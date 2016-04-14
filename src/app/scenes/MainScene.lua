@@ -19,19 +19,8 @@ function MainScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:setTouchSwallowEnabled(false)
    self.floating_layer:addTo(self,100000)
-
-     local buf={}
-	buf.pszfilename="liuyali"
-	buf["row"]=1
-	buf.col=2
-	buf.width=2
-	buf.height=3
-	buf.sX=3
-	buf.sY=3
-	buf.posx=3
-	buf.posy=4
-    debrisSprite.new(buf)
-
+  
+ -- self.debrisSprite:create(" ",10,10,10,10,10,10,10,10)
 end
 
 function MainScene:onEnter()

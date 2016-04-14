@@ -7,9 +7,7 @@ function DebrisSprite:ctor(parms)
    -- self:create(" ",10,10,10,10)
           
 
-	print("------------")
-	dump(parms)
-	self:create(parms)
+	
 end
 
 function DebrisSprite:onEnter()
@@ -17,11 +15,22 @@ end
 
 function DebrisSprite:onExit()
 end
-function DebrisSprite:create (buf)
-	local  pobSprite =DebrisSprite
-            pobSprite.srcPostion=setPosition(buf.posx,buf.posy)
-            local  rect = cc.rect(buf.col*buf.width, buf.row*buf.height,buf.width, buf.height);
+-- function DebrisSprite:create (const char *pszFileName,int row,int col,int width,int height,float sX,float sY,int posx,int posy)
+--     local pobSprite =  DebrisSprite.new( );
+--     pobSprite.srcPosition=cc.p(posx,posy);
+--    local  rect = cc.rect(col*width, row*height,width, height);
+--     pobSprite.m_nRowIndexSrc=row;
+--     pobSprite.m_nColIndexSrc=col;
+    
+--     if (pobSprite and  pobSprite:setDisplayFrame(pszFileName, rect))
+--     {
+--         pobSprite:setScale(sX,sY);
+--         pobSprite:setPosition(pobSprite.srcPosition);
+--         return pobSprite;
+--     }
+--     return nil;
+
             
 
-end
+-- end
 return DebrisSprite
