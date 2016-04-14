@@ -1,7 +1,7 @@
 
 require("config")
-require("cocos.init")
- loacal loginscene=require("framework.init")
+require("cocos.init") 
+
 
 local MyApp = class("MyApp", cc.mvc.AppBase)
 
