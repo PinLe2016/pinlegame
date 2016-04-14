@@ -23,3 +23,9 @@ CONFIG_SCREEN_HEIGHT = 960
 
 -- auto scale mode
 CONFIG_SCREEN_AUTOSCALE = "FIXED_WIDTH"
+
+--消息处理方法枚举
+G_NOTIFICATION_EVENT = {
+	LOGIN_POST="login_post",--登陆
+	
+}

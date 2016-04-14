@@ -20,24 +20,20 @@ function MainScene:ctor()
    self.floating_layer:setTouchSwallowEnabled(false)
    self.floating_layer:addTo(self,100000)
 
-     local buf={}
-	buf.pszfilename="liuyali"
-	buf["row"]=1
-	buf.col=2
-	buf.width=2
-	buf.height=3
-	buf.sX=3
-	buf.sY=3
-	buf.posx=3
-	buf.posy=4
-    debrisSprite.new(buf)
-
+   
 end
 
 function MainScene:onEnter()
+  dump("222")
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LOGIN_POST, self,
+                       function()
+                        dump("测试消息集成")
+                      end)
+   local debris=debrisSprite.new()
 end
 
 function MainScene:onExit()
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LOGIN_POST, self)
 end
 
 

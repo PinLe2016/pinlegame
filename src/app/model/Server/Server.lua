@@ -69,6 +69,7 @@ function Server:request(command , params, showMask)
         request:start()
         
         if showMask then self:show_mask_open() end
+    end
 
 end
 
@@ -133,7 +134,6 @@ function Server:on_request_finished_http(event , command)
 
   
 end
-
 
 
 require("app.model.Server.ServerLogin")

@@ -5,17 +5,21 @@ end)
 
 function DebrisSprite:ctor(parms)
    -- self:create(" ",10,10,10,10)
-          
-
-	print("------------")
-	dump(parms)
-	self:create(parms)
+  	self:setNodeEventEnabled(true)        
+  	dump("pppppp")
+	-- self:create(parms)
+	NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.LOGIN_POST, nil)--消息测试
 end
 
 function DebrisSprite:onEnter()
+	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LOGIN_POST, self,
+											 function()
+												dump("测试消息集成")
+											end)
 end
 
 function DebrisSprite:onExit()
+	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LOGIN_POST, self)
 end
 function DebrisSprite:create (buf)
 	local  pobSprite =DebrisSprite
