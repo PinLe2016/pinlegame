@@ -57,7 +57,7 @@ function LocalData:load()
  
 end
 
-require("app.model.LocalData.LocalBuilding")
+require("app.model.LocalData.LocalLogin")
 
 
 

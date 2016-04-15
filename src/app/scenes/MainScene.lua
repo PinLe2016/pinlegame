@@ -19,14 +19,20 @@ function MainScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:setTouchSwallowEnabled(false)
    self.floating_layer:addTo(self,100000)
-  
- -- self.debrisSprite:create(" ",10,10,10,10,10,10,10,10)
+
 end
 
 function MainScene:onEnter()
+  dump("222")
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LOGIN_POST, self,
+                       function()
+                        dump("测试消息集成")
+                      end)
+   local debris=debrisSprite.new()
 end
 
 function MainScene:onExit()
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LOGIN_POST, self)
 end
 
 
