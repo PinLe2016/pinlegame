@@ -19,6 +19,9 @@ function MainScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:setTouchSwallowEnabled(false)
    self.floating_layer:addTo(self,100000)
+   
+   --debrisSprite:create("sdfsdfsdf",10,10,10,10,10,10,10,10)
+
 
 end
 
