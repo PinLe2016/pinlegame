@@ -20,6 +20,19 @@ function MainScene:ctor()
    self.floating_layer:setTouchSwallowEnabled(false)
    self.floating_layer:addTo(self,100000)
    
+   --local  sp=debrisSprite.new()
+
+    local sprite1 = display.newSprite("sp.png")
+    sprite1:setPosition(display.cx,display.cy)
+    local  rect = cc.rect(100,100,100,100)
+    local clipnode = display.newClippingRegionNode(rect)
+   clipnode:addChild(sprite1)
+    
+    local  layer=display.newLayer()
+    layer:addChild(clipnode)
+    self:addChild(layer)
+
+
    --debrisSprite:create("sdfsdfsdf",10,10,10,10,10,10,10,10)
 
 

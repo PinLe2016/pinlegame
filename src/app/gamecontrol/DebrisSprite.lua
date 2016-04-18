@@ -1,11 +1,16 @@
 
 local DebrisSprite = class("DebrisSprite", function()
-    return display.newSprite()
+    return display.newLayer()
 end)
 
-function DebrisSprite:ctor(parms)
+function DebrisSprite:ctor()
    -- self:create(" ",10,10,10,10)
-   local sp = display.newTilesSprite("sp.jpg",cc.rect(10,10,10,10))
+   print("liuyali")
+   local sprite1 = display.newSprite("sp.png")
+    local  rect = cc.rect(10,10,10,10)
+    local clipnode = display.newClippingRegionNode(rect)
+   --clipnode:addChild(sprite1)
+    self:addChild(sprite1)
   
 
 end
@@ -24,7 +29,7 @@ end
 --     local pobSprite =  DebrisSprite.new( );
 --     local srcPosition=cc.p(posx,posy);
 --    local  rect = cc.rect(col*width, row*height,width, height);
---       print(rect)
+--     local clipnode = display.newClippingRegionNode(rect)
 --     pobSprite.m_nRowIndexSrc=row;
 --     pobSprite.m_nColIndexSrc=col;
 --     print(pszFileName  )
