@@ -13,7 +13,7 @@ function MyApp:run()
    cc.Director:getInstance():getOpenGLView():setDesignResolutionSize(640, 960, cc.ResolutionPolicy.FIXED_WIDTH)
 
     cc.FileUtils:getInstance():addSearchPath("res/")
-    self:enterScene("MainScene")
+    self:enterScene("debrisScene")
 end
 
 return MyApp
