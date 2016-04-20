@@ -31,13 +31,16 @@ end
 --注册
 function Server:create_username_user(username,password)
     local channel_code = PINLE_CHANNEL_ID
+    local platform=device.platform
+    if platform=="mac" then platform="ios" end
     local params = {
+            Loginname=username,
             deviceid = channel_code,
-            nickname=username,
+            nickname="我是王",
             password=crypto.md5(password),
             latitude=55,
             longtitude=66,
-            os=device.platform,
+            os=platform,
             ip="192.168.0.0",
             origin="xiaomi"
         }
