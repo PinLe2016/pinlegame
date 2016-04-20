@@ -42,7 +42,7 @@ local pos_x, pos_y = 0,0
    for i=1,row do
    	for j=1,col do
 
-            local fragment_sprite = display.newScale9Sprite(self.genie_sprite, 0, 0, cc.size(display.width,display.height))
+            local fragment_sprite = display.newScale9Sprite(self.filename, 0, 0, cc.size(display.width,display.height))
             fragment_sprite:setAnchorPoint(0, 0)
             local po = fragment_sprite:getContentSize()
             local rect = cc.rect(0,0, po.width/row-3, po.height/col-3)
@@ -62,8 +62,8 @@ local pos_x, pos_y = 0,0
 
             self.fragment_table[#self.fragment_table + 1] = clipnode
             clipnode:setPosition(pos_x + (j-1)*po.width/row, pos_y + (i-1)*po.height/col)
-
-
+            
+           -- fragment_sprite:setPosition(0 - (i-1)*self.content_size.width/row, 0 - (j-1)*self.content_size.height/col)--测试
             clipnode:setTouchEnabled(true)
             clipnode:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
                             --local boundingBox = clipnode:getCascadeBoundingBox()

@@ -32,8 +32,7 @@ function MainScene:ctor()
    --  layer:addChild(clipnode)
    --  self:addChild(layer)
 
-
-   debrisSprite:create("sp.png",10,10,10,10,10,10,10,10)
+  
 
 
 end
