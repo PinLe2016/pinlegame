@@ -19,30 +19,18 @@ function MainScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:setTouchSwallowEnabled(false)
    self.floating_layer:addTo(self,100000)
-   
-   --local  sp=debrisSprite.new()
 
-   --  local sprite1 = display.newSprite("sp.png")
-   --  sprite1:setPosition(display.cx,display.cy)
-   --  local  rect = cc.rect(100,100,100,100)
-   --  local clipnode = display.newClippingRegionNode(rect)
-   -- clipnode:addChild(sprite1)
-    
-   --  local  layer=display.newLayer()
-   --  layer:addChild(clipnode)
-   --  self:addChild(layer)
-
-
-   debrisSprite:create("sp.png",10,10,10,10,10,10,10,10)
+   Server:Instance():version_login_url()
+ -- Server:Instance():create_username_user("18210582995","111111")
 
 
 end
 
 function MainScene:onEnter()
-  dump("222")
+
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LOGIN_POST, self,
                        function()
-                        dump("测试消息集成")
+                       
                       end)
    local debris=debrisSprite.new()
 end
