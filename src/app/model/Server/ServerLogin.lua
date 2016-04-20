@@ -1,8 +1,9 @@
 
 
-function Server:get_login_url()
+--获取连接请求
+function Server:set_login_url(url)
 	
-	return "http://www.pinlegame.com/geturl.aspx?os="
+	self.login_url="http://www.url.com/url/Default.aspx?"
 end
 
 
@@ -10,23 +11,42 @@ function Server:is_first_game()
     return cc.UserDefault:getInstance():getBoolForKey("first_game",true)
 end
 
+--根据版本获取登陆注册信息
+function Server:version_login_url()
 
+    self:request_version("version_login_url" , nil)
+
+end
+
+function Server:version_login_url_callback()
+   dump(self.data)
+   self.login_url=self.data
+
+   --测试接口
+   self:create_username_user("18210582995","111111")
+end
 
 
 
 --注册
 function Server:create_username_user(username,password)
-  
-        local params = {
-            channel_code = channel_code,
-            username=username,
-            password=password_1
+    local channel_code = PINLE_CHANNEL_ID
+    local params = {
+            deviceid = channel_code,
+            nickname=username,
+            password=crypto.md5(password),
+            latitude=55,
+            longtitude=66,
+            os=device.platform,
+            ip="192.168.0.0",
+            origin="xiaomi"
         }
     self:request_http("create_username_user" , params , true); 
 end
 
 
 function Server:create_username_user_callback()
+    dump(self.data)
     if self.data.stats=="error"  then
         self:show_float_message("注册失败:" .. self.data.msg)
         return
