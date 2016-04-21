@@ -111,7 +111,7 @@ function Server:on_request_finished_http(event , command)
 
     -- 请求成功，显示服务端返回的内容
     local response = request:getResponseString()
-    print("--- response string ---\n" , response)
+    -- print("--- response string ---\n" , response)
     self.jsondata = json.decode(response)
     -- dump(self.jsondata)
     if self.jsondata == nil then
@@ -126,6 +126,7 @@ function Server:on_request_finished_http(event , command)
     if (self.jsondata.timestamp) then
        	   self.timediff = os.time() - self.jsondata.timestamp
     end
+
     -- 调用回调方法
     local callback = loadstring("Server:Instance():" .. command .. "_callback()")
     callback()

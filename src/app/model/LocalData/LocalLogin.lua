@@ -16,10 +16,9 @@ function LocalData:get_user_list()
 end
 
 function LocalData:set_save_user_data(user_data)
-
 	cc.UserDefault:getInstance():setStringForKey("user_data" ,json.encode(user_data))
 end
-function LocalData:set_save_user_data(user_data)
+function LocalData:get_save_user_data(user_data)
 	local user_data=cc.UserDefault:getInstance():getStringForKey("user_data")
 	return json.decode(user_data) or {}
 end

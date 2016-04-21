@@ -24,7 +24,7 @@ function Server:version_login_url_callback()
 
    --测试接口
    -- self:create_username_user("18210582992","111111")
-   self:get_server_list_by_username("18210582992","111111")
+   self:login("18210582992","111111")
 end
 
 
@@ -93,6 +93,7 @@ function Server:login_callback()
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
         return
     end
+    dump(self.data)
     LocalData:Instance():set_save_user_data(self.data)--保存玩家数据
 end
 
@@ -106,7 +107,6 @@ function Server:changepassword(username,new_password)
             password=crypto.md5(password)
         }
     self:request_http("changepassword" , params); 
-end
 end
 
 function Server:changepassword_callback()
