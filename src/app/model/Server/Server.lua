@@ -71,51 +71,26 @@ function Server:on_request_finished_version(event , command)
 end
 
 
---登陆接口请求
-function Server:request_http(command , params , showMask)
-    --print("requesting : " , command)
-    if showMask==nil then showMask=true end
-    --params.showMask=showMask 
+--数据接口
+--[[
+    --command --命名的方法字符转，用于回调
+    -- params --传输数据
+    -- functionname --拼乐数据文档后台区回调区分入口 以文档 functionname 值为准
+]]
+function Server:request_http(command , params)
+
+    local parsms_md5={methodtype="json",createtime=os.time(),functionname=command,functionparams=params}
+    local post_md5=json.encode(parsms_md5)
+    local post_="PINLEGAME"..post_md5.."PINLEGAME"
+    self.login_url=self.login_url.."type=json".."&key=PINLEGAME".."&md5="..crypto.md5(post_)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , "POST")
-    local params_encoded = json.encode(params)
-
-    params_encoded=MD5_KEY..params_encoded..MD5_KEY
-
-    print(params_encoded)
-    local timestamp = os.time()
-    request:addPOSTValue("type" ,"json")
-    request:addPOSTValue("key" , 0)
-    request:addPOSTValue("md5" , crypto.md5(params_encoded))
-    local strurl=self.login_url.."type=json,key=0,".."md5="..crypto.md5(params_encoded)
-    print("url ===",strurl)
+    request:setPOSTData(post_md5)
     request:setTimeout(0.5)
     request:start()
 
 end
 
 
---交互接口请求
-function Server:request(command , params, showMask)
-    if showMask==nil then showMask=true end
-    params=params or {}
-    params.showMask=showMask
-    print("-------- HttpOrSocket -------", HttpOrSocket,command) 
-    if HttpOrSocket == "HTTP" then
-        print("requesting : " , command)
-        local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.url , "POST")
-        local params_encoded = json.encode(params)
-        print(params_encoded)
-        local timestamp = os.time()
-        request:addPOSTValue("params" , params_encoded)
-        request:addPOSTValue("command" , command)
-        request:addPOSTValue("timestamp" , timestamp)
-        request:addPOSTValue("hash" , crypto.md5(self.secure_key .. timestamp .. params_encoded))
-        request:setTimeout(0.5)
-        request:start()
-
-    end
-
-end
 
 
 function Server:on_request_finished_http(event , command)
@@ -131,7 +106,6 @@ function Server:on_request_finished_http(event , command)
         -- 请求结束，但没有返回 200 响应代码
         self:show_float_message("服务器返回代码错误:" .. code)
         print("response status code : " .. code)
-        self:show_mask_close()
         return
     end
 
@@ -139,13 +113,14 @@ function Server:on_request_finished_http(event , command)
     local response = request:getResponseString()
     print("--- response string ---\n" , response)
     self.jsondata = json.decode(response)
+    -- dump(self.jsondata)
     if self.jsondata == nil then
         self:show_float_message("服务器返回信息格式错误，无法解析",response)
         return
     end
    
     -- 保存到类方便调用
-    self.data = json.decode(self.jsondata.data)
+    self.data = self.jsondata
     self.params = json.decode(self.jsondata.params)
     self.last_command = command
     if (self.jsondata.timestamp) then
