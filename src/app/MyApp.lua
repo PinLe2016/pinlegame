@@ -18,7 +18,7 @@ function MyApp:run()
 	cc.FileUtils:getInstance():addSearchPath("res/")
 	cc.FileUtils:getInstance():addSearchPath("res/CSres/main/MainUI")
 	cc.FileUtils:getInstance():addSearchPath("res/CSres/main")
-    self:enterScene("MainScene")
+    self:enterScene("debrisScene")
 end
 
 

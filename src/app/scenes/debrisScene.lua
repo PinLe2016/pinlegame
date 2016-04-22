@@ -14,7 +14,7 @@ function debrisScene:ctor()
  --self._widget = cc.uiloader:load("Layer.csb"):addTo(self)
 
 
-local de=debrisLayer.new("sp.png",3,3)
+local de=debrisLayer.new("sp.png",3,4)
 self:addChild(de)
 
 -- local node = cc.CSLoader:createNode("Layer.csb");
