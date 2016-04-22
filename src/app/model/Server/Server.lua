@@ -73,15 +73,14 @@ end
 
 --数据接口
 --[[
-    --command --命名的方法字符转，用于回调
+    --command --命名的方法字符转，用于回调 以文档 functionname 值为准
     -- params --传输数据
-    -- functionname --拼乐数据文档后台区回调区分入口 以文档 functionname 值为准
 ]]
 function Server:request_http(command , params)
 
     local parsms_md5={methodtype="json",createtime=os.time(),functionname=command,functionparams=params}
     local post_md5=json.encode(parsms_md5)
-    local post_="PINLEGAME"..post_md5.."PINLEGAME"
+    local post_=MD5_KEY..post_md5..MD5_KEY
     self.login_url=self.login_url.."type=json".."&key=PINLEGAME".."&md5="..crypto.md5(post_)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , "POST")
     request:setPOSTData(post_md5)
@@ -135,7 +134,7 @@ end
 
 
 require("app.model.Server.ServerLogin")
-
+require("app.model.Server.ServerSurprise")
 
 
 
