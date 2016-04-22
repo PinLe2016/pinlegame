@@ -11,23 +11,36 @@ end
 
 function MyApp:run()
    cc.Director:getInstance():getOpenGLView():setDesignResolutionSize(640, 960, cc.ResolutionPolicy.FIXED_WIDTH)
-     -- 这边是IPAD
-  self:GET_CHANNEL_ID()
+   --生成DEVICE_ID
+   self:init_userdefault()
+
 
 
 	cc.FileUtils:getInstance():addSearchPath("res/")
 	cc.FileUtils:getInstance():addSearchPath("res/CSres/main/MainUI")
 	cc.FileUtils:getInstance():addSearchPath("res/CSres/main")
-    self:enterScene("debrisScene")
+
+
+  self:enterScene("MainScene")
+
 end
 
 
-function MyApp:GET_CHANNEL_ID()
-   if device.platform ~= "android" then
-	  print("please run this on android device")
-	  return
+function MyApp:init_userdefault()
+
+   local device_id = cc.UserDefault:getInstance():getStringForKey("device_id")
+   if device_id == "" then
+    -- create random number
+    -- math.newrandomseed()
+    local rand = math.random(9999999)
+    -- get os time
+    local t = os.time()
+    -- put them together
+    -- device_id = crypto.md5( device.getOpenUDID() ..  rand  .. t )
+    device_id = crypto.md5( rand  .. t .. os.clock())
+    cc.UserDefault:getInstance():setStringForKey("device_id" , device_id)
    end
-   PINLE_CHANNEL_ID=device.getOpenUDID()
+   print("create device_id " .. device_id)
 end
 
 return MyApp

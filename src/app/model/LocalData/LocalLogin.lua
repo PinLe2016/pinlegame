@@ -7,10 +7,19 @@
 ]]
 
 
-function LocalData:set_server_list(server_list)
+function LocalData:set_user_list(server_list)
 	self.server_list=server_list
 end
 
-function LocalData:get_server_list()
+function LocalData:get_user_list()
 	return self.server_list
 end
+
+function LocalData:set_save_user_data(user_data)
+	cc.UserDefault:getInstance():setStringForKey("user_data" ,json.encode(user_data))
+end
+function LocalData:get_save_user_data(user_data)
+	local user_data=cc.UserDefault:getInstance():getStringForKey("user_data")
+	return json.decode(user_data) or {}
+end
+
