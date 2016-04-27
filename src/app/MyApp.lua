@@ -2,6 +2,8 @@
 require("config")
 require("cocos.init")
 require("framework.init")
+require "lfs"
+-- Util = require("app.model.Util")
 local MyApp = class("MyApp", cc.mvc.AppBase)
 PINLE_CHANNEL_ID="DVE"
 
@@ -19,8 +21,10 @@ function MyApp:run()
 	cc.FileUtils:getInstance():addSearchPath("res/")
 	cc.FileUtils:getInstance():addSearchPath("res/CSres/main/MainUI")
 	cc.FileUtils:getInstance():addSearchPath("res/CSres/main")
-
-
+  local writablePath = cc.FileUtils:getInstance():getWritablePath()
+  lfs.mkdir(writablePath .. "down_pic")
+  cc.FileUtils:getInstance():addSearchPath("down_pic/")
+  
   self:enterScene("MainScene")
 
 end

@@ -23,10 +23,15 @@ function MainScene:ctor()
 
 
 
-   Server:Instance():version_login_url()
+   -- Server:Instance():version_login_url()
+-- Server:Instance():request_pic("http://f.hiphotos.baidu.com/zhidao/pic/item/d833c895d143ad4b4cbf3f3081025aafa50f06a8.jpg","0.png")
+-- Server:Instance():request_pic("http://img4.kwcdn.kuwo.cn/star/KuwoArtPic/2013/15/1396929659847_w.jpg","1.png")
+-- Server:Instance():request_pic("http://www.16sucai.com/uploadfile/2012/0708/20120708023948159.jpg","2.png")
 
 
-
+local sp=display.newSprite("1.png")
+sp:setAnchorPoint(0.0,0.0)
+sp:addTo(self)
 end
 
 function MainScene:onEnter()
@@ -35,7 +40,6 @@ function MainScene:onEnter()
                        function()
                        
                       end)
-   local debris=debrisSprite.new()
 end
 
 function MainScene:onExit()

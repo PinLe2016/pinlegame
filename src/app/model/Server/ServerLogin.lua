@@ -14,7 +14,7 @@ end
 --根据版本获取登陆注册信息
 function Server:version_login_url()
 
-    self:request_version("version_login_url" , nil)
+    self:request_version("version_login_url")
 
 end
 
@@ -60,7 +60,7 @@ function Server:reg_callback()
         return
     end
 
-    LocalData:Instance():set_save_user_data(self.data)--保存玩家数据
+    LocalData:Instance():set_user_data(self.data)--保存玩家数据
     self:show_float_message("注册成功")
    -- end
      -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GET_SERVERLIST_BY_REFRESH)
@@ -89,12 +89,13 @@ end
 
 
 function Server:login_callback()
+    dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
         return
     end
-    dump(self.data)
-    LocalData:Instance():set_save_user_data(self.data)--保存玩家数据
+    
+    LocalData:Instance():set_user_data(self.data)--保存玩家数据
 end
 
 
@@ -114,7 +115,7 @@ function Server:changepassword_callback()
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
         return
     end
-    LocalData:Instance():set_save_user_data(self.data)--保存玩家数据
+    LocalData:Instance():set_user_data(self.data)--保存玩家数据
 end
 
 
