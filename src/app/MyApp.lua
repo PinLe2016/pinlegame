@@ -12,7 +12,7 @@ function MyApp:ctor()
 end
 
 function MyApp:run()
-   cc.Director:getInstance():getOpenGLView():setDesignResolutionSize(640, 960, cc.ResolutionPolicy.FIXED_WIDTH)
+   cc.Director:getInstance():getOpenGLView():setDesignResolutionSize(640, 1136, cc.ResolutionPolicy.FIXED_WIDTH)
    --生成DEVICE_ID
    self:init_userdefault()
 
@@ -21,11 +21,12 @@ function MyApp:run()
 	cc.FileUtils:getInstance():addSearchPath("res/")
 	cc.FileUtils:getInstance():addSearchPath("res/CSres/main/MainUI")
 	cc.FileUtils:getInstance():addSearchPath("res/CSres/main")
+      cc.FileUtils:getInstance():addSearchPath("res/cre")
   local writablePath = cc.FileUtils:getInstance():getWritablePath()
   lfs.mkdir(writablePath .. "down_pic")
   cc.FileUtils:getInstance():addSearchPath("down_pic/")
   
-  self:enterScene("MainScene")
+  self:enterScene("debrisScene")
 
 end
 

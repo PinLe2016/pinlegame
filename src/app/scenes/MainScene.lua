@@ -6,7 +6,7 @@ require("app.model.LocalData.LocalData")
 local FloatingLayerEx = require("app.layers.FloatingLayer")
 
 local MainScene = class("MainScene", function()
-    return display.newScene("MainScene")
+    return display.newScene("debrisScene")
 end)
 
 
