@@ -19,12 +19,13 @@ function Server:version_login_url()
 end
 
 function Server:version_login_url_callback()
-   -- dump(self.data)
+   dump(self.data)
    self.login_url=self.data
 
    --测试接口
    -- self:create_username_user("18210582992","111111")
-   self:login("18210582992","111111")
+   -- self:login("18210582992","111111")
+   -- Server:Instance():getsactivitieslist("1")
 end
 
 
@@ -96,6 +97,15 @@ function Server:login_callback()
     end
     
     LocalData:Instance():set_user_data(self.data)--保存玩家数据
+    -- 3.5.1 Server:Instance():getactivitylist("1")通过
+    -- 3.5.2 Server:Instance():getactivitybyid("86e2c414-b26a-48dc-8c6d-682544289d84") 通过
+    -- 3.5.3 Server:Instance():getranklistbyactivityid("86e2c414-b26a-48dc-8c6d-682544289d84",20)通过
+    -- 3.5.4 Server:Instance():getactivityadlist("86e2c414-b26a-48dc-8c6d-682544289d84")通过
+   -- 3.5.7  Server:Instance():getactivitypoints("86e2c414-b26a-48dc-8c6d-682544289d84")通过
+    --3.5.9  Server:Instance():getactivitypointsdetail("86e2c414-b26a-48dc-8c6d-682544289d84")--通过
+    --3.5.10 Server:Instance():getactivitywinners("86e2c414-b26a-48dc-8c6d-682544289d84")
+
+    
 end
 
 

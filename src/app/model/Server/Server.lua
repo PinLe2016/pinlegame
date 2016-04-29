@@ -78,21 +78,28 @@ end
     --command --命名的方法字符转，用于回调 以文档 functionname 值为准
     -- params --传输数据
 ]]
-function Server:request_http(command , params)
+function Server:request_http(command , params,request_type)
 
+    if not request_type then
+        request_type="GET"
+    end
     local parsms_md5={methodtype="json",createtime=os.time(),functionname=command,functionparams=params}
     local post_md5=json.encode(parsms_md5)
     local post_=MD5_KEY..post_md5..MD5_KEY
     local _key="PINLEGAME"
-    -- local login_info=LocalData:Instance():get_user_data()
+    local login_info=LocalData:Instance():get_user_data()
+    local md5=crypto.md5(post_)
+    -- dump(login_info)
+    if login_info and command~="login" then
+        _key=login_info["loginname"]
+        md5=_key..login_info["loginkey"]
+        md5=crypto.md5(tostring(md5))
 
-    -- if login_info  then
-    --     _key=login_info["loginkey"]
-    -- end
-
-        print("login-",command,self.login_url)
-    self.login_url=self.login_url.."type=json".."&key=PINLEGAME".. "&md5="..crypto.md5(post_)
-    local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , "POST")
+    end
+    self.login_url="http://123.57.136.223:2036/Default.aspx?"
+    self.login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
+    print("---url---",self.login_url,post_md5)
+    local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , request_type)
     request:setPOSTData(post_md5)
     request:setTimeout(0.5)
     request:start()
@@ -105,7 +112,6 @@ function Server:on_request_finished_http(event , command)
      -- print("--- response string ---\n" , response)
     local ok = (event.name == "completed")
 
-    dump(ok)
     local request = event.request
 
     if not ok then return end
@@ -121,7 +127,7 @@ function Server:on_request_finished_http(event , command)
     end
 
     -- 请求成功，显示服务端返回的内容
-    local response = request:getResponseString()
+    local response = request:getResponseData()
    
     self.jsondata = json.decode(response)
     -- dump(self.jsondata)
