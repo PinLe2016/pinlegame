@@ -17,6 +17,11 @@ function Util:trim (s)
 	return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end
 
+-- 除头尾空格
+function Util:sub_str (s,parm)
+  return string.gsub(s, parm, "")
+end
+
 
 function Util:FormatTime(orginSecond)
    local d = orginSecond

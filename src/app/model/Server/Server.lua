@@ -185,7 +185,7 @@ function Server:on_request_finished_pic(event , command)
     local dataRecv = request:getResponseData()
     -- local fileObject = self.download_file_list[self.download_progress]
   
-    local str=string.gsub(command, "/", "")
+    local str=Util:sub_str(command, "/")    
     dump(str)
     local file_path = self.writablePath.."down_pic/"..str
     local file = io.open( file_path, "w+b")
