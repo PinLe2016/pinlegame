@@ -52,27 +52,27 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     activity_ListView:removeAllItems()
     return  self
 end
-function SurpriseScene:Surpriseimages_list(  )
-         local list_table=LocalData:Instance():get_getactivitylist()
-         local  sup_data=list_table["game"]
-         for i=1,#sup_data do
-         	Server:Instance():request_pic(sup_data[i]["ownerurl"],sup_data[i]["ownerurl"])
-         end
-end
-function SurpriseScene:Surprise_list(  )
 
+function SurpriseScene:Surprise_list(  )
+        activity_ListView:removeAllItems()
          
          local list_table=LocalData:Instance():get_getactivitylist()
          local  sup_data=list_table["game"]
          for i=1,#sup_data do
-         	Server:Instance():request_pic(sup_data[i]["ownerurl"],sup_data[i]["ownerurl"])
+         	activity_ListView:pushBackDefaultItem()
+         	local  cell = activity_ListView:getItem(i-1);
          end
 end
 function SurpriseScene:Surpriseimages_list(  )
          local list_table=LocalData:Instance():get_getactivitylist()
          local  sup_data=list_table["game"]
          for i=1,#sup_data do
-         	Server:Instance():request_pic(sup_data[i]["ownerurl"],sup_data[i]["ownerurl"])
+         	local com_={}
+         	com_["command"]=sup_data[i]["ownerurl"]
+         	com_["max_pic_idx"]=#sup_data
+         	com_["curr_pic_idx"]=i
+       
+         	Server:Instance():request_pic(sup_data[i]["ownerurl"],com_)
          end
 end
 function SurpriseScene:pushFloating(text)
@@ -90,7 +90,7 @@ function SurpriseScene:onEnter()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
-                       self:Surpriseimages_list()
+                       self:Surprise_list()
                       end)
 end
 
