@@ -3,7 +3,7 @@ require("config")
 require("cocos.init")
 require("framework.init")
 require "lfs"
--- Util = require("app.model.Util")
+Util = require("app.model.Util")
 local MyApp = class("MyApp", cc.mvc.AppBase)
 PINLE_CHANNEL_ID="DVE"
 
