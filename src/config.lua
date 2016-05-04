@@ -32,5 +32,6 @@ PINLE_VERSION="3.0.0"
 --消息处理方法枚举
 G_NOTIFICATION_EVENT = {
 	LOGIN_POST="login_post",--登陆
+	SURPRIS_SCENE="SURPRIS_SCENE",--惊喜吧尝尽
 	
 }

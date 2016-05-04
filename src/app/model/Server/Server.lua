@@ -1,5 +1,4 @@
 Server = {}
-
 function Server:new(o)  
     o = o or {}  
     setmetatable(o,self)  
@@ -33,7 +32,14 @@ end
 
 function Server:show_float_message(msg)
    local scene = display.getRunningScene()
-   scene:pushFloating(msg,false)
+--addTo(scene)
+-- if cc.Director:getInstance():getRunningScene() then
+--     print("的房价是否都是SDFDS")
+--     cc.Director:getInstance():replaceScene(scene)
+-- else
+--     cc.Director:getInstance():runWithScene(scene)
+-- end
+   scene:pushFloating(msg)
 end
 
 
@@ -91,6 +97,7 @@ function Server:request_http(command , params,request_type)
     local md5=crypto.md5(post_)
     -- dump(login_info)
     if login_info and command~="login" then
+        dump(login_info)
         _key=login_info["loginname"]
         md5=_key..login_info["loginkey"]
         md5=crypto.md5(tostring(md5))
@@ -175,9 +182,9 @@ function Server:on_request_finished_pic(event , command)
         print("response status code : " .. code)
         return
     end
-
     local dataRecv = request:getResponseData()
     -- local fileObject = self.download_file_list[self.download_progress]
+    dump(command)
     local file_path = self.writablePath.."down_pic/"..command
     local file = io.open( file_path, "w+b")
     dump(file)

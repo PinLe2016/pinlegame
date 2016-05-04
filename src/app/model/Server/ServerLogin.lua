@@ -1,6 +1,7 @@
 
 
 --获取连接请求
+
 function Server:set_login_url(url)
 	
 	self.login_url="http://www.url.com/url/Default.aspx?"
@@ -32,6 +33,7 @@ end
 
 --注册
 function Server:reg(username,password)
+
     local channel_code = PINLE_CHANNEL_ID
     local platform=device.platform
     local device_id = cc.UserDefault:getInstance():getStringForKey("device_id")
@@ -70,6 +72,7 @@ end
 
 --登陆
 function Server:login(username,password)
+    print("开始"..username..password)
     local platform=device.platform
     local device_id = cc.UserDefault:getInstance():getStringForKey("device_id")
     if platform=="mac" then platform="IOS" end
@@ -93,10 +96,13 @@ function Server:login_callback()
     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
+         -- local a=FloatingLayer:Instance():floatingLayer_init(self.data.err_msg)
+         -- display.addChild(a)
         return
     end
-    
-    LocalData:Instance():set_user_data(self.data)--保存玩家数据
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_SCENE)
+       
+   LocalData:Instance():set_user_data(self.data)--保存玩家数据
     -- 3.5.1 Server:Instance():getactivitylist("1")通过
     -- 3.5.2 Server:Instance():getactivitybyid("86e2c414-b26a-48dc-8c6d-682544289d84") 通过
     -- 3.5.3 Server:Instance():getranklistbyactivityid("86e2c414-b26a-48dc-8c6d-682544289d84",20)通过

@@ -2,55 +2,117 @@
 -- Author: Your Name
 -- Date: 2016-04-19 09:45:07
 --
+require("app.model.NotificationCenter")
+local  SurpriseScene=require("app.scenes.SurpriseScene")
 local debrisScene = class("debrisScene", function()
     return display.newScene("debrisScene")
 end)
-
+local FloatingLayerEx = require("app.layers.FloatingLayer")
 local debrisLayer = require("app.gamecontrol.debrisLayer")
+require("app.model.Server.Server")
+FloatingLayer=require("app.layers.FloatingLayer")
+require("app.model.LocalData.LocalData")
 function debrisScene:ctor()
- 
-
-
- --self._widget = cc.uiloader:load("Layer.csb"):addTo(self)
-
-
--- local de=debrisLayer.new("sp.png",3,4)
--- self:addChild(de)
-
-  landing = cc.CSLoader:createNode("landing.csb");
-  self:addChild(landing);
-  landingbg_2 = landing:getChildByTag(6):getChildByTag(16)
-  landingbg_2:setString("textl刘雅丽1226566")
+       self:landing_init()
+   self.floating_layer = FloatingLayerEx.new()
+   self.floating_layer:addTo(self,100000)
+  -- phone_text:addEventListener(function()
+  --                  Server:Instance():login(phone_text:getString(),password_text:getString())
+  --           end）
+  -- password_text:addEventListener(function()
+  --                 Server:Instance():login(phone_text:getString(),password_text:getString())
+  --           end)
+  
+  --Server:Instance():login("liuyali","554564564564")
   --landingbg_2:addEventListener(textFieldEvent)
-  landingbg_2:addEventListener(function( )
-                    print("hahaha开心")
-            end)
-
-ui.newTTFLabel({text = "User Login", size = 20, align = ui.TEXT_ALIGN_CENTER})
-:pos(display.cx, display.cy+50)
-:addTo(landingbg_2)
-------
-local function onEdit(event, editbox)
-if event == "began" then
--- 开始输入
-elseif event == "changed" then
--- 输入框内容发生变化
-elseif event == "ended" then
--- 输入结束
-elseif event == "return" then
--- 从输入框返回
 end
+ function debrisScene:registered_init()
+   local function Getverificationcode_btCallback(sender, eventType)
+        if eventType == ccui.TouchEventType.ended then
+           local _random=math.random(1000,9999)
+           print("邀请码".._random)
+        end
+    end
+     local function submit_btCallback(sender, eventType)
+        if eventType == ccui.TouchEventType.ended then
+           print("提交")
+
+        end
+    end
+     local function callback_btCallback(sender, eventType)
+        if eventType == ccui.TouchEventType.ended then
+           print("取消")
+           self:landing_init()
+           registered:removeFromParent()
+        end
+    end
+    local Getverificationcode_bt=registered:getChildByTag(27)
+    Getverificationcode_bt:addTouchEventListener(Getverificationcode_btCallback)
+     local submit_bt=registered:getChildByTag(26)
+    submit_bt:addTouchEventListener(submit_btCallback)
+     local callback_bt=registered:getChildByTag(25)
+    callback_bt:addTouchEventListener(callback_btCallback)
+
 end
+function debrisScene:landing_init()
+    landing = cc.CSLoader:createNode("landing.csb");
+    self:addChild(landing)
+
+   -- local dialog=FloatingLayer:Instance():floatingLayer_init("多少分开始的")
+   -- self:addChild(dialog)
+   -- self:replaceScene(dialog)
+
+  phone_text = landing:getChildByTag(6):getChildByTag(16)
+  password_text=landing:getChildByTag(6):getChildByTag(17)
+
+local function go_btCallback(sender, eventType)
+        if eventType == ccui.TouchEventType.ended then
+           Server:Instance():login(phone_text:getString(),password_text:getString())
+        end
+    end
+
+    local function registered_btCallback(sender, eventType)
+        if eventType == ccui.TouchEventType.ended then
+           print("注册")
+            registered = cc.CSLoader:createNode("registered.csb");
+            self:addChild(registered);
+            landing:removeFromParent()
+            self:registered_init()
+        end
+    end
+
+    local function Forgotpassword_btCallback(sender, eventType)
+        if eventType == ccui.TouchEventType.ended then
+           print("忘记密码")
+        end
+    end
 
 
-end
-local function textFieldEvent(sender, eventType)
-     print("hahaha开心")
+   local go_bt = landing:getChildByTag(6):getChildByTag(11)--登陆
+    go_bt:addTouchEventListener(go_btCallback)
+
+     local registered_bt = landing:getChildByTag(6):getChildByTag(12)--注册
+    registered_bt:addTouchEventListener(registered_btCallback)
+
+     local Forgotpassword_bt = landing:getChildByTag(6):getChildByTag(13)--忘记密码
+    Forgotpassword_bt:addTouchEventListener(Forgotpassword_btCallback)
 end
 function debrisScene:onEnter()
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
+                       function()
+                        display.replaceScene(SurpriseScene:Instance():Surpriseinit())
+                      end)
+
 end
 
 function debrisScene:onExit()
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
 end
-
+function debrisScene:pushFloating(text)
+   if is_resource then
+       self.floating_layer:showFloat(text)  
+   else
+       self.floating_layer:showFloat(text) 
+   end
+end 
 return debrisScene

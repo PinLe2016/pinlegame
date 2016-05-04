@@ -8,6 +8,7 @@
 
 --status	是	要获取的数据状态	String	0未开始1已开始2已结束3全部
 function Server:getactivitylist(status)
+    print("解放军佛的设计佛山的减肥")
     local params = {}
     params={
             status=status
@@ -24,7 +25,7 @@ function Server:getactivitylist_callback()
     end
 
     LocalData:Instance():set_getactivitylist(self.data)--保存数据
-    self:show_float_message("获取活动专区列表")
+    --self:show_float_message("获取活动专区列表")
 end
 
 
