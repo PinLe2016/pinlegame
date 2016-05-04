@@ -23,8 +23,9 @@ function Server:getactivitylist_callback()
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
     end
-
+    
     LocalData:Instance():set_getactivitylist(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE)
     --self:show_float_message("获取活动专区列表")
 end
 
@@ -149,6 +150,7 @@ function Server:getactivitypoints(activityid)
             activityid =activityid,
         }
     self:request_http("getactivitypoints" , params ); 
+
 end
 
 function Server:getactivitypoints_callback()

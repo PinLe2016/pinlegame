@@ -3,12 +3,14 @@
 local SurpriseScene = class("SurpriseScene", function()
     return display.newScene("SurpriseScene")
 end)
---require("app.model.Server.Server")
+require("app.model.NotificationCenter")
+require("app.model.Server.Server")
+require("app.model.LocalData.LocalData")
 local FloatingLayerEx = require("app.layers.FloatingLayer")
 function SurpriseScene:ctor()
           self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
-    
+    self:Surpriseinit()
 end
  function SurpriseScene:Instance()  
     if self.instance == nil then  
@@ -24,19 +26,12 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
         if eventType == ccui.TouchEventType.ended then
            print("即将")
            Server:Instance():getactivitylist(1)
-
-
         end
     end
      local function activity_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            print("本期")
-         local list_table=LocalData:Instance():get_getactivitylist()
-         local  sup_data=list_table["game"]
-         for i=1,#sup_data do
-         	Server:Instance():request_pic(sup_data[i]["ownerurl"],sup_data[i]["ownerurl"])
-         end
-         print("hdshfdsfh  ",list_table)
+         
         end
     end
      local function Reviewpast_btCallback(sender, eventType)
@@ -52,9 +47,34 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
      local Reviewpast_bt=ActivitymainnterfaceiScene:getChildByTag(31)--回顾
     Reviewpast_bt:addTouchEventListener(Reviewpast_btCallback)
 
+    activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
+    activity_ListView:setItemModel(activity_ListView:getItem(0))
+    activity_ListView:removeAllItems()
     return  self
 end
+function SurpriseScene:Surpriseimages_list(  )
+         local list_table=LocalData:Instance():get_getactivitylist()
+         local  sup_data=list_table["game"]
+         for i=1,#sup_data do
+         	Server:Instance():request_pic(sup_data[i]["ownerurl"],sup_data[i]["ownerurl"])
+         end
+end
+function SurpriseScene:Surprise_list(  )
 
+         
+         local list_table=LocalData:Instance():get_getactivitylist()
+         local  sup_data=list_table["game"]
+         for i=1,#sup_data do
+         	Server:Instance():request_pic(sup_data[i]["ownerurl"],sup_data[i]["ownerurl"])
+         end
+end
+function SurpriseScene:Surpriseimages_list(  )
+         local list_table=LocalData:Instance():get_getactivitylist()
+         local  sup_data=list_table["game"]
+         for i=1,#sup_data do
+         	Server:Instance():request_pic(sup_data[i]["ownerurl"],sup_data[i]["ownerurl"])
+         end
+end
 function SurpriseScene:pushFloating(text)
    if is_resource then
        self.floating_layer:showFloat(text)  
@@ -64,9 +84,19 @@ function SurpriseScene:pushFloating(text)
 end 
 
 function SurpriseScene:onEnter()
+	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
+                       function()
+                       self:Surpriseimages_list()
+                      end)--
+	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
+                       function()
+                       self:Surpriseimages_list()
+                      end)
 end
 
 function SurpriseScene:onExit()
+	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
+	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
 end
 
 return SurpriseScene

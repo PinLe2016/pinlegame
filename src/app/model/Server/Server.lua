@@ -184,10 +184,11 @@ function Server:on_request_finished_pic(event , command)
     end
     local dataRecv = request:getResponseData()
     -- local fileObject = self.download_file_list[self.download_progress]
-    dump(command)
-    local file_path = self.writablePath.."down_pic/"..command
+  
+    local str=string.gsub(command, "/", "")
+    dump(str)
+    local file_path = self.writablePath.."down_pic/"..str
     local file = io.open( file_path, "w+b")
-    dump(file)
     if file then
         if file:write(dataRecv) == nil then
         -- self:show_error("can not save file : " .. file_path)
@@ -197,6 +198,8 @@ function Server:on_request_finished_pic(event , command)
         io.close(file)
  
     end
+NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_LIST)
+
 end
 
 require("app.model.Server.ServerLogin")

@@ -26,7 +26,7 @@ function MyApp:run()
   lfs.mkdir(writablePath .. "down_pic")
   cc.FileUtils:getInstance():addSearchPath("down_pic/")
   
-  self:enterScene("debrisScene")
+  self:enterScene("SurpriseScene")
 
 end
 
