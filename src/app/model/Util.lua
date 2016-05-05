@@ -18,8 +18,9 @@ function Util:trim (s)
 end
 
 -- 除头尾空格
-function Util:sub_str (s,parm)
-  return string.gsub(s, parm, "")
+function Util:sub_str (s,parm,parm1)
+  local str=string.gsub(s, parm, "")
+  return string.gsub(str, parm1, "")
 end
 
 
@@ -45,10 +46,12 @@ end
 
 -- 冒号格式时间显示
 function Util:FormatTime_colon(orginSecond)
+
    local d = orginSecond
-   local h = math.floor(d/3600)
-   local m = (d - h * 3600) / 60
-   local s = (m - math.floor(m)) *60
+   local day  = math.floor(d/60/60/24)
+   local h = math.floor((d/60/60)%24)
+   local m = (d/60)%60
+   local s = d%60
    local hour = math.floor(h)
    if (hour < 10) then
     hour = '0' .. hour
@@ -61,7 +64,8 @@ function Util:FormatTime_colon(orginSecond)
    if (math.abs(second) < 10) then
     second = '0' .. math.abs(second)
    end
-   return string.format("%s:%s:%s", hour, minutes, second)
+    local _table={day.."天",hour.."小时",minutes.."分",second.."秒"}
+   return _table--string.format("%s:%s:%s", hour, minutes, second)
 end
 
 -- 字符串拆成字符（中文）
@@ -196,6 +200,12 @@ function Util:dumpTexture()
         print(cc.Director:getInstance():getTextureCache():getCachedTextureInfo())
         print("\n___________________TextureData__________________________\n")
 end
+
+function Util:scene_control(scene)
+        local str_scene="app.scenes."..scene
+        display.replaceScene(require(str_scene):new())
+end
+
 
 function Util:tableLength(T)
 	local count = 0

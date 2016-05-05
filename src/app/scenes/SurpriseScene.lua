@@ -1,16 +1,26 @@
 
 --
+-- 
 local SurpriseScene = class("SurpriseScene", function()
-    return display.newScene("SurpriseScene")
+            return display.newScene("SurpriseScene")
 end)
-require("app.model.NotificationCenter")
-require("app.model.Server.Server")
-require("app.model.LocalData.LocalData")
-local FloatingLayerEx = require("app.layers.FloatingLayer")
+
+local GameScene = require("app.scenes.GameScene")
+
 function SurpriseScene:ctor()
-          self.floating_layer = FloatingLayerEx.new()
-   self.floating_layer:addTo(self,100000)
-    self:Surpriseinit()
+	self.time=0
+	self.secondOne = 0
+	self.list_table={}
+	self.floating_layer = FloatingLayerEx.new()
+	self.floating_layer:addTo(self,100000)
+	self:Surpriseinit()
+
+
+	 self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+        		self:update(dt)
+    	end)
+
+
 end
  function SurpriseScene:Instance()  
     if self.instance == nil then  
@@ -20,23 +30,40 @@ end
     return self.instance
 end
 function SurpriseScene:Surpriseinit()  --floatingLayer_init
+
+  -- self.time=0
+  -- self.secondOne = 0
+  -- self.list_table={}
+  -- self.floating_layer = FloatingLayerEx.new()
+  -- self.floating_layer:addTo(self,100000)
+  -- self:Surpriseinit()
+
+
+  --  self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+  --           self:update(dt)
+  --     end)
+
     ActivitymainnterfaceiScene = cc.CSLoader:createNode("ActivitymainnterfaceiScene.csb");
     self:addChild(ActivitymainnterfaceiScene)
     local function Soon_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            print("即将")
-           Server:Instance():getactivitylist(1)
+           Server:Instance():getactivitylist(0)
+           activity_ListView:removeAllItems()
         end
     end
      local function activity_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            print("本期")
-         
+         Server:Instance():getactivitylist(1)
+         activity_ListView:removeAllItems()
         end
     end
      local function Reviewpast_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            print("回顾")
+           Server:Instance():getactivitylist(2)
+           activity_ListView:removeAllItems()
            --registered:removeFromParent()
         end
     end
@@ -53,15 +80,50 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     return  self
 end
 
-function SurpriseScene:Surprise_list(  )
-        activity_ListView:removeAllItems()
-         
-         local list_table=LocalData:Instance():get_getactivitylist()
-         local  sup_data=list_table["game"]
-         for i=1,#sup_data do
-         	activity_ListView:pushBackDefaultItem()
-         	local  cell = activity_ListView:getItem(i-1);
-         end
+  function SurpriseScene:update(dt)
+	self.secondOne = self.secondOne+dt
+	if self.secondOne <1 then return end
+	self.secondOne=0
+            self.time=1+self.time
+            local  sup_data=self.list_table["game"]
+            for i=1,#sup_data do
+         	local  cell = activity_ListView:getItem(i-1)
+            local _table=Util:FormatTime_colon(sup_data[i]["finishtime"]-sup_data[i]["begintime"]-self.time)
+            local dayText=cell:getChildByTag(38)
+            dayText:setString(tostring(_table[1]))
+            local hoursText=cell:getChildByTag(39)
+            hoursText:setString(tostring(_table[2]))
+            local pointsText=cell:getChildByTag(40)
+            pointsText:setString(tostring(_table[3]))
+            local secondsText=cell:getChildByTag(41)
+            secondsText:setString(tostring(_table[4]))
+        end
+  end
+
+        
+function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/") 
+          activity_ListView:removeAllItems()
+          local  function onImageViewClicked(sender, eventType)
+                    if eventType == ccui.TouchEventType.ended then
+                          print("列表TOUCH事件")
+                           --display.replaceScene(GameScene:new())
+                           cc.Director:getInstance():pushScene(GameScene:new())
+                    end
+          end  
+
+          self.list_table=LocalData:Instance():get_getactivitylist()
+          local  sup_data=self.list_table["game"]
+          dump(sup_data)
+          for i=1,#sup_data do
+          	activity_ListView:pushBackDefaultItem()
+          	local  cell = activity_ListView:getItem(i-1)
+            local activity_Panel=cell:getChildByTag(36)
+            activity_Panel:addTouchEventListener(onImageViewClicked)
+            activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            local Nameprize_text=cell:getChildByTag(42)
+            Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
+          end
+          self:scheduleUpdate()
 end
 function SurpriseScene:Surpriseimages_list(  )
          local list_table=LocalData:Instance():get_getactivitylist()

@@ -8,7 +8,6 @@
 
 --status	是	要获取的数据状态	String	0未开始1已开始2已结束3全部
 function Server:getactivitylist(status)
-    print("解放军佛的设计佛山的减肥")
     local params = {}
     params={
             status=status
