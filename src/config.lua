@@ -19,7 +19,7 @@ CONFIG_SCREEN_ORIENTATION = "portrait"
 
 -- design resolution
 CONFIG_SCREEN_WIDTH  = 640
-CONFIG_SCREEN_HEIGHT = 1136
+CONFIG_SCREEN_HEIGHT = 960
 
 -- auto scale mode
 CONFIG_SCREEN_AUTOSCALE = "FIXED_WIDTH"
@@ -29,6 +29,16 @@ MD5_KEY="PINLEGAME"
 --版本号
 PINLE_VERSION="3.0.0"
 
+
+--四个公有文件引入
+require("app.model.Server.Server")--请求文件
+require("app.model.NotificationCenter")--消息文件
+require("app.model.LocalData.LocalData")--数据文件
+FloatingLayerEx = require("app.layers.FloatingLayer")--提示文件
+
+
+
+
 --消息处理方法枚举
 G_NOTIFICATION_EVENT = {
 	LOGIN_POST="login_post",--登陆
@@ -36,5 +46,5 @@ G_NOTIFICATION_EVENT = {
 	SURPRIS_LIST="SURPRIS_LIST", --获取惊喜吧列表
 	SURPRIS_LIST_IMAGE="SURPRIS_LIST_IMAGE" --惊喜吧图片下载
 
-	
 }
+

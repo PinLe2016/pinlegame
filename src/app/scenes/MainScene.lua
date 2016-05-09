@@ -1,12 +1,9 @@
 
-require("app.model.Server.Server")
-require("app.model.NotificationCenter")
-require("app.model.LocalData.LocalData")
 
-local FloatingLayerEx = require("app.layers.FloatingLayer")
+local debrisLayer = require("app.gamecontrol.debrisLayer")
 
 local MainScene = class("MainScene", function()
-    return display.newScene("debrisScene")
+    return display.newScene("MainScene")
 end)
 
 
@@ -29,9 +26,9 @@ function MainScene:ctor()
 -- Server:Instance():request_pic("http://www.16sucai.com/uploadfile/2012/0708/20120708023948159.jpg","2.png")
 
 
-local sp=display.newSprite("1.png")
-sp:setAnchorPoint(0.0,0.0)
-sp:addTo(self)
+-- local sp=display.newSprite("1.png")
+-- sp:setAnchorPoint(0.0,0.0)
+-- sp:addTo(self)
 end
 
 function MainScene:onEnter()

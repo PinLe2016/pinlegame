@@ -185,7 +185,7 @@ function Server:on_request_finished_pic(event , command)
     local dataRecv = request:getResponseData()
     -- local fileObject = self.download_file_list[self.download_progress]
   
-    local str=Util:sub_str(command, "/")    
+    local str=Util:sub_str(command["command"], "/",":")    
     dump(str)
     local file_path = self.writablePath.."down_pic/"..str
     local file = io.open( file_path, "w+b")
@@ -198,7 +198,10 @@ function Server:on_request_finished_pic(event , command)
         io.close(file)
  
     end
-NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_LIST)
+    if tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) then
+        NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_LIST)
+    end
+
 
 end
 
