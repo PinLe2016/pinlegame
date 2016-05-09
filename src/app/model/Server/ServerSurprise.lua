@@ -6,7 +6,7 @@
 
 --3.5.1 获取活动专区列表
 
---status	是	要获取的数据状态	String	0未开始1已开始2已结束3全部
+--status	是	要获取的数据状态	String	0未开始1已开始2已结束3我的惊喜
 function Server:getactivitylist(status)
     local params = {}
     params={
@@ -17,7 +17,8 @@ end
 
 
 function Server:getactivitylist_callback()
-    dump(self.data)
+    print(" geshu  ",#self.data["game"])
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
@@ -245,6 +246,25 @@ function Server:getactivityawards_callback()
         return
     end
     self:show_float_message("获取指定活动的广告列表")
+end
+
+-- 3.5.12   验证惊喜吧活动码接
+-- code 是   活动码 String
+function Server:validateactivitycode(code)
+    local params = {}
+    params={
+            code =code,
+        }
+    self:request_http("validateactivitycode" , params ); 
+end
+
+function Server:validateactivitycode_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("验证惊喜吧活动码接失败:" .. self.data.err_msg)
+        return
+    end
+    -- self:show_float_message("获取指定活动的广告列表")
 end
 
 

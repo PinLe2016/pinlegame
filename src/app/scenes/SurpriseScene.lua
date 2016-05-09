@@ -42,6 +42,8 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
   --  self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
   --           self:update(dt)
   --     end)
+    -- Server:Instance():validateactivitycode("123456")
+
 
     ActivitymainnterfaceiScene = cc.CSLoader:createNode("ActivitymainnterfaceiScene.csb");
     self:addChild(ActivitymainnterfaceiScene)
@@ -113,7 +115,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-          dump(sup_data)
+          -- dump(sup_data)
           for i=1,#sup_data do
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)
