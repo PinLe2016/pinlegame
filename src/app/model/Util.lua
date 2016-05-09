@@ -205,7 +205,10 @@ function Util:scene_control(scene)
         local str_scene="app.scenes."..scene
         display.replaceScene(require(str_scene):new())
 end
-
+-- function Util:scene_controlid(scene,id)
+--         local str_scene="app.scenes."..scene
+--         display.replaceScene(require(str_scene):new({id = id}))
+-- end
 
 function Util:tableLength(T)
 	local count = 0

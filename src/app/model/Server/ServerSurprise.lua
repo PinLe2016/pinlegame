@@ -45,8 +45,8 @@ function Server:getactivitybyid_callback()
         self:show_float_message("获取指定活动详情失败:" .. self.data.err_msg)
         return
     end
-    self:show_float_message("获取指定活动详情")
      LocalData:Instance():set_getactivitybyid(self.data)--保存数据
+     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE)
 end
 
 
@@ -67,7 +67,6 @@ function Server:getranklistbyactivityid_callback()
         self:show_float_message("获取活动的排行榜失败:" .. self.data.err_msg)
         return
     end
-    self:show_float_message("获取活动的排行榜")
     LocalData:Instance():set_getranklistbyactivityid(self.data)--保存数据
 end
 
@@ -122,6 +121,7 @@ end
 --3.5.6   获取活动排行榜单 (分页)
 --activityid        活动ID    string
 --pageindex 是   当前页码编号  Int
+--  排行榜
 function Server:getrankinglistofactivies(activityid,pageindex)
     local params = {}
     params={
@@ -139,7 +139,7 @@ function Server:getrankinglistofactivies_callback()
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
     end
-    self:show_float_message("获取指定活动的广告列表")
+    LocalData:Instance():setrankinglistofactivies_callback(self.data)
 end
 
 --3.5.7   获取用户活动老虎机积分（命令：getactivitypoints）
@@ -185,7 +185,7 @@ end
 --3.5.9   获取活动积分详细列表接口(命令：getactivitypointsdetail)
 --activityid    是   活动编号    String  
 --playerloginname 否   要对比的玩家登录名   String  如果不传此参数则只取玩家本人的积分详细
-
+--排行榜中的对比排行榜  和个人积分
 function Server:getactivitypointsdetail(activityid,playerloginname)
     local params = {}
     params={

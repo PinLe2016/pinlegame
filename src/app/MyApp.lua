@@ -17,9 +17,8 @@ function MyApp:run()
    --生成DEVICE_ID
    self:init_userdefault()
 
-
-
 	cc.FileUtils:getInstance():addSearchPath("res/")
+      cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")
   local writablePath = cc.FileUtils:getInstance():getWritablePath()
    lfs.mkdir(writablePath .. "down_pic")

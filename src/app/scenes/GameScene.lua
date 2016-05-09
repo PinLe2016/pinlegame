@@ -18,20 +18,27 @@ function GameScene:ctor()
    -- self.floating_layer = FloatingLayerEx.new()
    -- self.floating_layer:addTo(self,100000)
 
-    local  function csb_btCallback(sender, eventType)
+  local  function csb_btCallback(sender, eventType)
           if eventType == ccui.TouchEventType.ended then
-          -- local  SurpriseSceneeee=require("app.scenes.SurpriseScene")
-             -- display.replaceScene(G_CHANGE_SCENE.SURPRIS_SCENE)
+             --self:addChild(DetailsLayer:new({id=SurpriseScene.act_id,image=SurpriseScene. act_image}))
              Util:scene_control("SurpriseScene")
-             -- cc.Director:getInstance():popScene()
-             print("拼乐好玩吗")
+          end
+    end
+
+    local  function music_btCallback(sender, eventType)
+          cc.UserDefault:getInstance():setBoolForKey("music",true)
+          cc.UserDefault:getInstance():flush()
+          if eventType == ccui.TouchEventType.ended then
+            print("音乐",cc.UserDefault:getInstance():getBoolForKey("music"))
           end
     end
 
   local csb = cc.CSLoader:createNode("XSHGameScene.csb")
    self:addChild(csb)
-   local back=csb:getChildByTag(21)
-   back:addTouchEventListener(csb_btCallback)
+   local back_bt=csb:getChildByTag(21)
+   back_bt:addTouchEventListener(csb_btCallback)
+  local music_bt=csb:getChildByTag(22)
+   music_bt:addTouchEventListener(music_btCallback)
    local kuang=csb:getChildByTag(53)
    local _size=kuang:getContentSize()
    local point={}
@@ -57,11 +64,11 @@ end
 
 function GameScene:pushFloating(text)
 
-   if is_resource then
-       self.floating_layer:showFloat(text)  
-   else
-       self.floating_layer:showFloat(text) 
-   end
+   -- if is_resource then
+   --     self.floating_layer:showFloat(text)  
+   -- else
+   --     self.floating_layer:showFloat(text) 
+   -- end
 
 end 
 

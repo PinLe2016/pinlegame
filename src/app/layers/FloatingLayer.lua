@@ -21,7 +21,6 @@ function FloatingLayer:Instance()
     return self.instance
 end
 function FloatingLayer:showFloat(dialogtextString)  --floatingLayer_init
-	print("坑爹",dialogtextString)
     dialog = cc.CSLoader:createNode("Dialog.csb");
     self:addChild(dialog)
     dialogtext = dialog:getChildByTag(44)

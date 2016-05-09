@@ -8,6 +8,7 @@ end)
 local GameScene = require("app.scenes.GameScene")
 
 function SurpriseScene:ctor()
+      --self:addChild(SurpriseOverLayer.new())
 	self.time=0
 	self.secondOne = 0
 	self.list_table={}
@@ -22,13 +23,7 @@ function SurpriseScene:ctor()
 
 
 end
- function SurpriseScene:Instance()  
-    if self.instance == nil then  
-        self.instance =  self:new()
 
-    end
-    return self.instance
-end
 function SurpriseScene:Surpriseinit()  --floatingLayer_init
 
   -- self.time=0
@@ -50,6 +45,7 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
            print("即将")
            Server:Instance():getactivitylist(0)
            activity_ListView:removeAllItems()
+           self:unscheduleUpdate()
         end
     end
      local function activity_btCallback(sender, eventType)
@@ -57,6 +53,7 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
            print("本期")
          Server:Instance():getactivitylist(1)
          activity_ListView:removeAllItems()
+          self:unscheduleUpdate()
         end
     end
      local function Reviewpast_btCallback(sender, eventType)
@@ -64,6 +61,7 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
            print("回顾")
            Server:Instance():getactivitylist(2)
            activity_ListView:removeAllItems()
+            self:unscheduleUpdate()
            --registered:removeFromParent()
         end
     end
@@ -86,6 +84,7 @@ end
 	self.secondOne=0
             self.time=1+self.time
             local  sup_data=self.list_table["game"]
+            if not sup_data then return end
             for i=1,#sup_data do
          	local  cell = activity_ListView:getItem(i-1)
             local _table=Util:FormatTime_colon(sup_data[i]["finishtime"]-sup_data[i]["begintime"]-self.time)
@@ -103,26 +102,48 @@ end
         
 function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/") 
           activity_ListView:removeAllItems()
-          local  function onImageViewClicked(sender, eventType)
-                    if eventType == ccui.TouchEventType.ended then
-                          print("列表TOUCH事件")
-                           --display.replaceScene(GameScene:new())
-                           cc.Director:getInstance():pushScene(GameScene:new())
-                    end
-          end  
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
           dump(sup_data)
+          local  function onImageViewClicked(sender, eventType)
+                    
+                    if eventType == ccui.TouchEventType.ended then
+                           self.act_id=sup_data[sender:getTag()]["id"]
+                           self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
+                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image}))
+                    end
+          end  
+          --活动列表进行排序
+          local type_table={}
+          for i=1,#sup_data do
+                  type_table[i]=sup_data[i]["type"]
+          end
+
+          for i=1,#type_table do
+                  for j=1,#type_table-i do
+                       if type_table[j]>type_table[j+1] then 
+                              local  _data=sup_data[j]
+                              sup_data[j]=sup_data[j+1]
+                              sup_data[j+1]=_data
+                       end
+                  end
+          end
+          
           for i=1,#sup_data do
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)
+            cell:setTag(i)
             local activity_Panel=cell:getChildByTag(36)
-            activity_Panel:addTouchEventListener(onImageViewClicked)
+            cell:addTouchEventListener(onImageViewClicked)
             activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             local Nameprize_text=cell:getChildByTag(42)
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
+            local type=cell:getChildByTag(133)
+            local type_image=sup_data[i]["type"] .. ".png"
+            type:loadTexture(type_image)
           end
+
           self:scheduleUpdate()
 end
 function SurpriseScene:Surpriseimages_list(  )
@@ -146,12 +167,14 @@ function SurpriseScene:pushFloating(text)
 end 
 
 function SurpriseScene:onEnter()
+
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
                        self:Surpriseimages_list()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
+                        print("get_suprite  ")
                        self:Surprise_list()
                       end)
 end
@@ -159,6 +182,7 @@ end
 function SurpriseScene:onExit()
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
+
 end
 
 return SurpriseScene
