@@ -97,7 +97,7 @@ function Server:request_http(command , params,request_type)
     local md5=crypto.md5(post_)
     -- dump(login_info)
     if login_info and command~="login" then
-        dump(login_info)
+        -- dump(login_info)
         _key=login_info["loginname"]
         md5=_key..login_info["loginkey"]
         md5=crypto.md5(tostring(md5))
@@ -186,7 +186,7 @@ function Server:on_request_finished_pic(event , command)
     -- local fileObject = self.download_file_list[self.download_progress]
   
     local str=Util:sub_str(command["command"], "/",":")    
-    dump(str)
+    -- dump(str)
     local file_path = self.writablePath.."down_pic/"..str
     local file = io.open( file_path, "w+b")
     if file then
