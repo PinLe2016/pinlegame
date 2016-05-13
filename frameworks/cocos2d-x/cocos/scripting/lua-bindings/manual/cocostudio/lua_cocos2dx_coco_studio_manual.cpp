@@ -451,7 +451,61 @@ static void extendActionTimelineCache(lua_State* L)
     }
     lua_pop(L, 1);
 }
-
+static int lua_cocos2dx_studio_ActionTimeline_setLastFrameCallFunc(lua_State* tolua_S)  
+{  
+    int argc = 0;  
+    cocostudio::timeline::ActionTimeline* cobj =nullptr;  
+    // bool ok  = true;  
+      
+#if COCOS2D_DEBUG >= 1  
+    tolua_Error tolua_err;  
+#endif  
+      
+      
+#if COCOS2D_DEBUG >= 1  
+    if (!tolua_isusertype(tolua_S,1,"ccs.ActionTimeline",0,&tolua_err))goto tolua_lerror;  
+#endif  
+      
+    cobj = (cocostudio::timeline::ActionTimeline*)tolua_tousertype(tolua_S,1,0);  
+      
+#if COCOS2D_DEBUG >= 1  
+    if (!cobj)  
+    {  
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_cocos2dx_studio_ActionTimeline_setLastFrameCallFunc'",nullptr);  
+        return 0;  
+    }  
+#endif  
+      
+      
+    argc = lua_gettop(tolua_S) - 1;  
+      
+    if (1 == argc)  
+    {  
+#if COCOS2D_DEBUG >= 1  
+        if (!toluafix_isfunction(tolua_S,2,"LUA_FUNCTION",0,&tolua_err) )  
+        {  
+            goto tolua_lerror;  
+        }  
+#endif  
+          
+        LUA_FUNCTION handler = (  toluafix_ref_function(tolua_S,2,0));  
+          
+        cobj->setLastFrameCallFunc([=](){  
+            LuaEngine::getInstance()->getLuaStack()->executeFunctionByHandler(handler,0);  
+        });  
+          
+        return 0;  
+    }  
+      
+      
+    luaL_error(tolua_S,"'setFrameEventCallFunc' function of ActionTimeline has wrong number of arguments: %d, was expecting %d\n", argc,1);  
+      
+#if COCOS2D_DEBUG >= 1  
+tolua_lerror:  
+    tolua_error(tolua_S,"#ferror in function 'setFrameEventCallFunc'.",&tolua_err);  
+#endif  
+    return 0;  
+}  
 static int lua_cocos2dx_ActionTimeline_setFrameEventCallFunc(lua_State* L)
 {
     if (nullptr == L)
@@ -505,6 +559,8 @@ tolua_lerror:
 
 static void extendActionTimeline(lua_State* L)
 {
+    tolua_function(L, "setFrameEventCallFunc",lua_cocos2dx_ActionTimeline_setFrameEventCallFunc);
+    tolua_function(L, "setLastFrameCallFunc",lua_cocos2dx_studio_ActionTimeline_setLastFrameCallFunc);
     lua_pushstring(L, "ccs.ActionTimeline");
     lua_rawget(L, LUA_REGISTRYINDEX);
     if (lua_istable(L,-1))

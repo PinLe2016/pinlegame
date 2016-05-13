@@ -39,6 +39,7 @@ static void quick_module_register(lua_State *L)
     if (lua_istable(L, -1))//stack:...,_G,
     {
         register_all_quick_manual(L);
+        lua_register_mobclick_module(L);
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
         register_all_cocos2dx_extension_filter(L);
@@ -88,6 +89,7 @@ void AppDelegate::initGLContextAttrs()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
+   
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	initRuntime();
 #elif (COCOS2D_DEBUG > 0 && CC_CODE_IDE_DEBUG_SUPPORT > 0)
@@ -157,18 +159,20 @@ bool AppDelegate::applicationDidFinishLaunching()
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground()
 {
+    umeng::MobClickCpp::applicationDidEnterBackground();
     Director::getInstance()->stopAnimation();
     Director::getInstance()->pause();
 
     SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
     SimpleAudioEngine::getInstance()->pauseAllEffects();
-
+    
     Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_BACKGROUND_EVENT");
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground()
 {
+    umeng::MobClickCpp::applicationWillEnterForeground();
     Director::getInstance()->resume();
     Director::getInstance()->startAnimation();
 

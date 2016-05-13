@@ -16,7 +16,6 @@ function SurpriseScene:ctor()
 	self.floating_layer:addTo(self,100000)
 	self:Surpriseinit()
 
-
 	 self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         		self:update(dt)
     	end)
@@ -42,44 +41,53 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
 
     ActivitymainnterfaceiScene = cc.CSLoader:createNode("ActivitymainnterfaceiScene.csb");
     self:addChild(ActivitymainnterfaceiScene)
-    local function Soon_btCallback(sender, eventType)
-        if eventType == ccui.TouchEventType.ended then
-           print("即将")
-           Server:Instance():getactivitylist(0)
-           activity_ListView:removeAllItems()
-           self:unscheduleUpdate()
-        end
-    end
-     local function activity_btCallback(sender, eventType)
-        if eventType == ccui.TouchEventType.ended then
-           print("本期")
-         Server:Instance():getactivitylist(1)
-         activity_ListView:removeAllItems()
-          self:unscheduleUpdate()
-        end
-    end
-     local function Reviewpast_btCallback(sender, eventType)
-        if eventType == ccui.TouchEventType.ended then
-           print("回顾")
-           Server:Instance():getactivitylist(2)
-           activity_ListView:removeAllItems()
-            self:unscheduleUpdate()
-           --registered:removeFromParent()
-        end
-    end
+
     local Soon_bt=ActivitymainnterfaceiScene:getChildByTag(29)--即将
-    Soon_bt:addTouchEventListener(Soon_btCallback)
+    Soon_bt:addTouchEventListener((function(sender, eventType  )
+                     self:list_btCallback(sender, eventType)
+               end))
      local activity_bt=ActivitymainnterfaceiScene:getChildByTag(30)-- 本期
-    activity_bt:addTouchEventListener(activity_btCallback)
+    activity_bt:addTouchEventListener((function(sender, eventType  )
+                     self:list_btCallback(sender, eventType)
+               end))
      local Reviewpast_bt=ActivitymainnterfaceiScene:getChildByTag(31)--回顾
-    Reviewpast_bt:addTouchEventListener(Reviewpast_btCallback)
+    Reviewpast_bt:addTouchEventListener((function(sender, eventType  )
+                     self:list_btCallback(sender, eventType)
+               end))
+     local mysurprise_bt=ActivitymainnterfaceiScene:getChildByTag(117)--回顾
+    mysurprise_bt:addTouchEventListener((function(sender, eventType  )
+                     self:list_btCallback(sender, eventType)
+               end)
+    )
 
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
     activity_ListView:setItemModel(activity_ListView:getItem(0))
     activity_ListView:removeAllItems()
     return  self
 end
-
+  function SurpriseScene:list_btCallback( sender, eventType )
+              if eventType ~= ccui.TouchEventType.ended then
+                       return
+              end
+              local tag=sender:getTag()
+              if tag==29 then
+                      Server:Instance():getactivitylist(0)
+                      activity_ListView:removeAllItems()
+                      self:unscheduleUpdate()
+              elseif tag==30 then
+                      Server:Instance():getactivitylist(1)
+                      activity_ListView:removeAllItems()
+                      self:unscheduleUpdate()
+              elseif tag==31 then
+                      Server:Instance():getactivitylist(2)
+                      activity_ListView:removeAllItems()
+                      self:unscheduleUpdate()
+              elseif tag==117 then
+                      Server:Instance():getactivitylist(3)
+                      activity_ListView:removeAllItems()
+                      self:unscheduleUpdate()
+              end
+  end
   function SurpriseScene:update(dt)
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
@@ -113,7 +121,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                     if eventType == ccui.TouchEventType.ended then
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
-                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image}))
+                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"]}))
                     end
           end  
           --活动列表进行排序

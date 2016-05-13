@@ -51,6 +51,7 @@ import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 import com.anysdk.framework.PluginWrapper;
+import com.umeng.mobclickcpp.MobClickCppHelper;
 
 
 public class AppActivity extends Cocos2dxActivity{
@@ -97,6 +98,10 @@ public class AppActivity extends Cocos2dxActivity{
         //for anysdk
         PluginWrapper.init(this); // for plugins
 	}
+	//ÃÌº””—√ÀÕ≥º∆
+	static {
+        MobClickCppHelper.loadLibrary();
+    }
 	private boolean isNetworkConnected() {
 	        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);  
 	        if (cm != null) {  

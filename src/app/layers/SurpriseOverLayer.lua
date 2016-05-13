@@ -7,43 +7,40 @@
 -- Date: 2016-05-06 10:43:44
 --
 local SurpriseOverLayer = class("SurpriseOverLayer", function()
-            return display.newLayer("SurpriseOverLayer")
+            return display.newScene("SurpriseOverLayer")
 end)
-function SurpriseOverLayer:ctor()
-      self:init()
-      -- self.Laohuji = cc.CSLoader:createNode("RankinglistofactiviesLayer.csb");
-      -- self:addChild(self.Laohuji)
+function SurpriseOverLayer:ctor()--params
+
+       local actid=LocalData:Instance():get_actid({act_id=self.id})
+       Server:Instance():getactivitypoints(actid["act_id"])  --老虎机测试
+
+       self:setNodeEventEnabled(true)--layer添加监听
+      --self:init()
 end
 function SurpriseOverLayer:init(  )
 
-	local function began_btCallback(sender, eventType)
-		if eventType == ccui.TouchEventType.ended then
-			local  tempn = 4895
-			for i=1,#self. _table do
-				local  stopNum = 0;
-				if (tempn > 0)  then
-				stopNum = tempn % 10;
-				tempn = tempn / 10;
-				end
-				(self. _table[i]):stopGo(stopNum);
-			end
-		end
-	end
-
-	local function show_btCallback(sender, eventType)
-		if eventType == ccui.TouchEventType.ended then
-			for i=1,#self. _table do
-				self. _table[i]:startGo()
-			end
-		end
-	end
-
-	self.Laohuji = cc.CSLoader:createNode("Laohuji.csb");
+	self.Laohuji = cc.CSLoader:createNode("Laohuji.csb")
     	self:addChild(self.Laohuji)
-    	local began_bt=self.Laohuji:getChildByTag(164)
-    	began_bt:addTouchEventListener(began_btCallback)
+    	self.began_bt=self.Laohuji:getChildByTag(164)
+    	self.began_bt:setVisible(true)
+    	self.began_bt:addTouchEventListener(function(sender, eventType  )
+		self:touch_callback(sender, eventType)
+	end)
     	local show_bt=self.Laohuji:getChildByTag(165)
-    	show_bt:addTouchEventListener(show_btCallback)
+    	show_bt:addTouchEventListener(function(sender, eventType  )
+		self:touch_callback(sender, eventType)
+	end)
+
+ --    	local back_bt=self.Laohuji:getChildByTag(160)
+ --    	back_bt:addTouchEventListener(function(sender, eventType )
+ --    		print("反馈的就是福克斯的")
+	-- 	self:touch_callback(sender, eventType)
+	-- end)
+    	self.end_bt=self.Laohuji:getChildByTag(44)
+    	self.end_bt:setVisible(false)
+    	self.end_bt:addTouchEventListener(function(sender, eventType  )
+		self:touch_callback(sender, eventType)
+	end)
     	self. _table={}
     	for i=1,4 do
     		local score1=self.Laohuji:getChildByTag(157):getChildByTag(40-i)--score1
@@ -60,17 +57,74 @@ function SurpriseOverLayer:init(  )
     
 
 end
+
+function SurpriseOverLayer:touch_callback( sender, eventType )
+	if eventType ~= ccui.TouchEventType.ended then
+		return
+	end
+	local activitypoints=LocalData:Instance():getactivitypoints_callback()
+	local tag=sender:getTag()
+	if tag==164 then --开始
+		self.began_bt:setVisible(false)
+	            self.end_bt:setVisible(true)
+		for i=1,#self. _table do
+			self. _table[i]:startGo()
+		end
+	elseif tag==165 then --分享
+		print("分享")
+	elseif tag==160 then --返回
+	          	--Util:scene_control("SurpriseScene")
+	elseif tag==44 then  --结束
+		self.began_bt:setVisible(true)
+	            self.end_bt:setVisible(false)
+		local  tempn = activitypoints["points"]
+			for i=1,#self. _table do
+				local  stopNum = 0;
+				if (tempn > 0)  then
+				stopNum = tempn % 10;
+				tempn = tempn / 10;
+			end
+			(self. _table[i]):stopGo(stopNum);
+		end
+	end
+end
+--初始化数据
+function SurpriseOverLayer:init_data(  )
+	local activitypoints=LocalData:Instance():getactivitypoints_callback()
+
+            local allscore_text=self.Laohuji:getChildByTag(63)--累计积分
+            allscore_text:setString(tostring(activitypoints["totalPoints"]))
+            local bestscore_text=self.Laohuji:getChildByTag(62)--最佳积分
+            bestscore_text:setString(tostring(activitypoints["bestpoints"]))
+            local rank_text=self.Laohuji:getChildByTag(64)--排名
+            rank_text:setString(tostring(activitypoints["rank"]))
+end
 function SurpriseOverLayer:onEnter()
-	 -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
-  --                      function()
-  --                     		 self:init()--活动详情初始化
-  --                     end)
+	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
+                       function()
+                      		 self:init()--活动详情初始化
+                      end)
 end
 
 function SurpriseOverLayer:onExit()
-     	 --NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
+     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
 end
 
 return SurpriseOverLayer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -24,7 +24,8 @@ hellolua/Runtime_android.cpp \
 ../../Classes/runtime/Portrait_png.cpp \
 ../../Classes/runtime/Protos.pb.cc \
 ../../Classes/runtime/Runtime.cpp \
-../../Classes/runtime/Shine_png.cpp
+../../Classes/runtime/Shine_png.cpp \
+../../Classes/lua_binding.cpp
 endif
 
 #anysdk
@@ -47,6 +48,7 @@ $(LOCAL_PATH)/../protocols/include
 
 #anysdk
 LOCAL_WHOLE_STATIC_LIBRARIES += PluginProtocolStatic
+LOCAL_SHARED_LIBRARIES += mobclickcpp_shared
 
 LOCAL_STATIC_LIBRARIES := cocos2d_lua_static
 LOCAL_STATIC_LIBRARIES += lua_extensions_static
@@ -62,7 +64,7 @@ $(call import-module,scripting/lua-bindings/proj.android)
 $(call import-module, quick-src/lua_extensions)
 $(call import-module, quick-src/extra)
 $(call import-module, protobuf-lite)
-
+$(call import-module,libmobclickcpp)
 #anysdk
 $(call import-module,protocols/android)
 
