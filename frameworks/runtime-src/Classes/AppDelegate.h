@@ -2,7 +2,8 @@
 #define __APP_DELEGATE_H__
 
 #include "cocos2d.h"
-
+#include "MobClickCpp.h"
+#include "lua_binding.h"
 /**
 @brief    The cocos2d Application.
 
