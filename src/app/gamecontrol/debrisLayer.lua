@@ -30,7 +30,7 @@ function debrisLayer:ctor(params)
         self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
         self.content_size = self._size
 
-        self:addChild(self.fragment_sprite_bg)
+        --self:addChild(self.fragment_sprite_bg)
         self.fragment_sprite_bg:setOpacity(0)
 
         self.fragment_table={}

@@ -20,6 +20,11 @@ function OnerecordLayer:init(  )
     	local title_text=self.OnerecordLayer:getChildByTag(87)--标题
             title_text:setString(self.title)
 
+            local back_bt=self.OnerecordLayer:getChildByTag(88)--返回
+            back_bt:addTouchEventListener(function(sender, eventType  )
+                                    self:back(sender, eventType)
+                        end)
+
             self.rank_list=self.OnerecordLayer:getChildByTag(90)--个人记录排行榜列表
             self.rank_list:setItemModel(self.rank_list:getItem(0))
             self.rank_list:removeAllItems()
@@ -45,6 +50,14 @@ function OnerecordLayer:Onerecord_init(  )
 	            local time_text=cell:getChildByTag(95)--时间
 	            time_text:setString("第"  .. i  ..  "天")  --零时
             end
+
+end
+function OnerecordLayer:back( sender, eventType)
+            if eventType ~= ccui.TouchEventType.ended then
+                return
+            end
+            print("积分开始的减肥快睡觉")
+            self:removeFromParent()
 
 end
 function OnerecordLayer:onEnter()

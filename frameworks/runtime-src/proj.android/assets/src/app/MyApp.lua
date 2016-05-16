@@ -4,6 +4,7 @@ require("framework.init")
 require "lfs"
 Util = require("app.model.Util")
 require("config")
+require("MobClickForLua")
 
 local MyApp = class("MyApp", cc.mvc.AppBase)
 PINLE_CHANNEL_ID="DVE"
@@ -16,7 +17,8 @@ function MyApp:run()
    cc.Director:getInstance():getOpenGLView():setDesignResolutionSize(640, 1136, cc.ResolutionPolicy.EXACT_FIT)
    --生成DEVICE_ID
    self:init_userdefault()
-
+   MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
+   
 	cc.FileUtils:getInstance():addSearchPath("res/")
       cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")

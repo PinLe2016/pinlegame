@@ -30,6 +30,12 @@ function SurpriseOverLayer:init(  )
     	show_bt:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
 	end)
+
+ --    	local back_bt=self.Laohuji:getChildByTag(160)
+ --    	back_bt:addTouchEventListener(function(sender, eventType )
+ --    		print("反馈的就是福克斯的")
+	-- 	self:touch_callback(sender, eventType)
+	-- end)
     	self.end_bt=self.Laohuji:getChildByTag(44)
     	self.end_bt:setVisible(false)
     	self.end_bt:addTouchEventListener(function(sender, eventType  )
@@ -66,6 +72,8 @@ function SurpriseOverLayer:touch_callback( sender, eventType )
 		end
 	elseif tag==165 then --分享
 		print("分享")
+	elseif tag==160 then --返回
+	          	--Util:scene_control("SurpriseScene")
 	elseif tag==44 then  --结束
 		self.began_bt:setVisible(true)
 	            self.end_bt:setVisible(false)

@@ -40,7 +40,6 @@ function SurpriseOverScene:init(  )
 	end)
     	local back_bt=self.Laohuji:getChildByTag(160)
     	back_bt:addTouchEventListener(function(sender, eventType  )
-    		print("拼乐加油")
 		self:touch_callback(sender, eventType)
 	end)
     	self.end_bt=self.Laohuji:getChildByTag(44)
@@ -73,7 +72,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	local tag=sender:getTag()
 	if tag==164 then --开始
 		self.began_bt:setVisible(false)
-	            self.end_bt:setVisible(true)
+	            self.end_bt:setVisible(false)
 		for i=1,#self. _table do
 			self. _table[i]:startGo()
 		end
@@ -82,7 +81,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		print("分享")
 	elseif tag==163 then --点我有惊喜
 		print("点我有惊喜")
-	elseif tag ==160 then --返回
+	elseif tag==160 then --返回
 		Util:scene_control("SurpriseScene")
 	elseif tag==44 then  --结束
 		local  tempn = activitypoints["points"]

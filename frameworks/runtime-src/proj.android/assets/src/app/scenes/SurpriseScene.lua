@@ -16,7 +16,6 @@ function SurpriseScene:ctor()
 	self.floating_layer:addTo(self,100000)
 	self:Surpriseinit()
 
-
 	 self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         		self:update(dt)
     	end)

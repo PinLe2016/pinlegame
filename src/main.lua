@@ -10,6 +10,8 @@ package.path = package.path .. ";src/"
 cc.FileUtils:getInstance():setPopupNotify(false)
 require("app.MyApp").new():run()
 
+
+
 function TableToString(o,n,b,t)  
     if type(b) ~= "boolean" and b ~= nil then  
         print("expected third argument %s is a boolean", tostring(b))  

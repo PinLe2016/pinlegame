@@ -65,6 +65,7 @@
 		521A8E7119F0C3D200D177D7 /* Default-736h@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 521A8E6F19F0C3D200D177D7 /* Default-736h@3x.png */; };
 		82689D3A1CE487F70026A4F2 /* lua_binding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82689D381CE487F70026A4F2 /* lua_binding.cpp */; };
 		82689D3E1CE4881E0026A4F2 /* LaoHuJiDonghua.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 82689D3C1CE4881E0026A4F2 /* LaoHuJiDonghua.cpp */; };
+		82CA25AA1CE96CC300C71423 /* libcurl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82CA25A91CE96CC300C71423 /* libcurl.a */; };
 		9F598A0819F5F3A6006015D6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F598A0719F5F3A6006015D6 /* SystemConfiguration.framework */; };
 		9F598A0B19F5F4F4006015D6 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F598A0A19F5F4F4006015D6 /* StoreKit.framework */; };
 		9F9106B419F5614900AD5CAB /* libbase64.c in Sources */ = {isa = PBXBuildFile; fileRef = 9F9105AC19F5614800AD5CAB /* libbase64.c */; };
@@ -347,6 +348,7 @@
 		82689D3B1CE488060026A4F2 /* MobClickCpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MobClickCpp.h; path = ../Classes/MobClickCpp.h; sourceTree = "<group>"; };
 		82689D3C1CE4881E0026A4F2 /* LaoHuJiDonghua.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LaoHuJiDonghua.cpp; path = ../Classes/LaoHuJiDonghua.cpp; sourceTree = "<group>"; };
 		82689D3D1CE4881E0026A4F2 /* LaoHuJiDonghua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LaoHuJiDonghua.h; path = ../Classes/LaoHuJiDonghua.h; sourceTree = "<group>"; };
+		82CA25A91CE96CC300C71423 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = "../../cocos2d-x/external/curl/prebuilt/ios/libcurl.a"; sourceTree = "<group>"; };
 		9F598A0719F5F3A6006015D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		9F598A0A19F5F4F4006015D6 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/StoreKit.framework; sourceTree = DEVELOPER_DIR; };
 		9F9105A719F5614800AD5CAB /* HelperFunc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelperFunc.cpp; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 				15427CD5198F222200DC375D /* libluacocos2d iOS.a in Frameworks */,
 				15427CD3198F221400DC375D /* libcocos2d iOS.a in Frameworks */,
 				3EEEDB61197107C0006A9FF8 /* MediaPlayer.framework in Frameworks */,
+				82CA25AA1CE96CC300C71423 /* libcurl.a in Frameworks */,
 				D6B061351803AC000077942B /* CoreMotion.framework in Frameworks */,
 				1AF4C403178663F200122817 /* libz.dylib in Frameworks */,
 				50805AAF17EBBEAA004CFAD3 /* UIKit.framework in Frameworks */,
@@ -1236,6 +1239,7 @@
 		F293BB7C15EB830F00256477 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				82CA25A91CE96CC300C71423 /* libcurl.a */,
 				82689D3C1CE4881E0026A4F2 /* LaoHuJiDonghua.cpp */,
 				82689D3D1CE4881E0026A4F2 /* LaoHuJiDonghua.h */,
 				82689D3B1CE488060026A4F2 /* MobClickCpp.h */,

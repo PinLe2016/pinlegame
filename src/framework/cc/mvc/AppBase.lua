@@ -28,6 +28,7 @@ function AppBase:run()
 end
 
 function AppBase:exit()
+    MobClickForLua.umeng_end_lua()
     cc.Director:getInstance():endToLua()
     if device.platform == "windows" or device.platform == "mac" then
         os.exit()

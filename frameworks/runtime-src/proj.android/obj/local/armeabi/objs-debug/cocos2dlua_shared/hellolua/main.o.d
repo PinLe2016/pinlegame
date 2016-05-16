@@ -262,6 +262,11 @@
   /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/3d/../deprecated/CCBool.h \
   /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/3d/../deprecated/CCNotificationCenter.h \
   /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/3d/../deprecated/CCDeprecated.h \
+  jni/../../Classes/MobClickCpp.h jni/../../Classes/lua_binding.h \
+  /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/scripting/lua-bindings/proj.android/../../../../external/lua/tolua/tolua++.h \
+  /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/scripting/lua-bindings/proj.android/../../../../external/lua/luajit/include/lua.h \
+  /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/scripting/lua-bindings/proj.android/../../../../external/lua/luajit/include/luaconf.h \
+  /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/scripting/lua-bindings/proj.android/../../../../external/lua/luajit/include/lauxlib.h \
   /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/3d/../platform/android/jni/JniHelper.h \
   jni/../../Classes/ConfigParser.h \
   /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/external/json/document.h \
@@ -799,6 +804,18 @@ jni/../../Classes/AppDelegate.h:
 /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/3d/../deprecated/CCNotificationCenter.h:
 
 /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/3d/../deprecated/CCDeprecated.h:
+
+jni/../../Classes/MobClickCpp.h:
+
+jni/../../Classes/lua_binding.h:
+
+/Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/scripting/lua-bindings/proj.android/../../../../external/lua/tolua/tolua++.h:
+
+/Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/scripting/lua-bindings/proj.android/../../../../external/lua/luajit/include/lua.h:
+
+/Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/scripting/lua-bindings/proj.android/../../../../external/lua/luajit/include/luaconf.h:
+
+/Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/scripting/lua-bindings/proj.android/../../../../external/lua/luajit/include/lauxlib.h:
 
 /Users/lixin/Documents/quick-3.3/projest/pinlegame/frameworks/runtime-src/proj.android/../../cocos2d-x/cocos/3d/../platform/android/jni/JniHelper.h:
 

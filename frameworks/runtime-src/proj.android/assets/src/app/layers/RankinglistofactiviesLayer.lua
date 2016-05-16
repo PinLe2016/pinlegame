@@ -21,6 +21,11 @@ function RankinglistofactiviesLayer:init(  )
       local title_text=self.RankinglistofactiviesLayer:getChildByTag(67)--标题
       title_text:setString(self.title .. "排行榜")
 
+      local back_bt=self.RankinglistofactiviesLayer:getChildByTag(69)--返回
+      back_bt:addTouchEventListener(function(sender, eventType  )
+                                    self:back(sender, eventType)
+                        end)
+
     	rank_list=self.RankinglistofactiviesLayer:getChildByTag(71)--排行榜列表
     	rank_list:setItemModel(rank_list:getItem(0))
     	rank_list:removeAllItems()
@@ -63,6 +68,14 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             -- local act_head=cell:getChildByTag(78) --头像
             -- act_head:loadTexture(tostring(sup_data[i]["hearurl"]))
           end
+end
+function RankinglistofactiviesLayer:back( sender, eventType)
+            if eventType ~= ccui.TouchEventType.ended then
+                return
+            end
+            print("积分开始的减肥快睡觉")
+            self:removeFromParent()
+
 end
 function RankinglistofactiviesLayer:onImageViewClicked( sender, eventType )
           if eventType ~= ccui.TouchEventType.ended then
