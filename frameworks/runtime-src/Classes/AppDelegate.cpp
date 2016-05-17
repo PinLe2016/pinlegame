@@ -39,7 +39,10 @@ static void quick_module_register(lua_State *L)
     if (lua_istable(L, -1))//stack:...,_G,
     {
         register_all_quick_manual(L);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
         lua_register_mobclick_module(L);
+#endif
+        
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
         register_all_cocos2dx_extension_filter(L);
@@ -159,7 +162,10 @@ bool AppDelegate::applicationDidFinishLaunching()
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground()
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     umeng::MobClickCpp::applicationDidEnterBackground();
+#endif
+    
     Director::getInstance()->stopAnimation();
     Director::getInstance()->pause();
 
@@ -172,7 +178,10 @@ void AppDelegate::applicationDidEnterBackground()
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground()
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     umeng::MobClickCpp::applicationWillEnterForeground();
+#endif
+    
     Director::getInstance()->resume();
     Director::getInstance()->startAnimation();
 
