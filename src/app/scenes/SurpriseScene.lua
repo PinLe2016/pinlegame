@@ -66,6 +66,12 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     )
 
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
+    activity_ListView:addTouchEventListener((function(sender, eventType  )
+                      if eventType == ccui.TouchEventType.BOUNCE_BOTTOM then
+                                  print("技术开发建设看到房价")
+                                 return
+                      end
+     end))
     activity_ListView:setItemModel(activity_ListView:getItem(0))
     activity_ListView:removeAllItems()
     return  self
@@ -122,7 +128,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-          -- dump(sup_data)
+           dump(sup_data)
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then
@@ -135,6 +141,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           local type_table={}
           for i=1,#sup_data do
                   type_table[i]=sup_data[i]["type"]
+                  print("是否是打飞机  ",type_table[i])
           end
 
           for i=1,#type_table do
@@ -146,11 +153,9 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                        end
                   end
           end
-          
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-          -- dump(sup_data)
           for i=1,#sup_data do
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)

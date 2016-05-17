@@ -29,9 +29,9 @@ function MyApp:run()
    cc.FileUtils:getInstance():addSearchPath("down_pic/")
   
    --Util:removeDirectory("down_pic")
-  --self:enterScene("SurpriseScene")
+  self:enterScene("SurpriseScene")
  
-   self:enterScene("LoginScene")
+   --self:enterScene("LoginScene")
   -- self:enterScene("MainScene")
 
 end
