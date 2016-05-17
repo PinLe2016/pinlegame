@@ -67,9 +67,11 @@ end
 function MainInterfaceScene:pushFloating(text,is_resource,r_type)
    if is_resource then
        self.floating_layer:showFloat(text,is_resource,r_type)  
-       print("反馈的反馈的李开复")
+       self.barrier_bg:setVisible(false)
+       self.kuang:setVisible(false)
    else
-   	print("结束的开发建设的开发的设计")
+   	self.barrier_bg:setVisible(false)
+	self.kuang:setVisible(false)
        self.floating_layer:showFloat(text,is_resource) 
    end
 end 
