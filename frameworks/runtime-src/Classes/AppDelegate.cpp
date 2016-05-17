@@ -26,6 +26,7 @@
 #include "anysdk_manual_bindings.h"
 #endif
 
+#include "PinLe_platform.hpp"
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -39,9 +40,9 @@ static void quick_module_register(lua_State *L)
     if (lua_istable(L, -1))//stack:...,_G,
     {
         register_all_quick_manual(L);
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+
         lua_register_mobclick_module(L);
-#endif
+
         
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
@@ -75,7 +76,7 @@ AppDelegate::~AppDelegate()
 		endRuntime();
 	}
 #endif
-
+    log("%d",3);
 	ConfigParser::purge();
 }
 
@@ -156,15 +157,17 @@ bool AppDelegate::applicationDidFinishLaunching()
     engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
 #endif
 
+    PinLe_platform* pinle=new PinLe_platform();
+    pinle->getCity();
     return true;
 }
 
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground()
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+
     umeng::MobClickCpp::applicationDidEnterBackground();
-#endif
+
     
     Director::getInstance()->stopAnimation();
     Director::getInstance()->pause();
@@ -178,9 +181,7 @@ void AppDelegate::applicationDidEnterBackground()
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground()
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     umeng::MobClickCpp::applicationWillEnterForeground();
-#endif
     
     Director::getInstance()->resume();
     Director::getInstance()->startAnimation();

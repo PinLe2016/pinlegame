@@ -9,7 +9,8 @@ LOCAL_MODULE_FILENAME := libcocos2dlua
 LOCAL_SRC_FILES := hellolua/main.cpp \
 ../../Classes/VisibleRect.cpp \
 ../../Classes/AppDelegate.cpp \
-../../Classes/ConfigParser.cpp
+../../Classes/ConfigParser.cpp\
+../../Classes/PinLe_platform.cpp 
 
 ifeq ($(NDK_DEBUG),1)
 LOCAL_SRC_FILES += \
