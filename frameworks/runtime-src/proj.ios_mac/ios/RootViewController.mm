@@ -27,6 +27,7 @@
 #import "cocos2d.h"
 #import "platform/ios/CCEAGLView-ios.h"
 #include "ConfigParser.h"
+#import "CCLocationManager.h"
 
 @implementation RootViewController
 
@@ -124,6 +125,31 @@
 - (void)dealloc {
     [super dealloc];
 }
+
+#pragma mark 定位信息获取
+-(void) getCity
+{
+    [[CCLocationManager shareLocation] getCity:^(NSString *addressString) {
+        if (addressString) {
+            string cityaddress=[addressString UTF8String];
+            CCLOG("地址 %s ",cityaddress.c_str());
+        }
+        
+    } province:^(NSString *addressString) {
+        if (addressString) {
+            string cityaddress=[addressString UTF8String];
+            CCLOG("地址 %s ",cityaddress.c_str());
+        }
+        
+    } conty:^(NSString *addressString) {
+        if (addressString) {
+            string cityaddress=[addressString UTF8String];
+            CCLOG("地址 %s ",cityaddress.c_str());
+        }
+        
+    }];
+}
+
 
 
 @end
