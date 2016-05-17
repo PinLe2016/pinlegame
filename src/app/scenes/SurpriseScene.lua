@@ -59,6 +59,11 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
                      self:list_btCallback(sender, eventType)
                end)
     )
+    local back_bt=ActivitymainnterfaceiScene:getChildByTag(28)--回顾
+    back_bt:addTouchEventListener((function(sender, eventType  )
+                     self:list_btCallback(sender, eventType)
+               end)
+    )
 
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
     activity_ListView:setItemModel(activity_ListView:getItem(0))
@@ -86,6 +91,8 @@ end
                       Server:Instance():getactivitylist(3)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
+              elseif tag==28 then
+                        Util:scene_control("MainInterfaceScene")
               end
   end
   function SurpriseScene:update(dt)
@@ -115,7 +122,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-          dump(sup_data)
+          -- dump(sup_data)
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then

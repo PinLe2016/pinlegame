@@ -40,6 +40,8 @@ SurpriseOverScene = require("app.scenes.SurpriseOverScene")--惊喜吧结束界�
 OnerecordLayer = require("app.layers.OnerecordLayer")--个人积分界面
 RankinglistofactiviesLayer = require("app.layers.RankinglistofactiviesLayer")--排行榜界面
 FloatingLayerEx = require("app.layers.FloatingLayer")--提示文件
+MainInterfaceScene = require("app.scenes.MainInterfaceScene")--主界面
+SurpriseScene = require("app.scenes.SurpriseScene")--惊喜吧
 
 
 
