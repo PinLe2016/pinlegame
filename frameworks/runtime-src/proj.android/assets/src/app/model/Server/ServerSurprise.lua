@@ -265,9 +265,10 @@ end
 function Server:validateactivitycode_callback()
     dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("验证惊喜吧活动码接失败:" .. self.data.err_msg)
+        self:show_float_message("活动码失败")
         return
     end
+    self:show_float_message("活动码成功")
     -- self:show_float_message("获取指定活动的广告列表")
 end
 

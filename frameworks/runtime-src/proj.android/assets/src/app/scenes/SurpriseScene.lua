@@ -59,8 +59,20 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
                      self:list_btCallback(sender, eventType)
                end)
     )
+    local back_bt=ActivitymainnterfaceiScene:getChildByTag(28)--回顾
+    back_bt:addTouchEventListener((function(sender, eventType  )
+                     self:list_btCallback(sender, eventType)
+               end))
 
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
+    activity_ListView:addScrollViewEventListener((function(sender, eventType  )
+                      if eventType  ==6 then
+                                  print("技术开发建设看到房价",self.tt)
+                                    activity_ListView:pushBackDefaultItem()
+                                    local  cell = activity_ListView:getItem(self.tt)
+                                 return
+                      end
+     end))
     activity_ListView:setItemModel(activity_ListView:getItem(0))
     activity_ListView:removeAllItems()
     return  self
@@ -86,6 +98,8 @@ end
                       Server:Instance():getactivitylist(3)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
+              elseif tag==28 then
+                        Util:scene_control("MainInterfaceScene")
               end
   end
   function SurpriseScene:update(dt)
@@ -115,7 +129,8 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-          dump(sup_data)
+           self.tt= #sup_data
+           -- dump(sup_data)
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then
@@ -128,6 +143,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           local type_table={}
           for i=1,#sup_data do
                   type_table[i]=sup_data[i]["type"]
+                  print("是否是打飞机  ",type_table[i])
           end
 
           for i=1,#type_table do
@@ -139,11 +155,9 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                        end
                   end
           end
-          
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-          -- dump(sup_data)
           for i=1,#sup_data do
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)

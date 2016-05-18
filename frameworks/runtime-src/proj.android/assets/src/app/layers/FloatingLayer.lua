@@ -21,13 +21,48 @@ function FloatingLayer:Instance()
     return self.instance
 end
 function FloatingLayer:showFloat(dialogtextString)  --floatingLayer_init
-    dialog = cc.CSLoader:createNode("Dialog.csb");
-    self:addChild(dialog)
-    dialogtext = dialog:getChildByTag(44)
+    dump(dialogtextString)
+    self.dialog = cc.CSLoader:createNode("Dialog.csb");
+    self:addChild(self.dialog)
+    dialogtext = self.dialog:getChildByTag(44)
     dialogtext:setString(dialogtextString)
+   -- local name = cc.ui.UILabel.new({text = dialogtextString,
+   --                      size = 28,
+   --                      align = TEXT_ALIGN_CENTER,
+   --                      font = "Arial",
+   --                      color = cc.c4b(255,241,203),
+   --                      })
+   --       name:setAnchorPoint(0.5,0.5)
+
+   --       name:setPosition(320, 480)
+   --       name:addTo(self,100)
+
+    local dialogsure_bt=self.dialog:getChildByTag(43)
+        dialogsure_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
+     local dialogback_bt=self.dialog:getChildByTag(42)
+        dialogback_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
+
     
-    return  dialog
+    return  self.dialog
 end
+
+function FloatingLayer:touch_callback( sender, eventType )
+    if eventType ~= ccui.TouchEventType.ended then
+        return
+    end
+    local tag=sender:getTag()
+    if tag==43 then --确定
+         self.dialog:removeFromParent()
+    elseif tag==42 then --返回
+         self.dialog:removeFromParent()
+    end
+end
+
+
 -- function FloatingLayer:showFloat(text,is_resource,resourceType)
 -- 	self.float_number = self.float_number + 1
 
