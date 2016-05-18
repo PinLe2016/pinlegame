@@ -28,7 +28,7 @@
 #import "platform/ios/CCEAGLView-ios.h"
 #include "ConfigParser.h"
 #import "CCLocationManager.h"
-
+#include "PinLe_platform.hpp"
 @implementation RootViewController
 
 /*
@@ -129,21 +129,26 @@
 #pragma mark 定位信息获取
 -(void) getCity
 {
+    PinLe_platform* pinle=PinLe_platform::Instance();
     [[CCLocationManager shareLocation] getCity:^(NSString *addressString) {
         if (addressString) {
+            
             string cityaddress=[addressString UTF8String];
+            pinle->setCity(cityaddress);
             CCLOG("地址 %s ",cityaddress.c_str());
         }
         
     } province:^(NSString *addressString) {
         if (addressString) {
             string cityaddress=[addressString UTF8String];
+            pinle->setProvince(cityaddress);
             CCLOG("地址 %s ",cityaddress.c_str());
         }
         
     } conty:^(NSString *addressString) {
         if (addressString) {
             string cityaddress=[addressString UTF8String];
+            pinle->setCounty(cityaddress);
             CCLOG("地址 %s ",cityaddress.c_str());
         }
         

@@ -157,8 +157,8 @@ bool AppDelegate::applicationDidFinishLaunching()
     engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
 #endif
 
-    PinLe_platform* pinle=new PinLe_platform();
-    pinle->getCity();
+//    PinLe_platform* pinle=new PinLe_platform();
+//    pinle->getLocation();
     return true;
 }
 

@@ -20,7 +20,9 @@ function SurpriseScene:ctor()
         		self:update(dt)
     	end)
 
-
+local pinle_loclation=cc.PinLe_platform.new()
+  local city=pinle_loclation:getCity()
+  dump(city)
 end
 
 function SurpriseScene:Surpriseinit()  --floatingLayer_init

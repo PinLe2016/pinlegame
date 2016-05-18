@@ -26,8 +26,22 @@ PinLe_platform::~PinLe_platform()
 
 }
 
+static PinLe_platform* pinLe_platform=NULL;
 
-void PinLe_platform::getCity()
+PinLe_platform* PinLe_platform::Instance()
+{
+    if(pinLe_platform == NULL)
+    {
+        pinLe_platform = new PinLe_platform();
+        pinLe_platform->setCity("");
+        pinLe_platform->setCounty("");
+        pinLe_platform->setProvince("");
+    }
+    return pinLe_platform;
+}
+
+
+void PinLe_platform::getLocation()
 {
     std::string last_all;
     
@@ -42,7 +56,7 @@ void PinLe_platform::getCity()
         {
             jstring channel = (jstring)t.env->CallStaticObjectMethod (t.classID, t.methodID,0);
             last_all=JniHelper::jstring2string(channel);
-//            LocPlay::getInstance()->setProvince(last_all);
+            this->setProvince(last_all);
             log("111 %s",last_all.c_str());
             
         }
@@ -51,7 +65,7 @@ void PinLe_platform::getCity()
             
             jstring channel = (jstring)t.env->CallStaticObjectMethod (t.classID, t.methodID,1);
             last_all=JniHelper::jstring2string(channel);
-//            LocPlay::getInstance()->setIs_iphone(false);
+            this->setCity(last_all);
 //            LocPlay::getInstance()->setCity(last_all);
             log("222 %s",last_all.c_str());
         }
@@ -59,7 +73,7 @@ void PinLe_platform::getCity()
         {
             jstring channel = (jstring)t.env->CallStaticObjectMethod (t.classID, t.methodID,2);
             last_all=JniHelper::jstring2string(channel);
-//            LocPlay::getInstance()->setConty(last_all);
+            this->setCounty(last_all);
             log("333 %s",last_all.c_str());
         }
     }

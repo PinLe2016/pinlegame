@@ -130,7 +130,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
            self.tt= #sup_data
-           -- dump(sup_data)
+
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then

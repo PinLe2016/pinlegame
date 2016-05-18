@@ -107,9 +107,9 @@
 //            NSLog(@"______%@",_lastCity);
 //            NSLog(@"______%@",_lastAddress);
              
-//             NSLog(@"______%@",placemark.administrativeArea);
-//             NSLog(@"______%@",placemark.locality);
-//             NSLog(@"______%@",placemark.subLocality);
+             NSLog(@"______%@",placemark.administrativeArea);
+             NSLog(@"______%@",placemark.locality);
+             NSLog(@"______%@",placemark.subLocality);
          }
          
          if (_cityBlock)

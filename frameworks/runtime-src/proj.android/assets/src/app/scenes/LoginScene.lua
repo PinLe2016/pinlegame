@@ -99,8 +99,10 @@ end
 function LoginScene:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
-                        --Util:scene_control("MainInterfaceScene")
-                        --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
+
+                        Util:scene_control("MainInterfaceScene")
+
+
                       end)
 
 end
