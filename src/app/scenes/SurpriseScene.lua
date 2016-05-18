@@ -62,13 +62,14 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     local back_bt=ActivitymainnterfaceiScene:getChildByTag(28)--回顾
     back_bt:addTouchEventListener((function(sender, eventType  )
                      self:list_btCallback(sender, eventType)
-               end)
-    )
+               end))
 
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
-    activity_ListView:addTouchEventListener((function(sender, eventType  )
-                      if eventType == ccui.TouchEventType.BOUNCE_BOTTOM then
-                                  print("技术开发建设看到房价")
+    activity_ListView:addScrollViewEventListener((function(sender, eventType  )
+                      if eventType  ==6 then
+                                  print("技术开发建设看到房价",self.tt)
+                                    activity_ListView:pushBackDefaultItem()
+                                    local  cell = activity_ListView:getItem(self.tt)
                                  return
                       end
      end))
@@ -128,7 +129,8 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-           dump(sup_data)
+           self.tt= #sup_data
+           -- dump(sup_data)
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then

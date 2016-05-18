@@ -76,6 +76,7 @@ function Server:login(username,password)
     local platform=device.platform
     local device_id = cc.UserDefault:getInstance():getStringForKey("device_id")
     if platform=="mac" then platform="IOS" end
+    if platform=="android" then platform="ANDROID" end
     local params = {}
     params={
             loginname=username,
@@ -84,11 +85,15 @@ function Server:login(username,password)
             password=crypto.md5(password),
             latitude=55000000,
             longtitude=660000000,
-            systemtype=platform,
+            systemtype="android",
             ip="192.168.0.0",
             origin="0",
         }
-    self:request_http("login" , params); 
+        -- dump( json.encode(params))
+        local data=json.encode(params)
+        print("----",tostring(data))
+         -- self:show_float_message("测试:"..tostring(params.systemtype))
+     self:request_http("login" , params); 
 end
 
 
