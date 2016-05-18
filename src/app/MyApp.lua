@@ -22,6 +22,8 @@ function MyApp:run()
    self:init_userdefault()
    if device.platform=="android" then 
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
+    elseif device.platform=="ios" then
+      MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
 
 	cc.FileUtils:getInstance():addSearchPath("res/")
