@@ -20,7 +20,7 @@ function SurpriseScene:ctor()
         		self:update(dt)
     	end)
 
-local pinle_loclation=cc.PinLe_platform.new()
+local pinle_loclation=cc.PinLe_platform:Instance()
   local city=pinle_loclation:getCity()
   dump(city)
 end

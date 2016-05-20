@@ -15,7 +15,7 @@ end
 
 function MyApp:run()
    cc.Director:getInstance():getOpenGLView():setDesignResolutionSize(640, 1136, cc.ResolutionPolicy.EXACT_FIT)
-   local pinle_loclation=cc.PinLe_platform.new()
+   local pinle_loclation=cc.PinLe_platform:Instance()
    pinle_loclation:getLocation()
    
    --生成DEVICE_ID

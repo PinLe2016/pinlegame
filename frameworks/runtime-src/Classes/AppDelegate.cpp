@@ -26,7 +26,9 @@
 #include "anysdk_manual_bindings.h"
 #endif
 
-#include "PinLe_platform.hpp"
+
+#include "lua_PinLe_platform.hpp"
+#include "lua_cocos2dx_custom.hpp"
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -40,9 +42,12 @@ static void quick_module_register(lua_State *L)
     if (lua_istable(L, -1))//stack:...,_G,
     {
         register_all_quick_manual(L);
-
+        //定位绑定
+        register_all_PinLe_platform(L);
+        //友盟统计绑定
         lua_register_mobclick_module(L);
-
+        //老虎机绑定
+        register_all_cocos2dx_custom(L);
         
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
