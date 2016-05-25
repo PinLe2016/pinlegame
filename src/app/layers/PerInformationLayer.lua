@@ -133,12 +133,18 @@ function PerInformationLayer:fun_birthday(  )
             local width=birthday_years:getContentSize().width
             local birthday_years_y= birthday_years:getPositionY()
             self.qq=height
+            local  table_years={}
     	for i=1,130 do	
-    	     local  cell = birthday_years:clone()  
+    	     local  cell = birthday_years:clone() 
+                 table_years[i]=cell
     	     cell:setTag(i)
     	     cell:addTouchEventListener(function(sender, eventType  )
 		if sender:getPositionY()< self.qq*4 -50 or   sender:getPositionY()> self.qq*4 +50 then
-		-- sender:setPositionY(sender:getPositionY()- sender:getPositionY()%self.qq)
+                           
+                            for i=1,#table_years do
+                                 table_years[i]:setPositionY(table_years[i]:getPositionY()- table_years[i]:getPositionY()%self.qq)
+                            end
+		
 		-- print("减肥的快捷方式的发生的",sender:getTag())
 		end
 	     end)
