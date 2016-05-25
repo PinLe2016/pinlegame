@@ -45,7 +45,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	local tag=sender:getTag()
 	if tag==56 then --惊喜吧
 		 Util:scene_control("SurpriseScene")
-		 Server:Instance():getactivitylist(1)
+		 -- Server:Instance():getactivitylist(1)
 	elseif tag==72 then --活动码
 		self.barrier_bg:setVisible(true)
 		self.kuang:setVisible(true)

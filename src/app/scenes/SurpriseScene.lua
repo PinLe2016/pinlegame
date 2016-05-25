@@ -19,17 +19,11 @@ function SurpriseScene:ctor()
 	 self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         		self:update(dt)
     	end)
-<<<<<<< HEAD
       Server:Instance():getactivitylist("1")
 -- local pinle_loclation=cc.PinLe_platform.new()
 --   local city=pinle_loclation:getCity()
 --   dump(city)
-=======
 
-local pinle_loclation=cc.PinLe_platform:Instance()
-  local city=pinle_loclation:getCity()
-  dump(city)
->>>>>>> c9152b3c238dcc8fa96717feced055ca8558f25c
 end
 
 function SurpriseScene:Surpriseinit()  --floatingLayer_init
