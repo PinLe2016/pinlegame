@@ -62,6 +62,9 @@ end
 function Server:on_request_finished_version(event , command)
     local ok = (event.name == "completed")
     local request = event.request
+
+    if not ok then return end
+
     local code = request:getResponseStatusCode()
     if code ~= 200 then
         -- 请求结束，但没有返回 200 响应代码
@@ -84,11 +87,8 @@ end
     --command --命名的方法字符转，用于回调 以文档 functionname 值为准
     -- params --传输数据
 ]]
-function Server:request_http(command , params,request_type)
+function Server:request_http(command , params)
 
-    if not request_type then
-        request_type="GET"
-    end
     local parsms_md5={methodtype="json",createtime=os.time(),functionname=command,functionparams=params}
     local post_md5=json.encode(parsms_md5)
     local post_=MD5_KEY..post_md5..MD5_KEY
@@ -105,12 +105,12 @@ function Server:request_http(command , params,request_type)
     end
     self.login_url="http://123.57.136.223:2036/Default.aspx?"
     self.login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
-    print("---url---",self.login_url,post_md5)
-    local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , request_type)
+    -- print("---url---",self.login_url,post_md5)
+    local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , "POST")
+
     request:setPOSTData(post_md5)
     request:setTimeout(0.5)
     request:start()
-
 end
 
 

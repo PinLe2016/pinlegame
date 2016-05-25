@@ -13,7 +13,7 @@ local FloatingLayerEx = require("app.layers.FloatingLayer")
 function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
-
+    Server:Instance():version_login_url()
    self:landing_init()
   -- phone_text:addEventListener(function()
   --                  Server:Instance():login(phone_text:getString(),password_text:getString())

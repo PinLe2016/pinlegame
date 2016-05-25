@@ -7,8 +7,8 @@
 //
 
 #include "UM_Share.hpp"
-#include "UMengSocial/Cocos2dx/Common/CCUMSocialSDK.h"
-#include "UMengSocial/Cocos2dx/ShareButton/UMShareButton.h"
+#include "Cocos2dx/Common/CCUMSocialSDK.h"
+#include "Cocos2dx/ShareButton/UMShareButton.h"
 
 USING_NS_UM_SOCIAL;
 
@@ -27,7 +27,8 @@ bool UM_Share::init()
     }
 
     // 创建分享按钮, 参数1为按钮正常情况下的图片, 参数2为按钮选中时的图片,参数3为友盟appkey, 参数4为分享回调
-    UMShareButton *shareButton =UMShareButton::create("shareNormal.png","shareSelected.png", "你的友盟appkey",NULL);
+    //"res/cre/main_bar.png","res/cre/main_bar.png"
+    UMShareButton *shareButton =UMShareButton::create("res/cre/main_bar.png","res/cre/main_bar.png", "573c1df5e0f55afa04001f9f",NULL);
     // 显示在友盟分享面板上的平台
     vector<int>* platforms = new vector<int>();
 //    platforms->push_back(SINA);
@@ -40,9 +41,9 @@ bool UM_Share::init()
     // 设置友盟分享面板上显示的平台
     shareButton->setPlatforms(platforms);
     // 设置文本分享内容
-    shareButton->setShareContent("umeng social cocos2d-x sdk.") ;
+    shareButton->setShareContent("刘可是个屁妞。。。") ;
     // 设置要分享的图片, 图片支持本地图片和url图片, 但是url图片必须以http://或者https://开头
-    shareButton->setShareImage("/sdcard/header.jpeg") ;
+    shareButton->setShareImage("res/CSres/main/MainUI/main_bar.png") ;
     // 设置按钮的位置
     shareButton->setPosition(ccp(150, 180));
     // 然后开发者需要将该按钮添加到游戏场景中
@@ -51,9 +52,9 @@ bool UM_Share::init()
     this->addChild(pMenu, 1);
     
     // ********************** 设置平台信息 ***************************
-    // CCUMSocialSDK *sdk = shareButton->getSocialSDK();
+     CCUMSocialSDK *sdk = shareButton->getSocialSDK();
     // sdk->setQQAppIdAndAppKey("设置QQ的app id", "appkey");
-    // sdk->setWeiXinAppInfo("设置微信和朋友圈的app id","app key");
+     sdk->setWeiXinAppInfo("wx9389b5e4d6e62685","d99360c9e13c53207f20f786a6902587");
     // sdk->setYiXinAppKey("设置易信和易信朋友圈的app id");
     // sdk->setLaiwangAppInfo("设置来往和来往动态的app id",
     //                  "设置来往和来往动态的app key", "我的应用名");

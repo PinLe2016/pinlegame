@@ -29,6 +29,8 @@
 
 #include "lua_PinLe_platform.hpp"
 #include "lua_cocos2dx_custom.hpp"
+#include "lua_UM_Share.hpp"
+#include "PinLe_platform.hpp"
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -48,7 +50,8 @@ static void quick_module_register(lua_State *L)
         lua_register_mobclick_module(L);
         //老虎机绑定
         register_all_cocos2dx_custom(L);
-        
+        //分享绑定
+        register_all_UM_Share(L);
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
         register_all_cocos2dx_extension_filter(L);
@@ -162,8 +165,8 @@ bool AppDelegate::applicationDidFinishLaunching()
     engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
 #endif
 
-//    PinLe_platform* pinle=new PinLe_platform();
-//    pinle->getLocation();
+    PinLe_platform::Instance()->getLocation(); // 获取定位信息
+
     return true;
 }
 
