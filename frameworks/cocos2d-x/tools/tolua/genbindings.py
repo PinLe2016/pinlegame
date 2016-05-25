@@ -150,7 +150,8 @@ def main():
                     # 'cocos2dx_audioengine.ini': ('cocos2dx_audioengine', 'lua_cocos2dx_audioengine_auto'), \
                     # 'cocos2dx_csloader.ini' : ('cocos2dx_csloader', 'lua_cocos2dx_csloader_auto'), \
                     # 'cocos2dx_custom.ini' : ('cocos2dx_custom', 'lua_cocos2dx_custom'), \
-                    'PinLe_platform.ini' : ('PinLe_platform', 'lua_PinLe_platform'), \
+                    # 'PinLe_platform.ini' : ('PinLe_platform', 'lua_PinLe_platform'), \
+                    'UM_Share.ini' : ('UM_Share', 'lua_UM_Share'), \
                     }
         target = 'lua'
         generator_py = '%s/generator.py' % cxx_generator_root

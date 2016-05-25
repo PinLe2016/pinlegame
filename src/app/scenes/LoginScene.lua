@@ -13,6 +13,7 @@ local FloatingLayerEx = require("app.layers.FloatingLayer")
 function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
+<<<<<<< HEAD
    
     -- local qw = cc.CSLoader:createNode("Perinformation.csb");
     -- self:addChild(qw)
@@ -21,6 +22,16 @@ function LoginScene:ctor()
     -- else
     --      self:landing_init()
     -- end
+=======
+    Server:Instance():version_login_url()
+   self:landing_init()
+  -- phone_text:addEventListener(function()
+  --                  Server:Instance():login(phone_text:getString(),password_text:getString())
+  --           end）
+  -- password_text:addEventListener(function()
+  --                 Server:Instance():login(phone_text:getString(),password_text:getString())
+  --           end)
+>>>>>>> c9152b3c238dcc8fa96717feced055ca8558f25c
   
 self:landing_init()
 
