@@ -7,10 +7,12 @@
 --3.5.1 获取活动专区列表
 
 --status	是	要获取的数据状态	String	0未开始1已开始2已结束3我的惊喜
-function Server:getactivitylist(status)
+--pageno    是   分页页码    int 第一页是1
+function Server:getactivitylist(status,pageno)
     local params = {}
     params={
-            status=status
+            status=status,
+            pageno=pageno
         }
     self:request_http("getactivitylist" , params ); 
 end

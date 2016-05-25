@@ -14,23 +14,11 @@ function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
 
-   
-    --  if    LocalData:Instance():get_user_data() then
-    --        Util:scene_control("MainInterfaceScene")
-    -- else
-    --      self:landing_init()
-    -- end
 
     Server:Instance():version_login_url()
    self:landing_init()
 
-  -- phone_text:addEventListener(function()
-  --                  Server:Instance():login(phone_text:getString(),password_text:getString())
-  --           end）
-  -- password_text:addEventListener(function()
-  --                 Server:Instance():login(phone_text:getString(),password_text:getString())
-  --           end)
-  
+
 
 end
  function LoginScene:registered_init()

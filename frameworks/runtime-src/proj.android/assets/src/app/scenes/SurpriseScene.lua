@@ -20,7 +20,12 @@ function SurpriseScene:ctor()
         		self:update(dt)
     	end)
 
+local pinle_loclation=cc.PinLe_platform:Instance()
+  local city=pinle_loclation:getCity()
+  dump(city)
 
+  -- local um_share=cc.UM_Share:create()
+  -- um_share:addTo(self)
 end
 
 function SurpriseScene:Surpriseinit()  --floatingLayer_init
@@ -83,19 +88,19 @@ end
               end
               local tag=sender:getTag()
               if tag==29 then
-                      Server:Instance():getactivitylist(0)
+                      Server:Instance():getactivitylist("0",1)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==30 then
-                      Server:Instance():getactivitylist(1)
+                      Server:Instance():getactivitylist("1",1)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==31 then
-                      Server:Instance():getactivitylist(2)
+                      Server:Instance():getactivitylist(2,1)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==117 then
-                      Server:Instance():getactivitylist(3)
+                      Server:Instance():getactivitylist(3,1)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==28 then
@@ -130,7 +135,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
            self.tt= #sup_data
-
+           -- dump(sup_data)
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then
