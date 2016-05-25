@@ -13,29 +13,30 @@ local FloatingLayerEx = require("app.layers.FloatingLayer")
 function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
-
-   self:landing_init()
-  -- phone_text:addEventListener(function()
-  --                  Server:Instance():login(phone_text:getString(),password_text:getString())
-  --           end）
-  -- password_text:addEventListener(function()
-  --                 Server:Instance():login(phone_text:getString(),password_text:getString())
-  --           end)
+   
+    -- local qw = cc.CSLoader:createNode("Perinformation.csb");
+    -- self:addChild(qw)
+    --  if    LocalData:Instance():get_user_data() then
+    --        Util:scene_control("MainInterfaceScene")
+    -- else
+    --      self:landing_init()
+    -- end
   
-  --Server:Instance():login("liuyali","554564564564")
-  --landingbg_2:addEventListener(textFieldEvent)
+self:landing_init()
+
 end
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            local _random=math.random(1000,9999)
            print("邀请码".._random)
+           
         end
     end
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            print("提交")
-
+              
         end
     end
      local function callback_btCallback(sender, eventType)
@@ -83,6 +84,7 @@ local function go_btCallback(sender, eventType)
     local function Forgotpassword_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            print("忘记密码")
+               Util:scene_control("SurpriseOverScene")
         end
     end
 
@@ -99,7 +101,7 @@ end
 function LoginScene:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
-                        --Util:scene_control("MainInterfaceScene")
+                        Util:scene_control("MainInterfaceScene")
                         --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
                       end)
 

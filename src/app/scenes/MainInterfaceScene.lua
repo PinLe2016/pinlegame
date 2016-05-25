@@ -4,12 +4,11 @@
 local MainInterfaceScene = class("MainInterfaceScene", function()
     return display.newScene("MainInterfaceScene")
 end)
-
+local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧
 
 
 
 function MainInterfaceScene:ctor()
-
 	   self.floating_layer = FloatingLayerEx.new()
                self.floating_layer:addTo(self,100000)
 
@@ -28,6 +27,11 @@ function MainInterfaceScene:ctor()
     	true_bt:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
 	end)
+    	 local head=self.MainInterfaceScene:getChildByTag(37)
+    	head:addTouchEventListener(function(sender, eventType  )
+		self:touch_callback(sender, eventType)
+	end)
+
     	self.barrier_bg=self.MainInterfaceScene:getChildByTag(396)
     	self.kuang=self.MainInterfaceScene:getChildByTag(397)
 
@@ -45,6 +49,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==72 then --活动码
 		self.barrier_bg:setVisible(true)
 		self.kuang:setVisible(true)
+	elseif tag==37 then
+		self:addChild(PerInformationLayer.new())
 	elseif tag==399 then --弹出确定
 		Server:Instance():validateactivitycode(self.activitycode_text:getString())
 		self.activitycode_text:setString(" ")

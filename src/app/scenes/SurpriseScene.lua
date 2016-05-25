@@ -19,10 +19,10 @@ function SurpriseScene:ctor()
 	 self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         		self:update(dt)
     	end)
-
-local pinle_loclation=cc.PinLe_platform.new()
-  local city=pinle_loclation:getCity()
-  dump(city)
+      Server:Instance():getactivitylist("1")
+-- local pinle_loclation=cc.PinLe_platform.new()
+--   local city=pinle_loclation:getCity()
+--   dump(city)
 end
 
 function SurpriseScene:Surpriseinit()  --floatingLayer_init
@@ -69,9 +69,9 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
     activity_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
-                                  print("技术开发建设看到房价",self.tt)
-                                    activity_ListView:pushBackDefaultItem()
-                                    local  cell = activity_ListView:getItem(self.tt)
+                                  -- print("技术开发建设看到房价",self.tt)
+                                  --   activity_ListView:pushBackDefaultItem()
+                                  --   local  cell = activity_ListView:getItem(self.tt)
                                  return
                       end
      end))
@@ -85,19 +85,19 @@ end
               end
               local tag=sender:getTag()
               if tag==29 then
-                      Server:Instance():getactivitylist(0)
+                      Server:Instance():getactivitylist("0")
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==30 then
-                      Server:Instance():getactivitylist(1)
+                      Server:Instance():getactivitylist("1")
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==31 then
-                      Server:Instance():getactivitylist(2)
+                      Server:Instance():getactivitylist("2")
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==117 then
-                      Server:Instance():getactivitylist(3)
+                      Server:Instance():getactivitylist("3")
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==28 then
@@ -145,7 +145,6 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           local type_table={}
           for i=1,#sup_data do
                   type_table[i]=sup_data[i]["type"]
-                  print("是否是打飞机  ",type_table[i])
           end
 
           for i=1,#type_table do
@@ -185,7 +184,7 @@ function SurpriseScene:Surpriseimages_list(  )
          	com_["max_pic_idx"]=#sup_data
          	com_["curr_pic_idx"]=i
        
-         	Server:Instance():request_pic(sup_data[i]["ownerurl"],com_)
+         	Server:Instance():request_pic(sup_data[i]["ownerurl"],com_) --下载图片
          end
 end
 function SurpriseScene:pushFloating(text)
