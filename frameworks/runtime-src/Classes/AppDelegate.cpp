@@ -31,6 +31,7 @@
 #include "lua_cocos2dx_custom.hpp"
 #include "lua_UM_Share.hpp"
 #include "PinLe_platform.hpp"
+#include "lua_ItemPicker.hpp"
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -52,6 +53,8 @@ static void quick_module_register(lua_State *L)
         register_all_cocos2dx_custom(L);
         //分享绑定
         register_all_UM_Share(L);
+        //城市选择控件
+        register_all_ItemPicker(L);
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
         register_all_cocos2dx_extension_filter(L);
@@ -165,7 +168,7 @@ bool AppDelegate::applicationDidFinishLaunching()
     engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
 #endif
 
-    PinLe_platform::Instance()->getLocation(); // 获取定位信息
+//    PinLe_platform::Instance()->getLocation(); // 获取定位信息
 
     return true;
 }
