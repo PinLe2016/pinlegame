@@ -31,7 +31,12 @@
 #include "lua_cocos2dx_custom.hpp"
 #include "lua_UM_Share.hpp"
 #include "PinLe_platform.hpp"
-#include "lua_ItemPicker.hpp"
+//#include "lua_ItemPicker.hpp"
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#include "C2DXShareSDK.h"
+using namespace cn::sharesdk;
+#endif
+
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -54,7 +59,7 @@ static void quick_module_register(lua_State *L)
         //分享绑定
         register_all_UM_Share(L);
         //城市选择控件
-        register_all_ItemPicker(L);
+//        register_all_ItemPicker(L);
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
         register_all_cocos2dx_extension_filter(L);
@@ -67,6 +72,7 @@ static void quick_module_register(lua_State *L)
     }
     lua_pop(L, 1);
 }
+
 
 //
 AppDelegate::AppDelegate()
@@ -104,7 +110,9 @@ void AppDelegate::initGLContextAttrs()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
-   
+    //初始化社交平台信息
+    this->initPlatformConfig();
+    
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	initRuntime();
 #elif (COCOS2D_DEBUG > 0 && CC_CODE_IDE_DEBUG_SUPPORT > 0)
@@ -168,10 +176,32 @@ bool AppDelegate::applicationDidFinishLaunching()
     engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
 #endif
 
-//    PinLe_platform::Instance()->getLocation(); // 获取定位信息
+    PinLe_platform::Instance()->getLocation(); // 获取定位信息
 
     return true;
 }
+
+
+void AppDelegate::initPlatformConfig()
+{
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    //初始化ShareSDK
+    C2DXShareSDK::open("a1bb805aec94", false);
+    
+    
+    //设置平台配置
+    //Platforms
+    __Dictionary *totalDict = __Dictionary::create();
+    
+    //微信
+    __Dictionary *wcConfigDict = __Dictionary::create();
+    wcConfigDict -> setObject(String::create("wx9389b5e4d6e62685"), "app_id");
+    C2DXShareSDK::setPlatformConfig(C2DXPlatTypeWeixiSession, wcConfigDict);
+    C2DXShareSDK::setPlatformConfig(C2DXPlatTypeWeixiTimeline, wcConfigDict);
+    C2DXShareSDK::setPlatformConfig(C2DXPlatTypeWeixiFav, wcConfigDict);
+#endif
+}
+
 
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground()

@@ -38,6 +38,9 @@ public:
     
     void setLaunchMode(int mode);
     
+    //share sdk
+    void initPlatformConfig();
+    
 private:
     int _launchMode;
 };

@@ -85,7 +85,7 @@ function Server:login(username,password)
             password=crypto.md5(password),
             latitude=55000000,
             longtitude=660000000,
-            systemtype="android",
+            systemtype=platform,
             ip="192.168.0.0",
             origin="0",
         }

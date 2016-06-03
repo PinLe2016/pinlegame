@@ -16,4 +16,7 @@ int register_all_UM_Share(lua_State* tolua_S);
 
 
 
+
+
+
 #endif // __UM_Share_h__

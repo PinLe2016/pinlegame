@@ -19,9 +19,18 @@ class UM_Share :public Layer
 public:
     UM_Share();
     ~UM_Share();
-    virtual bool init();
-    CREATE_FUNC(UM_Share);
+    //传入分享图片路径
+    static UM_Share* createWithShare(string sharePicPath);
+    
+    bool initWithShare(string sharePicPath);
+
+    void shareWithIos(string sharePicPath);//友盟SDK分享
+    
+    void shareWithAndroid(string sharePicPath);//sharesdk分享
+    
 public:
+    void shareMenuItemClick(cocos2d::Ref* pSender);//android 分享回调
+//    void shareResultHandler(C2DXResponseState state, C2DXPlatType platType, __Dictionary *shareInfo, __Dictionary *error);
 //    void shareCallback(int platform, int stCode, string& errorMsg);
 };
 
