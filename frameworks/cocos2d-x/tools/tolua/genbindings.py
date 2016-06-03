@@ -151,7 +151,8 @@ def main():
                     # 'cocos2dx_csloader.ini' : ('cocos2dx_csloader', 'lua_cocos2dx_csloader_auto'), \
                     # 'cocos2dx_custom.ini' : ('cocos2dx_custom', 'lua_cocos2dx_custom'), \
                     # 'PinLe_platform.ini' : ('PinLe_platform', 'lua_PinLe_platform'), \
-                    'UM_Share.ini' : ('UM_Share', 'lua_UM_Share'), \
+                    # 'UM_Share.ini' : ('UM_Share', 'lua_UM_Share'), \
+                    'ItemPicker.ini' : ('ItemPicker', 'lua_ItemPicker'), \
                     }
         target = 'lua'
         generator_py = '%s/generator.py' % cxx_generator_root
