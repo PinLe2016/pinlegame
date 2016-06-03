@@ -13,12 +13,18 @@ function FloatingLayer:ctor()
     
 end
 
-function FloatingLayer:Instance()  
-    if self.instance == nil then  
-        self.instance =  self:new()
+function FloatingLayer:show_http(is_show)
+       if  is_show==false then
+         self:removeChildByTag(250, true)
+         return
+     end
+    local loadingLayer = cc.CSLoader:createNode("loadingLayer.csb")
+    self:addChild(loadingLayer,1,250)
 
-    end
-    return self.instance
+    local action = cc.CSLoader:createTimeline("loadingLayer.csb")
+    action:setTimeSpeed(0.5)
+    loadingLayer:runAction(action)
+    action:gotoFrameAndPlay(0,true)
 end
 function FloatingLayer:showFloat(dialogtextString)  --floatingLayer_init
     self.dialog = cc.CSLoader:createNode("Dialog.csb");

@@ -4,7 +4,19 @@
 --
 -- 获取活动专区列表
 function LocalData:set_getactivitylist(getactivitylist)
+
+	if  not getactivitylist then
+	     self.getactivitylist=getactivitylist
+	     return
+	end
+	if self.getactivitylist then
+		for k,v in pairs(getactivitylist["game"]) do
+			table.insert(self.getactivitylist["game"],v)
+		end
+		return
+	end
 	self.getactivitylist=getactivitylist
+
 end
 function LocalData:get_getactivitylist()
 	return self.getactivitylist or {}
@@ -67,6 +79,13 @@ function LocalData:set_actid(actid)
 end
 function LocalData:get_actid()
 	return self.actid or {}
+end
+--拼图结束后上传数据
+function LocalData:set_setgamerecord(gamerecord)
+	self.gamerecord=gamerecord
+end
+function LocalData:get_setgamerecord()
+	return self.gamerecord or {}
 end
 
 

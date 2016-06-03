@@ -25,7 +25,6 @@ end
 --拆分字符串返回表
 function Util:lua_string_split(str, split_char)      
  local sub_str_tab = {};  
-   
  while (true) do          
  local pos = string.find(str, split_char);    
  if (not pos) then              
@@ -162,7 +161,7 @@ function Util:removeDirectory(path)
 end
 
 
-
+--比较table
 function Util:compareTables(table1 , table2)
     if type(table1)~="table"   or  type(table2)~="table"  then 
       printError("cant compare noTable value") 
@@ -226,9 +225,9 @@ function Util:scene_control(scene)
         local str_scene="app.scenes."..scene
         display.replaceScene(require(str_scene):new())
 end
-function Util:scene_controlid(scene,Id)
+function Util:scene_controlid(scene,params)
         local str_scene="app.scenes."..scene
-        display.replaceScene(require(str_scene):new({Id=ld}))
+        display.replaceScene(require(str_scene).new(params))-- （.与：区别）
 end
 
 function Util:tableLength(T)
@@ -236,5 +235,21 @@ function Util:tableLength(T)
 	for _ in pairs(T) do count = count + 1 end
 	return count
 end
+--随机数
+function Util:rand(  )
+       return math.random(1000,9999)
+end
+
+
+
+
+
+
+
+
+
+
+
+
 
 return Util

@@ -7,26 +7,25 @@
 --3.5.1 获取活动专区列表
 
 --status	是	要获取的数据状态	String	0未开始1已开始2已结束3我的惊喜
-function Server:getactivitylist(status)
+function Server:getactivitylist(status,pageno)
     local params = {}
     params={
             status=status ,
-            pageno=1
+            pageno=pageno
         }
     self:request_http("getactivitylist" , params ); 
 end
 
 
 function Server:getactivitylist_callback()
-     dump(self.data)
+       dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
     end
-    
+    -- print("6------------")
     LocalData:Instance():set_getactivitylist(self.data)--保存数据
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE)
-    --self:show_float_message("获取活动专区列表")
 end
 
 
@@ -85,12 +84,13 @@ end
 
 function Server:getactivityadlist_callback()
     dump(self.data)
-    if self.data.err_code~=0  then
+    if  self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
     end
-    self:show_float_message("获取指定活动的广告列表")
     LocalData:Instance():set_getactivityadlist(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE)
+    
 end
 
 --3.5.5  生成通关订单
@@ -272,7 +272,32 @@ function Server:validateactivitycode_callback()
     -- self:show_float_message("获取指定活动的广告列表")
 end
 
+--记录游戏数据 3.3.3
+function Server:setgamerecord()
+    local params = {}
+    params={
+            gamesettingid=8,
+            adid="594DE1EC-7796-4E86-AEDA-20D82753C798",
+            imageid="9D2E7A7B-369C-4719-B4D8-0A4EBC5DDE57",
+            starttime="2015-01-01 12:12:12",
+            finishtime="2015-01-01 12:12:12",
+            steps="steps1",
+            time="54"
 
+        }
+    self:request_http("setgamerecord" , params ); 
+end
+
+
+function Server:setgamerecord_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("拼图上传数据失败:" .. self.data.err_msg)
+        return
+    end
+     LocalData:Instance():set_setgamerecord(self.data)--保存数据
+     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GAMERECORD_POST)
+end
 
 
 

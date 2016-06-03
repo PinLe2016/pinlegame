@@ -24,13 +24,14 @@ function DetailsLayer:init(  )
 	local  function back_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
 		     Util:scene_control("SurpriseScene",self.id)
+		     
 		end
 	end
 
 	local  function began_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
-		     Util:scene_control("GameScene")
-		     self:removeFromParent()
+		      Util:scene_controlid("GameScene",{id=self.id})
+		      
 		end
 	end
 	local details = cc.CSLoader:createNode("DetailsScene.csb")

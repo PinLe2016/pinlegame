@@ -2,15 +2,24 @@
 -- Author: peter
 -- Date: 2016-05-23 10:48:37
 --
-function LocalPerInformation:set_userinfo(getuserinfo)
+function LocalData:set_userinfo(setuserinfo)
+	self.setuserinfo=setuserinfo
+end
+function LocalData:get_userinfo()
+	return self.setuserinfo or {}
+end
+function LocalData:set_getuserinfo(getuserinfo)
+
 	self.getuserinfo=getuserinfo
 end
-function LocalPerInformation:get_userinfo()
+function LocalData:get_getuserinfo()
 	return self.getuserinfo or {}
 end
-function LocalPerInformation:set_userinfoinit(getuserinfo)
-	self.getuserinfo=getuserinfo
+--签到
+function LocalData:set_checkin(getcheckin)
+
+	self.getcheckin=getcheckin
 end
-function LocalPerInformation:set_userinfoinit()
-	return self.getuserinfo or {}
+function LocalData:get_checkin()
+	return self.getcheckin or {}
 end

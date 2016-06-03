@@ -15,22 +15,28 @@ local debrisLayer = require("app.gamecontrol.debrisLayer")
 
 
 function GameScene:ctor(params)
-   -- self.floating_layer = FloatingLayerEx.new()
-   -- self.floating_layer:addTo(self,100000)
+   self.floating_layer = FloatingLayerEx.new()
+   self.floating_layer:addTo(self,-1)
+
+      self.id=params.id
 
       local csb = cc.CSLoader:createNode("XSHGameScene.csb")
       self._csb=csb
       self:addChild(csb)
-      local back_bt=csb:getChildByTag(21)
+      local back_bt=csb:getChildByTag(21)  -- 禁返回
       back_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
-      local music_bt=csb:getChildByTag(22)
+      local music_bt=csb:getChildByTag(22) -- 禁音效
       music_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
-      local restore_bt=csb:getChildByTag(23)
+      local restore_bt=csb:getChildByTag(23)--查看原图
       restore_bt:addTouchEventListener(function(sender, eventType  )
+                     self:csb_btCallback(sender, eventType)
+               end)
+       local suspended_bt=csb:getChildByTag(44)--暂停
+      suspended_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
 
@@ -46,9 +52,9 @@ function GameScene:ctor(params)
                   local point={}
                   point.x=kuang:getPositionX()
                   point.y=kuang:getPositionY()
-                  local deblayer= debrisLayer.new({filename="httpwww.PinleGame.comGameImage856b7718-d0d9-41d7-86d8-11394180d357.jpg"
+                  local deblayer= debrisLayer.new({filename="httpwww.pinlegame.comGameImageaffbd109-a341-4f1c-8b3f-edb581f01c68.jpg"
                   ,row=4,col=5,_size=_size,point=point,id=self.id})
-                  csb:addChild(deblayer,3)
+                  csb:addChild(deblayer,-1)
                   node:removeFromParent()
                   self.fragment_sprite_bg:removeFromParent()
       end
@@ -69,54 +75,126 @@ function GameScene:csb_btCallback(sender, eventType)
             print("音乐",cc.UserDefault:getInstance():getBoolForKey("music"))
       elseif tag== 23 then
             self:originalimage()
+      elseif tag== 44 then
+           self:funsuspended()
+
       end
 
 
 end
+function GameScene:funsuspended( )
+           local mask_layer=self._csb:getChildByTag(46)  -- 遮罩层
+           mask_layer:setVisible(true)
+           local panel=self._csb:getChildByTag(47)  -- 面板
+           panel:setVisible(true)
+           local back_bt=panel:getChildByTag(49)  -- 返回
+           back_bt:addTouchEventListener(function(sender, eventType  )
+                     mask_layer:removeFromParent()
+                     panel:removeFromParent()
+               end)
+           local continue_bt=panel:getChildByTag(50)  -- 继续
+           continue_bt:addTouchEventListener(function(sender, eventType  )
+                     mask_layer:removeFromParent()
+                     panel:removeFromParent()
+               end)
+           local continue_bt=panel:getChildByTag(49)  -- 退出
+           continue_bt:addTouchEventListener(function(sender, eventType  )
+                     Util:scene_control("SurpriseScene")
+               end)
+           local sound_box=panel:getChildByTag(52)  -- 音效
+           sound_box:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            print("开启")
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             print("关闭")
+                     end
+               end)
+           local music_box=panel:getChildByTag(53)  -- 音乐
+           music_box:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            print("开启")
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             print("关闭")
+                     end
+               end)
+           local notifications_box=panel:getChildByTag(54)  -- 通知
+           notifications_box:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            print("开启")
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             print("关闭")
+                     end
+               end)
+end
 function GameScene:originalimage(  )
            local function onImageViewClicked(eventType,x,y)
                 -- if eventType == ccui.TouchEventType.ended then
-                    print("佛挡杀佛")
                 -- end
             end
-
+            
 
           local kuang=self._csb:getChildByTag(53)
           local _size=kuang:getContentSize()
+          dump(_size)
           local point={}
           point.x=kuang:getPositionX()
-          point.y=kuang:getPositionY()
-          self.fragment_sprite_bg = display.newScale9Sprite("httpwww.PinleGame.comGameImage856b7718-d0d9-41d7-86d8-11394180d357.jpg", point.x,point.y, cc.size(_size.width,_size.height))
+          point.y=kuang:getPositionY() 
+          self.fragment_sprite_bg = display.newScale9Sprite("httpwww.pinlegame.comGameImageaffbd109-a341-4f1c-8b3f-edb581f01c68.jpg", point.x,point.y, cc.size(_size.width,_size.height))
           self.fragment_sprite_bg:setTouchEnabled(true)
-          -- self.fragment_sprite_bg:registerScriptTouchHandler(function ( eventType,x,y )
-          --       print("佛挡杀佛")
-          --   end)
+          -- self.fragment_sprite_bg:addTouchEventListener(function(sender, eventType  )
+          --     print("哈哈哈哈哈哈")
+          -- end)
           self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
-          self._csb:addChild(self.fragment_sprite_bg,0)
+          self._csb:addChild(self.fragment_sprite_bg,20)
 
 end
+function GameScene:imgurl_download(  )
+         local list_table=LocalData:Instance():get_getactivityadlist()
+         local _table={}
+         local imgurl="http://www.PinleGame.com/GameImage/affbd109-a341-4f1c-8b3f-edb581f01c68.jpg"--list_table["imgurl"]
+          _table["imgurl"]="http://www.PinleGame.com/GameImage/affbd109-a341-4f1c-8b3f-edb581f01c68.jpg"--list_table["imgurl"]
+          Server:Instance():actrequest_pic(imgurl,_table) --下载图片
+end
 function GameScene:onEnter()
+
+     Server:Instance():getactivityadlist(self.id)--发送请求
+
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
                         display.replaceScene(SurpriseScene:Instance():Surpriseinit())
+                      end)
+     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self,
+                       function()
+                           print("下载图片")
+                            self:imgurl_download()
+
+                      end)
+     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self,
+                       function()
+                           print("完成下载图片")
                       end)
 
 end
 
 function GameScene:onExit()
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
+           NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self)
+           NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self)
 end
 
 function GameScene:pushFloating(text)
 
-   -- if is_resource then
-   --     self.floating_layer:showFloat(text)  
-   -- else
-   --     self.floating_layer:showFloat(text) 
-   -- end
+   if is_resource then
+       self.floating_layer:showFloat(text)  
+   else
+       self.floating_layer:showFloat(text) 
+   end
 
 end 
-
+function GameScene:push_buffer(is_buffer)
+       self.floating_layer:show_http(is_buffer) 
+       
+end 
 return GameScene
 
 

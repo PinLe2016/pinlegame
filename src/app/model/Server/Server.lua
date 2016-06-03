@@ -31,7 +31,7 @@ function Server:setTime(time)
 end
 
 function Server:show_float_message(msg)
-   local scene = display.getRunningScene()
+   local scene = cc.Director:getInstance():getRunningScene()
 --addTo(scene)
 -- if cc.Director:getInstance():getRunningScene() then
 --     print("的房价是否都是SDFDS")
@@ -41,6 +41,12 @@ function Server:show_float_message(msg)
 -- end
    scene:pushFloating(msg)
 end
+
+function Server:show_http_buffer(is_buffer)
+ 
+   display.getRunningScene():push_buffer(is_buffer)
+end
+
 
 
 
@@ -60,6 +66,7 @@ function Server:request_version(command , params)
 end
 
 function Server:on_request_finished_version(event , command)
+
     local ok = (event.name == "completed")
     local request = event.request
 
@@ -88,7 +95,7 @@ end
     -- params --传输数据
 ]]
 function Server:request_http(command , params)
-
+    self:show_http_buffer(true)-- 传输动画
     local parsms_md5={methodtype="json",createtime=os.time(),functionname=command,functionparams=params}
     local post_md5=json.encode(parsms_md5)
     local post_=MD5_KEY..post_md5..MD5_KEY
@@ -105,7 +112,7 @@ function Server:request_http(command , params)
     end
     self.login_url="http://123.57.136.223:2036/Default.aspx?"
     self.login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
-    print("---url---",self.login_url,post_md5)
+    --print("---url---",self.login_url,post_md5)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , "POST")
 
     request:setPOSTData(post_md5)
@@ -115,8 +122,9 @@ end
 
 
 function Server:on_request_finished_http(event , command)
-
-     -- print("--- response string ---\n" , response)
+     
+     
+    
     local ok = (event.name == "completed")
 
     local request = event.request
@@ -132,7 +140,7 @@ function Server:on_request_finished_http(event , command)
         print("response status code : " .. code)
         return
     end
-
+    self:show_http_buffer(false)-- 传输动画
     -- 请求成功，显示服务端返回的内容
     local response = request:getResponseData()
    
@@ -205,9 +213,154 @@ function Server:on_request_finished_pic(event , command)
 
 end
 
+
+--活动下载图片
+
+function Server:actrequest_pic(url,command)
+    self.pic_url=url
+    local request = network.createHTTPRequest(function(event) self:acton_request_finished_pic(event,command) end, url , "GET")
+    request:setTimeout(0.5)
+    request:start()
+
+end
+
+function Server:acton_request_finished_pic(event , command)
+    local ok = (event.name == "completed")
+    local request = event.request
+
+    if not ok then return end
+
+    local code = request:getResponseStatusCode()
+
+    if code ~= 200 then
+        -- 请求结束，但没有返回 200 响应代码
+        -- self:show_float_message("服务器返回代码错误:" .. code)
+        print("response status code : " .. code)
+        return
+    end
+    local dataRecv = request:getResponseData()
+    -- local fileObject = self.download_file_list[self.download_progress]
+  
+    local str=Util:sub_str(command["imgurl"], "/",":")    
+    -- dump(str)
+    local file_path = self.writablePath.."down_pic/"..str
+    local file = io.open( file_path, "w+b")
+    if file then
+        if file:write(dataRecv) == nil then
+        -- self:show_error("can not save file : " .. file_path)
+            print("can not save file")
+            return false
+        end
+        io.close(file)
+ 
+    end
+        NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE)
+
+
+end
+--奖池下载
+function Server:jackpot_pic(url,command)
+    self.pic_url=url
+    local request = network.createHTTPRequest(function(event) self:jackpot_request_finished_pic(event,command) end, url , "GET")
+    request:setTimeout(0.5)
+    request:start()
+
+end
+
+function Server:jackpot_request_finished_pic(event , command)
+    local ok = (event.name == "completed")
+    local request = event.request
+
+    if not ok then return end
+
+    local code = request:getResponseStatusCode()
+
+    if code ~= 200 then
+        -- 请求结束，但没有返回 200 响应代码
+        -- self:show_float_message("服务器返回代码错误:" .. code)
+        print("response status code : " .. code)
+        return
+    end
+    local dataRecv = request:getResponseData()
+    -- local fileObject = self.download_file_list[self.download_progress]
+    local str=Util:sub_str(command["imageurl"], "/",":")    
+    -- dump(str)
+    local file_path = self.writablePath.."down_pic/"..str
+    local file = io.open( file_path, "w+b")
+    if file then
+        if file:write(dataRecv) == nil then
+        -- self:show_error("can not save file : " .. file_path)
+            print("can not save file")
+            return false
+        end
+        io.close(file)
+ 
+    end
+        if tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) then
+        NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST)
+    end
+        
+
+
+end
+
+
+--奖池详情界面
+function Server:jackpotlayer_pic(url,command) 
+    self.pic_url=url
+    local request = network.createHTTPRequest(function(event) self:jackpotlayer_request_finished_pic(event,command) end, url , "GET")
+    request:setTimeout(0.5)
+    request:start()
+end
+
+function Server:jackpotlayer_request_finished_pic(event , command)
+    local ok = (event.name == "completed")
+    local request = event.request
+
+    if not ok then return end
+
+    local code = request:getResponseStatusCode()
+
+    if code ~= 200 then
+        -- 请求结束，但没有返回 200 响应代码
+        -- self:show_float_message("服务器返回代码错误:" .. code)
+        print("response status code : " .. code)
+        return
+    end
+    local dataRecv = request:getResponseData()
+    -- local fileObject = self.download_file_list[self.download_progress]
+    local str=Util:sub_str(command["imgurl"], "/",":")    
+    -- dump(str)
+    local file_path = self.writablePath.."down_pic/"..str
+    local file = io.open( file_path, "w+b")
+    if file then
+        if file:write(dataRecv) == nil then
+        -- self:show_error("can not save file : " .. file_path)
+            print("can not save file")
+            return false
+        end
+        io.close(file)
+ 
+    end
+        if tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) then
+        NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST)
+    end
+        
+
+
+end
+
+
+
+
+
+
+
+
 require("app.model.Server.ServerLogin")
 require("app.model.Server.ServerSurprise")
-require("app.model.Server.ServerUserData")
+require("app.model.Server.ServerUserData")   
+require("app.model.Server.ServerJackpot") 
 
 
 

@@ -24,18 +24,25 @@ end
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-           local _random=math.random(1000,9999)
+           self. _random=Util:rand(  ) --随机验证码
            print("邀请码".._random)
            
         end
     end
+    self. _random=000  --初始化
+     local phone_text=registered:getChildByTag(28)
+     local password_text=registered:getChildByTag(29)
+     local verificationcode_text=registered:getChildByTag(30)
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-           print("提交")
-              
+        if tostring(verificationcode_text:getString())  ~= tostring(self. _random) then
+              Server:Instance():prompt("验证码错误")
+             return    
+        end
+              Server:Instance():reg(phone_text:getString(),password_text:getString())
         end
     end
-     local function callback_btCallback(sender, eventType)
+     local function callback_btCallback(sender, eventType) 
         if eventType == ccui.TouchEventType.ended then
            print("取消")
            self:landing_init()
@@ -48,6 +55,7 @@ end
     submit_bt:addTouchEventListener(submit_btCallback)
      local callback_bt=registered:getChildByTag(25)
     callback_bt:addTouchEventListener(callback_btCallback)
+    
 
 end
 function LoginScene:landing_init()
@@ -113,4 +121,27 @@ function LoginScene:pushFloating(text)
        self.floating_layer:showFloat(text) 
    end
 end 
+
+function LoginScene:push_buffer(is_buffer)
+       self.floating_layer:show_http(is_buffer) 
+end 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 return LoginScene
