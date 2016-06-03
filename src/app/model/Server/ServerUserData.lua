@@ -4,7 +4,7 @@
 --
 --保存用户数据
 function Server:setuserinfo(params)
-   
+    print("经济佛法决定是否记得撒娇范德萨",params.imageurl)
        local _params = params
        dump(_params)
    
@@ -39,8 +39,28 @@ function Server:getuserinfo_callback()
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
     end
-    LocalData:Instance():set_userinfoinit(self.data)--保存数据
+    LocalData:Instance():set_getuserinfo(self.data)--保存数据
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE)
+   
+end
+
+--签到
+function Server:checkin()
+   
+       local params = {}
+        params={
+           
+         }
+    self:request_http("checkin" , params ); 
+end
+function Server:checkin_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_checkin(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.CHECK_POST)
    
 end
 

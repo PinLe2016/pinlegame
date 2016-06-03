@@ -15,7 +15,6 @@ end)
 function debrisLayer:ctor(params)
     --self:setTouchEnabled(true)
     -- self:setSwallowTouches(false)
-    dump(params)
     -- cc.ui.UILabel.new({
     --         UILabelType = 2, text = "Hello, World", size = 64})
     --     :align(display.CENTER, display.cx, display.cy)
@@ -203,13 +202,14 @@ function debrisLayer:saw_issuccess()
     end
     print("成功")
     Util:scene_control("SurpriseOverScene")
-
 end
 
 function debrisLayer:onEnter()
+
 end
 
 function debrisLayer:onExit()
+
 end
 
 return debrisLayer

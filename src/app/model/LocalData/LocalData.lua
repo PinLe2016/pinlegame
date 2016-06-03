@@ -36,7 +36,9 @@ end
 
 
 require("app.model.LocalData.LocalLogin")
- require("app.model.LocalData.LocalSurprise")
+require("app.model.LocalData.LocalSurprise")
+require("app.model.LocalData.LocalPerInformation")
+require("app.model.LocalData.LocalJackpot")
 
 
 

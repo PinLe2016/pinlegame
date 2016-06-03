@@ -8,18 +8,23 @@ end)
 local GameScene = require("app.scenes.GameScene")
 
 function SurpriseScene:ctor()
+
+      self.floating_layer = FloatingLayerEx.new()
+      self.floating_layer:addTo(self,100000)
       --self:addChild(SurpriseOverLayer.new())
+      self.sur_pageno=1
+      self.ser_status =1
 	self.time=0
 	self.secondOne = 0
 	self.list_table={}
-	self.floating_layer = FloatingLayerEx.new()
-	self.floating_layer:addTo(self,100000)
-	self:Surpriseinit()
-
+	-- self.floating_layer = FloatingLayerEx.new()
+	-- self.floating_layer:addTo(self,100000)
+      self:Surpriseinit()
 	 self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         		self:update(dt)
     	end)
-      Server:Instance():getactivitylist("1")
+       
+
 -- local pinle_loclation=cc.PinLe_platform:Instance()
 --   local city=pinle_loclation:getCity()
 --   dump(city)
@@ -40,7 +45,6 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
   --           self:update(dt)
   --     end)
     -- Server:Instance():validateactivitycode("123456")
-
 
     ActivitymainnterfaceiScene = cc.CSLoader:createNode("ActivitymainnterfaceiScene.csb");
     self:addChild(ActivitymainnterfaceiScene)
@@ -70,9 +74,9 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
     activity_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
-                                  -- print("技术开发建设看到房价",self.tt)
-                                  --   activity_ListView:pushBackDefaultItem()
-                                  --   local  cell = activity_ListView:getItem(self.tt)
+                        self.sur_pageno=self.sur_pageno+1
+                        Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)   --下拉刷新功能
+                        self:unscheduleUpdate()
                                  return
                       end
      end))
@@ -86,21 +90,34 @@ end
               end
               local tag=sender:getTag()
               if tag==29 then
-                      Server:Instance():getactivitylist("0")
-                      activity_ListView:removeAllItems()
-                      self:unscheduleUpdate()
+
+                       LocalData:Instance():set_getactivitylist(nil)--数据制空
+                       self.ser_status=0
+                       self.sur_pageno=1
+                       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+                       activity_ListView:removeAllItems()
+                       self:unscheduleUpdate()
               elseif tag==30 then
-                      Server:Instance():getactivitylist("1")
+                      LocalData:Instance():set_getactivitylist(nil)--数据制空
+                      self.ser_status=1
+                      self.sur_pageno=1
+                      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==31 then
-                      Server:Instance():getactivitylist("2")
+                      LocalData:Instance():set_getactivitylist(nil)--数据制空
+                      self.ser_status=2
+                      self.sur_pageno=1
+                      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
               elseif tag==117 then
-                      Server:Instance():getactivitylist("3")
-                      activity_ListView:removeAllItems()
-                      self:unscheduleUpdate()
+                       LocalData:Instance():set_getactivitylist(nil)--数据制空
+                       self.ser_status=3
+                       self.sur_pageno=1
+                       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+                       activity_ListView:removeAllItems()
+                       self:unscheduleUpdate()
               elseif tag==28 then
                         Util:scene_control("MainInterfaceScene")
               end
@@ -132,7 +149,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-           self.tt= #sup_data
+           self.sup_data_num= #sup_data
            -- dump(sup_data)
           local  function onImageViewClicked(sender, eventType)
                     
@@ -196,15 +213,22 @@ function SurpriseScene:pushFloating(text)
    end
 end 
 
+function SurpriseScene:push_buffer(is_buffer)
+       self.floating_layer:show_http(is_buffer) 
+       
+end 
+
 function SurpriseScene:onEnter()
+      LocalData:Instance():set_getactivitylist(nil)
+     Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
 
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
+                        -- print("7-------------")
                        self:Surpriseimages_list()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
-                        print("get_suprite  ")
                        self:Surprise_list()
                       end)
 end

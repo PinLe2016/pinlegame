@@ -51,12 +51,13 @@ function Server:reg(username,password)
             ip="192.168.0.0",
             origin="0",
         }
+        dump(params)
     self:request_http("reg" , params ); 
 end
 
 
 function Server:reg_callback()
-    -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("注册失败:" .. self.data.err_msg)
 
@@ -68,7 +69,9 @@ function Server:reg_callback()
    -- end
      -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GET_SERVERLIST_BY_REFRESH)
 end
-
+function Server:prompt( content )
+    self:show_float_message(tostring(content))
+end
 
 --登陆
 function Server:login(username,password)
@@ -85,7 +88,7 @@ function Server:login(username,password)
             password=crypto.md5(password),
             latitude=55000000,
             longtitude=660000000,
-            systemtype="android",
+            systemtype=platform,
             ip="192.168.0.0",
             origin="0",
         }

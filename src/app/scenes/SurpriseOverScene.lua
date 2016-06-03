@@ -14,6 +14,9 @@ local SurpriseOverScene = class("SurpriseOverScene", function()
             return display.newScene("SurpriseOverScene")
 end)
 function SurpriseOverScene:ctor()--params
+        
+        self.floating_layer = FloatingLayerEx.new()
+        self.floating_layer:addTo(self,1000)
 
         self.actid=LocalData:Instance():get_actid({act_id=self.id})
         self:init()
@@ -84,6 +87,8 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	elseif tag==160 then --返回
 		Util:scene_control("SurpriseScene")
 	elseif tag==44 then  --结束
+		self.began_bt:setVisible(false)
+	            self.end_bt:setVisible(false)
 		local  tempn = activitypoints["points"]
 		for i=1,#self. _table do
 			local  stopNum = 0;
@@ -99,13 +104,21 @@ end
 --初始化数据
 function SurpriseOverScene:init_data(  )
 	local activitypoints=LocalData:Instance():get_getactivitypoints()
-	dump(activitypoints)
             local allscore_text=self.Laohuji:getChildByTag(63)--累计积分
             allscore_text:setString(tostring(activitypoints["totalPoints"]))
             local bestscore_text=self.Laohuji:getChildByTag(62)--最佳积分
             bestscore_text:setString(tostring(activitypoints["bestpoints"]))
             local rank_text=self.Laohuji:getChildByTag(64)--排名
             rank_text:setString(tostring(activitypoints["rank"]))
+
+            local function stopAction()
+                self.began_bt:setVisible(true)
+	   self.end_bt:setVisible(false)
+            end
+             local callfunc = cc.CallFunc:create(stopAction)
+             rank_text:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+
+            
 end
 function SurpriseOverScene:onEnter()
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
@@ -118,7 +131,19 @@ end
 function SurpriseOverScene:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
 end
+function SurpriseOverScene:pushFloating(text)
 
+   if is_resource then
+       self.floating_layer:showFloat(text)  
+   else
+       self.floating_layer:showFloat(text) 
+   end
+
+end 
+function SurpriseOverScene:push_buffer(is_buffer)
+       self.floating_layer:show_http(is_buffer) 
+       
+end 
 return SurpriseOverScene
 
 
