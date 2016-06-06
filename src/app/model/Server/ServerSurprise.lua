@@ -273,7 +273,7 @@ function Server:validateactivitycode_callback()
 end
 
 --记录游戏数据 3.3.3 --校检完成
---type 0,表示奖池类型，1 专题活动类型
+--type 0,表示奖池类型和惊喜吧类型，1 专题活动类型
 --adid    广告编号    String  Guid
 --imageid   是   比赛使用的图片编号   String  Guid
 function Server:setgamerecord(type,adid,imageid)
