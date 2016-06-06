@@ -1,23 +1,21 @@
 
-
-
-
-
-
-
 local GoldprizeScene = class("GoldprizeScene", function()
     return display.newScene("GoldprizeScene")
 end)
 local  jackpotlayer= require("app.layers.JackpotLayer")--
+
+
 function GoldprizeScene:ctor()
 
-	   self.floating_layer = FloatingLayerEx.new()
-               self.floating_layer:addTo(self,100000)
-               self.sur_pageno=1
-               self:init()
+   self.floating_layer = FloatingLayerEx.new()
+   self.floating_layer:addTo(self,100000)
+   self.sur_pageno=1
+   self:init()
                
             
 end
+
+
 function GoldprizeScene:init(  )
 
 	self.GoldprizeScene = cc.CSLoader:createNode("Goldprize.csb")
@@ -44,67 +42,70 @@ function GoldprizeScene:init(  )
 	-- self:data_init()
 
 end
+
+
 function GoldprizeScene:data_init(  )
-          self.jackpot_ListView:removeAllItems()
+		self.jackpot_ListView:removeAllItems()
 
-          local  list_table=LocalData:Instance():get_getgoldspoollist()
-          local  jac_data=list_table["goldspools"]
-           self.jac_data_num= #jac_data /  2  +  #jac_data %  2
-           -- dump(sup_data)
-          
-          for i=1,self.jac_data_num do
-          	self.jackpot_ListView:pushBackDefaultItem()
-          	local  cell = self.jackpot_ListView:getItem(i-1)
-            cell:setTag(i)
+		local  list_table=LocalData:Instance():get_getgoldspoollist()
+		local  jac_data=list_table["goldspools"]
+		self.jac_data_num= #jac_data /  2  +  #jac_data %  2
+		-- dump(sup_data)
 
-	                    local bg1=cell:getChildByTag(63)
-	                    local bg1_image=bg1:getChildByTag(121)
-		        bg1_image:loadTexture(tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
-		        bg1_image:setTag(2*i-1)
-		        bg1_image:addTouchEventListener(function(sender, eventType  )
-				if eventType ~= ccui.TouchEventType.ended then
-					return
-				end
-				local tag=sender:getTag()
-				 local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"]})
-                                                 self:addChild(jackpotlayer)
+		for i=1,self.jac_data_num do
+			self.jackpot_ListView:pushBackDefaultItem()
+			local  cell = self.jackpot_ListView:getItem(i-1)
+		cell:setTag(i)
 
-			end)
-		        local end1=bg1:getChildByTag(66) --结束
-		        local began1=bg1:getChildByTag(67) --未结束
-		        local title1=bg1:getChildByTag(70)
-		        title1:setString(tostring(jac_data[2*i-1]["name"]))
-		        local goldsamount1=bg1:getChildByTag(71)--总金币
-		        goldsamount1:setString(tostring(jac_data[2*i-1]["goldsamount"]))
-		        local goldsremain1=bg1:getChildByTag(72) --剩余金币
-		        goldsremain1:setString(tostring(jac_data[2*i-1]["goldsremain"]))
+		            local bg1=cell:getChildByTag(63)
+		            local bg1_image=bg1:getChildByTag(121)
+		    bg1_image:loadTexture(tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
+		    bg1_image:setTag(2*i-1)
+		    bg1_image:addTouchEventListener(function(sender, eventType  )
+			if eventType ~= ccui.TouchEventType.ended then
+				return
+			end
+			local tag=sender:getTag()
+			 local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"]})
+		                                     self:addChild(jackpotlayer)
 
-		        if i*2-1== #jac_data  then
-		        	 return
-		        end
-		         local bg2=cell:getChildByTag(64)
-		         bg2:setVisible(true)
-		         local bg2_img=bg2:getChildByTag(91)
-		        bg2_img:loadTexture(tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
-		        bg2_img:setTag(2*i)
-		        bg2_img:addTouchEventListener(function(sender, eventType  )
-				if eventType ~= ccui.TouchEventType.ended then
-					return
-				end
-				local tag=sender:getTag()
-				local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"]})
-                                                self:addChild(jackpotlayer)
-			end)
-		        local end1=bg2:getChildByTag(89) --结束
-		        local began1=bg2:getChildByTag(90) --未结束
-		        local title1=bg2:getChildByTag(60)
-		        title1:setString(tostring(jac_data[2*i]["name"]))
-		        local goldsamount1=bg2:getChildByTag(61)--总金币
-		        goldsamount1:setString(tostring(jac_data[2*i]["goldsamount"]))
-		        local goldsremain1=bg2:getChildByTag(62) --剩余金币
-		        goldsremain1:setString(tostring(jac_data[2*i]["goldsremain"]))
-          end
+		end)
+		    local end1=bg1:getChildByTag(66) --结束
+		    local began1=bg1:getChildByTag(67) --未结束
+		    local title1=bg1:getChildByTag(70)
+		    title1:setString(tostring(jac_data[2*i-1]["name"]))
+		    local goldsamount1=bg1:getChildByTag(71)--总金币
+		    goldsamount1:setString(tostring(jac_data[2*i-1]["goldsamount"]))
+		    local goldsremain1=bg1:getChildByTag(72) --剩余金币
+		    goldsremain1:setString(tostring(jac_data[2*i-1]["goldsremain"]))
+
+		    if i*2-1== #jac_data  then
+		    	 return
+		    end
+		     local bg2=cell:getChildByTag(64)
+		     bg2:setVisible(true)
+		     local bg2_img=bg2:getChildByTag(91)
+		    bg2_img:loadTexture(tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
+		    bg2_img:setTag(2*i)
+		    bg2_img:addTouchEventListener(function(sender, eventType  )
+			if eventType ~= ccui.TouchEventType.ended then
+				return
+			end
+			local tag=sender:getTag()
+			local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"]})
+		                                    self:addChild(jackpotlayer)
+		end)
+		    local end1=bg2:getChildByTag(89) --结束
+		    local began1=bg2:getChildByTag(90) --未结束
+		    local title1=bg2:getChildByTag(60)
+		    title1:setString(tostring(jac_data[2*i]["name"]))
+		    local goldsamount1=bg2:getChildByTag(61)--总金币
+		    goldsamount1:setString(tostring(jac_data[2*i]["goldsamount"]))
+		    local goldsremain1=bg2:getChildByTag(62) --剩余金币
+		    goldsremain1:setString(tostring(jac_data[2*i]["goldsremain"]))
+		end
 end
+
 --下载图片
 function GoldprizeScene:imgurl_download(  )
           local  list_table=LocalData:Instance():get_getgoldspoollist()
@@ -147,26 +148,28 @@ function GoldprizeScene:onEnter()
 end
 
 function GoldprizeScene:onExit()
-  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self)
-  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self)
+	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self)
+	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self)
   
 end
 
 
 function GoldprizeScene:pushFloating(text)
-   if is_resource then
-       self.floating_layer:showFloat(text)  
-       self.barrier_bg:setVisible(false)
-       self.kuang:setVisible(false)
-   else
-   	self.barrier_bg:setVisible(false)
-	self.kuang:setVisible(false)
-       self.floating_layer:showFloat(text) 
-   end
+	if is_resource then
+		self.floating_layer:showFloat(text)  
+		self.barrier_bg:setVisible(false)
+		self.kuang:setVisible(false)
+	else
+		self.barrier_bg:setVisible(false)
+		self.kuang:setVisible(false)
+		self.floating_layer:showFloat(text) 
+	end
 end 
 
 function GoldprizeScene:push_buffer(is_buffer)
+
        self.floating_layer:show_http(is_buffer) 
+       
 end 
 
 
