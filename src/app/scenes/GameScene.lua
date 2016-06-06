@@ -55,7 +55,7 @@ function GameScene:ctor(params)
                   point.y=kuang:getPositionY()
                   local deblayer= debrisLayer.new({filename="httpwww.pinlegame.comGameImageaffbd109-a341-4f1c-8b3f-edb581f01c68.jpg"
                   ,row=4,col=5,_size=_size,point=point,id=self.id})
-                  csb:addChild(deblayer,-1)
+                  csb:addChild(deblayer)
                   node:removeFromParent()
                  self._originalimage:removeFromParent()
       end
@@ -87,6 +87,7 @@ function GameScene:funsuspended( )
            local mask_layer=self._csb:getChildByTag(46)  -- 遮罩层
            mask_layer:setVisible(true)
            local panel=self._csb:getChildByTag(47)  -- 面板
+           panel:setLocalZOrder(20)
            panel:setVisible(true)
            local back_bt=panel:getChildByTag(49)  -- 返回
            back_bt:addTouchEventListener(function(sender, eventType  )
@@ -100,7 +101,8 @@ function GameScene:funsuspended( )
                end)
            local continue_bt=panel:getChildByTag(49)  -- 退出
            continue_bt:addTouchEventListener(function(sender, eventType  )
-                     Util:scene_control("SurpriseScene")
+                      mask_layer:setVisible(false)
+                      panel:setVisible(false)
                end)
            local sound_box=panel:getChildByTag(52)  -- 音效
            sound_box:addEventListener(function(sender, eventType  )
@@ -130,6 +132,7 @@ end
 function GameScene:originalimage(dex)
            
            self._originalimage = cc.CSLoader:createNode("originalimage.csb")
+           self._kuang:setLocalZOrder(200)
            self._kuang:addChild(self._originalimage)
            self.original=self._originalimage:getChildByTag(118)
            --self.original:loadTexture("")-- 记住更换原图
