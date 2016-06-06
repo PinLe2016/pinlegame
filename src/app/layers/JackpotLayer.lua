@@ -12,18 +12,19 @@ end)
 --标题 活动类型 
 function JackpotLayer:ctor(params)
          self.id=params.id
-          Server:Instance():getgoldspooladlist(self.id)  --个人记录排行榜HTTP
+          Server:Instance():getgoldspooladlist(self.id)  --
          self:setNodeEventEnabled(true)--layer添加监听
 end
 function JackpotLayer:init(  )
 	self.JackpotScene = cc.CSLoader:createNode("JackpotScene.csb")
-      	self:addChild(self.JackpotScene)
+      self:addChild(self.JackpotScene)
 
 
         self.advertiPv=self.JackpotScene:getChildByTag(151)
         self.advertiPv:addEventListener(function(sender, eventType  )
                  if eventType == ccui.PageViewEventType.turning then
                     print("开心")
+                    --Server:Instance():getgoldspooladlist(self.id)
                 end
         end)
         local advertiPa=self.advertiPv:getChildByTag(152)
@@ -33,7 +34,7 @@ function JackpotLayer:init(  )
         for i=1,#jaclayer_data do
             local  call=advertiPa:clone() 
             local advertiImg=call:getChildByTag(155)
-            advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[i]["imgurl"], "/",":")))--初始化头像
+            advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[i]["imgurl"], "/",":")))--
             self.advertiPv:addPage(call)   --添加头像框
         end
         --self.PageView_head:scrollToPage(self._index)   --拿到需要索引的图
@@ -52,6 +53,14 @@ function JackpotLayer:init(  )
                         return
                 end
                  self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex()+1)
+                
+        end)
+         local back=self.JackpotScene:getChildByTag(137)  --返回
+         back:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+                 self.JackpotScene:removeFromParent()
                 
         end)
        

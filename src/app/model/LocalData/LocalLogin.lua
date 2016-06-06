@@ -23,3 +23,24 @@ function LocalData:get_user_data()
 	local user_data=cc.UserDefault:getInstance():getStringForKey("user_data")
 	return json.decode(user_data) or {}
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

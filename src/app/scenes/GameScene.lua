@@ -23,6 +23,7 @@ function GameScene:ctor(params)
       local csb = cc.CSLoader:createNode("XSHGameScene.csb")
       self._csb=csb
       self:addChild(csb)
+      self._kuang=csb:getChildByTag(53)
       local back_bt=csb:getChildByTag(21)  -- 禁返回
       back_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
@@ -40,7 +41,7 @@ function GameScene:ctor(params)
                      self:csb_btCallback(sender, eventType)
                end)
 
-      self:originalimage()
+      self:originalimage(1)
       local node = cc.CSLoader:createNode("battlestart.csb")
       local action = cc.CSLoader:createTimeline("battlestart.csb")
       action:setTimeSpeed(0.2)
@@ -56,7 +57,7 @@ function GameScene:ctor(params)
                   ,row=4,col=5,_size=_size,point=point,id=self.id})
                   csb:addChild(deblayer,-1)
                   node:removeFromParent()
-                  self.fragment_sprite_bg:removeFromParent()
+                 self._originalimage:removeFromParent()
       end
       local callfunc = cc.CallFunc:create(stopAction)
       node:runAction(cc.Sequence:create(cc.DelayTime:create(10),callfunc  ))
@@ -74,7 +75,7 @@ function GameScene:csb_btCallback(sender, eventType)
             cc.UserDefault:getInstance():flush()
             print("音乐",cc.UserDefault:getInstance():getBoolForKey("music"))
       elseif tag== 23 then
-            self:originalimage()
+            self:originalimage(2)
       elseif tag== 44 then
            self:funsuspended()
 
@@ -126,26 +127,25 @@ function GameScene:funsuspended( )
                      end
                end)
 end
-function GameScene:originalimage(  )
-           local function onImageViewClicked(eventType,x,y)
-                -- if eventType == ccui.TouchEventType.ended then
-                -- end
-            end
-            
+function GameScene:originalimage(dex)
+           
+           self._originalimage = cc.CSLoader:createNode("originalimage.csb")
+           self._kuang:addChild(self._originalimage)
+           self.original=self._originalimage:getChildByTag(118)
+           --self.original:loadTexture("")-- 记住更换原图
+           if dex==2 then
+              self.original:setTouchEnabled(true)
+           elseif dex==1 then
+              self.original:setTouchEnabled(false)
+           end
+           self.original:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                              return
+                    end
+                  self._originalimage:removeFromParent()
+          end)
 
-          local kuang=self._csb:getChildByTag(53)
-          local _size=kuang:getContentSize()
-          dump(_size)
-          local point={}
-          point.x=kuang:getPositionX()
-          point.y=kuang:getPositionY() 
-          self.fragment_sprite_bg = display.newScale9Sprite("httpwww.pinlegame.comGameImageaffbd109-a341-4f1c-8b3f-edb581f01c68.jpg", point.x,point.y, cc.size(_size.width,_size.height))
-          self.fragment_sprite_bg:setTouchEnabled(true)
-          -- self.fragment_sprite_bg:addTouchEventListener(function(sender, eventType  )
-          --     print("哈哈哈哈哈哈")
-          -- end)
-          self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
-          self._csb:addChild(self.fragment_sprite_bg,20)
+        
 
 end
 function GameScene:imgurl_download(  )

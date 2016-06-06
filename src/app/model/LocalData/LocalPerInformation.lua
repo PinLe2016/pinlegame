@@ -23,3 +23,11 @@ end
 function LocalData:get_checkin()
 	return self.getcheckin or {}
 end
+--签到历史
+function LocalData:set_getcheckinhistory(getcheckinhistory)
+
+	self.getcheckinhistory=getcheckinhistory
+end
+function LocalData:get_getcheckinhistory()
+	return self.getcheckinhistory or {}
+end

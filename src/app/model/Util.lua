@@ -239,7 +239,11 @@ end
 function Util:rand(  )
        return math.random(1000,9999)
 end
-
+function Util:getdays(  )
+            local year,month = os.date("%Y", os.time()), os.date("%m", os.time())+1 -- 正常是获取服务器给的时间来算
+            local dayAmount = os.date("%d", os.time({year=year, month=month, day=0})) -- 获取当月天数
+            return  dayAmount
+end
 
 
 

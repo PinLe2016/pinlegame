@@ -8,13 +8,13 @@
 local GoldprizeScene = class("GoldprizeScene", function()
     return display.newScene("GoldprizeScene")
 end)
-local  jackpotlayer= require("app.layers.JackpotLayer")--惊喜吧
+local  jackpotlayer= require("app.layers.JackpotLayer")--
 function GoldprizeScene:ctor()
 
 	   self.floating_layer = FloatingLayerEx.new()
                self.floating_layer:addTo(self,100000)
                self.sur_pageno=1
-               
+               self:init()
                
             
 end
@@ -41,7 +41,7 @@ function GoldprizeScene:init(  )
 	end))
 	self.jackpot_ListView:setItemModel(self.jackpot_ListView:getItem(0))
 	self.jackpot_ListView:removeAllItems()
-	self:data_init()
+	-- self:data_init()
 
 end
 function GoldprizeScene:data_init(  )
@@ -140,7 +140,7 @@ function GoldprizeScene:onEnter()
                       end)
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self,
                        function()
-                       self:init()  --初始化
+                       self:data_init()  --初始化
                       end)
   
 

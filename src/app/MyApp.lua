@@ -38,9 +38,10 @@ function MyApp:run()
    --Util:removeDirectory("down_pic")
   --self:enterScene("SurpriseScene")
  
-   self:enterScene("LoginScene")
-      --self:enterScene("MainInterfaceScene")
-  -- self:enterScene("GameScene")
+   --self:enterScene("LoginScene")
+      self:enterScene("MainInterfaceScene")
+      --self:enterScene("PerInformationScene")
+  -- self:enterScene("GameScene")  
 
 end
 

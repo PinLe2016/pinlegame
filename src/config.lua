@@ -41,6 +41,7 @@ RankinglistofactiviesLayer = require("app.layers.RankinglistofactiviesLayer")--�
 FloatingLayerEx = require("app.layers.FloatingLayer")--提示文件
 MainInterfaceScene = require("app.scenes.MainInterfaceScene")--主界面
 SurpriseScene = require("app.scenes.SurpriseScene")--惊喜吧
+PerInformationScene = require("app.scenes.PerInformationScene")--惊喜吧
 
 
 
@@ -65,6 +66,41 @@ G_NOTIFICATION_EVENT = {
 	JACKPOTLIST_INFOR_POST="JACKPOTLIST_INFOR_POST", --获取金币奖池的广告列表
 	JACKPOTLISTPIC_INFOR_POST="JACKPOTLISTPIC_INFOR_POST", --获取金币奖池的广告列表
 	CHECK_POST="CHECK_POST", --签到
-	GAMERECORD_POST="GAMERECORD_POST", --拼图结束后上传数据
+	GAMERECORD_POST="GAMERECORD_POST", --拼图结束后上传数据  set_getcheckinhistory
+	CHECKINHISTORY_POST="CHECKINHISTORY_POST", --签到历史
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

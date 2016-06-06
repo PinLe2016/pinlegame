@@ -65,8 +65,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==97 then
 		Util:scene_control("GoldprizeScene")
 	elseif tag==124 then
-		self:fun_checkin()
-	
+	           Server:Instance():getcheckinhistory()  --签到http
+
 
 
 	end
@@ -92,21 +92,65 @@ function MainInterfaceScene:fun_checkin(  )
 	       Server:Instance():checkin()  --发送消息
 	end)
 
+	self:init_checkin()-- 初始化签到数据
+
+
+
 end
 --签到 初始化
 function MainInterfaceScene:init_checkin(  )
-	-- body
+
+	local  day_bg=self.checkinlayer:getChildByTag(85)
+	local  day_text=day_bg:getChildByTag(86)
+	local   _size=day_bg:getContentSize()
+
+	local  checkindata=LocalData:Instance():get_getcheckinhistory() --用户数据
+	local  days=checkindata["days"]
+            local  totaydays=checkindata["totaldays"]
+            local  _table={}
+            for i=1, math.ceil(totaydays/7-1) do
+            	for j=1,7 do
+            	       local _bg=day_bg:clone()
+            	       local  day_text=_bg:getChildByTag(86)
+                               day_text:setString((i-1)*7+j)
+                               _table[(i-1)*7+j]=day_text
+            	       _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(j-1),_bg:getPositionY()-_size.height* math.ceil(i-1)))
+            	       self.checkinlayer:addChild(_bg)
+        		      
+        		end
+        	end
+        	for i=1,totaydays-math.ceil(totaydays/7-1)*7 do
+        		 local _bg=day_bg:clone()
+        		 local  day_text=_bg:getChildByTag(86)
+                         day_text:setString( math.ceil(totaydays/7-1)*7+i)
+                         _table[math.ceil(totaydays/7-1)*7+i]=day_text
+            	 _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
+            	 self.checkinlayer:addChild(_bg)
+        	end
+            for i=1,totaydays do
+            	for j=1,#days do
+            		if i==tonumber(os.date("%d",days[j])) then
+            			_table[i]:setColor(cc.c3b(255, 255, 100))
+            		end
+            	end
+            end
+
 end
 function MainInterfaceScene:onEnter()
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
-                       print("真的吗  签到 ")
+                       self:fun_checkin()--签到后
+                      end)
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self,
+                       function()
+                       self:fun_checkin()  --签到
                       end)
 end
 
 function MainInterfaceScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECK_POST, self)
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
 end
 
 

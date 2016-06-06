@@ -13,12 +13,7 @@ local debrisLayer = class("debrisLayer", function()
 end)
 
 function debrisLayer:ctor(params)
-    --self:setTouchEnabled(true)
-    -- self:setSwallowTouches(false)
-    -- cc.ui.UILabel.new({
-    --         UILabelType = 2, text = "Hello, World", size = 64})
-    --     :align(display.CENTER, display.cx, display.cy)
-    --     :addTo(self)
+       self:setNodeEventEnabled(true)--layer添加监听
         self.filename=params.filename
         self.point=params.point
         self._size=params._size
@@ -196,20 +191,26 @@ function debrisLayer:saw_issuccess()
         print("wwdwaf ",math.floor(pos.x),math.floor(pos_suss.x))
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
             print("失败")
-            Util:scene_control("SurpriseOverScene")
+            
+            --Server:Instance():setgamerecord()
             return
         end
     end
     print("成功")
     Util:scene_control("SurpriseOverScene")
+    Server:Instance():setgamerecord()
 end
 
 function debrisLayer:onEnter()
-
+                NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
+                       function()
+                        print("拼图结束")
+                        Util:scene_control("SurpriseOverScene")
+                end)
 end
 
 function debrisLayer:onExit()
-
+               NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
 end
 
 return debrisLayer

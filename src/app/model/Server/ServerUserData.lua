@@ -63,6 +63,25 @@ function Server:checkin_callback()
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.CHECK_POST)
    
 end
+--签到历史
+function Server:getcheckinhistory()
+   
+       local params = {}
+        params={
+           
+         }
+    self:request_http("getcheckinhistory" , params ); 
+end
+function Server:getcheckinhistory_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_getcheckinhistory(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST)
+   
+end
 
 
 

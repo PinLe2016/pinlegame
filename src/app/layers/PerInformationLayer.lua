@@ -59,6 +59,26 @@ function PerInformationLayer:perinformation_init(  )
     	registereday:setString(tostring(os.date("%Y年%m月%d日",userdatainit["registertime"])))
     	self.genderman=self.Perinformation:getChildByTag(79)  --性别男
     	self.gendergirl=self.Perinformation:getChildByTag(80)  --性别女
+            --性别之间切换
+            self.genderman:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            self.genderman:setSelected(true)
+                            self.gendergirl:setSelected(false)
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             print("关闭")
+                     end
+            end)
+
+            self.gendergirl:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            self.genderman:setSelected(false)
+                            self.gendergirl:setSelected(true)
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             print("关闭")
+                     end
+            end)
+
+
     	if userdatainit["gender"]==0 then    --0女1男2未知
     		self.genderman:setSelected(false)
     		self.gendergirl:setSelected(true)
