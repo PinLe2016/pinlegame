@@ -55,7 +55,7 @@ public :
     
 //    void inline setType(ModeType type ){m_type=type;}
 
-	void dispatchItemPickMsg();
+//	void dispatchItemPickMsg();
     
     void setOffsetLayout(int offset);
 

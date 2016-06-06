@@ -40,11 +40,6 @@
         
 --------------------------------
 -- 
--- @function [parent=#ItemPicker] dispatchItemPickMsg 
--- @param self
-        
---------------------------------
--- 
 -- @function [parent=#ItemPicker] create 
 -- @param self
 -- @return ItemPicker#ItemPicker ret (return value: ItemPicker)

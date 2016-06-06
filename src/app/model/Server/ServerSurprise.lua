@@ -272,15 +272,23 @@ function Server:validateactivitycode_callback()
     -- self:show_float_message("获取指定活动的广告列表")
 end
 
---记录游戏数据 3.3.3
-function Server:setgamerecord()
+--记录游戏数据 3.3.3 --校检完成
+--type 0,表示奖池类型，1 专题活动类型
+--adid    广告编号    String  Guid
+--imageid   是   比赛使用的图片编号   String  Guid
+function Server:setgamerecord(type,adid,imageid)
+    -- MD5_KEY="PINLEGAMERECORD"
+    local settingid="FE9ABC0E-CEE5-4F11-9BC3-16E0EE4A342C"
+    if tonumber(type)==1 then
+        settingid="850E3EB7-1C39-4328-ABB7-76DF387DEA77"
+    end
     local params = {}
     params={
-            gamesettingid=8,
-            adid="594DE1EC-7796-4E86-AEDA-20D82753C798",
-            imageid="9D2E7A7B-369C-4719-B4D8-0A4EBC5DDE57",
-            starttime="2015-01-01 12:12:12",
-            finishtime="2015-01-01 12:12:12",
+            gamesettingid=settingid,
+            adid=adid,
+            imageid=imageid,
+            starttime=os.time(),
+            finishtime=os.time(),
             steps="steps1",
             time="54"
 
@@ -290,6 +298,7 @@ end
 
 
 function Server:setgamerecord_callback()
+    -- MD5_KEY="PINLEGAME"
     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("拼图上传数据失败:" .. self.data.err_msg)

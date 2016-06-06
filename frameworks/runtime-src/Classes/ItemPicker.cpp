@@ -107,7 +107,6 @@ void ItemPicker::remedyItemPos(float duration)
 				startAutoScrollChildrenWithDestination(innerPos, duration, true);
 			}
 			
-			dispatchItemPickMsg();
 			return;
 
 		}
@@ -260,7 +259,7 @@ void ItemPicker::update(float dt)
             
             m_last_point=_innerContainer->getPositionY();
             getCellPos();
-            dispatchItemPickMsg();
+//            dispatchItemPickMsg();
 		}
         return;
 	}
