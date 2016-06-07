@@ -76,7 +76,7 @@ function MainInterfaceScene:fun_checkin(  )
 	self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       	self:addChild(self.checkinlayer)
 
-	local back_bt=self.checkinlayer:getChildByTag(84)
+	local back_bt=self.checkinlayer:getChildByTag(84)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType  )
 	       if eventType ~= ccui.TouchEventType.ended then
 		return
