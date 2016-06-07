@@ -24,7 +24,7 @@ function debrisLayer:ctor(params)
         self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
         self.content_size = self._size
 
-        --self:addChild(self.fragment_sprite_bg)
+        self:addChild(self.fragment_sprite_bg)
         self.fragment_sprite_bg:setOpacity(0)
 
         self.fragment_table={}
@@ -94,6 +94,7 @@ function debrisLayer:refresh_table()
 
                 end
        end  
+
 end
 function debrisLayer:RandomIndex(indexNum, tabNum)
 
@@ -146,7 +147,7 @@ function debrisLayer:touch_event_move(event,clipnode)
 end
 function debrisLayer:sort_sure()
     local po = self.fragment_sprite_bg:getContentSize()
-    local pos_x, pos_y = 0,0
+    local pos_x, pos_y = self.point.x,self.point.y
     local dex = 1
     for i=1,self.row do --
         for j=1,self.col do --hang
@@ -192,7 +193,7 @@ function debrisLayer:saw_issuccess()
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
             print("失败")
             
-            Util:scene_control("SurpriseOverScene")
+            -- Util:scene_control("SurpriseOverScene")
     --Server:Instance():setgamerecord()
             return
         end
