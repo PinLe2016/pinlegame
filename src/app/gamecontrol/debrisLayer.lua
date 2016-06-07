@@ -192,7 +192,8 @@ function debrisLayer:saw_issuccess()
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
             print("失败")
             
-            --Server:Instance():setgamerecord()
+            Util:scene_control("SurpriseOverScene")
+    --Server:Instance():setgamerecord()
             return
         end
     end

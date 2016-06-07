@@ -10,7 +10,7 @@ end)
 -- end 
 
 function FloatingLayer:ctor()
-    
+    self:setTouchSwallowEnabled(false)--防止吞吃
 end
 
 function FloatingLayer:show_http(is_show)
@@ -18,6 +18,7 @@ function FloatingLayer:show_http(is_show)
          self:removeChildByTag(250, true)
          return
      end
+     self:setTouchSwallowEnabled(true)--防止吞吃
     local loadingLayer = cc.CSLoader:createNode("loadingLayer.csb")
     self:addChild(loadingLayer,1,250)
 
@@ -65,6 +66,7 @@ function FloatingLayer:touch_callback( sender, eventType )
     elseif tag==42 then --返回
          self.dialog:removeFromParent()
     end
+    self:setTouchSwallowEnabled(false)--防止吞吃
 end
 
 

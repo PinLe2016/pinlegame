@@ -23,45 +23,51 @@ function GameScene:ctor(params)
       local csb = cc.CSLoader:createNode("XSHGameScene.csb")
       self._csb=csb
       self:addChild(csb)
-      self._kuang=csb:getChildByTag(53)
-      local back_bt=csb:getChildByTag(21)  -- 禁返回
+     
+end
+function GameScene:funinit(  )
+
+       self._kuang=self._csb:getChildByTag(53)
+      local back_bt=self._csb:getChildByTag(21)  -- 禁返回
       back_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
-      local music_bt=csb:getChildByTag(22) -- 禁音效
+      local music_bt=self._csb:getChildByTag(22) -- 禁音效
       music_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
-      local restore_bt=csb:getChildByTag(23)--查看原图
+      local restore_bt=self._csb:getChildByTag(23)--查看原图
       restore_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
-       local suspended_bt=csb:getChildByTag(44)--暂停
+       local suspended_bt=self._csb:getChildByTag(44)--暂停
       suspended_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
 
-      self:originalimage(1)
+      self:originalimage(1)  
       local node = cc.CSLoader:createNode("battlestart.csb")
       local action = cc.CSLoader:createTimeline("battlestart.csb")
       action:setTimeSpeed(0.2)
       node:runAction(action)
       action:gotoFrameAndPlay(20,false)
       local function stopAction()
-                  local kuang=csb:getChildByTag(53)
+                  local kuang=self._csb:getChildByTag(53)
                   local _size=kuang:getContentSize()
                   local point={}
                   point.x=kuang:getPositionX()
                   point.y=kuang:getPositionY()
-                  local deblayer= debrisLayer.new({filename="httpwww.pinlegame.comGameImageaffbd109-a341-4f1c-8b3f-edb581f01c68.jpg"
+                  local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+                  local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
                   ,row=4,col=5,_size=_size,point=point,id=self.id})
-                  csb:addChild(deblayer)
+                  self._csb:addChild(deblayer)
                   node:removeFromParent()
-                 self._originalimage:removeFromParent()
+                 self._originalimage:removeFromParent()  
       end
       local callfunc = cc.CallFunc:create(stopAction)
       node:runAction(cc.Sequence:create(cc.DelayTime:create(10),callfunc  ))
       self:addChild(node)
+
 end
 function GameScene:csb_btCallback(sender, eventType)
       if eventType ~= ccui.TouchEventType.ended then
@@ -91,13 +97,13 @@ function GameScene:funsuspended( )
            panel:setVisible(true)
            local back_bt=panel:getChildByTag(49)  -- 返回
            back_bt:addTouchEventListener(function(sender, eventType  )
-                     mask_layer:removeFromParent()
-                     panel:removeFromParent()
+                      mask_layer:setVisible(false)
+                      panel:setVisible(false)
                end)
            local continue_bt=panel:getChildByTag(50)  -- 继续
            continue_bt:addTouchEventListener(function(sender, eventType  )
-                     mask_layer:removeFromParent()
-                     panel:removeFromParent()
+                      mask_layer:setVisible(false)
+                      panel:setVisible(false)
                end)
            local continue_bt=panel:getChildByTag(49)  -- 退出
            continue_bt:addTouchEventListener(function(sender, eventType  )
@@ -130,12 +136,13 @@ function GameScene:funsuspended( )
                end)
 end
 function GameScene:originalimage(dex)
-           
+           local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+
            self._originalimage = cc.CSLoader:createNode("originalimage.csb")
            self._kuang:setLocalZOrder(200)
            self._kuang:addChild(self._originalimage)
            self.original=self._originalimage:getChildByTag(118)
-           --self.original:loadTexture("")-- 记住更换原图
+           self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
            if dex==2 then
               self.original:setTouchEnabled(true)
            elseif dex==1 then
@@ -152,10 +159,10 @@ function GameScene:originalimage(dex)
 
 end
 function GameScene:imgurl_download(  )
-         local list_table=LocalData:Instance():get_getactivityadlist()
+         local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
          local _table={}
-         local imgurl="http://www.PinleGame.com/GameImage/affbd109-a341-4f1c-8b3f-edb581f01c68.jpg"--list_table["imgurl"]
-          _table["imgurl"]="http://www.PinleGame.com/GameImage/affbd109-a341-4f1c-8b3f-edb581f01c68.jpg"--list_table["imgurl"]
+         local imgurl=list_table[1]["imgurl"]
+          _table["imgurl"]=list_table[1]["imgurl"]
           Server:Instance():actrequest_pic(imgurl,_table) --下载图片
 end
 function GameScene:onEnter()
@@ -175,6 +182,7 @@ function GameScene:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self,
                        function()
                            print("完成下载图片")
+                           self:funinit()
                       end)
 
 end
