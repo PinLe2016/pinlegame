@@ -105,7 +105,7 @@ function GameScene:funsuspended( )
                       mask_layer:setVisible(false)
                       panel:setVisible(false)
                end)
-           local continue_bt=panel:getChildByTag(49)  -- 退出
+           local continue_bt=panel:getChildByTag(51)  -- 退出
            continue_bt:addTouchEventListener(function(sender, eventType  )
                       mask_layer:setVisible(false)
                       panel:setVisible(false)

@@ -14,7 +14,7 @@ end
 function PerInformationLayer:init(  )
 	self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
     	self:addChild(self.Perinformation)
-
+            print("个人信息")
     	self.birthday_bt=self.Perinformation:getChildByTag(245)
     	self.birthday_bt:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
