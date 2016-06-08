@@ -55,13 +55,13 @@ function GoldprizeScene:data_init(  )
 		for i=1,self.jac_data_num do
 			self.jackpot_ListView:pushBackDefaultItem()
 			local  cell = self.jackpot_ListView:getItem(i-1)
-		cell:setTag(i)
+		            cell:setTag(i)
 
 		            local bg1=cell:getChildByTag(63)
 		            local bg1_image=bg1:getChildByTag(121)
-		    bg1_image:loadTexture(tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
-		    bg1_image:setTag(2*i-1)
-		    bg1_image:addTouchEventListener(function(sender, eventType  )
+			bg1_image:loadTexture(tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
+			bg1_image:setTag(2*i-1)
+			bg1_image:addTouchEventListener(function(sender, eventType  )
 			if eventType ~= ccui.TouchEventType.ended then
 				return
 			end
@@ -157,12 +157,10 @@ end
 function GoldprizeScene:pushFloating(text)
 	if is_resource then
 		self.floating_layer:showFloat(text)  
-		self.barrier_bg:setVisible(false)
-		self.kuang:setVisible(false)
+		
 	else
 		self.barrier_bg:setVisible(false)
-		self.kuang:setVisible(false)
-		self.floating_layer:showFloat(text) 
+		
 	end
 end 
 

@@ -11,7 +11,7 @@ local GameScene = class("GameScene", function()
       return display.newScene("GameScene")
 end)
 
-local debrisLayer = require("app.gamecontrol.debrisLayer")
+local debrisLayer = require("app.layers.debrisLayer")
 
 
 function GameScene:ctor(params)
@@ -37,6 +37,7 @@ function GameScene:funinit(  )
                      self:csb_btCallback(sender, eventType)
                end)
       local restore_bt=self._csb:getChildByTag(23)--查看原图
+      self._restore_bt=restore_bt
       restore_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
@@ -59,10 +60,15 @@ function GameScene:funinit(  )
                   point.y=kuang:getPositionY()
                   local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
                   local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
-                  ,row=4,col=5,_size=_size,point=point,id=self.id})
+                  ,row=1,col=2,_size=_size,point=point,id=self.id})
                   self._csb:addChild(deblayer)
-                  node:removeFromParent()
-                 self._originalimage:removeFromParent()  
+                  if  node then
+                     node:removeFromParent()
+                 end
+                 if  self._originalimage then
+                     self._originalimage:removeFromParent()
+                 end
+                    
       end
       local callfunc = cc.CallFunc:create(stopAction)
       node:runAction(cc.Sequence:create(cc.DelayTime:create(10),callfunc  ))
@@ -107,8 +113,7 @@ function GameScene:funsuspended( )
                end)
            local continue_bt=panel:getChildByTag(51)  -- 退出
            continue_bt:addTouchEventListener(function(sender, eventType  )
-                      mask_layer:setVisible(false)
-                      panel:setVisible(false)
+                      Util:scene_control("MainInterfaceScene")
                end)
            local sound_box=panel:getChildByTag(52)  -- 音效
            sound_box:addEventListener(function(sender, eventType  )
@@ -148,11 +153,16 @@ function GameScene:originalimage(dex)
            elseif dex==1 then
               self.original:setTouchEnabled(false)
            end
+           if self.original:isTouchEnabled() then
+               self._restore_bt:setTouchEnabled(false)
+           end
+
            self.original:addTouchEventListener(function(sender, eventType  )
                     if eventType ~= ccui.TouchEventType.ended then
                               return
                     end
                   self._originalimage:removeFromParent()
+                  self._restore_bt:setTouchEnabled(true)
           end)
 
         

@@ -1,6 +1,6 @@
 
 
-local debrisLayer = require("app.gamecontrol.debrisLayer")
+local debrisLayer = require("app.layers.debrisLayer")
 
 local MainScene = class("MainScene", function()
     return display.newScene("MainScene")

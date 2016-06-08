@@ -23,7 +23,7 @@ function SurpriseScene:ctor()
 	 self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         		self:update(dt)
     	end)
-       
+      self.tablecout=1
 
 -- local pinle_loclation=cc.PinLe_platform:Instance()
 --   local city=pinle_loclation:getCity()
@@ -89,9 +89,10 @@ end
                        return
               end
               local tag=sender:getTag()
-              if tag==29 then
+              if tag==29 then   
 
                        LocalData:Instance():set_getactivitylist(nil)--数据制空
+                       self.tablecout=0
                        self.ser_status=0
                        self.sur_pageno=1
                        Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
@@ -99,6 +100,7 @@ end
                        self:unscheduleUpdate()
               elseif tag==30 then
                       LocalData:Instance():set_getactivitylist(nil)--数据制空
+                      self.tablecout=0
                       self.ser_status=1
                       self.sur_pageno=1
                       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
@@ -106,6 +108,7 @@ end
                       self:unscheduleUpdate()
               elseif tag==31 then
                       LocalData:Instance():set_getactivitylist(nil)--数据制空
+                      self.tablecout=0
                       self.ser_status=2
                       self.sur_pageno=1
                       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
@@ -113,6 +116,7 @@ end
                       self:unscheduleUpdate()
               elseif tag==117 then
                        LocalData:Instance():set_getactivitylist(nil)--数据制空
+                       self.tablecout=0
                        self.ser_status=3
                        self.sur_pageno=1
                        Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
@@ -144,13 +148,23 @@ end
   end
 
         
-function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/") 
-          activity_ListView:removeAllItems()
+function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")     
+          
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
-           -- dump(sup_data)
+           if self.tablecout<self.sup_data_num then
+                   print("小于",self.tablecout ,"  ",self.sup_data_num)
+           elseif self.tablecout>self.sup_data_num then
+                 print("大于")
+                 activity_ListView:removeAllItems() 
+            else
+                 return
+           end
+
+          
+           
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then
@@ -177,7 +191,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
-          for i=1,#sup_data do
+          for i=self.tablecout+1,#sup_data do
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)
             cell:setTag(i)
@@ -192,7 +206,9 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           end
 
           self:scheduleUpdate()
+          self.tablecout=self.sup_data_num
 end
+
 function SurpriseScene:Surpriseimages_list(  )
          local list_table=LocalData:Instance():get_getactivitylist()
          local  sup_data=list_table["game"]
@@ -220,15 +236,17 @@ end
 
 function SurpriseScene:onEnter()
       LocalData:Instance():set_getactivitylist(nil)
+      self.tablecout=0
      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
 
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
-                        -- print("7-------------")
+                         --print("7-------------")
                        self:Surpriseimages_list()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
+                         --print("下拉刷新")
                        self:Surprise_list()
                       end)
 end

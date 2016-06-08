@@ -111,13 +111,22 @@ function PerInformationLayer:touch_callback( sender, eventType )
 	elseif tag==245 then --生日
 		self:fun_birthday(  )
 	elseif tag==49 then 
-		self.birthday:removeFromParent()
-	elseif tag==59 then 
-		self.adress:removeFromParent()
+                 if self.birthday then
+                       self.birthday:removeFromParent()
+                 end
+		
+	elseif tag==59 then
+                 if self.adress then
+                       self.adress:removeFromParent()
+                 end
+		
 	elseif tag==83 then 
 		self:savedata()   --  保存个人信息数据发送Http
 	elseif tag==97 then 
-		self.Perinformation:removeFromParent()
+                 if self.Perinformation then
+                       self.Perinformation:removeFromParent()
+                 end
+		
             elseif tag==67 then 
                         self:head()
 	end
@@ -174,10 +183,16 @@ function PerInformationLayer:head_callback( sender, eventType)
             end
             local tag=sender:getTag()
             if tag==25 then --返回
-                self.head_csb:removeFromParent()
+                if  self.head_csb then
+                    self.head_csb:removeFromParent()
+               end
+                
             elseif tag==24 then
                 self.image_head:loadTexture(tostring("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"))
-                self.head_csb:removeFromParent()
+                 if  self.head_csb then
+                    self.head_csb:removeFromParent()
+                end
+               
             end
 end
 function PerInformationLayer:savedata( )

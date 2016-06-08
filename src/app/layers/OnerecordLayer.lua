@@ -56,7 +56,7 @@ function OnerecordLayer:back( sender, eventType)
             if eventType ~= ccui.TouchEventType.ended then
                 return
             end
-            print("积分开始的减肥快睡觉")
+            
             self:removeFromParent()
 
 end

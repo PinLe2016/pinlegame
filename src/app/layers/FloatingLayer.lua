@@ -62,9 +62,14 @@ function FloatingLayer:touch_callback( sender, eventType )
     end
     local tag=sender:getTag()
     if tag==43 then --确定
-         self.dialog:removeFromParent()
+             if  self.dialog then
+                 self.dialog:removeFromParent()
+             end
     elseif tag==42 then --返回
-         self.dialog:removeFromParent()
+             if  self.dialog then
+                 self.dialog:removeFromParent()
+             end
+         
     end
     self:setTouchSwallowEnabled(false)--防止吞吃
 end
