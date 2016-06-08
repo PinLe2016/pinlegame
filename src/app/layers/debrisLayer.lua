@@ -1,4 +1,8 @@
 --
+-- Author: peter
+-- Date: 2016-06-07 11:13:42
+--
+--
 -- Author: Your Name
 -- Date: 2016-04-19 09:45:58
 --
@@ -81,7 +85,7 @@ function debrisLayer:refresh_table()
 
                                         if "began" == event.name then
                                             print("22222222")
-                                                clipnode:setTouchSwallowEnabled(true)--吞噬触摸，防止响应下层的图块。
+                                                clipnode:setTouchSwallowEnabled(false)--吞噬触摸，防止响应下层的图块。
                                                 clipnode:setLocalZOrder(4)
                                                 return true
                                         elseif "moved" == event.name then
@@ -94,7 +98,6 @@ function debrisLayer:refresh_table()
 
                 end
        end  
-
 end
 function debrisLayer:RandomIndex(indexNum, tabNum)
 
@@ -147,7 +150,8 @@ function debrisLayer:touch_event_move(event,clipnode)
 end
 function debrisLayer:sort_sure()
     local po = self.fragment_sprite_bg:getContentSize()
-    local pos_x, pos_y = self.point.x,self.point.y
+    dump(po)
+    local pos_x, pos_y = 0,0
     local dex = 1
     for i=1,self.row do --
         for j=1,self.col do --hang
@@ -191,9 +195,8 @@ function debrisLayer:saw_issuccess()
         local pos_suss=self.fragment_success[i]
         print("wwdwaf ",math.floor(pos.x),math.floor(pos_suss.x))
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
-            print("失败")
-            
-            -- Util:scene_control("SurpriseOverScene")
+            print("失败")  
+            --Util:scene_control("SurpriseOverScene")
     --Server:Instance():setgamerecord()
             return
         end

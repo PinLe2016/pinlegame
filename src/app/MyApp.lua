@@ -40,10 +40,18 @@ function MyApp:run()
   --self:enterScene("SurpriseScene")
  
    --self:enterScene("LoginScene")
-       self:enterScene("MainInterfaceScene")
+
+      -- self:enterScene("MainInterfaceScene")
       --self:enterScene("PerInformationScene")
   -- self:enterScene("GameScene")  
-
+  local login_info=LocalData:Instance():get_user_data()
+    
+  dump(login_info)
+  if login_info  then
+      self:enterScene("MainInterfaceScene")
+      return
+  end
+  self:enterScene("LoginScene")
 end
 
 

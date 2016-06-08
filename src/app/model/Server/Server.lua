@@ -159,6 +159,10 @@ function Server:on_request_finished_http(event , command)
        	   self.timediff = os.time() - self.jsondata.timestamp
     end
 
+    if tonumber(self.data["err_code"])==16 then
+         Util:scene_control("LoginScene")
+         return
+    end
     -- 调用回调方法
     local callback = loadstring("Server:Instance():" .. command .. "_callback()")
     callback()
