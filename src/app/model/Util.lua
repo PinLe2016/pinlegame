@@ -247,7 +247,37 @@ end
 
 
 
+--分享相关
+--截屏功能
+function Util:captureScreen()
+    local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
 
+    if device.platform=="ios" then
+      print("我累的去去")
+      file=cc.FileUtils:getInstance():getWritablePath().."res/screenshoot.jpg"
+    end
+      display.captureScreen( function (bSuc, filePath)
+                    --bSuc 截屏是否成功
+                      --filePath 文件保存所在的绝对路径
+                end, file)
+      return file
+end
+
+--分享功能
+function Util:share()
+  Util:captureScreen()
+
+  local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
+
+  if device.platform=="ios" then
+      print("我累的去去")
+      file="res/screenshoot.jpg"
+  end
+
+   dump(file)
+   local share=cc.UM_Share:createWithShare(file)
+   share:addTo(display.getRunningScene(),1000)
+end
 
 
 

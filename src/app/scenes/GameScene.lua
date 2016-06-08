@@ -107,8 +107,9 @@ function GameScene:funsuspended( )
                end)
            local continue_bt=panel:getChildByTag(51)  -- 退出
            continue_bt:addTouchEventListener(function(sender, eventType  )
-                      mask_layer:setVisible(false)
-                      panel:setVisible(false)
+                      -- mask_layer:setVisible(false)
+                      -- panel:setVisible(false)
+                      Util:scene_control("MainInterfaceScene")
                end)
            local sound_box=panel:getChildByTag(52)  -- 音效
            sound_box:addEventListener(function(sender, eventType  )
