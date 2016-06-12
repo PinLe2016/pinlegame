@@ -72,7 +72,6 @@ end
 
 --3.6.4 获取最近10次金币奖池金币奖励接口(getrecentgoldslist)
 --count 是 获得多少个 int
---注释，接口暂时未完成
 function Server:getrecentgoldslist(count)
        local _params ={}
        _params={
@@ -86,11 +85,42 @@ end
 function Server:getrecentgoldslist_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("获取最近10次金币奖池金币奖励失败:" .. self.data.err_msg)
+        -- self:show_float_message("获取最近10次金币奖池金币奖励失败:" .. self.data.err_msg)
         return
     end
     -- LocalData:Instance():set_getgoldspoollistbale(self.data)--保存数据
     -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST)
    
 end
+
+ --3.6.5获取用户金币奖池随机金币奖励（命令：getgoldspoolrandomgolds）
+ --goldspoolid  是 金币奖池ID  string
+ --usedoublecard  否 是否使用增倍卡 Integer 1是使用，不填或者其他数字代表不使用
+function Server:getgoldspoolrandomgolds(goldspoolid,usedoublecard)
+       local _params ={}
+       _params={
+            usedoublecard=usedoublecard,
+            goldspoolid=goldspoolid,
+   }
+   
+    self:request_http("getgoldspoolrandomgolds" , _params ); 
+end
+
+
+function Server:getgoldspoolrandomgolds_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        -- self:show_float_message("获取最近10次金币奖池金币奖励失败:" .. self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_getgoldspoollistbale(self.data)--保存数据
+    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST)
+   
+end
+
+
+
+
+
+
 

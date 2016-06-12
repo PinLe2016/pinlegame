@@ -21,7 +21,7 @@ function LocalData:set_user_data(user_data)
 end
 function LocalData:get_user_data()
 	local user_data=cc.UserDefault:getInstance():getStringForKey("user_data")
-	return json.decode(user_data) or {}
+	return json.decode(user_data) or nil
 end
 
 
