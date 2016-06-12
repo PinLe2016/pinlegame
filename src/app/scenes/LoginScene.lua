@@ -46,7 +46,10 @@ end
         if eventType == ccui.TouchEventType.ended then
            print("取消")
            self:landing_init()
-           registered:removeFromParent()
+           if  self.registered then
+                 self.registered:removeFromParent()
+           end
+          
         end
     end
     local Getverificationcode_bt=registered:getChildByTag(27)
@@ -80,7 +83,10 @@ local function go_btCallback(sender, eventType)
            print("注册")
             registered = cc.CSLoader:createNode("registered.csb");
             self:addChild(registered);
-            landing:removeFromParent()
+            if  landing then
+                 landing:removeFromParent()
+            end
+          
             self:registered_init()
         end
     end
