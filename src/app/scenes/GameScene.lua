@@ -18,8 +18,9 @@ function GameScene:ctor(params)
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,-1)
 
-      self.id=params.id
-
+      self.type=params.type
+      self.image= params.image
+      self.adid=params.adid
       local csb = cc.CSLoader:createNode("XSHGameScene.csb")
       self._csb=csb
       self:addChild(csb)
@@ -58,10 +59,17 @@ function GameScene:funinit(  )
                   local point={}
                   point.x=kuang:getPositionX()
                   point.y=kuang:getPositionY()
-                  local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
-                  local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
-                  ,row=1,col=2,_size=_size,point=point,id=self.id})
-                  self._csb:addChild(deblayer)
+                   if self.type=="surprise" then
+                      local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+                      local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
+                     ,row=4,col=5,_size=_size,point=point,adid=self.adid})
+                      self._csb:addChild(deblayer)
+                  elseif self.type=="audition" then
+                      local deblayer= debrisLayer.new({filename=self.image
+                     ,row=4,col=5,_size=_size,point=point,adid=self.adid})
+                      self._csb:addChild(deblayer)
+                  end
+
                   if  node then
                      node:removeFromParent()
                  end
@@ -147,7 +155,12 @@ function GameScene:originalimage(dex)
            self._kuang:setLocalZOrder(200)
            self._kuang:addChild(self._originalimage)
            self.original=self._originalimage:getChildByTag(118)
-           self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
+
+           if self.type=="surprise" then
+              self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
+          elseif self.type=="audition" then
+              self.original:loadTexture(tostring(self.image))-- 记住更换原图
+          end
            if dex==2 then
               self.original:setTouchEnabled(true)
            elseif dex==1 then
@@ -176,8 +189,14 @@ function GameScene:imgurl_download(  )
           Server:Instance():actrequest_pic(imgurl,_table) --下载图片
 end
 function GameScene:onEnter()
-
-     Server:Instance():getactivityadlist(self.id)--发送请求
+     if self.type=="surprise" then
+       print("1111111111")
+        Server:Instance():getactivityadlist(self.id)--发送请求
+    elseif self.type=="audition" then
+       self:funinit()
+       print("2222222")
+     end
+    
 
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()

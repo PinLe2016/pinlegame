@@ -45,6 +45,8 @@ function MainInterfaceScene:ctor()
     	self.kuang=self.MainInterfaceScene:getChildByTag(397)
 
     	self.activitycode_text = self.kuang:getChildByTag(58)
+
+      -- Server:Instance():setgamerecord(1,self.adid)
 end
 
 function MainInterfaceScene:touch_callback( sender, eventType )
@@ -81,8 +83,10 @@ function MainInterfaceScene:fun_checkin(  )
 	       if eventType ~= ccui.TouchEventType.ended then
 		return
 	       end
-
-	       self.checkinlayer:removeFromParent()
+            if self.checkinlayer then
+              self.checkinlayer:removeFromParent()
+            end
+	       
 	end)
 	local check_bt=self.checkinlayer:getChildByTag(87)
 	check_bt:addTouchEventListener(function(sender, eventType  )

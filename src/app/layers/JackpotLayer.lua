@@ -16,6 +16,12 @@ function JackpotLayer:ctor(params)
          Server:Instance():getgoldspoolbyid(self.id)
 
          self:setNodeEventEnabled(true)--layer添加监听
+
+         self.secondOne = 0
+         self.time=0
+          self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+            self:update(dt)
+      end)
 end
 function JackpotLayer:init(  )
 
@@ -26,15 +32,13 @@ function JackpotLayer:init(  )
         local advertiPa=self.advertiPv:getChildByTag(152)
 
         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+        
         local  jaclayer_data=list_table["ads"]
-
         self.advertiPv:addEventListener(function(sender, eventType  )
                  if eventType == ccui.PageViewEventType.turning then
                    
                     local  _id=jaclayer_data[1]["adid"]
-                     print("开心",_id)
-                    --Util:scene_controlid("GameScene",{id=_id})
-                    --Server:Instance():getgoldspoolbyid(_id)
+                    Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
                 end
         end)
         local _advertiImg=advertiPa:getChildByTag(155)
@@ -78,19 +82,72 @@ function JackpotLayer:init(  )
                 end
                 
         end)
-       
- --           self.sequence_list=self.JackpotScene:getChildByTag(160)--奖池列表
-	-- self.sequence_list:setItemModel(self.sequence_list:getItem(0))
-	-- self.sequence_list:removeAllItems()
 
-	 -- for i=1,self.jac_data_num do
-	 --          	self.jackpot_ListView:pushBackDefaultItem()
-	 --          	local  cell = self.jackpot_ListView:getItem(i-1)
-	 --            cell:setTag(i)
-	 -- end
+          self:information()
+          self:audition()
 
+end
+function JackpotLayer:information( )
+             local  list_table=LocalData:Instance():get_getgoldspoolbyid()
+             dump(list_table)
+             local title=self.JackpotScene:getChildByTag(138)  --标题
+             title:setString(list_table["title"])
 
+             local gold=self.JackpotScene:getChildByTag(140)  --剩余金币
+             gold:setString(list_table["remaingolds"])
 
+             local car_num=self.JackpotScene:getChildByTag(33)  --翻倍卡数量
+             car_num:setString(list_table["doublecardamount"])
+
+             local began_bt=self.JackpotScene:getChildByTag(46)  --开始
+             began_bt:addTouchEventListener(function(sender, eventType  )
+                       self:touch_callback( sender, eventType )             
+              end)
+             local ordinary_bt=self.JackpotScene:getChildByTag(44)  --普通
+             ordinary_bt:addTouchEventListener(function(sender, eventType  )
+                       self:touch_callback( sender, eventType )             
+              end)
+              local special_bt=self.JackpotScene:getChildByTag(45)  --翻倍
+             special_bt:addTouchEventListener(function(sender, eventType  )
+                       self:touch_callback( sender, eventType )             
+              end)
+end
+
+function JackpotLayer:touch_callback( sender, eventType )
+      if eventType ~= ccui.TouchEventType.ended then
+         return
+      end
+      local tag=sender:getTag()
+      if tag==46 then --开始
+            print("开始")
+            self:scheduleUpdate()
+      elseif tag==44 then
+            print("普通")
+            self:unscheduleUpdate()
+      elseif tag==45 then
+            print("翻倍")
+      end
+end
+
+--劲舞团
+function JackpotLayer:audition(  )
+      local progress_bg=self.JackpotScene:getChildByTag(40)  --滑动条
+      self.w_size=progress_bg:getContentSize().width
+      self.progress_bt=self.JackpotScene:getChildByTag(41) 
+      self.position_x=self.progress_bt:getPositionX()
+      self.po_x=self.progress_bt:getPositionX()+ self.w_size
+
+end
+
+--劲舞团 帧运动
+function JackpotLayer:update(dt)
+      if self.progress_bt:getPositionX()>=self.po_x-5 then
+         self.time=  -1
+      elseif self.progress_bt:getPositionX()<=self.position_x then
+         self.time= 1
+      end
+      self.progress_bt:setPositionX(self.progress_bt:getPositionX() +self.time )
+     
 end
 --下载图片
 function JackpotLayer:init_pic(  )

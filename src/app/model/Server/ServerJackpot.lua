@@ -24,7 +24,7 @@ function Server:getgoldspoollist_callback()
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    
 end
----获取金币奖池的广告列表
+---获取金币奖池的广告列表  1
 function Server:getgoldspooladlist(activityid)
        local _params ={}
        _params={
@@ -47,7 +47,7 @@ function Server:getgoldspooladlist_callback()
    
 end
 
---3.6.3获取指定金币奖池详情(命令：getgoldspoolbyid)
+--3.6.3获取指定金币奖池详情(命令：getgoldspoolbyid)   2
 --goldspoolid 是 金币奖池ID  String  GUID
 function Server:getgoldspoolbyid(activityid)
        local _params ={}
@@ -65,8 +65,8 @@ function Server:getgoldspoolbyid_callback()
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
     end
-    -- LocalData:Instance():set_getgoldspoollistbale(self.data)--保存数据
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST)
+    LocalData:Instance():set_getgoldspoolbyid(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST)
    
 end
 
@@ -89,8 +89,8 @@ function Server:getrecentgoldslist_callback()
         self:show_float_message("获取最近10次金币奖池金币奖励失败:" .. self.data.err_msg)
         return
     end
-    -- LocalData:Instance():set_getgoldspoollistbale(self.data)--保存数据
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST)
+    LocalData:Instance():set_getrecentgoldslist(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.RECENTGOLDSLIST_POST)
    
 end
 

@@ -276,17 +276,17 @@ end
 --type 0,表示奖池类型和惊喜吧类型，1 专题活动类型
 --adid    广告编号    String  Guid
 --imageid   是   比赛使用的图片编号   String  Guid
-function Server:setgamerecord(type,adid,imageid)
+function Server:setgamerecord(adid,imageid)
     -- MD5_KEY="PINLEGAMERECORD"
     local settingid="FE9ABC0E-CEE5-4F11-9BC3-16E0EE4A342C"
-    if tonumber(type)==1 then
-        settingid="850E3EB7-1C39-4328-ABB7-76DF387DEA77"
-    end
+    -- if tonumber(type)==1 then
+    --     settingid="850E3EB7-1C39-4328-ABB7-76DF387DEA77"
+    -- end
     local params = {}
     params={
             gamesettingid=settingid,
             adid=adid,
-            imageid=imageid,
+            imageid="9D2E7A7B-369C-4719-B4D8-0A4EBC5DDE57",--imageid,
             starttime=os.time(),
             finishtime=os.time(),
             steps="steps1",
