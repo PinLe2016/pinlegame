@@ -47,7 +47,7 @@ function MyApp:run()
   local login_info=LocalData:Instance():get_user_data()
     
   dump(login_info)
-  if login_info  then
+  if login_info~=nil  then
       self:enterScene("MainInterfaceScene")
       return
   end
