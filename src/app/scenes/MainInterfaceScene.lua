@@ -5,20 +5,20 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
     return display.newScene("MainInterfaceScene")
 end)
 
-local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧
--- local GoldprizeScene = require("app.scenes.GoldprizeScene")
+local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧  
+local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
 
 function MainInterfaceScene:ctor()
-	   self.floating_layer = FloatingLayerEx.new()
-               self.floating_layer:addTo(self,100000)
+	self.floating_layer = FloatingLayerEx.new()
+      self.floating_layer:addTo(self,100000)
 
-	 self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
-      	 self:addChild(self.MainInterfaceScene)
+	self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
+      self:addChild(self.MainInterfaceScene)
       self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       self:addChild(self.checkinlayer)
       self.checkinlayer:setVisible(false)
       	 
-      	 local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)
+      local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)
     	Surprise_bt:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
 	end)
@@ -44,6 +44,10 @@ function MainInterfaceScene:ctor()
 	end)
       local setup_bt=self.MainInterfaceScene:getChildByTag(48)
       setup_bt:addTouchEventListener(function(sender, eventType  )
+           self:touch_callback(sender, eventType)
+      end)
+      local friend_bt=self.MainInterfaceScene:getChildByTag(288)--邀请好友
+      friend_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
 
@@ -79,6 +83,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==91 then  --设置返回
             self.set_bg:setVisible(false)
             self.set_bg1:setVisible(false)
+       elseif tag==288 then  --邀请好友
+            self:addChild(FriendrequestLayer.new())
            
 
 
