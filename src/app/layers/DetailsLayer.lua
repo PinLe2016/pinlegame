@@ -30,7 +30,7 @@ function DetailsLayer:init(  )
 
 	local  function began_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
-		      Util:scene_controlid("GameScene",{id=self.id,type="surprise",image=" "})
+		      Util:scene_controlid("GameScene",{adid=self.id,type="surprise",image=" "})
 		      
 		end
 	end

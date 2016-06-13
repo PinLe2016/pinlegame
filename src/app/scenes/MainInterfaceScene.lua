@@ -14,6 +14,9 @@ function MainInterfaceScene:ctor()
 
 	 self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       	 self:addChild(self.MainInterfaceScene)
+      self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
+      self:addChild(self.checkinlayer)
+      self.checkinlayer:setVisible(false)
       	 
       	 local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)
     	Surprise_bt:addTouchEventListener(function(sender, eventType  )
@@ -39,6 +42,10 @@ function MainInterfaceScene:ctor()
     	checkin_bt:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
 	end)
+      local setup_bt=self.MainInterfaceScene:getChildByTag(48)
+      setup_bt:addTouchEventListener(function(sender, eventType  )
+           self:touch_callback(sender, eventType)
+      end)
 
 
     	self.barrier_bg=self.MainInterfaceScene:getChildByTag(396)
@@ -46,7 +53,6 @@ function MainInterfaceScene:ctor()
 
     	self.activitycode_text = self.kuang:getChildByTag(58)
 
-      -- Server:Instance():setgamerecord(1,self.adid)
 end
 
 function MainInterfaceScene:touch_callback( sender, eventType )
@@ -68,24 +74,53 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		Util:scene_control("GoldprizeScene")
 	elseif tag==124 then
 	           Server:Instance():getcheckinhistory()  --签到http
-
+      elseif tag==48 then  --设置
+            self:funsetup(  )
+      elseif tag==91 then  --设置返回
+            self.set_bg:setVisible(false)
+            self.set_bg1:setVisible(false)
+           
 
 
 	end
 end
+function MainInterfaceScene:funsetup(  )
+        self.set_bg=self.MainInterfaceScene:getChildByTag(88)
+        self.set_bg:setVisible(true)
+        self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
+        self.set_bg1:setVisible(true)
+        local set_back=self.set_bg1:getChildByTag(91)
+        set_back:addTouchEventListener(function(sender, eventType  )
+              self:touch_callback(sender, eventType)
+        end)
+        local music_bt=self.set_bg1:getChildByTag(93)  -- 音乐
+        music_bt:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            print("开启")
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             print("关闭")
+                     end
+        end)
+        local sound_bt=self.set_bg1:getChildByTag(92)  -- 音效
+        sound_bt:addEventListener(function(sender, eventType  )
+                 if eventType == ccui.CheckBoxEventType.selected then
+                        print("开启")
+                 elseif eventType == ccui.CheckBoxEventType.unselected then
+                         print("关闭")
+                 end
+         end)
+
+end
 --签到
 function MainInterfaceScene:fun_checkin(  )
-	self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
-      	self:addChild(self.checkinlayer)
+	 self.checkinlayer:setVisible(true)
 
 	local back_bt=self.checkinlayer:getChildByTag(84)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType  )
 	       if eventType ~= ccui.TouchEventType.ended then
-		return
+		      return
 	       end
-            if self.checkinlayer then
-              self.checkinlayer:removeFromParent()
-            end
+             self.checkinlayer:setVisible(false)
 	       
 	end)
 	local check_bt=self.checkinlayer:getChildByTag(87)
