@@ -9,7 +9,10 @@ function PerInformationLayer:ctor()--params
        Server:Instance():getuserinfo() -- 初始化数据
        self.head_index=100 -- 初始化
      --self:init()
-
+       self.secondOne = 0
+       self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+                self:update(dt)
+        end)
 end
 function PerInformationLayer:init(  )
 	self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
@@ -229,80 +232,94 @@ function PerInformationLayer:fun_birthday(  )
     	--年 
     	local birthday_scrollview=self.birthday:getChildByTag(174):getChildByTag(170)
     	local birthday_years=birthday_scrollview:getChildByTag(175)
-            local height=birthday_years:getContentSize().height   
-            local width=birthday_years:getContentSize().width
-            local birthday_years_y= birthday_years:getPositionY()
-            self.qq=height
-            local  table_years={}
-    	for i=1,130 do	
-    	     local  cell = birthday_years:clone() 
-                 table_years[i]=cell
-    	     cell:setTag(i)
-  --   	     cell:addTouchEventListener(function(sender, eventType  )
-		-- if sender:getPositionY()< birthday_years_y-self.qq*4 -50 or   sender:getPositionY()> birthday_years_y-self.qq*4 +50 then
-  --                           local  www= math.abs(sender:getPositionY()-(birthday_years_y-self.qq*4)) 
-  --                           print("减肥的快捷方式的发生的",sender:getPositionY())
-  --                           -- for i=1,#table_years do
-  --                           --      table_years[i]:setPositionY(table_years[i]:getPositionY()- www)
-  --                           -- end
-		-- end
-	 --     end)
-  --   	     birthday_scrollview:addTouchEventListener(function(sender, eventType  )
-		-- if eventType ~= ccui.TouchEventType.ended then
-		--          return
-	 --           end
-	 --           print("就是地方建设的快捷方式的")
-	 --     end)
-    	     
 
 
-    	     cell:setPositionY(birthday_years_y-i*height)
-    	     if i >=125 then
-    	     	cell:setString("")
-    	     else
-    	     	cell:setString(tostring(2016-i))
-    	     end
+        local height=birthday_years:getContentSize().height   
+        local width=birthday_years:getContentSize().width
+        local birthday_years_y= birthday_years:getPositionY()
+        self.qq=height
+        
+        table_years={}
+        self.birthday_Itempicker=self:addItemPickerData(birthday_scrollview,birthday_years)
+        self.birthday:getChildByTag(174):addChild(self.birthday_Itempicker)
 
-    	     birthday_scrollview:addChild(cell)
-    	      
+    	for i=1,70 do	
+
+            local cell=ccui.Text:create()
+            cell:setFontSize(36);
+            cell:setAnchorPoint(cc.p(0,0.5));
+            cell:setColor(cc.c4b(255,255,255))
+    	    cell:setString(tostring(2016-i))
+    	    self.birthday_Itempicker:pushBackItem(cell)
     	end
+        -- self:scheduleUpdate()
 
     	--月
     	local birthday_scrollview2=self.birthday:getChildByTag(174):getChildByTag(171)
     	local birthday_month=birthday_scrollview2:getChildByTag(176)
             -- local height_month=birthday_month:getContentSize().height   
-             local birthday_month_y= birthday_month:getPositionY()
-    	for i=1,11 do	
-    	     local  cell_month = birthday_month:clone()  
-    	     cell_month:setPositionY(birthday_month_y-i*height)
-    	    if i<9 then
-    	    	 cell_month:setString("0" .. tostring(i+1))
+        local birthday_month_y= birthday_month:getPositionY()
+
+        self.birthday_month_Itempicker=self:addItemPickerData(birthday_scrollview2,birthday_month)
+        self.birthday:getChildByTag(174):addChild(self.birthday_month_Itempicker)
+    	for i=1,12 do	
+    	    local cell_month=ccui.Text:create()
+            cell_month:setFontSize(36);
+            cell_month:setAnchorPoint(cc.p(0,0.5));
+            cell_month:setColor(cc.c4b(255,255,255))
+    	    if i<10 then
+    	    	 cell_month:setString("0" .. tostring(i))
     	    else
-    	    	 cell_month:setString(tostring(i+1))
+    	    	 cell_month:setString(tostring(i))
     	    end
     	    
 
-    	     birthday_scrollview2:addChild(cell_month)
-    	      
+    	     -- birthday_scrollview2:addChild(cell_month)
+    	      self.birthday_month_Itempicker:pushBackItem(cell_month)
     	end
     	--日
     	local birthday_scrollview3=self.birthday:getChildByTag(174):getChildByTag(173)
     	local birthday_daty=birthday_scrollview3:getChildByTag(177)
             --local height=birthday_years:getContentSize().height   
-            local birthday_daty_y= birthday_daty:getPositionY()
-    	for i=1,31 do	
-    	     local  cell_daty = birthday_daty:clone()  
-    	     cell_daty:setPositionY(birthday_daty_y-i*height)
-    	     if i <9 then
-    	     	cell_daty:setString("0" .. tostring(i+1))
-    	     else
-    	     	cell_daty:setString(tostring(i+1))
-    	     end
+        local birthday_daty_y= birthday_daty:getPositionY()
 
-    	     birthday_scrollview3:addChild(cell_daty)
+        self.birthday_daty_Itempicker=self:addItemPickerData(birthday_scrollview3,birthday_daty)
+        self.birthday:getChildByTag(174):addChild(self.birthday_daty_Itempicker)
+    	for i=1,31 do	
+    	     local cell_day=ccui.Text:create()
+            cell_day:setFontSize(36);
+            cell_day:setAnchorPoint(cc.p(0,0.5));
+            cell_day:setColor(cc.c4b(255,255,255))
+            if i<10 then
+                 cell_day:setString("0" .. tostring(i))
+            else
+                 cell_day:setString(tostring(i))
+            end
+            
+
+             -- birthday_scrollview2:addChild(cell_month)
+            self.birthday_daty_Itempicker:pushBackItem(cell_day)
     	      
     	end
 end
+
+
+function  PerInformationLayer:addItemPickerData(scorll,birthdayChild)
+
+    local picker =cc.ItemPicker:create()
+    picker:setDirection(scorll:getDirection())
+    picker:setContSize(cc.size(150, 300))
+    -- picker:setInnerContainerSize(cc.size(220,50*34))
+    picker:setParameter(cc.size(140,44),8)
+    picker:setPosition(scorll:getPositionX(),scorll:getPositionY()-17)
+    picker:setAnchorPoint(0,0)
+    scorll:removeFromParent()
+    
+    return picker;
+end
+
+
+
 function PerInformationLayer:fun_city(  )
 	self.adress = cc.CSLoader:createNode("Adress.csb")
     	self:addChild(self.adress)
@@ -342,6 +359,13 @@ function PerInformationLayer:chaifen(str)
         end
         return  dwnum 
 end
+
+function PerInformationLayer:update(dt)
+    self.secondOne = self.secondOne+dt
+    if self.secondOne <1 then return end
+    self.secondOne=0
+          -- dump(self.birthday_Itempicker:getCellPos())
+  end
 return PerInformationLayer
 
 
