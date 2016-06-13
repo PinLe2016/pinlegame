@@ -39,8 +39,10 @@ function JackpotLayer:init(  )
                    
                     local  _id=jaclayer_data[1]["adid"]
                     Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
+                    LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数据
                 end
         end)
+
         local _advertiImg=advertiPa:getChildByTag(155)
         _advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
         if #jaclayer_data>=2 then

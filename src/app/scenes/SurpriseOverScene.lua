@@ -17,8 +17,7 @@ function SurpriseOverScene:ctor()--params
         
         self.floating_layer = FloatingLayerEx.new()
         self.floating_layer:addTo(self,1000)
-
-        self.actid=LocalData:Instance():get_actid({act_id=self.id})
+        self.actid=LocalData:Instance():get_actid()
         self:init()
       
 end
@@ -79,6 +78,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		for i=1,#self. _table do
 			self. _table[i]:startGo()
 		end
+		dump(self.actid["act_id"])
 		Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
 	elseif tag==165 then --分享
 		print("分享")

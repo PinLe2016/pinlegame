@@ -191,7 +191,7 @@ end
 function GameScene:onEnter()
      if self.type=="surprise" then
        print("1111111111")
-        Server:Instance():getactivityadlist(self.id)--发送请求
+        Server:Instance():getactivityadlist(self.adid)--发送请求
     elseif self.type=="audition" then
        self:funinit()
        print("2222222")
