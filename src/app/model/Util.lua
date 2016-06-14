@@ -287,7 +287,7 @@ function Util:read_json(path_json)
   local fileStr = cc.HelperFunc:getFileData(file_path..path_json)
 
   local fileData = json.decode(fileStr)
-  
+   
   return fileData
 
 end
@@ -297,14 +297,6 @@ function Util:remove_json_str(pathname)
   string.gsub(pathname, "%b()", "")
 end
 
---添加匹配
-function Util:remove_json_str(pathname)
-  string.gsub(pathname, "%b()", "")
-end
-
-
-
-
-
-
 return Util
+
+

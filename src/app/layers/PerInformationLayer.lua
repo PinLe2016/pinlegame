@@ -113,7 +113,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
     --local activitypoints=LocalData:Instance():getactivitypoints_callback()
     local tag=sender:getTag()
     if tag==244 then --城市
-        self:fun_city(  )
+        self:fun_city_info(  )
     elseif tag==245 then --生日
         self:fun_birthday(  )
     elseif tag==49 then 
@@ -368,7 +368,7 @@ end
 
 
 
-function PerInformationLayer:fun_city(  )
+function PerInformationLayer:fun_city_info( )
         self.adress = cc.CSLoader:createNode("Adress.csb")
         self:addChild(self.adress)
         local city_back=self.adress:getChildByTag(52):getChildByTag(59)
@@ -384,37 +384,111 @@ function PerInformationLayer:fun_city(  )
         self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,province_text)
         self.adress:getChildByTag(52):addChild(self.adress_province_Itempicker)
 
-        for i=1,12+7 do   
+        --市
+        local city_scrollview=self.adress:getChildByTag(52):getChildByTag(63)
+        local city_text=city_scrollview:getChildByTag(96)
 
-            local button =self.adress_province_Itempicker:getCellLayout(cc.size(100,40))
+        self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,province_text)
+        self.adress:getChildByTag(52):addChild(self.adress_city_Itempicker)
 
+        --区
+        local area_scrollview=self.adress:getChildByTag(52):getChildByTag(64)
+        local area_text=area_scrollview:getChildByTag(97)
+        
+        self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,province_text)
+        self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
+
+        self.province="山东省"
+
+        self.city_data=Util:read_json("res/city.json")
+
+        self:fun_Province()
+end
+
+function PerInformationLayer:fun_Province( ... )
+    self.adress_province_Itempicker:clearItems()
+    self.adress_province_Itempicker:removeAllChildren()
+
+    local json_province=self.city_data["provinces"]
+    local m_offset_cell
+    for i=1,#json_province+4 do   
+
+        local button =self.adress_province_Itempicker:getCellLayout(cc.size(100,40))
+        local name
+        if i<provinces.Size()+2 and i-2>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(38);
             cell_month:setAnchorPoint(cc.p(0.0,0.0));
             cell_month:setColor(cc.c4b(255,0,255))
             cell_month:setPositionX(20)
             cell_month:setTag(i)
-            if i<12+5 and i-5>=0 then 
-               cell_month:setString("0" )
-            else
-                cell_month:setString(".")
-                cell_month:setOpacity(0)
-            end
+
             button:addChild(cell_month)
-            self.adress_province_Itempicker:pushBackItem(button)
+
+            
+            cell_month:setString(json_province[i-2]["name"])
+            name=provinces[i-2]["name"]
+           local pos = string.find(self.province, name)   
+            if pos then
+                m_offset_cell=i-2;
+            end
         end
 
-        --市
-        local city_scrollview=self.adress:getChildByTag(52):getChildByTag(63)
-        local city_text=city_scrollview:getChildByTag(96)
-        --区
-        local area_scrollview=self.adress:getChildByTag(52):getChildByTag(64)
-        local area_text=area_scrollview:getChildByTag(97)
         
-
+         self.adress_province_Itempicker:pushBackItem(button)
+    end
+    self.adress_province_Itempicker:setOffsetLayout(m_offset_cell);
 end
-function function_name( ... )
-    -- body
+
+function PerInformationLayer:fun_City( ... )
+    
+    self.adress_city_Itempicker:clearItems()
+    self.adress_city_Itempicker:removeAllChildren()
+
+    for i=1,12+7 do   
+
+        local button =self.adress_city_Itempicker:getCellLayout(cc.size(100,40))
+
+        local cell_month=ccui.Text:create()
+        cell_month:setFontSize(38);
+        cell_month:setAnchorPoint(cc.p(0.0,0.0));
+        cell_month:setColor(cc.c4b(255,0,255))
+        cell_month:setPositionX(20)
+        cell_month:setTag(i)
+        if i<12+5 and i-5>=0 then 
+           cell_month:setString("0" )
+        else
+            cell_month:setString(".")
+            cell_month:setOpacity(0)
+        end
+        button:addChild(cell_month)
+        self.adress_city_Itempicker:pushBackItem(button)
+    end
+end
+
+function PerInformationLayer:fun_Conty( ... )
+    self.adress_conty_Itempicker:clearItems()
+    self.adress_conty_Itempicker:removeAllChildren()
+
+    for i=1,12+7 do   
+
+        local button =self.adress_conty_Itempicker:getCellLayout(cc.size(100,40))
+
+        local cell_month=ccui.Text:create()
+        cell_month:setFontSize(38);
+        cell_month:setAnchorPoint(cc.p(0.0,0.0));
+        cell_month:setColor(cc.c4b(255,0,255))
+        cell_month:setPositionX(20)
+        cell_month:setTag(i)
+        if i<12+5 and i-5>=0 then 
+           cell_month:setString("0" )
+        else
+            cell_month:setString(".")
+            cell_month:setOpacity(0)
+        end
+        button:addChild(cell_month)
+        self.adress_conty_Itempicker:pushBackItem(button)
+    end
 end
 function PerInformationLayer:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
