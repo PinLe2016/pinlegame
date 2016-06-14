@@ -48,7 +48,7 @@ function MyApp:run()
     
   dump(login_info)
   if login_info~=nil  then
-      self:enterScene("MainInterfaceScene")
+      self:enterScene("LoginScene")
       return
   end
   self:enterScene("LoginScene")
