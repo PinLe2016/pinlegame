@@ -21,4 +21,7 @@ int register_all_ItemPicker(lua_State* tolua_S);
 
 
 
+
+
+
 #endif // __ItemPicker_h__

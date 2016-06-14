@@ -23,9 +23,22 @@
         
 --------------------------------
 -- 
+-- @function [parent=#ItemPicker] setContSize 
+-- @param self
+-- @param #size_table size
+        
+--------------------------------
+-- 
 -- @function [parent=#ItemPicker] getCellPos 
 -- @param self
 -- @return int#int ret (return value: int)
+        
+--------------------------------
+-- 
+-- @function [parent=#ItemPicker] setParameter 
+-- @param self
+-- @param #size_table cellContent
+-- @param #int _cont
         
 --------------------------------
 -- 
@@ -37,6 +50,13 @@
 -- 
 -- @function [parent=#ItemPicker] remedyItemPos 
 -- @param self
+        
+--------------------------------
+-- 
+-- @function [parent=#ItemPicker] getCellLayout 
+-- @param self
+-- @param #size_table size
+-- @return Layout#Layout ret (return value: ccui.Layout)
         
 --------------------------------
 -- 

@@ -13,55 +13,58 @@ function PerInformationLayer:ctor()--params
        self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
                 self:update(dt)
         end)
+
+       --获取城市定位
+       
 end
 function PerInformationLayer:init(  )
-	self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
-    	self:addChild(self.Perinformation)
+    self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
+        self:addChild(self.Perinformation)
             print("个人信息")
-    	self.birthday_bt=self.Perinformation:getChildByTag(245)
-    	self.birthday_bt:addTouchEventListener(function(sender, eventType  )
-		self:touch_callback(sender, eventType)
-	end)
-    	local city_bt=self.Perinformation:getChildByTag(244)
-    	city_bt:addTouchEventListener(function(sender, eventType  )
-		self:touch_callback(sender, eventType)
-	end)
-    	local true_bt=self.Perinformation:getChildByTag(83)  --确定
-    	true_bt:addTouchEventListener(function(sender, eventType  )
-		self:touch_callback(sender, eventType)
-	end)
-    	local back_bt=self.Perinformation:getChildByTag(97)  --返回
-    	back_bt:addTouchEventListener(function(sender, eventType  )
-		self:touch_callback(sender, eventType)
-	end)
+        self.birthday_bt=self.Perinformation:getChildByTag(245)
+        self.birthday_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
+        local city_bt=self.Perinformation:getChildByTag(244)
+        city_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
+        local true_bt=self.Perinformation:getChildByTag(83)  --确定
+        true_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
+        local back_bt=self.Perinformation:getChildByTag(97)  --返回
+        back_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
             local head_bt=self.Perinformation:getChildByTag(26):getChildByTag(67)  --头像
             head_bt:addTouchEventListener(function(sender, eventType  )
                         self:touch_callback(sender, eventType)
             end)
-    	self:perinformation_init()
+        self:perinformation_init()
 
 end
 --个人信息初始化
 function PerInformationLayer:perinformation_init(  )
 
-	local  userdata=LocalData:Instance():get_user_data() --用户数据
+    local  userdata=LocalData:Instance():get_user_data() --用户数据
 
-	local  bg=self.Perinformation:getChildByTag(26)
-	self.image_head=bg:getChildByTag(67)  --头像
+    local  bg=self.Perinformation:getChildByTag(26)
+    self.image_head=bg:getChildByTag(67)  --头像
             self._index=string.sub(tostring((self:chaifen(userdata["imageUrl"])),"."),1,1)
-    	self.image_head:loadTexture(tostring(Util:sub_str(userdata["imageUrl"], "/",":")))
-    	local name=self.Perinformation:getChildByTag(68)  --名字
-    	name:setString(userdata["nickname"])
-    	local golds=self.Perinformation:getChildByTag(73)  --金币
-    	golds:setString(userdata["golds"])
-    	local rankname=self.Perinformation:getChildByTag(76)  --等级
-    	rankname:setString("LV." .. userdata["rankname"])
+        self.image_head:loadTexture(tostring(Util:sub_str(userdata["imageUrl"], "/",":")))
+        local name=self.Perinformation:getChildByTag(68)  --名字
+        name:setString(userdata["nickname"])
+        local golds=self.Perinformation:getChildByTag(73)  --金币
+        golds:setString(userdata["golds"])
+        local rankname=self.Perinformation:getChildByTag(76)  --等级
+        rankname:setString("LV." .. userdata["rankname"])
 
-    	local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-    	local registereday=self.Perinformation:getChildByTag(86)  --注册日期
-    	registereday:setString(tostring(os.date("%Y年%m月%d日",userdatainit["registertime"])))
-    	self.genderman=self.Perinformation:getChildByTag(79)  --性别男
-    	self.gendergirl=self.Perinformation:getChildByTag(80)  --性别女
+        local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
+        local registereday=self.Perinformation:getChildByTag(86)  --注册日期
+        registereday:setString(tostring(os.date("%Y年%m月%d日",userdatainit["registertime"])))
+        self.genderman=self.Perinformation:getChildByTag(79)  --性别男
+        self.gendergirl=self.Perinformation:getChildByTag(80)  --性别女
             --性别之间切换
             self.genderman:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
@@ -82,57 +85,57 @@ function PerInformationLayer:perinformation_init(  )
             end)
 
 
-    	if userdatainit["gender"]==0 then    --0女1男2未知
-    		self.genderman:setSelected(false)
-    		self.gendergirl:setSelected(true)
-    	elseif userdatainit["gender"]==1 then
-    		self.genderman:setSelected(true)
-    		self.gendergirl:setSelected(false)
-    	else
-    		self.genderman:setSelected(false)
-    		self.gendergirl:setSelected(false)
-    	end  
-    	--初始化年月日
-    	local date=Util:lua_string_split(os.date("%Y/%m/%d",userdatainit["birthday"]),"/")
-    	self.date_years=self.Perinformation:getChildByTag(87)
-    	self.date_month=self.Perinformation:getChildByTag(88)
-    	self.date_day=self.Perinformation:getChildByTag(89)
-    	self.date_years:setString(date[1])
-    	self.date_month:setString(date[2])
-    	self.date_day:setString(date[3])
+        if userdatainit["gender"]==0 then    --0女1男2未知
+            self.genderman:setSelected(false)
+            self.gendergirl:setSelected(true)
+        elseif userdatainit["gender"]==1 then
+            self.genderman:setSelected(true)
+            self.gendergirl:setSelected(false)
+        else
+            self.genderman:setSelected(false)
+            self.gendergirl:setSelected(false)
+        end  
+        --初始化年月日
+        local date=Util:lua_string_split(os.date("%Y/%m/%d",userdatainit["birthday"]),"/")
+        self.date_years=self.Perinformation:getChildByTag(87)
+        self.date_month=self.Perinformation:getChildByTag(88)
+        self.date_day=self.Perinformation:getChildByTag(89)
+        self.date_years:setString(date[1])
+        self.date_month:setString(date[2])
+        self.date_day:setString(date[3])
  
 
 end
 function PerInformationLayer:touch_callback( sender, eventType )
-	if eventType ~= ccui.TouchEventType.ended then
-		return
-	end
-	--local activitypoints=LocalData:Instance():getactivitypoints_callback()
-	local tag=sender:getTag()
-	if tag==244 then --城市
-		self:fun_city(  )
-	elseif tag==245 then --生日
-		self:fun_birthday(  )
-	elseif tag==49 then 
+    if eventType ~= ccui.TouchEventType.ended then
+        return
+    end
+    --local activitypoints=LocalData:Instance():getactivitypoints_callback()
+    local tag=sender:getTag()
+    if tag==244 then --城市
+        self:fun_city(  )
+    elseif tag==245 then --生日
+        self:fun_birthday(  )
+    elseif tag==49 then 
                  if self.birthday then
                        self.birthday:removeFromParent()
                  end
-		
-	elseif tag==59 then
+        
+    elseif tag==59 then
                  if self.adress then
                        self.adress:removeFromParent()
                  end
-		
-	elseif tag==83 then 
-		self:savedata()   --  保存个人信息数据发送Http
-	elseif tag==97 then 
+        
+    elseif tag==83 then 
+        self:savedata()   --  保存个人信息数据发送Http
+    elseif tag==97 then 
                  if self.Perinformation then
                        self.Perinformation:removeFromParent()
                  end
-		
+        
             elseif tag==67 then 
                         self:head()
-	end
+    end
 end
 function PerInformationLayer:head( )
         self.head_csb = cc.CSLoader:createNode("Head.csb")
@@ -205,13 +208,13 @@ function PerInformationLayer:savedata( )
             elseif self.gendergirl:isSelected() then
                 gender="false"
             end
-	local  userdata=LocalData:Instance():get_user_data()
-	local  loginname=userdata["loginname"]
-	local  nickname=userdata["nickname"]  
-	local  provincename="山东"
-	local  cityid=1
-	local  cityname="青岛"
-	local  birthday =tostring(self.date_years:getString() .. self.date_month:getString() .. self.date_day:getString()) 
+    local  userdata=LocalData:Instance():get_user_data()
+    local  loginname=userdata["loginname"]
+    local  nickname=userdata["nickname"]  
+    local  provincename="山东"
+    local  cityid=1
+    local  cityname="青岛"
+    local  birthday =tostring(self.date_years:getString() .. self.date_month:getString() .. self.date_day:getString()) 
             local  provinceid=1 
             local  imageurl=self._index
             if self.head_index==100 then
@@ -219,19 +222,19 @@ function PerInformationLayer:savedata( )
             else
                  imageurl=self.head_index  --"httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"
             end
-	Server:Instance():setuserinfo({loginname=loginname,nickname=nickname,provinceid=provinceid,provincename
-		=provincename,cityid=cityid,cityname=cityname,birthday=birthday,gender=gender,imageurl=imageurl}) 
+    Server:Instance():setuserinfo({loginname=loginname,nickname=nickname,provinceid=provinceid,provincename
+        =provincename,cityid=cityid,cityname=cityname,birthday=birthday,gender=gender,imageurl=imageurl}) 
 end
 function PerInformationLayer:fun_birthday(  )
-	self.birthday = cc.CSLoader:createNode("Birthday.csb")
-    	self:addChild(self.birthday)
-    	local birthday_back=self.birthday:getChildByTag(174):getChildByTag(49)
-    	birthday_back:addTouchEventListener(function(sender, eventType  )
-		self:touch_callback(sender, eventType)
-	end)
-    	--年 
-    	local birthday_scrollview=self.birthday:getChildByTag(174):getChildByTag(170)
-    	local birthday_years=birthday_scrollview:getChildByTag(175)
+    self.birthday = cc.CSLoader:createNode("Birthday.csb")
+        self:addChild(self.birthday)
+        local birthday_back=self.birthday:getChildByTag(174):getChildByTag(49)
+        birthday_back:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
+        --年 
+        local birthday_scrollview=self.birthday:getChildByTag(174):getChildByTag(170)
+        local birthday_years=birthday_scrollview:getChildByTag(175)
 
 
         local height=birthday_years:getContentSize().height   
@@ -243,75 +246,105 @@ function PerInformationLayer:fun_birthday(  )
         self.birthday_Itempicker=self:addItemPickerData(birthday_scrollview,birthday_years)
         self.birthday:getChildByTag(174):addChild(self.birthday_Itempicker)
 
-    	for i=1,70 do	
-
+        for i=1,70+7 do   
+            local button =self.birthday_Itempicker:getCellLayout(cc.size(100,50))
             local cell=ccui.Text:create()
-            cell:setFontSize(36);
-            cell:setAnchorPoint(cc.p(0,0.5));
-            cell:setColor(cc.c4b(255,255,255))
-    	    cell:setString(tostring(2016-i))
-    	    self.birthday_Itempicker:pushBackItem(cell)
-    	end
+            cell:setFontSize(38);
+            cell:setAnchorPoint(cc.p(0.0,0.0));
+            cell:setColor(cc.c4b(255,0,255))
+            cell:setPositionX(5)
+            if i<70+5 and i-5>=0 then 
+                cell:setString(tostring(2016-(i-5)))
+            else
+                cell:setString(".")
+                cell:setOpacity(0)
+            end
+            dump(button:getContentSize())
+            cell:setTag(i)
+            button:addChild(cell)
+            self.birthday_Itempicker:pushBackItem(button)
+        end
         -- self:scheduleUpdate()
 
-    	--月
-    	local birthday_scrollview2=self.birthday:getChildByTag(174):getChildByTag(171)
-    	local birthday_month=birthday_scrollview2:getChildByTag(176)
+        --月
+        local birthday_scrollview2=self.birthday:getChildByTag(174):getChildByTag(171)
+        local birthday_month=birthday_scrollview2:getChildByTag(176)
             -- local height_month=birthday_month:getContentSize().height   
         local birthday_month_y= birthday_month:getPositionY()
 
         self.birthday_month_Itempicker=self:addItemPickerData(birthday_scrollview2,birthday_month)
         self.birthday:getChildByTag(174):addChild(self.birthday_month_Itempicker)
-    	for i=1,12 do	
-    	    local cell_month=ccui.Text:create()
-            cell_month:setFontSize(36);
-            cell_month:setAnchorPoint(cc.p(0,0.5));
-            cell_month:setColor(cc.c4b(255,255,255))
-    	    if i<10 then
-    	    	 cell_month:setString("0" .. tostring(i))
-    	    else
-    	    	 cell_month:setString(tostring(i))
-    	    end
-    	    
+        for i=1,12+7 do   
 
-    	     -- birthday_scrollview2:addChild(cell_month)
-    	      self.birthday_month_Itempicker:pushBackItem(cell_month)
-    	end
-    	--日
-    	local birthday_scrollview3=self.birthday:getChildByTag(174):getChildByTag(173)
-    	local birthday_daty=birthday_scrollview3:getChildByTag(177)
-            --local height=birthday_years:getContentSize().height   
+            local button =self.birthday_month_Itempicker:getCellLayout(cc.size(100,50))
+
+            local cell_month=ccui.Text:create()
+            cell_month:setFontSize(38);
+            cell_month:setAnchorPoint(cc.p(0.0,0.0));
+            cell_month:setColor(cc.c4b(255,0,255))
+            cell_month:setPositionX(20)
+            cell_month:setTag(i)
+            if i<12+5 and i-5>=0 then 
+                if i<14 then
+                     cell_month:setString("0" .. tostring(i-4))
+                else
+                     cell_month:setString(tostring(i-4))
+                end
+            else
+                cell_month:setString(".")
+                cell_month:setOpacity(0)
+            end
+
+            button:addChild(cell_month)
+            self.birthday_month_Itempicker:pushBackItem(button)
+        end
+
+
+        --日
+        local birthday_scrollview3=self.birthday:getChildByTag(174):getChildByTag(173)
+        local birthday_daty=birthday_scrollview3:getChildByTag(177)
+  
         local birthday_daty_y= birthday_daty:getPositionY()
 
         self.birthday_daty_Itempicker=self:addItemPickerData(birthday_scrollview3,birthday_daty)
         self.birthday:getChildByTag(174):addChild(self.birthday_daty_Itempicker)
-    	for i=1,31 do	
-    	     local cell_day=ccui.Text:create()
-            cell_day:setFontSize(36);
-            cell_day:setAnchorPoint(cc.p(0,0.5));
-            cell_day:setColor(cc.c4b(255,255,255))
-            if i<10 then
-                 cell_day:setString("0" .. tostring(i))
-            else
-                 cell_day:setString(tostring(i))
-            end
-            
+        for i=1,31+7 do   
+            local button =self.birthday_daty_Itempicker:getCellLayout(cc.size(100,50))
 
+            local cell_day=ccui.Text:create()
+            cell_day:setFontSize(38);
+            cell_day:setAnchorPoint(cc.p(0.0,0.0));
+            cell_day:setColor(cc.c4b(255,0,255))
+            cell_day:setPositionX(20)
+
+            if i<31+5 and i-5>=0 then 
+                if i<14 then
+                     cell_day:setString("0" .. tostring(i-4))
+                else
+                     cell_day:setString(tostring(i-4))
+                end
+            else
+                cell_day:setString(".")
+                cell_day:setOpacity(0)
+            end
+            button:addChild(cell_day)
              -- birthday_scrollview2:addChild(cell_month)
-            self.birthday_daty_Itempicker:pushBackItem(cell_day)
-    	      
-    	end
+            self.birthday_daty_Itempicker:pushBackItem(button)
+              
+        end
+
 end
 
 
 function  PerInformationLayer:addItemPickerData(scorll,birthdayChild)
 
+    local dex=0--960-display.height
     local picker =cc.ItemPicker:create()
     picker:setDirection(scorll:getDirection())
-    picker:setContSize(cc.size(150, 300))
+    picker:setContSize(cc.size(150, 400))
     -- picker:setInnerContainerSize(cc.size(220,50*34))
-    picker:setParameter(cc.size(140,44),8)
-    picker:setPosition(scorll:getPositionX(),scorll:getPositionY()-17)
+    picker:setParameter(cc.size(100,50),8)
+    picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
     picker:setAnchorPoint(0,0)
     scorll:removeFromParent()
     
@@ -321,27 +354,27 @@ end
 
 
 function PerInformationLayer:fun_city(  )
-	self.adress = cc.CSLoader:createNode("Adress.csb")
-    	self:addChild(self.adress)
-    	local city_back=self.adress:getChildByTag(52):getChildByTag(59)
-    	city_back:addTouchEventListener(function(sender, eventType  )
-		self:touch_callback(sender, eventType)
-	end)
+    self.adress = cc.CSLoader:createNode("Adress.csb")
+        self:addChild(self.adress)
+        local city_back=self.adress:getChildByTag(52):getChildByTag(59)
+        city_back:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
 end
 function PerInformationLayer:onEnter()
-	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
+     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
                        function()
-                      		self:init()
+                            self:init()
                       end)
-	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
+     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
                        function()
-                      		print("个人信息修改")
+                            print("个人信息修改")
                       end)
 end
 
 function PerInformationLayer:onExit()
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
+         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
+         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
 end
 --拆分头像
 function PerInformationLayer:trim (s) 
@@ -364,7 +397,7 @@ function PerInformationLayer:update(dt)
     self.secondOne = self.secondOne+dt
     if self.secondOne <1 then return end
     self.secondOne=0
-          -- dump(self.birthday_Itempicker:getCellPos())
+          dump(self.birthday_Itempicker:getCellPos())
   end
 return PerInformationLayer
 

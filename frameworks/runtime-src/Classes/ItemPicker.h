@@ -53,11 +53,16 @@ public :
     
     int getCellPos();
     
+    void setContSize(Size size);
 //    void inline setType(ModeType type ){m_type=type;}
 
 //	void dispatchItemPickMsg();
     
     void setOffsetLayout(int offset);
+    
+    void setParameter(Size cellContent,int _cont);
+    
+    Layout* getCellLayout(Size size);
 
 public:
 	vector<std::string> m_pickLuaCallbackName;
@@ -78,6 +83,8 @@ public:
     
     float m_last_point;//记录上次偏移
 	
+    Size m_cellContent;//标记元素大小
+    int  move_cont;//标记移动到顶点
 };
 
 #endif
