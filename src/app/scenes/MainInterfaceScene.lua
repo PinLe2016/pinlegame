@@ -7,13 +7,18 @@ end)
 
 local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧  
 local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
+local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
 
 function MainInterfaceScene:ctor()
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
+      self.count=0
 
 	self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
+      self.roleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
+      self:runAction(self.roleAction)
+
       self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       self:addChild(self.checkinlayer)
       self.checkinlayer:setVisible(false)
@@ -42,8 +47,23 @@ function MainInterfaceScene:ctor()
     	checkin_bt:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
 	end)
-      local setup_bt=self.MainInterfaceScene:getChildByTag(48)
+      local setup_bt=self.MainInterfaceScene:getChildByTag(48)  --设置
       setup_bt:addTouchEventListener(function(sender, eventType  )
+           self:touch_callback(sender, eventType)
+      end)
+      local jia_bt=self.MainInterfaceScene:getChildByTag(49)
+      jia_bt:addTouchEventListener(function(sender, eventType  )
+           self:touch_callback(sender, eventType)
+      end)
+      self.actbg=self.MainInterfaceScene:getChildByTag(51)--加动画
+      self.actbg:setVisible(false)
+      local setup_bt=self.actbg:getChildByTag(53)  --设置按钮
+      setup_bt:addTouchEventListener(function(sender, eventType  )
+
+           self:touch_callback(sender, eventType)
+      end)
+      local friends_bt=self.actbg:getChildByTag(52)  --邀请好友排行
+      friends_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
       local friend_bt=self.MainInterfaceScene:getChildByTag(288)--邀请好友
@@ -83,13 +103,26 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==91 then  --设置返回
             self.set_bg:setVisible(false)
             self.set_bg1:setVisible(false)
-       elseif tag==288 then  --邀请好友
+      elseif tag==288 then  --邀请好友
             self:addChild(FriendrequestLayer.new())
-           
-
-
+      elseif tag==49 then  --加
+            if self.roleAction:getStartFrame()==0 then
+                  self.actbg:setVisible(true)
+                  self.roleAction:gotoFrameAndPlay(40,81, false)
+            else
+                  self.roleAction:gotoFrameAndPlay(0,40, false)
+                  self.actbg:setVisible(true)
+            end
+      elseif tag==53 then  --设置
+            self:funsetup(  )
+      elseif tag==52 then  --邀请好友
+            self:addChild(InvitefriendsLayer.new())
 	end
 end
+
+
+
+
 function MainInterfaceScene:funsetup(  )
         self.set_bg=self.MainInterfaceScene:getChildByTag(88)
         self.set_bg:setVisible(true)
