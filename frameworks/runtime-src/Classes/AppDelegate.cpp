@@ -31,7 +31,7 @@
 #include "lua_cocos2dx_custom.hpp"
 #include "lua_UM_Share.hpp"
 #include "PinLe_platform.hpp"
-//#include "lua_ItemPicker.hpp"
+#include "lua_ItemPicker.hpp"
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include "C2DXShareSDK.h"
 using namespace cn::sharesdk;
@@ -59,7 +59,7 @@ static void quick_module_register(lua_State *L)
         //分享绑定
         register_all_UM_Share(L);
         //城市选择控件
-//        register_all_ItemPicker(L);
+        register_all_ItemPicker(L);
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
         register_all_cocos2dx_extension_filter(L);

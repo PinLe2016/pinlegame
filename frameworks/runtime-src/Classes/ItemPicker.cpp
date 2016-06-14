@@ -115,6 +115,24 @@ void ItemPicker::remedyItemPos(float duration)
 	
 }
 
+void ItemPicker::setContSize(cocos2d::Size size)
+{
+    this->setSize(size);
+}
+
+void ItemPicker::setParameter(cocos2d::Size cellContent, int _cont)
+{
+    m_cellContent=cellContent;
+    move_cont=_cont;
+}
+
+Layout* ItemPicker::getCellLayout(Size size)
+{
+    Layout* button = Layout::create();
+    button->setSize(size);
+//    button->setColor(Color3B(255,255,255));
+    return button;
+}
 
 void ItemPicker::pushBackItem(Widget* item)
 {
@@ -217,7 +235,7 @@ void ItemPicker::setOffsetLayout(int offset)
 
 int ItemPicker::getCellPos()
 {
-    int cell=-(_innerContainer->getPositionY())/50;
+    int cell=-(_innerContainer->getPositionY())/m_cellContent.height;
     if(cell<0) cell=0;
 //    CCLOG("cell %d",cell);
     return cell;
@@ -233,29 +251,29 @@ void ItemPicker::update(float dt)
 			m_bNeedRemedy = false;
             CCLOG("_innerContainer->getPositionY() %f %f",_innerContainer->getPositionY()
                   ,_innerContainer->getContentSize().height);
-            int bads=_innerContainer->getPositionY()/50;
+            int bads=_innerContainer->getPositionY()/m_cellContent.height;
            
             int off_dex=0;
             if (m_last_point-_innerContainer->getPositionY()>10 and
-                m_last_point-_innerContainer->getPositionY()<50
+                m_last_point-_innerContainer->getPositionY()<m_cellContent.height
                 and m_offset_cell==-1)
             {
-                off_dex=-50;
-                if(bads*50+off_dex<-_innerContainer->getContentSize().height+8*50)
+                off_dex=-m_cellContent.height;
+                if(bads*m_cellContent.height+off_dex<-_innerContainer->getContentSize().height+move_cont*m_cellContent.height)
                     off_dex=0;
             }
-            else if(_innerContainer->getPositionY()-m_last_point>50 and
-                    _innerContainer->getPositionY()-m_last_point<60
+            else if(_innerContainer->getPositionY()-m_last_point>m_cellContent.height and
+                    _innerContainer->getPositionY()-m_last_point<m_cellContent.height+10
                     and m_offset_cell==-1)
             {
-                off_dex=-50;
+                off_dex=-m_cellContent.height;
             }
             
             if (m_offset_cell!=-1) {
                 bads=-m_offset_cell;
                 m_offset_cell=-1;
             }
-            _innerContainer->setPosition(Vec2(0,bads*50+off_dex));
+            _innerContainer->setPosition(Vec2(0,bads*m_cellContent.height+off_dex));
             
             m_last_point=_innerContainer->getPositionY();
             getCellPos();

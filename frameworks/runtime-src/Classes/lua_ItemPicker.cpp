@@ -149,6 +149,55 @@ int lua_ItemPicker_ItemPicker_setPickerPointPos(lua_State* tolua_S)
 
     return 0;
 }
+int lua_ItemPicker_ItemPicker_setContSize(lua_State* tolua_S)
+{
+    int argc = 0;
+    ItemPicker* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ItemPicker",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ItemPicker*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_ItemPicker_ItemPicker_setContSize'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::Size arg0;
+
+        ok &= luaval_to_size(tolua_S, 2, &arg0, "ItemPicker:setContSize");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ItemPicker_ItemPicker_setContSize'", nullptr);
+            return 0;
+        }
+        cobj->setContSize(arg0);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ItemPicker:setContSize",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_ItemPicker_ItemPicker_setContSize'.",&tolua_err);
+#endif
+
+    return 0;
+}
 int lua_ItemPicker_ItemPicker_getCellPos(lua_State* tolua_S)
 {
     int argc = 0;
@@ -192,6 +241,58 @@ int lua_ItemPicker_ItemPicker_getCellPos(lua_State* tolua_S)
 #if COCOS2D_DEBUG >= 1
     tolua_lerror:
     tolua_error(tolua_S,"#ferror in function 'lua_ItemPicker_ItemPicker_getCellPos'.",&tolua_err);
+#endif
+
+    return 0;
+}
+int lua_ItemPicker_ItemPicker_setParameter(lua_State* tolua_S)
+{
+    int argc = 0;
+    ItemPicker* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ItemPicker",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ItemPicker*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_ItemPicker_ItemPicker_setParameter'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 2) 
+    {
+        cocos2d::Size arg0;
+        int arg1;
+
+        ok &= luaval_to_size(tolua_S, 2, &arg0, "ItemPicker:setParameter");
+
+        ok &= luaval_to_int32(tolua_S, 3,(int *)&arg1, "ItemPicker:setParameter");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ItemPicker_ItemPicker_setParameter'", nullptr);
+            return 0;
+        }
+        cobj->setParameter(arg0, arg1);
+        return 0;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ItemPicker:setParameter",argc, 2);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_ItemPicker_ItemPicker_setParameter'.",&tolua_err);
 #endif
 
     return 0;
@@ -304,6 +405,56 @@ int lua_ItemPicker_ItemPicker_remedyItemPos(lua_State* tolua_S)
 
     return 0;
 }
+int lua_ItemPicker_ItemPicker_getCellLayout(lua_State* tolua_S)
+{
+    int argc = 0;
+    ItemPicker* cobj = nullptr;
+    bool ok  = true;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_Error tolua_err;
+#endif
+
+
+#if COCOS2D_DEBUG >= 1
+    if (!tolua_isusertype(tolua_S,1,"ItemPicker",0,&tolua_err)) goto tolua_lerror;
+#endif
+
+    cobj = (ItemPicker*)tolua_tousertype(tolua_S,1,0);
+
+#if COCOS2D_DEBUG >= 1
+    if (!cobj) 
+    {
+        tolua_error(tolua_S,"invalid 'cobj' in function 'lua_ItemPicker_ItemPicker_getCellLayout'", nullptr);
+        return 0;
+    }
+#endif
+
+    argc = lua_gettop(tolua_S)-1;
+    if (argc == 1) 
+    {
+        cocos2d::Size arg0;
+
+        ok &= luaval_to_size(tolua_S, 2, &arg0, "ItemPicker:getCellLayout");
+        if(!ok)
+        {
+            tolua_error(tolua_S,"invalid arguments in function 'lua_ItemPicker_ItemPicker_getCellLayout'", nullptr);
+            return 0;
+        }
+        cocos2d::ui::Layout* ret = cobj->getCellLayout(arg0);
+        object_to_luaval<cocos2d::ui::Layout>(tolua_S, "ccui.Layout",(cocos2d::ui::Layout*)ret);
+        return 1;
+    }
+    luaL_error(tolua_S, "%s has wrong number of arguments: %d, was expecting %d \n", "ItemPicker:getCellLayout",argc, 1);
+    return 0;
+
+#if COCOS2D_DEBUG >= 1
+    tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'lua_ItemPicker_ItemPicker_getCellLayout'.",&tolua_err);
+#endif
+
+    return 0;
+}
 int lua_ItemPicker_ItemPicker_create(lua_State* tolua_S)
 {
     int argc = 0;
@@ -391,9 +542,12 @@ int lua_register_ItemPicker_ItemPicker(lua_State* tolua_S)
         tolua_function(tolua_S,"clearItems",lua_ItemPicker_ItemPicker_clearItems);
         tolua_function(tolua_S,"setOffsetLayout",lua_ItemPicker_ItemPicker_setOffsetLayout);
         tolua_function(tolua_S,"setPickerPointPos",lua_ItemPicker_ItemPicker_setPickerPointPos);
+        tolua_function(tolua_S,"setContSize",lua_ItemPicker_ItemPicker_setContSize);
         tolua_function(tolua_S,"getCellPos",lua_ItemPicker_ItemPicker_getCellPos);
+        tolua_function(tolua_S,"setParameter",lua_ItemPicker_ItemPicker_setParameter);
         tolua_function(tolua_S,"pushBackItem",lua_ItemPicker_ItemPicker_pushBackItem);
         tolua_function(tolua_S,"remedyItemPos",lua_ItemPicker_ItemPicker_remedyItemPos);
+        tolua_function(tolua_S,"getCellLayout",lua_ItemPicker_ItemPicker_getCellLayout);
         tolua_function(tolua_S,"create", lua_ItemPicker_ItemPicker_create);
     tolua_endmodule(tolua_S);
     std::string typeName = typeid(ItemPicker).name();
