@@ -270,7 +270,6 @@ function Util:share()
   local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
 
   if device.platform=="ios" then
-      print("我累的去去")
       file="res/screenshoot.jpg"
   end
 
@@ -282,9 +281,28 @@ end
 
 --读取json 文件
 function Util:read_json(path_json)
-  local fileStr = cc.HelperFunc:getFileData(path_json)
+
+  local file_path=cc.FileUtils:getInstance():getWritablePath()
+
+  local fileStr = cc.HelperFunc:getFileData(file_path..path_json)
+
   local fileData = json.decode(fileStr)
+  
+  return fileData
+
 end
+
+--去除json 括号
+function Util:remove_json_str(pathname)
+  string.gsub(pathname, "%b()", "")
+end
+
+--添加匹配
+function Util:remove_json_str(pathname)
+  string.gsub(pathname, "%b()", "")
+end
+
+
 
 
 
