@@ -279,7 +279,7 @@ function Util:share()
 end
 
 
---读取json 文件
+-- --读取json 文件
 function Util:read_json(path_json)
 
   local file_path=cc.FileUtils:getInstance():getWritablePath()
@@ -287,7 +287,6 @@ function Util:read_json(path_json)
   local fileStr = cc.HelperFunc:getFileData(file_path..path_json)
 
   local fileData = json.decode(fileStr)
-   
   return fileData
 
 end
