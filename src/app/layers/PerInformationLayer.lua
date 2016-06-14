@@ -351,15 +351,70 @@ function  PerInformationLayer:addItemPickerData(scorll,birthdayChild)
     return picker;
 end
 
+function  PerInformationLayer:add_addItemPickerData(scorll,birthdayChild)
+
+    local dex=0--960-display.height
+    local picker =cc.ItemPicker:create()
+    picker:setDirection(scorll:getDirection())
+    picker:setContSize(cc.size(150, 200))
+    -- picker:setInnerContainerSize(cc.size(220,50*34))
+    picker:setParameter(cc.size(100,40),8)
+    picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
+    picker:setAnchorPoint(0,0)
+    scorll:removeFromParent()
+    
+    return picker;
+end
+
 
 
 function PerInformationLayer:fun_city(  )
-    self.adress = cc.CSLoader:createNode("Adress.csb")
+        self.adress = cc.CSLoader:createNode("Adress.csb")
         self:addChild(self.adress)
         local city_back=self.adress:getChildByTag(52):getChildByTag(59)
         city_back:addTouchEventListener(function(sender, eventType  )
-        self:touch_callback(sender, eventType)
-    end)
+              self:touch_callback(sender, eventType)
+        end)
+        --省
+        local province_scrollview=self.adress:getChildByTag(52):getChildByTag(62)
+        local province_text=province_scrollview:getChildByTag(95)
+          
+        local adress_province_y= province_text:getPositionY()
+
+        self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,province_text)
+        self.adress:getChildByTag(52):addChild(self.adress_province_Itempicker)
+
+        for i=1,12+7 do   
+
+            local button =self.adress_province_Itempicker:getCellLayout(cc.size(100,40))
+
+            local cell_month=ccui.Text:create()
+            cell_month:setFontSize(38);
+            cell_month:setAnchorPoint(cc.p(0.0,0.0));
+            cell_month:setColor(cc.c4b(255,0,255))
+            cell_month:setPositionX(20)
+            cell_month:setTag(i)
+            if i<12+5 and i-5>=0 then 
+               cell_month:setString("0" )
+            else
+                cell_month:setString(".")
+                cell_month:setOpacity(0)
+            end
+            button:addChild(cell_month)
+            self.adress_province_Itempicker:pushBackItem(button)
+        end
+
+        --市
+        local city_scrollview=self.adress:getChildByTag(52):getChildByTag(63)
+        local city_text=city_scrollview:getChildByTag(96)
+        --区
+        local area_scrollview=self.adress:getChildByTag(52):getChildByTag(64)
+        local area_text=area_scrollview:getChildByTag(97)
+        
+
+end
+function function_name( ... )
+    -- body
 end
 function PerInformationLayer:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
