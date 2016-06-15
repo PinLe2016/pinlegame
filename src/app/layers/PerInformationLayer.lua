@@ -118,11 +118,13 @@ function PerInformationLayer:touch_callback( sender, eventType )
         self:fun_birthday(  )
     elseif tag==49 then 
                  if self.birthday then
+                    self:about_birthday_http_date()
                        self.birthday:removeFromParent()
                  end
         
     elseif tag==59 then
                  if self.adress then
+                    self:unscheduleUpdate()
                        self.adress:removeFromParent()
                  end
         
@@ -264,7 +266,7 @@ function PerInformationLayer:fun_birthday(  )
             button:addChild(cell)
             self.birthday_Itempicker:pushBackItem(button)
         end
-        -- self:scheduleUpdate()
+        -- 
 
         --月
         local birthday_scrollview2=self.birthday:getChildByTag(174):getChildByTag(171)
@@ -332,7 +334,7 @@ function PerInformationLayer:fun_birthday(  )
             self.birthday_daty_Itempicker:pushBackItem(button)
               
         end
-
+        -- self:scheduleUpdate()
 end
 
 
@@ -358,7 +360,7 @@ function  PerInformationLayer:add_addItemPickerData(scorll,birthdayChild)
     picker:setDirection(scorll:getDirection())
     picker:setContSize(cc.size(150, 200))
     -- picker:setInnerContainerSize(cc.size(220,50*34))
-    picker:setParameter(cc.size(100,40),8)
+    picker:setParameter(cc.size(140,40),5)
     picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
     picker:setAnchorPoint(0,0)
     scorll:removeFromParent()
@@ -398,11 +400,18 @@ function PerInformationLayer:fun_city_info( )
         self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,province_text)
         self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
 
-        self.province="山东省"
+        self.province="山东"
+        self.city="青岛"
+        self.conty="崂山区"
+        self.province_index=0
+        self.city_index=0
 
         self.city_data=Util:read_json("res/city.json")
 
         self:fun_Province()
+        -- self:fun_City()
+        -- self:fun_Conty()
+        self:scheduleUpdate()
 end
 
 function PerInformationLayer:fun_Province( ... )
@@ -415,9 +424,9 @@ function PerInformationLayer:fun_Province( ... )
 
         local button =self.adress_province_Itempicker:getCellLayout(cc.size(100,40))
         local name
-        if i<provinces.Size()+2 and i-2>0 then 
+        if i<#json_province+3 and i-2>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(38);
+            cell_month:setFontSize(36)
             cell_month:setAnchorPoint(cc.p(0.0,0.0));
             cell_month:setColor(cc.c4b(255,0,255))
             cell_month:setPositionX(20)
@@ -427,68 +436,98 @@ function PerInformationLayer:fun_Province( ... )
 
             
             cell_month:setString(json_province[i-2]["name"])
-            name=provinces[i-2]["name"]
+            name=json_province[i-2]["name"]
            local pos = string.find(self.province, name)   
             if pos then
-                m_offset_cell=i-2;
+                m_offset_cell=i-3;
             end
         end
 
         
          self.adress_province_Itempicker:pushBackItem(button)
     end
-    self.adress_province_Itempicker:setOffsetLayout(m_offset_cell);
+    self.adress_province_Itempicker:setOffsetLayout(m_offset_cell)
+
 end
 
-function PerInformationLayer:fun_City( ... )
+function PerInformationLayer:fun_City()
     
     self.adress_city_Itempicker:clearItems()
     self.adress_city_Itempicker:removeAllChildren()
+    dump(tonumber(self.adress_province_Itempicker:getCellPos()))
 
-    for i=1,12+7 do   
+    local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
+    -- local json_city=self.city_data["provinces"][29]["citys"]
+    -- dump(json_city)
+    local m_offset_cell=0
+    for i=1,#json_city+4 do   
 
-        local button =self.adress_city_Itempicker:getCellLayout(cc.size(100,40))
+        local button =self.adress_city_Itempicker:getCellLayout(cc.size(140,40))
+        local name
+        if i<#json_city+3 and i-2>0 then 
+            local cell_month=ccui.Text:create()
+            cell_month:setFontSize(18)
+            cell_month:setAnchorPoint(cc.p(0.5,0.0));
+            cell_month:setColor(cc.c4b(255,0,255))
+            cell_month:setPositionX(40)
+            cell_month:setTag(i)
 
-        local cell_month=ccui.Text:create()
-        cell_month:setFontSize(38);
-        cell_month:setAnchorPoint(cc.p(0.0,0.0));
-        cell_month:setColor(cc.c4b(255,0,255))
-        cell_month:setPositionX(20)
-        cell_month:setTag(i)
-        if i<12+5 and i-5>=0 then 
-           cell_month:setString("0" )
-        else
-            cell_month:setString(".")
-            cell_month:setOpacity(0)
+            button:addChild(cell_month)
+
+            
+            cell_month:setString(json_city[i-2]["name"])
+            name=json_city[i-2]["name"]
+           local pos = string.find(self.city, name)   
+            if pos then
+
+                m_offset_cell=i-3;
+            end
         end
-        button:addChild(cell_month)
+
         self.adress_city_Itempicker:pushBackItem(button)
     end
+    dump(m_offset_cell)
+    self.adress_city_Itempicker:setOffsetLayout(m_offset_cell)
 end
 
-function PerInformationLayer:fun_Conty( ... )
+function PerInformationLayer:fun_Conty()
     self.adress_conty_Itempicker:clearItems()
     self.adress_conty_Itempicker:removeAllChildren()
 
-    for i=1,12+7 do   
+    local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
+    -- local json_city=self.city_data["provinces"][29]["citys"]
+
+    local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
+    -- local json_conty=json_city[8]["areas"]
+    -- dump(self.adress_city_Itempicker:getCellPos())
+    -- dump(json_conty)
+    local m_offset_cell=0
+    for i=1,#json_conty+4 do   
 
         local button =self.adress_conty_Itempicker:getCellLayout(cc.size(100,40))
+        local name
+        if i<#json_conty+3 and i-2>0 then 
+            local cell_month=ccui.Text:create()
+            cell_month:setFontSize(36)
+            cell_month:setAnchorPoint(cc.p(0.0,0.0));
+            cell_month:setColor(cc.c4b(255,0,255))
+            cell_month:setPositionX(20)
+            cell_month:setTag(i)
 
-        local cell_month=ccui.Text:create()
-        cell_month:setFontSize(38);
-        cell_month:setAnchorPoint(cc.p(0.0,0.0));
-        cell_month:setColor(cc.c4b(255,0,255))
-        cell_month:setPositionX(20)
-        cell_month:setTag(i)
-        if i<12+5 and i-5>=0 then 
-           cell_month:setString("0" )
-        else
-            cell_month:setString(".")
-            cell_month:setOpacity(0)
+            button:addChild(cell_month)
+
+            
+            cell_month:setString(json_conty[i-2]["name"])
+            name=json_conty[i-2]["name"]
+           local pos = string.find(self.conty, name)   
+            if pos then
+                m_offset_cell=i-3;
+            end
         end
-        button:addChild(cell_month)
+
         self.adress_conty_Itempicker:pushBackItem(button)
     end
+    self.adress_conty_Itempicker:setOffsetLayout(m_offset_cell)
 end
 function PerInformationLayer:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
@@ -524,10 +563,54 @@ end
 
 function PerInformationLayer:update(dt)
     self.secondOne = self.secondOne+dt
-    if self.secondOne <1 then return end
+    if self.secondOne <0.5 then return end
     self.secondOne=0
-          dump(self.birthday_Itempicker:getCellPos())
-  end
+
+    if self.province_index~=self.adress_province_Itempicker:getCellPos() then
+        self:fun_City()
+        self.province_index=self.adress_province_Itempicker:getCellPos()
+        print("111----")
+    end
+
+    if self.city_index~= self.adress_city_Itempicker:getCellPos() then
+         self:fun_Conty()
+         self.city_index=self.adress_city_Itempicker:getCellPos()
+         print("2222----")
+         -- self:up_http_date()
+    end
+    -- dump(self.birthday_month_Itempicker:getCellPos())
+    -- self:up_http_date()
+end
+
+--城市相关数据保存
+function PerInformationLayer:about_city_http_date()
+
+    local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
+    local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
+
+    local province=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["name"]--获取省份选择
+    
+    local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
+    -- dump(json_conty)
+    local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+
+
+    dump(province)
+    dump(city)
+    dump(conty)
+end
+
+--生日相关数据保存
+function PerInformationLayer:about_birthday_http_date()
+    local birthday_year=2016-self.birthday_Itempicker:getCellPos()--年
+    local birthday_month=self.birthday_month_Itempicker:getCellPos()+1--月
+    local birthday_day=self.birthday_daty_Itempicker:getCellPos()+1--日
+
+    dump(birthday_year)
+    dump(birthday_month)
+    dump(birthday_day)
+end
+
 return PerInformationLayer
 
 
