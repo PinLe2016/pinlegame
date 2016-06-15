@@ -210,12 +210,22 @@ function PerInformationLayer:savedata( )
             elseif self.gendergirl:isSelected() then
                 gender="false"
             end
+
+    local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
+    local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
+
+    local province=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["name"]--获取省份选择
+
+    local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
+    -- dump(json_conty)
+    local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+
     local  userdata=LocalData:Instance():get_user_data()
     local  loginname=userdata["loginname"]
     local  nickname=userdata["nickname"]  
-    local  provincename="山东"
+    local  provincename=province
     local  cityid=1
-    local  cityname="青岛"
+    local  cityname=city
     local  birthday =tostring(self.date_years:getString() .. self.date_month:getString() .. self.date_day:getString()) 
             local  provinceid=1 
             local  imageurl=self._index
@@ -400,8 +410,10 @@ function PerInformationLayer:fun_city_info( )
         self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,province_text)
         self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
 
-        self.province="山东"
-        self.city="青岛"
+        local  userdata=LocalData:Instance():get_getuserinfo()
+        dump(userdata)
+        self.province=userdata["provincename"]
+        self.city=userdata["cityname"]
         self.conty="崂山区"
         self.province_index=0
         self.city_index=0
