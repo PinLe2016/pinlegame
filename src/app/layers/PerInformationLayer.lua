@@ -42,7 +42,13 @@ function PerInformationLayer:init(  )
                         self:touch_callback(sender, eventType)
             end)
         self:perinformation_init()
+        self:city_init()
 
+end
+function  PerInformationLayer:city_init( )
+         self._provincename=self.Perinformation:getChildByTag(90)
+         self._cityname=self.Perinformation:getChildByTag(91)
+         self._area=self.Perinformation:getChildByTag(92)
 end
 --个人信息初始化
 function PerInformationLayer:perinformation_init(  )
@@ -139,7 +145,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
     elseif tag==83 then 
         self:savedata()   --  保存个人信息数据发送Http
      elseif tag==61 then 
-        --self:savedata()   --  保存个人信息数据发送Http
+        self:_savecity(  )
     elseif tag==97 then 
                  if self.Perinformation then
                        self.Perinformation:removeFromParent()
@@ -148,6 +154,20 @@ function PerInformationLayer:touch_callback( sender, eventType )
             elseif tag==67 then 
                         self:head()
     end
+end
+function PerInformationLayer:_savecity(  )
+         local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
+         local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
+
+         local province=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["name"]--获取省份选择
+
+         local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
+         local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+         self._provincename:setString(province) 
+         self._cityname:setString(city) 
+         self._area=self.Perinformation:getChildByTag(92)
+          self:unscheduleUpdate()
+         self.adress:removeFromParent()
 end
 function PerInformationLayer:head( )
         self.head_csb = cc.CSLoader:createNode("Head.csb")
@@ -221,21 +241,13 @@ function PerInformationLayer:savedata( )
                 gender="false"
             end
 
-    local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
-    local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
-
-    local province=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["name"]--获取省份选择
-
-    local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
-    -- dump(json_conty)
-    local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
 
     local  userdata=LocalData:Instance():get_user_data()
     local  loginname=userdata["loginname"]
     local  nickname=userdata["nickname"]  
-    local  provincename=province
+    local  provincename=self._provincename:getString() 
     local  cityid=1
-    local  cityname=city
+    local  cityname=self._cityname:getString() 
     local  birthday =tostring(self.date_years:getString() .. self.date_month:getString() .. self.date_day:getString()) 
             local  provinceid=1 
             local  imageurl=self._index
