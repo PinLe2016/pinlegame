@@ -47,11 +47,19 @@ end
 --个人信息初始化
 function PerInformationLayer:perinformation_init(  )
 
-    local  userdata=LocalData:Instance():get_user_data() --用户数据
-
+     local  userdata=LocalData:Instance():get_user_data() --用户数据
+     local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
+     local userdt = LocalData:Instance():get_userdata()--
+     userdt["birthday"]=userdatainit["birthday"]
+     userdt["cityid"]=userdatainit["cityid"]
+     userdt["cityname"]=userdatainit["cityname"]
+     userdt["gender"]=userdatainit["gender"]
+     userdt["golds"]=userdatainit["golds"]
+     userdt["points"]=userdatainit["points"]
+     userdt["provincename"]=userdatainit["provincename"]
     local  bg=self.Perinformation:getChildByTag(26)
     self.image_head=bg:getChildByTag(67)  --头像
-            self._index=string.sub(tostring((self:chaifen(userdata["imageUrl"])),"."),1,1)
+        self._index=string.sub(tostring((self:chaifen(userdata["imageUrl"])),"."),1,1)
         self.image_head:loadTexture(tostring(Util:sub_str(userdata["imageUrl"], "/",":")))
         local name=self.Perinformation:getChildByTag(68)  --名字
         name:setString(userdata["nickname"])
@@ -60,7 +68,7 @@ function PerInformationLayer:perinformation_init(  )
         local rankname=self.Perinformation:getChildByTag(76)  --等级
         rankname:setString("LV." .. userdata["rankname"])
 
-        local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
+       
         local registereday=self.Perinformation:getChildByTag(86)  --注册日期
         registereday:setString(tostring(os.date("%Y年%m月%d日",userdatainit["registertime"])))
         self.genderman=self.Perinformation:getChildByTag(79)  --性别男
@@ -96,7 +104,7 @@ function PerInformationLayer:perinformation_init(  )
             self.gendergirl:setSelected(false)
         end  
         --初始化年月日
-        local date=Util:lua_string_split(os.date("%Y/%m/%d",userdatainit["birthday"]),"/")
+        local date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
         self.date_years=self.Perinformation:getChildByTag(87)
         self.date_month=self.Perinformation:getChildByTag(88)
         self.date_day=self.Perinformation:getChildByTag(89)
@@ -128,6 +136,8 @@ function PerInformationLayer:touch_callback( sender, eventType )
         
     elseif tag==83 then 
         self:savedata()   --  保存个人信息数据发送Http
+     elseif tag==61 then 
+        --self:savedata()   --  保存个人信息数据发送Http
     elseif tag==97 then 
                  if self.Perinformation then
                        self.Perinformation:removeFromParent()
@@ -373,6 +383,10 @@ function PerInformationLayer:fun_city_info( )
         self:addChild(self.adress)
         local city_back=self.adress:getChildByTag(52):getChildByTag(59)
         city_back:addTouchEventListener(function(sender, eventType  )
+              self:touch_callback(sender, eventType)
+        end)
+         local save=self.adress:getChildByTag(52):getChildByTag(61)
+         save:addTouchEventListener(function(sender, eventType  )
               self:touch_callback(sender, eventType)
         end)
         --省

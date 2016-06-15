@@ -21,6 +21,7 @@ function LocalData:set_user_data(user_data)
 end
 function LocalData:get_user_data()
 	local user_data=cc.UserDefault:getInstance():getStringForKey("user_data")
+	LocalData:Instance():set_userdata(json.decode(user_data))--保存数据
 	return json.decode(user_data) or nil
 end
 

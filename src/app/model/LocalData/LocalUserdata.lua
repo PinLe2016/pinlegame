@@ -5,9 +5,10 @@
 --用户所有数据
 
 function LocalData:set_userdata(userdata)
-	self.userdata=userdata
+	cc.UserDefault:getInstance():setStringForKey("user_data" ,json.encode(userdata))
 end
 
 function LocalData:get_userdata()
-	return self.userdata
+	local user_data=cc.UserDefault:getInstance():getStringForKey("user_data")
+	return json.decode(user_data) or nil
 end

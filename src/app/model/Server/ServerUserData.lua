@@ -4,16 +4,13 @@
 --
 --保存用户数据
 function Server:setuserinfo(params)
-    print("经济佛法决定是否记得撒娇范德萨",params.imageurl)
-       local _params = params
-       dump(_params)
-   
+
+       local _params = params   
     self:request_http("setuserinfo" , _params ); 
 end
 
 
 function Server:setuserinfo_callback()
-     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
