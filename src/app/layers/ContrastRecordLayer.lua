@@ -6,7 +6,7 @@ local ContrastRecordLayer = class("ContrastRecordLayer", function()
             return display.newLayer("ContrastRecordLayer")
 end)
 --标题 头像 名字 排名  等级
-function ContrastRecordLayer:ctor()
+function ContrastRecordLayer:ctor(params)
        self.id=params.id--activityid
        self.title=params.title--标题
        self.head=params.head--hero 头像
@@ -15,7 +15,6 @@ function ContrastRecordLayer:ctor()
        self.level=params.level --hero 等级
        self.heroid=params.heroid --hero ID 
        self.allscore=params.allscore --总积分
-
        Server:Instance():getactivitypointsdetail(self.id,self.heroid)  --对比排行榜HTTP
        self:setNodeEventEnabled(true)--layer添加监听
 
@@ -26,6 +25,7 @@ function ContrastRecordLayer:init(  )
     	self:addChild(self.ContrastRecordLayer)
 
     	local activitybyid=LocalData:Instance():get_getactivitybyid()
+      local userdt = LocalData:Instance():get_userdata()--
     	local oneallntegral=self.ContrastRecordLayer:getChildByTag(119)
 	oneallntegral:setString(activitybyid["mypoints"])--我的积分
 
@@ -33,36 +33,66 @@ function ContrastRecordLayer:init(  )
 	heroallntegral:setString(self.allscore)--hero总积分
 
     	local title_text=self.ContrastRecordLayer:getChildByTag(104)--标题
-            title_text:setString(self.title)
+      title_text:setString(self.title)
 
-            local level_text=self.ContrastRecordLayer:getChildByTag(105)--等级
-            level_text:setString(self.title)
+      local level_text=self.ContrastRecordLayer:getChildByTag(105)--等级
+      level_text:setString(userdt["grade"])
 
-            local name_text=self.ContrastRecordLayer:getChildByTag(106)--名称
-            name_text:setString(self.level)
+      local name_text=self.ContrastRecordLayer:getChildByTag(106)--名称
+      name_text:setString(self.level)
 
-            local rank_text=self.ContrastRecordLayer:getChildByTag(107)--排名
-            rank_text:setString(self.rank)
+      local rank_text=self.ContrastRecordLayer:getChildByTag(107)--排名
+      rank_text:setString(self.rank)
 
-            local head_image=self.ContrastRecordLayer:getChildByTag(108)--头像
-            head_image:loadTexture(self.head)
+      local head_image=self.ContrastRecordLayer:getChildByTag(108)--头像
+      head_image:loadTexture(self.head)
 	
+      local _back=self.ContrastRecordLayer:getChildByTag(121)-- 返回
+      _back:addTouchEventListener(function(sender, eventType  )
+                 self:touch_callback(sender, eventType)
+        end)
     	self.rank_list=self.ContrastRecordLayer:getChildByTag(109)--排行榜列表
-            self.rank_list:setItemModel(self.rank_list:getItem(0))
-            self.rank_list:removeAllItems()
-      	self:ContrastRecord_init()
+      self.rank_list:setItemModel(self.rank_list:getItem(0))
+      self.rank_list:removeAllItems()
+	self:ContrastRecord_init()
 end
+function ContrastRecordLayer:touch_callback( sender, eventType)
+            if eventType ~= ccui.TouchEventType.ended then
+                    return
+            end
+            local tag=sender:getTag()
+            if tag==121 then --返回
+               self:removeFromParent()
+            end
+               
+        
+end
+
 function ContrastRecordLayer:ContrastRecord_init(  )
 	self.rank_list:removeAllItems()
-	self.list_table=LocalData:Instance():getactivitypointsdetail_callback()
+	self.list_table=LocalData:Instance():get_getactivitypointsdetail()
             local  mypointslist=self.list_table["mypointslist"]
             local  playerpointslist=self.list_table["playerpointslist"]
-            local mynum=mypointslist[#mypointslist]["cycle "]
-            local playernum=playerpointslist[#playerpointslist]["cycle "]
+            local playernum=0
+            local mynum=0
+            if #playerpointslist==0 then
+               playernum=0
+            else
+               playernum=playerpointslist[#playerpointslist]["cycle"]
+            end
+            if #mypointslist==0 then
+              mynum=0
+            else
+              mynum=mypointslist[#mypointslist]["cycle"]
+            end
+            
             local count=mynum >= playernum and mynum or playernum  
+            print("时间 ",count)
 	for i=1,count do
+            self.rank_list:pushBackDefaultItem()
 		local  cell = self.rank_list:getItem(i-1)
-		if mypointslist[i]["cycle "]  == i  then
+
+		if mynum~=0 and mypointslist[i]["cycle"]  == i  then
 			local one_integral=cell:getChildByTag(117)--积分
 			one_integral:setString(mypointslist[i]["points"])
 		else
@@ -70,7 +100,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 			one_integral:setString("0")
 		end
 
-		if playerpointslist[i]["cycle "]  == i  then
+		if playernum ~= 0 and playerpointslist[i]["cycle"]  == i  then
 			local hero_integral=cell:getChildByTag(116)--积分
 			hero_integral:setString(playerpointslist[i]["points"])
 		else

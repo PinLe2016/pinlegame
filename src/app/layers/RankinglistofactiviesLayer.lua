@@ -11,7 +11,9 @@ function RankinglistofactiviesLayer:ctor(params)
       self.image=params.image
       self.title=params.title
       self:setNodeEventEnabled(true)--layer添加监听
+      local userdt = LocalData:Instance():get_userdata()
       Server:Instance():getranklistbyactivityid(self.id,self.count)  --排行榜HTTP
+
 end
 function RankinglistofactiviesLayer:init(  )
 
@@ -34,14 +36,14 @@ function RankinglistofactiviesLayer:init(  )
 end
 
 function RankinglistofactiviesLayer:Rankinglistofactivies_init()
-	    -- self.list_table=LocalData:Instance():getranklistbyactivityid_callback()
-     --      local  sup_data=self.list_table["ranklist"]
-     --      if not sup_data then
-     --        return
-     --      end
-     --       dump(sup_data)
-     --    rank_list:removeAllItems()
-          for i=1, 3    do  --#sup_data
+	    self.list_table=LocalData:Instance():get_getranklistbyactivityid()
+          local  sup_data=self.list_table["ranklist"]
+          if not sup_data then
+            return
+          end
+           dump(sup_data)
+        rank_list:removeAllItems()
+          for i=1, #sup_data do  --#sup_data
             rank_list:pushBackDefaultItem()
 
             local  cell = rank_list:getItem(i-1)
@@ -50,30 +52,29 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
                                     self:onImageViewClicked(sender, eventType)
                         end)
 
-            -- local panel_bg=cell:getChildByTag(84)--活动图片
+            local panel_bg=cell:getChildByTag(84)--活动图片
             -- panel_bg:loadTexture(self.image)
 
-            -- local name_text=cell:getChildByTag(81)--昵称
-            -- name_text:setString(tostring(sup_data[i]["nickname"]))
+            local name_text=cell:getChildByTag(81)--昵称
+            name_text:setString(tostring(sup_data[i]["nickname"]))
 
-            -- local integral_tex=cell:getChildByTag(82)--总积分
-            -- integral_tex:setString(tostring(sup_data[i]["totalPoints"]))
+            local integral_tex=cell:getChildByTag(82)--总积分
+            integral_tex:setString(tostring(sup_data[i]["totalPoints"]))
 
-            --  local name_text=cell:getChildByTag(81)--昵称
-            -- name_text:setString(tostring(sup_data[i]["nickname"]))
+             local name_text=cell:getChildByTag(81)--昵称
+            name_text:setString(tostring(sup_data[i]["nickname"]))
 
-            -- local level_text=cell:getChildByTag(83) --等级
-            -- level_text:setString(tostring(sup_data[i]["title"]))
+            local level_text=cell:getChildByTag(83) --等级
+            level_text:setString(tostring(sup_data[i]["title"]))
 
-            -- local act_head=cell:getChildByTag(78) --头像
-            -- act_head:loadTexture(tostring(sup_data[i]["hearurl"]))
+            local act_head=cell:getChildByTag(78) --头像
+            act_head:loadTexture(tostring(sup_data[i]["hearurl"]))
           end
 end
 function RankinglistofactiviesLayer:back( sender, eventType)
             if eventType ~= ccui.TouchEventType.ended then
                 return
             end
-            print("积分开始的减肥快睡觉")
             self:removeFromParent()
 
 end
