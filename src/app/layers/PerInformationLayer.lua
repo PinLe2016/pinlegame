@@ -256,8 +256,19 @@ function PerInformationLayer:savedata( )
             else
                  imageurl=self.head_index  --"httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"
             end
-    Server:Instance():setuserinfo({loginname=loginname,nickname=nickname,provinceid=provinceid,provincename
-        =provincename,cityid=cityid,cityname=cityname,birthday=birthday,gender=gender,imageurl=imageurl}) 
+    local params={
+            loginname=loginname,
+            nickname=nickname,
+            provinceid=provinceid,
+            provincename=provincename,
+            cityid=cityid,
+            cityname=cityname,
+            birthday=birthday,
+            gender=gender,
+            imageurl=imageurl
+        }
+        dump(params)
+    Server:Instance():setuserinfo(params) 
 end
 function PerInformationLayer:fun_birthday(  )
     self.birthday = cc.CSLoader:createNode("Birthday.csb")
