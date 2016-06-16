@@ -54,9 +54,10 @@ end
 function Server:getranklistbyactivityid(activitieid,count)
     local params = {}
     params={
-            activitieid=activitieid,
-            count=count,
+            activityid=activitieid,
+            count=count
         }
+        dump(params)
     self:request_http("getranklistbyactivityid" , params ); 
 end
 

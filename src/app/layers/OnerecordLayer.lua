@@ -9,7 +9,7 @@ end)
 function OnerecordLayer:ctor(params)
          self.type=params.type
          self.title=params.title
-
+         self.id=params.id
          Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self:setNodeEventEnabled(true)--layer添加监听
 end
@@ -34,10 +34,11 @@ function OnerecordLayer:init(  )
 end
 function OnerecordLayer:Onerecord_init(  )
 	self.rank_list:removeAllItems()
-	self.list_table=LocalData:Instance():getactivitypointsdetail_callback()
+	self.list_table=LocalData:Instance():get_getactivitypointsdetail()
             local  One_data=self.list_table["mypointslist"]
             local num=One_data[#One_data]["cycle "]
-            for i=1,One_data do
+            for i=1,#One_data do
+                  self.rank_list:pushBackDefaultItem()
             	local  cell = self.rank_list:getItem(i-1)
             	if One_data[i]["cycle "]  == i  then
             		 local integral_text=cell:getChildByTag(93)--积分

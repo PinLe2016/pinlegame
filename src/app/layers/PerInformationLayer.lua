@@ -18,9 +18,10 @@ function PerInformationLayer:ctor()--params
        
 end
 function PerInformationLayer:init(  )
-    self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
+    --print("个人信息")
+       self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
         self:addChild(self.Perinformation)
-            print("个人信息")
+            
         self.birthday_bt=self.Perinformation:getChildByTag(245)
         self.birthday_bt:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
@@ -42,13 +43,17 @@ function PerInformationLayer:init(  )
                         self:touch_callback(sender, eventType)
             end)
         self:perinformation_init()
-        self:city_init()
+        
 
 end
 function  PerInformationLayer:city_init( )
+         local userdt = LocalData:Instance():get_userdata()
          self._provincename=self.Perinformation:getChildByTag(90)
+         self._provincename:setString(userdt["provincename"])
          self._cityname=self.Perinformation:getChildByTag(91)
+         self._cityname:setString(userdt["cityname"])
          self._area=self.Perinformation:getChildByTag(92)
+         self._area:setString(userdt["conty"])
 end
 --个人信息初始化
 function PerInformationLayer:perinformation_init(  )
@@ -62,21 +67,24 @@ function PerInformationLayer:perinformation_init(  )
      userdt["gender"]=userdatainit["gender"]
      userdt["golds"]=userdatainit["golds"]
      userdt["points"]=userdatainit["points"]
-     userdt["provincename"]=userdatainit["provincename"]
+     userdt["provincename"]="山东"--userdatainit["provincename"]  
+     userdt["conty"]="崂山区"
+     LocalData:Instance():set_userdata(userdt)
+
     local  bg=self.Perinformation:getChildByTag(26)
     self.image_head=bg:getChildByTag(67)  --头像
-        self._index=string.sub(tostring((self:chaifen(userdata["imageUrl"])),"."),1,1)
-        self.image_head:loadTexture(tostring(Util:sub_str(userdata["imageUrl"], "/",":")))
+        self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
+        self.image_head:loadTexture(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         local name=self.Perinformation:getChildByTag(68)  --名字
-        name:setString(userdata["nickname"])
+        name:setString(userdt["nickname"])
         local golds=self.Perinformation:getChildByTag(73)  --金币
-        golds:setString(userdata["golds"])
+        golds:setString(userdt["golds"])
         local rankname=self.Perinformation:getChildByTag(76)  --等级
-        rankname:setString("LV." .. userdata["rankname"])
+        rankname:setString("LV." .. userdt["rankname"])
 
        
         local registereday=self.Perinformation:getChildByTag(86)  --注册日期
-        registereday:setString(tostring(os.date("%Y年%m月%d日",userdatainit["registertime"])))
+        registereday:setString(tostring(os.date("%Y年%m月%d日",userdt["registertime"])))
         self.genderman=self.Perinformation:getChildByTag(79)  --性别男
         self.gendergirl=self.Perinformation:getChildByTag(80)  --性别女
             --性别之间切换
@@ -99,10 +107,10 @@ function PerInformationLayer:perinformation_init(  )
             end)
 
 
-        if userdatainit["gender"]==0 then    --0女1男2未知
+        if userdt["gender"]==0 then    --0女1男2未知
             self.genderman:setSelected(false)
             self.gendergirl:setSelected(true)
-        elseif userdatainit["gender"]==1 then
+        elseif userdt["gender"]==1 then
             self.genderman:setSelected(true)
             self.gendergirl:setSelected(false)
         else
@@ -117,7 +125,9 @@ function PerInformationLayer:perinformation_init(  )
         self.date_years:setString(date[1])
         self.date_month:setString(date[2])
         self.date_day:setString(date[3])
- 
+        
+
+        self:city_init()
 
 end
 function PerInformationLayer:touch_callback( sender, eventType )
@@ -132,8 +142,8 @@ function PerInformationLayer:touch_callback( sender, eventType )
         self:fun_birthday(  )
     elseif tag==49 then 
                  if self.birthday then
-                    self:about_birthday_http_date()
-                       self.birthday:removeFromParent()
+                   
+                    self.birthday:removeFromParent()
                  end
         
     elseif tag==59 then
@@ -144,18 +154,36 @@ function PerInformationLayer:touch_callback( sender, eventType )
         
     elseif tag==83 then 
         self:savedata()   --  保存个人信息数据发送Http
-     elseif tag==61 then 
+    elseif tag==61 then   --个人信息主界面显示城市
         self:_savecity(  )
+    elseif tag==48 then 
+        self:_savetime()
+
     elseif tag==97 then 
                  if self.Perinformation then
-                       self.Perinformation:removeFromParent()
+                       --self.Perinformation:removeFromParent()
+                       self:removeFromParent()
                  end
         
             elseif tag==67 then 
                         self:head()
     end
 end
+function PerInformationLayer:_savetime(  )
+         
+    local birthday_year=2016-self.birthday_Itempicker:getCellPos()--年
+    local birthday_month=self.birthday_month_Itempicker:getCellPos()+1--月
+    local birthday_day=self.birthday_daty_Itempicker:getCellPos()+1--日
+
+    self.date_years:setString(birthday_year)
+    self.date_month:setString(birthday_month)
+    self.date_day:setString(birthday_day)
+
+     self.birthday:removeFromParent()
+
+end
 function PerInformationLayer:_savecity(  )
+
          local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
          local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
 
@@ -163,6 +191,10 @@ function PerInformationLayer:_savecity(  )
 
          local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
          local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+
+          local userdt = LocalData:Instance():get_userdata()--
+          userdt["conty"]=conty  --自己保存的区
+
          self._provincename:setString(province) 
          self._cityname:setString(city) 
          self._area=self.Perinformation:getChildByTag(92)
@@ -248,7 +280,9 @@ function PerInformationLayer:savedata( )
     local  provincename=self._provincename:getString() 
     local  cityid=1
     local  cityname=self._cityname:getString() 
-    local  birthday =tostring(self.date_years:getString() .. self.date_month:getString() .. self.date_day:getString()) 
+    --提交日期  和头像  时候  修改后  后台返回不变
+    local  birthday ="2015-01-01"  --tostring(self.date_years:getString() .. "-".. self.date_month:getString()  .. "-".. self.date_day:getString()) 
+    print("birthday  ",birthday)
             local  provinceid=1 
             local  imageurl=self._index
             if self.head_index==100 then
@@ -271,12 +305,17 @@ function PerInformationLayer:savedata( )
     Server:Instance():setuserinfo(params) 
 end
 function PerInformationLayer:fun_birthday(  )
-    self.birthday = cc.CSLoader:createNode("Birthday.csb")
+        self.birthday = cc.CSLoader:createNode("Birthday.csb")
         self:addChild(self.birthday)
         local birthday_back=self.birthday:getChildByTag(174):getChildByTag(49)
-        birthday_back:addTouchEventListener(function(sender, eventType  )
-        self:touch_callback(sender, eventType)
-    end)
+            birthday_back:addTouchEventListener(function(sender, eventType  )
+            self:touch_callback(sender, eventType)
+       end)
+        local _true=self.birthday:getChildByTag(174):getChildByTag(48)
+            _true:addTouchEventListener(function(sender, eventType  )
+            self:touch_callback(sender, eventType)
+       end)
+
         --年 
         local birthday_scrollview=self.birthday:getChildByTag(174):getChildByTag(170)
         local birthday_years=birthday_scrollview:getChildByTag(175)

@@ -102,7 +102,7 @@ function MainInterfaceScene:userdata(  )
        local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 钻石
        diamond_text:setString("0")--loadingBar:setPercent(0)
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
-       local jindu=userdt["grade"]/8 * 100
+       local jindu=userdt["grade"]/8 *100
        loadingbar:setPercent(jindu)
 end
 function MainInterfaceScene:touch_callback( sender, eventType )
