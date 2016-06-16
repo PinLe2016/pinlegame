@@ -60,6 +60,8 @@ function PerInformationLayer:perinformation_init(  )
 
      local  userdata=LocalData:Instance():get_user_data() --用户数据
      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
+     dump(userdatainit)
+
      local userdt = LocalData:Instance():get_userdata()--
      userdt["birthday"]=userdatainit["birthday"]
      userdt["cityid"]=userdatainit["cityid"]
@@ -67,8 +69,8 @@ function PerInformationLayer:perinformation_init(  )
      userdt["gender"]=userdatainit["gender"]
      userdt["golds"]=userdatainit["golds"]
      userdt["points"]=userdatainit["points"]
-     userdt["provincename"]="山东"--userdatainit["provincename"]  
-     userdt["conty"]="崂山区"
+     userdt["provincename"]=userdatainit["provincename"]  
+     userdt["conty"]=""
      LocalData:Instance():set_userdata(userdt)
 
     local  bg=self.Perinformation:getChildByTag(26)
@@ -281,7 +283,16 @@ function PerInformationLayer:savedata( )
     local  cityid=1
     local  cityname=self._cityname:getString() 
     --提交日期  和头像  时候  修改后  后台返回不变
-    local  birthday ="2015-01-01"  --tostring(self.date_years:getString() .. "-".. self.date_month:getString()  .. "-".. self.date_day:getString()) 
+    
+    local  birthday_time =
+    {
+        day =self.date_day:getString(),
+        month=self.date_month:getString(),
+        year=self.date_years:getString()  
+    } 
+    -- 
+
+    local birthday=Util:dateTotimestamp(birthday_time)
     print("birthday  ",birthday)
             local  provinceid=1 
             local  imageurl=self._index
