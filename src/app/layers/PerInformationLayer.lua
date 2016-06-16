@@ -556,6 +556,10 @@ function PerInformationLayer:fun_City()
     dump(tonumber(self.adress_province_Itempicker:getCellPos()))
 
     local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
+    dump(json_city)
+    if #json_city==0 then
+        return
+    end
     -- local json_city=self.city_data["provinces"][29]["citys"]
     -- dump(json_city)
     local m_offset_cell=0
@@ -595,8 +599,13 @@ function PerInformationLayer:fun_Conty()
 
     local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
     -- local json_city=self.city_data["provinces"][29]["citys"]
-
+    if #json_city==0 then
+        return
+    end
     local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
+    if #json_conty==0 then
+        return
+    end
     -- local json_conty=json_city[8]["areas"]
     -- dump(self.adress_city_Itempicker:getCellPos())
     -- dump(json_conty)
@@ -675,7 +684,7 @@ function PerInformationLayer:update(dt)
     if self.city_index~= self.adress_city_Itempicker:getCellPos() or is_change then
          self:fun_Conty()
          self.city_index=self.adress_city_Itempicker:getCellPos()
-)
+
     end
 
 end
