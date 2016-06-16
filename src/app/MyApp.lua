@@ -34,10 +34,10 @@ function MyApp:run()
       cc.FileUtils:getInstance():addSearchPath("res/pic")
   local writablePath = cc.FileUtils:getInstance():getWritablePath()
    -- lfs.mkdir(writablePath .. "down_pic")
-
+    Util:removeDirectory("res/pic")
   lfs.mkdir(writablePath .. "res/pic")
-     cc.FileUtils:getInstance():addSearchPath("pic/")
-   --Util:removeDirectory("down_pic")
+   cc.FileUtils:getInstance():addSearchPath("pic/")
+  
   --self:enterScene("SurpriseScene")
  
    --self:enterScene("LoginScene")
