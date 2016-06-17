@@ -85,7 +85,7 @@ function Util:FormatTime_colon(orginSecond)
     second = '0' .. math.abs(second)
    end
     local _table={day.."天",hour.."小时",minutes.."分",second.."秒"}
-    dump(_table)
+    -- dump(_table)
    return _table--string.format("%s:%s:%s", hour, minutes, second)
 end
 

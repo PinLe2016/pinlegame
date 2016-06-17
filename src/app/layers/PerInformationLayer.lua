@@ -502,8 +502,8 @@ function PerInformationLayer:fun_city_info( )
         self.province=userdata["provincename"]
         self.city=userdata["cityname"]
         self.conty="崂山区"
-        self.province_index=0
-        self.city_index=0
+        self.province_index=-1
+        self.city_index=-1
 
         self.city_data=Util:read_json("res/city.json")
 
@@ -556,6 +556,10 @@ function PerInformationLayer:fun_City()
     dump(tonumber(self.adress_province_Itempicker:getCellPos()))
 
     local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
+    dump(json_city)
+    if #json_city==0 then
+        return
+    end
     -- local json_city=self.city_data["provinces"][29]["citys"]
     -- dump(json_city)
     local m_offset_cell=0
@@ -595,8 +599,13 @@ function PerInformationLayer:fun_Conty()
 
     local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
     -- local json_city=self.city_data["provinces"][29]["citys"]
-
+    if #json_city==0 then
+        return
+    end
     local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
+    if #json_conty==0 then
+        return
+    end
     -- local json_conty=json_city[8]["areas"]
     -- dump(self.adress_city_Itempicker:getCellPos())
     -- dump(json_conty)
@@ -664,21 +673,20 @@ function PerInformationLayer:update(dt)
     self.secondOne = self.secondOne+dt
     if self.secondOne <0.5 then return end
     self.secondOne=0
-
+    local is_change=false
     if self.province_index~=self.adress_province_Itempicker:getCellPos() then
         self:fun_City()
         self.province_index=self.adress_province_Itempicker:getCellPos()
-        print("111----")
+        is_change=true
+        print("111----",self.city_index,self.adress_city_Itempicker:getCellPos())
     end
 
-    if self.city_index~= self.adress_city_Itempicker:getCellPos() then
+    if self.city_index~= self.adress_city_Itempicker:getCellPos() or is_change then
          self:fun_Conty()
          self.city_index=self.adress_city_Itempicker:getCellPos()
-         print("2222----")
-         -- self:up_http_date()
+
     end
-    -- dump(self.birthday_month_Itempicker:getCellPos())
-    -- self:up_http_date()
+
 end
 
 --城市相关数据保存
