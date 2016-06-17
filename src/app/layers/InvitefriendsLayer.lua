@@ -13,7 +13,9 @@ function InvitefriendsLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
 
-       self:init()
+       Server:Instance():get_reward_friend_list() --初始化未领取金币
+       Server:Instance():getfriendlist()--查询好友列表   
+       
       
 end
 function InvitefriendsLayer:init(  )
@@ -47,8 +49,9 @@ function InvitefriendsLayer:init(  )
 end
 function InvitefriendsLayer:fun_init(  )
             --以下都是测试
+            local friendlist_table=LocalData:Instance():getfriendlist()
 	local inviter_text=self.Invitefriends:getChildByTag(85):getChildByTag(88)  --邀请的人数
-            inviter_text:setString("已经成功邀请 " .. "99" .. " 人")
+            inviter_text:setString("已经成功邀请 " .. tostring(#friendlist_table["friendlist"]) .. " 人")
 
             local databg_text=self.Invitefriends:getChildByTag(106)  --数据背景
 
@@ -63,24 +66,25 @@ function InvitefriendsLayer:fun_init(  )
 
             local experience_text=databg_text:getChildByTag(114) --未领取的经验
             experience_text:setString("88868")
-            
-            for i=1,3 do
+           
+
+            if #friendlist_table["friendlist"]==0 then
+            	return
+            end
+            for i=1,#friendlist_table["friendlist"] do
 	          	 self._ListView:pushBackDefaultItem()
 	          	local  cell =  self._ListView:getItem(i-1)
 	            cell:setTag(i)
+	            local  nickname =  call:getChildByTag(94)
+	            nickname:setString(friendlist_table["nickname"])
+	            local  grade =  call:getChildByTag(96)
+	            grade:setString("LV." .. friendlist_table["grade"] )
+	            local  imgurl =  call:getChildByTag(94)
+	            imgurl:loadTexture(tostring(Util:sub_str(friendlist_table["imgurl"], "/",":")))
 	     
            end
 
 	
-
-
-
-
-
-
-
-
-
 end
 function InvitefriendsLayer:pop_up(  )
        self.Friendsstep = cc.CSLoader:createNode("Friendsstep.csb")  --
@@ -90,7 +94,8 @@ function InvitefriendsLayer:pop_up(  )
        self.m_feedback:setVisible(false)
        self.m_friend=self.Friendsstep:getChildByTag(238)  --邀请好友界面
        self.m_friend:setVisible(false)
-
+       
+       self.invitecode_num=self.m_feedback:getChildByTag(236) -- 输入邀请码
        local friend_back=self.m_friend:getChildByTag(242)  --好友返回
 	friend_back:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
@@ -142,26 +147,30 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
 	elseif tag==231 then  --获取输入码
-		print("获取输入码")
+		local _num=self.invitecode_num:getString()
+		Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
+		print("获取输入码",_num)
 	elseif tag==116 then  --一键获取
 		print("一键获取")
+		Server:Instance():get_reward_of_friends_levelup()
 	
 	
 	end
 end
 function InvitefriendsLayer:onEnter()
-	 -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
-  --                      function()
-  --                     		self:init()
-  --                     end)
-	 -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
+	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
+                       function()
+                       	            print("初始化")
+                      		self:init()
+                      end)
+	 -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
   --                      function()
   --                     		print("个人信息修改")
   --                     end)
 end
 
 function InvitefriendsLayer:onExit()
-     	 -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
+     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self)
      	 -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
 end
 

@@ -21,7 +21,7 @@ function MainInterfaceScene:ctor()
       -- Server:Instance():getfriendlist()--查询好友列表
       -- Server:Instance():getusercitybyphone()--手机归属
       -- Server:Instance():get_reward_of_friends_levelup()--领取好友升级奖励积分&金币
-      -- Server:Instance():get_reward_friend_list()--查询好友升级奖励金币列表
+      -- Server:Instance():get_reward_friend_list()--查询好友升级奖励金币列表    
       -- Server:Instance():sendmessage("1","15701399537","1234")--发送短信验证码
 end
 function MainInterfaceScene:fun_init( )
@@ -229,12 +229,16 @@ function MainInterfaceScene:init_checkin(  )
 
             local  totaydays=checkindata["totaldays"]
             local  _table={}
+            local  _biaojitable={}
             for i=1, math.ceil(totaydays/7-1) do
             	for j=1,7 do
             	       local _bg=day_bg:clone()
             	       local  day_text=_bg:getChildByTag(86)
+                         local biaoji=_bg:getChildByTag(484)
+                         biaoji:setVisible(false)
                                day_text:setString((i-1)*7+j)
                                _table[(i-1)*7+j]=day_text
+                               _biaojitable[(i-1)*7+j]=biaoji
             	       _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(j-1),_bg:getPositionY()-_size.height* math.ceil(i-1)))
             	       self.checkinlayer:addChild(_bg)
         		      
@@ -243,11 +247,14 @@ function MainInterfaceScene:init_checkin(  )
         	for i=1,totaydays-math.ceil(totaydays/7-1)*7 do
         		 local _bg=day_bg:clone()
         		 local  day_text=_bg:getChildByTag(86)
+                   local biaoji=_bg:getChildByTag(484)
                          day_text:setString( math.ceil(totaydays/7-1)*7+i)
                          _table[math.ceil(totaydays/7-1)*7+i]=day_text
+                         _biaojitable[math.ceil(totaydays/7-1)*7+i]=biaoji
             	 _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
             	 self.checkinlayer:addChild(_bg)
         	end
+              _biaojitable[16]:loadTexture("png/Qprize.png")
               if not days then
                 self.checkinlayer:setVisible(true)
                   return
@@ -258,7 +265,11 @@ function MainInterfaceScene:init_checkin(  )
                   end
             	for j=1,#days do
             		if i==tonumber(os.date("%d",days[j])) then
+                              if i==16 then
+                                _biaojitable[i]:loadTexture("png/Qprizeopen.png")
+                              end
             			_table[i]:setColor(cc.c3b(125, 125, 100))
+                              _biaojitable[i]:setVisible(true)
             		end
             	end
             end

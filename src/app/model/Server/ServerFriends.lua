@@ -53,13 +53,13 @@ function Server:getfriendlist_callback()
         return
     end
     LocalData:Instance():setfriendlist(self.data)--保存数据
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.FRIENDLIST_POST)
    
 end
 
 
 --3.2.14 设置邀请码
---invitecode	是	邀请码	String
+--invitecode	是	邀请码	String--邀请好友
 function Server:setinvitecode(invitecode)
        local params = {}
     params={
@@ -83,8 +83,8 @@ function Server:setinvitecode_callback()
 end
 
 
---3.2.15 领取好友升级奖励积分&金币
---invitecode	是	邀请码	String
+--3.2.15 领取好友升级奖励积分&金币  一键领取
+ --  
 function Server:get_reward_of_friends_levelup()
        local params = {}
     -- params={
@@ -103,11 +103,11 @@ function Server:get_reward_of_friends_levelup_callback()
         return
     end
     LocalData:Instance():set_reward_friend(self.data)--保存数据
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+    --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    
 end
 
---3.2.16 查询好友升级奖励金币列表
+--3.2.16 查询好友升级奖励金币列表   初始化未领取金币接口
 
 function Server:get_reward_friend_list()
        local params = {}
