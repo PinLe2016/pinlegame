@@ -76,6 +76,11 @@ function MainInterfaceScene:fun_init( )
       friend_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
+       local fenxiang_bt=self.actbg:getChildByTag(54)--测试分享
+      fenxiang_bt:addTouchEventListener(function(sender, eventType  )
+           self:touch_callback(sender, eventType)
+      end)
+     
 
 
       self.barrier_bg=self.MainInterfaceScene:getChildByTag(396)
@@ -98,6 +103,7 @@ function MainInterfaceScene:userdata(  )
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
        leve:setString("LV." .. userdt["grade"])
        local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
+       print("hahhahhahahhahfewahiufhewfh")
        gold_text:setString(userdt["golds"])
        local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 钻石
        diamond_text:setString("0")--loadingBar:setPercent(0)
@@ -131,6 +137,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友
             self:addChild(FriendrequestLayer.new())
+      elseif tag==54 then  --测试分享
+            Util:share()
+            print("分享")
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
                   self.actbg:setVisible(true)
@@ -178,7 +187,7 @@ function MainInterfaceScene:funsetup(  )
 end
 --签到
 function MainInterfaceScene:fun_checkin(  )
-	 self.checkinlayer:setVisible(true)
+	 self.checkinlayer:setVisible(false)
 
 	local back_bt=self.checkinlayer:getChildByTag(84)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType  )
@@ -210,6 +219,7 @@ function MainInterfaceScene:init_checkin(  )
 
 	local  checkindata=LocalData:Instance():get_getcheckinhistory() --用户数据
 	local  days=checkindata["days"]
+
             local  totaydays=checkindata["totaldays"]
             local  _table={}
             for i=1, math.ceil(totaydays/7-1) do
@@ -231,13 +241,22 @@ function MainInterfaceScene:init_checkin(  )
             	 _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
             	 self.checkinlayer:addChild(_bg)
         	end
+              if not days then
+                self.checkinlayer:setVisible(true)
+                  return
+              end
             for i=1,totaydays do
+                  if #days==0 then
+                      break
+                  end
             	for j=1,#days do
             		if i==tonumber(os.date("%d",days[j])) then
-            			_table[i]:setColor(cc.c3b(255, 255, 100))
+            			_table[i]:setColor(cc.c3b(125, 125, 100))
             		end
             	end
             end
+
+            self.checkinlayer:setVisible(true)
 
 end
 function MainInterfaceScene:onEnter()

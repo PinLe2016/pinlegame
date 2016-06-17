@@ -123,6 +123,7 @@ end
                        activity_ListView:removeAllItems()
                        self:unscheduleUpdate()
               elseif tag==28 then
+                       self:unscheduleUpdate()
                         Util:scene_control("MainInterfaceScene")
               end
   end
@@ -168,6 +169,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then
+                           self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
                           self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"]}))
