@@ -75,19 +75,44 @@ function SurpriseOverLayer:touch_callback( sender, eventType )
 	elseif tag==160 then --返回
 	          	--Util:scene_control("SurpriseScene")
 	elseif tag==44 then  --结束
-		self.began_bt:setVisible(true)
-	            self.end_bt:setVisible(false)
-		local  tempn = activitypoints["points"]
-			for i=1,#self. _table do
-				local  stopNum = 0;
-				if (tempn > 0)  then
-				stopNum = tempn % 10;
-				tempn = tempn / 10;
-			end
-			(self. _table[i]):stopGo(stopNum);
-		end
+		print("4444444")
+		self:L_end(  )
 	end
 end
+function SurpriseOverLayer:L_end(  )
+	print("kaishi 1213")
+	local  tempn = activitypoints["points"]
+	for i=1,#self. _table do
+		local  stopNum = 0;
+		if (tempn > 0)  then
+			stopNum = tempn % 10;
+			tempn = tempn / 10;
+	            end
+	(self. _table[i]):stopGo(stopNum);
+	end
+	print("kaishi 33333")
+	local daojishi_bg=self.Laohuji:getChildByTag(102)
+	daojishi_bg:setGlobalZOrder(100)
+	self.daojishi_text=daojishi_bg:getChildByTag(104)
+	daojishi_bg:setVisible(true)
+	self._time=10
+    	self.L_began=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self:countdown()
+             end,1.0, false)
+            print("kaishi ")
+end
+ function SurpriseOverLayer:countdown()
+ print("试试事实上 " ,self._time)
+           self._time=self._time-1
+           self.daojishi_text:setString(tostring(self._time))
+           if self._time==0 then
+              self.began_bt:setVisible(true)
+	  self.end_bt:setVisible(false)
+              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.L_began)--停止定时器
+           end
+end
+
+
 --初始化数据
 function SurpriseOverLayer:init_data(  )
 	local activitypoints=LocalData:Instance():getactivitypoints_callback()
