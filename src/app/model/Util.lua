@@ -283,9 +283,12 @@ end
 -- --读取json 文件
 function Util:read_json(path_json)
 
-  local file_path=cc.FileUtils:getInstance():getWritablePath()
-
-  local fileStr = cc.HelperFunc:getFileData(file_path..path_json)
+  local file_path=path_json
+ 
+  if device.platform=="mac" then
+    file_path=cc.FileUtils:getInstance():getWritablePath()..path_json
+  end
+  local fileStr = cc.HelperFunc:getFileData(file_path)
 
   local fileData = json.decode(fileStr)
   return fileData

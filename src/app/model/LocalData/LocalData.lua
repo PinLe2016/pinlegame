@@ -40,6 +40,6 @@ require("app.model.LocalData.LocalSurprise")
 require("app.model.LocalData.LocalPerInformation")
 require("app.model.LocalData.LocalJackpot")
 require("app.model.LocalData.LocalUserdata")
-
+require("app.model.LocalData.LocalFriends")
 
 

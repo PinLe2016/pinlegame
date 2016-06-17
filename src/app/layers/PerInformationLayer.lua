@@ -16,6 +16,8 @@ function PerInformationLayer:ctor()--params
 
        --获取城市定位
        
+       --手机归属请求
+       Server:Instance():getusercitybyphone()--手机归属
 end
 function PerInformationLayer:init(  )
     --print("个人信息")
@@ -60,7 +62,7 @@ function PerInformationLayer:perinformation_init(  )
 
      local  userdata=LocalData:Instance():get_user_data() --用户数据
      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-     dump(userdatainit)
+     -- dump(userdatainit)
 
      local userdt = LocalData:Instance():get_userdata()--
      userdt["birthday"]=userdatainit["birthday"]
@@ -498,10 +500,33 @@ function PerInformationLayer:fun_city_info( )
         self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
 
         local  userdata=LocalData:Instance():get_getuserinfo()
-        dump(userdata)
-        self.province=userdata["provincename"]
-        self.city=userdata["cityname"]
-        self.conty="崂山区"
+        -- dump(userdata)
+        --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属
+        self.province="1"
+        self.city="2"
+        self.conty="3"
+        local pinle_location=cc.PinLe_platform:Instance()
+        dump(pinle_location:getProvince())
+        if pinle_location:getProvince()~= "" then --手机定位
+            self.province=pinle_location:getProvince()
+            self.city=pinle_location:getCity()
+            self.conty=pinle_location:getCounty()
+            -- print("111111--------")
+        else
+            --手机归属--缺少接口
+            local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+            -- 
+            dump(phone_location)
+            self.province=phone_location["provincename"]
+            self.city=phone_location["cityname"]
+            self.conty="1"
+        end
+        dump(pinle_location:getProvince())
+        dump(pinle_location:getCity())
+        dump(pinle_location:getCounty())
+        -- self.province=userdata["provincename"]
+        -- self.city=userdata["cityname"]
+        -- self.conty="崂山区"
         self.province_index=-1
         self.city_index=-1
 
@@ -518,7 +543,7 @@ function PerInformationLayer:fun_Province( ... )
     self.adress_province_Itempicker:removeAllChildren()
 
     local json_province=self.city_data["provinces"]
-    local m_offset_cell
+    local m_offset_cell=0
     for i=1,#json_province+4 do   
 
         local button =self.adress_province_Itempicker:getCellLayout(cc.size(100,40))

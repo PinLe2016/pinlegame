@@ -10,7 +10,7 @@ function Server:Instance()
     if self.instance == nil then  
         self.instance =  self:new()
         -- self.url = "http://tank.g.catcap.cn/"
-        -- self.login_url="http://123.57.136.223:1036/Default.aspx?"
+        self.login_url=""
         self.writablePath = cc.FileUtils:getInstance():getWritablePath()
         self.timediff = 0
 
@@ -103,17 +103,21 @@ function Server:request_http(command , params)
     local login_info=LocalData:Instance():get_user_data()
     local md5=crypto.md5(post_)
  
-    if login_info and command~="login" then
+    if login_info and command~="login" and command~="sendmessage" then
 
         _key=login_info["loginname"]
         md5=_key..login_info["loginkey"]
         md5=crypto.md5(tostring(md5))
 
     end
-    self.login_url="http://123.57.136.223:2036/Default.aspx?"
-    self.login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
-    --print("---url---",self.login_url,post_md5)
-    local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , "POST")
+    if self.login_url=="" then
+        self.login_url="http://123.57.136.223:2036/Default.aspx?"
+            print("版本链接")
+    end
+    -- dump(self.login_url)
+    local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
+    -- print("---url---",self.login_url)
+    local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, login_url , "POST")
 
     request:setPOSTData(post_md5)
     request:setTimeout(0.5)
@@ -365,6 +369,7 @@ require("app.model.Server.ServerLogin")
 require("app.model.Server.ServerSurprise")
 require("app.model.Server.ServerUserData")   
 require("app.model.Server.ServerJackpot") 
+require("app.model.Server.ServerFriends") 
 
 
 
