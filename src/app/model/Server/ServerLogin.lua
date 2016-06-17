@@ -108,9 +108,10 @@ function Server:login_callback()
          -- display.addChild(a)
         return
     end
-    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_SCENE)
        
    LocalData:Instance():set_user_data(self.data)--保存玩家数据
+
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_SCENE)
     -- 3.5.1 Server:Instance():getactivitylist("1")通过
     -- 3.5.2 Server:Instance():getactivitybyid("86e2c414-b26a-48dc-8c6d-682544289d84") 通过
     -- 3.5.3 Server:Instance():getranklistbyactivityid("86e2c414-b26a-48dc-8c6d-682544289d84",20)通过
@@ -139,8 +140,94 @@ function Server:changepassword_callback()
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
         return
     end
-    LocalData:Instance():set_user_data(self.data)--保存玩家数据
+    -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
 end
+
+
+
+--3.2.13 发送短信验证码
+
+--type    是   请求类型    String  1注册 2修改密码
+--phone   是   手机号码    String  
+--code    是   验证码 String  
+
+
+function Server:sendmessage(type,phone,code)
+    local params = {}
+     params={
+            type=type,
+            phone=phone,
+            code=code,
+        }
+    self:request_http("sendmessage" , params); 
+end
+
+function Server:sendmessage_callback()
+    if self.data.err_code~=0  then
+        self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
+end
+
+
+--3.2.16获取玩家手机归属地
+function Server:getusercitybyphone()
+    local params = {}
+     -- params={
+     --        type=type,
+     --        phone=phone,
+     --        code=code,
+     --    }
+    self:request_http("getusercitybyphone" , params); 
+end
+
+function Server:getusercitybyphone_callback()
+    if self.data.err_code~=0  then
+        -- self:show_float_message("6获取玩家手机归属地:" .. self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
+end
+
+
+--3.7.1 版本检查
+--devicetype  是   设备类型    String  IOS、ANDROID、OTHER
+--versioncode 是   版本号 String  
+
+function Server:getversion()
+    local params = {}
+     params={
+            devicetype=devicetype,
+            versioncode=versioncode,
+        }
+    self:request_http("getversion" , params); 
+end
+
+function Server:getversion_callback()
+    if self.data.err_code~=0  then
+        self:show_float_message("6获取玩家手机归属地:" .. self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
