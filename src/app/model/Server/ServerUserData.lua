@@ -55,7 +55,7 @@ function Server:checkin_callback()
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
     end
-    LocalData:Instance():set_checkin(self.data)--保存数据
+    LocalData:Instance():set_getcheckinhistory(self.data)--保存数据
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.CHECK_POST)
    
 end

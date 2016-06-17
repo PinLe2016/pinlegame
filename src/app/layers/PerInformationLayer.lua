@@ -67,8 +67,8 @@ function PerInformationLayer:perinformation_init(  )
      userdt["cityid"]=userdatainit["cityid"]
      userdt["cityname"]=userdatainit["cityname"]
      userdt["gender"]=userdatainit["gender"]
-     userdt["golds"]=userdatainit["golds"]
-     userdt["points"]=userdatainit["points"]
+     -- userdt["golds"]=userdatainit["golds"]
+     -- userdt["points"]=userdatainit["points"]
      userdt["provincename"]=userdatainit["provincename"]  
      userdt["conty"]=""
      LocalData:Instance():set_userdata(userdt)
