@@ -112,12 +112,12 @@ function Server:request_http(command , params)
     end
     if self.login_url=="" then
         self.login_url="http://123.57.136.223:2036/Default.aspx?"
-        print("版本链接")
+            print("版本链接")
     end
-    
-    self.login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
-    print("---url---",self.login_url,post_md5)
-    local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, self.login_url , "POST")
+    -- dump(self.login_url)
+    local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
+    -- print("---url---",self.login_url)
+    local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, login_url , "POST")
 
     request:setPOSTData(post_md5)
     request:setTimeout(0.5)
@@ -149,7 +149,7 @@ function Server:on_request_finished_http(event , command)
     local response = request:getResponseData()
    
     self.jsondata = json.decode(response)
-    dump(self.jsondata)
+    -- dump(self.jsondata)
     if self.jsondata == nil then
         self:show_float_message("服务器返回信息格式错误，无法解析",response)
         return

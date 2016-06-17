@@ -124,7 +124,7 @@ function Server:login_callback()
 end
 
 
---修改密码 
+--忘记密码
 
 function Server:changepassword(username,new_password)
     local params = {}
@@ -165,26 +165,6 @@ end
 function Server:sendmessage_callback()
     if self.data.err_code~=0  then
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
-        return
-    end
-    -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
-end
-
-
---3.2.16获取玩家手机归属地
-function Server:getusercitybyphone()
-    local params = {}
-     -- params={
-     --        type=type,
-     --        phone=phone,
-     --        code=code,
-     --    }
-    self:request_http("getusercitybyphone" , params); 
-end
-
-function Server:getusercitybyphone_callback()
-    if self.data.err_code~=0  then
-        -- self:show_float_message("6获取玩家手机归属地:" .. self.data.err_msg)
         return
     end
     -- LocalData:Instance():set_user_data(self.data)--保存玩家数据

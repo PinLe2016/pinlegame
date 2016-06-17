@@ -16,6 +16,8 @@ function PerInformationLayer:ctor()--params
 
        --获取城市定位
        
+       --手机归属请求
+       Server:Instance():getusercitybyphone()--手机归属
 end
 function PerInformationLayer:init(  )
     --print("个人信息")
@@ -60,7 +62,7 @@ function PerInformationLayer:perinformation_init(  )
 
      local  userdata=LocalData:Instance():get_user_data() --用户数据
      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-     dump(userdatainit)
+     -- dump(userdatainit)
 
      local userdt = LocalData:Instance():get_userdata()--
      userdt["birthday"]=userdatainit["birthday"]
@@ -504,6 +506,7 @@ function PerInformationLayer:fun_city_info( )
         self.city="2"
         self.conty="3"
         local pinle_location=cc.PinLe_platform:Instance()
+        dump(pinle_location:getProvince())
         if pinle_location:getProvince()~= "" then --手机定位
             self.province=pinle_location:getProvince()
             self.city=pinle_location:getCity()
@@ -511,6 +514,12 @@ function PerInformationLayer:fun_city_info( )
             -- print("111111--------")
         else
             --手机归属--缺少接口
+            local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+            -- 
+            dump(phone_location)
+            self.province=phone_location["provincename"]
+            self.city=phone_location["cityname"]
+            self.conty="1"
         end
         dump(pinle_location:getProvince())
         dump(pinle_location:getCity())

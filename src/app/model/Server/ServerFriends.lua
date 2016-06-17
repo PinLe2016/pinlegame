@@ -52,7 +52,7 @@ function Server:getfriendlist_callback()
         self:show_float_message("查询好友列表:" .. self.data.err_msg)
         return
     end
-    -- LocalData:Instance():set_getgoldspoollist(self.data)--保存数据
+    LocalData:Instance():setfriendlist(self.data)--保存数据
     -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    
 end
@@ -102,7 +102,7 @@ function Server:get_reward_of_friends_levelup_callback()
         self:show_float_message("领取好友升级奖励积分&金币:" .. self.data.err_msg)
         return
     end
-    -- LocalData:Instance():set_getgoldspoollist(self.data)--保存数据
+    LocalData:Instance():set_reward_friend(self.data)--保存数据
     -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    
 end
@@ -126,7 +126,7 @@ function Server:get_reward_friend_list_callback()
         self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
         return
     end
-    -- LocalData:Instance():set_getgoldspoollist(self.data)--保存数据
+    LocalData:Instance():set_reward_friend_list(self.data)--保存数据
     -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    
 end
