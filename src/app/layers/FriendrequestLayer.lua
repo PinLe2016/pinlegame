@@ -8,8 +8,9 @@ end)
 function FriendrequestLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
+       Server:Instance():getfriendlist()--查询好友列表   
 
-       self:init()
+      
       
 end
 function FriendrequestLayer:init(  )
@@ -50,7 +51,9 @@ function FriendrequestLayer:init(  )
 	feedback_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
-
+        local friendlist_num=LocalData:Instance():getfriendlist()  
+        local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
+        friend_num:setString(tostring(#friendlist_num["friendlist"]) .. "人")
 end
 
 function FriendrequestLayer:pop_up(  )
@@ -61,7 +64,8 @@ function FriendrequestLayer:pop_up(  )
        self.m_feedback:setVisible(false)
        self.m_friend=self.Friendsstep:getChildByTag(238)  --邀请好友界面
        self.m_friend:setVisible(false)
-
+       
+       self.invitecode_num=self.m_feedback:getChildByTag(236) -- 输入邀请码
        local friend_back=self.m_friend:getChildByTag(242)  --好友返回
 	friend_back:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
@@ -121,16 +125,19 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
 	elseif tag==231 then  --获取输入码
-		print("获取输入码")
+		local _num=self.invitecode_num:getString()
+		Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
+		print("获取输入码",_num)
 	
 	
 	end
 end
 function FriendrequestLayer:onEnter()
-	 -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
-  --                      function()
-  --                     		self:init()
-  --                     end)
+	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
+                       function()
+                      		 self:init()
+
+                      end)
 	 -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
   --                      function()
   --                     		print("个人信息修改")
@@ -138,7 +145,7 @@ function FriendrequestLayer:onEnter()
 end
 
 function FriendrequestLayer:onExit()
-     	 -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
+     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
      	 -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
 end
 

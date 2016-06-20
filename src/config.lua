@@ -70,6 +70,7 @@ G_NOTIFICATION_EVENT = {
 	CHECK_POST="CHECK_POST", --签到
 	GAMERECORD_POST="GAMERECORD_POST", --拼图结束后上传数据  set_getcheckinhistory
 	CHECKINHISTORY_POST="CHECKINHISTORY_POST", --签到历史   
+	FRIENDLIST_POST="FRIENDLIST_POST", --查询好友列表  getfriendlist 
 
 }
 
