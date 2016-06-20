@@ -433,12 +433,12 @@ function PerInformationLayer:fun_birthday(  )
 end
 
 
-function  PerInformationLayer:addItemPickerData(scorll,birthdayChild)
+function  PerInformationLayer:addItemPickerData(scorll,size)
 
     local dex=0--960-display.height
     local picker =cc.ItemPicker:create()
     picker:setDirection(scorll:getDirection())
-    picker:setContSize(cc.size(150, 400))
+    picker:setContSize(cc.size(150, 400))--
     -- picker:setInnerContainerSize(cc.size(220,50*34))
     picker:setParameter(cc.size(100,50),8)
     picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
@@ -448,14 +448,14 @@ function  PerInformationLayer:addItemPickerData(scorll,birthdayChild)
     return picker;
 end
 
-function  PerInformationLayer:add_addItemPickerData(scorll,birthdayChild)
+function  PerInformationLayer:add_addItemPickerData(scorll,size)
 
     local dex=0--960-display.height
     local picker =cc.ItemPicker:create()
     picker:setDirection(scorll:getDirection())
-    picker:setContSize(cc.size(150, 200))
+    picker:setContSize(size)--cc.size(150, 200)
     -- picker:setInnerContainerSize(cc.size(220,50*34))
-    picker:setParameter(cc.size(140,40),5)
+    picker:setParameter(cc.size(size.width,40),5)--cc.size(140,40)
     picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
     picker:setAnchorPoint(0,0)
     scorll:removeFromParent()
@@ -482,21 +482,23 @@ function PerInformationLayer:fun_city_info( )
           
         local adress_province_y= province_text:getPositionY()
 
-        self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,province_text)
+        self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,cc.size(100, 200))
         self.adress:getChildByTag(52):addChild(self.adress_province_Itempicker)
 
         --市
         local city_scrollview=self.adress:getChildByTag(52):getChildByTag(63)
         local city_text=city_scrollview:getChildByTag(96)
 
-        self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,province_text)
+        self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,cc.size(230, 200))
+        self.adress_city_Itempicker:setPositionX(self.adress_city_Itempicker:getPositionX()-70)
         self.adress:getChildByTag(52):addChild(self.adress_city_Itempicker)
 
         --区
         local area_scrollview=self.adress:getChildByTag(52):getChildByTag(64)
         local area_text=area_scrollview:getChildByTag(97)
         
-        self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,province_text)
+        self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,cc.size(200, 200))
+        self.adress_conty_Itempicker:setPositionX(self.adress_conty_Itempicker:getPositionX())
         self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
 
         local  userdata=LocalData:Instance():get_getuserinfo()
@@ -550,10 +552,10 @@ function PerInformationLayer:fun_Province( ... )
         local name
         if i<#json_province+3 and i-2>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(36)
-            cell_month:setAnchorPoint(cc.p(0.0,0.0));
+            cell_month:setFontSize(34)
+            cell_month:setAnchorPoint(cc.p(0.5,0.0));
             cell_month:setColor(cc.c4b(255,0,255))
-            cell_month:setPositionX(20)
+            cell_month:setPositionX(55)
             cell_month:setTag(i)
 
             button:addChild(cell_month)
@@ -590,14 +592,14 @@ function PerInformationLayer:fun_City()
     local m_offset_cell=0
     for i=1,#json_city+4 do   
 
-        local button =self.adress_city_Itempicker:getCellLayout(cc.size(140,40))
+        local button =self.adress_city_Itempicker:getCellLayout(cc.size(230,40))
         local name
         if i<#json_city+3 and i-2>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(18)
+            cell_month:setFontSize(22)
             cell_month:setAnchorPoint(cc.p(0.5,0.0));
             cell_month:setColor(cc.c4b(255,0,255))
-            cell_month:setPositionX(40)
+            cell_month:setPositionX(140)
             cell_month:setTag(i)
 
             button:addChild(cell_month)
@@ -637,11 +639,11 @@ function PerInformationLayer:fun_Conty()
     local m_offset_cell=0
     for i=1,#json_conty+4 do   
 
-        local button =self.adress_conty_Itempicker:getCellLayout(cc.size(100,40))
+        local button =self.adress_conty_Itempicker:getCellLayout(cc.size(170,40))
         local name
         if i<#json_conty+3 and i-2>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(36)
+            cell_month:setFontSize(22)
             cell_month:setAnchorPoint(cc.p(0.0,0.0));
             cell_month:setColor(cc.c4b(255,0,255))
             cell_month:setPositionX(20)
