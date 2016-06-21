@@ -130,7 +130,7 @@ function Server:changepassword(username,new_password)
     local params = {}
      params={
             loginname=username,
-            password=crypto.md5(password)
+            password=crypto.md5(new_password)
         }
     self:request_http("changepassword" , params); 
 end
