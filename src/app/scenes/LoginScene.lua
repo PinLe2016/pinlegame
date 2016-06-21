@@ -15,7 +15,6 @@ function LoginScene:ctor()
    self.floating_layer:addTo(self,100000)
 
 
-    Server:Instance():version_login_url()
    self:landing_init()
 
 
