@@ -18,7 +18,8 @@ function MyApp:run()
 
    -- local pinle_loclation=cc.PinLe_platform:Instance()
    -- pinle_loclation:getLocation()
-
+    Server:Instance():version_login_url()
+    
    
    --生成DEVICE_ID
    self:init_userdefault()
@@ -47,7 +48,7 @@ function MyApp:run()
   -- self:enterScene("GameScene")  
   local login_info=LocalData:Instance():get_user_data()
     
-  dump(login_info)
+  -- dump(login_info)
   if login_info~=nil  then
       self:enterScene("LoginScene")
       return

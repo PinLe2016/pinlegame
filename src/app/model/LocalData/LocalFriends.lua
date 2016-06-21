@@ -28,3 +28,23 @@ end
 function LocalData:get_reward_friend_list()
 	return self.reward_friend_list or nil
 end
+
+--查询邀请好友奖励配置列表接口
+function LocalData:set_reward_setting_list(reward_setting)
+	self.reward_setting=reward_setting
+end
+
+function LocalData:get_reward_setting_list()
+	return self.reward_setting or nil
+end
+
+
+--领取邀请好友奖励接口
+function LocalData:set_friend_reward_setting(set_friend_reward)
+	self.set_friend_reward=set_friend_reward
+end
+
+function LocalData:get_friend_reward_setting()
+	return self.set_friend_reward or nil
+end
+

@@ -132,6 +132,56 @@ function Server:get_reward_friend_list_callback()
 end
 
 
+--3.2.1 查询邀请好友奖励配置列表接口
+
+function Server:get_friend_reward_setting_list()
+       local params = {}
+    -- params={
+    --         invitecode=invitecode ,
+    --         -- type=type
+    --     }
+   
+    self:request_http("get_friend_reward_setting_list" , params ) 
+end
+
+
+function Server:get_friend_reward_setting_list_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_reward_setting_list(self.data)--保存数据
+    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+   
+end
+
+--3.2.2 领取邀请好友奖励接口(命令：set_friend_reward_setting)
+--Id  是   配置ID    GUID    和配置列表对应
+function Server:set_friend_reward_setting(Id)
+       local params = {}
+    params={
+            Id=Id ,
+            -- type=type
+        }
+   
+    self:request_http("set_friend_reward_setting" , params ) 
+end
+
+
+function Server:set_friend_reward_setting_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_friend_reward_setting(self.data)--保存数据
+    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+   
+end
+
+
+
 
 
 

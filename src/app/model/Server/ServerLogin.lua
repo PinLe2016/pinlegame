@@ -130,7 +130,7 @@ function Server:changepassword(username,new_password)
     local params = {}
      params={
             loginname=username,
-            password=crypto.md5(password)
+            password=crypto.md5(new_password)
         }
         dump(params)
     self:request_http("changepassword" , params); 
@@ -189,7 +189,7 @@ end
 
 function Server:getversion_callback()
     if self.data.err_code~=0  then
-        self:show_float_message("6获取玩家手机归属地:" .. self.data.err_msg)
+        self:show_float_message("版本检查:" .. self.data.err_msg)
         return
     end
     -- LocalData:Instance():set_user_data(self.data)--保存玩家数据

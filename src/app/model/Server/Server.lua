@@ -103,7 +103,7 @@ function Server:request_http(command , params)
     local login_info=LocalData:Instance():get_user_data()
     local md5=crypto.md5(post_)
  
-    if login_info and command~="login" and command~="sendmessage" then
+    if login_info and command~="login" and command~="sendmessage" and command~="changepassword" and command~="reg" then
 
         _key=login_info["loginname"]
         md5=_key..login_info["loginkey"]
@@ -116,7 +116,7 @@ function Server:request_http(command , params)
     end
     -- dump(self.login_url)
     local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
-    -- print("---url---",self.login_url)
+    print("---url---",login_url,post_md5)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, login_url , "POST")
 
     request:setPOSTData(post_md5)
