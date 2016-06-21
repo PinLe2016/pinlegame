@@ -132,12 +132,21 @@ function JackpotLayer:information( )
 end
 
 function JackpotLayer:touch_callback( sender, eventType )
+      dump(eventType)
+      local tag=sender:getTag()
+     if eventType == 0 then
+             if tag==46 then --开始
+             self:act_began( )   
+           end
+      end
+
       if eventType ~= ccui.TouchEventType.ended then
          return
       end
-      local tag=sender:getTag()
+      
+      dump(tag)
       if tag==46 then --开始
-             self:act_began( )   
+             -- self:act_began( )   
       elseif tag==44 then
             self.is_double=1
             print("普通")

@@ -10,6 +10,7 @@
 -- Author: Your Name
 -- Date: 2016-05-06 10:43:44
 --
+--结束界面   老虎机  
 local SurpriseOverScene = class("SurpriseOverScene", function()
             return display.newScene("SurpriseOverScene")
 end)

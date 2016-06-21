@@ -132,10 +132,12 @@ function Server:changepassword(username,new_password)
             loginname=username,
             password=crypto.md5(password)
         }
+        dump(params)
     self:request_http("changepassword" , params); 
 end
 
 function Server:changepassword_callback()
+    dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
         return
@@ -163,6 +165,7 @@ function Server:sendmessage(type,phone,code)
 end
 
 function Server:sendmessage_callback()
+    dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
         return
