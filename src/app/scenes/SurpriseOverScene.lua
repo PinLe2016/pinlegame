@@ -96,6 +96,15 @@ end
 
 
 function SurpriseOverScene:L_end(  )
+            -- 老虎机数据
+            local _laohujidata=LocalData:Instance():get_getactivitypoints()
+            local userdt = LocalData:Instance():get_userdata()
+            userdt["golds"]=_laohujidata["golds"]
+            userdt["points"]=_laohujidata["points"]
+            LocalData:Instance():set_userdata(userdt) --  保存数据
+
+
+
 	local activitypoints=LocalData:Instance():get_getactivitypoints()
 	local  tempn = activitypoints["points"]
 	for i=1,#self. _table do

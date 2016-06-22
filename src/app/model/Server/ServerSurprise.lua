@@ -270,6 +270,7 @@ function Server:validateactivitycode_callback()
         return
     end
     self:show_float_message("活动码成功")
+    
     -- self:show_float_message("获取指定活动的广告列表")
 end
 

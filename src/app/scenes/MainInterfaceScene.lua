@@ -193,14 +193,16 @@ function MainInterfaceScene:funsetup(  )
 
 end
 --签到
-function MainInterfaceScene:fun_checkin(  )
+function MainInterfaceScene:fun_checkin( tm )
 	 self.checkinlayer:setVisible(false)
         --签到增加的金币
+        if tm==2 then
+          local _sig=LocalData:Instance():get_getcheckinhistory()
+          local userdt = LocalData:Instance():get_userdata()
+          userdt["golds"]=_sig["playerinfo"]["golds"]
+          LocalData:Instance():set_userdata(userdt) --  保存数据
+        end
         
-        local _sig=LocalData:Instance():get_getcheckinhistory()
-        local userdt = LocalData:Instance():get_userdata()
-        userdt["golds"]=_sig["golds"]
-        LocalData:Instance():set_userdata(userdt) --  保存数据
 
 
 	local back_bt=self.checkinlayer:getChildByTag(84)  --返回
@@ -288,11 +290,11 @@ function MainInterfaceScene:onEnter()
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
-                       self:fun_checkin()--签到后
+                       self:fun_checkin(2)--签到后
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self,
                        function()
-                       self:fun_checkin()  --签到
+                       self:fun_checkin(1)  --签到
                       end)
 end
 
