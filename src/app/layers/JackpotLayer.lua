@@ -14,6 +14,8 @@ function JackpotLayer:ctor(params)
          self.id=params.id
          Server:Instance():getgoldspooladlist(self.id)  --
          Server:Instance():getgoldspoolbyid(self.id)
+         Server:Instance():getrecentgoldslist(10)-- 中奖信息
+         Server:Instance():getgoldspoolrandomgolds(self.id,1)
 
          self:setNodeEventEnabled(true)--layer添加监听
 
@@ -24,6 +26,8 @@ function JackpotLayer:ctor(params)
       end)
 end
 function JackpotLayer:init(  )
+        
+        
 
   	  self.JackpotScene = cc.CSLoader:createNode("JackpotScene.csb")
         self:addChild(self.JackpotScene)
@@ -83,8 +87,36 @@ function JackpotLayer:init(  )
                 
         end)
 
+         --中奖信息排行
+        self._ListView=self.JackpotScene:getChildByTag(31):getChildByTag(35)--中奖信息排行
+        self._ListView:setItemModel(self._ListView:getItem(0))
+        self._ListView:removeAllItems()
+
+
           self:information()
           self:audition()
+          self:wininformation()
+
+end
+--中奖信息排行
+function  JackpotLayer:wininformation(  )
+            self._ListView:removeAllItems() 
+            local _table=LocalData:Instance():get_getrecentgoldslist()
+
+            local goldslist=_table["goldslist"]
+            if goldslist==0 then
+               return
+            end
+
+             for i=1,#goldslist do
+                  self._ListView:pushBackDefaultItem()
+                  local  cell = self._ListView:getItem(i-1)
+                  cell:setTag(i)
+                  local name=cell:getChildByTag(38)
+                  name:setString(goldslist[i]["nickname"])
+                  local _gold=cell:getChildByTag(39)
+                  _gold:setString(goldslist[i]["golds"])
+          end
 
 end
 function JackpotLayer:information( )

@@ -145,7 +145,7 @@ function FriendrequestLayer:onEnter()
 end
 
 function FriendrequestLayer:onExit()
-     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
+     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self)
      	 -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
 end
 

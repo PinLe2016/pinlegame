@@ -28,6 +28,21 @@ function RankinglistofactiviesLayer:init(  )
                                     self:back(sender, eventType)
                         end)
 
+      --  新增加的功能
+      local userdt = LocalData:Instance():get_userdata() 
+      local _name=self.RankinglistofactiviesLayer:getChildByTag(531) -- 名字
+      _name:setString(userdt["nickname"])
+
+      local _gold=self.RankinglistofactiviesLayer:getChildByTag(532) -- 金币
+      _gold:setString(userdt["golds"])
+
+      local _integral=self.RankinglistofactiviesLayer:getChildByTag(533) -- 积分
+      _integral:setString(userdt["points"])
+      
+       local _head=self.RankinglistofactiviesLayer:getChildByTag(529) --头像
+       _head:loadTexture(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+
+
     	rank_list=self.RankinglistofactiviesLayer:getChildByTag(71)--排行榜列表
     	rank_list:setItemModel(rank_list:getItem(0))
     	rank_list:removeAllItems()
@@ -68,7 +83,7 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             level_text:setString(tostring(sup_data[i]["title"]))
 
             local act_head=cell:getChildByTag(78) --头像
-            act_head:loadTexture(tostring(sup_data[i]["hearurl"]))
+            act_head:loadTexture(tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")))
           end
 end
 function RankinglistofactiviesLayer:back( sender, eventType)

@@ -85,11 +85,11 @@ end
 function Server:getrecentgoldslist_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        -- self:show_float_message("获取最近10次金币奖池金币奖励失败:" .. self.data.err_msg)
+         self:show_float_message("获取最近10次金币奖池金币奖励失败:" .. self.data.err_msg)
         return
     end
     LocalData:Instance():set_getrecentgoldslist(self.data)--保存数据
-    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.RECENTGOLDSLIST_POST)
+    --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.RECENTGOLDSLIST_POST)
    
 end
 

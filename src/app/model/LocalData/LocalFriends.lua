@@ -3,12 +3,12 @@
 -- Date: 2016-06-17 14:46:23
 --
 --查询好友列表
-function LocalData:setfriendlist(setfriendlist)
-	self.setfriendlist=setfriendlist
+function LocalData:setfriendlist(setfriendlis)
+	self.setfriendlis=setfriendlis
 end
 
 function LocalData:getfriendlist()
-	return self.setfriendlist or nil
+	return self.setfriendlis or nil
 end
 
 --领取好友升级奖励积分&金币

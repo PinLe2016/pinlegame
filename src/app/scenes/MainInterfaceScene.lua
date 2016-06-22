@@ -195,6 +195,13 @@ end
 --签到
 function MainInterfaceScene:fun_checkin(  )
 	 self.checkinlayer:setVisible(false)
+        --签到增加的金币
+        
+        local _sig=LocalData:Instance():get_getcheckinhistory()
+        local userdt = LocalData:Instance():get_userdata()
+        userdt["golds"]=_sig["golds"]
+        LocalData:Instance():set_userdata(userdt) --  保存数据
+
 
 	local back_bt=self.checkinlayer:getChildByTag(84)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType  )
