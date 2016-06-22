@@ -8,7 +8,7 @@ end)
 local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧  
 local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
 local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
-
+local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
 function MainInterfaceScene:ctor()
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
@@ -126,8 +126,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	if tag==56 then --惊喜吧
 		 Util:scene_control("SurpriseScene")
 	elseif tag==72 then --活动码
-		self.barrier_bg:setVisible(true)
-		self.kuang:setVisible(true)
+    self:addChild(activitycodeLayer.new())
+		-- self.barrier_bg:setVisible(true)
+		-- self.kuang:setVisible(true)
 	elseif tag==37 then
 		self:addChild(PerInformationLayer.new())
 	elseif tag==399 then --弹出确定

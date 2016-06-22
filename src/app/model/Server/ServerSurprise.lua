@@ -270,7 +270,8 @@ function Server:validateactivitycode_callback()
         self:show_float_message("活动码失败")
         return
     end
-    self:show_float_message("活动码成功")
+
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.ACTIVITYCODE)
     
     -- self:show_float_message("获取指定活动的广告列表")
 end
@@ -289,7 +290,7 @@ function Server:setgamerecord(adid,imageid)
     params={
             gamesettingid=settingid,
             adid=adid,
-            imageid="9D2E7A7B-369C-4719-B4D8-0A4EBC5DDE57",--imageid,
+            imageid="9D2E7A7B-369C-4719-B4D8-0A4EBC5DDE57",
             starttime=os.time(),
             finishtime=os.time(),
             steps="steps1",
