@@ -74,7 +74,29 @@ G_NOTIFICATION_EVENT = {
 
 }
 
+G_SOUND={
+	ACTIVITY="sound/background/activity.mp3",
+	GAMEBG="sound/background/gameBg.mp3",
+	MENUMUSIC="sound/background/menumusic.mp3",
+	PERSONALCHAGE="sound/background/personalchage.mp3",
 
+	--音效
+	COUNTDOWN="sound/effect/321.mp3",
+	BACK="sound/effect/back.mp3",
+	BUTTON="sound/effect/button.mp3",
+	CANCEL="sound/effect/cancel.mp3",
+	DROPPIC="sound/effect/droppic.mp3",
+	ERROR="sound/effect/error.mp3",
+	FALLMONEY="sound/effect/fallmoney.mp3",
+	LOGO="sound/effect/logo.mp3",
+	LOST="sound/effect/lost.mp3",
+	MOVE="sound/effect/move.mp3",
+	PAGECHANGE="sound/effect/pagechange.mp3",
+	PAGEPLAY="sound/effect/pageplay.mp3",
+	PREVIEW="sound/effect/preview.mp3",
+	SETTING="sound/effect/setting.mp3",
+	WIN="sound/effect/win.mp3",
+}
 
 
 
