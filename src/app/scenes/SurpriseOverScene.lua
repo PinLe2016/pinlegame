@@ -27,7 +27,13 @@ function SurpriseOverScene:init(  )
 	self.Laohuji = cc.CSLoader:createNode("Laohuji.csb")
     	self:addChild(self.Laohuji)
     	local image_name=self.Laohuji:getChildByTag(161)
-    	image_name:loadTexture(self.actid["image"])
+    	local image_pic=display.newScale9Sprite(self.actid["image"], image_name:getPositionX(),image_name:getPositionY(), image_name:getContentSize())
+    	self.Laohuji:addChild(image_pic)
+    	-- dump(image_name:getSize())
+    	-- image_name:setScaleX(image_name:getContentSize().width/575)
+
+    	image_name:removeFromParent()
+    	-- image_name:loadTexture(self.actid["image"])
     	self.began_bt=self.Laohuji:getChildByTag(164)
     	self.began_bt:setVisible(true)
     	self.began_bt:addTouchEventListener(function(sender, eventType  )
@@ -88,7 +94,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	elseif tag==163 then --点我有惊喜
 		print("点我有惊喜")
 	elseif tag==160 then --返回
-		Util:scene_control("SurpriseScene")
+		Util:scene_control("MainInterfaceScene")
 	elseif tag==44 then  --结束
 		self:L_end(  )
 		
