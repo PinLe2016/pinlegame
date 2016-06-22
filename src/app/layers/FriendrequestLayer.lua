@@ -120,7 +120,8 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
 	elseif tag==243 then  --分享
-		print("分享")
+		print("分享11")
+		Util:share()
 	elseif tag==230 then  --下次再说
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)

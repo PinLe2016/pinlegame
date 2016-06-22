@@ -159,7 +159,10 @@ function LoginScene:touch_Callback( sender, eventType  )
                  print("提交",_pass,"  ",self._mobilephone)
                  Server:Instance():changepassword(self._mobilephone,_pass)
               elseif tag==291 then
-                  self.p_random=Util:rand(  ) --随机验证码
+                  self.p_random=Util:rand(  ) --随机验证码\
+                   local phone=self.passwordLayer:getChildByTag(293)
+                    self._mobilephone=phone:getString()
+                   print("  ",self._mobilephone)
                   Server:Instance():sendmessage(2,self._mobilephone,self.p_random)
                   print("邀请码"..self.p_random)
              end
