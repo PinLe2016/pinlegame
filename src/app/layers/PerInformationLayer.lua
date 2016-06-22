@@ -492,7 +492,7 @@ function PerInformationLayer:fun_city_info( )
         local city_text=city_scrollview:getChildByTag(96)
 
         self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,cc.size(230, 200))
-        self.adress_city_Itempicker:setPositionX(self.adress_city_Itempicker:getPositionX()-70)
+        self.adress_city_Itempicker:setPositionX(self.adress_city_Itempicker:getPositionX()-10)
         self.adress:getChildByTag(52):addChild(self.adress_city_Itempicker)
 
         --区
