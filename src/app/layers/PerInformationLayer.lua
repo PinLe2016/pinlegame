@@ -24,11 +24,11 @@ function PerInformationLayer:init(  )
        self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
         self:addChild(self.Perinformation)
             
-        self.birthday_bt=self.Perinformation:getChildByTag(245)
+        self.birthday_bt=self.Perinformation:getChildByTag(26):getChildByTag(245)
         self.birthday_bt:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
     end)
-        local city_bt=self.Perinformation:getChildByTag(244)
+        local city_bt=self.Perinformation:getChildByTag(26):getChildByTag(244)
         city_bt:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
     end)
@@ -90,7 +90,8 @@ function PerInformationLayer:perinformation_init(  )
         local registereday=self.Perinformation:getChildByTag(86)  --注册日期
         registereday:setString(tostring(os.date("%Y年%m月%d日",userdt["registertime"])))
         self.genderman=self.Perinformation:getChildByTag(79)  --性别男
-        self.gendergirl=self.Perinformation:getChildByTag(80)  --性别女
+        self.gendergirl=self.Perinformation:getChildByName("CheckBox_2")  --getChildByTag(79)  --性别女
+      
             --性别之间切换
             self.genderman:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
@@ -101,7 +102,7 @@ function PerInformationLayer:perinformation_init(  )
                      end
             end)
 
-            self.gendergirl:addEventListener(function(sender, eventType  )
+            self.gendergirl: addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             self.genderman:setSelected(false)
                             self.gendergirl:setSelected(true)
@@ -109,6 +110,7 @@ function PerInformationLayer:perinformation_init(  )
                              print("关闭")
                      end
             end)
+           
 
 
         if userdt["gender"]==0 then    --0女1男2未知

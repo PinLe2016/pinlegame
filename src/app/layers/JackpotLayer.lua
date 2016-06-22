@@ -12,8 +12,8 @@ end)
 --标题 活动类型 
 function JackpotLayer:ctor(params)
          self.id=params.id
-         Server:Instance():getgoldspooladlist(self.id)  --
          Server:Instance():getgoldspoolbyid(self.id)
+         Server:Instance():getgoldspooladlist(self.id)  --
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
          -- Server:Instance():getgoldspoolrandomgolds(self.id,1)
 
@@ -93,7 +93,7 @@ function JackpotLayer:init(  )
         self._ListView:removeAllItems()
 
 
-          self:information()
+          -- self:information()
           self:audition()
           self:wininformation()
 
@@ -121,7 +121,7 @@ function  JackpotLayer:wininformation(  )
 end
 function JackpotLayer:information( )
              local  list_table=LocalData:Instance():get_getgoldspoolbyid()
-
+             
              local title=self.JackpotScene:getChildByTag(138)  --标题
              title:setString(list_table["title"])
 
@@ -156,7 +156,10 @@ function JackpotLayer:information( )
               end)
 
              self.be_num=self.JackpotScene:getChildByTag(999)  --参与卷
+             dump(list_table["playcardamount"])
              self.playcardamount=tonumber(list_table["playcardamount"])
+             dump(list_table)
+             dump(self.playcardamount)
              self.be_num:setString(list_table["playcardamount"])
              self.coolingtime=list_table["coolingtime"]
              self.is_double = 2  --  1  是翻倍   2  不使用
@@ -164,7 +167,7 @@ function JackpotLayer:information( )
 end
 
 function JackpotLayer:touch_callback( sender, eventType )
-      dump(eventType)
+
       local tag=sender:getTag()
      if eventType == 0 then
              if tag==46 then --开始
@@ -343,6 +346,11 @@ function JackpotLayer:onEnter()
                        function()
                       self:init()
                       end)
+NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
+                       function()
+                                self:information()
+                      end)
+
   --劲舞团开启停止后返回的后台随机金币数量
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self,
                        function()
@@ -355,6 +363,7 @@ function JackpotLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self)
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self)
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
+        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
 end
 
 

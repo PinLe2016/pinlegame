@@ -15,8 +15,10 @@ function LocalData:get_getgoldspoollistbale()
 	return self.getgoldspoollistbale or {}
 end
 
-function LocalData:set_getgoldspoolbyid(getgoldspoolbyid)
-	self.getgoldspoolbyid=getgoldspoolbyid
+function LocalData:set_getgoldspoolbyid(getgoldspoolbyi)
+	self.getgoldspoolbyid=getgoldspoolbyi
+	print("22222222222222222")
+	dump(self.getgoldspoolbyid)
 end
 function LocalData:get_getgoldspoolbyid()
 	return self.getgoldspoolbyid or {}

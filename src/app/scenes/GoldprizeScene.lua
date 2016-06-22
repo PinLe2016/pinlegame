@@ -159,7 +159,9 @@ function GoldprizeScene:pushFloating(text)
 		self.floating_layer:showFloat(text)  
 		
 	else
-		self.barrier_bg:setVisible(false)
+		if self.barrier_bg then 
+			self.barrier_bg:setVisible(false)
+		end
 		
 	end
 end 
