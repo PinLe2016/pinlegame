@@ -15,7 +15,7 @@ function JackpotLayer:ctor(params)
          Server:Instance():getgoldspooladlist(self.id)  --
          Server:Instance():getgoldspoolbyid(self.id)
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
-         Server:Instance():getgoldspoolrandomgolds(self.id,1)
+         -- Server:Instance():getgoldspoolrandomgolds(self.id,1)
 
          self:setNodeEventEnabled(true)--layer添加监听
 
@@ -159,7 +159,7 @@ function JackpotLayer:information( )
              self.playcardamount=tonumber(list_table["playcardamount"])
              self.be_num:setString(list_table["playcardamount"])
              self.coolingtime=list_table["coolingtime"]
-             self.is_double = 1  --  1  是普通   2  是翻倍
+             self.is_double = 2  --  1  是翻倍   2  不使用
 
 end
 
@@ -180,13 +180,13 @@ function JackpotLayer:touch_callback( sender, eventType )
       if tag==46 then --开始
              -- self:act_began( )   
       elseif tag==44 then
-            self.is_double=1
+            self.is_double=2
             print("普通")
       elseif tag==45 then
             if self._carnum>0 then
                print("翻倍",self._carnum)
                self._carnum=self._carnum-1
-               self.is_double=2
+               self.is_double=1
             end
             print("翻倍卡不足")
             self.is_double=2 -- 测试
@@ -214,11 +214,14 @@ function JackpotLayer:act_began( )
         --测试
         self.began_bt:setVisible(false)
         self:scheduleUpdate() 
+        --获取随机金币个数
+        Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
 end
 --劲舞团获取的金币
 function JackpotLayer:fun_win(  )
             --  测试
              local userdt = LocalData:Instance():get_userdata()--用户数据
+             dump(userdt)
              local _randgolds={math.random(50,200),500,1000}
              local _percentage={0.0001,0.0004,0.9995}
             if self.is_double==1 then
@@ -340,11 +343,18 @@ function JackpotLayer:onEnter()
                        function()
                       self:init()
                       end)
+  --劲舞团开启停止后返回的后台随机金币数量
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self,
+                       function()
+                         local random_golds= LocalData:Instance():get_getgoldspoolrandomgolds()
+                         dump(random_golds)
+                      end)
 end
 
 function JackpotLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self)
-     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self)
+     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
 end
 
 
