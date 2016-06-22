@@ -31,6 +31,11 @@ function activitycodeLayer:init(  )
              hongdong_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
+              local back_bt=self.inputcodeLayer:getChildByTag(28)--输入活动吗
+             back_bt:addTouchEventListener((function(sender, eventType  )
+                     self:touch_btCallback(sender, eventType)
+               end))
+
 
     	
             self.activity_ListView=self.inputcodeLayer:getChildByTag(748)--惊喜吧列表
@@ -98,6 +103,10 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	--todo
               elseif tag==745 then
               	--todo
+              elseif tag==28 then
+              	if self.inputcodeLayer then
+              	     self.inputcodeLayer:removeFromParent()
+              	end
               end
             
             

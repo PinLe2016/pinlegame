@@ -37,13 +37,15 @@ function GameScene:funinit(  )
       music_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
-      local restore_bt=self._csb:getChildByTag(23)--查看原图
-      self._restore_bt=restore_bt
-      restore_bt:addTouchEventListener(function(sender, eventType  )
+      self.restore_bt=self._csb:getChildByTag(23)--查看原图
+      self._restore_bt=self.restore_bt
+      self.restore_bt:setTouchEnabled(false)
+      self.restore_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
-       local suspended_bt=self._csb:getChildByTag(44)--暂停
-      suspended_bt:addTouchEventListener(function(sender, eventType  )
+       self.suspended_bt=self._csb:getChildByTag(44)--暂停
+       self.suspended_bt:setTouchEnabled(false)
+       self.suspended_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
 
@@ -76,6 +78,8 @@ function GameScene:funinit(  )
                  if  self._originalimage then
                      self._originalimage:removeFromParent()
                  end
+                 self.suspended_bt:setTouchEnabled(true)
+                 self.restore_bt:setTouchEnabled(true)
                     
       end
       local callfunc = cc.CallFunc:create(stopAction)
