@@ -72,6 +72,7 @@ function SurpriseOverLayer:touch_callback( sender, eventType )
 		end
 	elseif tag==165 then --分享
 		print("分享")
+		Util:share()
 	elseif tag==160 then --返回
 	          	--Util:scene_control("SurpriseScene")
 	elseif tag==44 then  --结束

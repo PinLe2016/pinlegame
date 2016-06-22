@@ -36,6 +36,9 @@ function OnerecordLayer:Onerecord_init(  )
 	self.rank_list:removeAllItems()
 	self.list_table=LocalData:Instance():get_getactivitypointsdetail()
             local  One_data=self.list_table["mypointslist"]
+            if next(One_data) ==nil then
+              return
+            end
             local num=One_data[#One_data]["cycle "]
             for i=1,#One_data do
                   self.rank_list:pushBackDefaultItem()

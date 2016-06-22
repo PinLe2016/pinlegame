@@ -84,6 +84,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
 	elseif tag==165 then --分享
 		print("分享")
+		Util:share()
 	elseif tag==163 then --点我有惊喜
 		print("点我有惊喜")
 	elseif tag==160 then --返回

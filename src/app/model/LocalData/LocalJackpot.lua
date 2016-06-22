@@ -28,3 +28,11 @@ end
 function LocalData:get_getrecentgoldslist()
 	return self.getrecentgoldslist or {}
 end
+
+
+function LocalData:set_getgoldspoolrandomgolds(getgoldspoolrandomgolds)
+	self.getgoldspoolrandomgolds=getgoldspoolrandomgolds
+end
+function LocalData:get_getgoldspoolrandomgolds()
+	return self.getgoldspoolrandomgolds or nil
+end
