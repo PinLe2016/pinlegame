@@ -7,6 +7,7 @@
 --3.5.1 获取活动专区列表
 
 --status	是	要获取的数据状态	String	0未开始1已开始2已结束3我的惊喜
+-- 4我的未结束活动码活动 5我的已结束活动码活动
 function Server:getactivitylist(status,pageno)
     local params = {}
     params={
