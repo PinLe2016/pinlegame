@@ -54,6 +54,7 @@ function JackpotLayer:init(  )
         end)
 
         local _advertiImg=advertiPa:getChildByTag(155)
+
         _advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
         if #jaclayer_data>=2 then
              for i=2,#jaclayer_data do
@@ -164,7 +165,7 @@ function JackpotLayer:information( )
              self.be_num=self.JackpotScene:getChildByTag(999)  --参与卷
              dump(list_table["playcardamount"])
              self.playcardamount=tonumber(list_table["playcardamount"])
-             dump(list_table)
+             -- dump(list_table)
              dump(self.playcardamount)
              self.be_num:setString(list_table["playcardamount"])
              self.coolingtime=list_table["coolingtime"]

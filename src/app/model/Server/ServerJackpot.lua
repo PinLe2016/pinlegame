@@ -8,14 +8,14 @@
 
 function Server:getgoldspoollist(params)
        local _params = params
-       dump(_params)
+       -- dump(_params)
    
     self:request_http("getgoldspoollist" , _params ); 
 end
 
 
 function Server:getgoldspoollist_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
@@ -30,14 +30,14 @@ function Server:getgoldspooladlist(activityid)
        _params={
             goldspoolid=activityid
    }
-       dump(_params)
+       -- dump(_params)
    
     self:request_http("getgoldspooladlist" , _params ); 
 end
 
 
 function Server:getgoldspooladlist_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
@@ -60,7 +60,7 @@ end
 
 
 function Server:getgoldspoolbyid_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
@@ -83,7 +83,7 @@ end
 
 
 function Server:getrecentgoldslist_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
          self:show_float_message("获取最近10次金币奖池金币奖励失败:" .. self.data.err_msg)
         return
@@ -108,7 +108,7 @@ end
 
 
 function Server:getgoldspoolrandomgolds_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取金币奖池随机金币奖励失败:" .. self.data.err_msg)
         return

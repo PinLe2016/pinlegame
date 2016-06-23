@@ -26,6 +26,7 @@ function debrisLayer:ctor(params)
         self.col=params.col
         self.count=params.row* params.col
         self.fragment_sprite_bg = display.newScale9Sprite(self.filename, self.point.x,self.point.y, cc.size(self._size.width,self._size.height))
+        
         self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
         self.content_size = self._size
          self.tp=params.tp
@@ -53,6 +54,9 @@ function debrisLayer:refresh_table()
    for i=1,row do
         for j=1,col do
                 local fragment_sprite = display.newScale9Sprite(self.filename, 0,0, cc.size(self._size.width,self._size.height))
+                if not fragment_sprite then
+                    fragment_sprite=display.newScale9Sprite("httpwww.pinlegame.comGameImageaffbd109-a341-4f1c-8b3f-edb581f01c68.jpg", 0,0, cc.size(self._size.width,self._size.height))
+                end
                 fragment_sprite:setAnchorPoint(0, 0)
                 local po = self._size
                 local rect = cc.rect(0,0, po.width/row-3, po.height/col-3)
