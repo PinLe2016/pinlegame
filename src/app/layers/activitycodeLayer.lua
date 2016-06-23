@@ -105,11 +105,7 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	--todo
               elseif tag==744 then
               	if self.inputcodeLayer then
-<<<<<<< HEAD
                   self:unscheduleUpdate()
-=======
-                    self:unscheduleUpdate()
->>>>>>> dbbd37c55cbe4675d4361f36e341572e376eeec5
               	     self.inputcodeLayer:removeFromParent()
               	end
               end
