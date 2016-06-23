@@ -38,9 +38,9 @@ function activitycodeLayer:init(  )
 
 
     	
-            self.activity_ListView=self.inputcodeLayer:getChildByTag(748)--惊喜吧列表
-	self.activity_ListView:setItemModel(self.activity_ListView:getItem(0))
-	self.activity_ListView:removeAllItems()
+    self.activity_ListView=self.inputcodeLayer:getChildByTag(748)--惊喜吧列表
+    self.activity_ListView:setItemModel(self.activity_ListView:getItem(0))
+    -- self.activity_ListView:removeAllItems()
 
 
 	 local true_bt=self.inputcodeLayer:getChildByTag(746)--关注活动
@@ -105,7 +105,11 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	--todo
               elseif tag==744 then
               	if self.inputcodeLayer then
+<<<<<<< HEAD
                   self:unscheduleUpdate()
+=======
+                    self:unscheduleUpdate()
+>>>>>>> dbbd37c55cbe4675d4361f36e341572e376eeec5
               	     self.inputcodeLayer:removeFromParent()
               	end
               end
@@ -147,7 +151,7 @@ function activitycodeLayer:actimages_list( )
          	Server:Instance():request_pic(sup_data[i]["ownerurl"],com_) --下载图片
          end
 end
-function activitycodeLayer:act_list(  )
+function activitycodeLayer:act_list()
 	
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
@@ -189,6 +193,8 @@ function activitycodeLayer:act_list(  )
           end
 
           self.list_table=LocalData:Instance():get_getactivitylist()
+          -- dump(self.list_table)
+          self.activity_ListView:removeAllItems()
           local  sup_data=self.list_table["game"]
           for i=self.tablecout+1,#sup_data do
           	self.activity_ListView:pushBackDefaultItem()
@@ -220,12 +226,13 @@ end
         end
   end
 function activitycodeLayer:onEnter()
-	LocalData:Instance():set_getactivitylist(nil)
 	self.tablecout=0
+  LocalData:Instance():set_getactivitylist(nil)
 	Server:Instance():getactivitylist(tostring(4),1)  --self.ser_status   self.sur_pageno
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
                          --print("7-------------")  --下载图片
+                        
                        self:actimages_list()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
@@ -235,6 +242,8 @@ function activitycodeLayer:onEnter()
                       end)
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYCODE, self,
                        function()
+                        self:unscheduleUpdate()
+                        LocalData:Instance():set_getactivitylist(nil)
                          Server:Instance():getactivitylist(tostring(4),1)   --再次刷新
                       end)--
 
