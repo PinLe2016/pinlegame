@@ -11,6 +11,7 @@ local JackpotLayer = class("JackpotLayer", function()
 end)
 --标题 活动类型 
 function JackpotLayer:ctor(params)
+         self.is_cooltime=true
          self.id=params.id
          Server:Instance():getgoldspoolbyid(self.id)
          Server:Instance():getgoldspooladlist(self.id)  --
@@ -168,7 +169,7 @@ function JackpotLayer:information( )
              -- dump(list_table)
              dump(self.playcardamount)
              self.be_num:setString(list_table["playcardamount"])
-             self.coolingtime=list_table["coolingtime"]
+             self.coolingtime=list_table["coolingtime"]   --  0 可以玩  -1  今天不能玩
              self.is_double = 2  --  1  是翻倍   2  不使用
 
 end
@@ -176,11 +177,11 @@ end
 function JackpotLayer:touch_callback( sender, eventType )
 
       local tag=sender:getTag()
-     if eventType == 0 then
-             if tag==46 then --开始
-             self:act_began( )   
-           end
-      end
+     -- if eventType == 0 then
+     --         if tag==46 then --开始
+     --         self:act_began( )   
+     --       end
+     --  end
 
       if eventType ~= ccui.TouchEventType.ended then
          return
@@ -188,7 +189,7 @@ function JackpotLayer:touch_callback( sender, eventType )
       
       dump(tag)
       if tag==46 then --开始
-             -- self:act_began( )   
+              self:act_began( )   
       elseif tag==44 then
             self.is_double=2
             print("普通")
@@ -202,9 +203,9 @@ function JackpotLayer:touch_callback( sender, eventType )
             self.is_double=2 -- 测试
             self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
-        
-                 -- local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-                 -- self.jinbi=_tablegods["golds"]
+                 self.end_bt:setTouchEnabled(false)
+                 local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
+                 self.jinbi=_tablegods["golds"]
              self:unscheduleUpdate()
                 local function stopAction()
                   self:fun_win()
@@ -225,19 +226,38 @@ function JackpotLayer:touch_callback( sender, eventType )
       end
 end
 function JackpotLayer:act_began( )
+       self.end_bt:setTouchEnabled(true)
+       if self.is_cooltime==false then
+           self:fun_cool(  )
+            return
+       end
+       if self.playcardamount<=0 then
+           Server:Instance():prompt("参与卷不够，请您充值")
+           return
+       end
+        if self.coolingtime~=0 then
+           Server:Instance():prompt("冷却时间不够，请等待")
+           return
+       end
        if self.playcardamount >0  and self.coolingtime==0 then
              print("拥有参与卷")
+             self.is_cooltime=false
+        
              self.playcardamount=self.playcardamount-1
              self.began_bt:setVisible(false)
              self:scheduleUpdate()
+             Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
+             self.be_num:setString(tostring(self.playcardamount))
+             return
         end
         print("没有参与卷")
-        self.be_num:setString(tostring(self.playcardamount))
+         
         --测试
-        self.began_bt:setVisible(false)
-        self:scheduleUpdate() 
+        -- self.began_bt:setVisible(false)
+        -- self:scheduleUpdate() 
+        -- Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
         --获取随机金币个数
-        Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
+        
 end
 --劲舞团获取的金币
 function JackpotLayer:fun_win(  )
@@ -274,6 +294,7 @@ end
            self._time=self._time-1
            self._countdown:setString(tostring(self._time))
            if self._time==0 then
+            self.is_cooltime=true
               self.mask_bg2:setVisible(false) 
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
            end
@@ -311,13 +332,13 @@ function JackpotLayer:cool_callback( sender, eventType)
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
 
       elseif tag==53 then  
-              self.acthua:setVisible(true)
-              self.roleAction:gotoFrameAndPlay(0,60, false)
-              if self.roleAction:getEndFrame()~=60 then
-                  print("12223")
-                  self.acthua:setVisible(false)
+            --   self.acthua:setVisible(true)
+            --   self.roleAction:gotoFrameAndPlay(0,60, false)
+            --   if self.roleAction:getEndFrame()~=60 then
+            --       print("12223")
+            --       self.acthua:setVisible(false)
                   
-            end
+            -- end
      
       end
 

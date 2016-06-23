@@ -18,7 +18,7 @@ end)
 
 function debrisLayer:ctor(params)
        self:setNodeEventEnabled(true)--layer添加监听
-        self.filename=params.filename
+        self.filename=  params.filename
         self.point=params.point
         self._size=params._size
         self.row=params.row

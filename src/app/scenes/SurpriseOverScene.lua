@@ -93,12 +93,8 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	local activitypoints=LocalData:Instance():get_getactivitypoints()
 	local tag=sender:getTag()
 	if tag==164 then --开始
-		self.began_bt:setVisible(false)
-	            self.end_bt:setVisible(false)
-		for i=1,#self. _table do
-			self. _table[i]:startGo()
-		end
-		dump(self.actid["act_id"])
+          
+		
 		Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
 	elseif tag==165 then --分享
 		print("分享")
@@ -178,8 +174,18 @@ end
 function SurpriseOverScene:onEnter()
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
-	                      	self.began_bt:setVisible(false)
-		            self.end_bt:setVisible(true)
+                  local _table=LocalData:Instance():get_getactivitypoints()
+	           if _table["remaintimes"]==0 then
+                   Server:Instance():prompt("您参与次数已经用完")
+                end
+                  self.began_bt:setVisible(false)
+                  self.end_bt:setVisible(true)
+                  for i=1,#self. _table do
+                      self. _table[i]:startGo()
+                  end
+                  dump(self.actid["act_id"])
+
+
                       end)
 end
 
