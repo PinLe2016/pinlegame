@@ -152,7 +152,7 @@ end
 function debrisLayer:sort_sure()
     local po = self.fragment_sprite_bg:getContentSize()
     dump(po)
-    local pos_x, pos_y = 0,0
+    local pos_x, pos_y = self.point.x,self.point.y
     local dex = 1
     for i=1,self.row do --
         for j=1,self.col do --hang
