@@ -13,7 +13,15 @@ function LocalData:get_userdata()
 	return json.decode(user_data) or nil
 end
 
+function LocalData:set_user_head(userdata)
+	dump(userdata)
+	cc.UserDefault:getInstance():setStringForKey("user_head" ,userdata)
+end
 
+function LocalData:get_user_head()
+	local user_head=cc.UserDefault:getInstance():getStringForKey("user_head","cre/httpgame.pinlegame.comheadheadicon_0.jpg")
+	return user_head or nil
+end
 --16获取玩家手机归属地
 
 function LocalData:set_getusercitybyphone(getusercity)

@@ -62,13 +62,14 @@ function PerInformationLayer:perinformation_init(  )
 
      local  userdata=LocalData:Instance():get_user_data() --用户数据
      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-     -- dump(userdata)
+      -- dump(userdata)
 
      local userdt = LocalData:Instance():get_userdata()--
      userdt["birthday"]=userdatainit["birthday"]
      userdt["cityid"]=userdatainit["cityid"]
      userdt["cityname"]=userdatainit["cityname"]
      userdt["gender"]=userdatainit["gender"]
+     userdt["nickname"]=userdatainit["nickname"]
      -- userdt["golds"]=userdatainit["golds"]
      -- userdt["points"]=userdatainit["points"]
      userdt["provincename"]=userdatainit["provincename"]  
@@ -78,9 +79,10 @@ function PerInformationLayer:perinformation_init(  )
     local  bg=self.Perinformation:getChildByTag(26)
     self.image_head=bg:getChildByTag(67)  --头像
         self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
-        self.image_head:loadTexture(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
-        local name=self.Perinformation:getChildByTag(68)  --名字
-        name:setString(userdt["nickname"])
+        dump(LocalData:Instance():get_user_head())
+        self.image_head:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+        self._Pname=self.Perinformation:getChildByTag(68)  --名字
+        self._Pname:setString(userdt["nickname"])
         local golds=self.Perinformation:getChildByTag(73)  --金币
         golds:setString(userdt["golds"])
         local rankname=self.Perinformation:getChildByTag(76)  --等级
@@ -265,6 +267,7 @@ function PerInformationLayer:head_callback( sender, eventType)
                 
             elseif tag==24 then
                 self.image_head:loadTexture(tostring("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"))
+                LocalData:Instance():set_user_head("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg")
                  if  self.head_csb then
                     self.head_csb:removeFromParent()
                 end
@@ -281,8 +284,9 @@ function PerInformationLayer:savedata( )
 
 
     local  userdata=LocalData:Instance():get_user_data()
-    local  loginname=userdata["loginname"]
-    local  nickname=userdata["nickname"]  
+    print("nanannana   ",self._Pname:getString())
+    local  loginname= userdata["loginname"]
+    local  nickname=self._Pname:getString()--userdata["nickname"]  
     local  provincename=self._provincename:getString() 
     local  cityid=1
     local  cityname=self._cityname:getString() 
