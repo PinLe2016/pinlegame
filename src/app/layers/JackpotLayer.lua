@@ -31,7 +31,13 @@ function JackpotLayer:init(  )
 
   	  self.JackpotScene = cc.CSLoader:createNode("JackpotScene.csb")
         self:addChild(self.JackpotScene)
-        
+        self.roleAction = cc.CSLoader:createTimeline("JackpotScene.csb")
+        self:runAction(self.roleAction)
+
+         self.acthua=self.JackpotScene:getChildByTag(213)  --金币动画界面
+         self.jinbi=self.acthua:getChildByTag(214)  --金币数量
+         self.acthua:setVisible(false)
+
         self.advertiPv=self.JackpotScene:getChildByTag(151)
         local advertiPa=self.advertiPv:getChildByTag(152)
 
@@ -194,8 +200,20 @@ function JackpotLayer:touch_callback( sender, eventType )
             print("翻倍卡不足")
             self.is_double=2 -- 测试
             self.car_num:setString(tostring(self._carnum) )
-      elseif tag==155 then  --劲舞团结束
-             self:fun_win()
+      elseif tag==155 then  --劲舞团结束  测试动画 
+        
+                 -- local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
+                 -- self.jinbi=_tablegods["golds"]
+             self:unscheduleUpdate()
+                local function stopAction()
+                  self:fun_win()
+                  self.acthua:setVisible(false)
+                end
+              self.acthua:setVisible(true)
+              self.roleAction:gotoFrameAndPlay(0,60, false)
+              local callfunc = cc.CallFunc:create(stopAction)
+              self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(5),callfunc  ))
+             
       elseif tag==47 then  --获取参与卷
              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
              local  jaclayer_data=list_table["ads"]
@@ -244,8 +262,8 @@ function JackpotLayer:fun_win(  )
            
             LocalData:Instance():set_userdata(userdt) --  保存数据
 
-            self.began_bt:setVisible(true)
-            self:unscheduleUpdate()
+             self.began_bt:setVisible(true)
+            --  self:unscheduleUpdate()
             --  冷却时间界面
             self:fun_cool()
 
@@ -291,8 +309,14 @@ function JackpotLayer:cool_callback( sender, eventType)
              self.mask_bg2:setVisible(false) 
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
 
-      elseif tag==53 then
-         print("获取金币")
+      elseif tag==53 then  
+              self.acthua:setVisible(true)
+              self.roleAction:gotoFrameAndPlay(0,60, false)
+              if self.roleAction:getEndFrame()~=60 then
+                  print("12223")
+                  self.acthua:setVisible(false)
+                  
+            end
      
       end
 
@@ -308,10 +332,10 @@ function JackpotLayer:audition(  )
       self.po_x=self.progress_bt:getPositionX()+ self.w_size  
 end
 function JackpotLayer:update(dt)
-      if self.progress_bt:getPositionX()>=self.po_x-5 then
-         self.time=  -1
+      if self.progress_bt:getPositionX()>=self.po_x-45 then
+         self.time=  -15
       elseif self.progress_bt:getPositionX()<=self.position_x then
-         self.time= 1
+         self.time= 15
       end
       self.progress_bt:setPositionX(self.progress_bt:getPositionX() +self.time )
      

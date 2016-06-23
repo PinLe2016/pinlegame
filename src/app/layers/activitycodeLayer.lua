@@ -40,7 +40,9 @@ function activitycodeLayer:init(  )
     	
     self.activity_ListView=self.inputcodeLayer:getChildByTag(748)--惊喜吧列表
     self.activity_ListView:setItemModel(self.activity_ListView:getItem(0))
+
     self.activity_ListView:removeAllItems()
+
 
 
 	 local true_bt=self.inputcodeLayer:getChildByTag(746)--关注活动
@@ -105,7 +107,9 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	--todo
               elseif tag==744 then
               	if self.inputcodeLayer then
+
                   self:unscheduleUpdate()
+
               	     self.inputcodeLayer:removeFromParent()
               	end
               end
