@@ -23,7 +23,7 @@ function DetailsLayer:init(  )
             self.title=activitybyid["title"]
 	local  function back_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
-		     Util:scene_control("SurpriseScene",self.id)
+		     Util:scene_control("MainInterfaceScene",self.id)
 		     
 		end
 	end

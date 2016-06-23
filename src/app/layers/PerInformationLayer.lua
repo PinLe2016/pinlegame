@@ -62,7 +62,7 @@ function PerInformationLayer:perinformation_init(  )
 
      local  userdata=LocalData:Instance():get_user_data() --用户数据
      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-     -- dump(userdatainit)
+     -- dump(userdata)
 
      local userdt = LocalData:Instance():get_userdata()--
      userdt["birthday"]=userdatainit["birthday"]
@@ -504,7 +504,10 @@ function PerInformationLayer:fun_city_info( )
         self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
 
         local  userdata=LocalData:Instance():get_getuserinfo()
-        -- dump(userdata)
+        dump(userdata)
+         local  userdatainit=LocalData:Instance():get_user_data() --用户数据
+        local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
+        city_curr:setString(userdatainit["provincename"]..userdatainit["cityname"])
         --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属
         self.province="1"
         self.city="2"
@@ -524,6 +527,11 @@ function PerInformationLayer:fun_city_info( )
             self.province=phone_location["provincename"]
             self.city=phone_location["cityname"]
             self.conty="1"
+        end
+
+        if self.province ~="1" then
+            local city_gps=self.adress:getChildByTag(52):getChildByTag(58)
+            city_gps:setString(self.province..self.city)
         end
         dump(pinle_location:getProvince())
         dump(pinle_location:getCity())

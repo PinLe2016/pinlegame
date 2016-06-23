@@ -40,7 +40,9 @@ function activitycodeLayer:init(  )
     	
     self.activity_ListView=self.inputcodeLayer:getChildByTag(748)--惊喜吧列表
     self.activity_ListView:setItemModel(self.activity_ListView:getItem(0))
-     self.activity_ListView:removeAllItems()
+
+    self.activity_ListView:removeAllItems()
+
 
 
 	 local true_bt=self.inputcodeLayer:getChildByTag(746)--关注活动
@@ -106,7 +108,8 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               elseif tag==744 then
               	if self.inputcodeLayer then
 
-                    self:unscheduleUpdate()
+                  self:unscheduleUpdate()
+
               	     self.inputcodeLayer:removeFromParent()
               	end
               end
@@ -151,6 +154,7 @@ end
 function activitycodeLayer:act_list()
 	
           self.list_table=LocalData:Instance():get_getactivitylist()
+          dump(self.list_table)
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
            if self.tablecout<self.sup_data_num then
@@ -191,7 +195,7 @@ function activitycodeLayer:act_list()
 
           self.list_table=LocalData:Instance():get_getactivitylist()
           -- dump(self.list_table)
-          self.activity_ListView:removeAllItems()
+          -- self.activity_ListView:removeAllItems()
           local  sup_data=self.list_table["game"]
           for i=self.tablecout+1,#sup_data do
           	self.activity_ListView:pushBackDefaultItem()
