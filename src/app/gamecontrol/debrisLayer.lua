@@ -23,7 +23,7 @@ function debrisLayer:ctor(params)
         self.fragment_sprite_bg = display.newScale9Sprite(self.filename, self.point.x,self.point.y, cc.size(self._size.width,self._size.height))
         self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
         self.content_size = self._size
-
+       
         self:addChild(self.fragment_sprite_bg)
         self.fragment_sprite_bg:setOpacity(0)
 
@@ -191,15 +191,15 @@ function debrisLayer:saw_issuccess()
         local pos_suss=self.fragment_success[i]
         print("wwdwaf ",math.floor(pos.x),math.floor(pos_suss.x))
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
-            print("失败")
+            print("失败",self.tp)
             
-            -- Util:scene_control("SurpriseOverScene")
-    --Server:Instance():setgamerecord()
+             Util:scene_control("SurpriseOverScene",)  
+            Server:Instance():setgamerecord()
             return
         end
     end
     print("成功")
-    Util:scene_control("SurpriseOverScene")
+    Util:scene_controlid("SurpriseOverScene",{tp=self.tp})  
     Server:Instance():setgamerecord()
 end
 

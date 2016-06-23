@@ -64,11 +64,11 @@ function GameScene:funinit(  )
                    if self.type=="surprise" then
                       local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
                       local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
-                     ,row=4,col=5,_size=_size,point=point,adid=self.adid})
+                     ,row=4,col=5,_size=_size,point=point,adid=self.adid,tp=1})
                       self._csb:addChild(deblayer)
                   elseif self.type=="audition" then
                       local deblayer= debrisLayer.new({filename=self.image
-                     ,row=4,col=5,_size=_size,point=point,adid=self.adid})
+                     ,row=4,col=5,_size=_size,point=point,adid=self.adid,tp=2})
                       self._csb:addChild(deblayer)
                   end
 

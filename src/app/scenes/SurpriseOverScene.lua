@@ -14,8 +14,9 @@
 local SurpriseOverScene = class("SurpriseOverScene", function()
             return display.newScene("SurpriseOverScene")
 end)
-function SurpriseOverScene:ctor()--params
-        
+function SurpriseOverScene:ctor(params)--params
+        self.tp=params.tp
+        print("sdifdsfjdsjf  ", self.tp)
         self.floating_layer = FloatingLayerEx.new()
         self.floating_layer:addTo(self,1000)
         self.actid=LocalData:Instance():get_actid()
@@ -26,14 +27,25 @@ function SurpriseOverScene:init(  )
 
 	self.Laohuji = cc.CSLoader:createNode("Laohuji.csb")
     	self:addChild(self.Laohuji)
-    	local image_name=self.Laohuji:getChildByTag(161)
-    	local image_pic=display.newScale9Sprite(self.actid["image"], image_name:getPositionX(),image_name:getPositionY(), image_name:getContentSize())
-    	self.Laohuji:addChild(image_pic)
-    	-- dump(image_name:getSize())
-    	-- image_name:setScaleX(image_name:getContentSize().width/575)
+    	if self.tp==2 then
+    		local image_name=self.Laohuji:getChildByTag(161)
+    	            image_name:setVisible(false)
+	    	local _imagename=self.Laohuji:getChildByTag(336)
+	    	_imagename:loadTexture(self.actid["image"])
+	 else
+	  	local image_name=self.Laohuji:getChildByTag(161)
+    	            image_name:setVisible(true)
+	    	
+	    	image_name:loadTexture(self.actid["image"])
+    	end
+    	
+    	-- local image_pic=display.newScale9Sprite(self.actid["image"], image_name:getPositionX(),image_name:getPositionY(), image_name:getContentSize())
+    	-- self.Laohuji:addChild(image_pic)
+    	-- -- dump(image_name:getSize())
+    	-- -- image_name:setScaleX(image_name:getContentSize().width/575)
 
-    	image_name:removeFromParent()
-    	-- image_name:loadTexture(self.actid["image"])
+    	-- image_name:removeFromParent()
+    	 
     	self.began_bt=self.Laohuji:getChildByTag(164)
     	self.began_bt:setVisible(true)
     	self.began_bt:addTouchEventListener(function(sender, eventType  )
