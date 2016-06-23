@@ -105,7 +105,11 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	--todo
               elseif tag==744 then
               	if self.inputcodeLayer then
+<<<<<<< HEAD
+                  self:unscheduleUpdate()
+=======
                     self:unscheduleUpdate()
+>>>>>>> dbbd37c55cbe4675d4361f36e341572e376eeec5
               	     self.inputcodeLayer:removeFromParent()
               	end
               end
@@ -157,7 +161,7 @@ function activitycodeLayer:act_list()
                    print("小于",self.tablecout ,"  ",self.sup_data_num)
            elseif self.tablecout>self.sup_data_num then
                  print("大于")
-                 activity_ListView:removeAllItems() 
+                 self.activity_ListView:removeAllItems() 
             else
                  return
            end
@@ -219,16 +223,10 @@ end
             local _table=Util:FormatTime_colon(sup_data[i]["finishtime"]-sup_data[i]["begintime"]-self.time)
             local dayText=cell:getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
-            -- local hoursText=cell:getChildByTag(39)
-            -- hoursText:setString(tostring(_table[2]))
-            -- local pointsText=cell:getChildByTag(40)
-            -- pointsText:setString(tostring(_table[3]))
-            -- local secondsText=cell:getChildByTag(41)
-            -- secondsText:setString(tostring(_table[4]))
+         
         end
   end
 function activitycodeLayer:onEnter()
-	
 	self.tablecout=0
   LocalData:Instance():set_getactivitylist(nil)
 	Server:Instance():getactivitylist(tostring(4),1)  --self.ser_status   self.sur_pageno
