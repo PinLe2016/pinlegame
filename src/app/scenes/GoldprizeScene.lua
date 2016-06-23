@@ -162,7 +162,7 @@ function GoldprizeScene:pushFloating(text)
 		if self.barrier_bg then 
 			self.barrier_bg:setVisible(false)
 		end
-		
+		self.floating_layer:showFloat(text)
 	end
 end 
 
@@ -171,7 +171,6 @@ function GoldprizeScene:push_buffer(is_buffer)
        self.floating_layer:show_http(is_buffer) 
        
 end 
-
 
 
 
