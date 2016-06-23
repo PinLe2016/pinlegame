@@ -45,7 +45,11 @@ function SurpriseOverScene:init(  )
     	-- -- image_name:setScaleX(image_name:getContentSize().width/575)
 
     	-- image_name:removeFromParent()
-    	 
+      --测试  初始化
+    local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
+    _betgolds:setString("20")
+
+
     	self.began_bt=self.Laohuji:getChildByTag(164)
     	self.began_bt:setVisible(true)
     	self.began_bt:addTouchEventListener(function(sender, eventType  )
@@ -95,7 +99,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	if tag==164 then --开始
           
 		
-		Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
+		Server:Instance():getactivitypoints("f491cc2c-03fb-4c75-8de3-049e97278f97")  --老虎机测试self.actid["act_id"]
 	elseif tag==165 then --分享
 		print("分享")
 		Util:share()
@@ -161,7 +165,8 @@ function SurpriseOverScene:init_data(  )
             bestscore_text:setString(tostring(activitypoints["bestpoints"]))
             local rank_text=self.Laohuji:getChildByTag(64)--排名
             rank_text:setString(tostring(activitypoints["rank"]))
-
+            local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
+             _betgolds:setString(tostring(activitypoints["betgolds"]))
     --         local function stopAction()
     --             self.began_bt:setVisible(true)
 	   -- self.end_bt:setVisible(false)

@@ -17,13 +17,20 @@ local debrisLayer = require("app.layers.debrisLayer")
 function GameScene:ctor(params)
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,-1)
-
+    self._time=10
       self.type=params.type
       self.image= params.image
       self.adid=params.adid
-      local csb = cc.CSLoader:createNode("XSHGameScene.csb")
+      if self.type=="daojishi" then
+         self.countdownLayer = cc.CSLoader:createNode("countdownLayer.csb")
+         self:addChild(self.countdownLayer)
+      else
+         local csb = cc.CSLoader:createNode("XSHGameScene.csb")
       self._csb=csb
       self:addChild(csb)
+      end
+     
+      
      
 end
 function GameScene:funinit(  )
@@ -185,6 +192,32 @@ function GameScene:originalimage(dex)
         
 
 end
+ function GameScene:countdown()
+           self._time=self._time-1
+           self._dajishi:setString(tostring(self._time))
+           if self._time==0 then
+              Util:scene_control("SurpriseOverScene")
+              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
+           end
+end
+function GameScene:fun_countdown( )
+      self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self:countdown()
+              end,1.0, false)
+end
+
+function GameScene:tupian(  )
+                 local _back=self.countdownLayer:getChildByTag(587)  --返回键
+                   _back:setVisible(false)
+
+                     local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+                     local  _image=self.countdownLayer:getChildByTag(590)
+                     _image:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))
+                    self._dajishi=self.countdownLayer:getChildByTag(589)
+                    self._dajishi:setString("10")
+                    self:fun_countdown( )
+
+end
 function GameScene:imgurl_download(  )
          local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
          local _table={}
@@ -199,6 +232,8 @@ function GameScene:onEnter()
     elseif self.type=="audition" then
        self:funinit()
        print("2222222")
+    elseif self.type=="daojishi" then
+      Server:Instance():getactivityadlist(self.adid)--发送请求
      end
     
 
@@ -215,7 +250,13 @@ function GameScene:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self,
                        function()
                            print("完成下载图片")
-                           self:funinit()
+                           if self.type=="surprise" then
+                                --self:funinit()
+                            elseif self.type=="daojishi" then
+                                 self:tupian(  )
+                           end
+                           
+                           
                       end)
 
 end

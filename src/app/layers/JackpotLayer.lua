@@ -198,9 +198,9 @@ function JackpotLayer:touch_callback( sender, eventType )
                self._carnum=self._carnum-1
                self.is_double=1
             end
-            print("翻倍卡不足")
-            self.is_double=2 -- 测试
-            self.car_num:setString(tostring(self._carnum) )
+            -- print("翻倍卡不足")
+            -- self.is_double=2 -- 测试
+            -- self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
                  self.end_bt:setTouchEnabled(false)
                  local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()

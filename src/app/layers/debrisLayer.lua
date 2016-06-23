@@ -197,14 +197,14 @@ function debrisLayer:saw_issuccess()
         local pos_suss=self.fragment_success[i]
         print("wwdwaf ",math.floor(pos.x),math.floor(pos_suss.x))
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
-     --        print("失败",self.tp)  
-     --          Util:scene_controlid("SurpriseOverScene",{tp=self.tp})  
-     -- Server:Instance():setgamerecord(self.adid)
+            print("失败",self.tp)  
+              Util:scene_controlid("GoldprizeScene"," ")  
+           Server:Instance():setgamerecord(self.adid)
             return
         end
     end
-    print("成功")
-     Util:scene_controlid("SurpriseOverScene",{tp=self.tp})  
+    print("成功")  --self.adid
+     Util:scene_controlid("GoldprizeScene"," ")  
     Server:Instance():setgamerecord(self.adid)
 end
 

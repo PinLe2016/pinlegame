@@ -231,6 +231,8 @@ function Util:scene_controlid(scene,params)
         display.replaceScene(require(str_scene).new(params))-- （.与：区别）
 end
 
+
+
 function Util:tableLength(T)
 	local count = 0
 	for _ in pairs(T) do count = count + 1 end
