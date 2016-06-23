@@ -31,7 +31,7 @@ function activitycodeLayer:init(  )
              hongdong_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
-              local back_bt=self.inputcodeLayer:getChildByTag(28)--输入活动吗
+              local back_bt=self.inputcodeLayer:getChildByTag(744)--输入活动吗
              back_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
@@ -46,7 +46,7 @@ function activitycodeLayer:init(  )
 	 local true_bt=self.inputcodeLayer:getChildByTag(746)--关注活动
              true_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
-		         -- LocalData:Instance():set_getactivitylist(nil)--数据制空
+		         LocalData:Instance():set_getactivitylist(nil)--数据制空
 	                      self.tablecout=0  
 	                      Server:Instance():getactivitylist(tostring(4),1)
 	                      self.activity_ListView:removeAllItems()
@@ -61,7 +61,7 @@ function activitycodeLayer:init(  )
              local true_bt=self.inputcodeLayer:getChildByTag(745)--关注活动
              true_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
-                            --LocalData:Instance():set_getactivitylist(nil)--数据制空
+                            LocalData:Instance():set_getactivitylist(nil)--数据制空
 	                 self.tablecout=0  
 	                 Server:Instance():getactivitylist(tostring(5),1)
 	                 self.activity_ListView:removeAllItems()
@@ -103,8 +103,9 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	--todo
               elseif tag==745 then
               	--todo
-              elseif tag==28 then
+              elseif tag==744 then
               	if self.inputcodeLayer then
+                  self:unscheduleUpdate()
               	     self.inputcodeLayer:removeFromParent()
               	end
               end
@@ -155,7 +156,7 @@ function activitycodeLayer:act_list(  )
                    print("小于",self.tablecout ,"  ",self.sup_data_num)
            elseif self.tablecout>self.sup_data_num then
                  print("大于")
-                 activity_ListView:removeAllItems() 
+                 self.activity_ListView:removeAllItems() 
             else
                  return
            end
@@ -215,16 +216,11 @@ end
             local _table=Util:FormatTime_colon(sup_data[i]["finishtime"]-sup_data[i]["begintime"]-self.time)
             local dayText=cell:getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
-            -- local hoursText=cell:getChildByTag(39)
-            -- hoursText:setString(tostring(_table[2]))
-            -- local pointsText=cell:getChildByTag(40)
-            -- pointsText:setString(tostring(_table[3]))
-            -- local secondsText=cell:getChildByTag(41)
-            -- secondsText:setString(tostring(_table[4]))
+         
         end
   end
 function activitycodeLayer:onEnter()
-	--LocalData:Instance():set_getactivitylist(nil)
+	LocalData:Instance():set_getactivitylist(nil)
 	self.tablecout=0
 	Server:Instance():getactivitylist(tostring(4),1)  --self.ser_status   self.sur_pageno
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
