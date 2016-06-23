@@ -26,6 +26,7 @@ function debrisLayer:ctor(params)
         self.col=params.col
         self.count=params.row* params.col
         self.fragment_sprite_bg = display.newScale9Sprite(self.filename, self.point.x,self.point.y, cc.size(self._size.width,self._size.height))
+        
         self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
         self.content_size = self._size
          self.tp=params.tp
@@ -50,9 +51,10 @@ function debrisLayer:refresh_table()
 
     local pos_x, pos_y =self.point.x,self.point.y
     local row ,col =self.row,self.col 
+    local path=cc.FileUtils:getInstance():getWritablePath()
    for i=1,row do
         for j=1,col do
-                local fragment_sprite = display.newScale9Sprite(self.filename, 0,0, cc.size(self._size.width,self._size.height))
+                local fragment_sprite = display.newScale9Sprite(path..self.filename, 0,0, cc.size(self._size.width,self._size.height))
                 fragment_sprite:setAnchorPoint(0, 0)
                 local po = self._size
                 local rect = cc.rect(0,0, po.width/row-3, po.height/col-3)

@@ -170,7 +170,8 @@ function GameScene:originalimage(dex)
            if self.type=="surprise" then
               self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
           elseif self.type=="audition" then
-              self.original:loadTexture(tostring(self.image))-- 记住更换原图
+            local path=cc.FileUtils:getInstance():getWritablePath()
+              self.original:loadTexture(path..tostring(self.image))-- 记住更换原图
           end
            if dex==2 then
               self.original:setTouchEnabled(true)

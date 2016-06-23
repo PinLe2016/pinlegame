@@ -202,8 +202,8 @@ function Server:on_request_finished_pic(event , command)
     -- local fileObject = self.download_file_list[self.download_progress]
   
     local str=Util:sub_str(command["command"], "/",":")    
-    -- dump(str)
-    local file_path = self.writablePath.."res/pic/"..str  
+    -- dump(str)--.."res/pic/"
+    local file_path = self.writablePath..str  
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
@@ -276,6 +276,7 @@ function Server:jackpot_pic(url,command)
 end
 
 function Server:jackpot_request_finished_pic(event , command)
+
     local ok = (event.name == "completed")
     local request = event.request
 
@@ -316,6 +317,7 @@ end
 --奖池详情界面
 function Server:jackpotlayer_pic(url,command) 
     self.pic_url=url
+    dump(self.pic_url)
     local request = network.createHTTPRequest(function(event) self:jackpotlayer_request_finished_pic(event,command) end, url , "GET")
     request:setTimeout(0.5)
     request:start()
@@ -335,11 +337,12 @@ function Server:jackpotlayer_request_finished_pic(event , command)
         print("response status code : " .. code)
         return
     end
+    dump(command)
     local dataRecv = request:getResponseData()
     -- local fileObject = self.download_file_list[self.download_progress]
     local str=Util:sub_str(command["imgurl"], "/",":")    
-    -- dump(str)
-    local file_path = self.writablePath.."res/pic/"..str
+    -- dump(str)--"res/pic/".."res/"..
+    local file_path = self.writablePath..str
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
