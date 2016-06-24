@@ -41,6 +41,8 @@ function SurpriseOverScene:init(  )
 	  	local image_name=self.Laohuji:getChildByTag(161)
     	            image_name:setVisible(false)
 	    	      local _imagename=self.Laohuji:getChildByTag(336)
+              local path=cc.FileUtils:getInstance():getWritablePath()
+
                  _imagename:loadTexture(self._imagetu)
 	    	--image_name:loadTexture(self._imagetu)--(self.actid["image"])
     	end
@@ -157,6 +159,7 @@ function SurpriseOverScene:L_end(  )
        _imagename1:setVisible(false)
        local _imagename2=self.daojishi_bg:getChildByTag(335)
        _imagename2:setVisible(true)
+       local path=cc.FileUtils:getInstance():getWritablePath()
        _imagename2:loadTexture(self._imagetu)
 
 	self._time=10
