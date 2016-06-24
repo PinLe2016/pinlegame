@@ -52,14 +52,12 @@ function GameScene:funinit(  )
                      self:csb_btCallback(sender, eventType)
                end)
       self.restore_bt=self._csb:getChildByTag(23)--查看原图
-      self.restore_bt:setPositionY(self.restore_bt:getPositionY())
       self._restore_bt=self.restore_bt
       self.restore_bt:setTouchEnabled(false)
       self.restore_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
        self.suspended_bt=self._csb:getChildByTag(44)--暂停
-       self.suspended_bt:setPositionY(self.suspended_bt:getPositionY())
        self.suspended_bt:setTouchEnabled(false)
        self.suspended_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
@@ -219,6 +217,7 @@ end
 function GameScene:tupian(  )
                  local _back=self.countdownLayer:getChildByTag(587)  --返回键
                    _back:setVisible(false)
+                   local path=cc.FileUtils:getInstance():getWritablePath()
 
                      local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
                      local  _image=self.countdownLayer:getChildByTag(590)

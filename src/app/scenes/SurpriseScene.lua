@@ -192,6 +192,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           end
 
           self.list_table=LocalData:Instance():get_getactivitylist()
+          local path=cc.FileUtils:getInstance():getWritablePath()
           local  sup_data=self.list_table["game"]
           for i=self.tablecout+1,#sup_data do
           	activity_ListView:pushBackDefaultItem()
@@ -199,7 +200,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             cell:setTag(i)
             local activity_Panel=cell:getChildByTag(36)
             cell:addTouchEventListener(onImageViewClicked)
-            activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             local Nameprize_text=cell:getChildByTag(42)
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
             local type=cell:getChildByTag(133)
