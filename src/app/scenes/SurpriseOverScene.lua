@@ -16,7 +16,6 @@ local SurpriseOverScene = class("SurpriseOverScene", function()
 end)
 function SurpriseOverScene:ctor(params)--params
         self.tp=params.tp
-        print("sdifdsfjdsjf  ", self.tp)
         self.floating_layer = FloatingLayerEx.new()
         self.floating_layer:addTo(self,1000)
         self.actid=LocalData:Instance():get_actid()
@@ -27,6 +26,12 @@ function SurpriseOverScene:init(  )
 
 	self.Laohuji = cc.CSLoader:createNode("Laohuji.csb")
     	self:addChild(self.Laohuji)
+
+      local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+      self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
+      
+
+    
     	if self.tp==2 then
     		local image_name=self.Laohuji:getChildByTag(161)
     	            image_name:setVisible(false)
@@ -34,9 +39,10 @@ function SurpriseOverScene:init(  )
 	    	_imagename:loadTexture(self.actid["image"])
 	 else
 	  	local image_name=self.Laohuji:getChildByTag(161)
-    	            image_name:setVisible(true)
-	    	
-	    	image_name:loadTexture(self.actid["image"])
+    	            image_name:setVisible(false)
+	    	      local _imagename=self.Laohuji:getChildByTag(336)
+                 _imagename:loadTexture(self._imagetu)
+	    	--image_name:loadTexture(self._imagetu)--(self.actid["image"])
     	end
     	
     	-- local image_pic=display.newScale9Sprite(self.actid["image"], image_name:getPositionX(),image_name:getPositionY(), image_name:getContentSize())
@@ -67,6 +73,11 @@ function SurpriseOverScene:init(  )
     	back_bt:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
 	end)
+      local share_bt=self.Laohuji:getChildByTag(213)-- 分享
+      share_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+
     	self.end_bt=self.Laohuji:getChildByTag(44)
     	self.end_bt:setVisible(false)
     	self.end_bt:addTouchEventListener(function(sender, eventType  )
@@ -109,6 +120,9 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		Util:scene_control("MainInterfaceScene")
 	elseif tag==44 then  --结束
 		self:L_end(  )
+      elseif tag==213 then  --分享
+           Util:share()
+           print("fenxiagn")
 		
 	end
 end
@@ -139,6 +153,12 @@ function SurpriseOverScene:L_end(  )
 	self.daojishi_bg:setGlobalZOrder(999999)
 	self.daojishi_text=self.daojishi_bg:getChildByTag(104)
 	self.daojishi_bg:setVisible(true)
+       local _imagename1=self.daojishi_bg:getChildByTag(158)
+       _imagename1:setVisible(false)
+       local _imagename2=self.daojishi_bg:getChildByTag(335)
+       _imagename2:setVisible(true)
+       _imagename2:loadTexture(self._imagetu)
+
 	self._time=10
     	self.L_began=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:countdown()

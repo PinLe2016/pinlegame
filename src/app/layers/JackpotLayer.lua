@@ -227,6 +227,7 @@ function JackpotLayer:touch_callback( sender, eventType )
               cc.Director:getInstance():pushScene(scene)
               -- Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
               LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数
+               --cc.Director:getInstance():pushScene("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
 
       end
 end
