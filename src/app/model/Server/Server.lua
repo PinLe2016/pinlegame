@@ -293,8 +293,8 @@ function Server:jackpot_request_finished_pic(event , command)
     local dataRecv = request:getResponseData()
     -- local fileObject = self.download_file_list[self.download_progress]
     local str=Util:sub_str(command["imageurl"], "/",":")    
-    -- dump(str)
-    local file_path = self.writablePath.."res/pic/"..str
+    -- dump(str)--"res/pic/"..
+    local file_path = self.writablePath..str
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
