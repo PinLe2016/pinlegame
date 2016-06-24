@@ -146,7 +146,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==288 then  --邀请好友
             self:addChild(FriendrequestLayer.new())
       elseif tag==54 then  --测试分享
-            Util:share()
+            --Util:share()
             print("分享")
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
