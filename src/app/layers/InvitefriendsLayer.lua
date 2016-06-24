@@ -14,14 +14,15 @@ function InvitefriendsLayer:ctor()--params
        self:setNodeEventEnabled(true)--layer添加监听
 
        --Server:Instance():get_reward_friend_list() --初始化未领取金币
+       Server:Instance():get_reward_of_friends_levelup()
        Server:Instance():getfriendlist()--查询好友列表   
        
-      
+        -- self:fun_init()-- 数据初始化
 end
 function InvitefriendsLayer:init(  )
        self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
        self:addChild(self.Invitefriends)
-       self:pop_up()--  弹出框
+        self:pop_up()--  弹出框
        local back_bt=self.Invitefriends:getChildByTag(82)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
@@ -49,7 +50,15 @@ function InvitefriendsLayer:init(  )
 end
 function InvitefriendsLayer:fun_init(  )
             --以下都是测试
+             local receive_table =  LocalData:Instance():get_reward_friend()
+             if  not receive_table then
+             	return
+             end
+            
+             local _playerinfo = receive_table["playerinfo"]
+   
             local friendlist_table=LocalData:Instance():getfriendlist()
+
 	local inviter_text=self.Invitefriends:getChildByTag(85):getChildByTag(88)  --邀请的人数
             inviter_text:setString("已经成功邀请 " .. tostring(#friendlist_table["friendlist"]) .. " 人")
 
@@ -62,7 +71,7 @@ function InvitefriendsLayer:fun_init(  )
             totalexperience_text:setString("88868")
 
             local gold_text=databg_text:getChildByTag(113)  --未领取的金币
-            gold_text:setString("88868")
+            gold_text:setString(_playerinfo["curgolds"])
 
             local experience_text=databg_text:getChildByTag(114) --未领取的经验
             experience_text:setString("88868")
@@ -152,6 +161,15 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 		Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
 		print("获取输入码",_num)
 	elseif tag==116 then  --一键获取
+		 local receive_table =  LocalData:Instance():get_reward_friend()
+                         local _playerinfo = receive_table["playerinfo"]
+                         if _playerinfo["curgolds"]==0 then
+                         	Server:Instance():prompt("没有金币领取")
+                         	return
+                         end
+   
+            local friendlist_table=LocalData:Instance():getfriendlist()
+
 		print("一键获取")
 		Server:Instance():get_reward_of_friends_levelup()
 	

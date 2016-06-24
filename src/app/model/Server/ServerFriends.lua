@@ -97,13 +97,13 @@ end
 
 
 function Server:get_reward_of_friends_levelup_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("领取好友升级奖励积分&金币:" .. self.data.err_msg)
         return
     end
     LocalData:Instance():set_reward_friend(self.data)--保存数据
-    --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.FRIENDLIST_POST)
    
 end
 
