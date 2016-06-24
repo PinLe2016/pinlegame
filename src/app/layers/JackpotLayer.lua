@@ -9,6 +9,9 @@
 local JackpotLayer = class("JackpotLayer", function()
             return display.newLayer("JackpotLayer")
 end)
+
+GameScene = require("app.scenes.GameScene")--惊喜吧
+
 --标题 活动类型 
 function JackpotLayer:ctor(params)
          self.is_cooltime=true
@@ -220,7 +223,9 @@ function JackpotLayer:touch_callback( sender, eventType )
              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
              local  jaclayer_data=list_table["ads"]
               local  _id=jaclayer_data[1]["adid"]
-              Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
+              local scene=GameScene.new({adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
+              cc.Director:getInstance():pushScene(scene)
+              -- Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
               LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数
 
       end
@@ -390,13 +395,8 @@ function JackpotLayer:onEnter()
                       end)
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self,
                        function()
-                       -- local cal2 = cc.CallFunc:create(function(node, value)
-                      --调用V_S  -- self:V_S()
                       self:init()
-              --         self:information()
-              --       end, {tag=0}) --cc.EaseElasticOut:create(
-              --   local sque=transition.sequence({cc.DelayTime:create(5.0),cal2})
-              -- self:runAction(sque)
+
                       end)
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
                        function()
