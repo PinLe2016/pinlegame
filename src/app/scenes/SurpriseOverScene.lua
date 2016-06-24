@@ -16,7 +16,6 @@ local SurpriseOverScene = class("SurpriseOverScene", function()
 end)
 function SurpriseOverScene:ctor(params)--params
         self.tp=params.tp
-        print("sdifdsfjdsjf  ", self.tp)
         self.floating_layer = FloatingLayerEx.new()
         self.floating_layer:addTo(self,1000)
         self.actid=LocalData:Instance():get_actid()
