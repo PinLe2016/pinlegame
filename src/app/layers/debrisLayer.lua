@@ -197,7 +197,7 @@ function debrisLayer:saw_issuccess()
     for i=1,#self.fragment_poins do
         local pos=self.fragment_poins[i]
         local pos_suss=self.fragment_success[i]
-        print("wwdwaf ",math.floor(pos.x),math.floor(pos_suss.x))
+        -- print("wwdwaf ",math.floor(pos.x),math.floor(pos_suss.x))
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
            --  print("失败",self.tp)  
            --    Util:scene_controlid("GoldprizeScene"," ")  
@@ -206,8 +206,10 @@ function debrisLayer:saw_issuccess()
         end
     end
     print("成功")  --self.adid
-     Util:scene_controlid("GoldprizeScene"," ")  
-    Server:Instance():setgamerecord(self.adid)
+     -- Util:scene_controlid("GoldprizeScene"," ")
+    Server:Instance():setgamerecord(self.adid)  
+     cc.Director:getInstance():popScene()
+  
 end
 
 function debrisLayer:onEnter()

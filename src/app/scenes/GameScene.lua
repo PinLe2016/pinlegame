@@ -15,12 +15,19 @@ local debrisLayer = require("app.layers.debrisLayer")
 
 
 function GameScene:ctor(params)
-   self.floating_layer = FloatingLayerEx.new()
-   self.floating_layer:addTo(self,-1)
+    self.floating_layer = FloatingLayerEx.new()
+
+    self.floating_layer:addTo(self,-1)
     self._time=10
-      self.type=params.type
-      self.image= params.image
-      self.adid=params.adid
+
+    self.type=params.type
+
+    self.image= params.image
+
+    self.adid=params.adid
+
+    self.id=params.id
+
       if self.type=="daojishi" then
          self.countdownLayer = cc.CSLoader:createNode("countdownLayer.csb")
          self:addChild(self.countdownLayer)
@@ -45,12 +52,14 @@ function GameScene:funinit(  )
                      self:csb_btCallback(sender, eventType)
                end)
       self.restore_bt=self._csb:getChildByTag(23)--查看原图
+      self.restore_bt:setPositionY(self.restore_bt:getPositionY()-30)
       self._restore_bt=self.restore_bt
       self.restore_bt:setTouchEnabled(false)
       self.restore_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
        self.suspended_bt=self._csb:getChildByTag(44)--暂停
+       self.suspended_bt:setPositionY(self.suspended_bt:getPositionY()-30)
        self.suspended_bt:setTouchEnabled(false)
        self.suspended_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
