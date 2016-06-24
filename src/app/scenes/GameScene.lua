@@ -52,14 +52,14 @@ function GameScene:funinit(  )
                      self:csb_btCallback(sender, eventType)
                end)
       self.restore_bt=self._csb:getChildByTag(23)--查看原图
-      self.restore_bt:setPositionY(self.restore_bt:getPositionY()-30)
+      self.restore_bt:setPositionY(self.restore_bt:getPositionY())
       self._restore_bt=self.restore_bt
       self.restore_bt:setTouchEnabled(false)
       self.restore_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
                end)
        self.suspended_bt=self._csb:getChildByTag(44)--暂停
-       self.suspended_bt:setPositionY(self.suspended_bt:getPositionY()-30)
+       self.suspended_bt:setPositionY(self.suspended_bt:getPositionY())
        self.suspended_bt:setTouchEnabled(false)
        self.suspended_bt:addTouchEventListener(function(sender, eventType  )
                      self:csb_btCallback(sender, eventType)
