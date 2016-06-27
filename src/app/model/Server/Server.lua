@@ -204,6 +204,10 @@ function Server:on_request_finished_pic(event , command)
     local str=Util:sub_str(command["command"], "/",":")    
     -- dump(str)--.."res/pic/"
     local file_path = self.writablePath.."down_pic/"..str  
+
+    if device.platform=="ios" then
+        file_path="res/"..str
+    end
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
@@ -252,6 +256,11 @@ function Server:acton_request_finished_pic(event , command)
     local str=Util:sub_str(command["imgurl"], "/",":")    
     -- dump(str)
     local file_path = self.writablePath.."down_pic/"..str
+
+    if device.platform=="ios" then
+        file_path="res/"..str
+    end
+    dump(file_path)
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
@@ -295,6 +304,11 @@ function Server:jackpot_request_finished_pic(event , command)
     local str=Util:sub_str(command["imageurl"], "/",":")    
     -- dump(str)--"res/pic/"..
     local file_path = self.writablePath.."down_pic/"..str
+
+    if device.platform=="ios" then
+        file_path="res/"..str
+    end
+
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
@@ -343,6 +357,11 @@ function Server:jackpotlayer_request_finished_pic(event , command)
     local str=Util:sub_str(command["imgurl"], "/",":")    
     -- dump(str)--"res/pic/".."res/"..
     local file_path = self.writablePath.."down_pic/"..str
+    
+    if device.platform=="ios" then
+        file_path="res/"..str
+    end
+
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
