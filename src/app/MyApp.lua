@@ -29,6 +29,7 @@ function MyApp:run()
    if device.platform=="android" then 
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
     elseif device.platform=="ios" then
+      print("12344555-------------------")
       path_res="down_pic"
       MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
@@ -36,14 +37,17 @@ function MyApp:run()
 	    cc.FileUtils:getInstance():addSearchPath("res/")
       cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")
-      cc.FileUtils:getInstance():addSearchPath("res/pic")
+     
   
-
+      
    -- lfs.mkdir(writablePath .. "down_pic")
   Util:removeDirectory(path_res)
   lfs.mkdir(path_res)
   cc.FileUtils:getInstance():addSearchPath(path_res)
   
+   cc.FileUtils:getInstance():addSearchPath("res/down_pic")
+
+  dump(path_res)
   --self:enterScene("SurpriseScene")
  
    --self:enterScene("LoginScene")
