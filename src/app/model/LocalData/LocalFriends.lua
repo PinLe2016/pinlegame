@@ -14,9 +14,11 @@ end
 --领取好友升级奖励积分&金币
 function LocalData:set_reward_friend(reward_friend)
 	self.reward_friend=reward_friend
+	-- dump(self.reward_friend)
 end
 
 function LocalData:get_reward_friend()
+	-- dump(self.reward_friend)
 	return self.reward_friend or nil
 end
 

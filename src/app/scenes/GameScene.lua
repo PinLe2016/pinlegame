@@ -233,6 +233,10 @@ function GameScene:imgurl_download(  )
          local imgurl=list_table[1]["imgurl"]
           _table["imgurl"]=list_table[1]["imgurl"]
           Server:Instance():actrequest_pic(imgurl,_table) --下载图片
+
+    
+
+
 end
 function GameScene:onEnter()
      if self.type=="surprise" then
