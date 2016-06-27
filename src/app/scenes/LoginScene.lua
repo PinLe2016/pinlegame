@@ -24,21 +24,58 @@ end
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            self._random=Util:rand(  ) --随机验证码
-           print("邀请码".. self.phone_text:getString(),  self._random)
-           Server:Instance():sendmessage(1,self.phone_text:getString(),self._random)
+           print("邀请码".. self.phone_text:getText(),  self._random)
+           Server:Instance():sendmessage(1,self.phone_text:getText(),self._random)
         end
     end
-    self. _random=000  --初始化
-     self.phone_text=registered:getChildByTag(28)
-     local password_text=registered:getChildByTag(29)
-     local verificationcode_text=registered:getChildByTag(30)
+     self. _random=000  --初始化
+     self.Zphone_text=self.registered:getChildByTag(28)
+     self.Zphone_text:setVisible(false)
+     self.Zphone_text:setTouchEnabled(false)
+     local password_text=self.registered:getChildByTag(29)
+     password_text:setVisible(false)
+     password_text:setTouchEnabled(false)
+     local verificationcode_text=self.registered:getChildByTag(30)
+     verificationcode_text:setVisible(false)
+     verificationcode_text:setTouchEnabled(false)
+
+    local res = "res/png/DLkuang.png"
+    local width = 350
+    local height = 40
+
+    self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
+    self.registered:addChild(self.phone_text)
+    self.phone_text:setPosition( cc.p(130,438 ))  
+    self.phone_text:setPlaceHolder("请输入手机号码")
+    self.phone_text:setAnchorPoint(0,0)  
+    self.phone_text:setMaxLength(11)
+
+    self.Zpassword_text = ccui.EditBox:create(cc.size(width,height),res)
+    self.registered:addChild(self.Zpassword_text )
+    self.Zpassword_text :setPosition( cc.p(130,380 ))  
+    self.Zpassword_text :setPlaceHolder("请输入密码")
+    self.Zpassword_text :setAnchorPoint(0,0)  
+    self.Zpassword_text :setMaxLength(19)
+    self.Zpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
+
+    self.Zcode_text = ccui.EditBox:create(cc.size(120,40),res)
+    self.registered:addChild(self.Zcode_text)
+    self.Zcode_text:setPosition( cc.p(130,323 ))  
+    self.Zcode_text:setPlaceHolder("验证码")
+    self.Zcode_text:setAnchorPoint(0,0)  
+    self.Zcode_text:setMaxLength(6)
+
+
+
+
+
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-        if tostring(verificationcode_text:getString())  ~= tostring(self._random) then
+        if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
               Server:Instance():prompt("验证码错误")
              return    
         end
-              Server:Instance():reg(self.phone_text:getString(),password_text:getString())
+              Server:Instance():reg(self.phone_text:getText(),self.Zpassword_text:getText())
         end
     end
      local function callback_btCallback(sender, eventType) 
@@ -51,11 +88,11 @@ end
           
         end
     end
-    local Getverificationcode_bt=registered:getChildByTag(27)
+    local Getverificationcode_bt=self.registered:getChildByTag(27)
     Getverificationcode_bt:addTouchEventListener(Getverificationcode_btCallback)
-     local submit_bt=registered:getChildByTag(26)
+     local submit_bt=self.registered:getChildByTag(26)
     submit_bt:addTouchEventListener(submit_btCallback)
-     local callback_bt=registered:getChildByTag(25)
+     local callback_bt=self.registered:getChildByTag(25)
     callback_bt:addTouchEventListener(callback_btCallback)
     
 
@@ -67,23 +104,64 @@ function LoginScene:landing_init()
    -- local dialog=FloatingLayer:Instance():floatingLayer_init("多少分开始的")
    -- self:addChild(dialog)
    -- self:replaceScene(dialog)
+  phone_bg=landing:getChildByTag(6)
+  local Editphone = landing:getChildByTag(6):getChildByTag(16)
+  Editphone:setTouchEnabled(false)
+  Editphone:setVisible(false)
 
-  phone_text = landing:getChildByTag(6):getChildByTag(16)
-  password_text=landing:getChildByTag(6):getChildByTag(17)
+   
+  local EditPassword=landing:getChildByTag(6):getChildByTag(17)
+  EditPassword:setTouchEnabled(false)
+  EditPassword:setVisible(false)
+
+
+    local res = "res/png/DLkuang.png"
+    local width = 350
+    local height = 40
+
+    self.Dphone_text = ccui.EditBox:create(cc.size(width,height),res)
+    phone_bg:addChild(self.Dphone_text)
+    self.Dphone_text:setVisible(true)
+    self.Dphone_text:setPosition( cc.p(107,77 ))  
+    self.Dphone_text:setPlaceHolder("请输入手机号码")
+    self.Dphone_text:setAnchorPoint(0,0)  
+    self.Dphone_text:setMaxLength(11)
+
+    self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
+    self.Dpassword_text:setVisible(true)
+    phone_bg:addChild(self.Dpassword_text )
+    self.Dpassword_text :setPosition( cc.p(107,25 ))  
+    self.Dpassword_text :setPlaceHolder("请输入密码")
+    self.Dpassword_text :setAnchorPoint(0,0)  
+    self.Dpassword_text :setMaxLength(19)
+    self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
+
+
+
+
 
 local function go_btCallback(sender, eventType)
+
         if eventType == ccui.TouchEventType.ended then
-           Server:Instance():login(phone_text:getString(),password_text:getString())
-        end
+            if  self.Dphone_text:getText() == "" then
+                Server:Instance():prompt("填写的手机号不能为空哦！")
+               return
+            end
+           Server:Instance():login(self.Dphone_text:getText(),self.Dpassword_text :getText())
+        end   
     end
 
     local function registered_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
            print("注册")
-            registered = cc.CSLoader:createNode("registered.csb");
-            self:addChild(registered);
+            self.registered = cc.CSLoader:createNode("registered.csb");
+            self:addChild(self.registered);
             if  landing then
+                 self.Dpassword_text :setVisible(false)
+                 self.Dphone_text:setVisible(false)
                  landing:removeFromParent()
+                 
+                 --password_text:removeFromParent()
             end
           
             self:registered_init()
@@ -93,6 +171,9 @@ local function go_btCallback(sender, eventType)
     local function Forgotpassword_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
                  print("忘记密码")
+                 self.Dpassword_text :setVisible(false)
+                 self.Dphone_text:setVisible(false)
+                 landing:removeFromParent()
                 self.passwordLayer = cc.CSLoader:createNode("passwordLayer.csb");
                 self:addChild(self.passwordLayer);
                 self:_passwordLayer()
@@ -110,6 +191,23 @@ local function go_btCallback(sender, eventType)
      local Forgotpassword_bt = landing:getChildByTag(6):getChildByTag(13)--忘记密码
     Forgotpassword_bt:addTouchEventListener(Forgotpassword_btCallback)
 end
+-- function LoginScene:touchCallback( sender, eventType )
+--               if eventType ~= ccui.TouchEventType.ended then
+--                        return
+--               end
+--               local tag=sender:getTag()
+--               if tag==11 then  
+--                      Server:Instance():prompt("11验证码错误")
+--                      return
+--                      print("不会吧11")
+--                      Server:Instance():login(phone_text:getText(),password_text:getText())
+--             end
+             
+            
+-- end 
+
+
+
 function LoginScene:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
@@ -134,6 +232,38 @@ function LoginScene:_passwordLayer( )
                      self:touch_Callback(sender, eventType)
                end))
 
+
+            local phone=self.passwordLayer:getChildByTag(293)
+            phone:setVisible(false)
+            phone:setTouchEnabled(false)
+            local Wcode_text = self.passwordLayer:getChildByTag(294)
+            Wcode_text:setVisible(false)
+            Wcode_text:setTouchEnabled(false)
+
+            local res = "res/png/DLkuang.png"
+            local width = 350
+            local height = 40
+
+            self.Wphone_text = ccui.EditBox:create(cc.size(width,height),res)
+            self.passwordLayer:addChild(self.Wphone_text)
+            self.Wphone_text:setPosition( cc.p(58,441 ))  
+            self.Wphone_text:setPlaceHolder("请输入手机号码")
+            self.Wphone_text:setAnchorPoint(0,0)  
+            self.Wphone_text:setMaxLength(11)
+
+            self._yanzhengma = ccui.EditBox:create(cc.size(120,40),res)
+            self.passwordLayer:addChild(self._yanzhengma)
+            self._yanzhengma:setPosition( cc.p(58,356 ))  
+            self._yanzhengma:setPlaceHolder("验证码")
+            self._yanzhengma:setAnchorPoint(0,0)  
+            self._yanzhengma:setMaxLength(6)
+
+            
+
+
+
+
+
 end
 function LoginScene:touch_Callback( sender, eventType  )
               if eventType ~= ccui.TouchEventType.ended then
@@ -141,35 +271,39 @@ function LoginScene:touch_Callback( sender, eventType  )
               end
               local tag=sender:getTag()
               if tag==290 then      --修改密码 返回
+                  self:landing_init()
                  if  self.passwordLayer then
                      self.passwordLayer:removeFromParent()
                 end
              elseif tag==292 then   --修改密码 提交
-                local phone=self.passwordLayer:getChildByTag(293)
-                self._mobilephone=phone:getString()
+                
                 self:_resetpasswordLayer()
                 
               elseif tag==305 then  --重新设置密码  返回
+                self:landing_init()
+           
                 if self.resetpasswordLayer then
                    self.resetpasswordLayer:removeFromParent()
                 end
               elseif tag==303 then
                 local password = self.resetpasswordLayer:getChildByTag(302)
-                local _pass=password:getString()
+                local _pass=self.Wpassword_text:getText()
                  print("提交",_pass,"  ",self._mobilephone)
                  Server:Instance():changepassword(self._mobilephone,_pass)
               elseif tag==291 then
                   self.p_random=Util:rand(  ) --随机验证码\
-                   local phone=self.passwordLayer:getChildByTag(293)
-                    self._mobilephone=phone:getString()
+                     local phone=self.passwordLayer:getChildByTag(293)
+                    self._mobilephone=self.Wphone_text:getText()
                    print("  ",self._mobilephone)
                   Server:Instance():sendmessage(2,self._mobilephone,self.p_random)
                   print("邀请码"..self.p_random)
              end
 end
 function LoginScene:_resetpasswordLayer(  )
-            local _yanzhengma = self.passwordLayer:getChildByTag(294)
-            if tostring(_yanzhengma:getString())  ~= tostring(self.p_random) then
+
+            self._mobilephone=self.Wphone_text:getText()
+
+            if tostring(self._yanzhengma:getText())  ~= tostring(self.p_random) then
               Server:Instance():prompt("验证码错误")
               return    
            end
@@ -189,6 +323,26 @@ function LoginScene:_resetpasswordLayer(  )
                end))
              local phone = self.resetpasswordLayer:getChildByTag(300)
              phone:setString(self._mobilephone)
+             local password1 = self.resetpasswordLayer:getChildByTag(302)
+             password1:setVisible(false)
+             password1:setTouchEnabled(false)
+              local res = "res/png/DLkuang.png"
+              local width = 350
+              local height = 40
+
+              self.Wpassword_text = ccui.EditBox:create(cc.size(width,height),res)
+              self.resetpasswordLayer:addChild(self.Wpassword_text )
+              self.Wpassword_text :setPosition( cc.p(100,375 ))  
+              self.Wpassword_text :setPlaceHolder("请输入密码")
+              self.Wpassword_text :setAnchorPoint(0,0)  
+              self.Wpassword_text :setMaxLength(19)
+              self.Wpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
+              
+
+
+
+
+
              if self.passwordLayer then
                    self.passwordLayer:removeFromParent()
             end

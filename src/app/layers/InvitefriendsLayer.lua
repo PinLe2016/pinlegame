@@ -167,9 +167,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
                          	Server:Instance():prompt("没有金币领取")
                          	return
                          end
-   
-            local friendlist_table=LocalData:Instance():getfriendlist()
-
+                        local friendlist_table=LocalData:Instance():getfriendlist()
 		print("一键获取")
 		Server:Instance():get_reward_of_friends_levelup()
 	
