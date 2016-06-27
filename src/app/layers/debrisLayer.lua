@@ -17,6 +17,7 @@ local debrisLayer = class("debrisLayer", function()
 end)
 
 function debrisLayer:ctor(params)
+    -- dump(params)
        self:setNodeEventEnabled(true)--layer添加监听
         self.filename=  params.filename
         self.point=params.point
@@ -25,8 +26,14 @@ function debrisLayer:ctor(params)
         self.adid=params.adid
         self.col=params.col
         self.count=params.row* params.col
-        self.fragment_sprite_bg = display.newScale9Sprite(self.filename, self.point.x,self.point.y, cc.size(self._size.width,self._size.height))
-        
+        local path=cc.FileUtils:getInstance():getWritablePath()
+        -- self.fragment_sprite_bg = display.newScale9Sprite(self.filename, self.point.x,self.point.y, cc.size(self._size.width,self._size.height))
+        self.fragment_sprite_bg = display.newSprite(self.filename)
+        self.fragment_sprite_bg:setScaleX(0.703)
+        self.fragment_sprite_bg:setScaleY(0.703)
+
+
+
         self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
         self.content_size = self._size
          self.tp=params.tp
@@ -54,7 +61,11 @@ function debrisLayer:refresh_table()
     local path=cc.FileUtils:getInstance():getWritablePath()
    for i=1,row do
         for j=1,col do
-                local fragment_sprite = display.newScale9Sprite(path..self.filename, 0,0, cc.size(self._size.width,self._size.height))
+                -- local fragment_sprite = display.newScale9Sprite(path..self.filename, 0,0, cc.size(self._size.width,self._size.height))
+                local fragment_sprite = display.newSprite(self.filename)
+                fragment_sprite:setScaleX(0.703)
+                fragment_sprite:setScaleY(0.703)
+
                 fragment_sprite:setAnchorPoint(0, 0)
                 local po = self._size
                 local rect = cc.rect(0,0, po.width/row-3, po.height/col-3)
@@ -153,7 +164,7 @@ function debrisLayer:touch_event_move(event,clipnode)
         clipnode:setPosition(pos_x, pos_y)        
 end
 function debrisLayer:sort_sure()
-    local po = self.fragment_sprite_bg:getContentSize()
+    local po =self._size-- self.fragment_sprite_bg:getContentSize()
     dump(po)
     local pos_x, pos_y = self.point.x,self.point.y
     local dex = 1
@@ -194,6 +205,7 @@ function debrisLayer:touchEnd(event,clipnode,pos)
 end
 
 function debrisLayer:saw_issuccess()
+
     for i=1,#self.fragment_poins do
         local pos=self.fragment_poins[i]
         local pos_suss=self.fragment_success[i]

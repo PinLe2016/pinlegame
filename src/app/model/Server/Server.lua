@@ -203,7 +203,7 @@ function Server:on_request_finished_pic(event , command)
   
     local str=Util:sub_str(command["command"], "/",":")    
     -- dump(str)--.."res/pic/"
-    local file_path = self.writablePath..str  
+    local file_path = self.writablePath.."down_pic/"..str  
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
@@ -251,7 +251,7 @@ function Server:acton_request_finished_pic(event , command)
   
     local str=Util:sub_str(command["imgurl"], "/",":")    
     -- dump(str)
-    local file_path = self.writablePath.."res/pic/"..str
+    local file_path = self.writablePath.."down_pic/"..str
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
@@ -294,7 +294,7 @@ function Server:jackpot_request_finished_pic(event , command)
     -- local fileObject = self.download_file_list[self.download_progress]
     local str=Util:sub_str(command["imageurl"], "/",":")    
     -- dump(str)--"res/pic/"..
-    local file_path = self.writablePath..str
+    local file_path = self.writablePath.."down_pic/"..str
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
@@ -342,7 +342,7 @@ function Server:jackpotlayer_request_finished_pic(event , command)
     -- local fileObject = self.download_file_list[self.download_progress]
     local str=Util:sub_str(command["imgurl"], "/",":")    
     -- dump(str)--"res/pic/".."res/"..
-    local file_path = self.writablePath..str
+    local file_path = self.writablePath.."down_pic/"..str
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then

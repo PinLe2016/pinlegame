@@ -47,7 +47,7 @@ function DetailsLayer:init(  )
 
 	local act_image=details:getChildByTag(35)
 	local path=cc.FileUtils:getInstance():getWritablePath()
-	act_image:loadTexture(path..self.image)
+	act_image:loadTexture(self.image)
 
 	local act_title=details:getChildByTag(45)
 	act_title:setString(activitybyid["title"])

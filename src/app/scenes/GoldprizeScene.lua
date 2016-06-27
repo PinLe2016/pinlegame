@@ -61,7 +61,7 @@ function GoldprizeScene:data_init(  )
 		        local bg1=cell:getChildByTag(63)
 		        local bg1_image=bg1:getChildByTag(121)
 
-				bg1_image:loadTexture(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
+				bg1_image:loadTexture(tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
 				bg1_image:setTag(2*i-1)
 
 				bg1_image:addTouchEventListener(function(sender, eventType  )
@@ -96,7 +96,7 @@ function GoldprizeScene:data_init(  )
 			bg2:setVisible(true)
 
 			local bg2_img=bg2:getChildByTag(91)
-			bg2_img:loadTexture(tostring(path..Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
+			bg2_img:loadTexture(tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
 			bg2_img:setTag(2*i)
 			bg2_img:addTouchEventListener(function(sender, eventType  )
 

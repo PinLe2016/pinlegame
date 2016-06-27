@@ -204,7 +204,7 @@ function activitycodeLayer:act_list()
             local activity_Panel=cell:getChildByTag(750)
             cell:addTouchEventListener(onImageViewClicked)
             local path=cc.FileUtils:getInstance():getWritablePath()
-            activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             local type=cell:getChildByTag(751)
             local type_image=sup_data[i]["type"] .. ".png"
             type:loadTexture(type_image)

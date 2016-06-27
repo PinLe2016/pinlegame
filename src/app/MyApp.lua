@@ -23,21 +23,26 @@ function MyApp:run()
    
    --生成DEVICE_ID
    self:init_userdefault()
+   local writablePath = cc.FileUtils:getInstance():getWritablePath()
+   local  path_res=writablePath.."down_pic"
+
    if device.platform=="android" then 
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
     elseif device.platform=="ios" then
+      path_res="down_pic"
       MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
 
-	cc.FileUtils:getInstance():addSearchPath("res/")
+	    cc.FileUtils:getInstance():addSearchPath("res/")
       cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")
       cc.FileUtils:getInstance():addSearchPath("res/pic")
-  local writablePath = cc.FileUtils:getInstance():getWritablePath()
+  
+
    -- lfs.mkdir(writablePath .. "down_pic")
-    Util:removeDirectory("res/pic")
-  lfs.mkdir(writablePath .. "res/pic")
-   cc.FileUtils:getInstance():addSearchPath("pic/")
+  Util:removeDirectory(path_res)
+  lfs.mkdir(path_res)
+  cc.FileUtils:getInstance():addSearchPath(path_res)
   
   --self:enterScene("SurpriseScene")
  
