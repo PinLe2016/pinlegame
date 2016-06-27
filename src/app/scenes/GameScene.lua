@@ -82,7 +82,7 @@ function GameScene:funinit(  )
                       self._csb:addChild(deblayer)
                   elseif self.type=="audition" then
                       local deblayer= debrisLayer.new({filename=self.image
-                     ,row=4,col=5,_size=_size,point=point,adid=self.adid,tp=2})
+                     ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=2})
                       self._csb:addChild(deblayer)
                   end
 
@@ -178,7 +178,7 @@ function GameScene:originalimage(dex)
               self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
           elseif self.type=="audition" then
             local path=cc.FileUtils:getInstance():getWritablePath()
-              self.original:loadTexture(path..tostring(self.image))-- 记住更换原图
+              self.original:loadTexture(tostring(self.image))-- 记住更换原图
           end
            if dex==2 then
               self.original:setTouchEnabled(true)

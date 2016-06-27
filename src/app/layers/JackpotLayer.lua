@@ -59,7 +59,7 @@ function JackpotLayer:init(  )
 
         local _advertiImg=advertiPa:getChildByTag(155)
         local path=cc.FileUtils:getInstance():getWritablePath()
-        _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
+        _advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
         if #jaclayer_data>=2 then
              for i=2,#jaclayer_data do
                   local  call=advertiPa:clone() 
