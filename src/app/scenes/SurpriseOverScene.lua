@@ -111,7 +111,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	local tag=sender:getTag()
 	if tag==164 then --开始
           
-		
+		audio.playMusic(G_SOUND["FALLMONEY"],true)
 		Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
 	elseif tag==165 then --分享
 		print("分享")
@@ -121,6 +121,8 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	elseif tag==160 then --返回
 		Util:scene_control("MainInterfaceScene")
 	elseif tag==44 then  --结束
+             audio.stopMusic(G_SOUND["FALLMONEY"])
+             audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
 		self:L_end(  )
       elseif tag==213 then  --分享
            Util:share()
@@ -200,6 +202,7 @@ function SurpriseOverScene:init_data(  )
             
 end
 function SurpriseOverScene:onEnter()
+       audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
                   local _table=LocalData:Instance():get_getactivitypoints()
@@ -218,6 +221,7 @@ function SurpriseOverScene:onEnter()
 end
 
 function SurpriseOverScene:onExit()
+       audio.stopMusic(G_SOUND["PERSONALCHAGE"])
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
 end
 function SurpriseOverScene:pushFloating(text)

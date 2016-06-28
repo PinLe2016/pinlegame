@@ -11,7 +11,7 @@ local activitycodeLayer = class("activitycodeLayer", function()
 end)
 -- 标题 活动类型 
 function activitycodeLayer:ctor()
-         
+         audio.stopMusic("ACTIVITY")
          --Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self.tablecout=1
          self:setNodeEventEnabled(true)--layer添加监听
@@ -20,7 +20,7 @@ function activitycodeLayer:ctor()
          self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         		self:update(dt)
     	end)
-
+          
          self:init()
 end
 function activitycodeLayer:init(  )
@@ -107,7 +107,8 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	--todo
               elseif tag==744 then
               	if self.inputcodeLayer then
-
+                   audio.stopMusic(G_SOUND["GAMEBG"])
+                   audio.playMusic(G_SOUND["ACTIVITY"],true)
                   self:unscheduleUpdate()
 
               	     self.inputcodeLayer:removeFromParent()
@@ -228,8 +229,9 @@ end
         end
   end
 function activitycodeLayer:onEnter()
+      audio.playMusic(G_SOUND["GAMEBG"],true)
 	self.tablecout=0
-  LocalData:Instance():set_getactivitylist(nil)
+      LocalData:Instance():set_getactivitylist(nil)
 	Server:Instance():getactivitylist(tostring(4),1)  --self.ser_status   self.sur_pageno
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
@@ -252,6 +254,7 @@ function activitycodeLayer:onEnter()
 end
 
 function activitycodeLayer:onExit()
+      
      	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYCODE, self)

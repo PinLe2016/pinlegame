@@ -145,16 +145,20 @@ function GameScene:funsuspended( )
            sound_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
+                             audio.resumeMusic()
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              print("关闭")
+                              audio.pauseMusic()
                      end
                end)
            local music_box=panel:getChildByTag(53)  -- 音乐
            music_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
+                            audio.resumeMusic()
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              print("关闭")
+                             audio.pauseMusic()
                      end
                end)
            local notifications_box=panel:getChildByTag(54)  -- 通知
@@ -239,6 +243,7 @@ function GameScene:imgurl_download(  )
 
 end
 function GameScene:onEnter()
+     audio.playMusic(G_SOUND["MENUMUSIC"],true)
      if self.type=="surprise" then
        print("1111111111")
         Server:Instance():getactivityadlist(self.adid)--发送请求
@@ -275,6 +280,7 @@ function GameScene:onEnter()
 end
 
 function GameScene:onExit()
+           audio.stopMusic(G_SOUND["MENUMUSIC"])
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self)

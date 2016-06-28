@@ -81,6 +81,9 @@ function PerInformationLayer:perinformation_init(  )
         self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
         dump(LocalData:Instance():get_user_head())
         self.image_head:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+        
+
+
         self._Pname=self.Perinformation:getChildByTag(68)  --名字
         self._Pname:setString(userdt["nickname"])
         local golds=self.Perinformation:getChildByTag(73)  --金币
@@ -170,7 +173,9 @@ function PerInformationLayer:touch_callback( sender, eventType )
     elseif tag==97 then 
                  if self.Perinformation then
                        --self.Perinformation:removeFromParent()
+                       Util:scene_control("MainInterfaceScene")
                        self:removeFromParent()
+
                  end
         
             elseif tag==67 then 
@@ -202,6 +207,17 @@ function PerInformationLayer:_savecity(  )
 
           local userdt = LocalData:Instance():get_userdata()--
           userdt["conty"]=conty  --自己保存的区
+         
+        --  if  self.city_present:isSelected() then   --待修改
+        --      self.city_gps:setSelected(false)
+        --      self.city_choose:setSelected(false)
+        -- elseif self.city_gps:isSelected() then
+        --      self.city_present:setSelected(false)
+        --      self.city_choose:setSelected(false)
+        -- elseif self.city_choose:isSelected() then
+        --      self.city_present:setSelected(false)
+        --      self.city_gps:setSelected(false)
+        --  end
 
          self._provincename:setString(province) 
          self._cityname:setString(city) 
@@ -223,7 +239,7 @@ function PerInformationLayer:head( )
         self.PageView_head=self.head_csb:getChildByTag(21):getChildByTag(26)
         self.PageView_head:addEventListener(function(sender, eventType  )
                  if eventType == ccui.PageViewEventType.turning then
-                    self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex())
+                  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex())
                     self.head_index=tostring(self.PageView_head:getCurPageIndex())
                 end
         end)
@@ -474,6 +490,43 @@ end
 function PerInformationLayer:fun_city_info( )
         self.adress = cc.CSLoader:createNode("Adress.csb")
         self:addChild(self.adress)
+
+         self.city_present=self.adress:getChildByTag(131)  --当前城市按钮
+         self.city_present:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            self.city_gps:setSelected(false)
+                            self.city_choose:setSelected(false)
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                              self.city_present:setSelected(true)
+                     end
+            end)
+
+         self.city_gps=self.adress:getChildByTag(132)  --定位城市
+         self.city_gps:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                             self.city_present:setSelected(false)
+                             self.city_choose:setSelected(false)
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                            self.city_present:setSelected(true)
+                     end
+            end)
+
+         self.city_choose=self.adress:getChildByTag(133)  --选择城市
+         self.city_choose:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                             self.city_present:setSelected(false)
+                             self.city_gps:setSelected(false)
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             self.city_present:setSelected(true)
+                     end
+            end)
+
+
+         
+        
+
+
+
         local city_back=self.adress:getChildByTag(52):getChildByTag(59)
         city_back:addTouchEventListener(function(sender, eventType  )
               self:touch_callback(sender, eventType)
