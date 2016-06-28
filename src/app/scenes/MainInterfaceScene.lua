@@ -15,7 +15,7 @@ function MainInterfaceScene:ctor()
       self.count=0
        
       self:fun_init()
-	
+
       -- Server:Instance():setinvitecode("18810673239")--邀请码
       -- Server:Instance():setfriend("18810673239","1")--好友添加/删除/通过验证
       -- Server:Instance():getfriendlist()--查询好友列表
@@ -99,16 +99,16 @@ function MainInterfaceScene:fun_init( )
 end
 --用户数据
 function MainInterfaceScene:userdata(  )
-       local userdt = LocalData:Instance():get_userdata()--
+       local userdt = LocalData:Instance():get_userdata()
        dump(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
-       head:loadTexture(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+       head:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
        name:setString(userdt["nickname"])
        local crown_name=self.MainInterfaceScene:getChildByTag(41)-- 爵位
        crown_name:setString(userdt["rankname"])
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
-       leve:setString("LV." .. userdt["grade"])
+       leve:setString(userdt["grade"])
        local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
        print("hahhahhahahhahfewahiufhewfh")
        gold_text:setString(userdt["golds"])
@@ -147,7 +147,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:addChild(FriendrequestLayer.new())
       elseif tag==54 then  --测试分享
             --Util:share()
-            print("分享")
+          
+
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
                   self.actbg:setVisible(true)
@@ -179,16 +180,19 @@ function MainInterfaceScene:funsetup(  )
         music_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
+                            audio.resumeMusic()
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              print("关闭")
+                             audio.pauseMusic()
                      end
         end)
         local sound_bt=self.set_bg1:getChildByTag(92)  -- 音效
         sound_bt:addEventListener(function(sender, eventType  )
                  if eventType == ccui.CheckBoxEventType.selected then
                         print("开启")
+                        audio.resumeAllSounds()--恢复所有音效
                  elseif eventType == ccui.CheckBoxEventType.unselected then
-                         print("关闭")
+                         audio.pauseAllSounds()  --关闭所有音效
                  end
          end)
 
@@ -288,7 +292,7 @@ function MainInterfaceScene:init_checkin(  )
 
 end
 function MainInterfaceScene:onEnter()
-
+  audio.playMusic(G_SOUND["ACTIVITY"],true)
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
                        self:fun_checkin(2)--签到后
@@ -300,6 +304,7 @@ function MainInterfaceScene:onEnter()
 end
 
 function MainInterfaceScene:onExit()
+  audio.stopMusic(G_SOUND["ACTIVITY"])
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECK_POST, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
 end

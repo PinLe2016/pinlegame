@@ -40,7 +40,7 @@ function RankinglistofactiviesLayer:init(  )
       _integral:setString(userdt["points"])
       
        local _head=self.RankinglistofactiviesLayer:getChildByTag(529) --头像
-       _head:loadTexture(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+       _head:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
 
 
     	rank_list=self.RankinglistofactiviesLayer:getChildByTag(71)--排行榜列表

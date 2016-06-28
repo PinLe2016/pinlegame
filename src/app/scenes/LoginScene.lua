@@ -42,19 +42,19 @@ end
     local res = "res/png/DLkuang.png"
     local width = 350
     local height = 40
-
+    --注册
     self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.phone_text)
     self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX(),self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
     self.phone_text:setPlaceHolder("请输入手机号码")
-    self.phone_text:setAnchorPoint(0,0)  
+    --self.phone_text:setAnchorPoint(0,0)  
     self.phone_text:setMaxLength(11)
 
     self.Zpassword_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.Zpassword_text )
     self.Zpassword_text :setPosition(cc.p(password_text:getPositionX(),password_text:getPositionY()))--( cc.p(130,380 ))  
     self.Zpassword_text :setPlaceHolder("请输入密码")
-    self.Zpassword_text :setAnchorPoint(0,0)  
+    --self.Zpassword_text :setAnchorPoint(0,0)  
     self.Zpassword_text :setMaxLength(19)
     self.Zpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
@@ -62,7 +62,7 @@ end
     self.registered:addChild(self.Zcode_text)
     self.Zcode_text:setPosition(cc.p(verificationcode_text:getPositionX(),verificationcode_text:getPositionY()))--( cc.p(130,323 ))  
     self.Zcode_text:setPlaceHolder("验证码")
-    self.Zcode_text:setAnchorPoint(0,0)  
+    --self.Zcode_text:setAnchorPoint(0,0)  
     self.Zcode_text:setMaxLength(6)
 
 
@@ -118,13 +118,13 @@ function LoginScene:landing_init()
     local res = "res/png/DLkuang.png"
     local width = 350
     local height = 40
-
+    --登陆
     self.Dphone_text = ccui.EditBox:create(cc.size(width,height),res)
     phone_bg:addChild(self.Dphone_text)
     self.Dphone_text:setVisible(true)
     self.Dphone_text:setPosition(cc.p(Editphone:getPositionX(),Editphone:getPositionY()))--( cc.p(107,77 ))  
     self.Dphone_text:setPlaceHolder("请输入手机号码")
-    self.Dphone_text:setAnchorPoint(0,0)  
+    --self.Dphone_text:setAnchorPoint(0,0)  
     self.Dphone_text:setMaxLength(11)
 
     self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
@@ -132,7 +132,7 @@ function LoginScene:landing_init()
     phone_bg:addChild(self.Dpassword_text )
     self.Dpassword_text :setPosition(cc.p(EditPassword:getPositionX(),EditPassword:getPositionY()))--( cc.p(107,25 ))  
     self.Dpassword_text :setPlaceHolder("请输入密码")
-    self.Dpassword_text :setAnchorPoint(0,0)  
+    --self.Dpassword_text :setAnchorPoint(0,0)  
     self.Dpassword_text :setMaxLength(19)
     self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
@@ -206,16 +206,6 @@ end
             
 -- end 
 
-
-
-function LoginScene:onEnter()
-   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
-                       function()
-                        Util:scene_control("MainInterfaceScene")
-                        --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
-                      end)
-
-end
 function LoginScene:_passwordLayer( )
 
           local _back = self.passwordLayer:getChildByTag(290)
@@ -243,19 +233,19 @@ function LoginScene:_passwordLayer( )
             local res = "res/png/DLkuang.png"
             local width = 350
             local height = 40
-
+            --忘记密码
             self.Wphone_text = ccui.EditBox:create(cc.size(width,height),res)
             self.passwordLayer:addChild(self.Wphone_text)
             self.Wphone_text:setPosition(cc.p(phone:getPositionX(),phone:getPositionY()))--( cc.p(58,441 ))  
             self.Wphone_text:setPlaceHolder("请输入手机号码")
-            self.Wphone_text:setAnchorPoint(0,0)  
+            --self.Wphone_text:setAnchorPoint(0,0)  
             self.Wphone_text:setMaxLength(11)
 
             self._yanzhengma = ccui.EditBox:create(cc.size(120,40),res)
             self.passwordLayer:addChild(self._yanzhengma)
             self._yanzhengma:setPosition(cc.p(Wcode_text:getPositionX(),Wcode_text:getPositionY()))--( cc.p(58,356 ))  
             self._yanzhengma:setPlaceHolder("验证码")
-            self._yanzhengma:setAnchorPoint(0,0)  
+            --self._yanzhengma:setAnchorPoint(0,0)  
             self._yanzhengma:setMaxLength(6)
 
             
@@ -329,12 +319,12 @@ function LoginScene:_resetpasswordLayer(  )
               local res = "res/png/DLkuang.png"
               local width = 350
               local height = 40
-
+             --修改密码
               self.Wpassword_text = ccui.EditBox:create(cc.size(width,height),res)
               self.resetpasswordLayer:addChild(self.Wpassword_text )
               self.Wpassword_text :setPosition(cc.p(password1:getPositionX(),password1:getPositionY()))--( cc.p(100,375 ))  
               self.Wpassword_text :setPlaceHolder("请输入密码")
-              self.Wpassword_text :setAnchorPoint(0,0)  
+              --self.Wpassword_text :setAnchorPoint(0,0)  
               self.Wpassword_text :setMaxLength(19)
               self.Wpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
               
@@ -347,7 +337,19 @@ function LoginScene:_resetpasswordLayer(  )
                    self.passwordLayer:removeFromParent()
             end
 end
+function LoginScene:onEnter()
+  audio.playMusic(G_SOUND["LOGO"],true)
+  
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
+                       function()
+                        Util:scene_control("MainInterfaceScene")
+                        --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
+                      end)
+
+end
 function LoginScene:onExit()
+  audio.stopMusic(G_SOUND["LOGO"])
+   
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
 end
 function LoginScene:pushFloating(text)

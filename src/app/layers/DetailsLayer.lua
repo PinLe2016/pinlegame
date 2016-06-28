@@ -65,7 +65,7 @@ function DetailsLayer:init(  )
 	status_text:setString(user["rankname"])
 
 	local head_image=details:getChildByTag(36)
-	--head_image:setString(user["myrank"])
+	head_image:loadTexture("cre/"..LocalData:Instance():get_user_head())
 
 	local Personalrecord_bt=details:getChildByTag(42)--个人记录
 	Personalrecord_bt:addTouchEventListener(function(sender, eventType  )

@@ -88,8 +88,8 @@ function InvitefriendsLayer:fun_init(  )
 	            nickname:setString(friendlist_table["nickname"])
 	            local  grade =  call:getChildByTag(96)
 	            grade:setString("LV." .. friendlist_table["grade"] )
-	            local  imgurl =  call:getChildByTag(94)
-	            imgurl:loadTexture(tostring(Util:sub_str(friendlist_table["imgurl"], "/",":")))
+	            local  imgurl =  call:getChildByTag(105)
+	            imgurl:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(friendlist_table["imgurl"], "/",":")))
 	     
            end
 

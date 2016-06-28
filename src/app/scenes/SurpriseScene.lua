@@ -238,6 +238,7 @@ function SurpriseScene:push_buffer(is_buffer)
 end 
 
 function SurpriseScene:onEnter()
+      audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
       LocalData:Instance():set_getactivitylist(nil)
       self.tablecout=0
      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
@@ -255,6 +256,7 @@ function SurpriseScene:onEnter()
 end
 
 function SurpriseScene:onExit()
+      audio.stopMusic(G_SOUND["PERSONALCHAGE"])
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
 
