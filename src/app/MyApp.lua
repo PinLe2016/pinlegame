@@ -20,7 +20,7 @@ function MyApp:run()
    -- pinle_loclation:getLocation()
     Server:Instance():version_login_url()
     
-   
+   print("入口后台差异检测测试---")
    --生成DEVICE_ID
    self:init_userdefault()
    local writablePath = cc.FileUtils:getInstance():getWritablePath()
@@ -28,24 +28,24 @@ function MyApp:run()
 
    if device.platform=="android" then 
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
-    elseif device.platform=="ios" then
-      print("12344555-------------------")
-      path_res="down_pic"
-      MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
+       Util:removeDirectory(path_res)
+    elseif device.platform=="ios" or device.platform=="mac" then
+      path_res=writablePath.."res/down_pic"
+      -- MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
 
 	    cc.FileUtils:getInstance():addSearchPath("res/")
       cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")
-     
+      cc.FileUtils:getInstance():addSearchPath("res/down_pic")
   
       
    -- lfs.mkdir(writablePath .. "down_pic")
-  Util:removeDirectory(path_res)
+  -- Util:removeDirectory("res/down_pic")
   lfs.mkdir(path_res)
   cc.FileUtils:getInstance():addSearchPath(path_res)
   
-   cc.FileUtils:getInstance():addSearchPath("res/down_pic")
+   
 
   dump(path_res)
   --self:enterScene("SurpriseScene")
@@ -58,10 +58,10 @@ function MyApp:run()
   local login_info=LocalData:Instance():get_user_data()
     
   -- dump(login_info)
-  -- if login_info~=nil  then
-  --     self:enterScene("MainInterfaceScene")
-  --     return
-  -- end
+  if login_info~=nil  then
+      self:enterScene("MainInterfaceScene")
+      return
+  end
   self:enterScene("LoginScene")
 end
 

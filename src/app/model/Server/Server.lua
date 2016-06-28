@@ -205,8 +205,9 @@ function Server:on_request_finished_pic(event , command)
     -- dump(str)--.."res/pic/"
     local file_path = self.writablePath.."down_pic/"..str  
 
-    if device.platform=="ios" then
-        file_path="res/"..str
+    if device.platform=="ios" or device.platform=="mac" then
+        print("下载图片走这里？")
+        file_path=self.writablePath.."res/down_pic/"..str
     end
     local file = io.open( file_path, "w+b")
     if file then
@@ -257,8 +258,8 @@ function Server:acton_request_finished_pic(event , command)
     -- dump(str)
     local file_path = self.writablePath.."down_pic/"..str
 
-    if device.platform=="ios" then
-        file_path="res/"..str
+    if device.platform=="ios" or device.platform=="mac" then
+        file_path=self.writablePath.."res/down_pic/"..str
     end
     dump(file_path)
     local file = io.open( file_path, "w+b")
@@ -305,8 +306,9 @@ function Server:jackpot_request_finished_pic(event , command)
     -- dump(str)--"res/pic/"..
     local file_path = self.writablePath.."down_pic/"..str
 
-    if device.platform=="ios" then
-        file_path="res/"..str
+    if device.platform=="ios" or device.platform=="mac" then
+        print("11111")
+        file_path=self.writablePath.."res/down_pic/"..str
     end
 
     local file = io.open( file_path, "w+b")
@@ -358,8 +360,8 @@ function Server:jackpotlayer_request_finished_pic(event , command)
     -- dump(str)--"res/pic/".."res/"..
     local file_path = self.writablePath.."down_pic/"..str
     
-    if device.platform=="ios" then
-        file_path="res/"..str
+    if device.platform=="ios" or device.platform=="mac"  then
+        file_path=self.writablePath.."res/down_pic/"..str
     end
 
     local file = io.open( file_path, "w+b")
