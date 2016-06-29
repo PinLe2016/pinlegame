@@ -58,11 +58,11 @@ function debrisLayer:refresh_table()
 
     local pos_x, pos_y =self.point.x,self.point.y
     local row ,col =self.row,self.col 
-    local path=cc.FileUtils:getInstance():getWritablePath()
+     local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
    for i=1,row do
         for j=1,col do
                 -- local fragment_sprite = display.newScale9Sprite(path..self.filename, 0,0, cc.size(self._size.width,self._size.height))
-                local fragment_sprite = display.newSprite(self.filename)
+                local fragment_sprite = display.newSprite(path..self.filename)
                 fragment_sprite:setScaleX(0.703)
                 fragment_sprite:setScaleY(0.703)
 

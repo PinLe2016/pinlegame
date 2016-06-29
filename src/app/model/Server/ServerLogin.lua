@@ -181,19 +181,25 @@ end
 
 function Server:getversion()
     local params = {}
+    local version=LocalData:Instance():get_version()
      params={
-            devicetype=devicetype,
-            versioncode=versioncode,
+            devicetype="ios",--device.platform,
+            versioncode="3.0",
         }
     self:request_http("getversion" , params); 
 end
 
 function Server:getversion_callback()
-    if self.data.err_code~=0  then
-        self:show_float_message("版本检查:" .. self.data.err_msg)
-        return
-    end
-    -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
+    dump(self.data)
+    -- if self.data.err_code~=0  then
+    --     self:show_float_message("版本检查:" .. self.data.err_msg)
+    --     return
+    -- end
+    
+    LocalData:Instance():set_version(self.data["versioncode"])--保存玩家数据
+    LocalData:Instance():set_version_date(self.data)--保存玩家数据
+
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.VERRSION)
 end
 
 

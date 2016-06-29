@@ -72,7 +72,8 @@ G_NOTIFICATION_EVENT = {
 	CHECKINHISTORY_POST=				"CHECKINHISTORY_POST", --签到历史   
 	FRIENDLIST_POST=					"FRIENDLIST_POST", --查询好友列表  getfriendlist 
 	POOL_RANDOM_GOLDS=					"poolrandomgolds",--奖池劲舞团每次随机获取金币信息 getgoldspoolrandomgolds
-	ACTIVITYCODE=					"ACTIVITYCODE",--活动吗  Activity code
+	ACTIVITYCODE=						"ACTIVITYCODE",--活动吗  Activity code
+	VERRSION=							"VERRSION",--活动吗  热更新消息
 
 }
 

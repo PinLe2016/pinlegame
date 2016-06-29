@@ -182,8 +182,8 @@ function GameScene:originalimage(dex)
            if self.type=="surprise" then
               self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
           elseif self.type=="audition" then
-            local path=cc.FileUtils:getInstance():getWritablePath()
-              self.original:loadTexture(tostring(self.image))-- 记住更换原图
+            local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+              self.original:loadTexture(path..tostring(self.image))-- 记住更换原图
           end
            if dex==2 then
               self.original:setTouchEnabled(true)
@@ -229,7 +229,10 @@ function GameScene:tupian(  )
 
                      local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
                      local  _image=self.countdownLayer:getChildByTag(590)
-                     _image:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))
+                    
+                     local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"..tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
+                     _image:loadTexture(path)
+                     dump(path)
                     self._dajishi=self.countdownLayer:getChildByTag(589)
                     self._dajishi:setString("10")
                     self:fun_countdown( )

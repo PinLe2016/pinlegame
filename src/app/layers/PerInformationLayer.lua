@@ -55,7 +55,8 @@ function  PerInformationLayer:city_init( )
          self._cityname=self.Perinformation:getChildByTag(91)
          self._cityname:setString(userdt["cityname"])
          self._area=self.Perinformation:getChildByTag(92)
-         self._area:setString(userdt["conty"])
+         self._area:setString(userdt["districtame"])
+         self._area:setVisible(true)
 end
 --个人信息初始化
 function PerInformationLayer:perinformation_init(  )
@@ -73,7 +74,7 @@ function PerInformationLayer:perinformation_init(  )
      -- userdt["golds"]=userdatainit["golds"]
      -- userdt["points"]=userdatainit["points"]
      userdt["provincename"]=userdatainit["provincename"]  
-     userdt["conty"]=""
+     userdt["districtame"]=userdatainit["districtame"]  
      LocalData:Instance():set_userdata(userdt)
 
     local  bg=self.Perinformation:getChildByTag(26)
@@ -221,7 +222,8 @@ function PerInformationLayer:_savecity(  )
 
          self._provincename:setString(province) 
          self._cityname:setString(city) 
-         self._area=self.Perinformation:getChildByTag(92)
+         self._area:setString(conty) 
+         
           self:unscheduleUpdate()
          self.adress:removeFromParent()
 end
@@ -305,6 +307,7 @@ function PerInformationLayer:savedata( )
     local  nickname=self._Pname:getString()--userdata["nickname"]  
     local  provincename=self._provincename:getString() 
     local  cityid=1
+    local  districtid=1
     local  cityname=self._cityname:getString() 
     --提交日期  和头像  时候  修改后  后台返回不变
     
@@ -334,7 +337,9 @@ function PerInformationLayer:savedata( )
             cityname=cityname,
             birthday=birthday,
             gender=gender,
-            imageurl=imageurl
+            imageurl=imageurl,
+            districtame=self._area:getString(),
+            districtid=districtid,
         }
         dump(params)
     Server:Instance():setuserinfo(params) 
@@ -564,7 +569,7 @@ function PerInformationLayer:fun_city_info( )
         dump(userdata)
          local  userdatainit=LocalData:Instance():get_user_data() --用户数据
         local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
-        city_curr:setString(userdatainit["provincename"]..userdatainit["cityname"])
+        city_curr:setString(userdatainit["provincename"]..userdatainit["cityname"]..userdatainit["districtame"])
         --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属
         self.province="1"
         self.city="2"

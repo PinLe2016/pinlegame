@@ -25,6 +25,22 @@ function LocalData:get_user_data()
 	return json.decode(user_data) or nil
 end
 
+--版本号
+function LocalData:set_version(user_version)
+	cc.UserDefault:getInstance():setStringForKey("user_version" ,json.encode(user_version))
+end
+function LocalData:get_version()
+	local user_version=cc.UserDefault:getInstance():getStringForKey("user_version","3.0")
+	return user_version or "3.0"
+end
+
+function LocalData:set_version_date(version_date)
+	self.version_date=version_date
+end
+function LocalData:get_version_date()
+	return json.decode(self.version_date) or nil
+end
+
 
 
 
