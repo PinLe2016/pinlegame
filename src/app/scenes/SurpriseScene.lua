@@ -57,6 +57,8 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     activity_bt:addTouchEventListener((function(sender, eventType  )
                      self:list_btCallback(sender, eventType)
                end))
+     activity_bt:setBright(false)
+     self.curr_bright=activity_bt--记录当前高亮
      local Reviewpast_bt=ActivitymainnterfaceiScene:getChildByTag(31)--回顾
     Reviewpast_bt:addTouchEventListener((function(sender, eventType  )
                      self:list_btCallback(sender, eventType)
@@ -89,6 +91,12 @@ end
                        return
               end
               local tag=sender:getTag()
+              
+              if self.curr_bright:getTag()==tag then
+                  return
+              end
+              self.curr_bright:setBright(true)
+              sender:setBright(false)
               if tag==29 then   
 
                        LocalData:Instance():set_getactivitylist(nil)--数据制空
@@ -98,6 +106,7 @@ end
                        Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                        activity_ListView:removeAllItems()
                        self:unscheduleUpdate()
+
               elseif tag==30 then
                       LocalData:Instance():set_getactivitylist(nil)--数据制空
                       self.tablecout=0
@@ -126,6 +135,7 @@ end
                        self:unscheduleUpdate()
                         Util:scene_control("MainInterfaceScene")
               end
+             self.curr_bright=sender
   end
   function SurpriseScene:update(dt)
 	self.secondOne = self.secondOne+dt

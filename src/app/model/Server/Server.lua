@@ -44,7 +44,7 @@ end
 
 function Server:show_http_buffer(is_buffer)
  
-   display.getRunningScene():push_buffer(is_buffer)
+   -- display.getRunningScene():push_buffer(is_buffer)
 end
 
 
@@ -103,7 +103,7 @@ function Server:request_http(command , params)
     local login_info=LocalData:Instance():get_user_data()
     local md5=crypto.md5(post_)
  
-    if login_info and command~="login" and command~="sendmessage" and command~="changepassword" and command~="reg" then
+    if login_info and command~="login" and command~="sendmessage" and command~="changepassword" and command~="reg" and command~="getversion" then
 
         _key=login_info["loginname"]
         md5=_key..login_info["loginkey"]
@@ -205,10 +205,10 @@ function Server:on_request_finished_pic(event , command)
     -- dump(str)--.."res/pic/"
     local file_path = self.writablePath.."down_pic/"..str  
 
-    if device.platform=="ios" or device.platform=="mac" then
-        print("下载图片走这里？")
-        file_path=self.writablePath.."res/down_pic/"..str
-    end
+    -- if device.platform=="ios" or device.platform=="mac" then
+    --     print("下载图片走这里？")
+    --     file_path=self.writablePath.."res/down_pic/"..str
+    -- end
     local file = io.open( file_path, "w+b")
     if file then
         if file:write(dataRecv) == nil then
@@ -258,9 +258,9 @@ function Server:acton_request_finished_pic(event , command)
     -- dump(str)
     local file_path = self.writablePath.."down_pic/"..str
 
-    if device.platform=="ios" or device.platform=="mac" then
-        file_path=self.writablePath.."res/down_pic/"..str
-    end
+    -- if device.platform=="ios" or device.platform=="mac" then
+    --     file_path=self.writablePath.."res/down_pic/"..str
+    -- end
     dump(file_path)
     local file = io.open( file_path, "w+b")
     if file then
@@ -306,10 +306,10 @@ function Server:jackpot_request_finished_pic(event , command)
     -- dump(str)--"res/pic/"..
     local file_path = self.writablePath.."down_pic/"..str
 
-    if device.platform=="ios" or device.platform=="mac" then
-        print("11111")
-        file_path=self.writablePath.."res/down_pic/"..str
-    end
+    -- if device.platform=="ios" or device.platform=="mac" then
+    --     print("11111")
+    --     file_path=self.writablePath.."res/down_pic/"..str
+    -- end
 
     local file = io.open( file_path, "w+b")
     if file then
@@ -360,9 +360,9 @@ function Server:jackpotlayer_request_finished_pic(event , command)
     -- dump(str)--"res/pic/".."res/"..
     local file_path = self.writablePath.."down_pic/"..str
     
-    if device.platform=="ios" or device.platform=="mac"  then
-        file_path=self.writablePath.."res/down_pic/"..str
-    end
+    -- if device.platform=="ios" or device.platform=="mac"  then
+    --     file_path=self.writablePath.."res/down_pic/"..str
+    -- end
 
     local file = io.open( file_path, "w+b")
     if file then

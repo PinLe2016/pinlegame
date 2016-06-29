@@ -30,7 +30,7 @@ function MyApp:run()
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
        Util:removeDirectory(path_res)
     elseif device.platform=="ios" or device.platform=="mac" then
-      path_res=writablePath.."res/down_pic"
+      -- path_res=writablePath.."down_pic/"
       -- MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
 
@@ -41,20 +41,11 @@ function MyApp:run()
   
       
    -- lfs.mkdir(writablePath .. "down_pic")
-  -- Util:removeDirectory("res/down_pic")
+  Util:removeDirectory("down_pic")
   lfs.mkdir(path_res)
   cc.FileUtils:getInstance():addSearchPath(path_res)
   
-   
-
-  dump(path_res)
-  --self:enterScene("SurpriseScene")
  
-   --self:enterScene("LoginScene")
-
-      -- self:enterScene("MainInterfaceScene")
-      --self:enterScene("PerInformationScene")
-  -- self:enterScene("GameScene")  
   local login_info=LocalData:Instance():get_user_data()
     
   -- dump(login_info)
@@ -63,6 +54,8 @@ function MyApp:run()
       return
   end
   self:enterScene("LoginScene")
+  -- self:enterScene("UpgradeScene")
+  
 end
 
 
