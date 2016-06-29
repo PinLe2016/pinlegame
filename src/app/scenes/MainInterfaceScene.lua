@@ -43,6 +43,10 @@ function MainInterfaceScene:fun_init( )
           activitycode_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
+      local mall_bt=self.MainInterfaceScene:getChildByTag(626)  --商城
+      mall_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
       local jackpot_bt=self.MainInterfaceScene:getChildByTag(97)
           jackpot_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
@@ -147,7 +151,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:addChild(FriendrequestLayer.new())
       elseif tag==54 then  --测试分享
             --Util:share()
-          
+      elseif tag==626 then  --商城
+            device.openURL("http://playios.pinlegame.com/P_default.aspx?")
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then

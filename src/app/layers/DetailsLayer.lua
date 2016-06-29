@@ -5,6 +5,7 @@
 local DetailsLayer = class("DetailsLayer", function()
             return display.newLayer("DetailsLayer")
 end)
+GameScene = require("app.scenes.GameScene")
 function DetailsLayer:ctor(params)
        self:setNodeEventEnabled(true)--layer添加监听
 
@@ -23,15 +24,17 @@ function DetailsLayer:init(  )
             self.title=activitybyid["title"]
 	local  function back_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
-		     Util:scene_control("MainInterfaceScene",self.id)
-		     
+		     --Util:scene_control("MainInterfaceScene",self.id)
+		     self:removeFromParent()
+
 		end
 	end
 
 	local  function began_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
-		      Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
-		      
+		     -- Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
+		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" "})
+                      	       cc.Director:getInstance():pushScene(scene)
 		      --Util:scene_control("SurpriseOverScene")
 		      
 		end

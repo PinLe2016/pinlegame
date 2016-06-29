@@ -12,7 +12,7 @@ local GameScene = class("GameScene", function()
 end)
 
 local debrisLayer = require("app.layers.debrisLayer")
-
+local SurpriseOverScene = require("app.scenes.SurpriseOverScene")
 
 function GameScene:ctor(params)
     self.floating_layer = FloatingLayerEx.new()
@@ -139,7 +139,8 @@ function GameScene:funsuspended( )
                end)
            local continue_bt=panel:getChildByTag(51)  -- 退出
            continue_bt:addTouchEventListener(function(sender, eventType  )
-                      Util:scene_control("MainInterfaceScene")
+                      --Util:scene_control("MainInterfaceScene")
+                      cc.Director:getInstance():popScene()
                end)
            local sound_box=panel:getChildByTag(52)  -- 音效
            sound_box:addEventListener(function(sender, eventType  )
@@ -209,6 +210,9 @@ end
            self._dajishi:setString(tostring(self._time))
            if self._time==0 then
               Util:scene_control("SurpriseOverScene")
+               -- local scene=SurpriseOverScene.new({})
+               -- cc.Director:getInstance():pushScene(scene)
+
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
            end
 end

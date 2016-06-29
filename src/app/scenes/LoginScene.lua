@@ -45,24 +45,24 @@ end
     --注册
     self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.phone_text)
-    self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX(),self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
+    self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX()-20,self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
     self.phone_text:setPlaceHolder("请输入手机号码")
-    --self.phone_text:setAnchorPoint(0,0)  
+    self.phone_text:setAnchorPoint(0.5,0.5)  
     self.phone_text:setMaxLength(11)
 
     self.Zpassword_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.Zpassword_text )
-    self.Zpassword_text :setPosition(cc.p(password_text:getPositionX(),password_text:getPositionY()))--( cc.p(130,380 ))  
+    self.Zpassword_text :setPosition(cc.p(password_text:getPositionX()-20,password_text:getPositionY()))--( cc.p(130,380 ))  
     self.Zpassword_text :setPlaceHolder("请输入密码")
-    --self.Zpassword_text :setAnchorPoint(0,0)  
+    self.Zpassword_text :setAnchorPoint(0.5,0.5)  
     self.Zpassword_text :setMaxLength(19)
     self.Zpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
     self.Zcode_text = ccui.EditBox:create(cc.size(120,40),res)
     self.registered:addChild(self.Zcode_text)
-    self.Zcode_text:setPosition(cc.p(verificationcode_text:getPositionX(),verificationcode_text:getPositionY()))--( cc.p(130,323 ))  
+    self.Zcode_text:setPosition(cc.p(verificationcode_text:getPositionX()-20,verificationcode_text:getPositionY()))--( cc.p(130,323 ))  
     self.Zcode_text:setPlaceHolder("验证码")
-    --self.Zcode_text:setAnchorPoint(0,0)  
+    self.Zcode_text:setAnchorPoint(0.5,0.5)  
     self.Zcode_text:setMaxLength(6)
 
 
@@ -124,7 +124,7 @@ function LoginScene:landing_init()
     self.Dphone_text:setVisible(true)
     self.Dphone_text:setPosition(cc.p(Editphone:getPositionX(),Editphone:getPositionY()))--( cc.p(107,77 ))  
     self.Dphone_text:setPlaceHolder("请输入手机号码")
-    --self.Dphone_text:setAnchorPoint(0,0)  
+    self.Dphone_text:setAnchorPoint(0,0.5)  
     self.Dphone_text:setMaxLength(11)
 
     self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
@@ -132,7 +132,7 @@ function LoginScene:landing_init()
     phone_bg:addChild(self.Dpassword_text )
     self.Dpassword_text :setPosition(cc.p(EditPassword:getPositionX(),EditPassword:getPositionY()))--( cc.p(107,25 ))  
     self.Dpassword_text :setPlaceHolder("请输入密码")
-    --self.Dpassword_text :setAnchorPoint(0,0)  
+    self.Dpassword_text :setAnchorPoint(0,0.5)  
     self.Dpassword_text :setMaxLength(19)
     self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
@@ -152,6 +152,8 @@ local function go_btCallback(sender, eventType)
     end
 
     local function registered_btCallback(sender, eventType)
+   
+    
         if eventType == ccui.TouchEventType.ended then
            print("注册")
             self.registered = cc.CSLoader:createNode("registered.csb");
@@ -238,14 +240,14 @@ function LoginScene:_passwordLayer( )
             self.passwordLayer:addChild(self.Wphone_text)
             self.Wphone_text:setPosition(cc.p(phone:getPositionX(),phone:getPositionY()))--( cc.p(58,441 ))  
             self.Wphone_text:setPlaceHolder("请输入手机号码")
-            --self.Wphone_text:setAnchorPoint(0,0)  
+            self.Wphone_text:setAnchorPoint(0,0.5)  
             self.Wphone_text:setMaxLength(11)
 
             self._yanzhengma = ccui.EditBox:create(cc.size(120,40),res)
             self.passwordLayer:addChild(self._yanzhengma)
             self._yanzhengma:setPosition(cc.p(Wcode_text:getPositionX(),Wcode_text:getPositionY()))--( cc.p(58,356 ))  
             self._yanzhengma:setPlaceHolder("验证码")
-            --self._yanzhengma:setAnchorPoint(0,0)  
+            self._yanzhengma:setAnchorPoint(0,0.5)  
             self._yanzhengma:setMaxLength(6)
 
             
@@ -284,7 +286,12 @@ function LoginScene:touch_Callback( sender, eventType  )
                   self.p_random=Util:rand(  ) --随机验证码\
                      local phone=self.passwordLayer:getChildByTag(293)
                     self._mobilephone=self.Wphone_text:getText()
-                   print("  ",self._mobilephone)
+                   print(" 长度 ",string.len(self._mobilephone))
+
+                   if string.len(self._mobilephone)~=11 then
+                       Server:Instance():prompt("填写手机号码错误")
+                       return
+                   end
                   Server:Instance():sendmessage(2,self._mobilephone,self.p_random)
                   print("邀请码"..self.p_random)
              end
@@ -322,9 +329,9 @@ function LoginScene:_resetpasswordLayer(  )
              --修改密码
               self.Wpassword_text = ccui.EditBox:create(cc.size(width,height),res)
               self.resetpasswordLayer:addChild(self.Wpassword_text )
-              self.Wpassword_text :setPosition(cc.p(password1:getPositionX(),password1:getPositionY()))--( cc.p(100,375 ))  
+              self.Wpassword_text :setPosition(cc.p(password1:getPositionX()-200,password1:getPositionY()))--( cc.p(100,375 ))  
               self.Wpassword_text :setPlaceHolder("请输入密码")
-              --self.Wpassword_text :setAnchorPoint(0,0)  
+              self.Wpassword_text :setAnchorPoint(0,0.5)  
               self.Wpassword_text :setMaxLength(19)
               self.Wpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
               
