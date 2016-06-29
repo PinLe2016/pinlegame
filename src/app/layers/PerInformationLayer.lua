@@ -55,7 +55,11 @@ function  PerInformationLayer:city_init( )
          self._cityname=self.Perinformation:getChildByTag(91)
          self._cityname:setString(userdt["cityname"])
          self._area=self.Perinformation:getChildByTag(92)
-         self._area:setString(userdt["districtame"])
+         local area=""
+         if userdt["districtame"] then
+             area=userdt["districtame"]
+         end
+         self._area:setString(area)
          self._area:setVisible(true)
 end
 --个人信息初始化
@@ -569,7 +573,12 @@ function PerInformationLayer:fun_city_info( )
         dump(userdata)
          local  userdatainit=LocalData:Instance():get_user_data() --用户数据
         local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
-        city_curr:setString(userdatainit["provincename"]..userdatainit["cityname"]..userdatainit["districtame"])
+        local area=""
+        if userdatainit["districtame"]  then
+
+            area=userdatainit["districtame"]
+        end
+        city_curr:setString(userdatainit["provincename"]..userdatainit["cityname"]..area)
         --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属
         self.province="1"
         self.city="2"
