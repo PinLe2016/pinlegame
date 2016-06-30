@@ -43,6 +43,8 @@ public:
     
 private:
     int _launchMode;
+    
+    void initSearchPaths();
 };
 
 #endif  // __APP_DELEGATE_H__
