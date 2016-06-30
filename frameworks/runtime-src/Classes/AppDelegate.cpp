@@ -139,7 +139,8 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
         director->startAnimation();
     }
-   
+        initSearchPaths();
+    
     auto engine = LuaEngine::getInstance();
     ScriptEngineManager::getInstance()->setScriptEngine(engine);
     lua_State* L = engine->getLuaStack()->getLuaState();
@@ -157,7 +158,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
 
     stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
-
+    stack->loadChunksFromZIP("version.zip");
     //register custom function
     //LuaStack* stack = engine->getLuaStack();
     //register_custom_function(stack->getLuaState());
@@ -170,10 +171,12 @@ bool AppDelegate::applicationDidFinishLaunching()
     }
     else
     {
-        engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
+//        engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
+        engine->executeString(" require 'main' ");
     }
 #else
-    engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
+//    engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
+    engine->executeString(" require 'main' ");
 #endif
 
     PinLe_platform::Instance()->getLocation(); // 获取定位信息
@@ -232,9 +235,40 @@ void AppDelegate::applicationWillEnterForeground()
     SimpleAudioEngine::getInstance()->resumeAllEffects();
 
     Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("APP_ENTER_FOREGROUND_EVENT");
+    PinLe_platform::Instance()->getLocation(); // 获取定位信息
 }
 
 void AppDelegate::setLaunchMode(int mode)
 {
     _launchMode = mode;
+}
+
+
+void AppDelegate::initSearchPaths() {
+    
+    FileUtils* sharedFileUtils = FileUtils::getInstance();
+    std::vector<std::string> oldSearchPaths = sharedFileUtils->getSearchPaths();
+    std::vector<std::string> tempPaths(oldSearchPaths);
+    std::vector<std::string> searchPaths;
+    
+    
+    searchPaths.push_back(sharedFileUtils->getWritablePath() + "upd/src");
+//    searchPaths.push_back(sharedFileUtils->getWritablePath() + "upd/res");
+//    searchPaths.push_back("src/");
+    searchPaths.push_back("res/");
+    
+    
+    
+    for (int i = 0; i < tempPaths.size(); ++i) {
+        searchPaths.push_back(tempPaths[i]);
+    }
+    
+    for(auto& path:searchPaths)
+    {
+        CCLOG("222%s",path.c_str());
+    }
+    
+    sharedFileUtils->setSearchPaths(searchPaths);
+    
+    
 }
