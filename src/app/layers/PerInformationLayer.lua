@@ -619,7 +619,8 @@ function PerInformationLayer:fun_city_info( )
             dump(phone_location)
             self.province=" "
             self.city=" "
-            if not phone_location then
+            if phone_location then
+                print("手机归属")
                 self.province=phone_location["provincename"]
                 self.city=phone_location["cityname"]
             end
@@ -628,10 +629,10 @@ function PerInformationLayer:fun_city_info( )
             self.conty="1"
         end
 
-        if self.province ~="1" then
-            local city_gps=self.adress:getChildByTag(52):getChildByTag(58)
-            city_gps:setString(self.province..self.city)
-        end
+        -- if self.province ~="1" then
+        local city_gps=self.adress:getChildByTag(52):getChildByTag(58)
+        city_gps:setString(self.province..self.city)
+        -- end
         dump(pinle_location:getProvince())
         dump(pinle_location:getCity())
         dump(pinle_location:getCounty())
@@ -692,7 +693,7 @@ function PerInformationLayer:fun_City()
     dump(tonumber(self.adress_province_Itempicker:getCellPos()))
 
     local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
-    dump(json_city)
+    -- dump(json_city)
     if #json_city==0 then
         return
     end
