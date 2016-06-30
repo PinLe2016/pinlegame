@@ -22,7 +22,7 @@ function JackpotLayer:ctor(params)
          -- Server:Instance():getgoldspoolrandomgolds(self.id,1)
 
          self:setNodeEventEnabled(true)--layer添加监听
-
+         self.is_bright=true
          self.secondOne = 0
          self.time=0
           self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
@@ -40,6 +40,7 @@ function JackpotLayer:init(  )
 
          self.acthua=self.JackpotScene:getChildByTag(213)  --金币动画界面
          self.jinbi=self.acthua:getChildByTag(214)  --金币数量
+         
          self.acthua:setVisible(false)
 
         self.advertiPv=self.JackpotScene:getChildByTag(151)
@@ -155,12 +156,14 @@ function JackpotLayer:information( )
                        self:touch_callback( sender, eventType )             
               end)
 
-             local ordinary_bt=self.JackpotScene:getChildByTag(44)  --普通
-             ordinary_bt:addTouchEventListener(function(sender, eventType  )
+             self.ordinary_bt=self.JackpotScene:getChildByTag(44)  --普通
+             self.ordinary_bt:setBright(false)
+             self.curr_bright=self.ordinary_bt
+             self.ordinary_bt:addTouchEventListener(function(sender, eventType  )
                        self:touch_callback( sender, eventType )             
               end)
-              local special_bt=self.JackpotScene:getChildByTag(45)  --翻倍
-             special_bt:addTouchEventListener(function(sender, eventType  )
+              self.special_bt=self.JackpotScene:getChildByTag(45)  --翻倍
+             self.special_bt:addTouchEventListener(function(sender, eventType  )
                        self:touch_callback( sender, eventType )             
               end)
               local obtain_bt=self.JackpotScene:getChildByTag(47)  --获取参与卷
@@ -178,7 +181,11 @@ function JackpotLayer:information( )
              self.is_double = 2  --  1  是翻倍   2  不使用
 
 end
-
+function JackpotLayer:vouchers(  )
+         local _table=LocalData:Instance():get_setgamerecord()--保存数据
+         local goldspool=_table["goldspool"]
+         self.be_num:setString(goldspool["playcardamount"])
+end
 function JackpotLayer:touch_callback( sender, eventType )
 
       local tag=sender:getTag()
@@ -191,26 +198,37 @@ function JackpotLayer:touch_callback( sender, eventType )
       if eventType ~= ccui.TouchEventType.ended then
          return
       end
-      
+      if self.curr_bright:getTag()==tag then
+                  return
+       end
+
       dump(tag)
       if tag==46 then --开始
               self:act_began( )   
       elseif tag==44 then
+            self.curr_bright=sender
             self.is_double=2
             print("普通")
+            self.ordinary_bt:setBright(true)
+            self.special_bt:setBright(false)
       elseif tag==45 then
             if self._carnum>0 then
+               self.curr_bright=sender
                print("翻倍",self._carnum)
                self._carnum=self._carnum-1
                self.is_double=1
+               self.ordinary_bt:setBright(false)
+               self.special_bt:setBright(true)
             end
+             Server:Instance():prompt("翻倍卡不足")
             -- print("翻倍卡不足")
             -- self.is_double=2 -- 测试
             -- self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
                  self.end_bt:setTouchEnabled(false)
                  local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-                 self.jinbi=_tablegods["golds"]
+                 dump(_tablegods)
+                 self.jinbi:setString("+"  ..  _tablegods["golds"])     
              self:unscheduleUpdate()
                 local function stopAction()
                   self:fun_win()
@@ -232,6 +250,7 @@ function JackpotLayer:touch_callback( sender, eventType )
                --cc.Director:getInstance():pushScene("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
 
       end
+      
 end
 function JackpotLayer:act_began( )
        self.end_bt:setTouchEnabled(true)
@@ -405,7 +424,11 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POS
                        function()
                                 self:information()
                       end)
-
+NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
+                       function()
+                               self:vouchers(  )
+                                print("劲舞团")
+                      end)
   --劲舞团开启停止后返回的后台随机金币数量
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self,
                        function()
@@ -419,6 +442,7 @@ function JackpotLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self)
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
+        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
 end
 
 

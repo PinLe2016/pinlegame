@@ -28,7 +28,7 @@ LOAD LUA FILE: /Users/lixin/Documents/quick-3.3/projest/pinlegame/src/main.lua
 [LUA-print]               LOAD QUICK FRAMEWORK
 [LUA-print] ===========================================================
 [LUA-print] [INFO] 
-[LUA-print] [INFO] # DEBUG                        = 2
+[LUA-print] [INFO] # DEBUG                        = 0
 [LUA-print] [INFO] #
 [LUA-print] [INFO] # device.platform              = mac
 [LUA-print] [INFO] # device.model                 = unknown
@@ -40,24 +40,276 @@ LOAD LUA FILE: /Users/lixin/Documents/quick-3.3/projest/pinlegame/src/main.lua
 libpng warning: iCCP: known incorrect sRGB profile
 [LUA-print] [INFO] # CONFIG_SCREEN_AUTOSCALE      = FIXED_WIDTH
 [LUA-print] [INFO] # CONFIG_SCREEN_WIDTH          = 640.00
-[LUA-print] [INFO] # CONFIG_SCREEN_HEIGHT         = 1138.67
-[LUA-print] [INFO] # display.widthInPixels        = 480.00
-[LUA-print] [INFO] # display.heightInPixels       = 854.00
-[LUA-print] [INFO] # display.contentScaleFactor   = 0.75
+[LUA-print] [INFO] # CONFIG_SCREEN_HEIGHT         = 1136.00
+[LUA-print] [INFO] # display.widthInPixels        = 640.00
+[LUA-print] [INFO] # display.heightInPixels       = 1136.00
+[LUA-print] [INFO] # display.contentScaleFactor   = 1.00
 [LUA-print] [INFO] # display.width                = 640.00
-[LUA-print] [INFO] # display.height               = 1138.67
+[LUA-print] [INFO] # display.height               = 1136.00
 [LUA-print] [INFO] # display.cx                   = 320.00
-[LUA-print] [INFO] # display.cy                   = 569.33
+[LUA-print] [INFO] # display.cy                   = 568.00
 [LUA-print] [INFO] # display.left                 = 0.00
 [LUA-print] [INFO] # display.right                = 640.00
-[LUA-print] [INFO] # display.top                  = 1138.67
+[LUA-print] [INFO] # display.top                  = 1136.00
 [LUA-print] [INFO] # display.bottom               = 0.00
 [LUA-print] [INFO] # display.c_left               = -320.00
 [LUA-print] [INFO] # display.c_right              = 320.00
-[LUA-print] [INFO] # display.c_top                = 569.33
-[LUA-print] [INFO] # display.c_bottom             = -569.33
+[LUA-print] [INFO] # display.c_top                = 568.00
+[LUA-print] [INFO] # display.c_bottom             = -568.00
 [LUA-print] [INFO] #
 libpng warning: iCCP: known incorrect sRGB profile
-[LUA ERROR] load "app/model/Server/Server.lua", error: syntax error during pre-compilation.
-[LUA ERROR] error loading module 'app.model.Server.Server' from file '/Users/lixin/Documents/quick-3.3/projest/pinlegame/src/app/model/Server/Server.lua':
-	...in/Documents/quick-3.3/projest/pinlegame/src/app/model/Server/Server.lua:145: 'end' expected (to close 'function' at line 53) near '<eof>'
+[LUA-print] 入口后台差异检测测试---
+[LUA-print] create device_id 8d60d8965be7e2d05d8d09ba1ee842e5
+suffix = csb
+textureSize = 0
+classname = Node
+size = 26
+classname = ImageView
+callBackName  cannot be found
+size = 8
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d0c3600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d0fa600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c23ea00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c8cfa00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c8a1a00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c8ba600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d0f2c00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c8bb800
+child = 0x7f8a1d0c2400
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d0fb200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d0fd400
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d0ff600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d110400
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d11e000
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d120c00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d12da00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d133800
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d13ac00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d13f000
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d146000
+classname = ImageView
+callBackName  cannot be found
+size = 3
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d148e00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d14e200
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d16c800
+child = 0x7f8a1d141400
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d157000
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d15e400
+classname = LoadingBar
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d17f200
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d11ec00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d167c00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d187a00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d19da00
+classname = ImageView
+Get data from file(Default/ImageFile.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c278c00
+classname = ImageView
+callBackName  cannot be found
+size = 3
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c2a5a00
+classname = TextField
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c2aca00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c2b6600
+child = 0x7f8a1c29a000
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d1a5400
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d1b8600
+classname = ImageView
+callBackName  cannot be found
+size = 4
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d1b3e00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d1b0e00
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d196600
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c2c6a00
+child = 0x7f8a1c2d1800
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c2c9400
+suffix = csb
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+suffix = csb
+textureSize = 0
+classname = Node
+size = 6
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d17fe00
+classname = ImageView
+callBackName  cannot be found
+size = 1
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c8d2e00
+child = 0x7f8a1d0f0400
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c2d5600
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c2e8800
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1c2e9a00
+child = 0x7f8a1c2e6600
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d832c00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8a1d87c400
+[LUA-print] dump from: [string "app/scenes/MainInterfaceScene.lua"]:107: in function 'userdata'
+[LUA-print] - "<var>" = {
+[LUA-print] -     "birthday"     = 631123200
+[LUA-print] -     "cityid"       = 1
+[LUA-print] -     "cityname"     = "烟台"
+[LUA-print] -     "err_code"     = 0
+[LUA-print] -     "gender"       = 0
+[LUA-print] -     "golds"        = 20157
+[LUA-print] -     "grade"        = 0
+[LUA-print] -     "imageUrl"     = "http://game.PinleGame.com/head/headicon_0.jpg"
+[LUA-print] -     "loginkey"     = "B12F224B927C6056DE0CB1DFAE0C1EA8"
+[LUA-print] -     "loginname"    = "12345678912"
+[LUA-print] -     "nickname"     = "昵称55555"
+[LUA-print] -     "points"       = 1368
+[LUA-print] -     "provincename" = "山东"
+[LUA-print] -     "rankname"     = "平民"
+[LUA-print] - }
+[LUA-print] hahhahhahahhahfewahiufhewfh
+[LUA-print] dump from: [string "app/model/Server/ServerLogin.lua"]:23: in function 'version_login_url_callback'
+[LUA-print] - "<var>" = "http://123.57.136.223:2036/Default.aspx?"
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:51: in function 'get_music'
+[LUA-print] - "<var>" = false
+[LUA-print] 抱歉无法播放音乐
+[LUA-print] CHECK_POST
+[LUA-print] CHECKINHISTORY_POST

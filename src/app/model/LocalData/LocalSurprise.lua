@@ -87,8 +87,16 @@ end
 function LocalData:get_setgamerecord()
 	return self.gamerecord or {}
 end
+--记录是否今天签到
+function LocalData:set_isign(number)
+	dump(number)
+	cc.UserDefault:getInstance():setStringForKey("music" ,number)
+end
 
-
+function LocalData:get_isign()
+	local number=cc.UserDefault:getInstance():getStringForKey("music",1)
+	return number or nil
+end
 
 
 

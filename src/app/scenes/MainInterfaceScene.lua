@@ -185,19 +185,28 @@ function MainInterfaceScene:funsetup(  )
         music_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
-                            audio.resumeMusic()
+                            LocalData:Instance():set_music(true)
+                            --audio.resumeMusic()
+                            Util:player_music("ACTIVITY",true )
+                            
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              print("关闭")
-                             audio.pauseMusic()
+                             LocalData:Instance():set_music(false)
+                             --audio.pauseMusic()
+                             Util:stop_music("ACTIVITY")
                      end
         end)
         local sound_bt=self.set_bg1:getChildByTag(92)  -- 音效
         sound_bt:addEventListener(function(sender, eventType  )
                  if eventType == ccui.CheckBoxEventType.selected then
                         print("开启")
+                         LocalData:Instance():set_music(true)
                         audio.resumeAllSounds()--恢复所有音效
+                       --Util:player_music("ACTIVITY",true )
                  elseif eventType == ccui.CheckBoxEventType.unselected then
-                         audio.pauseAllSounds()  --关闭所有音效
+                        LocalData:Instance():set_music(false)
+                        audio.pauseAllSounds()  --关闭所有音效
+                         --Util:stop_music("ACTIVITY")
                  end
          end)
 
@@ -224,6 +233,7 @@ function MainInterfaceScene:fun_checkin( tm )
 	       
 	end)
 	local check_bt=self.checkinlayer:getChildByTag(87)
+      self.check_button=check_bt
 	check_bt:addTouchEventListener(function(sender, eventType  )
 	       if eventType ~= ccui.TouchEventType.ended then
 		return
@@ -278,6 +288,7 @@ function MainInterfaceScene:init_checkin(  )
                 self.checkinlayer:setVisible(true)
                   return
               end
+           
             for i=1,totaydays do
                   if #days==0 then
                       break
@@ -294,10 +305,18 @@ function MainInterfaceScene:init_checkin(  )
             end
 
             self.checkinlayer:setVisible(true)
-
+            print("额鹅鹅鹅   ",days[#days],"   ",LocalData:Instance():get_isign())
+             if tonumber(days[#days]) ==tonumber(LocalData:Instance():get_isign()) then
+                Server:Instance():prompt("今天您已经签到，请改天再签")
+                self.check_button:setTouchEnabled(false)
+            else
+               self.check_button:setTouchEnabled(true)
+            end
+            LocalData:Instance():set_isign(days[#days])
 end
 function MainInterfaceScene:onEnter()
-  audio.playMusic(G_SOUND["ACTIVITY"],true)
+  --audio.playMusic(G_SOUND["ACTIVITY"],true)
+  Util:player_music("ACTIVITY",true )
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
                        self:fun_checkin(2)--签到后
@@ -309,7 +328,8 @@ function MainInterfaceScene:onEnter()
 end
 
 function MainInterfaceScene:onExit()
-  audio.stopMusic(G_SOUND["ACTIVITY"])
+  --audio.stopMusic(G_SOUND["ACTIVITY"])
+  Util:stop_music("ACTIVITY")
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECK_POST, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
 end

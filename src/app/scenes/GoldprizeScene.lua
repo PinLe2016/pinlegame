@@ -152,7 +152,8 @@ function GoldprizeScene:touch_callback( sender, eventType )
 end
 
 function GoldprizeScene:onEnter()
-	audio.playMusic(G_SOUND["GAMEBG"],true)
+	--audio.playMusic(G_SOUND["GAMEBG"],true)
+	Util:player_music("GAMEBG",true )
   Server:Instance():getgoldspoollist({pagesize=2,pageno=self.sur_pageno})  --发送消息
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self,
@@ -168,7 +169,8 @@ function GoldprizeScene:onEnter()
 end
 
 function GoldprizeScene:onExit()
-	  audio.stopMusic(G_SOUND["GAMEBG"])
+	  --audio.stopMusic(G_SOUND["GAMEBG"])
+	  Util:stop_music("GAMEBG")
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self)
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self)
   

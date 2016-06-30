@@ -104,7 +104,23 @@ function InvitefriendsLayer:pop_up(  )
        self.m_friend=self.Friendsstep:getChildByTag(238)  --邀请好友界面
        self.m_friend:setVisible(false)
        
-       self.invitecode_num=self.m_feedback:getChildByTag(236) -- 输入邀请码
+       local _invitecodeNum=self.m_feedback:getChildByTag(236) -- 输入邀请码
+       _invitecodeNum:setVisible(false)
+       _invitecodeNum:setTouchEnabled(false)
+
+      local res = "res/png/DLkuang.png"
+      local width = 300
+      local height = 40
+       --登陆
+      self.invitecode_num = ccui.EditBox:create(cc.size(width,height),res)
+      self.invitecode_num:setVisible(false)
+      self.m_feedback:addChild(self.invitecode_num)
+      self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX()-130,_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
+      self.invitecode_num:setPlaceHolder("请输入手机号码")
+      self.invitecode_num:setAnchorPoint(0,0.5)  
+      self.invitecode_num:setMaxLength(11)
+
+
        local friend_back=self.m_friend:getChildByTag(242)  --好友返回
 	friend_back:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
@@ -144,9 +160,11 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	elseif tag==118 then
 		self.Friendsstep:setVisible(true)
 		self.m_feedback:setVisible(true)
+            self.invitecode_num:setVisible(true)
 	elseif tag==229 then  --回馈返回
 		self.Friendsstep:setVisible(false)
 		self.m_feedback:setVisible(false)
+            self.invitecode_num:setVisible(false)
 	elseif tag==242 then  --好友返回
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)

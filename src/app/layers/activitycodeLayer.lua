@@ -11,7 +11,8 @@ local activitycodeLayer = class("activitycodeLayer", function()
 end)
 -- 标题 活动类型 
 function activitycodeLayer:ctor()
-         audio.stopMusic("ACTIVITY")
+         --audio.stopMusic("ACTIVITY")
+         Util:stop_music("ACTIVITY")
          --Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self.tablecout=1
          self:setNodeEventEnabled(true)--layer添加监听
@@ -38,41 +39,38 @@ function activitycodeLayer:init(  )
 
 
     	
-    self.activity_ListView=self.inputcodeLayer:getChildByTag(748)--惊喜吧列表
-    self.activity_ListView:setItemModel(self.activity_ListView:getItem(0))
+            self.activity_ListView=self.inputcodeLayer:getChildByTag(748)--惊喜吧列表
+            self.activity_ListView:setItemModel(self.activity_ListView:getItem(0))
 
-    self.activity_ListView:removeAllItems()
-
-
-
-	 local true_bt=self.inputcodeLayer:getChildByTag(746)--关注活动
-             true_bt:addEventListener(function(sender, eventType  )
-                     if eventType == ccui.CheckBoxEventType.selected then
-		         LocalData:Instance():set_getactivitylist(nil)--数据制空
-	                      self.tablecout=0  
-	                      Server:Instance():getactivitylist(tostring(4),1)
-	                      self.activity_ListView:removeAllItems()
-	                      self:unscheduleUpdate()
+            self.activity_ListView:removeAllItems()
 
 
-                     elseif eventType == ccui.CheckBoxEventType.unselected then
-                             print("关闭")
-                     end
-            end)
 
-             local true_bt=self.inputcodeLayer:getChildByTag(745)--关注活动
-             true_bt:addEventListener(function(sender, eventType  )
-                     if eventType == ccui.CheckBoxEventType.selected then
-                            LocalData:Instance():set_getactivitylist(nil)--数据制空
-	                 self.tablecout=0  
-	                 Server:Instance():getactivitylist(tostring(5),1)
-	                 self.activity_ListView:removeAllItems()
-	                 self:unscheduleUpdate()
+	      local true_bt1=self.inputcodeLayer:getChildByTag(916)--关注活动
+             true_bt1:setBright(false)
+            self.curr_bright=true_bt1--记录当前高亮
+             true_bt1:addTouchEventListener((function(sender, eventType  )
+                     self:_touchbak(sender, eventType)
+              end))
 
-                     elseif eventType == ccui.CheckBoxEventType.unselected then
-                             print("关闭")
-                     end
-            end)
+             local end_bt1=self.inputcodeLayer:getChildByTag(917)--结束活动
+             end_bt1:addTouchEventListener((function(sender, eventType  )
+                     self:_touchbak(sender, eventType)
+              end))
+
+
+            --  true_bt:addEventListener(function(sender, eventType  )
+            --          if eventType == ccui.CheckBoxEventType.selected then
+            --                 LocalData:Instance():set_getactivitylist(nil)--数据制空
+	           --       self.tablecout=0  
+	           --       Server:Instance():getactivitylist(tostring(5),1)
+	           --       self.activity_ListView:removeAllItems()
+	           --       self:unscheduleUpdate()
+
+            --          elseif eventType == ccui.CheckBoxEventType.unselected then
+            --                  print("关闭")
+            --          end
+            -- end)
 
 	 
 
@@ -80,6 +78,36 @@ function activitycodeLayer:init(  )
 end
 function activitycodeLayer:Onerecord_init(  )
 	
+end
+function activitycodeLayer:_touchbak( sender, eventType )
+          if eventType ~= ccui.TouchEventType.ended then
+                return
+            end
+             local tag=sender:getTag()
+             if self.curr_bright:getTag()==tag then
+                  return
+              end
+              self.curr_bright:setBright(true)
+              sender:setBright(false)
+
+            
+           if tag==916 then
+
+                       LocalData:Instance():set_getactivitylist(nil)--数据制空
+                        self.tablecout=0  
+                        Server:Instance():getactivitylist(tostring(4),1)
+                        self.activity_ListView:removeAllItems()
+                        self:unscheduleUpdate()
+
+              elseif tag==917 then
+
+                 LocalData:Instance():set_getactivitylist(nil)--数据制空
+                   self.tablecout=0  
+                   Server:Instance():getactivitylist(tostring(5),1)
+                   self.activity_ListView:removeAllItems()
+                   self:unscheduleUpdate()
+            end
+             self.curr_bright=sender
 end
 function activitycodeLayer:touch_btCallback( sender, eventType)
             if eventType ~= ccui.TouchEventType.ended then
@@ -98,17 +126,28 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	if self.ActivitycodeLayer then
               	     self.ActivitycodeLayer:removeFromParent()
               	end
-              elseif tag==746 then
-              	if conditions then
-              		--todo
-              	end
-              	--todo
-              elseif tag==745 then
-              	--todo
+              elseif tag==916 then
+
+              	       LocalData:Instance():set_getactivitylist(nil)--数据制空
+                        self.tablecout=0  
+                        Server:Instance():getactivitylist(tostring(4),1)
+                        self.activity_ListView:removeAllItems()
+                        self:unscheduleUpdate()
+
+              elseif tag==917 then
+
+              	 LocalData:Instance():set_getactivitylist(nil)--数据制空
+                   self.tablecout=0  
+                   Server:Instance():getactivitylist(tostring(5),1)
+                   self.activity_ListView:removeAllItems()
+                   self:unscheduleUpdate()
+
               elseif tag==744 then
               	if self.inputcodeLayer then
-                   audio.stopMusic(G_SOUND["GAMEBG"])
-                   audio.playMusic(G_SOUND["ACTIVITY"],true)
+                   -- audio.stopMusic(G_SOUND["GAMEBG"])
+                   -- audio.playMusic(G_SOUND["ACTIVITY"],true)
+                   Util:stop_music("GAMEBG")
+                   Util:player_music("ACTIVITY",true )
                   self:unscheduleUpdate()
 
               	     self.inputcodeLayer:removeFromParent()
@@ -229,7 +268,8 @@ end
         end
   end
 function activitycodeLayer:onEnter()
-      audio.playMusic(G_SOUND["GAMEBG"],true)
+      --audio.playMusic(G_SOUND["GAMEBG"],true)
+      Util:player_music("GAMEBG",true )
 	self.tablecout=0
       LocalData:Instance():set_getactivitylist(nil)
 	Server:Instance():getactivitylist(tostring(4),1)  --self.ser_status   self.sur_pageno

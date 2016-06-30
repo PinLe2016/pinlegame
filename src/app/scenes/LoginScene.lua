@@ -345,7 +345,8 @@ function LoginScene:_resetpasswordLayer(  )
             end
 end
 function LoginScene:onEnter()
-  audio.playMusic(G_SOUND["LOGO"],true)
+  --audio.playMusic(G_SOUND["LOGO"],true)
+  Util:player_music("LOGO",true )
   
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
@@ -355,8 +356,8 @@ function LoginScene:onEnter()
 
 end
 function LoginScene:onExit()
-  audio.stopMusic(G_SOUND["LOGO"])
-   
+  --audio.stopMusic(G_SOUND["LOGO"])
+  Util:stop_music("LOGO")
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
 end
 function LoginScene:pushFloating(text)

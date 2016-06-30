@@ -33,7 +33,7 @@ function DetailsLayer:init(  )
 	local  function began_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
 		     -- Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
-		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" "})
+		       local scene=GameScene.new({adid=self.id,type="surprise",image=" "})  --daojishi
                       	       cc.Director:getInstance():pushScene(scene)
 		      --Util:scene_control("SurpriseOverScene")
 		      

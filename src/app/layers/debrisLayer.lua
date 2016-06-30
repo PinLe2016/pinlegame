@@ -25,7 +25,7 @@ function debrisLayer:ctor(params)
         self.row=params.row
         self.adid=params.adid
         self.col=params.col
-        self.count=params.row* params.col
+        self.count=params.row * params.col
         local path=cc.FileUtils:getInstance():getWritablePath()
         -- self.fragment_sprite_bg = display.newScale9Sprite(self.filename, self.point.x,self.point.y, cc.size(self._size.width,self._size.height))
         self.fragment_sprite_bg = display.newSprite(self.filename)
@@ -37,6 +37,7 @@ function debrisLayer:ctor(params)
         self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
         self.content_size = self._size
          self.tp=params.tp
+         self.type=params.type
         print("开心  ",self.tp)
         self:addChild(self.fragment_sprite_bg)
         self.fragment_sprite_bg:setOpacity(0)
@@ -211,16 +212,31 @@ function debrisLayer:saw_issuccess()
         local pos_suss=self.fragment_success[i]
         -- print("wwdwaf ",math.floor(pos.x),math.floor(pos_suss.x))
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
-           --  print("失败",self.tp)  
-     --        Server:Instance():setgamerecord(self.adid)  
-     -- cc.Director:getInstance():popScene()
+            print("111111111122    ", self.type)
+           Server:Instance():setgamerecord(self.adid)  
+            if self.type=="surprise" then
+                --  local scene=SurpriseOverScene.new({})
+                -- cc.Director:getInstance():pushScene(scene)
+                Util:scene_controlid("SurpriseOverScene"," ")
+          return
+     end
+   
+     cc.Director:getInstance():popScene()
             return
         end
     end
     print("成功")  --self.adid
      -- Util:scene_controlid("GoldprizeScene"," ")
-    Server:Instance():setgamerecord(self.adid)  
+      Server:Instance():setgamerecord(self.adid)  
+     if self.type=="surprise" then
+          -- local scene=SurpriseOverScene.new({})
+          -- cc.Director:getInstance():pushScene(scene)
+          Util:scene_controlid("SurpriseOverScene"," ")
+          return
+     end
+   
      cc.Director:getInstance():popScene()
+     
   
 end
 

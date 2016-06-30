@@ -41,6 +41,16 @@ function LocalData:get_version_date()
 	return json.decode(self.version_date) or nil
 end
 
+function LocalData:set_music(_music)
+
+	cc.UserDefault:getInstance():setBoolForKey("music" ,_music)
+end
+
+function LocalData:get_music()
+	local _music=cc.UserDefault:getInstance():getBoolForKey("music")
+	dump(_music)
+	return _music or false
+end
 
 
 

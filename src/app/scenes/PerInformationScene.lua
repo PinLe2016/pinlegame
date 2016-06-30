@@ -222,7 +222,8 @@ function PerInformationScene:saw_issuccess()
 end
 
 function PerInformationScene:onEnter()
-                audio.playMusic(G_SOUND["ACTIVITY"],true)
+                --audio.playMusic(G_SOUND["ACTIVITY"],true)
+                Util:player_music("ACTIVITY",true )
                 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
                        function()
                         print("拼图结束")
@@ -231,7 +232,8 @@ function PerInformationScene:onEnter()
 end
 
 function PerInformationScene:onExit()
-                audio.stopMusic(G_SOUND["ACTIVITY"])
+                --audio.stopMusic(G_SOUND["ACTIVITY"])
+                Util:stop_music("ACTIVITY")
                NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
 end
 

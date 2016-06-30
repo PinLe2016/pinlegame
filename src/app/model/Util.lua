@@ -310,8 +310,23 @@ function Util:dateTotimestamp(birthday)
   dump(secondOfToday)
   return secondOfToday
 end
+--音乐
+function Util:player_music(musicname,cycle ) --音乐名字，是否重播，是否设置禁止播放
 
-
+    if LocalData:Instance():get_music() then
+      audio.playMusic(G_SOUND[musicname],cycle)
+    else
+      print("抱歉无法播放音乐")
+   end   
+end
+function Util:stop_music( musicname ) -- 停止播放音乐
+    
+     if not LocalData:Instance():get_music() then
+       audio.stopMusic(G_SOUND[musicname])
+    else
+      print("抱歉无法关闭音乐")
+   end   
+end
 
 
 return Util

@@ -89,8 +89,22 @@ function PerInformationLayer:perinformation_init(  )
         
 
 
-        self._Pname=self.Perinformation:getChildByTag(68)  --名字
-        self._Pname:setString(userdt["nickname"])
+        self.Dphone_text=self.Perinformation:getChildByTag(68)  --名字Dphone_text
+        self.Dphone_text:setTouchEnabled(false)
+        self.Dphone_text:setVisible(false)
+        local res = "res/png/DLkuang.png"
+        local width = 350
+        local height = 40
+        --登陆
+        self._Pname = ccui.EditBox:create(cc.size(width,height),res)
+        self.Perinformation:addChild(self._Pname)
+        self._Pname:setVisible(true)
+        self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  
+        self._Pname:setPlaceHolder(userdt["nickname"])
+        self._Pname:setAnchorPoint(0,0.5)  
+        self._Pname:setMaxLength(11)
+
+        --self._Pname:setString(userdt["nickname"])
         local golds=self.Perinformation:getChildByTag(73)  --金币
         golds:setString(userdt["golds"])
         local rankname=self.Perinformation:getChildByTag(76)  --等级
@@ -213,20 +227,25 @@ function PerInformationLayer:_savecity(  )
           local userdt = LocalData:Instance():get_userdata()--
           userdt["conty"]=conty  --自己保存的区
          
-        --  if  self.city_present:isSelected() then   --待修改
-        --      self.city_gps:setSelected(false)
-        --      self.city_choose:setSelected(false)
-        -- elseif self.city_gps:isSelected() then
-        --      self.city_present:setSelected(false)
-        --      self.city_choose:setSelected(false)
-        -- elseif self.city_choose:isSelected() then
-        --      self.city_present:setSelected(false)
-        --      self.city_gps:setSelected(false)
-        --  end
+         self._provincename:setString(" ") 
+         self._cityname:setString(" ") 
+         self._area:setString(" ") 
 
-         self._provincename:setString(province) 
-         self._cityname:setString(city) 
-         self._area:setString(conty) 
+         if  self.city_present:isSelected() then   --待修改
+             self._provincename:setString(self.city_now[1]) 
+             self._cityname:setString(self.city_now[2]) 
+             self._area:setString(self.city_now[3])
+        elseif self.city_gps:isSelected() then  --带修改
+             -- self._provincename:setString(province) 
+             -- self._cityname:setString(city) 
+             -- self._area:setString(conty) 
+        elseif self.city_choose:isSelected() then
+             self._provincename:setString(province) 
+             self._cityname:setString(city) 
+             self._area:setString(conty) 
+         end
+
+         
          
           self:unscheduleUpdate()
          self.adress:removeFromParent()
@@ -306,9 +325,9 @@ function PerInformationLayer:savedata( )
 
 
     local  userdata=LocalData:Instance():get_user_data()
-    print("nanannana   ",self._Pname:getString())
+    print("nanannana   ",self._Pname:getText())
     local  loginname= userdata["loginname"]
-    local  nickname=self._Pname:getString()--userdata["nickname"]  
+    local  nickname=self._Pname:getText()--userdata["nickname"]  
     local  provincename=self._provincename:getString() 
     local  cityid=1
     local  districtid=1
@@ -578,7 +597,10 @@ function PerInformationLayer:fun_city_info( )
 
             area=userdatainit["districtame"]
         end
-        city_curr:setString(userdatainit["provincename"]..userdatainit["cityname"]..area)
+        local str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] .. "-" .. area
+        city_curr:setString(str)
+        self.city_now=Util:lua_string_split(str, "-")  --当前城市
+
         --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属
         self.province="1"
         self.city="2"
@@ -595,8 +617,14 @@ function PerInformationLayer:fun_city_info( )
             local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
             -- 
             dump(phone_location)
-            self.province=phone_location["provincename"]
-            self.city=phone_location["cityname"]
+            self.province=" "
+            self.city=" "
+            if not phone_location then
+                self.province=phone_location["provincename"]
+                self.city=phone_location["cityname"]
+            end
+            
+            
             self.conty="1"
         end
 

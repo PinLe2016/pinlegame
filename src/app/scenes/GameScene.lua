@@ -78,7 +78,7 @@ function GameScene:funinit(  )
                    if self.type=="surprise" then
                       local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
                       local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
-                     ,row=4,col=5,_size=_size,point=point,adid=self.adid,tp=1})
+                     ,row=4,col=5,_size=_size,point=point,adid=self.adid,tp=1,type=self.type})
                       self._csb:addChild(deblayer)
                   elseif self.type=="audition" then
                       local deblayer= debrisLayer.new({filename=self.image
@@ -250,9 +250,10 @@ function GameScene:imgurl_download(  )
 
 end
 function GameScene:onEnter()
-     audio.playMusic(G_SOUND["MENUMUSIC"],true)
+     --audio.playMusic(G_SOUND["MENUMUSIC"],true)
+     Util:player_music("MENUMUSIC",true )
      if self.type=="surprise" then
-       print("1111111111")
+       print("1111111111    ",self.adid)
         Server:Instance():getactivityadlist(self.adid)--发送请求
     elseif self.type=="audition" then
        self:funinit()
@@ -276,7 +277,7 @@ function GameScene:onEnter()
                        function()
                            print("完成下载图片")
                            if self.type=="surprise" then
-                                --self:funinit()
+                                self:funinit()
                             elseif self.type=="daojishi" then
                                  self:tupian(  )
                            end
@@ -287,7 +288,8 @@ function GameScene:onEnter()
 end
 
 function GameScene:onExit()
-           audio.stopMusic(G_SOUND["MENUMUSIC"])
+           --audio.stopMusic(G_SOUND["MENUMUSIC"])
+           Util:stop_music("MENUMUSIC")
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self)

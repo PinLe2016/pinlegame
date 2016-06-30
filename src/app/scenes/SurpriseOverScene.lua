@@ -110,12 +110,12 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	local activitypoints=LocalData:Instance():get_getactivitypoints()
 	local tag=sender:getTag()
 	if tag==164 then --开始
-         print("jjjjjjjjjjjjjj")
-         self.began_bt:setButtonEnabled(false)
+
+         --self.began_bt:setButtonEnabled(false)
            --w:setFocusEnabled(false)
-                        self.began_bt:setColor(cc.c3b(255, 255,   0))
-		-- audio.playMusic(G_SOUND["FALLMONEY"],true)
-		-- Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
+           -- self.began_bt:setColor(cc.c3b(255, 255,   0))
+		audio.playMusic(G_SOUND["FALLMONEY"],true)
+		Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
 	elseif tag==165 then --分享
 		print("分享")
 		Util:share()
@@ -125,8 +125,10 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		--Util:scene_control("MainInterfaceScene")
      cc.Director:getInstance():popScene()
 	elseif tag==44 then  --结束
-             audio.stopMusic(G_SOUND["FALLMONEY"])
-             audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
+             -- audio.stopMusic(G_SOUND["FALLMONEY"])
+             -- audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
+             Util:stop_music("FALLMONEY")
+             Util:player_music("PERSONALCHAGE",true )
 		self:L_end(  )
       elseif tag==213 then  --分享
            Util:share()
@@ -171,6 +173,7 @@ function SurpriseOverScene:L_end(  )
 
 	self._time=10
     	self.L_began=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self.daojishi_text:setString(tostring(self._time))
                                 self:countdown()
              end,1.0, false)
 end
@@ -207,7 +210,8 @@ function SurpriseOverScene:init_data(  )
             
 end
 function SurpriseOverScene:onEnter()
-       audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
+       --audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
+       Util:player_music("PERSONALCHAGE",true )
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
                   local _table=LocalData:Instance():get_getactivitypoints()
@@ -226,7 +230,8 @@ function SurpriseOverScene:onEnter()
 end
 
 function SurpriseOverScene:onExit()
-       audio.stopMusic(G_SOUND["PERSONALCHAGE"])
+       --audio.stopMusic(G_SOUND["PERSONALCHAGE"])
+       Util:stop_music("PERSONALCHAGE")
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
 end
 function SurpriseOverScene:pushFloating(text)
