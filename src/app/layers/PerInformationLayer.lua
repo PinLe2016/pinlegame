@@ -19,11 +19,95 @@ function PerInformationLayer:ctor()--params
        --手机归属请求
        Server:Instance():getusercitybyphone()--手机归属
 end
+--新增的个人信息界面
+function PerInformationLayer:add_init(  )
+              self.showinformation = cc.CSLoader:createNode("showinformation.csb")
+              self:addChild(self.showinformation)
+              
+                 local  userdata=LocalData:Instance():get_user_data() --用户数据
+                 local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
+
+                 local userdt = LocalData:Instance():get_userdata()--
+                 userdt["birthday"]=userdatainit["birthday"]
+                 userdt["cityid"]=userdatainit["cityid"]
+                 userdt["cityname"]=userdatainit["cityname"]
+                 userdt["gender"]=userdatainit["gender"]
+                 userdt["nickname"]=userdatainit["nickname"]
+                 userdt["provincename"]=userdatainit["provincename"]  
+                 userdt["districtame"]=userdatainit["districtame"]  
+                 LocalData:Instance():set_userdata(userdt)
+
+                
+                    self.image_head1=self.showinformation:getChildByTag(1401)  --头像
+                    self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
+                    self.image_head1:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+                    
+
+
+                    self._Pname1=self.showinformation:getChildByTag(1402) --名字Dphone_text
+                    self._Pname1:setString(userdt["nickname"])
+                   
+                    local golds=self.showinformation:getChildByTag(1413)   --金币
+                    golds:setString(userdt["golds"])
+                    local rankname=self.showinformation:getChildByTag(1414)   --等级
+                    rankname:setString("LV." .. userdt["rankname"])
+
+                   
+                    local registereday=self.showinformation:getChildByTag(1412)  --注册日期
+                    registereday:setString(tostring(os.date("%Y年%m月%d日",userdt["registertime"])))
+                    self.genderman1=self.showinformation:getChildByTag(1403)  --性别
+                   
+                    if userdt["gender"]==0 then    --0女1男2未知
+                        self.genderman1:setString("女")
+                    elseif userdt["gender"]==1 then
+                        self.genderman1:setString("男")
+                    else
+                        self.genderman1:setString(" ")
+                    end  
+        --初始化年月日
+                local date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
+                self.date_years1=self.showinformation:getChildByTag(1404)
+                self.date_years1:setString(date[1] .. "-" ..  date[2] .. "-" .. date[3] )
+       
+
+                 self._provincename1=self.showinformation:getChildByTag(1405)
+                 local area=""
+                 if userdt["districtame"] then
+                     area=userdt["districtame"]
+                 end
+                 self._provincename1:setString(userdt["provincename"] .. "-" .. userdt["cityname"] .. "-" .. area)
+
+                local back_bt=self.showinformation:getChildByTag(1399)  --返回
+                back_bt:addTouchEventListener(function(sender, eventType  )
+                       self:touch_back(sender, eventType)
+                 end)
+
+                local Modify_bt=self.showinformation:getChildByTag(1410)  --修改
+                Modify_bt:addTouchEventListener(function(sender, eventType  )
+                      self:touch_back(sender, eventType)
+                 end)
+end
+function PerInformationLayer:touch_back( sender, eventType )
+    if eventType ~= ccui.TouchEventType.ended then
+        return
+    end
+    --local activitypoints=LocalData:Instance():getactivitypoints_callback()
+    local tag=sender:getTag()
+    if tag==1399 then --返回
+        if self.showinformation then
+            Util:scene_control("MainInterfaceScene")
+            self:removeFromParent()
+        end
+    elseif  tag==1410 then
+         self:init()
+    end
+end
+
+
 function PerInformationLayer:init(  )
-    --print("个人信息")
+
        self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
-        self:addChild(self.Perinformation)
-            
+       self:addChild(self.Perinformation)
         self.birthday_bt=self.Perinformation:getChildByTag(26):getChildByTag(245)
         self.birthday_bt:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
@@ -191,9 +275,8 @@ function PerInformationLayer:touch_callback( sender, eventType )
 
     elseif tag==97 then 
                  if self.Perinformation then
-                       --self.Perinformation:removeFromParent()
-                       Util:scene_control("MainInterfaceScene")
-                       self:removeFromParent()
+                       self.Perinformation:removeFromParent()
+                       
 
                  end
         
@@ -210,7 +293,7 @@ function PerInformationLayer:_savetime(  )
     self.date_years:setString(birthday_year)
     self.date_month:setString(birthday_month)
     self.date_day:setString(birthday_day)
-
+self.date_years1= self.date_years:setString(birthday_year .. "-" ..  birthday_month .. "-" .. birthday_day )
      self.birthday:removeFromParent()
 
 end
@@ -244,7 +327,7 @@ function PerInformationLayer:_savecity(  )
              self._cityname:setString(city) 
              self._area:setString(conty) 
          end
-
+self._provincename1:setString(self._provincename:getString() .. "-" .. self._cityname:getString() .. "-" .. self._area:getString())
          
          
           self:unscheduleUpdate()
@@ -308,6 +391,7 @@ function PerInformationLayer:head_callback( sender, eventType)
                 
             elseif tag==24 then
                 self.image_head:loadTexture(tostring("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"))
+                self.image_head1:loadTexture(tostring("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"))
                 LocalData:Instance():set_user_head("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg")
                  if  self.head_csb then
                     self.head_csb:removeFromParent()
@@ -319,15 +403,18 @@ function PerInformationLayer:savedata( )
             local  gender="2"  --默认无
             if self.genderman:isSelected() then
                 gender="true"
+                self.genderman1="男"
             elseif self.gendergirl:isSelected() then
                 gender="false"
+                self.genderman1="女"
             end
-
+           self.genderman1="  "
 
     local  userdata=LocalData:Instance():get_user_data()
     print("nanannana   ",self._Pname:getText())
     local  loginname= userdata["loginname"]
     local  nickname=self._Pname:getText()--userdata["nickname"]  
+    self._Pname1=self._Pname:getText()
     local  provincename=self._provincename:getString() 
     local  cityid=1
     local  districtid=1
@@ -776,7 +863,8 @@ end
 function PerInformationLayer:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
                        function()
-                            self:init()
+                            --self:init()
+                            self:add_init()
                       end)
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
                        function()

@@ -68,7 +68,7 @@ function JackpotLayer:init(  )
                   local  call=advertiPa:clone() 
                   local advertiImg=call:getChildByTag(155)
                   advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[i]["imgurl"], "/",":")))--
-                  self.advertiPv:addPage(call)   --
+                  self.advertiPv:addPage(call)   
             end
         end
        
@@ -185,6 +185,7 @@ function JackpotLayer:vouchers(  )
          local _table=LocalData:Instance():get_setgamerecord()--保存数据
          local goldspool=_table["goldspool"]
          self.be_num:setString(goldspool["playcardamount"])
+         self.playcardamount=tonumber(goldspool["playcardamount"])
 end
 function JackpotLayer:touch_callback( sender, eventType )
 
@@ -237,7 +238,7 @@ function JackpotLayer:touch_callback( sender, eventType )
               self.acthua:setVisible(true)
               self.roleAction:gotoFrameAndPlay(0,60, false)
               local callfunc = cc.CallFunc:create(stopAction)
-              self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(5),callfunc  ))
+              self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
              
       elseif tag==47 then  --获取参与卷
              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
@@ -262,11 +263,11 @@ function JackpotLayer:act_began( )
            Server:Instance():prompt("参与卷不够，请您充值")
            return
        end
-        if self.coolingtime~=0 then
+        if self.coolingtime==-1 then
            Server:Instance():prompt("冷却时间不够，请等待")
            return
        end
-       if self.playcardamount >0  and self.coolingtime==0 then
+       if self.playcardamount >0  and self.coolingtime~=-1 then
              print("拥有参与卷")
              self.is_cooltime=false
         

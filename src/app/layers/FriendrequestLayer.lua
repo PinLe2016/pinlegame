@@ -21,27 +21,82 @@ function FriendrequestLayer:init(  )
 	back_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
+      self.dian1=self.Friendrequest:getChildByTag(171)
+      self.dian2=self.Friendrequest:getChildByTag(172)
 
-       local receive_bt1=self.Friendrequest:getChildByTag(129):getChildByTag(135)  --领取1
+       local PageView_=self.Friendrequest:getChildByTag(1291)
+       PageView_:addEventListener(function(sender, eventType  )
+                 if eventType == ccui.PageViewEventType.turning then
+                  PageView_:scrollToPage(PageView_:getCurPageIndex())
+                      if PageView_:getCurPageIndex()==0 then
+                      	   self.dian1:setSelected(true)
+                           self.dian2:setSelected(false)
+                       elseif PageView_:getCurPageIndex()==1 then
+                           self.dian1:setSelected(false)
+                           self.dian2:setSelected(true)
+                      end
+                end
+        end)
+        local friendlist_num=LocalData:Instance():getfriendlist()  
+        local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
+        friend_num:setString(tostring(#friendlist_num["friendlist"]) .. "人")
+
+       
+       local _list=self.Friendrequest:getChildByTag(1291):getChildByTag(1292)
+
+        local receive_bt1=_list:getChildByTag(129):getChildByTag(135)  --领取1
 	receive_bt1:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
-       local receive_bt2=self.Friendrequest:getChildByTag(130):getChildByTag(138)--领取2
+       local receive_bt2=_list:getChildByTag(130):getChildByTag(138)--领取2
 	receive_bt2:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
-       local receive_bt3=self.Friendrequest:getChildByTag(131):getChildByTag(141)--领取3
+       local receive_bt3=_list:getChildByTag(131):getChildByTag(141)--领取3
 	receive_bt3:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
-       local receive_bt4=self.Friendrequest:getChildByTag(132):getChildByTag(144)--领取4
+       local receive_bt4=_list:getChildByTag(132):getChildByTag(144)--领取4
 	receive_bt4:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
+	
+       local _listble=self.Friendrequest:getChildByTag(1291):getChildByTag(1590)
 
+        local receive_bt5=_listble:getChildByTag(1591):getChildByTag(1599)  --领取5
+	receive_bt5:addTouchEventListener(function(sender, eventType)
+	self:touch_callback(sender, eventType)
+       end)
+
+       local receive_bt6=_listble:getChildByTag(1592):getChildByTag(1600)--领取6
+	receive_bt6:addTouchEventListener(function(sender, eventType)
+	self:touch_callback(sender, eventType)
+       end)
+
+       local receive_bt7=_listble:getChildByTag(1593):getChildByTag(1601)--领取7
+	receive_bt7:addTouchEventListener(function(sender, eventType)
+	self:touch_callback(sender, eventType)
+       end)
+
+       local receive_bt8=_listble:getChildByTag(1594):getChildByTag(1602)--领取8
+	receive_bt8:addTouchEventListener(function(sender, eventType)
+	self:touch_callback(sender, eventType)
+       end)
+       local _table={3,5,10,20,30,50,80,100}
+       print("1111",#_table)
+       -- for i=1,#_table do
+       -- 	print("1111",_table[i])
+       -- 	 -- if 3 ==_table[i] then
+       -- 	 --     print("2222")
+       -- 	 --     local rec="receive_bt"  ..  tostring(i)
+       -- 	 --     rec:setTouchEnabled(true)
+       --   --     end
+       -- end
+
+      
        local friend_bt=self.Friendrequest:getChildByTag(161)  --好友邀请
 	friend_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
@@ -51,9 +106,7 @@ function FriendrequestLayer:init(  )
 	feedback_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
-        local friendlist_num=LocalData:Instance():getfriendlist()  
-        local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
-        friend_num:setString(tostring(#friendlist_num["friendlist"]) .. "人")
+       
 end
 
 function FriendrequestLayer:pop_up(  )
@@ -107,6 +160,7 @@ function FriendrequestLayer:pop_up(  )
 	self:touch_callback(sender, eventType)
        end)
 end
+
 function FriendrequestLayer:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
 		return
@@ -123,6 +177,14 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		print("hahahdfsfdsfdsf 3")
 	elseif tag==144 then
 		print("hahahdfsfdsfdsf 4")
+	elseif tag==1599 then
+		print("hahahdfsfdsfdsf 5")
+	elseif tag==1600 then
+		print("hahahdfsfdsfdsf 6")
+	elseif tag==1601 then
+		print("hahahdfsfdsfdsf 7")
+	elseif tag==1602 then
+		print("hahahdfsfdsfdsf 8")
 	elseif tag==161 then  --好友邀请
 		self.Friendsstep:setVisible(true)
 		self.m_friend:setVisible(true)
