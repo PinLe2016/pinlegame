@@ -236,9 +236,9 @@ function PerInformationLayer:_savecity(  )
              self._cityname:setString(self.city_now[2]) 
              self._area:setString(self.city_now[3])
         elseif self.city_gps:isSelected() then  --带修改
-             -- self._provincename:setString(province) 
-             -- self._cityname:setString(city) 
-             -- self._area:setString(conty) 
+             self._provincename:setString(self.province) 
+             self._cityname:setString(self.city) 
+             self._area:setString(self.conty) 
         elseif self.city_choose:isSelected() then
              self._provincename:setString(province) 
              self._cityname:setString(city) 
