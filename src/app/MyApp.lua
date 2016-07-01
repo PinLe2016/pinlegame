@@ -5,6 +5,7 @@ require "lfs"
 Util = require("app.model.Util")
 require("config")
 require("MobClickForLua")
+require "AssetsManagerTest/AssetsManagerTest"
 
 local MyApp = class("MyApp", cc.mvc.AppBase)
 PINLE_CHANNEL_ID="DVE"
@@ -20,7 +21,7 @@ function MyApp:run()
    -- pinle_loclation:getLocation()
     Server:Instance():version_login_url()
     
-   print("入口后台差异检测测试---")
+   -- print("入口后台差异检测测试---")
    --生成DEVICE_ID
    self:init_userdefault()
    local writablePath = cc.FileUtils:getInstance():getWritablePath()
@@ -30,7 +31,6 @@ function MyApp:run()
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
        Util:removeDirectory(path_res)
     elseif device.platform=="ios" or device.platform=="mac" then
-      -- path_res=writablePath.."down_pic/"
       -- MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
 
@@ -38,7 +38,7 @@ function MyApp:run()
       cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")
       cc.FileUtils:getInstance():addSearchPath("res/down_pic")
-  
+      
       
    -- lfs.mkdir(writablePath .. "down_pic")
   Util:removeDirectory("down_pic")
@@ -54,8 +54,11 @@ function MyApp:run()
       return
   end
   self:enterScene("LoginScene")
-  -- self:enterScene("UpgradeScene")
-  
+  -- Util:scene_control("UpgradeScene")
+  -- AssetsManagerTestMain()
+   --  local  scene =AssetsManagerTestMain()
+   -- cc.Director:getInstance():replaceScene(scene)
+
 end
 
 
