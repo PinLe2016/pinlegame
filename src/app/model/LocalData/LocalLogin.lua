@@ -37,9 +37,11 @@ end
 function LocalData:set_version_date(version_date)
 	self.version_date=version_date
 end
+
 function LocalData:get_version_date()
-	return json.decode(self.version_date) or nil
+	return self.version_date or nil
 end
+
 
 function LocalData:set_music(_music)
 

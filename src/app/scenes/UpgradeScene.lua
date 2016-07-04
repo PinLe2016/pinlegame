@@ -12,9 +12,12 @@ function UpgradeScene:ctor()
 end
 
 function UpgradeScene:getVersionInfo()
-  	
+  	local up_date=LocalData:Instance():get_version_date()
+  	dump(up_date)
+  	self.masterURL=up_date["masterURL"]
+  	self.url=up_date["url"]
+  	self:addChild(self:updateLayer())
 
-  	self:addChild(updateLayer())
 end
 
 
@@ -80,10 +83,13 @@ function UpgradeScene:updateLayer()
     end
 
     local function getAssetsManager()--"https://raw.github.com/samuele3hu/AssetsManagerTest/master/package.zip"
-        if nil == assetsManager then--"https://raw.github.com/samuele3hu/AssetsManagerTest/master/package.zip"
-            assetsManager = cc.AssetsManager:new("https://raw.github.com/samuele3hu/AssetsManagerTest/master/package.zip",
-                                           "https://raw.github.com/samuele3hu/AssetsManagerTest/master/version",
+        if nil == assetsManager then--"https://raw.github.com/samuele3hu/AssetsManagerTest/master/version"
+            assetsManager = cc.AssetsManager:new(self.url,
+                                           self.masterURL,
                                            pathToSave)
+            -- assetsManager = cc.AssetsManager:new("https://raw.github.com/samuele3hu/AssetsManagerTest/master/package.zip",
+            --                                "https://raw.github.com/samuele3hu/AssetsManagerTest/master/version",
+            --                                pathToSave)
             assetsManager:retain()
             assetsManager:setDelegate(onError, cc.ASSETSMANAGER_PROTOCOL_ERROR )
             assetsManager:setDelegate(onProgress, cc.ASSETSMANAGER_PROTOCOL_PROGRESS)
@@ -122,13 +128,26 @@ function UpgradeScene:updateLayer()
         if not isUpdateItemClicked then
             local realPath = pathToSave .. "/package"
             addSearchPath(realPath,true)
-            local realPath_1 = pathToSave .. "/package/luaScript"
-            addSearchPath(realPath_1,true)
+            -- local realPath_1 = pathToSave .. "/package/app"
+            -- addSearchPath(realPath_1,true)
         end
 
-        assetsManagerModule = reloadModule("AssetsManagerTest/AssetsManagerModule")
+        -- package.loaded["app.scenes.MainInterfaceScene"] = nil
+   --      assetsManagerModule=require("AssetsManagerTest/AssetsManagerModule")
+ 		-- -- assetsManagerModule = reloadModule("AssetsManagerTest/AssetsManagerModule")
+   --      assetsManagerModule.newScene(AssetsManagerTestMain)
 
-        assetsManagerModule.newScene(AssetsManagerTestMain)
+            local login_info=LocalData:Instance():get_user_data()
+    	
+		  dump(login_info)
+		  if login_info~=nil  then
+		  	 -- Util:scene_control("MainInterfaceScene")
+		  	 display.replaceScene(require("app/scenes/MainInterfaceScene"):new())
+		      -- self:enterScene("MainInterfaceScene")
+		      return
+		  end
+		   Util:scene_control("LoginScene")
+		  -- self:enterScene("LoginScene")
     end
 
     local callbackFuncs =
@@ -150,7 +169,7 @@ function UpgradeScene:updateLayer()
     for i = 1, table.getn(menuItemNames) do
         local item = cc.MenuItemFont:create(menuItemNames[i])
         item:registerScriptTapHandler(callbackFuncs[i])
-        item:setPosition(winSize.width / 2, winSize.height - i * lineSpace)
+        item:setPosition(320, 760 - i * lineSpace)
         -- if not support then
         --     item:setEnabled(false)
         -- end
