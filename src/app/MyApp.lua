@@ -49,10 +49,10 @@ function MyApp:run()
   local login_info=LocalData:Instance():get_user_data()
     
   -- dump(login_info)
-  if login_info~=nil  then
-      self:enterScene("MainInterfaceScene")
-      return
-  end
+  -- if login_info~=nil  then
+  --     self:enterScene("MainInterfaceScene")
+  --     return
+  -- end
   self:enterScene("LoginScene")
   -- Util:scene_control("UpgradeScene")
   -- AssetsManagerTestMain()

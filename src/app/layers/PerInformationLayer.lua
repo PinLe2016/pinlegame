@@ -34,7 +34,8 @@ function PerInformationLayer:add_init(  )
                  userdt["gender"]=userdatainit["gender"]
                  userdt["nickname"]=userdatainit["nickname"]
                  userdt["provincename"]=userdatainit["provincename"]  
-                 userdt["districtame"]=userdatainit["districtame"]  
+                 userdt["districtame"]=userdatainit["districtame"]
+                 userdt["registertime"]=userdatainit["registertime"]  
                  LocalData:Instance():set_userdata(userdt)
 
                 
@@ -161,6 +162,7 @@ function PerInformationLayer:perinformation_init(  )
      userdt["nickname"]=userdatainit["nickname"]
      -- userdt["golds"]=userdatainit["golds"]
      -- userdt["points"]=userdatainit["points"]
+     userdt["registertime"]=userdatainit["registertime"]
      userdt["provincename"]=userdatainit["provincename"]  
      userdt["districtame"]=userdatainit["districtame"]  
      LocalData:Instance():set_userdata(userdt)
@@ -196,7 +198,8 @@ function PerInformationLayer:perinformation_init(  )
 
        
         local registereday=self.Perinformation:getChildByTag(86)  --注册日期
-        registereday:setString(tostring(os.date("%Y年%m月%d日",userdt["registertime"])))
+        
+        registereday:setString(tostring(os.date("%Y年%m月%d日",userdt["registertime"])))  --
         self.genderman=self.Perinformation:getChildByTag(79)  --性别男
         self.gendergirl=self.Perinformation:getChildByName("CheckBox_2")  --getChildByTag(79)  --性别女
       
