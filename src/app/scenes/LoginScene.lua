@@ -40,7 +40,7 @@ end
      verificationcode_text:setTouchEnabled(false)
 
     local res = "res/png/DLkuang.png"
-    local width = 350
+    local width = 300
     local height = 40
     --注册
     self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
