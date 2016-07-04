@@ -235,7 +235,7 @@ function LoginScene:_passwordLayer( )
             Wcode_text:setTouchEnabled(false)
 
             local res = "res/png/DLkuang.png"
-            local width = 350
+            local width = 300
             local height = 40
             --忘记密码
             self.Wphone_text = ccui.EditBox:create(cc.size(width,height),res)
