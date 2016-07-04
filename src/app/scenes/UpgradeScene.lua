@@ -1,17 +1,36 @@
-local targetPlatform = cc.Application:getInstance():getTargetPlatform()
 
-local lineSpace = 40
-local itemTagBasic = 1000
-local menuItemNames =
-{
-    "enter",
-    "reset",
-    "update",
-}
+local UpgradeScene = class("UpgradeScene", function()
+							  return display.newScene("UpgradeScene")
+end)
 
-local winSize = cc.Director:getInstance():getWinSize()
+require "lfs"
 
-local function updateLayer()
+function UpgradeScene:ctor()
+
+  	--请求版本更新链接
+  	Server:Instance():getversion()
+end
+
+function UpgradeScene:getVersionInfo()
+  	
+
+  	self:addChild(updateLayer())
+end
+
+
+function UpgradeScene:updateLayer()
+
+	local targetPlatform = cc.Application:getInstance():getTargetPlatform()
+
+	local lineSpace = 40
+	local itemTagBasic = 1000
+	local menuItemNames =
+	{
+	    "enter",
+	    "reset",
+	    "update",
+	}
+
     local layer = cc.Layer:create()
 
     local support  = false
@@ -152,13 +171,67 @@ local function updateLayer()
     return layer
 end
 
--------------------------------------
---  AssetsManager Test
--------------------------------------
-function AssetsManagerTestMain()
-    print("==e--===")
-    local scene = cc.Scene:create()
-    scene:addChild(updateLayer())
-    -- scene:addChild(CreateBackMenuItem())
-    return scene
+
+
+function UpgradeScene:start_game()
+  
+   if device.platform=="mac" then 
+	self:decodeCSVFileTocsv_decode()
+   end 
+
+   if device.platform ~="mac" then 
+   	--在热更新结束后重新加载一遍新拉下来的 src_encode.zip
+	cc.LuaLoadChunksFromZIP("src_encode.zip")
+   end 
+
+   local scene = require "app.scenes.MainScene"
+   display.replaceScene(scene:new())
 end
+
+function UpgradeScene:onEnter()
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.VERRSION, self,function()
+   												-- local scene = require "app.scenes.GameScene"
+   												-- local seq = transition.sequence({
+   												-- 	  cc.DelayTime:create(1),
+   												-- 	  cc.CallFunc:create(function()  
+   												-- 			display.replaceScene(scene:new())
+   												-- end )})
+   												-- self:runAction(seq)
+   												self:getVersionInfo()
+   											end)
+ 
+end
+
+function UpgradeScene:onExit()
+   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
+   -- NotificationCenter:Instance():RemoveObserver("SOCKET_LINKED", self)
+end
+
+function UpgradeScene:onCleanup()
+end
+
+function UpgradeScene:create_dirs()
+   for k,v in ipairs(self.rflist.dirPaths) do
+	  self:mkDir(self.writablePath .. "/" .. v.name)
+   end
+end
+
+
+
+function UpgradeScene:mkDir(path)
+   if not UpgradeScene:fileExists(path) then
+	  return lfs.mkdir(path)
+   end
+   return true
+end
+
+function UpgradeScene:fileExists(path)
+   return cc.FileUtils:getInstance():isFileExist(path)
+end
+
+
+
+
+
+
+return UpgradeScene

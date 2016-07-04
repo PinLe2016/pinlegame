@@ -213,15 +213,15 @@ function debrisLayer:saw_issuccess()
         -- print("wwdwaf ",math.floor(pos.x),math.floor(pos_suss.x))
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
             print("111111111122    ", self.type)
-           Server:Instance():setgamerecord(self.adid)  
-            if self.type=="surprise" then
-                --  local scene=SurpriseOverScene.new({})
-                -- cc.Director:getInstance():pushScene(scene)
-                Util:scene_controlid("SurpriseOverScene"," ")
-          return
-     end
+     --       Server:Instance():setgamerecord(self.adid)  
+     --        if self.type=="surprise" then
+     --            --  local scene=SurpriseOverScene.new({})
+     --            -- cc.Director:getInstance():pushScene(scene)
+     --            Util:scene_controlid("SurpriseOverScene"," ")
+     --      return
+     -- end
    
-     cc.Director:getInstance():popScene()
+     -- cc.Director:getInstance():popScene()
             return
         end
     end
