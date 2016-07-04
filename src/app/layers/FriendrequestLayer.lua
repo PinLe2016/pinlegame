@@ -85,8 +85,9 @@ function FriendrequestLayer:init(  )
 	receive_bt8:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
-       local _table={3,5,10,20,30,50,80,100}
-       print("1111",#_table)
+       
+       -- local _2table = {2,3,6,5,9,8}  --{3,5,10,20,30,50,80,100}
+       -- print("22221111",#_2table)
        -- for i=1,#_table do
        -- 	print("1111",_table[i])
        -- 	 -- if 3 ==_table[i] then
