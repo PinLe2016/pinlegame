@@ -13,7 +13,7 @@ local FloatingLayerEx = require("app.layers.FloatingLayer")
 function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
-
+    
 
    self:landing_init()
 
@@ -105,6 +105,8 @@ function LoginScene:landing_init()
    -- self:addChild(dialog)
    -- self:replaceScene(dialog)
   phone_bg=landing:getChildByTag(6)
+  dump(phone_bg:getPosition())
+  print("顶顶顶顶",phone_bg:getPositionX(),phone_bg:getPositionY())
   local Editphone = landing:getChildByTag(6):getChildByTag(16)
   Editphone:setTouchEnabled(false)
   Editphone:setVisible(false)

@@ -159,30 +159,39 @@ function SurpriseOverScene:L_end(  )
 	(self. _table[i]):stopGo(stopNum);
 	end
 	self:init_data()
-	self.daojishi_bg=self.Laohuji:getChildByTag(102)
-	self.daojishi_bg:setGlobalZOrder(999999)
-	self.daojishi_text=self.daojishi_bg:getChildByTag(104)
-	self.daojishi_bg:setVisible(true)
-       local _imagename1=self.daojishi_bg:getChildByTag(158)
-       _imagename1:setVisible(false)
-       local _imagename2=self.daojishi_bg:getChildByTag(335)
-       _imagename2:setVisible(true)
+       local function stopAction()
+                 self.began_bt:setVisible(true)
+                 self.end_bt:setVisible(false)
+       end
+      local callfunc = cc.CallFunc:create(stopAction)
+      self.began_bt:runAction(cc.Sequence:create(cc.DelayTime:create(3),callfunc  ))
 
-       local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-       _imagename2:loadTexture(path..self._imagetu)
 
-	self._time=10
-    	self.L_began=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
-                                self.daojishi_text:setString(tostring(self._time))
-                                self:countdown()
-             end,1.0, false)
+
+	-- self.daojishi_bg=self.Laohuji:getChildByTag(102)
+	-- self.daojishi_bg:setGlobalZOrder(999999)
+	-- self.daojishi_text=self.daojishi_bg:getChildByTag(104)
+	-- self.daojishi_bg:setVisible(false)  --true
+ --       local _imagename1=self.daojishi_bg:getChildByTag(158)
+ --       _imagename1:setVisible(false)
+ --       local _imagename2=self.daojishi_bg:getChildByTag(335)
+ --       _imagename2:setVisible(true)
+
+ --       local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+ --       _imagename2:loadTexture(path..self._imagetu)
+
+	-- self._time=10
+ --    	self.L_began=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+ --                                self.daojishi_text:setString(tostring(self._time))
+ --                                self:countdown()
+ --             end,1.0, false)
 end
  function SurpriseOverScene:countdown()
            self._time=self._time-1
            self.daojishi_text:setString(tostring(self._time))
            if self._time==0 then
               self.began_bt:setVisible(true)
-	  self.end_bt:setVisible(false)
+	        self.end_bt:setVisible(false)
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.L_began)--停止定时器
               self.daojishi_bg:setVisible(false)
            end
