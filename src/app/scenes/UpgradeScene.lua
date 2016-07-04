@@ -141,8 +141,8 @@ function UpgradeScene:updateLayer()
     	
 		  dump(login_info)
 		  if login_info~=nil  then
-		  	 -- Util:scene_control("MainInterfaceScene")
-		  	 display.replaceScene(require("app/scenes/MainInterfaceScene"):new())
+		  	 Util:scene_control("MainInterfaceScene")
+		  	 -- display.replaceScene(require("app/scenes/MainInterfaceScene"):new())
 		      -- self:enterScene("MainInterfaceScene")
 		      return
 		  end

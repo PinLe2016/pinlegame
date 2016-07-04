@@ -39,6 +39,9 @@ function MyApp:run()
       cc.FileUtils:getInstance():addSearchPath("res/cre")
       cc.FileUtils:getInstance():addSearchPath("res/down_pic")
       
+      --热更路径
+      local realPath = createDownloadDir() .. "/package"
+      addSearchPath(realPath,true)
       
    -- lfs.mkdir(writablePath .. "down_pic")
   Util:removeDirectory("down_pic")
@@ -50,10 +53,10 @@ function MyApp:run()
     
   -- dump(login_info)
   if login_info~=nil  then
-      self:enterScene("MainInterfaceScene")
+      Util:scene_control("MainInterfaceScene")
       return
   end
-  self:enterScene("LoginScene")
+  Util:scene_control("LoginScene")
   -- Util:scene_control("UpgradeScene")
   -- AssetsManagerTestMain()
    --  local  scene =AssetsManagerTestMain()
