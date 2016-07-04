@@ -10,19 +10,14 @@ local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好
 local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
 local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
 function MainInterfaceScene:ctor()
+   print("我磊哥去u ------")
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
       self.count=0
        
       self:fun_init()
 
-      -- Server:Instance():setinvitecode("18810673239")--邀请码
-      -- Server:Instance():setfriend("18810673239","1")--好友添加/删除/通过验证
-      -- Server:Instance():getfriendlist()--查询好友列表
-      -- Server:Instance():getusercitybyphone()--手机归属
-      -- Server:Instance():get_reward_of_friends_levelup()--领取好友升级奖励积分&金币
-      -- Server:Instance():get_reward_friend_list()--查询好友升级奖励金币列表    
-      -- Server:Instance():sendmessage("1","15701399537","1234")--发送短信验证码
+   
 end
 function MainInterfaceScene:fun_init( )
       

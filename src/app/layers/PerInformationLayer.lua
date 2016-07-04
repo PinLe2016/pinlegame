@@ -496,7 +496,7 @@ function PerInformationLayer:fun_birthday(  )
                 cell:setString(".")
                 cell:setOpacity(0)
             end
-            dump(button:getContentSize())
+            -- dump(button:getContentSize())
             cell:setTag(i)
             button:addChild(cell)
             self.birthday_Itempicker:pushBackItem(button)
@@ -679,7 +679,7 @@ function PerInformationLayer:fun_city_info( )
         self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
 
         local  userdata=LocalData:Instance():get_getuserinfo()
-        dump(userdata)
+        -- dump(userdata)
          local  userdatainit=LocalData:Instance():get_user_data() --用户数据
         local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
         local area=""

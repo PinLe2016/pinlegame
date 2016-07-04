@@ -190,13 +190,13 @@ function Server:getversion()
 end
 
 function Server:getversion_callback()
-    dump(self.data)
+    -- dump(self.data)
     -- if self.data.err_code~=0  then
     --     self:show_float_message("版本检查:" .. self.data.err_msg)
     --     return
     -- end
     
-    LocalData:Instance():set_version(self.data["versioncode"])--保存玩家数据
+    -- LocalData:Instance():set_version(self.data["versioncode"])--保存玩家数据
     LocalData:Instance():set_version_date(self.data)--保存玩家数据
 
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.VERRSION)
