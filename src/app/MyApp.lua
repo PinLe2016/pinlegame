@@ -42,6 +42,9 @@ function MyApp:run()
       --热更路径
       local realPath = writablePath .. "tmpdir/package"
       addSearchPath(realPath,true)
+      addSearchPath(realPath.."res/",true)
+      addSearchPath(realPath.."res/csb",true)
+      addSearchPath(realPath.."res/cre",true)
       -- package.path=package.path.."tmpdir/package"
       
       

@@ -296,7 +296,7 @@ function PerInformationLayer:_savetime(  )
     self.date_years:setString(birthday_year)
     self.date_month:setString(birthday_month)
     self.date_day:setString(birthday_day)
-self.date_years1= self.date_years:setString(birthday_year .. "-" ..  birthday_month .. "-" .. birthday_day )
+self.date_years1:setString(birthday_year .. "-" ..  birthday_month .. "-" .. birthday_day) 
      self.birthday:removeFromParent()
 
 end
