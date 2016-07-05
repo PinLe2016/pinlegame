@@ -285,9 +285,8 @@ function MainInterfaceScene:init_checkin(  )
             	 _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
             	 self.checkinlayer:addChild(_bg)
         	end
-              local path=cc.FileUtils:getInstance():getWritablePath() .. "down_pic/"
-              _biaojitable[16]:loadTexture(path .. "D1.png")
-              print("鹅鹅鹅鹅鹅鹅  ",path .. "res/png/Qprize.png")
+              _biaojitable[16]:loadTexture("png/Qprize.png")
+              _biaojitable[16]:setVisible(true)
               if not days then
                 self.checkinlayer:setVisible(true)
                   return

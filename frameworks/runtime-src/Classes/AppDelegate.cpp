@@ -32,6 +32,7 @@
 #include "lua_UM_Share.hpp"
 #include "PinLe_platform.hpp"
 #include "lua_ItemPicker.hpp"
+#include "lua_assetsmanager_test_sample.h"
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include "C2DXShareSDK.h"
 using namespace cn::sharesdk;
@@ -60,6 +61,8 @@ static void quick_module_register(lua_State *L)
         register_all_UM_Share(L);
         //城市选择控件
         register_all_ItemPicker(L);
+        //热更路径绑定
+        register_assetsmanager_test_sample(L);
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
         register_all_cocos2dx_extension_filter(L);
@@ -171,12 +174,12 @@ bool AppDelegate::applicationDidFinishLaunching()
     }
     else
     {
-//        engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
-        engine->executeString(" require 'main' ");
+        engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
+//        engine->executeString(" require 'main' ");
     }
 #else
-//    engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
-    engine->executeString(" require 'main' ");
+    engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
+//    engine->executeString(" require 'main' ");
 #endif
 
     PinLe_platform::Instance()->getLocation(); // 获取定位信息
@@ -252,10 +255,10 @@ void AppDelegate::initSearchPaths() {
     std::vector<std::string> searchPaths;
     
     
-    searchPaths.push_back(sharedFileUtils->getWritablePath() + "upd/src");
+    searchPaths.push_back(sharedFileUtils->getWritablePath() + "tmpdir/package");
 //    searchPaths.push_back(sharedFileUtils->getWritablePath() + "upd/res");
 //    searchPaths.push_back("src/");
-    searchPaths.push_back("res/");
+//    searchPaths.push_back("res/");
     
     
     

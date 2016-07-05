@@ -30,17 +30,26 @@ function MyApp:run()
    if device.platform=="android" then 
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
        Util:removeDirectory(path_res)
-    elseif device.platform=="ios" or device.platform=="mac" then
-      -- MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
+    elseif device.platform=="ios" then
+      MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
 
 	    cc.FileUtils:getInstance():addSearchPath("res/")
       cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")
       cc.FileUtils:getInstance():addSearchPath("res/down_pic")
+      -- cc.FileUtils:getInstance():addSearchPath("res/png")
+      
+      --热更路径
+      local realPath = writablePath .. "tmpdir/package"
+      addSearchPath(realPath,true)
+      addSearchPath(writablePath.."tmpdir/package/res",true)
+      addSearchPath(writablePath.."tmpdir/package/res/csb",true)
+      addSearchPath(writablePath.."tmpdir/package/res/cre",true)
+      -- addSearchPath(writablePath.."tmpdir/package/res/png",true)
+      -- package.path=package.path.."tmpdir/package"
       
       
-   -- lfs.mkdir(writablePath .. "down_pic")
   Util:removeDirectory("down_pic")
   lfs.mkdir(path_res)
   cc.FileUtils:getInstance():addSearchPath(path_res)
@@ -48,16 +57,13 @@ function MyApp:run()
  
   local login_info=LocalData:Instance():get_user_data()
     
-  -- dump(login_info)
   if login_info~=nil  then
-      self:enterScene("MainInterfaceScene")
+      Util:scene_control("MainInterfaceScene")
       return
   end
-  self:enterScene("LoginScene")
+  Util:scene_control("LoginScene")
   -- Util:scene_control("UpgradeScene")
-  -- AssetsManagerTestMain()
-   --  local  scene =AssetsManagerTestMain()
-   -- cc.Director:getInstance():replaceScene(scene)
+
 
 end
 
