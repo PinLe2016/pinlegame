@@ -223,11 +223,11 @@ function Util:dumpTexture()
 end
 
 function Util:scene_control(scene)
-        local str_scene="app.scenes."..scene
+        local str_scene="app/scenes/"..scene
         display.replaceScene(require(str_scene):new())
 end
 function Util:scene_controlid(scene,params)
-        local str_scene="app.scenes."..scene
+        local str_scene="app/scenes/"..scene
         display.replaceScene(require(str_scene).new(params))-- （.与：区别）
 end
 

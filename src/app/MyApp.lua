@@ -30,8 +30,8 @@ function MyApp:run()
    if device.platform=="android" then 
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
        Util:removeDirectory(path_res)
-    elseif device.platform=="ios" or device.platform=="mac" then
-      -- MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
+    elseif device.platform=="ios" then
+      MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
 
 	    cc.FileUtils:getInstance():addSearchPath("res/")
@@ -40,10 +40,11 @@ function MyApp:run()
       cc.FileUtils:getInstance():addSearchPath("res/down_pic")
       
       --热更路径
-      local realPath = createDownloadDir() .. "/package"
+      local realPath = writablePath .. "tmpdir/package"
       addSearchPath(realPath,true)
+      -- package.path=package.path.."tmpdir/package"
       
-   -- lfs.mkdir(writablePath .. "down_pic")
+      
   Util:removeDirectory("down_pic")
   lfs.mkdir(path_res)
   cc.FileUtils:getInstance():addSearchPath(path_res)
@@ -58,9 +59,7 @@ function MyApp:run()
   end
   Util:scene_control("LoginScene")
   -- Util:scene_control("UpgradeScene")
-  -- AssetsManagerTestMain()
-   --  local  scene =AssetsManagerTestMain()
-   -- cc.Director:getInstance():replaceScene(scene)
+
 
 end
 
