@@ -36,12 +36,17 @@ function JackpotLayer:init(  )
   	  self.JackpotScene = cc.CSLoader:createNode("JackpotScene.csb")
         self:addChild(self.JackpotScene)
         self.roleAction = cc.CSLoader:createTimeline("JackpotScene.csb")
-        self:runAction(self.roleAction)
+        self.JackpotScene:runAction(self.roleAction)
 
-         self.acthua=self.JackpotScene:getChildByTag(213)  --金币动画界面
-         self.jinbi=self.acthua:getChildByTag(214)  --金币数量
+         --新增加动画
+         self.actdhua=self.JackpotScene:getChildByTag(229)  --金币动画界面
+         self.actdhua:addTouchEventListener(function(sender, eventType  )
+              self:touch_callback(sender, eventType)
+          end)
+         self._jinbi=self.actdhua:getChildByTag(277):getChildByTag(278)  --金币数量
          
-         self.acthua:setVisible(false)
+         self.actdhua:setVisible(false)
+
 
         self.advertiPv=self.JackpotScene:getChildByTag(151)
         local advertiPa=self.advertiPv:getChildByTag(152)
@@ -229,16 +234,16 @@ function JackpotLayer:touch_callback( sender, eventType )
                  self.end_bt:setTouchEnabled(false)
                  local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
                  dump(_tablegods)
-                 self.jinbi:setString("+"  ..  _tablegods["golds"])     
+                 self._jinbi:setString("+"  ..  _tablegods["golds"])     
              self:unscheduleUpdate()
                 local function stopAction()
                   self:fun_win()
-                  self.acthua:setVisible(false)
+                  self.actdhua:setVisible(false)
                 end
-              self.acthua:setVisible(true)
-              self.roleAction:gotoFrameAndPlay(0,60, false)
-              local callfunc = cc.CallFunc:create(stopAction)
-              self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+              self.actdhua:setVisible(true)
+              self.roleAction:gotoFrameAndPlay(0,50, true)
+              -- local callfunc = cc.CallFunc:create(stopAction)
+              -- self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(100),callfunc  ))
              
       elseif tag==47 then  --获取参与卷
              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
@@ -249,7 +254,9 @@ function JackpotLayer:touch_callback( sender, eventType )
               -- Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
               LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数
                --cc.Director:getInstance():pushScene("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
-
+      elseif tag==229 then
+              self:fun_win()
+              self.actdhua:setVisible(false)
       end
       
 end

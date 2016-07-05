@@ -140,7 +140,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==48 then  --设置
             self:funsetup(  )
       elseif tag==91 then  --设置返回
-            self.set_bg:setVisible(false)
+            --self.set_bg:setVisible(false)
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友
             self:addChild(FriendrequestLayer.new())
@@ -161,6 +161,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:funsetup(  )
       elseif tag==52 then  --邀请好友
             self:addChild(InvitefriendsLayer.new())
+      elseif tag==266 then  --注销
+            Util:scene_control("LoginScene")
 	end
 end
 
@@ -168,14 +170,19 @@ end
 
 
 function MainInterfaceScene:funsetup(  )
-        self.set_bg=self.MainInterfaceScene:getChildByTag(88)
-        self.set_bg:setVisible(true)
+        -- self.set_bg=self.MainInterfaceScene:getChildByTag(88)
+        -- self.set_bg:setVisible(true)
         self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
         self.set_bg1:setVisible(true)
         local set_back=self.set_bg1:getChildByTag(91)
         set_back:addTouchEventListener(function(sender, eventType  )
               self:touch_callback(sender, eventType)
         end)
+        local cancellation_bt=self.set_bg1:getChildByTag(266)--注销功能
+        cancellation_bt:addTouchEventListener(function(sender, eventType  )
+            self:touch_callback(sender, eventType)
+      end)
+
         local music_bt=self.set_bg1:getChildByTag(93)  -- 音乐
         music_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
@@ -278,7 +285,9 @@ function MainInterfaceScene:init_checkin(  )
             	 _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
             	 self.checkinlayer:addChild(_bg)
         	end
-              _biaojitable[16]:loadTexture("png/Qprize.png")
+              local path=cc.FileUtils:getInstance():getWritablePath() .. "down_pic/"
+              _biaojitable[16]:loadTexture(path .. "D1.png")
+              print("鹅鹅鹅鹅鹅鹅  ",path .. "res/png/Qprize.png")
               if not days then
                 self.checkinlayer:setVisible(true)
                   return
@@ -291,7 +300,7 @@ function MainInterfaceScene:init_checkin(  )
             	for j=1,#days do
             		if i==tonumber(os.date("%d",days[j])) then
                               if i==16 then
-                                _biaojitable[i]:loadTexture("png/Qprizeopen.png")
+                                _biaojitable[i]:loadTexture("res/png/Qprizeopen.png")
                               end
             			_table[i]:setColor(cc.c3b(125, 125, 100))
                               _biaojitable[i]:setVisible(true)
@@ -300,7 +309,6 @@ function MainInterfaceScene:init_checkin(  )
             end
 
             self.checkinlayer:setVisible(true)
-            print("额鹅鹅鹅   ",days[#days],"   ",LocalData:Instance():get_isign())
              if tonumber(days[#days]) ==tonumber(LocalData:Instance():get_isign()) then
                 Server:Instance():prompt("今天您已经签到，请改天再签")
                 self.check_button:setTouchEnabled(false)
