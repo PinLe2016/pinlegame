@@ -42,9 +42,10 @@ function MyApp:run()
       --热更路径
       local realPath = writablePath .. "tmpdir/package"
       addSearchPath(realPath,true)
-      addSearchPath(realPath.."res/",true)
-      addSearchPath(realPath.."res/csb",true)
-      addSearchPath(realPath.."res/cre",true)
+      addSearchPath(writablePath.."tmpdir/package/res",true)
+      addSearchPath(writablePath.."tmpdir/package/res/csb",true)
+      addSearchPath(writablePath.."tmpdir/package/res/cre",true)
+      addSearchPath(writablePath.."tmpdir/package/res/png",true)
       -- package.path=package.path.."tmpdir/package"
       
       
@@ -55,7 +56,6 @@ function MyApp:run()
  
   local login_info=LocalData:Instance():get_user_data()
     
-  -- dump(login_info)
   if login_info~=nil  then
       Util:scene_control("MainInterfaceScene")
       return
