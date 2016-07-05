@@ -38,6 +38,7 @@ function MyApp:run()
       cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")
       cc.FileUtils:getInstance():addSearchPath("res/down_pic")
+      -- cc.FileUtils:getInstance():addSearchPath("res/png")
       
       --热更路径
       local realPath = writablePath .. "tmpdir/package"
@@ -45,7 +46,7 @@ function MyApp:run()
       addSearchPath(writablePath.."tmpdir/package/res",true)
       addSearchPath(writablePath.."tmpdir/package/res/csb",true)
       addSearchPath(writablePath.."tmpdir/package/res/cre",true)
-      addSearchPath(writablePath.."tmpdir/package/res/png",true)
+      -- addSearchPath(writablePath.."tmpdir/package/res/png",true)
       -- package.path=package.path.."tmpdir/package"
       
       

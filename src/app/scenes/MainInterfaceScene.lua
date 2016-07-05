@@ -278,7 +278,12 @@ function MainInterfaceScene:init_checkin(  )
             	 _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
             	 self.checkinlayer:addChild(_bg)
         	end
+          -- local spri=display.newSprite("png/Qprize.png")
+          -- spri:setPosition(320, 480)
+          -- spri:addTo(self,500)
+          -- dump(_biaojitable)
               _biaojitable[16]:loadTexture("png/Qprize.png")
+              _biaojitable[16]:setVisible(true)
               if not days then
                 self.checkinlayer:setVisible(true)
                   return
