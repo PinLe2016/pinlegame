@@ -13,13 +13,47 @@ local FloatingLayerEx = require("app.layers.FloatingLayer")
 function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
-    
 
-   self:landing_init()
-
+     self:progressbarScene()
 
 
 end
+--新增加的进度条
+function LoginScene:progressbarScene(  )
+        self.ProgressbarScene = cc.CSLoader:createNode("ProgressbarScene.csb")
+        self:addChild(self.ProgressbarScene)
+        self.loadingBar=self.ProgressbarScene:getChildByTag(328)
+        self.roleAction = cc.CSLoader:createTimeline("ProgressbarScene.csb")
+        self.ProgressbarScene:runAction(self.roleAction)
+         self.roleAction:gotoFrameAndPlay(0,40, true)
+         self._time=0
+         self:fun_countdown( )
+         self.loadingBar:setPercent(0)
+end
+ function LoginScene:countdown()
+           self._time=self._time+10
+        
+            self.loadingBar:setPercent(self._time)
+           print("333333", self._time)
+            if self._time==100 then
+               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
+                 local login_info=LocalData:Instance():get_user_data()
+                if login_info~=nil  then
+                    Util:scene_control("MainInterfaceScene")
+                    return
+                end
+               self:landing_init()
+             
+           end
+end
+function LoginScene:fun_countdown( )
+      self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self:countdown()
+              end,1.0, false)
+end
+
+
+
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then

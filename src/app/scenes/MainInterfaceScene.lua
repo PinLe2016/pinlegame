@@ -23,6 +23,7 @@ function MainInterfaceScene:fun_init( )
       
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
+
       self.roleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
       self:runAction(self.roleAction)
 

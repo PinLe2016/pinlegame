@@ -57,10 +57,10 @@ function MyApp:run()
  
   local login_info=LocalData:Instance():get_user_data()
     
-  if login_info~=nil  then
-      Util:scene_control("MainInterfaceScene")
-      return
-  end
+  -- if login_info~=nil  then
+  --     Util:scene_control("MainInterfaceScene")
+  --     return
+  -- end
   Util:scene_control("LoginScene")
   -- Util:scene_control("UpgradeScene")
 
