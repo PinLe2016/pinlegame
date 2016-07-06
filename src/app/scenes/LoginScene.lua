@@ -14,8 +14,14 @@ function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
 
-     self:progressbarScene()
-
+      if qqqq==0 then
+       self:progressbarScene()
+       qqqq=2
+     else
+       self:landing_init()
+     end
+--请求版本更新链接
+  Server:Instance():getversion()
 
 end
 --新增加的进度条
@@ -26,31 +32,30 @@ function LoginScene:progressbarScene(  )
         self.roleAction = cc.CSLoader:createTimeline("ProgressbarScene.csb")
         self.ProgressbarScene:runAction(self.roleAction)
          self.roleAction:gotoFrameAndPlay(0,40, true)
-         self._time=0
-         self:fun_countdown( )
+         -- self:fun_countdown( )
          self.loadingBar:setPercent(0)
 end
- function LoginScene:countdown()
-           self._time=self._time+10
+--  function LoginScene:countdown()
+--            self._time=self._time+20
         
-            self.loadingBar:setPercent(self._time)
-           print("333333", self._time)
-            if self._time==100 then
-               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
-                 local login_info=LocalData:Instance():get_user_data()
-                if login_info~=nil  then
-                    Util:scene_control("MainInterfaceScene")
-                    return
-                end
-               self:landing_init()
+--             self.loadingBar:setPercent(self._time)
+--            print("333333", self._time)
+--             if self._time==120 then
+--                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
+--                  local login_info=LocalData:Instance():get_user_data()
+--                 if login_info~=nil  then
+--                     Util:scene_control("MainInterfaceScene")
+--                     return
+--                 end
+--                self:landing_init()
              
-           end
-end
-function LoginScene:fun_countdown( )
-      self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
-                                self:countdown()
-              end,1.0, false)
-end
+--            end
+-- end
+-- function LoginScene:fun_countdown( )
+--       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+--                                 self:countdown()
+--               end,1.0, false)
+-- end
 
 
 
@@ -384,17 +389,23 @@ function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
   Util:player_music("LOGO",true )
   
-   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
-                       function()
-                        Util:scene_control("MainInterfaceScene")
-                        --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
-                      end)
+   -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
+   --                     function()
+   --                      Util:scene_control("MainInterfaceScene")
+   --                      --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
+   --                    end)
+
+--热更消息接收
+ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.VERRSION, self,function()
+                          self:getVersionInfo()
+                        end)
 
 end
 function LoginScene:onExit()
   --audio.stopMusic(G_SOUND["LOGO"])
-  Util:stop_music("LOGO")
-  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
+    Util:stop_music("LOGO")
+  -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
+    NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
 end
 function LoginScene:pushFloating(text)
    if is_resource then
@@ -413,12 +424,128 @@ end
 
 
 
+function LoginScene:updateLayer()
+
+    local layer = cc.Layer:create()
+
+    local support  = false
+    if (cc.PLATFORM_OS_IPHONE == targetPlatform) or (cc.PLATFORM_OS_IPAD == targetPlatform) 
+        or (cc.PLATFORM_OS_WINDOWS == targetPlatform) or (cc.PLATFORM_OS_ANDROID == targetPlatform) 
+        or (cc.PLATFORM_OS_MAC  == targetPlatform) then
+        support = true
+    end
+
+    -- if not support then
+    --     print("Platform is not supported!")
+    --     return layer
+    -- end
+
+   
+    local isUpdateItemClicked = false
+    local assetsManager       = nil
+    local pathToSave          = ""
+
+    pathToSave = createDownloadDir()
+
+
+    local function enter(sender)
+
+        if not isUpdateItemClicked then
+            local realPath = pathToSave .. "/package"
+            addSearchPath(realPath,true)
+        end
+
+        local login_info=LocalData:Instance():get_user_data()
+      
+      if login_info~=nil  then
+         Util:scene_control("MainInterfaceScene")
+          return
+      end
+       Util:scene_control("LoginScene")
+    end
+
+    local callbackFuncs =
+    {
+        enter
+    }
+
+
+
+    local function onError(errorCode)
+        if errorCode == cc.ASSETSMANAGER_NO_NEW_VERSION then
+            self.loadingBar:setPercent(100)
+            callbackFuncs[1]()
+        elseif errorCode == cc.ASSETSMANAGER_NETWORK then
+            -- progressLable:setString("network error")
+            self:pushFloating("请检查你的网络")
+        end
+    end
+
+    local function onProgress( percent )
+        -- local progress = string.format("downloading %d%%",percent)
+        -- progressLable:setString(progress)
+        self.loadingBar:setPercent(percent)
+    end
+
+    local function onSuccess()
+        -- progressLable:setString("downloading ok")
+
+        self.loadingBar:setPercent(100)
+        callbackFuncs[1]()
+    end
+
+    local function getAssetsManager()--"https://raw.github.com/samuele3hu/AssetsManagerTest/master/package.zip"
+        if nil == assetsManager then--"https://raw.github.com/samuele3hu/AssetsManagerTest/master/version"
+            assetsManager = cc.AssetsManager:new(self.url,
+                                           self.masterURL,
+                                           pathToSave)
+            -- assetsManager = cc.AssetsManager:new("https://raw.github.com/samuele3hu/AssetsManagerTest/master/package.zip",
+            --                                "https://raw.github.com/samuele3hu/AssetsManagerTest/master/version",
+            --                                pathToSave)
+            assetsManager:retain()
+            assetsManager:setDelegate(onError, cc.ASSETSMANAGER_PROTOCOL_ERROR )
+            assetsManager:setDelegate(onProgress, cc.ASSETSMANAGER_PROTOCOL_PROGRESS)
+            assetsManager:setDelegate(onSuccess, cc.ASSETSMANAGER_PROTOCOL_SUCCESS )
+            assetsManager:setConnectionTimeout(3)
+        end
+
+        return assetsManager
+    end
+    --版本下载更新中
+    getAssetsManager():update()
+
+    local function reset(sender)
+        progressLable:setString("")
+        print("--删除--")
+        deleteDownloadDir(pathToSave)
+
+        getAssetsManager():deleteVersion()
+
+        createDownloadDir()
+    end
+
+    local function reloadModule( moduleName )
+
+        package.loaded[moduleName] = nil
+
+        return require(moduleName)
+    end
+
+    
+    return layer
+end
 
 
 
 
+function LoginScene:getVersionInfo()
+    local up_date=LocalData:Instance():get_version_date()
+    dump(up_date)
+    self.masterURL=up_date["masterURL"]
+    self.url=up_date["url"]
+    self:addChild(self:updateLayer())
 
-
+end
 
 
 
