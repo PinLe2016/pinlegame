@@ -389,11 +389,11 @@ function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
   Util:player_music("LOGO",true )
   
-   -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
-   --                     function()
-   --                      Util:scene_control("MainInterfaceScene")
-   --                      --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
-   --                    end)
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
+                       function()
+                        Util:scene_control("MainInterfaceScene")
+                        --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
+                      end)
 
 --热更消息接收
  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.VERRSION, self,function()
@@ -404,7 +404,7 @@ end
 function LoginScene:onExit()
   --audio.stopMusic(G_SOUND["LOGO"])
     Util:stop_music("LOGO")
-  -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
     NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
 end
 function LoginScene:pushFloating(text)
