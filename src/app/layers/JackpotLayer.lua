@@ -45,6 +45,13 @@ function JackpotLayer:init(  )
           end)
          self._jinbi=self.actdhua:getChildByTag(277):getChildByTag(278)  --金币数量
          
+         -- self.shuiguo1=self.JackpotScene:getChildByTag(771):getChildByTag(773)
+         -- self.shuiguo1:setVisible(false)
+         -- self.shuiguo2=self.JackpotScene:getChildByTag(771):getChildByTag(774)
+         -- self.shuiguo2:setVisible(false)
+         -- self.shuiguo3=self.JackpotScene:getChildByTag(771):getChildByTag(775)
+         -- self.shuiguo3:setVisible(false)
+
          self.actdhua:setVisible(false)
 
 
@@ -234,8 +241,8 @@ function JackpotLayer:touch_callback( sender, eventType )
                  self.end_bt:setTouchEnabled(false)
                  local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
                  dump(_tablegods)
-                 self._jinbi:setString("+"  ..  _tablegods["golds"])     
-             self:unscheduleUpdate()
+                 --self._jinbi:setString("+"  ..  _tablegods["golds"])     
+             --self:unscheduleUpdate()
                 local function stopAction()
                   self:fun_win()
                   self.actdhua:setVisible(false)
@@ -274,13 +281,15 @@ function JackpotLayer:act_began( )
            Server:Instance():prompt("冷却时间不够，请等待")
            return
        end
+      
        if self.playcardamount >0  and self.coolingtime~=-1 then
              print("拥有参与卷")
              self.is_cooltime=false
         
              self.playcardamount=self.playcardamount-1
              self.began_bt:setVisible(false)
-             self:scheduleUpdate()
+             -- self:scheduleUpdate()
+             self.roleAction:gotoFrameAndPlay(0,75, true)
              Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
              self.be_num:setString(tostring(self.playcardamount))
              return

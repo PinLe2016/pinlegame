@@ -226,7 +226,7 @@ function debrisLayer:saw_issuccess()
      if self.type=="surprise" then
           -- local scene=SurpriseOverScene.new({})
           -- cc.Director:getInstance():pushScene(scene)
-          Util:scene_controlid("SurpriseOverScene"," ")
+          Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
           return
      end
    

@@ -15,6 +15,7 @@ local SurpriseOverScene = class("SurpriseOverScene", function()
             return display.newScene("SurpriseOverScene")
 end)
 function SurpriseOverScene:ctor(params)--params
+        self.id=params.id
         self.tp=params.tp
         self.floating_layer = FloatingLayerEx.new()
         self.floating_layer:addTo(self,1000)
@@ -123,7 +124,9 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		print("点我有惊喜")
 	elseif tag==160 then --返回
 		--Util:scene_control("MainInterfaceScene")
+   -- Server:Instance():getactivitybyid(self.id)
      cc.Director:getInstance():popScene()
+
 	elseif tag==44 then  --结束
              -- audio.stopMusic(G_SOUND["FALLMONEY"])
              -- audio.playMusic(G_SOUND["PERSONALCHAGE"],true)

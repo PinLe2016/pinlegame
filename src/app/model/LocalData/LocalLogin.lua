@@ -53,8 +53,14 @@ function LocalData:get_music()
 	dump(_music)
 	return _music or false
 end
+--注册验证码
+function LocalData:set_sendmessage(server_code)
+	self.server_code=server_code
+end
 
-
+function LocalData:get_sendmessage()
+	return self.server_code
+end
 
 
 

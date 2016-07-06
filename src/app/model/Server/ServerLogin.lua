@@ -143,6 +143,7 @@ function Server:changepassword_callback()
         return
     end
     self:show_float_message("修改密码成功")
+    dialogdetermine=1-- 修改密码成功
     -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
 end
 
@@ -171,7 +172,8 @@ function Server:sendmessage_callback()
         self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
         return
     end
-    -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
+     LocalData:Instance():set_sendmessage(self.data)--
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.REGISTRATIONCODE)
 end
 
 

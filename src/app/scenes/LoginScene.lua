@@ -13,8 +13,14 @@ local FloatingLayerEx = require("app.layers.FloatingLayer")
 function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
-
-     self:progressbarScene()
+     if qqqq==0 then
+       self:progressbarScene()
+       qqqq=2
+     else
+       self:landing_init()
+     end
+   self.layertype=0  --判断界面
+     
 
 
 end
@@ -34,8 +40,7 @@ end
            self._time=self._time+10
         
             self.loadingBar:setPercent(self._time)
-           print("333333", self._time)
-            if self._time==100 then
+            if self._time==110 then
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
                  local login_info=LocalData:Instance():get_user_data()
                 if login_info~=nil  then
@@ -57,6 +62,7 @@ end
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
+           self.layertype=1
            self._random=Util:rand(  ) --随机验证码
            print("邀请码".. self.phone_text:getText(),  self._random)
            Server:Instance():sendmessage(1,self.phone_text:getText(),self._random)
@@ -109,6 +115,9 @@ end
               Server:Instance():prompt("验证码错误")
              return    
         end
+        if self._scode then
+              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+        end
               Server:Instance():reg(self.phone_text:getText(),self.Zpassword_text:getText())
         end
     end
@@ -116,14 +125,17 @@ end
         if eventType == ccui.TouchEventType.ended then
            print("取消")
            self:landing_init()
+           if self._scode then
+              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+           end
            if  self.registered then
                  self.registered:removeFromParent()
            end
           
         end
     end
-    local Getverificationcode_bt=self.registered:getChildByTag(27)
-    Getverificationcode_bt:addTouchEventListener(Getverificationcode_btCallback)
+    self.Getverificationcode_bt=self.registered:getChildByTag(27) --注册验证码按钮
+    self.Getverificationcode_bt:addTouchEventListener(Getverificationcode_btCallback)
      local submit_bt=self.registered:getChildByTag(26)
     submit_bt:addTouchEventListener(submit_btCallback)
      local callback_bt=self.registered:getChildByTag(25)
@@ -255,8 +267,8 @@ function LoginScene:_passwordLayer( )
           submit:addTouchEventListener((function(sender, eventType  )
                      self:touch_Callback(sender, eventType)
                end))
-           local yanzhengma = self.passwordLayer:getChildByTag(291)
-          yanzhengma:addTouchEventListener((function(sender, eventType  )
+           self.yanzhengma = self.passwordLayer:getChildByTag(291)
+          self.yanzhengma:addTouchEventListener((function(sender, eventType  )
                      self:touch_Callback(sender, eventType)
                end))
 
@@ -299,12 +311,17 @@ function LoginScene:touch_Callback( sender, eventType  )
               end
               local tag=sender:getTag()
               if tag==290 then      --修改密码 返回
+                   if self._scode then
+                        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                 end
                   self:landing_init()
                  if  self.passwordLayer then
                      self.passwordLayer:removeFromParent()
                 end
              elseif tag==292 then   --修改密码 提交
-                
+                if self._scode then
+                    cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+              end
                 self:_resetpasswordLayer()
                 
               elseif tag==305 then  --重新设置密码  返回
@@ -328,6 +345,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                        Server:Instance():prompt("填写手机号码错误")
                        return
                    end
+                   self.layertype=2
                   Server:Instance():sendmessage(2,self._mobilephone,self.p_random)
                   print("邀请码"..self.p_random)
              end
@@ -380,6 +398,22 @@ function LoginScene:_resetpasswordLayer(  )
                    self.passwordLayer:removeFromParent()
             end
 end
+
+ function LoginScene:countdowncode()
+           self._code=self._code-1
+           self.code_bt:setTitleText(tostring(self._code) .. "S")
+            if self._code==0 then
+               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止定时器
+                 self.code_bt:setTitleText("获取验证密码")
+             
+           end
+end
+function LoginScene:fun_countdowncode( )
+      self._scode=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self:countdowncode()
+              end,1.0, false)
+end
+
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
   Util:player_music("LOGO",true )
@@ -389,12 +423,35 @@ function LoginScene:onEnter()
                         Util:scene_control("MainInterfaceScene")
                         --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
                       end)
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self,
+                       function()
+                       print("注册的验证码")
+                       self._code=30
+                       if  self.layertype==1 then
+                           self.code_bt=self.Getverificationcode_bt
+                        elseif self.layertype==2 then
+                           self.code_bt=self.yanzhengma
+                       end
+                       self.code_bt:setTitleText("30S")
+                       self:fun_countdowncode()
+                      end)
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self,
+                       function()
+                         if self.resetpasswordLayer then
+                                self.resetpasswordLayer:removeFromParent()
+                                self:landing_init()
+                         end
+                      end)
+
+
 
 end
 function LoginScene:onExit()
   --audio.stopMusic(G_SOUND["LOGO"])
   Util:stop_music("LOGO")
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self)
 end
 function LoginScene:pushFloating(text)
    if is_resource then
