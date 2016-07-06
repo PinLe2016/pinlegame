@@ -146,7 +146,7 @@ end
             if not sup_data then return end
             for i=1,#sup_data do
          	local  cell = activity_ListView:getItem(i-1)
-            local _table=Util:FormatTime_colon(sup_data[i]["finishtime"]-sup_data[i]["begintime"]-self.time)
+            local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             local dayText=cell:getChildByTag(38)
             dayText:setString(tostring(_table[1]))
             local hoursText=cell:getChildByTag(39)
