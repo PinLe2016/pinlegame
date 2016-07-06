@@ -28,9 +28,11 @@ CONFIG_SCREEN_AUTOSCALE = "FIXED_WIDTH"
 MD5_KEY="PINLEGAME"
 --版本号
 PINLE_VERSION="3.0.0"
+
 --公共
  qqqq=0
  dialogdetermine=0  --弹出提示框
+
 --四个公有文件引入
 require("app.model.Server.Server")--请求文件
 require("app.model.NotificationCenter")--消息文件
