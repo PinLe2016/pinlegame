@@ -28,12 +28,12 @@ end
 function LoginScene:progressbarScene(  )
         self.ProgressbarScene = cc.CSLoader:createNode("ProgressbarScene.csb")
         self:addChild(self.ProgressbarScene)
-        self.loadingBar=self.ProgressbarScene:getChildByTag(328)
+        loadingBar=self.ProgressbarScene:getChildByTag(328)
         self.roleAction = cc.CSLoader:createTimeline("ProgressbarScene.csb")
         self.ProgressbarScene:runAction(self.roleAction)
          self.roleAction:gotoFrameAndPlay(0,40, true)
          -- self:fun_countdown( )
-         self.loadingBar:setPercent(0)
+         loadingBar:setPercent(0)
 end
 --  function LoginScene:countdown()
 --            self._time=self._time+20
@@ -473,7 +473,7 @@ function LoginScene:updateLayer()
 
     local function onError(errorCode)
         if errorCode == cc.ASSETSMANAGER_NO_NEW_VERSION then
-            self.loadingBar:setPercent(100)
+            loadingBar:setPercent(100)
             callbackFuncs[1]()
         elseif errorCode == cc.ASSETSMANAGER_NETWORK then
             -- progressLable:setString("network error")
@@ -484,13 +484,13 @@ function LoginScene:updateLayer()
     local function onProgress( percent )
         -- local progress = string.format("downloading %d%%",percent)
         -- progressLable:setString(progress)
-        self.loadingBar:setPercent(percent)
+        loadingBar:setPercent(percent)
     end
 
     local function onSuccess()
         -- progressLable:setString("downloading ok")
 
-        self.loadingBar:setPercent(100)
+        loadingBar:setPercent(100)
         callbackFuncs[1]()
     end
 
