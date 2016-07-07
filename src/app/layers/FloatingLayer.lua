@@ -74,6 +74,8 @@ function FloatingLayer:touch_callback( sender, eventType )
              end
          
     end
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.REG)--注册相关消息
+    
     self:setTouchSwallowEnabled(false)--防止吞吃
 end
 

@@ -15,6 +15,8 @@ function LoginScene:ctor()
    self.floating_layer:addTo(self,100000)
 
      if qqqq==0 then
+      --请求版本更新链接
+        Server:Instance():getversion()
        self:progressbarScene()
        qqqq=2
      else
@@ -24,8 +26,7 @@ function LoginScene:ctor()
    self.layertype=0  --判断界面
      
 
---请求版本更新链接
-  Server:Instance():getversion()
+
 
 
 end
@@ -147,6 +148,7 @@ end
            end
            if  self.registered then
                  self.registered:removeFromParent()
+                 self.registered=nil
            end
           
         end
@@ -362,6 +364,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                        Server:Instance():prompt("填写手机号码错误")
                        return
                    end
+                   sender:setTouchEnabled(false)
                    self.layertype=2
                   Server:Instance():sendmessage(2,self._mobilephone,self.p_random)
                   print("邀请码"..self.p_random)
@@ -433,7 +436,9 @@ end
 
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
-  Util:player_music("LOGO",true )
+  if LocalData:Instance():get_music() then 
+    Util:player_music("LOGO",true )
+  end 
   
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
@@ -452,6 +457,22 @@ function LoginScene:onEnter()
                        self.code_bt:setTitleText("30S")
                        self:fun_countdowncode()
                       end)
+
+    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REG, self,--注册成功返回
+                       function()
+                         
+                         if  self.registered then
+                               self:landing_init()
+                             if self._scode then
+                                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                             end
+
+                               self.registered:removeFromParent()
+                               self.registered=nil
+                         end
+                        
+                      end)
+
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self,
                        function()
                          if self.resetpasswordLayer then
@@ -471,6 +492,7 @@ end
 function LoginScene:onExit()
   --audio.stopMusic(G_SOUND["LOGO"])
     Util:stop_music("LOGO")
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REG, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
 
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)

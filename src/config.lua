@@ -53,6 +53,7 @@ PerInformationScene = require("app.scenes.PerInformationScene")--惊喜吧
 --消息处理方法枚举
 G_NOTIFICATION_EVENT = {
 	LOGIN_POST=							"login_post",--登陆
+	REG=								"REG",--注册
 	SURPRIS_SCENE=						"SURPRIS_SCENE",--惊喜吧场景
 	SURPRIS_LIST=						"SURPRIS_LIST", --获取惊喜吧列表
 	SURPRIS_LIST_IMAGE=					"SURPRIS_LIST_IMAGE",--惊喜吧图片下载

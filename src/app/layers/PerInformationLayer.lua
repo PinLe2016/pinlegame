@@ -206,7 +206,7 @@ function PerInformationLayer:perinformation_init(  )
         -- self._Pname:setPlaceHolder(nick_sub)
         self._Pname:setText(nick_sub)
         self._Pname:setAnchorPoint(0,0.5)  
-        self._Pname:setMaxLength(11)
+        self._Pname:setMaxLength(6)
 
         --self._Pname:setString(userdt["nickname"])
         local golds=self.Perinformation:getChildByTag(73)  --金币

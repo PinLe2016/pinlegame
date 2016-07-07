@@ -10,7 +10,6 @@ local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好
 local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
 local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
 function MainInterfaceScene:ctor()
-   print("我磊哥去u ------")
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
       self.count=0
@@ -159,10 +158,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
                   self.actbg:setVisible(true)
             end
       elseif tag==53 then  --设置
-            self:funsetup(  )
+            self:funsetup( )
       elseif tag==52 then  --邀请好友
             self:addChild(InvitefriendsLayer.new())
       elseif tag==266 then  --注销
+            LocalData:Instance():set_user_data(nil)
             Util:scene_control("LoginScene")
 	end
 end
