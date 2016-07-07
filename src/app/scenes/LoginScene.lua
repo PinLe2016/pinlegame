@@ -17,6 +17,8 @@ function LoginScene:ctor()
       
 
      if qqqq==0 then
+      --请求版本更新链接
+        Server:Instance():getversion()
        self:progressbarScene()
        qqqq=2
      else
@@ -26,9 +28,8 @@ function LoginScene:ctor()
    self.layertype=0  --判断界面
      
 
---请求版本更新链接
-  Server:Instance():getversion()
 
+self.code_bt=nil
 
 end
 --新增加的进度条
@@ -68,7 +69,9 @@ end
 --                self:landing_init()
 
              
+
             end
+
 end
 -- function LoginScene:fun_countdown( )
 --       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
@@ -81,6 +84,8 @@ end
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
+          sender:setColor(cc.c3b(100, 100, 100))
+          sender:setTouchEnabled(false)
            self.layertype=1
            self._random=Util:rand(  ) --随机验证码
            print("邀请码".. self.phone_text:getText(),  self._random)
@@ -149,6 +154,7 @@ end
            end
            if  self.registered then
                  self.registered:removeFromParent()
+                 self.registered=nil
            end
           
         end
@@ -364,6 +370,8 @@ function LoginScene:touch_Callback( sender, eventType  )
                        Server:Instance():prompt("填写手机号码错误")
                        return
                    end
+                   sender:setTouchEnabled(false)
+                   sender:setColor(cc.c3b(100, 100, 100))
                    self.layertype=2
                   Server:Instance():sendmessage(2,self._mobilephone,self.p_random)
                   print("邀请码"..self.p_random)
@@ -422,6 +430,10 @@ end
            self._code=self._code-1
            self.code_bt:setTitleText(tostring(self._code) .. "S")
             if self._code==0 then
+              if self.code_bt then
+                self.code_bt:setTouchEnabled(true)
+                self.code_bt:setColor(cc.c3b(255, 255, 255))
+              end
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止定时器
                  self.code_bt:setTitleText("获取验证密码")
              
@@ -435,7 +447,9 @@ end
 
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
-  Util:player_music("LOGO",true )
+  if LocalData:Instance():get_music() then 
+    Util:player_music("LOGO",true )
+  end 
   
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
@@ -454,6 +468,22 @@ function LoginScene:onEnter()
                        self.code_bt:setTitleText("30S")
                        self:fun_countdowncode()
                       end)
+
+    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REG, self,--注册成功返回
+                       function()
+                         
+                         if  self.registered then
+                               self:landing_init()
+                             if self._scode then
+                                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                             end
+
+                               self.registered:removeFromParent()
+                               self.registered=nil
+                         end
+                        
+                      end)
+
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self,
                        function()
                          if self.resetpasswordLayer then
@@ -473,12 +503,15 @@ end
 function LoginScene:onExit()
   --audio.stopMusic(G_SOUND["LOGO"])
     Util:stop_music("LOGO")
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REG, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
 
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self)
 
+
     NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
+
 
 end
 function LoginScene:pushFloating(text)

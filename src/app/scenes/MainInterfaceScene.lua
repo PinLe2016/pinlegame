@@ -164,11 +164,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             end
       elseif tag==53 then  --设置
             self:funsetup(  )
-            
 
       elseif tag==52 then  --邀请好友
             self:addChild(InvitefriendsLayer.new())
       elseif tag==266 then  --注销
+            LocalData:Instance():set_user_data(nil)
             Util:scene_control("LoginScene")
 	end
 end
