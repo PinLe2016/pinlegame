@@ -27,7 +27,7 @@ function LoginScene:ctor()
      
 
 
-
+self.code_bt=nil
 
 end
 --新增加的进度条
@@ -80,6 +80,8 @@ end
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
+          sender:setColor(cc.c3b(100, 100, 100))
+          sender:setTouchEnabled(false)
            self.layertype=1
            self._random=Util:rand(  ) --随机验证码
            print("邀请码".. self.phone_text:getText(),  self._random)
@@ -365,6 +367,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                        return
                    end
                    sender:setTouchEnabled(false)
+                   sender:setColor(cc.c3b(100, 100, 100))
                    self.layertype=2
                   Server:Instance():sendmessage(2,self._mobilephone,self.p_random)
                   print("邀请码"..self.p_random)
@@ -423,6 +426,10 @@ end
            self._code=self._code-1
            self.code_bt:setTitleText(tostring(self._code) .. "S")
             if self._code==0 then
+              if self.code_bt then
+                self.code_bt:setTouchEnabled(true)
+                self.code_bt:setColor(cc.c3b(255, 255, 255))
+              end
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止定时器
                  self.code_bt:setTitleText("获取验证密码")
              
