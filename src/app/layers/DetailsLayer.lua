@@ -47,6 +47,12 @@ function DetailsLayer:init(  )
 
 	local began_bt=details:getChildByTag(26)
 	began_bt:addTouchEventListener(began_btCallback)
+            
+             local rules_bt=details:getChildByTag(27)--规则
+             rules_bt:addTouchEventListener((function(sender, eventType  )
+                     self:list_btCallback(sender, eventType)
+               end)
+              )
 
 	local act_image=details:getChildByTag(35)
 	local path=cc.FileUtils:getInstance():getWritablePath()
@@ -83,6 +89,7 @@ function DetailsLayer:init(  )
 
 end
 
+
 function DetailsLayer:list_btCallback(sender, eventType)
 	if eventType ~= ccui.TouchEventType.ended then
 		return
@@ -92,8 +99,109 @@ function DetailsLayer:list_btCallback(sender, eventType)
 		self:addChild(RankinglistofactiviesLayer.new({id=self.id,count=1,image=self.image,title=self.title}))
 	elseif tag==42 then --个人记录
 		self:addChild(OnerecordLayer.new({id=self.id,type=self.type,title=self.title}))
+	elseif tag==27 then   --规则
+		self:guizelayer(  )
+            elseif tag==787 then   --规则
+		if self.Ruledescription then
+			self.Ruledescription:removeFromParent()
+		end
+	elseif tag==786 then   --疑问
+		print("疑问")
 	end
 	
+end
+function DetailsLayer:_btCallback(sender, eventType)
+	if eventType ~= ccui.TouchEventType.ended then
+		return
+	end
+	local tag=sender:getTag()
+	 if self.curr_bright:getTag()==tag then
+                  return
+              end
+            self.curr_bright:setBright(true)
+            sender:setBright(false)
+	if tag==810 then 
+	      self:is_visible(  )
+	      local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(803)
+	      _text1:setVisible(true)
+	elseif tag==811 then
+		 self:is_visible(  )
+		 local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(804)
+	             _text1:setVisible(true)
+	elseif tag==812 then
+		self:is_visible(  )
+		 local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(805)
+	            _text1:setVisible(true)
+	elseif tag==813 then
+		self:is_visible(  )
+		 local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(806)
+	             _text1:setVisible(true)
+	elseif tag==814 then
+		self:is_visible(  )
+		 local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(807)
+	            _text1:setVisible(true)
+	elseif tag==815 then
+		self:is_visible(  )
+	            local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(808)
+	            _text1:setVisible(true)
+	end
+	self.curr_bright=sender
+end
+function DetailsLayer:is_visible(  )
+	  local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(803)
+	   _text1:setVisible(false)
+	   local _text2=self.Ruledescription:getChildByTag(802):getChildByTag(804)
+	   _text2:setVisible(false)
+	   local _text3=self.Ruledescription:getChildByTag(802):getChildByTag(805)
+	   _text3:setVisible(false)
+	   local _text4=self.Ruledescription:getChildByTag(802):getChildByTag(806)
+	   _text4:setVisible(false)
+	   local _text5=self.Ruledescription:getChildByTag(802):getChildByTag(807)
+	   _text5:setVisible(false)
+	   local _text6=self.Ruledescription:getChildByTag(802):getChildByTag(808)
+	   _text6:setVisible(false)
+
+end
+function DetailsLayer:guizelayer(  )
+	self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
+            self:addChild(self.Ruledescription)
+            local back_bt=self.Ruledescription:getChildByTag(787)--
+	back_bt:addTouchEventListener(function(sender, eventType  )
+		self:list_btCallback(sender, eventType)
+	end)
+	local doubt_bt=self.Ruledescription:getChildByTag(786)--  问号
+	doubt_bt:addTouchEventListener(function(sender, eventType  )
+		self:list_btCallback(sender, eventType)
+	end)
+
+	 local type_bt=self.Ruledescription:getChildByTag(810)--年
+	type_bt:addTouchEventListener(function(sender, eventType  )
+		self:_btCallback(sender, eventType)
+	end)
+	type_bt:setBright(false)
+            self.curr_bright=type_bt--记录当前高亮
+
+	 local type_bt1=self.Ruledescription:getChildByTag(811)--月
+	type_bt1:addTouchEventListener(function(sender, eventType  )
+		self:_btCallback(sender, eventType)
+	end)
+	 local type_bt2=self.Ruledescription:getChildByTag(812)--周
+	type_bt2:addTouchEventListener(function(sender, eventType  )
+		self:_btCallback(sender, eventType)
+	end)
+	 local type_bt3=self.Ruledescription:getChildByTag(813)--热门
+	type_bt3:addTouchEventListener(function(sender, eventType  )
+		self:_btCallback(sender, eventType)
+	end)
+	 local type_bt4=self.Ruledescription:getChildByTag(814)--日
+	type_bt4:addTouchEventListener(function(sender, eventType  )
+		self:_btCallback(sender, eventType)
+	end)
+	 local type_bt5=self.Ruledescription:getChildByTag(815)--整点
+	type_bt5:addTouchEventListener(function(sender, eventType  )
+		self:_btCallback(sender, eventType)
+	end)
+
 end
 function DetailsLayer:onEnter()
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,

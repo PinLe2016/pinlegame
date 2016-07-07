@@ -14,6 +14,8 @@ function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
    self.floating_layer:addTo(self,100000)
 
+      
+
      if qqqq==0 then
        self:progressbarScene()
        qqqq=2
@@ -40,10 +42,10 @@ function LoginScene:progressbarScene(  )
          -- self:fun_countdown( )
          loadingBar:setPercent(0)
 end
---  function LoginScene:countdown()
---            self._time=self._time+20
+ function LoginScene:countdown()
+           self._time=self._time+20
         
-<<<<<<< HEAD
+
             self.loadingBar:setPercent(self._time)
             if self._time==110 then
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
@@ -53,7 +55,7 @@ end
                     return
                 end
                self:landing_init()
-=======
+
 --             self.loadingBar:setPercent(self._time)
 --            print("333333", self._time)
 --             if self._time==120 then
@@ -64,10 +66,10 @@ end
 --                     return
 --                 end
 --                self:landing_init()
->>>>>>> 46384f6ab6b393b510f06075cdd76f436006664f
+
              
---            end
--- end
+            end
+end
 -- function LoginScene:fun_countdown( )
 --       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
 --                                 self:countdown()
@@ -472,12 +474,12 @@ function LoginScene:onExit()
   --audio.stopMusic(G_SOUND["LOGO"])
     Util:stop_music("LOGO")
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
-<<<<<<< HEAD
+
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self)
-=======
+
     NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
->>>>>>> 46384f6ab6b393b510f06075cdd76f436006664f
+
 end
 function LoginScene:pushFloating(text)
    if is_resource then

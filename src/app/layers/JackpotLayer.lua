@@ -37,22 +37,38 @@ function JackpotLayer:init(  )
         self:addChild(self.JackpotScene)
         self.roleAction = cc.CSLoader:createTimeline("JackpotScene.csb")
         self.JackpotScene:runAction(self.roleAction)
+        self.roleAction:setTimeSpeed(5)
+        self.goldanimation = cc.CSLoader:createNode("goldanimation.csb")
+        self.goldanimation:setVisible(false)
+        self:addChild(self.goldanimation)
+        self.goldAction = cc.CSLoader:createTimeline("goldanimation.csb")
+        self.goldanimation:runAction(self.goldAction)
+        
 
          --新增加动画
-         self.actdhua=self.JackpotScene:getChildByTag(229)  --金币动画界面
+         -- self.actdhua=self.JackpotScene:getChildByTag(229)  --金币动画界面
+         -- self.actdhua:addTouchEventListener(function(sender, eventType  )
+         --      self:touch_callback(sender, eventType)
+         --  end)
+         -- self._jinbi=self.actdhua:getChildByTag(277):getChildByTag(278)  --金币数量
+
+
+         self.actdhua=self.goldanimation:getChildByTag(780)  --金币动画界面
          self.actdhua:addTouchEventListener(function(sender, eventType  )
               self:touch_callback(sender, eventType)
           end)
-         self._jinbi=self.actdhua:getChildByTag(277):getChildByTag(278)  --金币数量
-         
-         -- self.shuiguo1=self.JackpotScene:getChildByTag(771):getChildByTag(773)
-         -- self.shuiguo1:setVisible(false)
-         -- self.shuiguo2=self.JackpotScene:getChildByTag(771):getChildByTag(774)
-         -- self.shuiguo2:setVisible(false)
-         -- self.shuiguo3=self.JackpotScene:getChildByTag(771):getChildByTag(775)
+         self._jinbi=self.actdhua:getChildByTag(781):getChildByTag(782)  --金币数量
+
+
+
+         self.shuiguo1=self.JackpotScene:getChildByTag(771):getChildByTag(773)
+         self.shuiguo1:setVisible(false)
+         self.shuiguo2=self.JackpotScene:getChildByTag(771):getChildByTag(774)
+         self.shuiguo2:setVisible(false)
+         self.shuiguo3=self.JackpotScene:getChildByTag(771):getChildByTag(775)
          -- self.shuiguo3:setVisible(false)
 
-         self.actdhua:setVisible(false)
+         --self.actdhua:setVisible(false)
 
 
         self.advertiPv=self.JackpotScene:getChildByTag(151)
@@ -110,7 +126,10 @@ function JackpotLayer:init(  )
                         return
                 end
                    self:removeFromParent()
-                
+                   if self._slowdown then
+                       cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止水果机定时器
+                   end
+                   
         end)
 
          --中奖信息排行
@@ -239,16 +258,25 @@ function JackpotLayer:touch_callback( sender, eventType )
             -- self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
                  self.end_bt:setTouchEnabled(false)
-                 local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-                 dump(_tablegods)
-                 --self._jinbi:setString("+"  ..  _tablegods["golds"])     
-             --self:unscheduleUpdate()
-                local function stopAction()
-                  self:fun_win()
-                  self.actdhua:setVisible(false)
-                end
-              self.actdhua:setVisible(true)
-              self.roleAction:gotoFrameAndPlay(0,50, true)
+                 -- print("wwqwerewar   ",self.roleAction:getCurrentFrame()%5)
+                 -- print("wwqwerewar   ",self.roleAction:getCurrentFrame())
+                 -- print("wwqwerewar   ",self.roleAction:getCurrentFrame()-self.roleAction:getCurrentFrame()%5)
+                 -- self.roleAction:setCurrentFrame(self.roleAction:getCurrentFrame()-self.roleAction:getCurrentFrame()%5)
+                 -- self.roleAction:pause()
+                 self:fun_slowdown( )  --减速
+             --     self.shuiguo1:setVisible(false)
+             --     self.shuiguo2:setVisible(false)
+             --     local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
+             --     dump(_tablegods)
+             --     --self._jinbi:setString("+"  ..  _tablegods["golds"])     
+             -- --self:unscheduleUpdate()
+             --    local function stopAction()
+             --      self:fun_win()
+             --      self.goldanimation:setVisible(false)
+             --    end
+             --  self.goldanimation:setVisible(true)
+             --  self.goldAction:gotoFrameAndPlay(0,20, true)
+
               -- local callfunc = cc.CallFunc:create(stopAction)
               -- self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(100),callfunc  ))
              
@@ -261,13 +289,50 @@ function JackpotLayer:touch_callback( sender, eventType )
               -- Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
               LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数
                --cc.Director:getInstance():pushScene("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
-      elseif tag==229 then
+      elseif tag==780 then
               self:fun_win()
-              self.actdhua:setVisible(false)
+              self.goldanimation:setVisible(false)
       end
       
 end
+--劲舞团减速
+ function JackpotLayer:slowdown()
+               self.slowdown_num=self.slowdown_num-0.1
+               self.roleAction:setTimeSpeed(self.slowdown_num)
+               if self.slowdown_num<=0 then
+                  self.roleAction:gotoFrameAndPause(self.roleAction:getCurrentFrame()-self.roleAction:getCurrentFrame()%5)
+                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止定时器
+                  self.shuiguo1:setVisible(false)
+                  self.shuiguo2:setVisible(false)
+                  local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
+                 --self._jinbi:setString("+"  ..  _tablegods["golds"])     
+                 --self:unscheduleUpdate()
+                local function stopAction()
+                  self:fun_win()
+                  self.goldanimation:setVisible(false)
+                end
+              -- self.goldanimation:setVisible(true)
+              -- self.goldAction:gotoFrameAndPlay(0,20, true)
+               local function removeThis()
+                 self:fun_win()
+                 self.goldanimation:setVisible(false)
+              end
+               self.shuiguo3:runAction( cc.Sequence:create(cc.Blink:create(3, 3),cc.CallFunc:create(removeThis)))
+
+
+               end
+              
+                
+end
+function JackpotLayer:fun_slowdown( )
+      self.slowdown_num=3
+      self._slowdown=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self:slowdown()
+              end,0.1, false)
+end
+
 function JackpotLayer:act_began( )
+       self.cunum=0
        self.end_bt:setTouchEnabled(true)
        if self.is_cooltime==false then
            self:fun_cool(  )
@@ -282,16 +347,26 @@ function JackpotLayer:act_began( )
            return
        end
       
-       if self.playcardamount >0  and self.coolingtime~=-1 then
+        if self.playcardamount >0  and self.coolingtime~=-1 then
              print("拥有参与卷")
              self.is_cooltime=false
         
              self.playcardamount=self.playcardamount-1
              self.began_bt:setVisible(false)
              -- self:scheduleUpdate()
-             self.roleAction:gotoFrameAndPlay(0,75, true)
+            self.roleAction:gotoFrameAndPlay(self.roleAction:getCurrentFrame(),75, true)
+            --  if  self.cunum==0 then
+            --       
+            -- else
+            --    self.roleAction:resume()
+            --  end
+             
+
+             self.roleAction:setTimeSpeed(5)
              Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
              self.be_num:setString(tostring(self.playcardamount))
+             self.shuiguo1:setVisible(true)
+             self.shuiguo2:setVisible(true)
              return
         end
         print("没有参与卷")

@@ -10,7 +10,6 @@ local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好
 local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
 local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
 function MainInterfaceScene:ctor()
-   print("我磊哥去u ------")
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
       self.count=0
@@ -30,6 +29,8 @@ function MainInterfaceScene:fun_init( )
       self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       self:addChild(self.checkinlayer)
       self.checkinlayer:setVisible(false)
+
+
          
       local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)
           Surprise_bt:addTouchEventListener(function(sender, eventType  )
@@ -84,6 +85,7 @@ function MainInterfaceScene:fun_init( )
       end)
        local fenxiang_bt=self.actbg:getChildByTag(54)--测试分享
       fenxiang_bt:addTouchEventListener(function(sender, eventType  )
+           print("规则额")
            self:touch_callback(sender, eventType)
       end)
      
@@ -146,7 +148,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==288 then  --邀请好友
             self:addChild(FriendrequestLayer.new())
       elseif tag==54 then  --测试分享
-            --Util:share()
+            print("规则")
+            -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
+            -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
             device.openURL("http://playios.pinlegame.com/P_default.aspx?")
 
@@ -160,6 +164,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             end
       elseif tag==53 then  --设置
             self:funsetup(  )
+            
+
       elseif tag==52 then  --邀请好友
             self:addChild(InvitefriendsLayer.new())
       elseif tag==266 then  --注销
