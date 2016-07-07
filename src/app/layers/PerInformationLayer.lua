@@ -46,7 +46,15 @@ function PerInformationLayer:add_init(  )
 
 
                     self._Pname1=self.showinformation:getChildByTag(1402) --名字Dphone_text
-                    self._Pname1:setString(userdt["nickname"])
+                    dump(userdt["nickname"])
+                    local nickname=userdata["loginname"]
+                    local nick_sub=string.sub(nickname,1,3)
+                    nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
+                    dump(userdt)
+                    if userdt["nickname"]~="" then
+                        nick_sub=userdt["nickname"]
+                    end
+                    self._Pname1:setString(nick_sub)
                    
                     local golds=self.showinformation:getChildByTag(1413)   --金币
                     golds:setString(userdt["golds"])
@@ -152,7 +160,7 @@ function PerInformationLayer:perinformation_init(  )
 
      local  userdata=LocalData:Instance():get_user_data() --用户数据
      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-      dump(userdatainit)
+      -- dump(userdatainit)
 
      local userdt = LocalData:Instance():get_userdata()--
      userdt["birthday"]=userdatainit["birthday"]
@@ -186,7 +194,17 @@ function PerInformationLayer:perinformation_init(  )
         self.Perinformation:addChild(self._Pname)
         self._Pname:setVisible(true)
         self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  
-        self._Pname:setPlaceHolder(userdt["nickname"])
+       
+        local nickname=userdata["loginname"]
+        dump(nickname)
+        local nick_sub=string.sub(nickname,1,3)
+        nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
+        dump(userdt)
+        if userdt["nickname"]~="" then
+            nick_sub=userdt["nickname"]
+        end
+        -- self._Pname:setPlaceHolder(nick_sub)
+        self._Pname:setText(nick_sub)
         self._Pname:setAnchorPoint(0,0.5)  
         self._Pname:setMaxLength(11)
 
@@ -414,10 +432,16 @@ function PerInformationLayer:savedata( )
            self.genderman1="  "
 
     local  userdata=LocalData:Instance():get_user_data()
-    print("nanannana   ",self._Pname:getText())
+ 
+    -- print("nanannana   ",self._Pname:getText())
+    -- print("wwww   ",self._Pname:getPlaceHolder())
+    
     local  loginname= userdata["loginname"]
-    local  nickname=self._Pname:getText()--userdata["nickname"]  
-    self._Pname1=self._Pname:getText()
+    local  nickname=self._Pname:getText()  
+    userdata["nickname"]=nickname
+    LocalData:Instance():set_user_data(userdata)
+    -- self._Pname1=self._Pname:getText()
+    self._Pname1:setString(tostring(self._Pname:getText()))
     local  provincename=self._provincename:getString() 
     local  cityid=1
     local  districtid=1

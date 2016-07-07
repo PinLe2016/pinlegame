@@ -12,9 +12,10 @@ end
 
 function Server:setuserinfo_callback()
     if self.data.err_code~=0  then
-        self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
+        self:show_float_message("保存用户数据失败:" .. self.data.err_msg)
         return
     end
+    self:show_float_message("信息修改成功!")
     LocalData:Instance():set_userinfo(self.data)--保存数据
      NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE)
    
