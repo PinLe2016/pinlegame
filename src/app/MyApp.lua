@@ -5,7 +5,6 @@ require "lfs"
 Util = require("app.model.Util")
 require("config")
 require("MobClickForLua")
-require "AssetsManagerTest/AssetsManagerTest"
 
 local MyApp = class("MyApp", cc.mvc.AppBase)
 PINLE_CHANNEL_ID="DVE"
