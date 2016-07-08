@@ -115,6 +115,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
          --self.began_bt:setButtonEnabled(false)
            --w:setFocusEnabled(false)
            -- self.began_bt:setColor(cc.c3b(255, 255,   0))
+           self.began_bt:setTouchEnabled(false)
 		audio.playMusic(G_SOUND["FALLMONEY"],true)
 		Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
 	elseif tag==165 then --分享
@@ -124,12 +125,14 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		print("点我有惊喜")
 	elseif tag==160 then --返回
 		--Util:scene_control("MainInterfaceScene")
-   -- Server:Instance():getactivitybyid(self.id)
+    Server:Instance():getactivitybyid(self.id)
      cc.Director:getInstance():popScene()
 
 	elseif tag==44 then  --结束
              -- audio.stopMusic(G_SOUND["FALLMONEY"])
              -- audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
+             self.end_bt:setTouchEnabled(false)
+             self.began_bt:setTouchEnabled(true)
              Util:stop_music("FALLMONEY")
              Util:player_music("PERSONALCHAGE",true )
 		self:L_end(  )
@@ -194,6 +197,7 @@ end
            self.daojishi_text:setString(tostring(self._time))
            if self._time==0 then
               self.began_bt:setVisible(true)
+              self.began_bt:setTouchEnabled(true)
 	        self.end_bt:setVisible(false)
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.L_began)--停止定时器
               self.daojishi_bg:setVisible(false)
@@ -232,6 +236,7 @@ function SurpriseOverScene:onEnter()
                 end
                   self.began_bt:setVisible(false)
                   self.end_bt:setVisible(true)
+                  self.end_bt:setTouchEnabled(true)
                   for i=1,#self. _table do
                       self. _table[i]:startGo()
                   end

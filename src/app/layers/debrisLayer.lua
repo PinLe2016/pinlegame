@@ -213,10 +213,11 @@ function debrisLayer:saw_issuccess()
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
                 Server:Instance():setgamerecord(self.adid)  
                 if self.type=="surprise" then
-                    Util:scene_controlid("SurpriseOverScene"," ")
+                    Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                      return
                end
-                    cc.Director:getInstance():popScene()
+                    --cc.Director:getInstance():popScene()
+                    self:add_reward( )
             return
         end
     end
@@ -229,12 +230,46 @@ function debrisLayer:saw_issuccess()
           Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
           return
      end
-   
-     cc.Director:getInstance():popScene()
+   self:add_reward( )
+    --cc.Director:getInstance():popScene()
      
   
 end
+--增加幸运卡
+function debrisLayer:add_reward( )
+        self.Rewardvouchers = cc.CSLoader:createNode("Rewardvouchers.csb")
+        self:addChild(self.Rewardvouchers,10000)
+        self.began_bt=self.Rewardvouchers:getChildByTag(425)  --立即参与
+         self.began_bt:addTouchEventListener(function(sender, eventType  )
+                   self:touch_callback( sender, eventType )             
+          end)
 
+        self.again_bt=self.Rewardvouchers:getChildByTag(426)  --再来一局
+         self.again_bt:addTouchEventListener(function(sender, eventType  )
+                   self:touch_callback( sender, eventType )             
+          end)
+
+end
+function debrisLayer:touch_callback( sender, eventType )
+          local tag=sender:getTag()
+
+      if eventType ~= ccui.TouchEventType.ended then
+         return
+      end
+      if tag==425 then --立即参与
+          if self.Rewardvouchers then
+              self.Rewardvouchers:removeFromParent()
+          end
+           cc.Director:getInstance():popScene()
+      elseif tag==426 then   --再来一局
+         local _table=LocalData:Instance():get_actid()--保存数
+         local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
+         cc.Director:getInstance():popScene()
+         cc.Director:getInstance():pushScene(scene)
+             
+     end
+
+end
 function debrisLayer:onEnter()
                 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
                        function()

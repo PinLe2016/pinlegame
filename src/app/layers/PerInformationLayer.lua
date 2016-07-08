@@ -95,7 +95,95 @@ function PerInformationLayer:add_init(  )
                 Modify_bt:addTouchEventListener(function(sender, eventType  )
                       self:touch_back(sender, eventType)
                  end)
+
+                 local mail_bt=self.showinformation:getChildByTag(190)  --填写邮件信息
+                mail_bt:addTouchEventListener(function(sender, eventType  )
+                      self:touch_back(sender, eventType)
+                 end)
+
+
 end
+--新增加的邮件界面
+function PerInformationLayer:fun_mail(  )
+        self.Receivinginformation = cc.CSLoader:createNode("Receivinginformation.csb")
+        self:addChild(self.Receivinginformation)
+        local back_bt=self.Receivinginformation:getChildByTag(220):getChildByTag(234)  --返回
+        back_bt:addTouchEventListener(function(sender, eventType  )
+              self:touch_back(sender, eventType)
+         end)
+        local determine_bt=self.Receivinginformation:getChildByTag(220):getChildByTag(235)  --确定
+        determine_bt:addTouchEventListener(function(sender, eventType  )
+              self:touch_back(sender, eventType)
+         end)
+        self.ads_bg=self.Receivinginformation:getChildByTag(119)
+        self.ads_bg:setVisible(false)
+        local ads_bt=self.Receivinginformation:getChildByTag(220):getChildByTag(227)  --所在地区
+        ads_bt:setVisible(true)
+        if self.ads_bg:isVisible() then
+            ads_bt:setTouchEnabled(false)
+        else
+            ads_bt:setTouchEnabled(true)
+        end
+        ads_bt:addTouchEventListener(function(sender, eventType  )
+              self:touch_back(sender, eventType)
+         end)
+        
+        local false_bt=self.Receivinginformation:getChildByTag(119):getChildByTag(146)  --取消选择地址
+        false_bt:addTouchEventListener(function(sender, eventType  )
+              self:touch_back(sender, eventType)
+         end)
+        local true_bt=self.Receivinginformation:getChildByTag(119):getChildByTag(147)  --确定选择地址
+        true_bt:addTouchEventListener(function(sender, eventType  )
+              self:touch_back(sender, eventType)
+         end)
+         local em_bg=self.Receivinginformation:getChildByTag(220)
+         local name_field=em_bg:getChildByTag(229)
+         local phone_field=em_bg:getChildByTag(230)
+         local adm_field=em_bg:getChildByTag(231)
+         local name_g=em_bg:getChildByTag(225)
+         name_g:setVisible(false)
+         local phone_g=em_bg:getChildByTag(226)
+         phone_g:setVisible(false)
+         local adm_g=em_bg:getChildByTag(228)
+         adm_g:setVisible(false)
+
+
+
+
+
+
+
+--新增的邮件box控件
+    local res = "res/png/DLkuang.png"
+    local width = 300
+    local height = 40
+    
+    local name_text = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(name_text)
+    name_text:setPosition(cc.p(name_field:getPositionX(),name_field:getPositionY()))--( cc.p(130,438 ))  
+    name_text:setPlaceHolder("您的姓名")
+    name_text:setAnchorPoint(0,0.5)  
+    name_text:setMaxLength(11)
+
+    local phone_text = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(phone_text)
+    phone_text:setPosition(cc.p(phone_field:getPositionX(),phone_field:getPositionY()))--( cc.p(130,438 ))  
+    phone_text:setPlaceHolder("您的手机号")
+    phone_text:setAnchorPoint(0,0.5)  
+    phone_text:setMaxLength(11)
+
+    local ads_text = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(ads_text)
+    ads_text:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
+    ads_text:setPlaceHolder("详细地址")
+    ads_text:setAnchorPoint(0,0.5)  
+    ads_text:setMaxLength(13)
+
+
+
+end
+
+
 function PerInformationLayer:touch_back( sender, eventType )
     if eventType ~= ccui.TouchEventType.ended then
         return
@@ -109,6 +197,20 @@ function PerInformationLayer:touch_back( sender, eventType )
         end
     elseif  tag==1410 then
          self:init()
+    elseif  tag==190 then
+         self:fun_mail(  )
+    elseif  tag==234 then
+         if self.Receivinginformation then
+             self.Receivinginformation:removeFromParent()
+         end
+    elseif  tag==235 then
+         print("确定")
+    elseif  tag==227 then
+         self.ads_bg:setVisible(true)
+    elseif  tag==146 then
+        self.ads_bg:setVisible(false)
+    elseif  tag==147 then
+         print("确定选择地址")
     end
 end
 

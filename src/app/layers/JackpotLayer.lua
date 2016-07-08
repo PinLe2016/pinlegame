@@ -43,8 +43,20 @@ function JackpotLayer:init(  )
         self:addChild(self.goldanimation)
         self.goldAction = cc.CSLoader:createTimeline("goldanimation.csb")
         self.goldanimation:runAction(self.goldAction)
-        
 
+         local reward_bt=self.JackpotScene:getChildByTag(777)  -- 是否选择幸运卡
+        reward_bt:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            self.is_double=1   --翻倍
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                            self.is_double=2  --普通
+                            
+                     end
+        end)
+
+
+        
+        
          --新增加动画
          -- self.actdhua=self.JackpotScene:getChildByTag(229)  --金币动画界面
          -- self.actdhua:addTouchEventListener(function(sender, eventType  )
@@ -257,7 +269,7 @@ function JackpotLayer:touch_callback( sender, eventType )
             -- self.is_double=2 -- 测试
             -- self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
-                 self.end_bt:setTouchEnabled(false)
+                 --self.end_bt:setTouchEnabled(false)
                  -- print("wwqwerewar   ",self.roleAction:getCurrentFrame()%5)
                  -- print("wwqwerewar   ",self.roleAction:getCurrentFrame())
                  -- print("wwqwerewar   ",self.roleAction:getCurrentFrame()-self.roleAction:getCurrentFrame()%5)
@@ -281,50 +293,64 @@ function JackpotLayer:touch_callback( sender, eventType )
               -- self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(100),callfunc  ))
              
       elseif tag==47 then  --获取参与卷
+
              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
              local  jaclayer_data=list_table["ads"]
               local  _id=jaclayer_data[1]["adid"]
               local scene=GameScene.new({adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
               cc.Director:getInstance():pushScene(scene)
-              -- Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
               LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数
-               --cc.Director:getInstance():pushScene("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
       elseif tag==780 then
               self:fun_win()
               self.goldanimation:setVisible(false)
       end
       
 end
+
 --劲舞团减速
  function JackpotLayer:slowdown()
                self.slowdown_num=self.slowdown_num-0.1
                self.roleAction:setTimeSpeed(self.slowdown_num)
-               if self.slowdown_num<=0 then
-                  self.roleAction:gotoFrameAndPause(self.roleAction:getCurrentFrame()-self.roleAction:getCurrentFrame()%5)
-                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止定时器
-                  self.shuiguo1:setVisible(false)
-                  self.shuiguo2:setVisible(false)
-                  local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-                 --self._jinbi:setString("+"  ..  _tablegods["golds"])     
-                 --self:unscheduleUpdate()
-                local function stopAction()
-                  self:fun_win()
-                  self.goldanimation:setVisible(false)
-                end
-              -- self.goldanimation:setVisible(true)
-              -- self.goldAction:gotoFrameAndPlay(0,20, true)
-               local function removeThis()
-                 self:fun_win()
-                 self.goldanimation:setVisible(false)
-              end
-               self.shuiguo3:runAction( cc.Sequence:create(cc.Blink:create(3, 3),cc.CallFunc:create(removeThis)))
+               if self.slowdown_num<=0.1 then
+                     self.slowdown_num=0.15
+                      local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
+                     if self.roleAction:getCurrentFrame()+2>self.glodreward[tostring(_tablegods["golds"])]  and  self.roleAction:getCurrentFrame()-2<self.glodreward[tostring(_tablegods["golds"])] then
+                            self.roleAction:gotoFrameAndPause(self.glodreward[tostring(_tablegods["golds"])])
+                            cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止定时器
+                            self.shuiguo1:setVisible(false)
+                            self.shuiguo2:setVisible(false)
+                           
+                           --self._jinbi:setString("+"  ..  _tablegods["golds"])     
+                           --self:unscheduleUpdate()
+                          local function stopAction()
+                            self:fun_win()
+                            self.goldanimation:setVisible(false)
+                          end
+                        -- self.goldanimation:setVisible(true)
+                        -- self.goldAction:gotoFrameAndPlay(0,20, true)
+                         local function removeThis()
+                           self:fun_win()
+                           self.goldanimation:setVisible(false)
+                        end
+                         self.shuiguo3:runAction( cc.Sequence:create(cc.Blink:create(3, 3),cc.CallFunc:create(removeThis)))
 
+
+                     end
+
+                  -- self.roleAction:gotoFrameAndPause(self.roleAction:getCurrentFrame()-self.roleAction:getCurrentFrame()%5)
+                  -- cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止定时器
+                 
 
                end
               
                 
 end
 function JackpotLayer:fun_slowdown( )
+      self.glodreward ={["7"]=0,["10"]=5,["1000"]=10,["5"]=15,["15"]=20,["50"]=25,["20"]=30,["200"]=35,
+                                ["9"]=40,["711"]=45,["500"]=50,["6"]=55,["19"]=60,["14"]=65,["16"]=70,["100"]=75}
+      
+
+      print("就将计就计",self.glodreward[tostring(7)])
       self.slowdown_num=3
       self._slowdown=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:slowdown()
@@ -413,7 +439,7 @@ end
            self._time=self._time-1
            self._countdown:setString(tostring(self._time))
            if self._time==0 then
-            self.is_cooltime=true
+              self.is_cooltime=true
               self.mask_bg2:setVisible(false) 
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
            end

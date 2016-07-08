@@ -14,7 +14,6 @@ function DetailsLayer:ctor(params)
        self.type=params.type--活动类型
        LocalData:Instance():set_actid({act_id=self.id,image=self.image})--保存数据
        Server:Instance():getactivitybyid(self.id)
-     
  
 end
 function DetailsLayer:init(  )

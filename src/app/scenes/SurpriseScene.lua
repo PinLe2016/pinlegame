@@ -215,7 +215,22 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
             local type=cell:getChildByTag(133)
             local type_image=sup_data[i]["type"] .. ".png"
+            local huojiang_bg=cell:getChildByTag(336)
             type:loadTexture(type_image)
+            if  self.ser_status==2 then   --获奖名单
+                
+                 huojiang_bg:setVisible(true)
+                 local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
+                 huojiang_bt:addTouchEventListener((function(sender, eventType  )
+                      if eventType ~= ccui.TouchEventType.ended then
+                       return
+                         print("获奖名单")
+                     end
+               end))
+            else
+              huojiang_bg:setVisible(false)
+            end
+
           end
 
           self:scheduleUpdate()
@@ -256,12 +271,12 @@ function SurpriseScene:onEnter()
 
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
-                         --print("7-------------")
+
                        self:Surpriseimages_list()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
-                         --print("下拉刷新")
+
                        self:Surprise_list()
                       end)
 end
