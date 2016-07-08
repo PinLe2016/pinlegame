@@ -158,26 +158,26 @@ function PerInformationLayer:fun_mail(  )
     local width = 300
     local height = 40
     
-    local name_text = ccui.EditBox:create(cc.size(width,height),res)
-    em_bg:addChild(name_text)
-    name_text:setPosition(cc.p(name_field:getPositionX(),name_field:getPositionY()))--( cc.p(130,438 ))  
-    name_text:setPlaceHolder("您的姓名")
-    name_text:setAnchorPoint(0,0.5)  
-    name_text:setMaxLength(11)
+    self.name_text_mail = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(self.name_text_mail)
+    self.name_text_mail:setPosition(cc.p(name_field:getPositionX(),name_field:getPositionY()))--( cc.p(130,438 ))  
+    self.name_text_mail:setPlaceHolder("您的姓名")
+    self.name_text_mail:setAnchorPoint(0,0.5)  
+    self.name_text_mail:setMaxLength(11)
 
-    local phone_text = ccui.EditBox:create(cc.size(width,height),res)
-    em_bg:addChild(phone_text)
-    phone_text:setPosition(cc.p(phone_field:getPositionX(),phone_field:getPositionY()))--( cc.p(130,438 ))  
-    phone_text:setPlaceHolder("您的手机号")
-    phone_text:setAnchorPoint(0,0.5)  
-    phone_text:setMaxLength(11)
+    self.phone_text_mail = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(self.phone_text_mail)
+    self.phone_text_mail:setPosition(cc.p(phone_field:getPositionX(),phone_field:getPositionY()))--( cc.p(130,438 ))  
+    self.phone_text_mail:setPlaceHolder("您的手机号")
+    self.phone_text_mail:setAnchorPoint(0,0.5)  
+    self.phone_text_mail:setMaxLength(11)
 
-    local ads_text = ccui.EditBox:create(cc.size(width,height),res)
-    em_bg:addChild(ads_text)
-    ads_text:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
-    ads_text:setPlaceHolder("详细地址")
-    ads_text:setAnchorPoint(0,0.5)  
-    ads_text:setMaxLength(13)
+    self.ads_text_mail = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(self.ads_text_mail)
+    self.ads_text_mail:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
+    self.ads_text_mail:setPlaceHolder("详细地址")
+    self.ads_text_mail:setAnchorPoint(0,0.5)  
+    self.ads_text_mail:setMaxLength(13)
 
         self.mail_h=3
         self.mail_dex=2
@@ -293,7 +293,8 @@ function PerInformationLayer:save_mail(cath)
      dump(conty)
 
     if cath==1 then
-       
+        --服务器保存收货地址
+       Server:Instance():setconsignee(self.name_text_mail:getText(),self.phone_text_mail:getText(),tostring(province_id),tostring(city_id),self.ads_text_mail:getText())
        return
     end
         
@@ -519,7 +520,7 @@ function PerInformationLayer:_savecity(  )
         if next(json_conty) then
             conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
         end
-    
+
           local userdt = LocalData:Instance():get_userdata()--
           userdt["conty"]=conty  --自己保存的区
          
