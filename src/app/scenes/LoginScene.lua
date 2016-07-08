@@ -19,7 +19,7 @@ function LoginScene:ctor()
      if qqqq==0 then
       --请求版本更新链接
         Server:Instance():getversion()
-       self:progressbarScene()
+        self:progressbarScene()
        qqqq=2
      else
        self:landing_init()
@@ -564,11 +564,11 @@ function LoginScene:updateLayer()
 
         local login_info=LocalData:Instance():get_user_data()
       
-      if login_info~=nil  then
-         Util:scene_control("MainInterfaceScene")
-          return
-      end
-       Util:scene_control("LoginScene")
+        if login_info~=nil  then
+           Util:scene_control("MainInterfaceScene")
+            return
+        end
+        Util:scene_control("LoginScene")
     end
 
     local callbackFuncs =
@@ -648,10 +648,22 @@ end
 function LoginScene:getVersionInfo()
     local up_date=LocalData:Instance():get_version_date()
     dump(up_date)
-    self.masterURL=up_date["masterURL"]
-    self.url=up_date["url"]
-    self:addChild(self:updateLayer())
+    if tonumber(up_date["Isused"])==1 then
+      print("走了没呢")
+      self.masterURL=up_date["masterURL"]
+      self.url=up_date["url"]
+      self:addChild(self:updateLayer())
+      return
+    end
 
+    local login_info=LocalData:Instance():get_user_data()
+    if login_info~=nil  then
+           Util:scene_control("MainInterfaceScene")
+            return
+    end
+        -- Util:scene_control("LoginScene")
+
+    self:landing_init()
 end
 
 
