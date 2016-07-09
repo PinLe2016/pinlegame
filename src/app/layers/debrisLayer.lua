@@ -223,7 +223,7 @@ function debrisLayer:saw_issuccess()
     end
     print("成功")  --self.adid
      -- Util:scene_controlid("GoldprizeScene"," ")
-      Server:Instance():setgamerecord(self.adid)  
+      -- Server:Instance():setgamerecord(self.adid)  
      if self.type=="surprise" then
           -- local scene=SurpriseOverScene.new({})
           -- cc.Director:getInstance():pushScene(scene)
@@ -257,10 +257,12 @@ function debrisLayer:touch_callback( sender, eventType )
          return
       end
       if tag==425 then --立即参与
+
           if self.Rewardvouchers then
               self.Rewardvouchers:removeFromParent()
           end
            cc.Director:getInstance():popScene()
+             Server:Instance():setgamerecord(self.adid)  
       elseif tag==426 then   --再来一局
          local _table=LocalData:Instance():get_actid()--保存数
          local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
@@ -271,15 +273,15 @@ function debrisLayer:touch_callback( sender, eventType )
 
 end
 function debrisLayer:onEnter()
-                NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
-                       function()
-                        print("拼图结束")
-                        Util:scene_control("SurpriseOverScene")
-                end)
+                -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
+                --        function()
+                --         print("拼图结束")
+                --         Util:scene_control("SurpriseOverScene")
+                -- end)
 end
 
 function debrisLayer:onExit()
-               NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
+              -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
 end
 
 return debrisLayer

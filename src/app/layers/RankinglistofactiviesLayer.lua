@@ -30,14 +30,19 @@ function RankinglistofactiviesLayer:init(  )
 
       --  新增加的功能
       local userdt = LocalData:Instance():get_userdata() 
+      local _activitybyid=LocalData:Instance():get_getactivitybyid()
+      -- dump(userdt)
       local _name=self.RankinglistofactiviesLayer:getChildByTag(531) -- 名字
       _name:setString(userdt["nickname"])
 
-      local _gold=self.RankinglistofactiviesLayer:getChildByTag(532) -- 金币
-      _gold:setString(userdt["golds"])
+       local _leve=self.RankinglistofactiviesLayer:getChildByTag(90) -- 等级
+      _leve:setString(userdt["rankname"])
 
-      local _integral=self.RankinglistofactiviesLayer:getChildByTag(533) -- 积分
-      _integral:setString(userdt["points"])
+      local _gold=self.RankinglistofactiviesLayer:getChildByTag(532) -- 积分  
+      _gold:setString(_activitybyid["mypoints"])
+
+      local _integral=self.RankinglistofactiviesLayer:getChildByTag(533) -- 排名
+      _integral:setString(_activitybyid["myrank"])
       
        local _head=self.RankinglistofactiviesLayer:getChildByTag(529) --头像
        _head:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
@@ -56,11 +61,11 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
           if not sup_data then
             return
           end
-           dump(sup_data)
+           dump(#sup_data)
         rank_list:removeAllItems()
           for i=1, #sup_data do  --#sup_data
             rank_list:pushBackDefaultItem()
-
+            print("12222  ",i)
             local  cell = rank_list:getItem(i-1)
             cell:setTag(i)
             cell:addTouchEventListener(function(sender, eventType  )
@@ -84,6 +89,18 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
 
             local act_head=cell:getChildByTag(78) --头像
             act_head:loadTexture(tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")))
+
+            local ranking_tag=cell:getChildByTag(86)  --排名数字
+            if i<4 then 
+               ranking_tag:loadTexture(string.format("png/PH_%d.png", i))
+            else
+                ranking_tag:setVisible(false)
+                local ordinary_tag=cell:getChildByTag(87)
+                ordinary_tag:setVisible(true)
+                local _tag=ordinary_tag:getChildByTag(88)
+                _tag:setString(tostring(i))
+            end
+          
           end
 end
 function RankinglistofactiviesLayer:back( sender, eventType)

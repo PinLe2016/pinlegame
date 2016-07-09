@@ -38,11 +38,14 @@ function ContrastRecordLayer:init(  )
       local level_text=self.ContrastRecordLayer:getChildByTag(105)--等级
       level_text:setString(userdt["grade"])
 
-      local name_text=self.ContrastRecordLayer:getChildByTag(106)--名称
-      name_text:setString(self.level)
+      local name_text=self.ContrastRecordLayer:getChildByTag(106)--名称  rankname
+      name_text:setString(userdt["nickname"])
 
       local rank_text=self.ContrastRecordLayer:getChildByTag(107)--排名
-      rank_text:setString(self.rank)
+      rank_text:setString(activitybyid["myrank"])
+
+      local dengji_text=self.ContrastRecordLayer:getChildByTag(101)--等级
+      dengji_text:setString(userdt["rankname"])
 
       local head_image=self.ContrastRecordLayer:getChildByTag(108)--头像
       head_image:loadTexture("cre/"..LocalData:Instance():get_user_head())--(self.head)

@@ -138,6 +138,7 @@ end
              self.curr_bright=sender
   end
   function SurpriseScene:update(dt)
+
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
 	self.secondOne=0
@@ -161,7 +162,6 @@ end
         
 function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")     
           
-
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
@@ -217,16 +217,33 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             local type_image=sup_data[i]["type"] .. ".png"
             local huojiang_bg=cell:getChildByTag(336)
             type:loadTexture(type_image)
-            if  self.ser_status==2 then   --获奖名单
+
+            local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
+            if  self.ser_status==2 then   --往期获奖名单
                 
                  huojiang_bg:setVisible(true)
                  local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
+                 huojiang_bt:setTag(i)
                  huojiang_bt:addTouchEventListener((function(sender, eventType  )
                       if eventType ~= ccui.TouchEventType.ended then
-                       return
-                         print("获奖名单")
+                           return
                      end
+                      local  win_id=  sup_data[sender:getTag()]["id"]
+                            Server:Instance():getactivitywinners(win_id)
                end))
+            elseif self.ser_status==3 and tonumber(_table1) < 0 then  --我的活动获奖名单
+                    huojiang_bg:setVisible(true)
+                     local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
+                     huojiang_bt:setTag(i)
+                    huojiang_bt:addTouchEventListener((function(sender, eventType  )
+                         if eventType ~= ccui.TouchEventType.ended then
+                               return
+                       end
+                    local  win_id=  sup_data[sender:getTag()]["id"]
+                    Server:Instance():getactivitywinners(win_id)
+               end))
+
+
             else
               huojiang_bg:setVisible(false)
             end
@@ -236,7 +253,56 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           self:scheduleUpdate()
           self.tablecout=self.sup_data_num
 end
+--初始化获奖名单
+function SurpriseScene:_winners( )
+    self.Winners = cc.CSLoader:createNode("Winners.csb");
+    self:addChild(self.Winners)
 
+    local back_bt= self.Winners:getChildByTag(63)--返回
+    back_bt:addTouchEventListener((function(sender, eventType)
+            if eventType ~= ccui.TouchEventType.ended then
+                       return
+            end
+            if self.Winners then
+               self.Winners:removeFromParent()
+            end
+                         
+     end))
+
+    self.win_ListView=self.Winners:getChildByTag(69)--获奖列表
+    self.win_ListView:setItemModel(self.win_ListView:getItem(0))
+    self.win_ListView:removeAllItems()
+
+    self:winners_init()  --更新数据
+
+end
+--获奖名单中数据更新
+function SurpriseScene:winners_init( )
+          self.win_table= LocalData:Instance():get_getactivitywinners()
+          local  sup_data=self.win_table["winnerlist "]
+          if not sup_data then
+            return
+          end
+           dump(sup_data)
+        self.win_ListView:removeAllItems()
+          for i=1, #sup_data do  --#sup_data
+            self.win_ListView:pushBackDefaultItem()
+
+            local  cell = self.win_ListView:getItem(i-1)
+
+            local name_text=cell:getChildByTag(72)--昵称
+            name_text:setString(tostring(sup_data[i]["nickname"]))
+
+            local paiming_tex=cell:getChildByTag(71)--排名
+            paiming_tex:setString(tostring(i))
+
+             local points_text=cell:getChildByTag(73)--积分
+            points_text:setString(tostring(sup_data[i]["points"]))
+
+            local goodsname_text=cell:getChildByTag(74) --获奖物品
+            goodsname_text:setString(tostring(sup_data[i]["goodsname"]))
+          end  
+end
 function SurpriseScene:Surpriseimages_list(  )
          local list_table=LocalData:Instance():get_getactivitylist()
          local  sup_data=list_table["game"]
@@ -279,6 +345,11 @@ function SurpriseScene:onEnter()
 
                        self:Surprise_list()
                       end)
+      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.WINNERS, self,
+                       function()
+
+                       self:_winners( )-- 获奖名单
+                      end)
 end
 
 function SurpriseScene:onExit()
@@ -286,6 +357,7 @@ function SurpriseScene:onExit()
       Util:stop_music("PERSONALCHAGE")
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)
 
 end
 

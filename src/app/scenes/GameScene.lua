@@ -265,7 +265,8 @@ function GameScene:onEnter()
 
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
-                        display.replaceScene(SurpriseScene:Instance():Surpriseinit())
+                        print("什么鬼")
+                        --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
                       end)
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self,
                        function()

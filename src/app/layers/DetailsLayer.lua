@@ -95,7 +95,7 @@ function DetailsLayer:list_btCallback(sender, eventType)
 	end
 	local tag=sender:getTag()
 	if tag==43 then --排行榜
-		self:addChild(RankinglistofactiviesLayer.new({id=self.id,count=1,image=self.image,title=self.title}))
+		self:addChild(RankinglistofactiviesLayer.new({id=self.id,count=20,image=self.image,title=self.title}))
 	elseif tag==42 then --个人记录
 		self:addChild(OnerecordLayer.new({id=self.id,type=self.type,title=self.title}))
 	elseif tag==27 then   --规则

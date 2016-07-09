@@ -164,8 +164,9 @@ function SurpriseOverScene:L_end(  )
 	            end
 	(self. _table[i]):stopGo(stopNum);
 	end
-	self:init_data()
+	
        local function stopAction()
+                 self:init_data()
                  self.began_bt:setVisible(true)
                  self.end_bt:setVisible(false)
        end

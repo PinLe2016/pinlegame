@@ -81,6 +81,7 @@ G_NOTIFICATION_EVENT = {
 	VERRSION=							"VERRSION",--活动吗  热更新消息
 	REGISTRATIONCODE=					"REGISTRATIONCODE",--注册的验证码
 	PASSWOEDCHANGE=					"PASSWOEDCHANGE",--注册的验证码
+	WINNERS=					            "WINNERS",--获奖名单 
 }
 
 G_SOUND={

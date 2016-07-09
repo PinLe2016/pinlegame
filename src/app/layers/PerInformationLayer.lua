@@ -147,12 +147,6 @@ function PerInformationLayer:fun_mail(  )
          local adm_g=em_bg:getChildByTag(228)
          adm_g:setVisible(false)
 
-
-
-
-
-
-
 --新增的邮件box控件
     local res = "res/png/DLkuang.png"
     local width = 300
@@ -458,7 +452,7 @@ self._provincename1:setString(self._provincename:getString() .. "-" .. self._cit
 end
 function PerInformationLayer:head( )
         self.head_csb = cc.CSLoader:createNode("Head.csb")
-        self:addChild(self.head_csb)
+        self:addChild(self.head_csb,20)
         local head_back=self.head_csb:getChildByTag(21):getChildByTag(25)
         head_back:addTouchEventListener(function(sender, eventType  )
                  self:head_callback(sender, eventType)

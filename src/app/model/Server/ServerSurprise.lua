@@ -64,7 +64,7 @@ end
 
 
 function Server:getranklistbyactivityid_callback()
-    dump(self.data)
+    --dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动的排行榜失败:" .. self.data.err_msg)
         return
@@ -231,8 +231,8 @@ function Server:getactivitywinners_callback()
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
     end
-    self:show_float_message("获取指定活动的广告列表")
     LocalData:Instance():set_getactivitywinners(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.WINNERS)
 end
 
 -- 3.5.11   获取活动奖品详细列表接口
