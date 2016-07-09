@@ -242,10 +242,13 @@ function PerInformationLayer:touch_back( sender, eventType )
     elseif  tag==234 then
          if self.Receivinginformation then
             self:unscheduleUpdate()
+            self.phone_text_mail=nil
              self.Receivinginformation:removeFromParent()
          end
     elseif  tag==235 then
          print("确定")
+         self.phone_text_mail:setVisible(false)
+         self.ads_text_mail:setVisible(false)
          self:save_mail(1)
     elseif  tag==227 then
          self.ads_bg:setVisible(true)
@@ -456,6 +459,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
     if tag==244 then --城市
         self:fun_city_info(  )
     elseif tag==245 then --生日
+        self._Pname:setTouchEnabled(false)
         self:fun_birthday(  )
     elseif tag==49 then 
                  if self.birthday then
@@ -470,20 +474,23 @@ function PerInformationLayer:touch_callback( sender, eventType )
                  end
         
     elseif tag==83 then 
+         self._Pname:setVisible(false)
         self:savedata()   --  保存个人信息数据发送Http
     elseif tag==61 then   --个人信息主界面显示城市
         self:_savecity(  )
     elseif tag==48 then 
         self:_savetime()
-
+        self._Pname:setTouchEnabled(true)
     elseif tag==97 then 
                  if self.Perinformation then
+                    self._Pname=nil
                        self.Perinformation:removeFromParent()
                        
 
                  end
-        
+          
             elseif tag==67 then 
+                 self._Pname:setVisible(false)
                         self:head()
     end
 end
@@ -595,6 +602,7 @@ function PerInformationLayer:head_callback( sender, eventType)
             if tag==25 then --返回
                 if  self.head_csb then
                     self.head_csb:removeFromParent()
+                     self._Pname:setVisible(true)
                end
                 
             elseif tag==24 then
@@ -602,6 +610,7 @@ function PerInformationLayer:head_callback( sender, eventType)
                 self.image_head1:loadTexture(tostring("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"))
                 LocalData:Instance():set_user_head("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg")
                  if  self.head_csb then
+                    self._Pname:setVisible(true)
                     self.head_csb:removeFromParent()
                 end
                
@@ -1083,6 +1092,19 @@ function PerInformationLayer:onEnter()
                             --self:init()
                             self:add_init()
                       end)
+      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REG, self,
+                       function()
+                            if self._Pname then
+                                 self._Pname:setVisible(true)
+                            end
+                            if  self.phone_text_mail then
+                               self.phone_text_mail:setVisible(true)
+                               self.ads_text_mail:setVisible(true)
+                            end
+                                  
+                           
+                      end)
+
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
                        function()
                             print("个人信息修改")
@@ -1091,6 +1113,8 @@ end
 
 function PerInformationLayer:onExit()
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
+          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REG, self)
+
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
 end
 --拆分头像
