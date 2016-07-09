@@ -152,26 +152,72 @@ function PerInformationLayer:fun_mail(  )
     local width = 300
     local height = 40
     
-    local name_text = ccui.EditBox:create(cc.size(width,height),res)
-    em_bg:addChild(name_text)
-    name_text:setPosition(cc.p(name_field:getPositionX(),name_field:getPositionY()))--( cc.p(130,438 ))  
-    name_text:setPlaceHolder("您的姓名")
-    name_text:setAnchorPoint(0,0.5)  
-    name_text:setMaxLength(11)
+    self.name_text_mail = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(self.name_text_mail)
+    self.name_text_mail:setPosition(cc.p(name_field:getPositionX(),name_field:getPositionY()))--( cc.p(130,438 ))  
+    self.name_text_mail:setPlaceHolder("您的姓名")
+    self.name_text_mail:setAnchorPoint(0,0.5)  
+    self.name_text_mail:setMaxLength(11)
 
-    local phone_text = ccui.EditBox:create(cc.size(width,height),res)
-    em_bg:addChild(phone_text)
-    phone_text:setPosition(cc.p(phone_field:getPositionX(),phone_field:getPositionY()))--( cc.p(130,438 ))  
-    phone_text:setPlaceHolder("您的手机号")
-    phone_text:setAnchorPoint(0,0.5)  
-    phone_text:setMaxLength(11)
+    self.phone_text_mail = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(self.phone_text_mail)
+    self.phone_text_mail:setPosition(cc.p(phone_field:getPositionX(),phone_field:getPositionY()))--( cc.p(130,438 ))  
+    self.phone_text_mail:setPlaceHolder("您的手机号")
+    self.phone_text_mail:setAnchorPoint(0,0.5)  
+    self.phone_text_mail:setMaxLength(11)
 
-    local ads_text = ccui.EditBox:create(cc.size(width,height),res)
-    em_bg:addChild(ads_text)
-    ads_text:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
-    ads_text:setPlaceHolder("详细地址")
-    ads_text:setAnchorPoint(0,0.5)  
-    ads_text:setMaxLength(13)
+    self.ads_text_mail = ccui.EditBox:create(cc.size(width,height),res)
+    em_bg:addChild(self.ads_text_mail)
+    self.ads_text_mail:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
+    self.ads_text_mail:setPlaceHolder("详细地址")
+    self.ads_text_mail:setAnchorPoint(0,0.5)  
+    self.ads_text_mail:setMaxLength(13)
+
+        self.mail_h=3
+        self.mail_dex=2
+     --省
+        local province_scrollview=self.Receivinginformation:getChildByTag(119):getChildByTag(149)
+        -- local province_text=province_scrollview:getChildByTag(95)
+          
+        -- local adress_province_y= province_text:getPositionY()
+
+        self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,cc.size(130, 320))
+        self.Receivinginformation:getChildByTag(119):addChild(self.adress_province_Itempicker)
+
+        --市
+        local city_scrollview=self.Receivinginformation:getChildByTag(119):getChildByTag(150)
+        -- local city_text=city_scrollview:getChildByTag(96)
+
+        self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,cc.size(230, 320))
+        self.adress_city_Itempicker:setPositionX(self.adress_city_Itempicker:getPositionX())
+        self.Receivinginformation:getChildByTag(119):addChild(self.adress_city_Itempicker)
+
+        --区
+        local area_scrollview=self.Receivinginformation:getChildByTag(119):getChildByTag(151)
+        -- local area_text=area_scrollview:getChildByTag(97)
+        
+        self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,cc.size(200, 320))
+        self.adress_conty_Itempicker:setPositionX(self.adress_conty_Itempicker:getPositionX()+20)
+        self.Receivinginformation:getChildByTag(119):addChild(self.adress_conty_Itempicker)
+
+
+        --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属
+        self.province="1"
+        self.city="2"
+        self.conty="3"
+
+        self.province_index=-1
+        self.city_index=-1
+
+        self.city_data=Util:read_json("res/city.json")
+
+        self:fun_Province()
+        -- self:fun_City()
+        -- self:fun_Conty()
+        self:scheduleUpdate()
+
+
+
 
 
 
@@ -192,22 +238,62 @@ function PerInformationLayer:touch_back( sender, eventType )
     elseif  tag==1410 then
          self:init()
     elseif  tag==190 then
-         self:fun_mail(  )
+         self:fun_mail()
     elseif  tag==234 then
          if self.Receivinginformation then
+            self:unscheduleUpdate()
              self.Receivinginformation:removeFromParent()
          end
     elseif  tag==235 then
          print("确定")
+         self:save_mail(1)
     elseif  tag==227 then
          self.ads_bg:setVisible(true)
     elseif  tag==146 then
         self.ads_bg:setVisible(false)
     elseif  tag==147 then
+        self:save_mail(2)
          print("确定选择地址")
     end
 end
 
+-- cath 1 保存邮寄信息上传服务器
+--      2 选择邮寄城市的确认
+function PerInformationLayer:save_mail(cath)
+
+    local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
+
+    local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
+
+    local province=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["name"]--获取省份选择
+
+    local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
+
+
+    local conty=""
+    if next(json_conty) then
+        conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+    end
+    
+
+
+    local province_id=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["id"]--所选省份ID
+    local city_id=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["id"]--所选城市ID
+
+     dump(province_id)
+    dump(city_id)
+     dump(province)
+     dump(city)
+     dump(conty)
+
+    if cath==1 then
+        --服务器保存收货地址
+       Server:Instance():setconsignee(self.name_text_mail:getText(),self.phone_text_mail:getText(),tostring(province_id),tostring(city_id),self.ads_text_mail:getText())
+       return
+    end
+        
+    self.Receivinginformation:getChildByTag(220):getChildByTag(233):setString(province..city..conty)
+end
 
 function PerInformationLayer:init(  )
 
@@ -422,7 +508,12 @@ function PerInformationLayer:_savecity(  )
          local province=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["name"]--获取省份选择
 
          local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
-         local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+         -- local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+
+         local conty=""
+        if next(json_conty) then
+            conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+        end
 
           local userdt = LocalData:Instance():get_userdata()--
           userdt["conty"]=conty  --自己保存的区
@@ -851,6 +942,8 @@ function PerInformationLayer:fun_city_info( )
         -- self.conty="崂山区"
         self.province_index=-1
         self.city_index=-1
+        self.mail_h=0
+        self.mail_dex=0
 
         self.city_data=Util:read_json("res/city.json")
 
@@ -866,11 +959,11 @@ function PerInformationLayer:fun_Province( ... )
 
     local json_province=self.city_data["provinces"]
     local m_offset_cell=0
-    for i=1,#json_province+4 do   
+    for i=1,#json_province+4+self.mail_h do   
 
         local button =self.adress_province_Itempicker:getCellLayout(cc.size(100,40))
         local name
-        if i<#json_province+3 and i-2>0 then 
+        if i<#json_province+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(34)
             cell_month:setAnchorPoint(cc.p(0.5,0.0));
@@ -881,8 +974,8 @@ function PerInformationLayer:fun_Province( ... )
             button:addChild(cell_month)
 
             
-            cell_month:setString(json_province[i-2]["name"])
-            name=json_province[i-2]["name"]
+            cell_month:setString(json_province[i-2-self.mail_dex]["name"])
+            name=json_province[i-2-self.mail_dex]["name"]
            local pos = string.find(self.province, name)   
             if pos then
                 m_offset_cell=i-3;
@@ -910,11 +1003,11 @@ function PerInformationLayer:fun_City()
     -- local json_city=self.city_data["provinces"][29]["citys"]
     -- dump(json_city)
     local m_offset_cell=0
-    for i=1,#json_city+4 do   
+    for i=1,#json_city+4+self.mail_h do   
 
         local button =self.adress_city_Itempicker:getCellLayout(cc.size(230,40))
         local name
-        if i<#json_city+3 and i-2>0 then 
+        if i<#json_city+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(22)
             cell_month:setAnchorPoint(cc.p(0.5,0.0));
@@ -925,8 +1018,8 @@ function PerInformationLayer:fun_City()
             button:addChild(cell_month)
 
             
-            cell_month:setString(json_city[i-2]["name"])
-            name=json_city[i-2]["name"]
+            cell_month:setString(json_city[i-2-self.mail_dex]["name"])
+            name=json_city[i-2-self.mail_dex]["name"]
            local pos = string.find(self.city, name)   
             if pos then
 
@@ -957,11 +1050,11 @@ function PerInformationLayer:fun_Conty()
     -- dump(self.adress_city_Itempicker:getCellPos())
     -- dump(json_conty)
     local m_offset_cell=0
-    for i=1,#json_conty+4 do   
+    for i=1,#json_conty+4+self.mail_h do   
 
         local button =self.adress_conty_Itempicker:getCellLayout(cc.size(170,40))
         local name
-        if i<#json_conty+3 and i-2>0 then 
+        if i<#json_conty+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(22)
             cell_month:setAnchorPoint(cc.p(0.0,0.0));
@@ -972,8 +1065,8 @@ function PerInformationLayer:fun_Conty()
             button:addChild(cell_month)
 
             
-            cell_month:setString(json_conty[i-2]["name"])
-            name=json_conty[i-2]["name"]
+            cell_month:setString(json_conty[i-2-self.mail_dex]["name"])
+            name=json_conty[i-2-self.mail_dex]["name"]
            local pos = string.find(self.conty, name)   
             if pos then
                 m_offset_cell=i-3;
