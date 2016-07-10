@@ -84,7 +84,12 @@ function PerInformationLayer:add_init(  )
                  if userdt["districtame"] then
                      area=userdt["districtame"]
                  end
-                 self._provincename1:setString(userdt["provincename"] .. "-" .. userdt["cityname"] .. "-" .. area)
+               
+                 dump(userdt["cityname"])
+                 if userdt["provincename"] then
+                     self._provincename1:setString(userdt["provincename"] .. "-" .. userdt["cityname"] .. "-" .. area)
+                 end
+                 
 
                 local back_bt=self.showinformation:getChildByTag(1399)  --返回
                 back_bt:addTouchEventListener(function(sender, eventType  )
@@ -384,7 +389,7 @@ function PerInformationLayer:perinformation_init(  )
         dump(nickname)
         local nick_sub=string.sub(nickname,1,3)
         nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
-        dump(userdt)
+        -- dump(userdt)
         if userdt["nickname"]~="" then
             nick_sub=userdt["nickname"]
         end
@@ -907,7 +912,13 @@ function PerInformationLayer:fun_city_info( )
 
             area=userdatainit["districtame"]
         end
-        local str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] .. "-" .. area
+
+        local str=""
+
+        if userdatainit["provincename"] then
+            str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] .. "-" .. area
+        end
+        
         city_curr:setString(str)
         self.city_now=Util:lua_string_split(str, "-")  --当前城市
 

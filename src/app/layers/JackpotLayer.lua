@@ -404,7 +404,7 @@ function JackpotLayer:act_began( )
            return
        end
         if self.coolingtime==-1 then
-           Server:Instance():prompt("冷却时间不够，请等待")
+           Server:Instance():prompt("今天次数已完成,请明天再玩")
            return
        end
       
