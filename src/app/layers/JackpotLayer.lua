@@ -45,6 +45,7 @@ function JackpotLayer:init(  )
         self.goldanimation:runAction(self.goldAction)
 
          local reward_bt=self.JackpotScene:getChildByTag(777)  -- 是否选择幸运卡
+         self._rewardbt=reward_bt
         reward_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             self.is_double=1   --翻倍
@@ -219,6 +220,7 @@ function JackpotLayer:information( )
                        self:touch_callback( sender, eventType )             
               end)
               local obtain_bt=self.JackpotScene:getChildByTag(47)  --获取参与卷
+              self._obtainbt=obtain_bt
              obtain_bt:addTouchEventListener(function(sender, eventType  )
                        self:touch_callback( sender, eventType )             
               end)
@@ -260,6 +262,8 @@ function JackpotLayer:touch_callback( sender, eventType )
 
       dump(tag)
       if tag==46 then --开始
+               self._rewardbt:setTouchEnabled(false)
+               self._obtainbt:setTouchEnabled(false)
               self:act_began( )   
       elseif tag==44 then
             self.curr_bright=sender
@@ -345,13 +349,13 @@ end
                self.roleAction:setTimeSpeed(self.slowdown_num)
                if self.slowdown_num<=0.1 then
                      self.slowdown_num=0.15
-                      local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()   --_tablegods["golds"]
-                     if self.roleAction:getCurrentFrame()+2>self.glodreward[tostring(_tablegods["golds"])]  and  self.roleAction:getCurrentFrame()-2<self.glodreward[tostring(_tablegods["golds"])] then
-                            self.roleAction:gotoFrameAndPause(self.glodreward[tostring(_tablegods["golds"])])
+                     -- local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()   --_tablegods["golds"]
+                     if self.roleAction:getCurrentFrame()+2>self.glodreward[tostring(50)]  and  self.roleAction:getCurrentFrame()-2<self.glodreward[tostring(50)] then
+                            self.roleAction:gotoFrameAndPause(self.glodreward[tostring(50)])
                             cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止定时器
                             self.shuiguo1:setVisible(false)
                             self.shuiguo2:setVisible(false)
-
+                             
                            
                            --self._jinbi:setString("+"  ..  _tablegods["golds"])     
                            --self:unscheduleUpdate()
@@ -366,6 +370,8 @@ end
                            self.goldanimation:setVisible(false)
                             self.coll_bg:setVisible(true)-- 新的冷却倒计时
                             self:Xfun_countdown( )--  新的倒计时
+                            self._rewardbt:setTouchEnabled(true)
+                            self._obtainbt:setTouchEnabled(true)
                         end
                          self.shuiguo3:runAction( cc.Sequence:create(cc.Blink:create(3, 3),cc.CallFunc:create(removeThis)))
 
@@ -404,7 +410,7 @@ function JackpotLayer:act_began( )
            return
        end
         if self.coolingtime==-1 then
-           Server:Instance():prompt("冷却时间不够，请等待")
+           Server:Instance():prompt("今天次数已完成,请明天再玩")
            return
        end
       

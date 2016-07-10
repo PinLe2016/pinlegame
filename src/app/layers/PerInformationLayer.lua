@@ -311,6 +311,7 @@ function PerInformationLayer:init(  )
         self:touch_callback(sender, eventType)
     end)
         local true_bt=self.Perinformation:getChildByTag(83)  --确定
+        self._turebut=true_bt
         true_bt:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
     end)
@@ -475,6 +476,12 @@ function PerInformationLayer:touch_callback( sender, eventType )
         
     elseif tag==83 then 
          self._Pname:setVisible(false)
+         self._turebut:setTouchEnabled(false)
+         local function stopAction()
+                self._turebut:setTouchEnabled(true)
+       end
+      local callfunc = cc.CallFunc:create(stopAction)
+      self._turebut:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
         self:savedata()   --  保存个人信息数据发送Http
     elseif tag==61 then   --个人信息主界面显示城市
         self:_savecity(  )
