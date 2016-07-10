@@ -84,6 +84,7 @@ function MainInterfaceScene:fun_init( )
            self:touch_callback(sender, eventType)
       end)
        local fenxiang_bt=self.actbg:getChildByTag(54)--测试分享
+       fenxiang_bt:setVisible(false)--功能未铺，暂时关闭
       fenxiang_bt:addTouchEventListener(function(sender, eventType  )
            print("规则额")
            self:touch_callback(sender, eventType)
