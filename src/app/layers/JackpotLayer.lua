@@ -333,6 +333,7 @@ end
                self._rewardbt:setTouchEnabled(true)
                self._obtainbt:setTouchEnabled(true)
                self.coll_bg:setVisible(false)
+               self.end_bt:setTouchEnabled(true)
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
            end
 end
@@ -393,6 +394,7 @@ function JackpotLayer:fun_slowdown( )
 
       print("就将计就计",self.glodreward[tostring(7)])
       self.slowdown_num=3
+      self.end_bt:setTouchEnabled(false)
       self._slowdown=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:slowdown()
               end,0.1, false)
@@ -401,20 +403,20 @@ end
 function JackpotLayer:act_began( )
        self.cunum=0
        self.end_bt:setTouchEnabled(true)
-       -- if self.is_cooltime==false then
-       --     --self:fun_cool(  )
-       --      return
-       -- end
-       -- if self.playcardamount<=0 then
-       --     Server:Instance():prompt("参与卷不够，请您充值")
-       --     return
-       -- end
-       --  if self.coolingtime==-1 then
-       --     Server:Instance():prompt("今天次数已完成,请明天再玩")
-       --     return
-       -- end
+       if self.is_cooltime==false then
+           --self:fun_cool(  )
+            return
+       end
+       if self.playcardamount<=0 then
+           Server:Instance():prompt("参与卷不够，请您充值")
+           return
+       end
+        if self.coolingtime==-1 then
+           Server:Instance():prompt("今天次数已完成,请明天再玩")
+           return
+       end
       
-       --  if self.playcardamount >0  and self.coolingtime~=-1 then
+        if self.playcardamount >0  and self.coolingtime~=-1 then
         if self.playcardamount ~=1220  and self.coolingtime~=-1222 then
              print("拥有参与卷")
              self.is_cooltime=false
