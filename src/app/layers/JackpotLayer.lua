@@ -262,8 +262,7 @@ function JackpotLayer:touch_callback( sender, eventType )
 
       dump(tag)
       if tag==46 then --开始
-               self._rewardbt:setTouchEnabled(false)
-               self._obtainbt:setTouchEnabled(false)
+               
               self:act_began( )   
       elseif tag==44 then
             self.curr_bright=sender
@@ -331,6 +330,8 @@ end
            self.coll_text:setString(tostring(self._Xtime))
            if self._Xtime==0 then
               --self.is_cooltime=true
+               self._rewardbt:setTouchEnabled(true)
+               self._obtainbt:setTouchEnabled(true)
                self.coll_bg:setVisible(false)
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
            end
@@ -348,9 +349,9 @@ end
                self.slowdown_num=self.slowdown_num-0.1
                self.roleAction:setTimeSpeed(self.slowdown_num)
                if self.slowdown_num<=0.1 then
-                     self.slowdown_num=0.15
+                     self.slowdown_num=0.2
                      -- local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()   --_tablegods["golds"]
-                     if self.roleAction:getCurrentFrame()+2>self.glodreward[tostring(50)]  and  self.roleAction:getCurrentFrame()-2<self.glodreward[tostring(50)] then
+                     if self.roleAction:getCurrentFrame()+1>self.glodreward[tostring(50)]  and  self.roleAction:getCurrentFrame()-1<self.glodreward[tostring(50)] then
                             self.roleAction:gotoFrameAndPause(self.glodreward[tostring(50)])
                             cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止定时器
                             self.shuiguo1:setVisible(false)
@@ -370,8 +371,7 @@ end
                            self.goldanimation:setVisible(false)
                             self.coll_bg:setVisible(true)-- 新的冷却倒计时
                             self:Xfun_countdown( )--  新的倒计时
-                            self._rewardbt:setTouchEnabled(true)
-                            self._obtainbt:setTouchEnabled(true)
+                           
                         end
                          self.shuiguo3:runAction( cc.Sequence:create(cc.Blink:create(3, 3),cc.CallFunc:create(removeThis)))
 
@@ -401,21 +401,21 @@ end
 function JackpotLayer:act_began( )
        self.cunum=0
        self.end_bt:setTouchEnabled(true)
-       if self.is_cooltime==false then
-           --self:fun_cool(  )
-            return
-       end
-       if self.playcardamount<=0 then
-           Server:Instance():prompt("参与卷不够，请您充值")
-           return
-       end
-        if self.coolingtime==-1 then
-           Server:Instance():prompt("今天次数已完成,请明天再玩")
-           return
-       end
+       -- if self.is_cooltime==false then
+       --     --self:fun_cool(  )
+       --      return
+       -- end
+       -- if self.playcardamount<=0 then
+       --     Server:Instance():prompt("参与卷不够，请您充值")
+       --     return
+       -- end
+       --  if self.coolingtime==-1 then
+       --     Server:Instance():prompt("今天次数已完成,请明天再玩")
+       --     return
+       -- end
       
-        if self.playcardamount >0  and self.coolingtime~=-1 then
-       -- if self.playcardamount ~=1220  and self.coolingtime~=-1222 then
+       --  if self.playcardamount >0  and self.coolingtime~=-1 then
+        if self.playcardamount ~=1220  and self.coolingtime~=-1222 then
              print("拥有参与卷")
              self.is_cooltime=false
         
@@ -423,6 +423,8 @@ function JackpotLayer:act_began( )
              self.began_bt:setVisible(false)
              -- self:scheduleUpdate()
             self.roleAction:gotoFrameAndPlay(0,75, true)
+            self._rewardbt:setTouchEnabled(false)
+            self._obtainbt:setTouchEnabled(false)
             --  if  self.cunum==0 then
             --       
             -- else
