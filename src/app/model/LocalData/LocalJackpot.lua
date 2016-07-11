@@ -17,8 +17,6 @@ end
 
 function LocalData:set_getgoldspoolbyid(getgoldspoolbyi)
 	self.getgoldspoolbyid=getgoldspoolbyi
-	print("22222222222222222")
-	dump(self.getgoldspoolbyid)
 end
 function LocalData:get_getgoldspoolbyid()
 	return self.getgoldspoolbyid or {}
@@ -38,3 +36,15 @@ end
 function LocalData:get_getgoldspoolrandomgolds()
 	return self.getgoldspoolrandomgolds or nil
 end
+
+
+function LocalData:set_user_time(userdata)
+	cc.UserDefault:getInstance():setStringForKey("usertime" ,userdata)
+end
+
+function LocalData:get_user_time()
+	local user_head=cc.UserDefault:getInstance():getStringForKey("usertime","0")
+	return user_head or nil
+end
+
+

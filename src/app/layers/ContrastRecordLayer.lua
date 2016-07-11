@@ -15,6 +15,7 @@ function ContrastRecordLayer:ctor(params)
        self.level=params.level --hero 等级
        self.heroid=params.heroid --hero ID 
        self.allscore=params.allscore --总积分
+       print("dsfdsfdsfdsg  ",self.id,"   ",self.heroid)
        Server:Instance():getactivitypointsdetail(self.id,self.heroid)  --对比排行榜HTTP
        self:setNodeEventEnabled(true)--layer添加监听
 

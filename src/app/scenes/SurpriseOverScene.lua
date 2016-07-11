@@ -48,6 +48,18 @@ function SurpriseOverScene:init(  )
 	    	--image_name:loadTexture(self._imagetu)--(self.actid["image"])
     	end
     	
+      local activitybyid=LocalData:Instance():get_getactivitybyid()
+      local allscore_text=self.Laohuji:getChildByTag(63)--累计积分
+      allscore_text:setString(tostring(activitybyid["mypoints"]))
+      local bestscore_text=self.Laohuji:getChildByTag(62)--最佳积分
+      bestscore_text:setString(tostring(activitybyid["mypoints"]))
+      local rank_text=self.Laohuji:getChildByTag(64)--排名
+      rank_text:setString(tostring(activitybyid["myrank"]))
+      local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
+       _betgolds:setString(tostring(activitybyid["betgolds"] .. "/次"))
+
+
+
     	-- local image_pic=display.newScale9Sprite(self.actid["image"], image_name:getPositionX(),image_name:getPositionY(), image_name:getContentSize())
     	-- self.Laohuji:addChild(image_pic)
     	-- -- dump(image_name:getSize())
@@ -55,8 +67,7 @@ function SurpriseOverScene:init(  )
 
     	-- image_name:removeFromParent()
       --测试  初始化
-    local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
-    _betgolds:setString("20")
+
 
 
     	self.began_bt=self.Laohuji:getChildByTag(164)

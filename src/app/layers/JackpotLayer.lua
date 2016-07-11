@@ -31,7 +31,10 @@ function JackpotLayer:ctor(params)
 end
 function JackpotLayer:init(  )
         
-        
+        print("4444455555444")
+         dump(LocalData:Instance():get_user_time())
+
+          
 
   	  self.JackpotScene = cc.CSLoader:createNode("JackpotScene.csb")
         self:addChild(self.JackpotScene)
@@ -54,10 +57,7 @@ function JackpotLayer:init(  )
                             
                      end
         end)
-
-
-        
-        
+        -- print("4444455555444")
          --新增加动画
          -- self.actdhua=self.JackpotScene:getChildByTag(229)  --金币动画界面
          -- self.actdhua:addTouchEventListener(function(sender, eventType  )
@@ -98,8 +98,6 @@ function JackpotLayer:init(  )
                     -- LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数据
                 end
         end)
-
-
         local _advertiImg=advertiPa:getChildByTag(155)
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
@@ -145,6 +143,7 @@ function JackpotLayer:init(  )
                        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止水果机定时器
                    end
                    self:removeFromParent()
+                 
                    
                    
         end)
@@ -154,10 +153,10 @@ function JackpotLayer:init(  )
         self._ListView:setItemModel(self._ListView:getItem(0))
         self._ListView:removeAllItems()
 
-
-          -- self:information()
           self:audition()
           self:wininformation()
+
+    
 
 end
 --中奖信息排行
@@ -183,7 +182,10 @@ function  JackpotLayer:wininformation(  )
 end
 function JackpotLayer:information( )
              local  list_table=LocalData:Instance():get_getgoldspoolbyid()
-             
+             dump(list_table)
+             if not list_table then
+               return
+             end
              local title=self.JackpotScene:getChildByTag(138)  --标题
              title:setString(list_table["title"])
 
@@ -226,17 +228,23 @@ function JackpotLayer:information( )
               end)
 
              self.be_num=self.JackpotScene:getChildByTag(999)  --参与卷
-             dump(list_table["playcardamount"])
              self.playcardamount=tonumber(list_table["playcardamount"])
              -- dump(list_table)
-             dump(self.playcardamount)
-             if self.playcardamount<0 then
-                 self.began_bt:setColor(100,100,100)
-             end
+             
              self.be_num:setString(list_table["playcardamount"])
              self.coolingtime=list_table["coolingtime"]   --  0 可以玩  -1  今天不能玩
+             self.ban_t=self.JackpotScene:getChildByTag(948)  --结束
              self.is_double = 2  --  1  是翻倍   2  不使用
-
+              if self.coolingtime==-1 or self.playcardamount<0 then
+                 self.ban_t:setVisible(true)
+              else
+                self.ban_t:setVisible(false)
+              end
+          local is_start=LocalData:Instance():get_user_time()
+         if tostring(is_start)=="1" then
+            self:Xfun_countdown()
+            print("44444")
+          end
 end
 function JackpotLayer:vouchers(  )
          local _table=LocalData:Instance():get_setgamerecord()--保存数据
@@ -327,9 +335,9 @@ end
 
  function JackpotLayer:Xcountdown()
            self._Xtime=self._Xtime-1
-           self.coll_text:setString(tostring(self._Xtime))
+           self.coll_text:setString(tostring(self._Xtime) .. "S")
            if self._Xtime==0 then
-              --self.is_cooltime=true
+               LocalData:Instance():set_user_time("0")
                self._rewardbt:setTouchEnabled(true)
                self._obtainbt:setTouchEnabled(true)
                self.coll_bg:setVisible(false)
@@ -338,8 +346,10 @@ end
            end
 end
 function JackpotLayer:Xfun_countdown( )
-      self.coll_text:setString("30S")
-      self._Xtime=30
+  self.coll_bg:setVisible(true)-- 新的冷却倒计时
+      self.coll_text:setString("10S")
+      LocalData:Instance():set_user_time("1")
+      self._Xtime=10
       self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:Xcountdown()
               end,1.0, false)
@@ -347,12 +357,16 @@ end
 
 --劲舞团减速
  function JackpotLayer:slowdown()
-               self.slowdown_num=self.slowdown_num-0.1
+               self.slowdown_num=self.slowdown_num-0.5
                self.roleAction:setTimeSpeed(self.slowdown_num)
-               if self.slowdown_num<=0.1 then
-                     self.slowdown_num=0.2
+               if self.slowdown_num<=0.5 then
+                     self.slowdown_num=1
                      -- local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()   --_tablegods["golds"]
-                     if self.roleAction:getCurrentFrame()+1>self.glodreward[tostring(50)]  and  self.roleAction:getCurrentFrame()-1<self.glodreward[tostring(50)] then
+                    --  local userdt = LocalData:Instance():get_userdata()
+                    --  userdt["golds"]=_tablegods["golds"]
+                    -- LocalData:Instance():set_userdata(userdt)  --增加金币数
+
+                     if self.roleAction:getCurrentFrame()+2>self.glodreward[tostring(50)]  and  self.roleAction:getCurrentFrame()-2<self.glodreward[tostring(50)] then
                             self.roleAction:gotoFrameAndPause(self.glodreward[tostring(50)])
                             cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止定时器
                             self.shuiguo1:setVisible(false)
@@ -370,8 +384,8 @@ end
                          local function removeThis()
                            self:fun_win()
                            self.goldanimation:setVisible(false)
-                            self.coll_bg:setVisible(true)-- 新的冷却倒计时
                             self:Xfun_countdown( )--  新的倒计时
+
                            
                         end
                          self.shuiguo3:runAction( cc.Sequence:create(cc.Blink:create(3, 3),cc.CallFunc:create(removeThis)))
@@ -392,7 +406,6 @@ function JackpotLayer:fun_slowdown( )
                                 ["9"]=40,["711"]=45,["500"]=50,["6"]=55,["19"]=60,["14"]=65,["16"]=70,["100"]=75}
       
 
-      print("就将计就计",self.glodreward[tostring(7)])
       self.slowdown_num=3
       self.end_bt:setTouchEnabled(false)
       self._slowdown=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
@@ -404,20 +417,19 @@ function JackpotLayer:act_began( )
        self.cunum=0
        self.end_bt:setTouchEnabled(true)
        if self.is_cooltime==false then
-           --self:fun_cool(  )
+           self:Xfun_countdown( )
             return
        end
        if self.playcardamount<=0 then
-           Server:Instance():prompt("参与卷不够，请您充值")
+           Server:Instance():prompt("参与券不够，请先获取参与券")
            return
        end
         if self.coolingtime==-1 then
            Server:Instance():prompt("今天次数已完成,请明天再玩")
-           return
        end
       
         if self.playcardamount >0  and self.coolingtime~=-1 then
-        if self.playcardamount ~=1220  and self.coolingtime~=-1222 then
+        --if self.playcardamount ~=1220  and self.coolingtime~=-1222 then
              print("拥有参与卷")
              self.is_cooltime=false
         

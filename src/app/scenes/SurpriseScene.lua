@@ -214,7 +214,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             local Nameprize_text=cell:getChildByTag(42)
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
             local type=cell:getChildByTag(133)
-            local type_image=sup_data[i]["type"] .. ".png"
+            local type_image="png/J_" .. sup_data[i]["type"] .. ".png"
             local huojiang_bg=cell:getChildByTag(336)
             type:loadTexture(type_image)
 

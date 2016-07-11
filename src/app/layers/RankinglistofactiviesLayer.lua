@@ -68,7 +68,9 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             print("12222  ",i)
             local  cell = rank_list:getItem(i-1)
             cell:setTag(i)
+
             cell:addTouchEventListener(function(sender, eventType  )
+
                                     self:onImageViewClicked(sender, eventType)
                         end)
 
@@ -114,11 +116,17 @@ function RankinglistofactiviesLayer:onImageViewClicked( sender, eventType )
           if eventType ~= ccui.TouchEventType.ended then
                 return
           end
+
           local tag=sender:getTag()
           local  sup_data=self.list_table["ranklist"]
+           local login_info=LocalData:Instance():get_user_data()
+          local _key=login_info["loginname"]
+          if tostring(sup_data[tag]["playerid"])==tostring(_key)   then
+                return
+          end
           self:addChild(ContrastRecordLayer.new({title=self.title,head=sup_data[tag]["hearurl"],
                                     name=sup_data[tag]["nickname"],rank=sup_data[tag]["rank"],
-                                    level=sup_data[tag]["title"],heroid=sup_data[tag]["id"],id=self.id,
+                                    level=sup_data[tag]["title"],heroid=sup_data[tag]["playerid"],id=self.id,
                                     allscore=sup_data[tag]["totalPoints"]}))
 end
 function RankinglistofactiviesLayer:onEnter()

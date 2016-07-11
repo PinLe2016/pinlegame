@@ -210,23 +210,23 @@ function debrisLayer:saw_issuccess()
     for i=1,#self.fragment_poins do
         local pos=self.fragment_poins[i]
         local pos_suss=self.fragment_success[i]
-        if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then
-                Server:Instance():setgamerecord(self.adid)  
-                if self.type=="surprise" then
-                    Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
-                     return
-               end
-                    --cc.Director:getInstance():popScene()
-                    self:add_reward( )
+        if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then 
+               --  if self.type=="surprise" then
+               --      -- Server:Instance():setgamerecord(self.adid) 
+               --      Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
+               --       return
+               -- end
+               --      --cc.Director:getInstance():popScene()
+               --      self:add_reward( )
             return
         end
     end
     print("成功")  --self.adid
      -- Util:scene_controlid("GoldprizeScene"," ")
-      -- Server:Instance():setgamerecord(self.adid)  
      if self.type=="surprise" then
           -- local scene=SurpriseOverScene.new({})
           -- cc.Director:getInstance():pushScene(scene)
+          --Server:Instance():setgamerecord(self.adid) 
           Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
           return
      end
