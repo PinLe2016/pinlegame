@@ -84,6 +84,7 @@ function MainInterfaceScene:fun_init( )
            self:touch_callback(sender, eventType)
       end)
        local fenxiang_bt=self.actbg:getChildByTag(54)--测试分享
+       fenxiang_bt:setVisible(false)--功能未铺，暂时关闭
       fenxiang_bt:addTouchEventListener(function(sender, eventType  )
            print("规则额")
            self:touch_callback(sender, eventType)
@@ -316,7 +317,7 @@ function MainInterfaceScene:init_checkin(  )
 
             self.checkinlayer:setVisible(true)
              if tonumber(days[#days]) ==tonumber(LocalData:Instance():get_isign()) then
-                Server:Instance():prompt("今天您已经签到，请改天再签")
+                -- Server:Instance():prompt("今天您已经签到，请改天再签")
                 self.check_button:setTouchEnabled(false)
             else
                self.check_button:setTouchEnabled(true)
