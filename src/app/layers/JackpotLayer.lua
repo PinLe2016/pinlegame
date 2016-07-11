@@ -49,7 +49,13 @@ function JackpotLayer:init(  )
 
          local reward_bt=self.JackpotScene:getChildByTag(777)  -- 是否选择幸运卡
          self._rewardbt=reward_bt
+         
         reward_bt:addEventListener(function(sender, eventType  )
+                     if self._doublecardamount <=0 then
+                         reward_bt:setSelected(false)
+                         --Server:Instance():prompt("您现在还没有幸运卡，请您充值")
+                         return
+                     end
                      if eventType == ccui.CheckBoxEventType.selected then
                             self.is_double=1   --翻倍
                      elseif eventType == ccui.CheckBoxEventType.unselected then
@@ -194,6 +200,7 @@ function JackpotLayer:information( )
 
              self.car_num=self.JackpotScene:getChildByTag(33)  --翻倍卡数量
              self._carnum=tonumber(list_table["doublecardamount"])  
+             self._doublecardamount=tonumber(list_table["doublecardamount"])  
              self.car_num:setString(self._carnum)
 
 
@@ -290,7 +297,7 @@ function JackpotLayer:touch_callback( sender, eventType )
              Server:Instance():prompt("翻倍卡不足")
             -- print("翻倍卡不足")
             -- self.is_double=2 -- 测试
-            -- self.car_num:setString(tostring(self._carnum) )
+            self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
                  --self.end_bt:setTouchEnabled(false)
                  -- print("wwqwerewar   ",self.roleAction:getCurrentFrame()%5)

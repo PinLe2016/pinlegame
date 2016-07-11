@@ -204,6 +204,17 @@ function Server:getversion_callback()
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.VERRSION)
 end
 
+function Server:mall(username,password)
+    print("开始"..username..password)
+    local params = {}
+    params={
+            loginname=username,
+            password=crypto.md5(password),
+        }
+        local hp="http://play.pinlegame.com/P_default.aspx?" ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
+        return  hp
+end
+
 
 
 

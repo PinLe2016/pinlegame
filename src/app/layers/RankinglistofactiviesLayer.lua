@@ -56,6 +56,8 @@ function RankinglistofactiviesLayer:init(  )
 end
 
 function RankinglistofactiviesLayer:Rankinglistofactivies_init()
+          local login_info=LocalData:Instance():get_user_data()
+          local _key=login_info["loginname"]
 	    self.list_table=LocalData:Instance():get_getranklistbyactivityid()
           local  sup_data=self.list_table["ranklist"]
           if not sup_data then
@@ -73,7 +75,13 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
 
                                     self:onImageViewClicked(sender, eventType)
                         end)
-
+            if tostring(sup_data[i]["playerid"])==tostring(_key)   then
+                 local my_img=cell:getChildByTag(527)--提示自己
+                 my_img:setVisible(true)
+            else
+               local my_img=cell:getChildByTag(527)--提示自己
+               my_img:setVisible(false)
+            end
             local panel_bg=cell:getChildByTag(84)--活动图片
             -- panel_bg:loadTexture(self.image)
 

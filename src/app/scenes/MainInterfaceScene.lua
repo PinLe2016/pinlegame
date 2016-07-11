@@ -153,7 +153,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
-            device.openURL("http://playios.pinlegame.com/P_default.aspx?")
+             local login_info=LocalData:Instance():get_user_data()
+             dump(login_info)
+              local _key=login_info["loginname"]
+              local _loginkey=login_info["loginkey"]
+             device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
