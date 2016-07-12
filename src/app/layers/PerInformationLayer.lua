@@ -847,7 +847,7 @@ function PerInformationLayer:fun_city_info( )
                             self.city_gps:setSelected(false)
                             self.city_choose:setSelected(false)
                      elseif eventType == ccui.CheckBoxEventType.unselected then
-                              self.city_present:setSelected(true)
+                              self.city_choose:setSelected(true)
                      end
             end)
 
@@ -857,7 +857,7 @@ function PerInformationLayer:fun_city_info( )
                              self.city_present:setSelected(false)
                              self.city_choose:setSelected(false)
                      elseif eventType == ccui.CheckBoxEventType.unselected then
-                            self.city_present:setSelected(true)
+                            self.city_choose:setSelected(true)
                      end
             end)
 
@@ -867,7 +867,7 @@ function PerInformationLayer:fun_city_info( )
                              self.city_present:setSelected(false)
                              self.city_gps:setSelected(false)
                      elseif eventType == ccui.CheckBoxEventType.unselected then
-                             self.city_present:setSelected(true)
+                             self.city_choose:setSelected(true)
                      end
             end)
 

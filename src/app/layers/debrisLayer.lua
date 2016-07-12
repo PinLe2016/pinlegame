@@ -262,6 +262,7 @@ function debrisLayer:touch_callback( sender, eventType )
            cc.Director:getInstance():popScene()
              Server:Instance():setgamerecord(self.adid)  
       elseif tag==426 then   --再来一局
+        Server:Instance():setgamerecord(self.adid) 
          local _table=LocalData:Instance():get_actid()--保存数
          local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
          cc.Director:getInstance():popScene()

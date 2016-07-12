@@ -33,7 +33,7 @@ function GoldprizeScene:init(  )
     	self.jackpot_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
                         self.sur_pageno=self.sur_pageno+1
-                        Server:Instance():getgoldspoollist({pagesize=2,pageno=self.sur_pageno})  --发送消息
+                        Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno})  --发送消息
                                  return
                       end
 	end))
@@ -154,7 +154,7 @@ end
 function GoldprizeScene:onEnter()
 	--audio.playMusic(G_SOUND["GAMEBG"],true)
 	Util:player_music("GAMEBG",true )
-  Server:Instance():getgoldspoollist({pagesize=2,pageno=self.sur_pageno})  --发送消息
+  Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno})  --发送消息
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self,
                        function()

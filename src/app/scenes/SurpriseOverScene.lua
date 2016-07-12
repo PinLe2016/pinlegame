@@ -245,6 +245,8 @@ function SurpriseOverScene:onEnter()
                   local _table=LocalData:Instance():get_getactivitypoints()
 	           if _table["remaintimes"]==0 then
                    Server:Instance():prompt("您参与次数已经用完")
+                   self.began_bt:setTouchEnabled(false)
+                   return
                 end
                   self.began_bt:setVisible(false)
                   self.end_bt:setVisible(true)
