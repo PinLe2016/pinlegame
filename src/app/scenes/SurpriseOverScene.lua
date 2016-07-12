@@ -98,6 +98,7 @@ function SurpriseOverScene:init(  )
 		self:touch_callback(sender, eventType)
 	end)
     	self. _table={}
+
     	for i=1,4 do
     		local score=self.Laohuji:getChildByTag(157)
     		local score1=self.Laohuji:getChildByTag(157):getChildByTag(40-i)--score1
@@ -106,7 +107,7 @@ function SurpriseOverScene:init(  )
 	            local laoHuJi1 = cc.LaoHuJiDonghua:create()--cc.CustomClass:create()
 	            local msg = laoHuJi1:helloMsg()
 	            release_print("customClass's msg is : " .. msg)
-	            laoHuJi1:setDate("CSres/public/publicUI/number0-9", "item_", 10,cc.p(po1x,po1y) );
+	            laoHuJi1:setDate("png/number0-9", "item_", 10,cc.p(po1x,po1y) );
 	            laoHuJi1:setStartSpeed(30);
 	            score:addChild(laoHuJi1);
 	            self._table[i]=laoHuJi1
@@ -238,6 +239,7 @@ function SurpriseOverScene:init_data(  )
             
 end
 function SurpriseOverScene:onEnter()
+  cc.SpriteFrameCache:getInstance():addSpriteFrames("png/number0-9.plist")
        --audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
        Util:player_music("PERSONALCHAGE",true )
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
@@ -261,6 +263,7 @@ function SurpriseOverScene:onEnter()
 end
 
 function SurpriseOverScene:onExit()
+  cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("png/number0-9.plist")
        --audio.stopMusic(G_SOUND["PERSONALCHAGE"])
        Util:stop_music("PERSONALCHAGE")
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
