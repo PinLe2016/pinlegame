@@ -77,6 +77,7 @@ function Server:setinvitecode_callback()
         self:show_float_message("设置邀请码:" .. self.data.err_msg)
         return
     end
+    self:show_float_message("恭喜您邀请成功" )
     -- LocalData:Instance():set_getgoldspoollist(self.data)--保存数据
     -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    
@@ -133,7 +134,7 @@ end
 
 
 --3.2.1 查询邀请好友奖励配置列表接口
-
+--点击邀请有礼接口
 function Server:get_friend_reward_setting_list()
        local params = {}
     -- params={
@@ -146,13 +147,13 @@ end
 
 
 function Server:get_friend_reward_setting_list_callback()
-     dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
         return
     end
     LocalData:Instance():set_reward_setting_list(self.data)--保存数据
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.INVITATION_POLITE)
    
 end
 

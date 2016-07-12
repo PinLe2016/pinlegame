@@ -13,7 +13,7 @@ function InvitefriendsLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
 
-       --Server:Instance():get_reward_friend_list() --初始化未领取金币
+       --Server:Instance():get_reward_friend_list() --
        Server:Instance():get_reward_of_friends_levelup()
        Server:Instance():getfriendlist()--查询好友列表   
        

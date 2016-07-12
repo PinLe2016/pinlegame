@@ -8,9 +8,9 @@ end)
 function FriendrequestLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
-       Server:Instance():getfriendlist()--查询好友列表   
+       Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
+       --Server:Instance():getfriendlist()--查询好友列表   
        --Server:Instance():set_friend_reward_setting()
-      
       
 end
 function FriendrequestLayer:init(  )
@@ -39,9 +39,9 @@ function FriendrequestLayer:init(  )
                       end
                 end
         end)
-        local friendlist_num=LocalData:Instance():getfriendlist()  
+        self.friendlist_num=LocalData:Instance():get_reward_setting_list()  
         local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
-        friend_num:setString(tostring(#friendlist_num["friendlist"]) .. "人")
+        friend_num:setString(tostring(self.friendlist_num["friendcount"]) .. "人")
 
        
        local _list=self.Friendrequest:getChildByTag(1291):getChildByTag(1292)
@@ -87,11 +87,11 @@ function FriendrequestLayer:init(  )
 	receive_bt8:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
-       
+       self.managerlist=self.friendlist_num["managerlist"]  --tag  0可以领取  1已经领取   2好友个数不到不可领取
        local _table = {3,5,10,20,30,50,80,100}
        local lo_img={receive_bt1,receive_bt2,receive_bt3,receive_bt4,receive_bt5,receive_bt6,receive_bt7,receive_bt8}
-       for i=1,#_table do
-         if #friendlist_num["friendlist"]==_table[i] then
+       for i=1,#self.managerlist do
+         if self.managerlist[i]["tag"]==1 then
                 lo_img[i]:setTouchEnabled(true)
         end
        end
@@ -171,22 +171,28 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		self:removeFromParent()
 	elseif tag==135 then
 		print("hahahdfsfdsfdsf 1")
-            --Server:Instance():set_friend_reward_setting()--奖励
+            Server:Instance():set_friend_reward_setting(self.managerlist[1]["Id"])--奖励
 	elseif tag==138 then
 		print("hahahdfsfdsfdsf 2")
-    --Server:Instance():set_friend_reward_setting()
+            Server:Instance():set_friend_reward_setting(self.managerlist[2]["Id"])--奖励
 	elseif tag==141 then
 		print("hahahdfsfdsfdsf 3")
+            Server:Instance():set_friend_reward_setting(self.managerlist[3]["Id"])--奖励
 	elseif tag==144 then
 		print("hahahdfsfdsfdsf 4")
+            Server:Instance():set_friend_reward_setting(self.managerlist[4]["Id"])--奖励
 	elseif tag==1599 then
 		print("hahahdfsfdsfdsf 5")
+            Server:Instance():set_friend_reward_setting(self.managerlist[5]["Id"])--奖励
 	elseif tag==1600 then
 		print("hahahdfsfdsfdsf 6")
+            Server:Instance():set_friend_reward_setting(self.managerlist[6]["Id"])--奖励
 	elseif tag==1601 then
 		print("hahahdfsfdsfdsf 7")
+            Server:Instance():set_friend_reward_setting(self.managerlist[7]["Id"])--奖励
 	elseif tag==1602 then
 		print("hahahdfsfdsfdsf 8")
+            Server:Instance():set_friend_reward_setting(self.managerlist[8]["Id"])--奖励
 	elseif tag==161 then  --好友邀请
 		self.Friendsstep:setVisible(true)
 		self.m_friend:setVisible(true)
@@ -216,7 +222,7 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 	end
 end
 function FriendrequestLayer:onEnter()
-	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
+	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self,
                        function()
                       		 self:init()
 
@@ -228,7 +234,7 @@ function FriendrequestLayer:onEnter()
 end
 
 function FriendrequestLayer:onExit()
-     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self)
+     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self)
      	 -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
 end
 
