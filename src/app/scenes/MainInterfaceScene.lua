@@ -26,10 +26,6 @@ function MainInterfaceScene:fun_init( )
       self.roleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
       self:runAction(self.roleAction)
 
-      self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
-      self:addChild(self.checkinlayer)
-      self.checkinlayer:setVisible(false)
-
 
          
       local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)
@@ -140,6 +136,10 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==97 then
 		Util:scene_control("GoldprizeScene")
 	elseif tag==124 then
+      self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
+      self:addChild(self.checkinlayer)
+      self.checkinlayer:setVisible(false)
+
 	           Server:Instance():getcheckinhistory()  --签到http
       elseif tag==48 then  --设置
             self:funsetup(  )
@@ -227,6 +227,10 @@ function MainInterfaceScene:funsetup(  )
 end
 --签到
 function MainInterfaceScene:fun_checkin( tm )
+
+  if not self.checkinlayer then
+    return
+  end
 	 self.checkinlayer:setVisible(false)
         --签到增加的金币
         if tm==2 then
@@ -243,7 +247,8 @@ function MainInterfaceScene:fun_checkin( tm )
 	       if eventType ~= ccui.TouchEventType.ended then
 		      return
 	       end
-             self.checkinlayer:setVisible(false)
+         self.checkinlayer:removeFromParent()
+             self.checkinlayer=nil
 	       
 	end)
 	local check_bt=self.checkinlayer:getChildByTag(87)
@@ -320,13 +325,13 @@ function MainInterfaceScene:init_checkin(  )
             end
 
             self.checkinlayer:setVisible(true)
-             if tonumber(days[#days]) ==tonumber(LocalData:Instance():get_isign()) then
-                -- Server:Instance():prompt("今天您已经签到，请改天再签")
-                self.check_button:setTouchEnabled(false)
-            else
-               self.check_button:setTouchEnabled(true)
-            end
-            LocalData:Instance():set_isign(days[#days])
+            --  if tonumber(days[#days]) ==tonumber(LocalData:Instance():get_isign()) then
+            --     -- Server:Instance():prompt("今天您已经签到，请改天再签")
+            --     self.check_button:setTouchEnabled(false)
+            -- else
+            --    self.check_button:setTouchEnabled(true)
+            -- end
+            -- LocalData:Instance():set_isign(days[#days])
 end
 function MainInterfaceScene:onEnter()
   --audio.playMusic(G_SOUND["ACTIVITY"],true)
