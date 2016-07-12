@@ -156,7 +156,7 @@ function JackpotLayer:init(  )
 
           self:audition()
           self:wininformation()
-
+          self:information( )
     
 
 end
@@ -187,8 +187,11 @@ function JackpotLayer:information( )
              if not list_table then
                return
              end
+             if not self.JackpotScene then
+               return
+             end
              local title=self.JackpotScene:getChildByTag(138)  --标题
-             title:setString(list_table["title"])
+             title:setString(tostring(list_table["title"]))
 
              local gold=self.JackpotScene:getChildByTag(140)  --剩余金币
              gold:setString(list_table["remaingolds"])
@@ -249,10 +252,23 @@ function JackpotLayer:information( )
           end
 end
 function JackpotLayer:vouchers(  )
+
          local _table=LocalData:Instance():get_setgamerecord()--保存数据
+         dump(_table)
          local goldspool=_table["goldspool"]
          self.be_num:setString(goldspool["playcardamount"])
          self.playcardamount=tonumber(goldspool["playcardamount"])
+
+
+
+          if self.coolingtime==-1 or self.playcardamount<=0 then
+                 self.ban_t:setVisible(true)
+              else
+                self.ban_t:setVisible(false)
+          end
+
+
+
 end
 function JackpotLayer:touch_callback( sender, eventType )
 
@@ -348,7 +364,7 @@ end
            end
 end
 function JackpotLayer:Xfun_countdown( )
-  self.coll_bg:setVisible(true)-- 新的冷却倒计时
+      self.coll_bg:setVisible(true)-- 新的冷却倒计时
       self.coll_text:setString("10S")
       LocalData:Instance():set_user_time(self.id,"1")
       self._Xtime=10
@@ -364,9 +380,9 @@ end
                if self.slowdown_num<=0.5 then
                      self.slowdown_num=1
                       local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()   --_tablegods["golds"]
-                      dump(_tablegods)
+              
                      local userdt = LocalData:Instance():get_userdata()
-                     userdt["golds"]=userdt["playergolds"] 
+                     userdt["golds"]=_tablegods["playergolds"] 
                     LocalData:Instance():set_userdata(userdt)  --增加金币数
 
                      if self.roleAction:getCurrentFrame()+2>self.glodreward[tostring(_tablegods["golds"])]  and  self.roleAction:getCurrentFrame()-2<self.glodreward[tostring(_tablegods["golds"])] then
@@ -406,7 +422,7 @@ end
 end
 function JackpotLayer:fun_slowdown( )
       self.glodreward ={["7"]=0,["10"]=5,["1000"]=10,["5"]=15,["15"]=20,["50"]=25,["20"]=30,["200"]=35,
-                                ["9"]=40,["711"]=45,["500"]=50,["6"]=55,["19"]=60,["14"]=65,["16"]=70,["100"]=75}
+                                ["9"]=40,["11"]=45,["500"]=50,["6"]=55,["19"]=60,["14"]=65,["16"]=70,["100"]=75}
       
 
       self.slowdown_num=3
@@ -601,11 +617,12 @@ function JackpotLayer:onEnter()
                       end)
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
                        function()
+                         print("劲舞团")
                                 self:information()
                       end)
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
                        function()
-                             print("劲舞团")
+                            
                                self:vouchers(  )
                                
                       end)
