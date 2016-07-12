@@ -161,7 +161,7 @@ end
 function Server:set_friend_reward_setting(Id)
        local params = {}
     params={
-            Id=Id ,
+            Id=Id,
             -- type=type
         }
    

@@ -209,7 +209,7 @@ function Server:mall(username,password)
     local params = {}
     params={
             loginname=username,
-            password=crypto.md5(password),
+            password=crypto.md5(username ..  password),
         }
         local hp="http://play.pinlegame.com/P_default.aspx?" ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         return  hp

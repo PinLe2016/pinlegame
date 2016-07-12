@@ -9,11 +9,13 @@ function FriendrequestLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
        Server:Instance():getfriendlist()--查询好友列表   
-
+       --Server:Instance():set_friend_reward_setting()
       
       
 end
 function FriendrequestLayer:init(  )
+
+
        self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
        self:addChild(self.Friendrequest)
        self:pop_up()--弹出框
@@ -86,16 +88,13 @@ function FriendrequestLayer:init(  )
 	self:touch_callback(sender, eventType)
        end)
        
-       -- local _2table = {2,3,6,5,9,8}  --{3,5,10,20,30,50,80,100}
-       -- print("22221111",#_2table)
-       -- for i=1,#_table do
-       -- 	print("1111",_table[i])
-       -- 	 -- if 3 ==_table[i] then
-       -- 	 --     print("2222")
-       -- 	 --     local rec="receive_bt"  ..  tostring(i)
-       -- 	 --     rec:setTouchEnabled(true)
-       --   --     end
-       -- end
+       local _table = {3,5,10,20,30,50,80,100}
+       local lo_img={receive_bt1,receive_bt2,receive_bt3,receive_bt4,receive_bt5,receive_bt6,receive_bt7,receive_bt8}
+       for i=1,#_table do
+         if #friendlist_num["friendlist"]==_table[i] then
+                lo_img[i]:setTouchEnabled(true)
+        end
+       end
 
       
        local friend_bt=self.Friendrequest:getChildByTag(161)  --好友邀请
@@ -172,8 +171,10 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		self:removeFromParent()
 	elseif tag==135 then
 		print("hahahdfsfdsfdsf 1")
+            --Server:Instance():set_friend_reward_setting()--奖励
 	elseif tag==138 then
 		print("hahahdfsfdsfdsf 2")
+    --Server:Instance():set_friend_reward_setting()
 	elseif tag==141 then
 		print("hahahdfsfdsfdsf 3")
 	elseif tag==144 then

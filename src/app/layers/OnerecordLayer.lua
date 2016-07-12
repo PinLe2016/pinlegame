@@ -10,6 +10,7 @@ function OnerecordLayer:ctor(params)
          self.type=params.type
          self.title=params.title
          self.id=params.id
+         self._type=params._type
          Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self:setNodeEventEnabled(true)--layer添加监听
 end
@@ -33,6 +34,7 @@ function OnerecordLayer:init(  )
 
 end
 function OnerecordLayer:Onerecord_init(  )
+     local _ble={"月","周","天","天"}
 	self.rank_list:removeAllItems()
 	self.list_table=LocalData:Instance():get_getactivitypointsdetail()
   dump(self.list_table)
@@ -53,7 +55,15 @@ function OnerecordLayer:Onerecord_init(  )
             	end
             	
 	            local time_text=cell:getChildByTag(95)--时间
-	            time_text:setString("第"  .. i  ..  "天")  --零时
+                    if self._type<3 then
+                            local  tpy=_ble[tonumber(self._type)+1]
+                            name_text:setString("第"  .. i  ..  tpy)
+                    elseif self._type==5 then
+                            name_text:setString("第"  .. i  ..  "天")   --热门
+                    else
+                             name_text:setString("第"  .. i  ..  "天")  --零时
+                     end
+	            
             end
 
 end

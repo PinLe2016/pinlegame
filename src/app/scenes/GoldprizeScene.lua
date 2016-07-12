@@ -83,7 +83,7 @@ function GoldprizeScene:data_init(  )
 
 		    title1:setString(tostring(jac_data[2*i-1]["name"]))
 		    local goldsamount1=bg1:getChildByTag(71)--总金币
-		    goldsamount1:setString(tostring(jac_data[2*i-1]["goldsamount"]))
+		    goldsamount1:setString(tostring(jac_data[2*i-1]["goldsremain"]))  --goldsamount
 
 		    local goldsremain1=bg1:getChildByTag(72) --剩余金币
 		    goldsremain1:setString(tostring(jac_data[2*i-1]["goldsremain"]))
@@ -118,7 +118,7 @@ function GoldprizeScene:data_init(  )
 		    title1:setString(tostring(jac_data[2*i]["name"]))
 		    local goldsamount1=bg2:getChildByTag(61)--总金币
 
-		    goldsamount1:setString(tostring(jac_data[2*i]["goldsamount"]))
+		    goldsamount1:setString(tostring(jac_data[2*i]["goldsremain"]))--goldsamount
 		    local goldsremain1=bg2:getChildByTag(62) --剩余金币
 
 		    goldsremain1:setString(tostring(jac_data[2*i]["goldsremain"]))

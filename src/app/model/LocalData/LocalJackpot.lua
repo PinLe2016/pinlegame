@@ -38,13 +38,22 @@ function LocalData:get_getgoldspoolrandomgolds()
 end
 
 
-function LocalData:set_user_time(userdata)
-	cc.UserDefault:getInstance():setStringForKey("usertime" ,userdata)
+function LocalData:set_user_time(userid,userdata)
+	cc.UserDefault:getInstance():setStringForKey(tostring(userid) ,userdata)
 end
 
-function LocalData:get_user_time()
-	local user_head=cc.UserDefault:getInstance():getStringForKey("usertime","0")
+function LocalData:get_user_time(userkey)
+	local user_head=cc.UserDefault:getInstance():getStringForKey(tostring(userkey),"0")
 	return user_head or nil
 end
+-- function LocalData:set_user_id(userid)
+-- 	cc.UserDefault:getInstance():setStringForKey(userid ,userid)
+-- end
+
+-- function LocalData:get_user_id()
+-- 	local user_id=cc.UserDefault:getInstance():getStringForKey("userid"," ")
+-- 	return user_id or nil
+-- end
+
 
 

@@ -30,11 +30,6 @@ function JackpotLayer:ctor(params)
       end)
 end
 function JackpotLayer:init(  )
-        
-        print("4444455555444")
-         dump(LocalData:Instance():get_user_time())
-
-          
 
   	  self.JackpotScene = cc.CSLoader:createNode("JackpotScene.csb")
         self:addChild(self.JackpotScene)
@@ -242,12 +237,12 @@ function JackpotLayer:information( )
              self.coolingtime=list_table["coolingtime"]   --  0 可以玩  -1  今天不能玩
              self.ban_t=self.JackpotScene:getChildByTag(948)  --结束
              self.is_double = 2  --  1  是翻倍   2  不使用
-              if self.coolingtime==-1 or self.playcardamount<0 then
+              if self.coolingtime==-1 or self.playcardamount<=0 then
                  self.ban_t:setVisible(true)
               else
                 self.ban_t:setVisible(false)
               end
-          local is_start=LocalData:Instance():get_user_time()
+          local is_start=LocalData:Instance():get_user_time(self.id)
          if tostring(is_start)=="1" then
             self:Xfun_countdown()
             print("44444")
@@ -344,7 +339,7 @@ end
            self._Xtime=self._Xtime-1
            self.coll_text:setString(tostring(self._Xtime) .. "S")
            if self._Xtime==0 then
-               LocalData:Instance():set_user_time("0")
+               LocalData:Instance():set_user_time(self.id,"0")
                self._rewardbt:setTouchEnabled(true)
                self._obtainbt:setTouchEnabled(true)
                self.coll_bg:setVisible(false)
@@ -355,7 +350,7 @@ end
 function JackpotLayer:Xfun_countdown( )
   self.coll_bg:setVisible(true)-- 新的冷却倒计时
       self.coll_text:setString("10S")
-      LocalData:Instance():set_user_time("1")
+      LocalData:Instance():set_user_time(self.id,"1")
       self._Xtime=10
       self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:Xcountdown()
@@ -368,13 +363,14 @@ end
                self.roleAction:setTimeSpeed(self.slowdown_num)
                if self.slowdown_num<=0.5 then
                      self.slowdown_num=1
-                     -- local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()   --_tablegods["golds"]
-                    --  local userdt = LocalData:Instance():get_userdata()
-                    --  userdt["golds"]=_tablegods["golds"]
-                    -- LocalData:Instance():set_userdata(userdt)  --增加金币数
+                      local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()   --_tablegods["golds"]
+                      dump(_tablegods)
+                     local userdt = LocalData:Instance():get_userdata()
+                     userdt["golds"]=userdt["playergolds"] 
+                    LocalData:Instance():set_userdata(userdt)  --增加金币数
 
-                     if self.roleAction:getCurrentFrame()+2>self.glodreward[tostring(50)]  and  self.roleAction:getCurrentFrame()-2<self.glodreward[tostring(50)] then
-                            self.roleAction:gotoFrameAndPause(self.glodreward[tostring(50)])
+                     if self.roleAction:getCurrentFrame()+2>self.glodreward[tostring(_tablegods["golds"])]  and  self.roleAction:getCurrentFrame()-2<self.glodreward[tostring(_tablegods["golds"])] then
+                            self.roleAction:gotoFrameAndPause(self.glodreward[tostring(_tablegods["golds"])])
                             cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止定时器
                             self.shuiguo1:setVisible(false)
                             self.shuiguo2:setVisible(false)
@@ -383,13 +379,13 @@ end
                            --self._jinbi:setString("+"  ..  _tablegods["golds"])     
                            --self:unscheduleUpdate()
                           local function stopAction()
-                            self:fun_win()
+                            -- self:fun_win()
                             self.goldanimation:setVisible(false)
                           end
                         -- self.goldanimation:setVisible(true)
                         -- self.goldAction:gotoFrameAndPlay(0,20, true)
                          local function removeThis()
-                           self:fun_win()
+                           --self:fun_win()
                            self.goldanimation:setVisible(false)
                             self:Xfun_countdown( )--  新的倒计时
 

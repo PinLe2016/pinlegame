@@ -10,6 +10,7 @@ function RankinglistofactiviesLayer:ctor(params)
       self.count=params.count
       self.image=params.image
       self.title=params.title
+      self._type=params._type
       self:setNodeEventEnabled(true)--layer添加监听
       local userdt = LocalData:Instance():get_userdata()
       Server:Instance():getranklistbyactivityid(self.id,self.count)  --排行榜HTTP
@@ -70,7 +71,7 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             print("12222  ",i)
             local  cell = rank_list:getItem(i-1)
             cell:setTag(i)
-
+            
             cell:addTouchEventListener(function(sender, eventType  )
 
                                     self:onImageViewClicked(sender, eventType)
@@ -124,7 +125,9 @@ function RankinglistofactiviesLayer:onImageViewClicked( sender, eventType )
           if eventType ~= ccui.TouchEventType.ended then
                 return
           end
-
+          if self._type==3  or   self._type==4 then
+            return
+          end
           local tag=sender:getTag()
           local  sup_data=self.list_table["ranklist"]
            local login_info=LocalData:Instance():get_user_data()
@@ -134,7 +137,7 @@ function RankinglistofactiviesLayer:onImageViewClicked( sender, eventType )
           end
           self:addChild(ContrastRecordLayer.new({title=self.title,head=sup_data[tag]["hearurl"],
                                     name=sup_data[tag]["nickname"],rank=sup_data[tag]["rank"],
-                                    level=sup_data[tag]["title"],heroid=sup_data[tag]["playerid"],id=self.id,
+                                    level=sup_data[tag]["title"],heroid=sup_data[tag]["playerid"],id=self.id,_type=self._type,
                                     allscore=sup_data[tag]["totalPoints"]}))
 end
 function RankinglistofactiviesLayer:onEnter()

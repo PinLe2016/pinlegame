@@ -15,6 +15,7 @@ function ContrastRecordLayer:ctor(params)
        self.level=params.level --hero 等级
        self.heroid=params.heroid --hero ID 
        self.allscore=params.allscore --总积分
+       self._type=params._type
        print("dsfdsfdsfdsg  ",self.id,"   ",self.heroid)
        Server:Instance():getactivitypointsdetail(self.id,self.heroid)  --对比排行榜HTTP
        self:setNodeEventEnabled(true)--layer添加监听
@@ -114,7 +115,15 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 
 
 		local name_text=cell:getChildByTag(115)--时间
-		name_text:setString("第"  .. i  ..  "天")  --零时
+            local _ble={"月","周","天","天"}--年0  月1  周2  日  整点   热门5  （整点和热门没有）
+            if self._type<3 then
+                    local  tpy=_ble[tonumber(self._type)+1]
+                    name_text:setString("第"  .. i  ..  tpy)
+            elseif self._type==5 then
+                    name_text:setString("第"  .. i  ..  "天")   --热门
+            else
+                     name_text:setString("第"  .. i  ..  "天")  --零时
+             end
 	end
 
            
