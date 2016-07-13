@@ -53,7 +53,8 @@ function OnerecordLayer:Onerecord_init(  )
                        for j=1,#One_data do
                            if One_data[j]["cycle"]  ==i then
                              local integral_text=cell:getChildByTag(93)--积分
-                             integral_text:setString(One_data[i]["points"])
+                             integral_text:setString(One_data[j]["points"])
+                             break
                         else
                              local integral_text=cell:getChildByTag(93)--积分
                                integral_text:setString("0")
