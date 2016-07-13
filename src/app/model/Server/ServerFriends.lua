@@ -47,7 +47,7 @@ end
 
 
 function Server:getfriendlist_callback()
-     dump(self.data)
+     --dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("查询好友列表:" .. self.data.err_msg)
         return

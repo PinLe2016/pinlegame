@@ -13,8 +13,8 @@ function InvitefriendsLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
 
-       --Server:Instance():get_reward_friend_list() --
-       Server:Instance():get_reward_of_friends_levelup()
+       Server:Instance():get_reward_friend_list() --
+       --Server:Instance():get_reward_of_friends_levelup()
        Server:Instance():getfriendlist()--查询好友列表   
        
         -- self:fun_init()-- 数据初始化
@@ -58,8 +58,9 @@ function InvitefriendsLayer:fun_init(  )
              local _playerinfo = receive_table["playerinfo"]
    
             local friendlist_table=LocalData:Instance():getfriendlist()
+            dump(friendlist_table)
 
-	local inviter_text=self.Invitefriends:getChildByTag(85):getChildByTag(88)  --邀请的人数
+	      local inviter_text=self.Invitefriends:getChildByTag(85):getChildByTag(88)  --邀请的人数
             inviter_text:setString("已经成功邀请 " .. tostring(#friendlist_table["friendlist"]) .. " 人")
 
             local databg_text=self.Invitefriends:getChildByTag(106)  --数据背景

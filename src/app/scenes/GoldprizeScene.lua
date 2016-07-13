@@ -49,8 +49,15 @@ function GoldprizeScene:data_init(  )
 
 		local  list_table=LocalData:Instance():get_getgoldspoollist()
 		local  jac_data=list_table["goldspools"]
-		self.jac_data_num= #jac_data /  2  +  #jac_data %  2
-		-- dump(sup_data)
+		local jioushu=math.floor(tonumber(#jac_data)) % 2  == 1 and 1 or 2
+		local _jioushu=0
+		if jioushu==1 then
+			 _jioushu=#jac_data /  2-0.5
+	 	else
+	 		_jioushu=#jac_data /  2
+		end
+		print("sdsfdsfdsfds  ","  ",_jioushu,"  ",#jac_data %  2)
+		self.jac_data_num=_jioushu  +  #jac_data %  2
 		local path=cc.FileUtils:getInstance():getWritablePath()
 
 		for i=1,self.jac_data_num do
@@ -88,11 +95,14 @@ function GoldprizeScene:data_init(  )
 		    local goldsremain1=bg1:getChildByTag(72) --剩余金币
 		    goldsremain1:setString(tostring(jac_data[2*i-1]["goldsremain"]))
 
+		    bg2=cell:getChildByTag(64)
+		    bg2:setVisible(false)
+
 		    if i*2-1== #jac_data  then
 		    	 return
 		    end
 
-			local bg2=cell:getChildByTag(64)
+			--local bg2=cell:getChildByTag(64)
 			bg2:setVisible(true)
 
 			local bg2_img=bg2:getChildByTag(91)
