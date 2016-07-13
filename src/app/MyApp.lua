@@ -28,7 +28,7 @@ function MyApp:run()
 
    if device.platform=="android" then 
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
-       Util:removeDirectory(path_res)
+       -- Util:removeDirectory(path_res)
     elseif device.platform=="ios" then
       MobClickForLua.startMobclick("573c1df5e0f55afa04001f9f","")
     end
@@ -49,7 +49,7 @@ function MyApp:run()
       -- package.path=package.path.."tmpdir/package"
       
       
-  Util:removeDirectory("down_pic")
+  Util:removeDirectory(path_res)
   lfs.mkdir(path_res)
   cc.FileUtils:getInstance():addSearchPath(path_res)
   
