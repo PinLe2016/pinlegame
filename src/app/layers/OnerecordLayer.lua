@@ -42,17 +42,30 @@ function OnerecordLayer:Onerecord_init(  )
             if next(One_data) ==nil then
               return
             end
-            local num=One_data[#One_data]["cycle "]
-            for i=1,#One_data do
+            local num=One_data[#One_data]["cycle"]
+            if num==0 then
+                return
+            end
+            for i=1,num do
                   self.rank_list:pushBackDefaultItem()
             	local  cell = self.rank_list:getItem(i-1)
-            	if One_data[i]["cycle"]  ==i then
-            		 local integral_text=cell:getChildByTag(93)--积分
-	           		 integral_text:setString(One_data[i]["points"])
-	            else
-	            	 local integral_text=cell:getChildByTag(93)--积分
-	                   integral_text:setString("0")
-            	end
+
+                       for j=1,#One_data do
+                           if One_data[j]["cycle"]  ==i then
+                             local integral_text=cell:getChildByTag(93)--积分
+                             integral_text:setString(One_data[i]["points"])
+                        else
+                             local integral_text=cell:getChildByTag(93)--积分
+                               integral_text:setString("0")
+                        end
+                       end
+            	-- if One_data[i]["cycle"]  ==i then
+            	-- 	 local integral_text=cell:getChildByTag(93)--积分
+	           	-- 	 integral_text:setString(One_data[i]["points"])
+	            -- else
+	            -- 	 local integral_text=cell:getChildByTag(93)--积分
+	            --        integral_text:setString("0")
+            	-- end
             	
 	            local time_text=cell:getChildByTag(95)--时间
                     if self._type<3 then

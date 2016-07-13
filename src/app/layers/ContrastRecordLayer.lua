@@ -96,22 +96,43 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 	for i=1,count do
             self.rank_list:pushBackDefaultItem()
 		local  cell = self.rank_list:getItem(i-1)
-            print("dsfsdfdsfsxcd  ",mynum,"  ",mypointslist[i]["cycle"]   ,"  ",i)
-		if mynum  ~=0 and tonumber(mypointslist[i]["cycle"]) == i then
-			local one_integral=cell:getChildByTag(117)--积分
-			one_integral:setString(mypointslist[i]["points"])
-		else
-			local one_integral=cell:getChildByTag(117)--积分
-			one_integral:setString("0")
-		end
+            if #mypointslist ==0  then
+                 for j=1,#mypointslist do 
+              
+                  if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
+                  local one_integral=cell:getChildByTag(117)--积分
+                  one_integral:setString(mypointslist[j]["points"])
+                   break
+                else
+                  local one_integral=cell:getChildByTag(117)--积分
+                  one_integral:setString("0")
+                end
 
-		if playernum ~= 0 and playerpointslist[i]["cycle"]  == i  then
-			local hero_integral=cell:getChildByTag(116)--积分
-			hero_integral:setString(playerpointslist[i]["points"])
-		else
-			local hero_integral=cell:getChildByTag(116)--积分
-			hero_integral:setString("0")
-		end
+               end
+            else
+                 local one_integral=cell:getChildByTag(117)--积分
+                  one_integral:setString("0")
+            end
+           
+		if #playerpointslist ==0  then
+                  for k=1,#playerpointslist do
+              
+             if playernum ~= 0 and playerpointslist[k]["cycle"]  == i  then
+             
+              local hero_integral=cell:getChildByTag(116)--积分
+              hero_integral:setString(playerpointslist[k]["points"])
+              break
+            else
+              local hero_integral=cell:getChildByTag(116)--积分
+              hero_integral:setString("0")
+            end
+           end
+         else
+            local hero_integral=cell:getChildByTag(116)--积分
+              hero_integral:setString("0")
+          end
+           
+		
 
 
 		local name_text=cell:getChildByTag(115)--时间
