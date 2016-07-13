@@ -528,6 +528,7 @@ function PerInformationLayer:_savecity(  )
 
          local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
          -- local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
+         local city_id=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["id"]--所选城市ID
 
          local conty=""
         if next(json_conty) then
@@ -556,7 +557,10 @@ function PerInformationLayer:_savecity(  )
          end
 self._provincename1:setString(self._provincename:getString() .. "-" .. self._cityname:getString() .. "-" .. self._area:getString())
          
-         
+         local  userdata=LocalData:Instance():get_user_data()
+         userdata["cityid"]=city_id
+         LocalData:Instance():set_user_data(userdata)
+
           self:unscheduleUpdate()
          self.adress:removeFromParent()
 end
@@ -643,7 +647,7 @@ function PerInformationLayer:savedata( )
  
     -- print("nanannana   ",self._Pname:getText())
     -- print("wwww   ",self._Pname:getPlaceHolder())
-    
+    dump(userdata)
     local  loginname= userdata["loginname"]
     local  nickname=self._Pname:getText()  
     userdata["nickname"]=nickname
@@ -651,7 +655,7 @@ function PerInformationLayer:savedata( )
     -- self._Pname1=self._Pname:getText()
     self._Pname1:setString(tostring(self._Pname:getText()))
     local  provincename=self._provincename:getString() 
-    local  cityid=1
+    local  cityid=userdata["cityid"]
     local  districtid=1
     local  cityname=self._cityname:getString() 
     --提交日期  和头像  时候  修改后  后台返回不变
