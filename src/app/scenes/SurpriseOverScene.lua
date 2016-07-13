@@ -57,6 +57,9 @@ function SurpriseOverScene:init(  )
       rank_text:setString(tostring(activitybyid["myrank"]))
       local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
        _betgolds:setString(tostring(activitybyid["betgolds"] .. "/次"))
+      local _cishu=self.Laohuji:getChildByTag(101)   --  次数
+      _cishu:setString(tostring(activitybyid["remaintimes"] ) ..   "次数")
+
 
 
 
@@ -123,13 +126,27 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	local activitypoints=LocalData:Instance():get_getactivitypoints()
 	local tag=sender:getTag()
 	if tag==164 then --开始
+          local  cishu=LocalData:Instance():get_getactivitybyid()
+          if not  cishu then
+                self.began_bt:setTouchEnabled(false)
+               audio.playMusic(G_SOUND["FALLMONEY"],true)
+               Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
+          else
+             if  tonumber(cishu["remaintimes"]) == 0 then
+            Server:Instance():prompt("你今天次数以用完，请明天在来吧")
+             return
+            else
+               self.began_bt:setTouchEnabled(false)
+               audio.playMusic(G_SOUND["FALLMONEY"],true)
+               Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
+          end
 
+          end
+         
          --self.began_bt:setButtonEnabled(false)
            --w:setFocusEnabled(false)
            -- self.began_bt:setColor(cc.c3b(255, 255,   0))
-           self.began_bt:setTouchEnabled(false)
-		audio.playMusic(G_SOUND["FALLMONEY"],true)
-		Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
+          
 	elseif tag==165 then --分享
 		print("分享")
 		Util:share()
@@ -229,6 +246,9 @@ function SurpriseOverScene:init_data(  )
             rank_text:setString(tostring(activitypoints["rank"]))
             local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
              _betgolds:setString(tostring(activitypoints["betgolds"]))
+              local _cishu=self.Laohuji:getChildByTag(101)   --  次数
+             _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "次数")
+
     --         local function stopAction()
     --             self.began_bt:setVisible(true)
 	   -- self.end_bt:setVisible(false)
@@ -244,7 +264,7 @@ function SurpriseOverScene:onEnter()
        Util:player_music("PERSONALCHAGE",true )
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
-                  local _table=LocalData:Instance():get_getactivitypoints()
+                local _table=LocalData:Instance():get_getactivitypoints()
 	           if _table["remaintimes"]==0 then
                    Server:Instance():prompt("您参与次数已经用完")
                    self.began_bt:setTouchEnabled(false)
