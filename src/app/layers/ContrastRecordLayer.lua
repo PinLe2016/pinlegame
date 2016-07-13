@@ -96,8 +96,8 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 	for i=1,count do
             self.rank_list:pushBackDefaultItem()
 		local  cell = self.rank_list:getItem(i-1)
-
-		if mynum~=0 and mypointslist[i]["cycle"]  == i  then
+            print("dsfsdfdsfsxcd  ",mynum,"  ",mypointslist[i]["cycle"]   ,"  ",i)
+		if mynum  ~=0 and tonumber(mypointslist[i]["cycle"]) == i then
 			local one_integral=cell:getChildByTag(117)--积分
 			one_integral:setString(mypointslist[i]["points"])
 		else

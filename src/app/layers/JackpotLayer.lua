@@ -138,9 +138,12 @@ function JackpotLayer:init(  )
                         return
                 end
                   if self._Xscnum then
+                     print("11118989898989")
+                     dump(self._Xscnum)
                     cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
                   end
                   if self._slowdown then
+                       print("8989898989")
                        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止水果机定时器
                    end
                    self:removeFromParent()
@@ -153,10 +156,11 @@ function JackpotLayer:init(  )
         self._ListView=self.JackpotScene:getChildByTag(31):getChildByTag(35)--中奖信息排行
         self._ListView:setItemModel(self._ListView:getItem(0))
         self._ListView:removeAllItems()
-
+          
+          self:information( )
           self:audition()
           self:wininformation()
-          self:information( )
+         
     
 
 end
@@ -184,10 +188,8 @@ end
 function JackpotLayer:information( )
              local  list_table=LocalData:Instance():get_getgoldspoolbyid()
              dump(list_table)
-             if not list_table then
-               return
-             end
-             if not self.JackpotScene then
+             if not list_table  or  not self.JackpotScene then
+                print("888")
                return
              end
              local title=self.JackpotScene:getChildByTag(138)  --标题
@@ -246,7 +248,7 @@ function JackpotLayer:information( )
                 self.ban_t:setVisible(false)
               end
           local is_start=LocalData:Instance():get_user_time(self.id)
-         if tostring(is_start)=="1" then
+         if tonumber(self.coolingtime) ~=  0   and  tonumber(self.coolingtime)~= -1    then  --当coolingtime 不为-1  或 0 时开始进入倒计时
             self:Xfun_countdown()
             print("44444")
           end
@@ -352,10 +354,12 @@ function JackpotLayer:touch_callback( sender, eventType )
 end
 
  function JackpotLayer:Xcountdown()
+
            self._Xtime=self._Xtime-1
            self.coll_text:setString(tostring(self._Xtime) .. "S")
            if self._Xtime==0 then
                LocalData:Instance():set_user_time(self.id,"0")
+                self.began_bt:setVisible(true)
                self._rewardbt:setTouchEnabled(true)
                self._obtainbt:setTouchEnabled(true)
                self.coll_bg:setVisible(false)
@@ -364,12 +368,25 @@ end
            end
 end
 function JackpotLayer:Xfun_countdown( )
+      print("55555555")
+      local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
+     
       self.coll_bg:setVisible(true)-- 新的冷却倒计时
-      self.coll_text:setString("10S")
+      if not  _tablegods then   --self.coolingtime
+        self.coll_text:setString(tostring(self.coolingtime)   ..   "S")
+        self._Xtime=tonumber(self.coolingtime)
+      else
+        self.coll_text:setString(tostring(_tablegods["coolingtime"])  ..    "S")
+        self._Xtime=tonumber(_tablegods["coolingtime"])
+      end
+      
       LocalData:Instance():set_user_time(self.id,"1")
-      self._Xtime=10
+     
       self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
-                                self:Xcountdown()
+                                if   self._Xscnum then
+                                   self:Xcountdown()
+                                end
+                                
               end,1.0, false)
 end
 
@@ -403,7 +420,7 @@ end
                          local function removeThis()
                            --self:fun_win()
                            self.goldanimation:setVisible(false)
-                            self:Xfun_countdown( )--  新的倒计时
+                           -- self:Xfun_countdown( )--  新的倒计时
 
                            
                         end
@@ -435,10 +452,7 @@ end
 function JackpotLayer:act_began( )
        self.cunum=0
        self.end_bt:setTouchEnabled(true)
-       if self.is_cooltime==false then
-           self:Xfun_countdown( )
-            return
-       end
+       
        if self.playcardamount<=0 then
            Server:Instance():prompt("参与券不够，请先获取参与券")
            return
@@ -622,7 +636,10 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POS
                       end)
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
                        function()
-                            
+                                if tonumber(self.coolingtime) ~=  0   and  tonumber(self.coolingtime)~= -1    then  --当coolingtime 不为-1  或 0 时开始进入倒计时
+                                  self:Xfun_countdown()
+                                  print("444448888")
+                                end
                                self:vouchers(  )
                                
                       end)

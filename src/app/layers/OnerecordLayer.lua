@@ -57,11 +57,11 @@ function OnerecordLayer:Onerecord_init(  )
 	            local time_text=cell:getChildByTag(95)--时间
                     if self._type<3 then
                             local  tpy=_ble[tonumber(self._type)+1]
-                            name_text:setString("第"  .. i  ..  tpy)
+                            time_text:setString("第"  .. i  ..  tpy)
                     elseif self._type==5 then
-                            name_text:setString("第"  .. i  ..  "天")   --热门
+                            time_text:setString("第"  .. i  ..  "天")   --热门
                     else
-                             name_text:setString("第"  .. i  ..  "天")  --零时
+                             time_text:setString("第"  .. i  ..  "天")  --零时
                      end
 	            
             end

@@ -49,7 +49,7 @@ function GoldprizeScene:data_init(  )
 
 		local  list_table=LocalData:Instance():get_getgoldspoollist()
 		local  jac_data=list_table["goldspools"]
-		local jioushu=math.floor(tonumber(#jac_data)) % 2  == 1 and 1 or 2
+		local jioushu=math.floor(tonumber(#jac_data)) % 2  == 1 and 1 or 2   --判段奇数 偶数
 		local _jioushu=0
 		if jioushu==1 then
 			 _jioushu=#jac_data /  2-0.5
