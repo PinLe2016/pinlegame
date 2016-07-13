@@ -211,7 +211,7 @@ function Server:mall(username,password)
             loginname=username,
             password=crypto.md5(username ..  password),
         }
-        local hp="http://play.pinlegame.com/P_default.aspx?" ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
+        local hp="http://123.57.136.223:2036/P_default.aspx?" ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         return  hp
 end
 
