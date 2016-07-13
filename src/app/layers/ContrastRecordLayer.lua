@@ -98,13 +98,13 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 		local  cell = self.rank_list:getItem(i-1)
             if #mypointslist ~=0  then
                  for j=1,#mypointslist do 
-              
-                  if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
                   local one_integral=cell:getChildByTag(117)--积分
+                  if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
+                  
                   one_integral:setString(mypointslist[j]["points"])
                    break
                 else
-                  local one_integral=cell:getChildByTag(117)--积分
+                  -- local one_integral=cell:getChildByTag(117)--积分
                   one_integral:setString("0")
                 end
 

@@ -146,8 +146,8 @@ function JackpotLayer:init(  )
                        print("8989898989")
                        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._slowdown)--停止水果机定时器
                    end
-                   self:removeFromParent()
-                 
+                   -- self:removeFromParent()
+                 Util:scene_control("GoldprizeScene")
                    
                    
         end)
