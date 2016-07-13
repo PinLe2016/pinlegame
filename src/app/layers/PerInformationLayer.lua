@@ -529,6 +529,7 @@ function PerInformationLayer:_savecity(  )
          local city=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["name"] --获取城市选择
          -- local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
          local city_id=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["id"]--所选城市ID
+        local province_id=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["id"]--所选省份ID
 
          local conty=""
         if next(json_conty) then
@@ -559,6 +560,7 @@ self._provincename1:setString(self._provincename:getString() .. "-" .. self._cit
          
          local  userdata=LocalData:Instance():get_user_data()
          userdata["cityid"]=city_id
+         userdata["provinceid"]=province_id
          LocalData:Instance():set_user_data(userdata)
 
           self:unscheduleUpdate()
@@ -670,8 +672,8 @@ function PerInformationLayer:savedata( )
 
     local birthday=Util:dateTotimestamp(birthday_time)
     print("birthday  ",birthday)
-            local  provinceid=1 
-            local  imageurl=self._index
+    local  provinceid=userdata["provinceid"] 
+    local  imageurl=self._index
             if self.head_index==100 then
                  imageurl= tostring(self._index) --
             else
