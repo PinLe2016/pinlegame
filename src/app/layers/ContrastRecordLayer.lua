@@ -96,7 +96,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 	for i=1,count do
             self.rank_list:pushBackDefaultItem()
 		local  cell = self.rank_list:getItem(i-1)
-            if #mypointslist ==0  then
+            if #mypointslist ~=0  then
                  for j=1,#mypointslist do 
               
                   if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
@@ -114,7 +114,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                   one_integral:setString("0")
             end
            
-		if #playerpointslist ==0  then
+		if #playerpointslist ~=0  then
                   for k=1,#playerpointslist do
               
              if playernum ~= 0 and playerpointslist[k]["cycle"]  == i  then
