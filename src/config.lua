@@ -51,6 +51,7 @@ SurpriseScene = require("app.scenes.SurpriseScene")--惊喜吧
 
 
 
+
 --消息处理方法枚举
 G_NOTIFICATION_EVENT = {
 	LOGIN_POST=							"login_post",--登陆
