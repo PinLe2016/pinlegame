@@ -39,7 +39,7 @@ function LoginScene:progressbarScene(  )
         loadingBar=self.ProgressbarScene:getChildByTag(328)
         self.roleAction = cc.CSLoader:createTimeline("ProgressbarScene.csb")
         self.ProgressbarScene:runAction(self.roleAction)
-         self.roleAction:gotoFrameAndPlay(0,40, true)
+         self.roleAction:gotoFrameAndPlay(0,41, true)
          -- self:fun_countdown( )
          loadingBar:setPercent(0)
 end

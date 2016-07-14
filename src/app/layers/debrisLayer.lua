@@ -215,7 +215,7 @@ function debrisLayer:saw_issuccess()
                     Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                      return
                end
-                    self:add_reward( )
+                     Server:Instance():setgamerecord(self.adid)
             return
         end
     end
@@ -228,7 +228,8 @@ function debrisLayer:saw_issuccess()
           Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
           return
      end
-   self:add_reward( )
+     Server:Instance():setgamerecord(self.adid) 
+   -- self:add_reward( )
     --cc.Director:getInstance():popScene()
      
   
@@ -237,15 +238,49 @@ end
 function debrisLayer:add_reward( )
         self.Rewardvouchers = cc.CSLoader:createNode("Rewardvouchers.csb")
         self:addChild(self.Rewardvouchers,10000)
-        self.began_bt=self.Rewardvouchers:getChildByTag(425)  --立即参与
+        local jique=self.Rewardvouchers:getChildByTag(421)
+        local jinyan=self.Rewardvouchers:getChildByTag(102)
+
+        
+
+
+         self.began_bt=self.Rewardvouchers:getChildByTag(421):getChildByTag(425)  --立即参与
          self.began_bt:addTouchEventListener(function(sender, eventType  )
                    self:touch_callback( sender, eventType )             
           end)
 
-        self.again_bt=self.Rewardvouchers:getChildByTag(426)  --再来一局
+        self.again_bt=self.Rewardvouchers:getChildByTag(421):getChildByTag(426)  --再来一局
          self.again_bt:addTouchEventListener(function(sender, eventType  )
                    self:touch_callback( sender, eventType )             
           end)
+
+
+         self.jbegan_bt=self.Rewardvouchers:getChildByTag(102):getChildByTag(106)  --返回奖池
+         self.jbegan_bt:addTouchEventListener(function(sender, eventType  )
+                   self:touch_callback( sender, eventType )             
+          end)
+
+        self.jagain_bt=self.Rewardvouchers:getChildByTag(102):getChildByTag(107)  --经验再来一局
+         self.jagain_bt:addTouchEventListener(function(sender, eventType  )
+                   self:touch_callback( sender, eventType )             
+          end)
+
+
+
+
+         local _table=LocalData:Instance():get_setgamerecord()--保存数据
+         dump(_table)
+         local goldspool=_table["goldspool"]
+         if tonumber(goldspool["getcardamount"]) ==0 then
+               jique:setVisible(false)
+               jinyan:setVisible(true)
+         else
+               jique:setVisible(true)
+               jinyan:setVisible(false)
+         end
+
+
+
 
 end
 function debrisLayer:touch_callback( sender, eventType )
@@ -260,9 +295,20 @@ function debrisLayer:touch_callback( sender, eventType )
               self.Rewardvouchers:removeFromParent()
           end
            cc.Director:getInstance():popScene()
-             Server:Instance():setgamerecord(self.adid)  
+             -- Server:Instance():setgamerecord(self.adid)  
       elseif tag==426 then   --再来一局
-        Server:Instance():setgamerecord(self.adid) 
+        --Server:Instance():setgamerecord(self.adid) 
+         local _table=LocalData:Instance():get_actid()--保存数
+         local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
+         cc.Director:getInstance():popScene()
+         cc.Director:getInstance():pushScene(scene)
+       elseif tag==106 then   --返回奖池
+           if self.Rewardvouchers then
+              self.Rewardvouchers:removeFromParent()
+          end
+           cc.Director:getInstance():popScene()
+       elseif tag==107 then   --再来一局
+        --Server:Instance():setgamerecord(self.adid) 
          local _table=LocalData:Instance():get_actid()--保存数
          local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
          cc.Director:getInstance():popScene()
@@ -277,10 +323,19 @@ function debrisLayer:onEnter()
                 --         print("拼图结束")
                 --         Util:scene_control("SurpriseOverScene")
                 -- end)
+
+              NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
+                       function()
+                              
+                               self:add_reward( )
+                      end)
+
+
 end
 
 function debrisLayer:onExit()
               -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
+                NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
 end
 
 return debrisLayer
