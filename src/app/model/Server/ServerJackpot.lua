@@ -119,6 +119,7 @@ function Server:getgoldspoolrandomgolds_callback()
 end
 --目的是给另一个场景传递信息
 function Server:sceneinformation()
+  print("5545645645644")
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.BACKSUPPOR)
      
 end

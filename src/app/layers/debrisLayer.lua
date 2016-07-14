@@ -280,6 +280,8 @@ function debrisLayer:add_reward( )
                jinyan:setVisible(false)
          end
 end
+
+
 function debrisLayer:touch_callback( sender, eventType )
           local tag=sender:getTag()
 
@@ -293,6 +295,7 @@ function debrisLayer:touch_callback( sender, eventType )
           end
               cc.Director:getInstance():popScene()
               --Server:Instance():setgamerecord(self.adid)  
+              Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
               Server:Instance():sceneinformation()
       elseif tag==426 then   --再来一局
         Server:Instance():setgamerecord(self.adid) 
@@ -306,6 +309,7 @@ function debrisLayer:touch_callback( sender, eventType )
           end
            cc.Director:getInstance():popScene()
            --Server:Instance():setgamerecord(self.adid) 
+            print("1215552121")
            Server:Instance():sceneinformation()
           
        elseif tag==107 then   --再来一局
