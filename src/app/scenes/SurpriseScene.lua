@@ -14,20 +14,22 @@ function SurpriseScene:ctor()
       --self:addChild(SurpriseOverLayer.new())
       self.sur_pageno=1
       self.ser_status =1
-	self.time=0
-	self.secondOne = 0
-	self.list_table={}
-	-- self.floating_layer = FloatingLayerEx.new()
-	-- self.floating_layer:addTo(self,100000)
+      self.time=0
+      self.secondOne = 0
+      self.list_table={}
+      -- self.floating_layer = FloatingLayerEx.new()
+      -- self.floating_layer:addTo(self,100000)
       self:Surpriseinit()
-	 self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
-        		self:update(dt)
-    	end)
+      self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+      	self:update(dt)
+      end)
       self.tablecout=1
 
--- local pinle_loclation=cc.PinLe_platform:Instance()
---   local city=pinle_loclation:getCity()
---   dump(city)
+      -- local pinle_loclation=cc.PinLe_platform:Instance()
+      --   local city=pinle_loclation:getCity()
+      --   dump(city)
+
+      self:listener_home() --注册安卓返回键
 
 end
 
@@ -360,5 +362,25 @@ function SurpriseScene:onExit()
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)
 
 end
+--android 返回键 响应
+function SurpriseScene:listener_home() 
+    local  layer=cc.Layer:create()
+    self:addChild(layer)
+    local function onKeyReleased(keyCode, event)
+          if keyCode == cc.KeyCode.KEY_BACK then
+              self:unscheduleUpdate()
+              Util:scene_control("MainInterfaceScene")
+          end
+    end
+
+    local listener = cc.EventListenerKeyboard:create()--
+    listener:registerScriptHandler(onKeyReleased,cc.Handler.EVENT_KEYBOARD_RELEASED)
+
+    local eventDispatch = layer:getEventDispatcher()
+    eventDispatch:addEventListenerWithSceneGraphPriority(listener,layer)
+
+end
+
+
 
 return SurpriseScene

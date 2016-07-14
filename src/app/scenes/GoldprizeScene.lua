@@ -12,7 +12,7 @@ function GoldprizeScene:ctor()
    self.sur_pageno=1
    self:init()
                
-            
+   self:listener_home() --注册安卓返回键         
 end
 
 
@@ -207,7 +207,23 @@ end
 
 
 
+--android 返回键 响应
+function GoldprizeScene:listener_home() 
+    local  layer=cc.Layer:create()
+    self:addChild(layer)
+    local function onKeyReleased(keyCode, event)
+          if keyCode == cc.KeyCode.KEY_BACK then
+              Util:scene_control("MainInterfaceScene")
+          end
+    end
 
+    local listener = cc.EventListenerKeyboard:create()--
+    listener:registerScriptHandler(onKeyReleased,cc.Handler.EVENT_KEYBOARD_RELEASED)
+
+    local eventDispatch = layer:getEventDispatcher()
+    eventDispatch:addEventListenerWithSceneGraphPriority(listener,layer)
+
+end
 
 
 
