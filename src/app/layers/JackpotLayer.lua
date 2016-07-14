@@ -465,6 +465,14 @@ function JackpotLayer:fun_slowdown( )
 end
 
 function JackpotLayer:act_began( )
+     local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
+    if not _tablegods then
+      print("kong")
+    else
+        self.coolingtime=tonumber(_tablegods["coolingtime"])
+    end
+     
+
        self.cunum=0
        self.end_bt:setTouchEnabled(true)
        
@@ -656,6 +664,7 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self,
                                   self:Xfun_countdown()
                                  
                                 end
+                                print("jkjjklj ")
                                self:vouchers(  )
                                
                       end)

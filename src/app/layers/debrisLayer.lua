@@ -293,6 +293,20 @@ function debrisLayer:touch_callback( sender, eventType )
           end
               cc.Director:getInstance():popScene()
               --Server:Instance():setgamerecord(self.adid)  
+
+
+            local function stopAction()
+              print("5656556")
+              Server:Instance():sceneinformation()
+                    
+            end
+      local callfunc = cc.CallFunc:create(stopAction)
+      self:runAction(cc.Sequence:create(cc.DelayTime:create(0.1),callfunc  ))
+
+
+
+
+              print("1212121")
               Server:Instance():sceneinformation()
       elseif tag==426 then   --再来一局
         Server:Instance():setgamerecord(self.adid) 
@@ -306,6 +320,7 @@ function debrisLayer:touch_callback( sender, eventType )
           end
            cc.Director:getInstance():popScene()
            --Server:Instance():setgamerecord(self.adid) 
+            print("1215552121")
            Server:Instance():sceneinformation()
           
        elseif tag==107 then   --再来一局
