@@ -384,7 +384,6 @@ end
            end
 end
 function JackpotLayer:Xfun_countdown( )
-      print("55555555")
       local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
      
       self.coll_bg:setVisible(true)-- 新的冷却倒计时
@@ -392,6 +391,16 @@ function JackpotLayer:Xfun_countdown( )
         self.coll_text:setString(tostring(self.coolingtime)   ..   "S")
         self._Xtime=tonumber(self.coolingtime)
       else
+           if tonumber(self.coolingtime)== -1 then
+                self.began_bt:setVisible(true)
+               self._rewardbt:setTouchEnabled(true)
+               self._obtainbt:setTouchEnabled(true)
+               self.coll_bg:setVisible(false)
+               self.end_bt:setTouchEnabled(true)
+              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
+              return
+
+           end
         self.coll_text:setString(tostring(_tablegods["coolingtime"])  ..    "S")
         self._Xtime=tonumber(_tablegods["coolingtime"])
       end
