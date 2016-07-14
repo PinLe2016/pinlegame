@@ -16,10 +16,11 @@ GameScene = require("app.scenes.GameScene")--惊喜吧
 function JackpotLayer:ctor(params)
          self.is_cooltime=true
          self.id=params.id
+          LocalData:Instance():set_user_oid(self.id)
          Server:Instance():getgoldspoolbyid(self.id)
          Server:Instance():getgoldspooladlist(self.id)  --
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
-         -- Server:Instance():getgoldspoolrandomgolds(self.id,1)
+          Server:Instance():getgoldspoolrandomgolds(self.id,0)
           print("劲舞团")
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true

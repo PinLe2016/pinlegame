@@ -46,7 +46,7 @@ RankinglistofactiviesLayer = require("app.layers.RankinglistofactiviesLayer")--�
 FloatingLayerEx = require("app.layers.FloatingLayer")--提示文件
 MainInterfaceScene = require("app.scenes.MainInterfaceScene")--主界面
 SurpriseScene = require("app.scenes.SurpriseScene")--惊喜吧
-PerInformationScene = require("app.scenes.PerInformationScene")--惊喜吧
+
 
 
 

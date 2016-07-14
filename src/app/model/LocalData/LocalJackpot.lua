@@ -46,14 +46,14 @@ function LocalData:get_user_time(userkey)
 	local user_head=cc.UserDefault:getInstance():getStringForKey(tostring(userkey),"0")
 	return user_head or nil
 end
--- function LocalData:set_user_id(userid)
--- 	cc.UserDefault:getInstance():setStringForKey(userid ,userid)
--- end
+function LocalData:set_user_oid(userid)
+	cc.UserDefault:getInstance():setStringForKey("userid" ,userid)
+end
 
--- function LocalData:get_user_id()
--- 	local user_id=cc.UserDefault:getInstance():getStringForKey("userid"," ")
--- 	return user_id or nil
--- end
+function LocalData:get_user_oid()
+	local user_id=cc.UserDefault:getInstance():getStringForKey("userid"," ")
+	return user_id or nil
+end
 
 
 
