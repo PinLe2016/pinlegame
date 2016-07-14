@@ -220,9 +220,14 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
             local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
             if  self.ser_status==2 then   --往期获奖名单
-                
+                cell:setTouchEnabled(false)
                  huojiang_bg:setVisible(true)
                  local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
+                 if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
+                    huojiang_bt:setColor(cc.c3b(100, 100, 100))
+                    huojiang_bt:setTouchEnabled(false)
+                 end
+                 
                  huojiang_bt:setTag(i)
                  huojiang_bt:addTouchEventListener((function(sender, eventType  )
                       if eventType ~= ccui.TouchEventType.ended then
@@ -230,11 +235,19 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                      end
                       local  win_id=  sup_data[sender:getTag()]["id"]
                             Server:Instance():getactivitywinners(win_id)
+                            self:_winners( )
+
                end))
             elseif self.ser_status==3 and tonumber(_table1) < 0 then  --我的活动获奖名单
+                    cell:setTouchEnabled(false)
                     huojiang_bg:setVisible(true)
                      local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
                      huojiang_bt:setTag(i)
+                      if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
+                        huojiang_bt:setColor(cc.c3b(100, 100, 100))
+                        huojiang_bt:setTouchEnabled(false)
+                     end
+
                     huojiang_bt:addTouchEventListener((function(sender, eventType  )
                          if eventType ~= ccui.TouchEventType.ended then
                                return
@@ -279,11 +292,10 @@ end
 --获奖名单中数据更新
 function SurpriseScene:winners_init( )
           self.win_table= LocalData:Instance():get_getactivitywinners()
-          local  sup_data=self.win_table["winnerlist "]
+          local  sup_data=self.win_table["winnerlist"]
           if not sup_data then
             return
           end
-           dump(sup_data)
         self.win_ListView:removeAllItems()
           for i=1, #sup_data do  --#sup_data
             self.win_ListView:pushBackDefaultItem()
@@ -348,7 +360,8 @@ function SurpriseScene:onEnter()
       NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.WINNERS, self,
                        function()
 
-                       self:_winners( )-- 获奖名单
+                       --self:_winners( )-- 获奖名单
+                       self:winners_init()  --更新数据
                       end)
 end
 

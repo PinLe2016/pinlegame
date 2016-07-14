@@ -49,4 +49,14 @@ end
 function LocalData:get_friend_reward_setting()
 	return self.set_friend_reward or nil
 end
+--一键领取
+function LocalData:set_reward_of_friends_levelup(levelup)
+	self.levelup=levelup
+end
+
+function LocalData:get_reward_of_friends_levelup()
+	return self.levelup or nil
+end
+
+
 

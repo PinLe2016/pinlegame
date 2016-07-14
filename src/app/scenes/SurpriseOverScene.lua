@@ -58,7 +58,12 @@ function SurpriseOverScene:init(  )
       local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
        _betgolds:setString(tostring(activitybyid["betgolds"] .. "/次"))
       local _cishu=self.Laohuji:getChildByTag(101)   --  次数
-      _cishu:setString(tostring(activitybyid["remaintimes"] ) ..   "次数")
+       if tonumber(activitybyid["remaintimes"]) <0  then
+                _cishu:setString("∞")
+        else
+          _cishu:setString(tostring(activitybyid["remaintimes"])  ..   "次数")
+        end
+
 
 
 
@@ -126,6 +131,14 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	local activitypoints=LocalData:Instance():get_getactivitypoints()
 	local tag=sender:getTag()
 	if tag==164 then --开始
+           local _table=LocalData:Instance():get_getactivitypoints()
+             if _table["remaintimes"]==0 then
+                   Server:Instance():prompt("您参与次数已经用完")   --  记得改特佳
+                   self.began_bt:setTouchEnabled(false)
+                   return
+                end
+
+
           local  cishu=LocalData:Instance():get_getactivitybyid()
           if not  cishu then
                 self.began_bt:setTouchEnabled(false)
@@ -247,7 +260,12 @@ function SurpriseOverScene:init_data(  )
             local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
              _betgolds:setString(tostring(activitypoints["betgolds"]))
               local _cishu=self.Laohuji:getChildByTag(101)   --  次数
-             _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "次数")
+              if tonumber(activitypoints["remaintimes"]) <0 then
+                _cishu:setString("∞")
+              else
+                _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "次数")
+              end
+             
 
     --         local function stopAction()
     --             self.began_bt:setVisible(true)
@@ -264,12 +282,12 @@ function SurpriseOverScene:onEnter()
        Util:player_music("PERSONALCHAGE",true )
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
-                local _table=LocalData:Instance():get_getactivitypoints()
-	           if _table["remaintimes"]==0 then
-                   Server:Instance():prompt("您参与次数已经用完")
-                   self.began_bt:setTouchEnabled(false)
-                   return
-                end
+            --     local _table=LocalData:Instance():get_getactivitypoints()
+	           -- if _table["remaintimes"]==0 then
+            --        Server:Instance():prompt("您参与次数已经用完")   --  记得改特佳
+            --        self.began_bt:setTouchEnabled(false)
+            --        return
+            --     end
                   self.began_bt:setVisible(false)
                   self.end_bt:setVisible(true)
                   self.end_bt:setTouchEnabled(true)

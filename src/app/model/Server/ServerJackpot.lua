@@ -15,7 +15,7 @@ end
 
 
 function Server:getgoldspoollist_callback()
-      dump(self.data)
+      --dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
@@ -37,7 +37,7 @@ end
 
 
 function Server:getgoldspooladlist_callback()
-     -- dump(self.data)
+      dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
@@ -117,7 +117,11 @@ function Server:getgoldspoolrandomgolds_callback()
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS)
    
 end
-
+--目的是给另一个场景传递信息
+function Server:sceneinformation()
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.BACKSUPPOR)
+     
+end
 
 
 
