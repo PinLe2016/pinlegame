@@ -260,12 +260,14 @@ function SurpriseOverScene:init_data(  )
             local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
              _betgolds:setString(tostring(activitypoints["betgolds"]))
               local _cishu=self.Laohuji:getChildByTag(101)   --  次数
+
               if tonumber(activitypoints["remaintimes"]) <0 then
                 _cishu:setString("∞")
               else
                 _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "次数")
               end
              
+
 
     --         local function stopAction()
     --             self.began_bt:setVisible(true)
