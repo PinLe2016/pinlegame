@@ -37,7 +37,7 @@ function GameScene:ctor(params)
       self:addChild(csb)
       end
      
-      
+    self:listener_home() --注册安卓返回键
      
 end
 function GameScene:funinit(  )
@@ -309,6 +309,26 @@ function GameScene:push_buffer(is_buffer)
        self.floating_layer:show_http(is_buffer) 
        
 end 
+
+--android 返回键 响应
+function GameScene:listener_home() 
+    local  layer=cc.Layer:create()
+    self:addChild(layer)
+    local function onKeyReleased(keyCode, event)
+          if keyCode == cc.KeyCode.KEY_BACK then
+              cc.Director:getInstance():popScene()
+          end
+    end
+
+    local listener = cc.EventListenerKeyboard:create()--
+    listener:registerScriptHandler(onKeyReleased,cc.Handler.EVENT_KEYBOARD_RELEASED)
+
+    local eventDispatch = layer:getEventDispatcher()
+    eventDispatch:addEventListenerWithSceneGraphPriority(listener,layer)
+
+end
+
+
 return GameScene
 
 
