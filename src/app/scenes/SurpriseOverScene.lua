@@ -58,7 +58,7 @@ function SurpriseOverScene:init(  )
       local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
        _betgolds:setString(tostring(activitybyid["betgolds"] .. "/次"))
       local _cishu=self.Laohuji:getChildByTag(101)   --  次数
-      _cishu:setString(tostring(activitybyid["remaintimes"] ) ..   "次数")
+      _cishu:setString(tostring(activitybyid["remaintimes"] ) ..   "次")
 
 
 
@@ -247,7 +247,7 @@ function SurpriseOverScene:init_data(  )
             local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
              _betgolds:setString(tostring(activitypoints["betgolds"]))
               local _cishu=self.Laohuji:getChildByTag(101)   --  次数
-             _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "次数")
+             _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "次")
 
     --         local function stopAction()
     --             self.began_bt:setVisible(true)

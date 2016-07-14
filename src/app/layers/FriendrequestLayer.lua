@@ -142,7 +142,7 @@ function FriendrequestLayer:pop_up(  )
 
        local share_bt=self.m_friend:getChildByTag(243)  --前往邀请  分享
 	share_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+	-- self:touch_callback(sender, eventType)
        end)
 
       local feedback_back=self.m_feedback:getChildByTag(229)  --回馈返回
@@ -194,8 +194,11 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		print("hahahdfsfdsfdsf 8")
             Server:Instance():set_friend_reward_setting(self.managerlist[8]["Id"])--奖励
 	elseif tag==161 then  --好友邀请
-		self.Friendsstep:setVisible(true)
-		self.m_friend:setVisible(true)
+		-- self.Friendsstep:setVisible(true)
+		-- self.m_friend:setVisible(true)
+    print("分享11")
+    Util:share()
+
 	elseif tag==162 then  --回馈邀请人
 		self.Friendsstep:setVisible(true)
 		self.m_feedback:setVisible(true)
@@ -208,8 +211,7 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
 	elseif tag==243 then  --分享
-		print("分享11")
-		Util:share()
+		
 	elseif tag==230 then  --下次再说
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
