@@ -13,11 +13,10 @@ function InvitefriendsLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
 
-       Server:Instance():get_reward_friend_list() --
-       --Server:Instance():get_reward_of_friends_levelup()
-       Server:Instance():getfriendlist()--查询好友列表   
+       Server:Instance():get_reward_friend_list() --好友列表
+
        
-        -- self:fun_init()-- 数据初始化
+
 end
 function InvitefriendsLayer:init(  )
        self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
@@ -43,54 +42,76 @@ function InvitefriendsLayer:init(  )
        self._ListView=self.Invitefriends:getChildByTag(91)--邀请好友排行list
        self._ListView:setItemModel(self._ListView:getItem(0))
        self._ListView:removeAllItems()
-
        self:fun_init()-- 数据初始化
 
+
+
+end
+--一键领取
+function InvitefriendsLayer:friends_levelup(  )
+               local friendlist_table =  LocalData:Instance():get_reward_of_friends_levelup()
+             if  not friendlist_table then
+              return
+             end
+              self._ListView:removeAllItems()
+             local playerinfo=friendlist_table["playerinfo"]
+            self.gold_text:setString(playerinfo["curgolds"])
+            if #friendlist_table["friendlist"]==0 then
+              return
+            end
+            local _friendlist=friendlist_table["friendlist"]
+            for i=1,#_friendlist do
+               self._ListView:pushBackDefaultItem()
+              local  _cell =  self._ListView:getItem(i-1)
+              _cell:setTag(i)
+              self.nickname = _cell:getChildByTag(94)  --名字
+              self.nickname:setString(_friendlist[i]["nickname"])
+              self.grade =  _cell:getChildByTag(95)  --等级
+              self.grade:setString( _friendlist[i]["playergrade"] )
+              self.imgurl =  _cell:getChildByTag(105)  --头像
+              self.imgurl:loadTexture(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":")))
+               self.today_golds =  _cell:getChildByTag(102)  --今日贡献金币
+              self.today_golds:setString( _friendlist[i]["today_golds"] )
+              self.total_golds =  _cell:getChildByTag(101)  --贡献总金币
+              self.total_golds:setString( _friendlist[i]["total_golds"] )
+       
+           end
 
 end
 function InvitefriendsLayer:fun_init(  )
             --以下都是测试
-             local receive_table =  LocalData:Instance():get_reward_friend()
-             if  not receive_table then
+             local friendlist_table =  LocalData:Instance():get_reward_friend_list()
+             if  not friendlist_table then
              	return
              end
-            
-             local _playerinfo = receive_table["playerinfo"]
-   
-            local friendlist_table=LocalData:Instance():getfriendlist()
-            dump(friendlist_table)
+              self._ListView:removeAllItems()
 
-	      local inviter_text=self.Invitefriends:getChildByTag(85):getChildByTag(88)  --邀请的人数
-            inviter_text:setString("已经成功邀请 " .. tostring(#friendlist_table["friendlist"]) .. " 人")
+             local databg_text=self.Invitefriends:getChildByTag(106)  --数据背
 
-            local databg_text=self.Invitefriends:getChildByTag(106)  --数据背景
-
-            local totalgold_text=databg_text:getChildByTag(111)   --总金币
-            totalgold_text:setString("88868")
-
-            local totalexperience_text=databg_text:getChildByTag(112) --总经验
-            totalexperience_text:setString("88868")
-
-            local gold_text=databg_text:getChildByTag(113)  --未领取的金币
-            gold_text:setString(_playerinfo["curgolds"])
-
-            local experience_text=databg_text:getChildByTag(114) --未领取的经验
-            experience_text:setString("88868")
-           
-
+            self.gold_text=databg_text:getChildByTag(113)  --未领取的金币
+            self.gold_text:setString("0")
+            if not friendlist_table["one_points"] then
+              return
+            end
+            self.gold_text:setString(friendlist_table["one_points"])
             if #friendlist_table["friendlist"]==0 then
             	return
             end
-            for i=1,#friendlist_table["friendlist"] do
+            local _friendlist=friendlist_table["friendlist"]
+            for i=1,#_friendlist do
 	          	 self._ListView:pushBackDefaultItem()
-	          	local  cell =  self._ListView:getItem(i-1)
-	            cell:setTag(i)
-	            local  nickname =  call:getChildByTag(94)
-	            nickname:setString(friendlist_table["nickname"])
-	            local  grade =  call:getChildByTag(96)
-	            grade:setString("LV." .. friendlist_table["grade"] )
-	            local  imgurl =  call:getChildByTag(105)
-	            imgurl:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(friendlist_table["imgurl"], "/",":")))
+	          	local  _cell =  self._ListView:getItem(i-1)
+	            _cell:setTag(i)
+	            self.nickname = _cell:getChildByTag(94)  --名字
+	            self.nickname:setString(_friendlist[i]["nickname"])
+	            self.grade =  _cell:getChildByTag(95)  --等级
+	            self.grade:setString( _friendlist[i]["playergrade"] )
+	            self.imgurl =  _cell:getChildByTag(105)  --头像
+	            self.imgurl:loadTexture(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":")))
+                   self.today_golds =  _cell:getChildByTag(102)  --今日贡献金币
+                  self.today_golds:setString( _friendlist[i]["today_golds"] )
+                  self.total_golds =  _cell:getChildByTag(101)  --贡献总金币
+                  self.total_golds:setString( _friendlist[i]["total_golds"] )
 	     
            end
 
@@ -180,15 +201,19 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 		Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
 		print("获取输入码",_num)
 	elseif tag==116 then  --一键获取
-		 local receive_table =  LocalData:Instance():get_reward_friend()
-     dump(receive_table)
-                         local _playerinfo = receive_table["playerinfo"]
-                         if _playerinfo["curgolds"]==0 then
-                         	Server:Instance():prompt("没有金币领取")
-                         	return
-                         end
-                        local friendlist_table=LocalData:Instance():getfriendlist()
-		print("一键获取")
+             if self.gold_text:getString() ==  "0" then
+                 Server:Instance():prompt("没有金币领取")
+                 return
+             end
+		--  local receive_table =  LocalData:Instance():get_reward_friend()
+  --    dump(receive_table)
+  --                        local _playerinfo = receive_table["playerinfo"]
+  --                        if _playerinfo["curgolds"]==0 then
+  --                        	Server:Instance():prompt("没有金币领取")
+  --                        	return
+  --                        end
+  --                       local friendlist_table=LocalData:Instance():getfriendlist()
+		-- print("一键获取")
 		Server:Instance():get_reward_of_friends_levelup()
 	
 	
@@ -200,15 +225,16 @@ function InvitefriendsLayer:onEnter()
                        	            print("初始化")
                       		self:init()
                       end)
-	 -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
-  --                      function()
-  --                     		print("个人信息修改")
-  --                     end)
+	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self,
+                       function()
+                      		print("个人信息修改")
+                          self:friends_levelup(  )
+                      end)
 end
 
 function InvitefriendsLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self)
-     	 -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
+     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self)
 end
 
 return InvitefriendsLayer

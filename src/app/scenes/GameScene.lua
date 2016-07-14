@@ -66,9 +66,9 @@ function GameScene:funinit(  )
       self:originalimage(1)  
       local node = cc.CSLoader:createNode("battlestart.csb")
       local action = cc.CSLoader:createTimeline("battlestart.csb")
-      action:setTimeSpeed(0.2)
+      action:setTimeSpeed(0.25)
       node:runAction(action)
-      action:gotoFrameAndPlay(20,false)
+      action:gotoFrameAndPlay(15,90,false)
       local function stopAction()
                   local kuang=self._csb:getChildByTag(53)
                   local _size=kuang:getContentSize()
@@ -97,7 +97,7 @@ function GameScene:funinit(  )
                     
       end
       local callfunc = cc.CallFunc:create(stopAction)
-      node:runAction(cc.Sequence:create(cc.DelayTime:create(10),callfunc  ))
+      node:runAction(cc.Sequence:create(cc.DelayTime:create(6),callfunc  ))
       self:addChild(node)
 
 end

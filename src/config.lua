@@ -33,6 +33,7 @@ PINLE_VERSION="3.0.0"
  qqqq=0
  dialogdetermine=0  --弹出提示框
 
+
 --四个公有文件引入
 require("app.model.Server.Server")--请求文件
 require("app.model.NotificationCenter")--消息文件
@@ -83,6 +84,9 @@ G_NOTIFICATION_EVENT = {
 	PASSWOEDCHANGE=					"PASSWOEDCHANGE",--注册的验证码
 	WINNERS=					            "WINNERS",--获奖名单 
 	INVITATION_POLITE=					            "INVITATION_POLITE",--邀请有礼
+	FRIENDSLEVELUP=					            "FRIENDSLEVELUP",--一键领取
+	BACKSUPPOR=					            "BACKSUPPOR",--参与卷返回
+	
 }
 
 G_SOUND={

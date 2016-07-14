@@ -216,6 +216,7 @@ function debrisLayer:saw_issuccess()
                      return
                end
                      Server:Instance():setgamerecord(self.adid)
+                      --self:add_reward( )
             return
         end
     end
@@ -228,8 +229,8 @@ function debrisLayer:saw_issuccess()
           Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
           return
      end
-     Server:Instance():setgamerecord(self.adid) 
-   -- self:add_reward( )
+     --Server:Instance():setgamerecord(self.adid) 
+    self:add_reward( )
     --cc.Director:getInstance():popScene()
      
   
@@ -265,12 +266,12 @@ function debrisLayer:add_reward( )
                    self:touch_callback( sender, eventType )             
           end)
 
-
-
-
          local _table=LocalData:Instance():get_setgamerecord()--保存数据
-         dump(_table)
-         local goldspool=_table["goldspool"]
+
+         if   not _table["goldspool"] then
+             return
+         end
+          local goldspool=_table["goldspool"]
          if tonumber(goldspool["getcardamount"]) ==0 then
                jique:setVisible(false)
                jinyan:setVisible(true)
@@ -278,10 +279,6 @@ function debrisLayer:add_reward( )
                jique:setVisible(true)
                jinyan:setVisible(false)
          end
-
-
-
-
 end
 function debrisLayer:touch_callback( sender, eventType )
           local tag=sender:getTag()
@@ -294,10 +291,11 @@ function debrisLayer:touch_callback( sender, eventType )
           if self.Rewardvouchers then
               self.Rewardvouchers:removeFromParent()
           end
-           cc.Director:getInstance():popScene()
-             -- Server:Instance():setgamerecord(self.adid)  
+              cc.Director:getInstance():popScene()
+              --Server:Instance():setgamerecord(self.adid)  
+              Server:Instance():sceneinformation()
       elseif tag==426 then   --再来一局
-        --Server:Instance():setgamerecord(self.adid) 
+        Server:Instance():setgamerecord(self.adid) 
          local _table=LocalData:Instance():get_actid()--保存数
          local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
          cc.Director:getInstance():popScene()
@@ -307,6 +305,9 @@ function debrisLayer:touch_callback( sender, eventType )
               self.Rewardvouchers:removeFromParent()
           end
            cc.Director:getInstance():popScene()
+           --Server:Instance():setgamerecord(self.adid) 
+           Server:Instance():sceneinformation()
+          
        elseif tag==107 then   --再来一局
         --Server:Instance():setgamerecord(self.adid) 
          local _table=LocalData:Instance():get_actid()--保存数

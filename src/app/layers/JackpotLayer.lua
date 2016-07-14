@@ -89,28 +89,43 @@ function JackpotLayer:init(  )
         local advertiPa=self.advertiPv:getChildByTag(152)
 
         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+        self._dian1=self.JackpotScene:getChildByTag(810)
+        self._dian2=self.JackpotScene:getChildByTag(811)
+        self._dian3=self.JackpotScene:getChildByTag(812)
+
         
         local  jaclayer_data=list_table["ads"]
         self.advertiPv:addEventListener(function(sender, eventType  )
                  if eventType == ccui.PageViewEventType.turning then
-                   print("开心")
-                    -- local  _id=jaclayer_data[1]["adid"]
-                    -- Util:scene_controlid("GameScene",{adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
-                    -- LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数据
+                    self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex())
+                      if self.advertiPv:getCurPageIndex()==0 then
+                           self._dian1:setSelected(true)
+                           self._dian2:setSelected(false)
+                           self._dian3:setSelected(false)
+
+                       elseif self.advertiPv:getCurPageIndex()==1 then
+                           self._dian1:setSelected(false)
+                           self._dian2:setSelected(true)
+                           self._dian3:setSelected(false)
+                         elseif self.advertiPv:getCurPageIndex()==2 then
+                          self._dian1:setSelected(false)
+                           self._dian2:setSelected(false)
+                           self._dian3:setSelected(true)
+                      end
                 end
         end)
         local _advertiImg=advertiPa:getChildByTag(155)
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
-
-        if #jaclayer_data>=2 then
-             for i=2,#jaclayer_data do
+        --现在注销是因为后台返回一个图片
+        --if #jaclayer_data>=2 then
+             for i=2, 3  do  --#jaclayer_data
                   local  call=advertiPa:clone() 
-                  local advertiImg=call:getChildByTag(155)
-                  advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[i]["imgurl"], "/",":")))--
+                  -- local advertiImg=call:getChildByTag(155)
+                  -- advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
                   self.advertiPv:addPage(call)   
             end
-        end
+       -- end
        
         --self.PageView_head:scrollToPage(self._index)   --拿到需要索引的图
         
@@ -260,7 +275,7 @@ function JackpotLayer:vouchers(  )
          local goldspool=_table["goldspool"]
          self.be_num:setString(goldspool["playcardamount"])
          self.playcardamount=tonumber(goldspool["playcardamount"])
-
+         
 
 
           if self.coolingtime==-1 or self.playcardamount<=0 then
@@ -420,7 +435,7 @@ end
                          local function removeThis()
                            --self:fun_win()
                            self.goldanimation:setVisible(false)
-                           -- self:Xfun_countdown( )--  新的倒计时
+                            self:Xfun_countdown( )--  新的倒计时
 
                            
                         end
@@ -457,6 +472,7 @@ function JackpotLayer:act_began( )
            Server:Instance():prompt("参与券不够，请先获取参与券")
            return
        end
+
         if self.coolingtime==-1 then
            Server:Instance():prompt("今天次数已完成,请明天再玩")
        end
@@ -634,11 +650,11 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POS
                          print("劲舞团")
                                 self:information()
                       end)
-NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
+NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self,
                        function()
                                 if tonumber(self.coolingtime) ~=  0   and  tonumber(self.coolingtime)~= -1    then  --当coolingtime 不为-1  或 0 时开始进入倒计时
                                   self:Xfun_countdown()
-                                  print("444448888")
+                                 
                                 end
                                self:vouchers(  )
                                
@@ -647,7 +663,7 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self,
                        function()
                          local random_golds= LocalData:Instance():get_getgoldspoolrandomgolds()
-                         dump(random_golds)
+                         --dump(random_golds)
                       end)
 end
 
@@ -656,7 +672,7 @@ function JackpotLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self)
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
-        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
+        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self)
 end
 
 
