@@ -276,8 +276,9 @@ function Util:share()
       file="res/screenshoot.jpg"
   end
 
-   dump(file)
-   local share=cc.UM_Share:createWithShare(file)
+   local login_info=LocalData:Instance():get_user_data()
+   
+   local share=cc.UM_Share:createWithShare(file,login_info["playerid"])
    share:addTo(display.getRunningScene(),1000)
 end
 
