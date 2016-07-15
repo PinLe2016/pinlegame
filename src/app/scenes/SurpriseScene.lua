@@ -211,6 +211,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           	local  cell = activity_ListView:getItem(i-1)
             cell:setTag(i)
             local activity_Panel=cell:getChildByTag(36)
+            activity_Panel:setTouchEnabled(false)
             cell:addTouchEventListener(onImageViewClicked)
             activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             local Nameprize_text=cell:getChildByTag(42)
@@ -222,6 +223,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
             local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
             if  self.ser_status==2 then   --往期获奖名单
+              activity_Panel:setTouchEnabled(true)
                 cell:setTouchEnabled(false)
                  huojiang_bg:setVisible(true)
                  local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
@@ -241,6 +243,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
                end))
             elseif self.ser_status==3 and tonumber(_table1) < 0 then  --我的活动获奖名单
+                  activity_Panel:setTouchEnabled(true)
                     cell:setTouchEnabled(false)
                     huojiang_bg:setVisible(true)
                      local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮

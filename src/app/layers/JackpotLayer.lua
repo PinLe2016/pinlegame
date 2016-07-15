@@ -20,7 +20,6 @@ function JackpotLayer:ctor(params)
          Server:Instance():getgoldspoolbyid(self.id)
          Server:Instance():getgoldspooladlist(self.id)  --
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
-          --Server:Instance():getgoldspoolrandomgolds(self.id,0)
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true
          self.secondOne = 0
