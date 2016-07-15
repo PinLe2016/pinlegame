@@ -96,6 +96,7 @@ function JackpotLayer:init(  )
         local  jaclayer_data=list_table["adlist"]
         self.advertiPv:addEventListener(function(sender, eventType  )
                  if eventType == ccui.PageViewEventType.turning then
+                    self.tpid=jaclayer_data[self.advertiPv:getCurPageIndex()+1]["adid"]
                     self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex())
                       if self.advertiPv:getCurPageIndex()==0 then
                            self._dian1:setSelected(true)
@@ -118,10 +119,11 @@ function JackpotLayer:init(  )
         _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
         --现在注销是因为后台返回一个图片
         --if #jaclayer_data>=2 then
-             for i=2, 3  do  --#jaclayer_data
+        self.tpid=jaclayer_data[1]["adid"]
+             for i=2, #jaclayer_data  do  --
                   local  call=advertiPa:clone() 
-                  -- local advertiImg=call:getChildByTag(155)
-                  -- advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
+                  local advertiImg=call:getChildByTag(155)
+                  advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[i]["imgurl"], "/",":")))--
                   self.advertiPv:addPage(call)   
             end
        -- end
@@ -349,7 +351,7 @@ function JackpotLayer:touch_callback( sender, eventType )
               -- local callfunc = cc.CallFunc:create(stopAction)
               -- self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(100),callfunc  ))
              
-      elseif tag==47 then  --获取参与卷
+      elseif tag==47 then  --获取参与卷  local scene=GameScene.new({adid=self.id,type="surprise",image=" "}) 
              if self._Xscnum then
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
              end
@@ -357,7 +359,7 @@ function JackpotLayer:touch_callback( sender, eventType )
              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
              local  jaclayer_data=list_table["adlist"]
               local  _id=jaclayer_data[1]["adid"]
-              local scene=GameScene.new({adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
+              local scene=GameScene.new({adid= _id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--_id
               cc.Director:getInstance():pushScene(scene)
               LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数
       elseif tag==780 then
@@ -378,6 +380,13 @@ end
                self._obtainbt:setTouchEnabled(true)
                self.coll_bg:setVisible(false)
                self.end_bt:setTouchEnabled(true)
+
+              if self.coolingtime==-1 or self.playcardamount<=0 then
+                 self.ban_t:setVisible(true)
+              else
+                self.ban_t:setVisible(false)
+              end
+
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
            end
 end
@@ -496,7 +505,11 @@ function JackpotLayer:act_began( )
            return
        end
 
-        if tonumber(self.coolingtime)==-1 then
+        if tonumber(self.coolingtime)== -1 then
+             self.ban_t:setVisible(true)
+        else
+              self.ban_t:setVisible(false)
+      
            Server:Instance():prompt("今天次数已完成,请明天再玩")
            return
        end
@@ -518,9 +531,8 @@ function JackpotLayer:act_began( )
             --    self.roleAction:resume()
             --  end
              
-
              self.roleAction:setTimeSpeed(5)
-             Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
+             Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)  --
              self.be_num:setString(tostring(self.playcardamount))
              self.shuiguo1:setVisible(false)
              self.shuiguo2:setVisible(false)
