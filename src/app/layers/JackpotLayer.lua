@@ -399,7 +399,7 @@ function JackpotLayer:Xfun_countdown( )
               return
 
      end
-     if onumber(_tablegods["coolingtime"])< 0  then
+     if tonumber(_tablegods["coolingtime"])< 0  then
                self._rewardbt:setTouchEnabled(true)
                self._obtainbt:setTouchEnabled(true)
                self.coll_bg:setVisible(false)
@@ -496,8 +496,9 @@ function JackpotLayer:act_began( )
            return
        end
 
-        if self.coolingtime==-1 then
+        if tonumber(self.coolingtime)==-1 then
            Server:Instance():prompt("今天次数已完成,请明天再玩")
+           return
        end
       
         if self.playcardamount >0  and self.coolingtime~=-1 then
