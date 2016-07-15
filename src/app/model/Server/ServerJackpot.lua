@@ -71,7 +71,7 @@ function Server:getgoldspoolbyid_callback()
 end
 
 --3.6.4 获取最近10次金币奖池金币奖励接口(getrecentgoldslist)
---count 是 获得多少个 int
+--count 是 获得多少个 ints
 function Server:getrecentgoldslist(count)
        local _params ={}
        _params={
@@ -108,7 +108,7 @@ end
 
 
 function Server:getgoldspoolrandomgolds_callback()
-     -- dump(self.data)
+      dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取金币奖池随机金币奖励失败:" .. self.data.err_msg)
         return

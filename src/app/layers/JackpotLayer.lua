@@ -20,8 +20,7 @@ function JackpotLayer:ctor(params)
          Server:Instance():getgoldspoolbyid(self.id)
          Server:Instance():getgoldspooladlist(self.id)  --
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
-          Server:Instance():getgoldspoolrandomgolds(self.id,0)
-          print("劲舞团")
+          --Server:Instance():getgoldspoolrandomgolds(self.id,0)
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true
          self.secondOne = 0
@@ -95,7 +94,7 @@ function JackpotLayer:init(  )
         self._dian3=self.JackpotScene:getChildByTag(812)
 
         
-        local  jaclayer_data=list_table["ads"]
+        local  jaclayer_data=list_table["adlist"]
         self.advertiPv:addEventListener(function(sender, eventType  )
                  if eventType == ccui.PageViewEventType.turning then
                     self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex())
@@ -173,10 +172,10 @@ function JackpotLayer:init(  )
         self._ListView:setItemModel(self._ListView:getItem(0))
         self._ListView:removeAllItems()
           
-          self:information( )
+          
           self:audition()
           self:wininformation()
-         
+         self:information( )
     
 
 end
@@ -357,7 +356,7 @@ function JackpotLayer:touch_callback( sender, eventType )
              end
              
              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-             local  jaclayer_data=list_table["ads"]
+             local  jaclayer_data=list_table["adlist"]
               local  _id=jaclayer_data[1]["adid"]
               local scene=GameScene.new({adid=_id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})
               cc.Director:getInstance():pushScene(scene)
@@ -397,10 +396,17 @@ function JackpotLayer:Xfun_countdown( )
                self._obtainbt:setTouchEnabled(true)
                self.coll_bg:setVisible(false)
                self.end_bt:setTouchEnabled(true)
-              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
+              --cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
               return
 
-           end
+     end
+     if onumber(_tablegods["coolingtime"])< 0  then
+               self._rewardbt:setTouchEnabled(true)
+               self._obtainbt:setTouchEnabled(true)
+               self.coll_bg:setVisible(false)
+               self.end_bt:setTouchEnabled(true)
+              return
+     end
         self.coll_text:setString(tostring(_tablegods["coolingtime"])  ..    "S")
         self._Xtime=tonumber(_tablegods["coolingtime"])
       end
@@ -635,7 +641,7 @@ end
 --下载图片
 function JackpotLayer:init_pic(  )
           local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-          local  jaclayer_data=list_table["ads"]
+          local  jaclayer_data=list_table["adlist"]
           for i=1,#jaclayer_data do
 	          	local _table={}
 	            _table["imgurl"]=jaclayer_data[i]["imgurl"]
@@ -666,7 +672,7 @@ function JackpotLayer:onEnter()
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
                        function()
                          print("劲舞团")
-                                self:information()
+                               
                       end)
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self,
                        function()
