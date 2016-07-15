@@ -84,6 +84,12 @@ function GameScene:funinit(  )
                       local deblayer= debrisLayer.new({filename=self.image
                      ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=2})
                       self._csb:addChild(deblayer)
+                     --    local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                     --    local  jaclayer_data=list_table["adlist"]
+                     --  local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
+                     -- ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=1,type=self.type})
+                     --  self._csb:addChild(deblayer)
+
                   end
 
                   if  node then
@@ -140,6 +146,8 @@ function GameScene:funsuspended( )
            local continue_bt=panel:getChildByTag(51)  -- 退出
            continue_bt:addTouchEventListener(function(sender, eventType  )
                       --Util:scene_control("MainInterfaceScene")
+                      Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
+                     Server:Instance():sceneinformation()
                       cc.Director:getInstance():popScene()
                end)
            local sound_box=panel:getChildByTag(52)  -- 音效
@@ -182,8 +190,12 @@ function GameScene:originalimage(dex)
            if self.type=="surprise" then
               self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
           elseif self.type=="audition" then
+             -- local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+             -- local  jaclayer_data=list_table["adlist"]
+             --  self.original:loadTexture(tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))
             local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
               self.original:loadTexture(path..tostring(self.image))-- 记住更换原图
+               
           end
            if dex==2 then
               self.original:setTouchEnabled(true)
@@ -239,6 +251,19 @@ function GameScene:tupian(  )
 
 end
 function GameScene:imgurl_download(  )
+        -- if self.type=="audition" then
+        --    local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+        --   local  jaclayer_data=list_table["adlist"]
+        --   for i=1,#jaclayer_data do
+        --       local _table={}
+        --       _table["imgurl"]=jaclayer_data[i]["imgurl"]
+        --         _table["max_pic_idx"]=#jaclayer_data
+        --         _table["curr_pic_idx"]=i
+        --          Server:Instance():actrequest_pic(jaclayer_data[i]["imgurl"],_table) --下载图片
+        --   end
+        --   return
+        -- end
+
          local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
          local _table={}
          local imgurl=list_table[1]["imgurl"]
@@ -257,7 +282,7 @@ function GameScene:onEnter()
         Server:Instance():getactivityadlist(self.adid)--发送请求
     elseif self.type=="audition" then
        self:funinit()
-       print("2222222")
+       --Server:Instance():getgoldspooladlist(self.adid)  --记住一会把消息改成上面的   
     elseif self.type=="daojishi" then
       Server:Instance():getactivityadlist(self.adid)--发送请求
      end
