@@ -27,20 +27,12 @@ function debrisLayer:ctor(params)
         self.col=params.col
         self.count=params.row * params.col
         local path=cc.FileUtils:getInstance():getWritablePath()
-        -- self.fragment_sprite_bg = display.newScale9Sprite(self.filename, self.point.x,self.point.y, cc.size(self._size.width,self._size.height))
-        self.fragment_sprite_bg = display.newSprite(self.filename)
-        self.fragment_sprite_bg:setScaleX(0.703)
-        self.fragment_sprite_bg:setScaleY(0.703)
 
-
-
-        self.fragment_sprite_bg:setAnchorPoint(0.0, 0.0)
         self.content_size = self._size
          self.tp=params.tp
          self.type=params.type
         print("开心  ",self.tp)
-        self:addChild(self.fragment_sprite_bg)
-        self.fragment_sprite_bg:setOpacity(0)
+
 
         self.fragment_table={}
         self.fragment_poins={}
@@ -165,7 +157,7 @@ function debrisLayer:touch_event_move(event,clipnode)
         clipnode:setPosition(pos_x, pos_y)        
 end
 function debrisLayer:sort_sure()
-    local po =self._size-- self.fragment_sprite_bg:getContentSize()
+    local po =self._size
     dump(po)
     local pos_x, pos_y = self.point.x,self.point.y
     local dex = 1
@@ -298,7 +290,6 @@ function debrisLayer:touch_callback( sender, eventType )
               Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
               Server:Instance():sceneinformation()
       elseif tag==426 then   --再来一局
-        Server:Instance():setgamerecord(self.adid) 
          local _table=LocalData:Instance():get_actid()--保存数
          local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
          cc.Director:getInstance():popScene()
