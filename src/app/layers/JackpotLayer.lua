@@ -671,6 +671,7 @@ function JackpotLayer:onEnter()
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
                        function()
                          print("劲舞团")
+                         self:information( )
                                
                       end)
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self,
