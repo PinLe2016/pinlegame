@@ -177,8 +177,9 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	if tag==82 then --返回
 		self:removeFromParent()
 	elseif tag==117 then
-		self.Friendsstep:setVisible(true)
-		self.m_friend:setVisible(true)
+		-- self.Friendsstep:setVisible(true)
+		-- self.m_friend:setVisible(true)
+    Util:share()
 	elseif tag==118 then
 		self.Friendsstep:setVisible(true)
 		self.m_feedback:setVisible(true)

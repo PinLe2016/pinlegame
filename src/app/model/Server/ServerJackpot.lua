@@ -110,7 +110,7 @@ end
 function Server:getgoldspoolrandomgolds_callback()
       dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("获取金币奖池随机金币奖励失败:" .. self.data.err_msg)
+        -- self:show_float_message("获取金币奖池随机金币奖励失败:" .. self.data.err_msg)
         return
     end
     LocalData:Instance():set_getgoldspoolrandomgolds(self.data)--保存数据
