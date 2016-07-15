@@ -267,7 +267,7 @@ end
 function Server:validateactivitycode_callback()
     dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("改为活动码无效")
+        self:show_float_message("活动码无效")
         return
     end
 
