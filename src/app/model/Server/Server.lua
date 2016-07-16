@@ -116,7 +116,7 @@ function Server:request_http(command , params)
     end
     -- dump(self.login_url)
     local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
-    print("---url---",login_url,post_md5)
+    -- print("---url---",login_url,post_md5)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, login_url , "POST")
 
     request:setPOSTData(post_md5)
@@ -333,7 +333,7 @@ end
 --奖池详情界面
 function Server:jackpotlayer_pic(url,command) 
     self.pic_url=url
-    dump(self.pic_url)
+    -- dump(self.pic_url)
     local request = network.createHTTPRequest(function(event) self:jackpotlayer_request_finished_pic(event,command) end, url , "GET")
     request:setTimeout(0.5)
     request:start()
@@ -353,7 +353,7 @@ function Server:jackpotlayer_request_finished_pic(event , command)
         print("response status code : " .. code)
         return
     end
-    --dump(command)
+
     local dataRecv = request:getResponseData()
     -- local fileObject = self.download_file_list[self.download_progress]
     local str=Util:sub_str(command["imageurl"], "/",":")    
