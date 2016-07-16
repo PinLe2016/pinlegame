@@ -293,7 +293,7 @@ function debrisLayer:touch_callback( sender, eventType )
       elseif tag==426 then   --再来一局
          local _table=LocalData:Instance():get_actid()--保存数
          local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
-         --cc.Director:getInstance():popScene()
+         cc.Director:getInstance():popScene()
          cc.Director:getInstance():pushScene(scene)
        elseif tag==106 then   --返回奖池
            if self.Rewardvouchers then
