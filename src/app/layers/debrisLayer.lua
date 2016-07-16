@@ -215,6 +215,7 @@ function debrisLayer:saw_issuccess()
                     Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                      return
                end
+               print("22223214888   ",self.adid)
                      Server:Instance():setgamerecord(self.adid)
                       --self:add_reward( )
             return
@@ -298,7 +299,7 @@ function debrisLayer:touch_callback( sender, eventType )
               Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
               Server:Instance():sceneinformation()
       elseif tag==426 then   --再来一局
-        Server:Instance():setgamerecord(self.adid) 
+        --Server:Instance():setgamerecord(self.adid) 
          local _table=LocalData:Instance():get_actid()--保存数
          local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
          cc.Director:getInstance():popScene()

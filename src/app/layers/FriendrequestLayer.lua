@@ -46,54 +46,58 @@ function FriendrequestLayer:init(  )
        
        local _list=self.Friendrequest:getChildByTag(1291):getChildByTag(1292)
 
-        local receive_bt1=_list:getChildByTag(129):getChildByTag(135)  --领取1
-	receive_bt1:addTouchEventListener(function(sender, eventType)
+      self.receive_bt1=_list:getChildByTag(129):getChildByTag(135)  --领取1
+	self.receive_bt1:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
-       local receive_bt2=_list:getChildByTag(130):getChildByTag(138)--领取2
-	receive_bt2:addTouchEventListener(function(sender, eventType)
+      self.receive_bt2=_list:getChildByTag(130):getChildByTag(138)--领取2
+	self.receive_bt2:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
-       local receive_bt3=_list:getChildByTag(131):getChildByTag(141)--领取3
-	receive_bt3:addTouchEventListener(function(sender, eventType)
+       self.receive_bt3=_list:getChildByTag(131):getChildByTag(141)--领取3
+	self.receive_bt3:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
-       local receive_bt4=_list:getChildByTag(132):getChildByTag(144)--领取4
-	receive_bt4:addTouchEventListener(function(sender, eventType)
+      self.receive_bt4=_list:getChildByTag(132):getChildByTag(144)--领取4
+	self.receive_bt4:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 	
        local _listble=self.Friendrequest:getChildByTag(1291):getChildByTag(1590)
 
-        local receive_bt5=_listble:getChildByTag(1591):getChildByTag(1599)  --领取5
-	receive_bt5:addTouchEventListener(function(sender, eventType)
+      self.receive_bt5=_listble:getChildByTag(1591):getChildByTag(1599)  --领取5
+	self.receive_bt5:addTouchEventListener(function(sender, eventType)
+	       self:touch_callback(sender, eventType)
+       end)
+
+      self.receive_bt6=_listble:getChildByTag(1592):getChildByTag(1600)--领取6
+	self.receive_bt6:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
-       local receive_bt6=_listble:getChildByTag(1592):getChildByTag(1600)--领取6
-	receive_bt6:addTouchEventListener(function(sender, eventType)
+      self.receive_bt7=_listble:getChildByTag(1593):getChildByTag(1601)--领取7
+	self.receive_bt7:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
-       local receive_bt7=_listble:getChildByTag(1593):getChildByTag(1601)--领取7
-	receive_bt7:addTouchEventListener(function(sender, eventType)
+      self.receive_bt8=_listble:getChildByTag(1594):getChildByTag(1602)--领取8
+	self.receive_bt8:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
-
-       local receive_bt8=_listble:getChildByTag(1594):getChildByTag(1602)--领取8
-	receive_bt8:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-       self.managerlist=self.friendlist_num["managerlist"]  --tag  0可以领取  1已经领取   2好友个数不到不可领取
+       self.managerlist=self.friendlist_num["managerlist"]  
        local _table = {3,5,10,20,30,50,80,100}
-       local lo_img={receive_bt1,receive_bt2,receive_bt3,receive_bt4,receive_bt5,receive_bt6,receive_bt7,receive_bt8}
-       for i=1,#self.managerlist do
-         if self.managerlist[i]["tag"]==1 then
-                lo_img[i]:setTouchEnabled(true)
+
+       local lo_img={self.receive_bt1,self.receive_bt2,self.receive_bt3,self.receive_bt4,self.receive_bt5,self.receive_bt6,self.receive_bt7,self.receive_bt8}
+       for i=1,#self.managerlist do    --   tag
+          for j=1,#_table do
+            if self.managerlist[i]["friendscount"]==_table[j] then  --
+                lo_img[j]:setTouchEnabled(true)
         end
+          end
+         
        end
 
       
@@ -166,33 +170,68 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		return
 	end
 	local tag=sender:getTag()
+     local lo_img={self.receive_bt1,self.receive_bt2,self.receive_bt3,self.receive_bt4,self.receive_bt5,self.receive_bt6,self.receive_bt7,self.receive_bt8}
+     local friendlist_num=LocalData:Instance():get_reward_setting_list()  
+     local managerlist=self.friendlist_num["managerlist"]
+     local _table = {3,5,10,20,30,50,80,100}
+
+   
+
+
+--判断是否领取
+    for i=1,#_table do
+        for j=1,#managerlist do
+
+            if tag==lo_img[i]:getTag()  and  self.managerlist[j]["friendscount"]==_table[i]   then  --
+               if tonumber(managerlist[j]["tag"]) ==1 then   --tag  0可以领取  1已经领取   2好友个数不到不可领取
+                    Server:Instance():prompt("您已经领取过了")
+                     return
+              elseif tonumber(managerlist[j]["tag"])==2 then   --tag  0可以领取  1已经领取   2好友个数不到不可领取
+                    Server:Instance():prompt("您好友个数不到,不可领取")
+                    return
+              end
+          end
+
+        end
+    end
+
+ 
+
 	if tag==123 then --返回
 		print("fanh ")
 		self:removeFromParent()
 	elseif tag==135 then
 		print("hahahdfsfdsfdsf 1")
             Server:Instance():set_friend_reward_setting(self.managerlist[1]["Id"])--奖励
+            Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==138 then
 		print("hahahdfsfdsfdsf 2")
             Server:Instance():set_friend_reward_setting(self.managerlist[2]["Id"])--奖励
+            Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==141 then
 		print("hahahdfsfdsfdsf 3")
             Server:Instance():set_friend_reward_setting(self.managerlist[3]["Id"])--奖励
+            Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==144 then
 		print("hahahdfsfdsfdsf 4")
             Server:Instance():set_friend_reward_setting(self.managerlist[4]["Id"])--奖励
+            Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==1599 then
 		print("hahahdfsfdsfdsf 5")
             Server:Instance():set_friend_reward_setting(self.managerlist[5]["Id"])--奖励
+            Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==1600 then
 		print("hahahdfsfdsfdsf 6")
             Server:Instance():set_friend_reward_setting(self.managerlist[6]["Id"])--奖励
+            Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==1601 then
 		print("hahahdfsfdsfdsf 7")
             Server:Instance():set_friend_reward_setting(self.managerlist[7]["Id"])--奖励
+            Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==1602 then
 		print("hahahdfsfdsfdsf 8")
             Server:Instance():set_friend_reward_setting(self.managerlist[8]["Id"])--奖励
+            Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==161 then  --好友邀请
 		-- self.Friendsstep:setVisible(true)
 		-- self.m_friend:setVisible(true)

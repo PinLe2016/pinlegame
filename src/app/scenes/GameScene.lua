@@ -81,14 +81,17 @@ function GameScene:funinit(  )
                      ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=1,type=self.type})
                       self._csb:addChild(deblayer)
                   elseif self.type=="audition" then
-                      local deblayer= debrisLayer.new({filename=self.image
-                     ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=2})
-                      self._csb:addChild(deblayer)
-                     --    local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-                     --    local  jaclayer_data=list_table["adlist"]
-                     --  local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
-                     -- ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=1,type=self.type})
+
+                     --  local deblayer= debrisLayer.new({filename=self.image
+                     -- ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=2})
                      --  self._csb:addChild(deblayer)
+                        local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                        local  jaclayer_data=list_table["adlist"]
+
+
+                      local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
+                     ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type})   --self.adid
+                      self._csb:addChild(deblayer)
 
                   end
 
@@ -190,11 +193,15 @@ function GameScene:originalimage(dex)
            if self.type=="surprise" then
               self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
           elseif self.type=="audition" then
-             -- local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-             -- local  jaclayer_data=list_table["adlist"]
-             --  self.original:loadTexture(tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))
-            local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-              self.original:loadTexture(path..tostring(self.image))-- 记住更换原图
+
+             local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+             local  jaclayer_data=list_table["adlist"]
+             local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+             print("6666666666555 .",tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))
+              self.original:loadTexture(path  ..  tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))
+
+            -- local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+            --   self.original:loadTexture(path..tostring(self.image))-- 记住更换原图
                
           end
            if dex==2 then
@@ -251,18 +258,18 @@ function GameScene:tupian(  )
 
 end
 function GameScene:imgurl_download(  )
-        -- if self.type=="audition" then
-        --    local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-        --   local  jaclayer_data=list_table["adlist"]
-        --   for i=1,#jaclayer_data do
-        --       local _table={}
-        --       _table["imgurl"]=jaclayer_data[i]["imgurl"]
-        --         _table["max_pic_idx"]=#jaclayer_data
-        --         _table["curr_pic_idx"]=i
-        --          Server:Instance():actrequest_pic(jaclayer_data[i]["imgurl"],_table) --下载图片
-        --   end
-        --   return
-        -- end
+        if self.type=="audition" then
+           local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+          local  jaclayer_data=list_table["adlist"]
+          for i=1,#jaclayer_data do
+              local _table={}
+              _table["imgurl"]=jaclayer_data[i]["imgurl"]
+                _table["max_pic_idx"]=#jaclayer_data
+                _table["curr_pic_idx"]=i
+                 Server:Instance():actrequest_pic(jaclayer_data[i]["imgurl"],_table) --下载图片
+          end
+          return
+        end
 
          local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
          local _table={}
@@ -281,8 +288,9 @@ function GameScene:onEnter()
        print("1111111111    ",self.adid)
         Server:Instance():getactivityadlist(self.adid)--发送请求
     elseif self.type=="audition" then
-       self:funinit()
-       --Server:Instance():getgoldspooladlist(self.adid)  --记住一会把消息改成上面的   
+       --self:funinit()
+       print("22223214   ",self.adid)
+       Server:Instance():getgoldspooladlist(self.adid)  --记住一会把消息改成上面的   
     elseif self.type=="daojishi" then
       Server:Instance():getactivityadlist(self.adid)--发送请求
      end
@@ -302,7 +310,7 @@ function GameScene:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self,
                        function()
                            print("完成下载图片")
-                           if self.type=="surprise" then
+                           if self.type=="surprise"  or  self.type=="audition"   then
                                 self:funinit()
                             elseif self.type=="daojishi" then
                                  self:tupian(  )

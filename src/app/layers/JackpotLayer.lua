@@ -16,9 +16,11 @@ GameScene = require("app.scenes.GameScene")--惊喜吧
 function JackpotLayer:ctor(params)
          self.is_cooltime=true
          self.id=params.id
+         self.adownerid=params.adownerid
           LocalData:Instance():set_user_oid(self.id)
          Server:Instance():getgoldspoolbyid(self.id)
-         Server:Instance():getgoldspooladlist(self.id)  --
+         --Server:Instance():getgoldspooladlist(self.id)  --现在改成获取参与卷接口  禁止
+         Server:Instance():getgoldspoollist({pagesize=1,pageno=1,adownerid = self.adownerid})
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true
@@ -87,16 +89,21 @@ function JackpotLayer:init(  )
         self.advertiPv=self.JackpotScene:getChildByTag(151)
         local advertiPa=self.advertiPv:getChildByTag(152)
 
-        local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-        self._dian1=self.JackpotScene:getChildByTag(810)
+        --local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+        local  list_table=LocalData:Instance():get_getgoldspoollist()
+        --以下三个禁
+        self._dian1=self.JackpotScene:getChildByTag(810)  
         self._dian2=self.JackpotScene:getChildByTag(811)
         self._dian3=self.JackpotScene:getChildByTag(812)
 
+        self._jiliang=self.JackpotScene:getChildByTag(951)
+
         
-        local  jaclayer_data=list_table["adlist"]
+        local  jaclayer_data=list_table["goldspools"]
         self.advertiPv:addEventListener(function(sender, eventType  )
                  if eventType == ccui.PageViewEventType.turning then
-                    self.tpid=jaclayer_data[self.advertiPv:getCurPageIndex()+1]["adid"]
+                    self.tpid=jaclayer_data[self.advertiPv:getCurPageIndex()+1]["id"]
+                    self._jiliang:setString( tostring(self.advertiPv:getCurPageIndex()+1)  ..  "/" ..  tostring(#jaclayer_data))
                     self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex())
                       if self.advertiPv:getCurPageIndex()==0 then
                            self._dian1:setSelected(true)
@@ -116,14 +123,15 @@ function JackpotLayer:init(  )
         end)
         local _advertiImg=advertiPa:getChildByTag(155)
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-        _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")))--
+        _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
         --现在注销是因为后台返回一个图片
         --if #jaclayer_data>=2 then
-        self.tpid=jaclayer_data[1]["adid"]
+        self.tpid=jaclayer_data[1]["id"]
+         self._jiliang:setString("1/"  ..  tostring(#jaclayer_data))
              for i=2, #jaclayer_data  do  --
                   local  call=advertiPa:clone() 
                   local advertiImg=call:getChildByTag(155)
-                  advertiImg:loadTexture(tostring(Util:sub_str(jaclayer_data[i]["imgurl"], "/",":")))--
+                  advertiImg:loadTexture(path .. tostring(Util:sub_str(jaclayer_data[i]["imageurl"], "/",":")))--imgurl
                   self.advertiPv:addPage(call)   
             end
        -- end
@@ -352,16 +360,20 @@ function JackpotLayer:touch_callback( sender, eventType )
               -- self.JackpotScene:runAction(cc.Sequence:create(cc.DelayTime:create(100),callfunc  ))
              
       elseif tag==47 then  --获取参与卷  local scene=GameScene.new({adid=self.id,type="surprise",image=" "}) 
-             if self._Xscnum then
-               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
+             if not self._Xscnum then
+
+            else
+              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
              end
              
-             local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-             local  jaclayer_data=list_table["adlist"]
-              local  _id=jaclayer_data[1]["adid"]
-              local scene=GameScene.new({adid= _id,type="audition",image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--_id
+             -- local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+             -- local  jaclayer_data=list_table["adlist"]
+             -- local  _id=jaclayer_data[1]["adid"]
+
+              local scene=GameScene.new({adid= self.tpid,type="audition",image=""})--_id   tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
               cc.Director:getInstance():pushScene(scene)
-              LocalData:Instance():set_actid({act_id=_id,image=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))})--保存数
+              LocalData:Instance():set_actid({act_id=self.tpid,image=" "})--保存数
+
       elseif tag==780 then
               self:fun_win()
               self.goldanimation:setVisible(false)
@@ -652,15 +664,28 @@ function JackpotLayer:update(dt)
 end
 --下载图片
 function JackpotLayer:init_pic(  )
-          local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-          local  jaclayer_data=list_table["adlist"]
-          for i=1,#jaclayer_data do
-	          	local _table={}
-	            _table["imgurl"]=jaclayer_data[i]["imgurl"]
-         	            _table["max_pic_idx"]=#jaclayer_data
-         	            _table["curr_pic_idx"]=i
-                       Server:Instance():jackpotlayer_pic(jaclayer_data[i]["imgurl"],_table) --下载图片
+          -- local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+          -- local  jaclayer_data=list_table["adlist"]
+          -- for i=1,#jaclayer_data do
+	         --  	local _table={}
+	         --    _table["imgurl"]=jaclayer_data[i]["imgurl"]
+         	--             _table["max_pic_idx"]=#jaclayer_data
+         	--             _table["curr_pic_idx"]=i
+          --              Server:Instance():jackpotlayer_pic(jaclayer_data[i]["imgurl"],_table) --下载图片
+          -- end
+
+         --以下是测试
+          local  list_table=LocalData:Instance():get_getgoldspoollist()
+          local  jac_data=list_table["goldspools"]
+          for i=1,#jac_data do
+              local _table={}
+              _table["imageurl"]=jac_data[i]["imageurl"]
+                      _table["max_pic_idx"]=#jac_data
+                      _table["curr_pic_idx"]=i
+                       Server:Instance():jackpotlayer_pic(jac_data[i]["imageurl"],_table) --下载图片
           end
+
+
          
 
 end

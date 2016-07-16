@@ -54,6 +54,15 @@ function LocalData:get_user_oid()
 	local user_id=cc.UserDefault:getInstance():getStringForKey("userid"," ")
 	return user_id or nil
 end
+function LocalData:set_user_adownerid(adownerid)
+	cc.UserDefault:getInstance():setStringForKey("adownerid" ,adownerid)
+end
+
+function LocalData:get_user_adownerid()
+	local adownerid=cc.UserDefault:getInstance():getStringForKey("adownerid"," ")
+	return adownerid or nil
+end
+
 
 
 

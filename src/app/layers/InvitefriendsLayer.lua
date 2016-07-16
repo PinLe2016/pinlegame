@@ -93,7 +93,7 @@ function InvitefriendsLayer:fun_init(  )
             if not friendlist_table["one_points"] then
               return
             end
-            self.gold_text:setString(friendlist_table["one_points"])
+            self.gold_text:setString(friendlist_table["golds"])
             if #friendlist_table["friendlist"]==0 then
             	return
             end

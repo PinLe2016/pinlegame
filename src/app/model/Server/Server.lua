@@ -353,10 +353,10 @@ function Server:jackpotlayer_request_finished_pic(event , command)
         print("response status code : " .. code)
         return
     end
-    dump(command)
+    --dump(command)
     local dataRecv = request:getResponseData()
     -- local fileObject = self.download_file_list[self.download_progress]
-    local str=Util:sub_str(command["imgurl"], "/",":")    
+    local str=Util:sub_str(command["imageurl"], "/",":")    
     -- dump(str)--"res/pic/".."res/"..
     local file_path = self.writablePath.."down_pic/"..str
     

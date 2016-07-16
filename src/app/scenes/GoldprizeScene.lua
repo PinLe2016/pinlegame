@@ -33,7 +33,7 @@ function GoldprizeScene:init(  )
     	self.jackpot_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
                         self.sur_pageno=self.sur_pageno+1
-                        Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno})  --发送消息
+                        Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid = ""})  --发送消息
                                  return
                       end
 	end))
@@ -67,10 +67,11 @@ function GoldprizeScene:data_init(  )
 
 		        local bg1=cell:getChildByTag(63)
 		        local bg1_image=bg1:getChildByTag(121)
+		        local bg1_jibiao=bg1:getChildByTag(986)
 		        local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 				bg1_image:loadTexture(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
 				bg1_image:setTag(2*i-1)
-
+				bg1_jibiao:setString(tostring(2*i-1))
 				bg1_image:addTouchEventListener(function(sender, eventType  )
 						if eventType ~= ccui.TouchEventType.ended then
 								return
@@ -78,7 +79,7 @@ function GoldprizeScene:data_init(  )
 
 						local tag=sender:getTag()
 
-						local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"]})
+						local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"] })
 
 						self:addChild(jackpotlayer)
 
@@ -106,9 +107,11 @@ function GoldprizeScene:data_init(  )
 			bg2:setVisible(true)
 
 			local bg2_img=bg2:getChildByTag(91)
+			local bg2_jiaobiao=bg2:getChildByTag(985)
 			local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 			bg2_img:loadTexture(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
 			bg2_img:setTag(2*i)
+			bg2_jiaobiao:setString(tostring(2*i))
 			bg2_img:addTouchEventListener(function(sender, eventType  )
 
 					if eventType ~= ccui.TouchEventType.ended then
@@ -116,7 +119,7 @@ function GoldprizeScene:data_init(  )
 					end
 
 					local tag=sender:getTag()
-					local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"]})
+					local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"],  adownerid= jac_data[2*i-1]["adownerid"] })
 
 				    self:addChild(jackpotlayer)
 			end)
@@ -157,14 +160,24 @@ function GoldprizeScene:touch_callback( sender, eventType )
 	if tag==57 then --返回
 		 Util:scene_control("MainInterfaceScene")
 	elseif tag==58 then --说明
-		print("说明")
+		 self:fun_prizepoolules()
+	elseif tag==1044 then
+		self.Prizepoolules:removeFromParent()
+
 	end
 end
-
+function GoldprizeScene:fun_prizepoolules()
+	self.Prizepoolules = cc.CSLoader:createNode("Prizepoolules.csb")  --邀请好友排行榜
+             self:addChild(self.Prizepoolules)
+             local back=self.Prizepoolules:getChildByTag(1044)
+	 back:addTouchEventListener(function(sender, eventType  )
+		self:touch_callback(sender, eventType)
+	end)
+end
 function GoldprizeScene:onEnter()
 	--audio.playMusic(G_SOUND["GAMEBG"],true)
 	Util:player_music("GAMEBG",true )
-  Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno})  --发送消息
+  Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid =""})  --发送消息
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self,
                        function()

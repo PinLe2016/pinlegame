@@ -8,19 +8,22 @@
 
 function Server:getgoldspoollist(params)
        local _params = params
-       -- dump(_params)
-   
+       self._adownerid=params.adownerid
     self:request_http("getgoldspoollist" , _params ); 
 end
 
 
 function Server:getgoldspoollist_callback()
-      --dump(self.data)
+      dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
     end
     LocalData:Instance():set_getgoldspoollist(self.data)--保存数据
+    if self._adownerid ~= "" then
+         NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST)
+         return
+    end
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    
 end
@@ -43,7 +46,7 @@ function Server:getgoldspooladlist_callback()
         return
     end
     LocalData:Instance():set_getgoldspoollistbale(self.data)--保存数据
-    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST)
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE)  --这个已经废了JACKPOTLIST_INFOR_POST
    
 end
 
