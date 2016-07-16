@@ -382,7 +382,7 @@ function JackpotLayer:touch_callback( sender, eventType )
 end
 
  function JackpotLayer:Xcountdown()
-
+ print("1111112333")
            self._Xtime=self._Xtime-1
            self.coll_text:setString(tostring(self._Xtime) .. "S")
            if self._Xtime==0 then
@@ -443,6 +443,7 @@ end
 
 --劲舞团减速
  function JackpotLayer:slowdown()
+         print("1111112")
                self.slowdown_num=self.slowdown_num-0.5
                self.roleAction:setTimeSpeed(self.slowdown_num)
                if self.slowdown_num<=0.5 then

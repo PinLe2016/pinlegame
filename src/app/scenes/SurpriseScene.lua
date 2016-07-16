@@ -80,7 +80,7 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
                       if eventType  ==6 then
                         self.sur_pageno=self.sur_pageno+1
                         Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)   --下拉刷新功能
-                        self:unscheduleUpdate()
+                        self:scheduleUpdate()
                                  return
                       end
      end))
@@ -179,6 +179,20 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           
            
           local  function onImageViewClicked(sender, eventType)
+                   if eventType ~= ccui.TouchEventType.ended then
+                               return
+                    end
+
+                   local i=sender:getTag()
+                   local  sup_data=self.list_table["game"]
+                   local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
+                    if  self.ser_status==2   or self.ser_status==3 and tonumber(_table1) < 0  then
+                          local  win_id=  sup_data[sender:getTag()]["id"]
+                            Server:Instance():getactivitywinners(win_id)
+                            self:_winners( )
+                            return
+                   end
+
                     
                     if eventType == ccui.TouchEventType.ended then
                            self:unscheduleUpdate()
@@ -211,7 +225,6 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           	local  cell = activity_ListView:getItem(i-1)
             cell:setTag(i)
             local activity_Panel=cell:getChildByTag(36)
-            activity_Panel:setTouchEnabled(false)
             cell:addTouchEventListener(onImageViewClicked)
             activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             local Nameprize_text=cell:getChildByTag(42)
@@ -223,13 +236,13 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
             local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
             if  self.ser_status==2 then   --往期获奖名单
-              activity_Panel:setTouchEnabled(true)
-                cell:setTouchEnabled(false)
+               
                  huojiang_bg:setVisible(true)
                  local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
                  if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
-                    huojiang_bt:setColor(cc.c3b(100, 100, 100))
-                    huojiang_bt:setTouchEnabled(false)
+                    cell:setTouchEnabled(false)  --禁止点击
+                    huojiang_bg:setColor(cc.c3b(100, 100, 100))
+                    huojiang_bg:setTouchEnabled(false)
                  end
                  
                  huojiang_bt:setTag(i)
@@ -243,14 +256,13 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
                end))
             elseif self.ser_status==3 and tonumber(_table1) < 0 then  --我的活动获奖名单
-                  activity_Panel:setTouchEnabled(true)
-                    cell:setTouchEnabled(false)
                     huojiang_bg:setVisible(true)
                      local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
                      huojiang_bt:setTag(i)
                       if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
-                        huojiang_bt:setColor(cc.c3b(100, 100, 100))
-                        huojiang_bt:setTouchEnabled(false)
+                         cell:setTouchEnabled(false)  --禁止点击
+                        huojiang_bg:setColor(cc.c3b(100, 100, 100))
+                        huojiang_bg:setTouchEnabled(false)
                      end
 
                     huojiang_bt:addTouchEventListener((function(sender, eventType  )
