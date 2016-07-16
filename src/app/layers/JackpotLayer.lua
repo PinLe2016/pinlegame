@@ -520,11 +520,10 @@ function JackpotLayer:act_began( )
 
         if tonumber(self.coolingtime)== -1 then
              self.ban_t:setVisible(true)
+              Server:Instance():prompt("今天次数已完成,请明天再玩")
+              return
         else
               self.ban_t:setVisible(false)
-      
-           Server:Instance():prompt("今天次数已完成,请明天再玩")
-           return
        end
       
         if self.playcardamount >0  and self.coolingtime~=-1 then
