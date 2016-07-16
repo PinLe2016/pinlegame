@@ -588,7 +588,7 @@ function PerInformationLayer:head( )
         for i=1,15 do
             local  call=Panel:clone() 
             local head_image=call:getChildByTag(86)
-            head_image:loadTexture( "httpgame.pinlegame.comheadheadicon_" .. tostring(i) .. ".jpg")--初始化头像
+            head_image:loadTexture( "png/httpgame.pinlegame.comheadheadicon_" .. tostring(i) .. ".jpg")--初始化头像
             self.PageView_head:addPage(call)   --添加头像框
         end
         self.PageView_head:scrollToPage(self._index)   --拿到需要索引的图

@@ -71,7 +71,7 @@ function GoldprizeScene:data_init(  )
 		        local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 				bg1_image:loadTexture(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
 				bg1_image:setTag(2*i-1)
-				bg1_jibiao:setString(tostring(2*i-1))
+				bg1_jibiao:setString(tostring(jac_data[2*i-1]["goldspoolcount"]))
 				bg1_image:addTouchEventListener(function(sender, eventType  )
 						if eventType ~= ccui.TouchEventType.ended then
 								return
@@ -111,7 +111,7 @@ function GoldprizeScene:data_init(  )
 			local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 			bg2_img:loadTexture(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
 			bg2_img:setTag(2*i)
-			bg2_jiaobiao:setString(tostring(2*i))
+			bg2_jiaobiao:setString(tostring(jac_data[2*i]["goldspoolcount"]))
 			bg2_img:addTouchEventListener(function(sender, eventType  )
 
 					if eventType ~= ccui.TouchEventType.ended then
