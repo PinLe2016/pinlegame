@@ -203,6 +203,7 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 
 	if tag==123 then --返回
 		print("fanh ")
+          Util:scene_control("MainInterfaceScene")
 		self:removeFromParent()
 	elseif tag==135 then
 		print("hahahdfsfdsfdsf 1")
