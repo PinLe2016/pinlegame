@@ -208,7 +208,7 @@ function debrisLayer:saw_issuccess()
                      return
                end
                print("22223214888   ",self.adid)
-                     Server:Instance():setgamerecord(self.adid)
+                     --Server:Instance():setgamerecord(self.adid)
                       --self:add_reward( )
             return
         end
@@ -222,8 +222,8 @@ function debrisLayer:saw_issuccess()
           Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
           return
      end
-     --Server:Instance():setgamerecord(self.adid) 
-    self:add_reward( )
+     Server:Instance():setgamerecord(self.adid)
+    --self:add_reward( )
     --cc.Director:getInstance():popScene()
      
   
