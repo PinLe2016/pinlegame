@@ -537,11 +537,12 @@ function JackpotLayer:act_began( )
             self.roleAction:gotoFrameAndPlay(0,75, true)
             self._rewardbt:setTouchEnabled(false)
             self._obtainbt:setTouchEnabled(false)
-            --  if  self.cunum==0 then
-            --       
-            -- else
-            --    self.roleAction:resume()
-            --  end
+            if self._doublecardamount>0   and self.is_double==1 then
+                
+               self._doublecardamount= self._doublecardamount-1
+               self.car_num:setString(tostring(self._doublecardamount))
+
+            end
              
              self.roleAction:setTimeSpeed(5)
              Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)  --
