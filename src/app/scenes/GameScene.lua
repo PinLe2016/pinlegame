@@ -150,8 +150,11 @@ function GameScene:funsuspended( )
            local continue_bt=panel:getChildByTag(51)  -- 退出
            continue_bt:addTouchEventListener(function(sender, eventType  )
                       --Util:scene_control("MainInterfaceScene")
-                      Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
-                     Server:Instance():sceneinformation()
+                      if self.type=="audition" then
+                          Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
+                         Server:Instance():sceneinformation()
+                      end
+                    
                       cc.Director:getInstance():popScene()
                end)
            local sound_box=panel:getChildByTag(52)  -- 音效
