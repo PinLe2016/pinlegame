@@ -77,6 +77,7 @@ function GameScene:funinit(  )
                   point.y=kuang:getPositionY()
                    if self.type=="surprise" then
                       local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+
                       local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
                      ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=1,type=self.type})
                       self._csb:addChild(deblayer)
@@ -191,7 +192,8 @@ function GameScene:originalimage(dex)
            self.original=self._originalimage:getChildByTag(118)
 
            if self.type=="surprise" then
-              self.original:loadTexture(tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
+              local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+              self.original:loadTexture(path..tostring(Util:sub_str(list_table[1]["imgurl"], "/",":")))-- 记住更换原图
           elseif self.type=="audition" then
 
              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
