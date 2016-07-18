@@ -37,11 +37,20 @@ function PerInformationLayer:add_init(  )
                  userdt["districtame"]=userdatainit["districtame"]
                  userdt["registertime"]=userdatainit["registertime"]  
                  LocalData:Instance():set_userdata(userdt)
+                dump(userdatainit)
 
-                
+                local haerd=userdatainit["imageUrl"]
+               
+            
+                 
                     self.image_head1=self.showinformation:getChildByTag(1401)  --头像
-                    self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
-                    self.image_head1:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+                    self._index=string.sub(haerd,-5,-5)--string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
+                    -- dump(LocalData:Instance():get_user_head())
+                    dump(tonumber(self._index))
+                   
+                    local haer=string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
+                     dump(haer)
+                    self.image_head1:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
                     
 
 
@@ -368,9 +377,10 @@ function PerInformationLayer:perinformation_init(  )
 
     local  bg=self.Perinformation:getChildByTag(26)
     self.image_head=bg:getChildByTag(67)  --头像
-        self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
+        -- self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
         dump(LocalData:Instance():get_user_head())
-        self.image_head:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+        local haer=string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
+        self.image_head:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         
 
 
