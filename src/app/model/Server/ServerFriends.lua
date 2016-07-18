@@ -66,7 +66,10 @@ function Server:setinvitecode(invitecode)
             invitecode=invitecode ,
             -- type=type
         }
-   
+    if invitecode=="" then
+        self:show_float_message("邀请码不能为空")
+        return
+    end
     self:request_http("setinvitecode" , params ) 
 end
 
@@ -74,7 +77,7 @@ end
 function Server:setinvitecode_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("设置邀请码:" .. self.data.err_msg)
+        self:show_float_message("" .. self.data.err_msg)
         return
     end
     self:show_float_message("恭喜您邀请成功" )
