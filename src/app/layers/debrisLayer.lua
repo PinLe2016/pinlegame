@@ -208,7 +208,7 @@ function debrisLayer:saw_issuccess()
                      return
                end
                print("22223214888   ",self.adid)
-                     --Server:Instance():setgamerecord(self.adid)
+                     Server:Instance():setgamerecord(self.adid)
                       --self:add_reward( )
             return
         end
