@@ -14,20 +14,22 @@ GameScene = require("app.scenes.GameScene")--惊喜吧
 
 --标题 活动类型 
 function JackpotLayer:ctor(params)
-              self.is_cooltime=true
-              self.id=params.id
-              self.adownerid=params.adownerid
-              LocalData:Instance():set_user_oid(self.id)
-              Server:Instance():getgoldspoollist({pagesize=1,pageno=1,adownerid = self.adownerid})
-              Server:Instance():getrecentgoldslist(10)-- 中奖信息
-              Server:Instance():getgoldspoolbyid(self.id)
-              self:setNodeEventEnabled(true)--layer添加监听
-              self.is_bright=true
-              self.secondOne = 0
-              self.time=0
-              self.slowdown_num=5
-              self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
-              self:update(dt)
+
+        dump(params)
+         self.is_cooltime=true
+         self.id=params.id
+         self.adownerid=params.adownerid
+          LocalData:Instance():set_user_oid(self.id)
+         Server:Instance():getgoldspoolbyid(self.id)
+         --Server:Instance():getgoldspooladlist(self.id)  --现在改成获取参与卷接口  禁止
+         Server:Instance():getgoldspoollist({pagesize=params.goldspoolcount,pageno=1,adownerid = self.adownerid})
+         Server:Instance():getrecentgoldslist(10)-- 中奖信息
+         self:setNodeEventEnabled(true)--layer添加监听
+         self.is_bright=true
+         self.secondOne = 0
+         self.time=0
+          self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+            self:update(dt)
       end)
 end
 function JackpotLayer:init(  )
@@ -411,35 +413,10 @@ function JackpotLayer:fun_slowdown( )
 end
 
 function JackpotLayer:act_began( )
-    --  local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-    -- if not _tablegods then
-    --    return 
-    -- end
-    
-    -- self.coolingtime=tonumber(_tablegods["coolingtime"])
 
        self.cunum=0
        self.end_bt:setTouchEnabled(true)
-       
-       -- if self.playcardamount<=0 then
-       --     Server:Instance():prompt("参与券不够，请先获取参与券")
-       --     return
-       -- end
-       -- print("hhhh  ",tonumber(self.coolingtime))
-       --  if tonumber(self.coolingtime)== -1 then
-       --       self.ban_t:setVisible(true)
-       --        -- Server:Instance():prompt("今天次数已完成,请明天再玩")
-       --        return
-       --  else
-       --        self.ban_t:setVisible(false)
-       -- end
-      
-        -- if self.playcardamount >0  and self.coolingtime~=-1 then
-        --if self.playcardamount ~=1220  and self.coolingtime~=-1222 then
-          Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)  --
-          
-        -- end
-        print("没有参与卷")
+       Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)  --
          
 end
 function JackpotLayer:cool_callback( sender, eventType)

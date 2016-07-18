@@ -87,6 +87,7 @@ G_NOTIFICATION_EVENT = {
 	INVITATION_POLITE=					            "INVITATION_POLITE",--邀请有礼
 	FRIENDSLEVELUP=					            "FRIENDSLEVELUP",--一键领取
 	BACKSUPPOR=					            "BACKSUPPOR",--参与卷返回
+	STECODE=								"setinvitecode"--邀请码刷新
 	
 }
 

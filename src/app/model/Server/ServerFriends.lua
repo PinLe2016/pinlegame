@@ -66,20 +66,27 @@ function Server:setinvitecode(invitecode)
             invitecode=invitecode ,
             -- type=type
         }
-   
+    if invitecode=="" then
+        self:show_float_message("邀请码不能为空")
+        return
+    end
     self:request_http("setinvitecode" , params ) 
 end
 
 
 function Server:setinvitecode_callback()
-     dump(self.data)
+
     if self.data.err_code~=0  then
-        self:show_float_message("设置邀请码:" .. self.data.err_msg)
+        self:show_float_message("" .. self.data.err_msg)
         return
     end
+
     self:show_float_message("恭喜您邀请成功" )
-    -- LocalData:Instance():set_getgoldspoollist(self.data)--保存数据
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+    local fistname=LocalData:Instance():get_reward_setting_list()
+    fistname["invitecode"]=tostring(self.params["invitecode"])
+    LocalData:Instance():set_reward_setting_list(fistname)--保存数据
+
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.STECODE)
    
 end
 

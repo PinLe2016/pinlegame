@@ -101,7 +101,8 @@ function MainInterfaceScene:userdata(  )
        local userdt = LocalData:Instance():get_userdata()
        dump(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
-       head:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+
+       head:loadTexture("png/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
        name:setString(userdt["nickname"])
        local crown_name=self.MainInterfaceScene:getChildByTag(41)-- 爵位
