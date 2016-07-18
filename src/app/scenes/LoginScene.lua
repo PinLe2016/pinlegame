@@ -448,7 +448,7 @@ end
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
   if LocalData:Instance():get_music() then 
-    Util:player_music("LOGO",true )
+    Util:player_music("GAMEBG",true )
   end 
   
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
