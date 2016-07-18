@@ -55,7 +55,7 @@ function InvitefriendsLayer:friends_levelup(  )
              end
               self._ListView:removeAllItems()
              local playerinfo=friendlist_table["playerinfo"]
-            self.gold_text:setString(playerinfo["curgolds"])
+            self.gold_text:setString(playerinfo["golds"])
             if #friendlist_table["friendlist"]==0 then
               return
             end

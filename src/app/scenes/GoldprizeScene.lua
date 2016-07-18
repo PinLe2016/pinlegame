@@ -79,7 +79,7 @@ function GoldprizeScene:data_init(  )
 
 						local tag=sender:getTag()
 
-						local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"],goldspoolcount=  jac_data[2*i]["goldspoolcount"] })
+						local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"],goldspoolcount=  jac_data[2*i-1]["goldspoolcount"] })
 
 						self:addChild(jackpotlayer)
 
@@ -91,10 +91,10 @@ function GoldprizeScene:data_init(  )
 
 		    title1:setString(tostring(jac_data[2*i-1]["name"]))
 		    local goldsamount1=bg1:getChildByTag(71)--总金币
-		    goldsamount1:setString(tostring(jac_data[2*i-1]["goldsremain"]))  --goldsamount
+		    goldsamount1:setString(tostring(jac_data[2*i-1]["goldsamount"]))  --goldsamount
 
 		    local goldsremain1=bg1:getChildByTag(72) --剩余金币
-		    goldsremain1:setString(tostring(jac_data[2*i-1]["goldsremain"]))
+		    goldsremain1:setString(tostring(jac_data[2*i-1]["goldsamount"]))
 
 		    bg2=cell:getChildByTag(64)
 		    bg2:setVisible(false)
@@ -120,7 +120,7 @@ function GoldprizeScene:data_init(  )
 
 					local tag=sender:getTag()
 
-					local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"],  adownerid= jac_data[2*i]["adownerid"] })
+					local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"],  adownerid= jac_data[2*i]["adownerid"],goldspoolcount=  jac_data[2*i]["goldspoolcount"] })
 
 				    self:addChild(jackpotlayer)
 			end)
@@ -132,10 +132,10 @@ function GoldprizeScene:data_init(  )
 		    title1:setString(tostring(jac_data[2*i]["name"]))
 		    local goldsamount1=bg2:getChildByTag(61)--总金币
 
-		    goldsamount1:setString(tostring(jac_data[2*i]["goldsremain"]))--goldsamount
+		    goldsamount1:setString(tostring(jac_data[2*i]["goldsamount"]))--goldsamount
 		    local goldsremain1=bg2:getChildByTag(62) --剩余金币
 
-		    goldsremain1:setString(tostring(jac_data[2*i]["goldsremain"]))
+		    goldsremain1:setString(tostring(jac_data[2*i]["goldsamount"]))
 		end
 end
 

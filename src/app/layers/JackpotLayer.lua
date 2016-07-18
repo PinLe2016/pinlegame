@@ -16,12 +16,12 @@ GameScene = require("app.scenes.GameScene")--惊喜吧
 function JackpotLayer:ctor(params)
 
         dump(params)
+        self._tid=""
          self.is_cooltime=true
          self.id=params.id
          self.adownerid=params.adownerid
           LocalData:Instance():set_user_oid(self.id)
-         Server:Instance():getgoldspoolbyid(self.id)
-         --Server:Instance():getgoldspooladlist(self.id)  --现在改成获取参与卷接口  禁止
+         --Server:Instance():getgoldspoolbyid(self.id)  --删除
          Server:Instance():getgoldspoollist({pagesize=params.goldspoolcount,pageno=1,adownerid = self.adownerid})
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
          self:setNodeEventEnabled(true)--layer添加监听
@@ -78,8 +78,18 @@ function JackpotLayer:init(  )
         
         local  jaclayer_data=list_table["goldspools"]
         self.advertiPv:addEventListener(function(sender, eventType  )
+                
                  if eventType == ccui.PageViewEventType.turning then
+
                     self.tpid=jaclayer_data[self.advertiPv:getCurPageIndex()+1]["id"]
+                    if self.tpid ~= self._tid then
+                           if self._Xscnum then
+                             cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
+                           end
+                           Server:Instance():getgoldspoolbyid(self.tpid)
+                    end
+                   self._tid=self.tpid
+
                     self._jiliang:setString( tostring(self.advertiPv:getCurPageIndex()+1)  ..  "/" ..  tostring(#jaclayer_data))
                     self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex())
                       if self.advertiPv:getCurPageIndex()==0 then
@@ -102,6 +112,7 @@ function JackpotLayer:init(  )
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
          self.tpid=jaclayer_data[1]["id"]
+        Server:Instance():getgoldspoolbyid(self.id)
          self._jiliang:setString("1/"  ..  tostring(#jaclayer_data))
         --现在注销是因为后台返回一个图片
         if #jaclayer_data>=2 then
@@ -115,6 +126,7 @@ function JackpotLayer:init(  )
           
          local left_bt=self.JackpotScene:getChildByTag(154)  --减
          left_bt:setTouchSwallowEnabled(true)
+
          left_bt:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
@@ -157,9 +169,6 @@ function JackpotLayer:init(  )
         self._ListView:removeAllItems()
           
            self:wininformation()
-           self:information( )
-    
-
 end
 --中奖信息排行
 function  JackpotLayer:wininformation(  )
@@ -187,7 +196,7 @@ function JackpotLayer:information( )
              dump(list_table)
              if not list_table  or  not self.JackpotScene then
                 print("888")
-                --Server:Instance():getgoldspoolbyid(self.id)
+               
                return
              end
              local title=self.JackpotScene:getChildByTag(138)  --标题

@@ -214,7 +214,7 @@ function activitycodeLayer:act_list()
                            self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
-                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"]}))
+                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="act"}))
                     end
           end  
           --活动列表进行排序

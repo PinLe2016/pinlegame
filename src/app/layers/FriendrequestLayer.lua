@@ -101,6 +101,24 @@ function FriendrequestLayer:init(  )
          
        end
 
+       for i=1,#_table do
+        for j=1,#self.managerlist do
+            if self.managerlist[j]["friendscount"]==_table[i]   then  --
+            print("777")
+                  if tonumber(self.managerlist[j]["tag"]) ==1 then 
+                    print("778888")
+                      lo_img[i]:setColor(cc.c3b(100,100,100))
+                       lo_img[i]:setTouchEnabled(false)
+                  end
+            end
+          end
+      end
+
+ 
+
+
+
+
       
        local friend_bt=self.Friendrequest:getChildByTag(161)  --好友邀请
 	friend_bt:addTouchEventListener(function(sender, eventType)
@@ -204,9 +222,6 @@ function FriendrequestLayer:touch_callback( sender, eventType )
      local managerlist=self.friendlist_num["managerlist"]
      local _table = {3,5,10,20,30,50,80,100}
 
-   
-
-
 --判断是否领取
     for i=1,#_table do
         for j=1,#managerlist do
@@ -225,10 +240,6 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 
         end
     end
-
-
-
-
 
 	if tag==123 then --返回
 		print("fanh ")

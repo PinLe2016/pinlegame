@@ -198,7 +198,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                            self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
-                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"]}))
+                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="sup"}))
                     end
           end  
           --活动列表进行排序
@@ -242,6 +242,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                  local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
                  if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
                     cell:setTouchEnabled(false)  --禁止点击
+                    activity_Panel:setTouchEnabled(true)
                     huojiang_bg:setColor(cc.c3b(100, 100, 100))
                     huojiang_bg:setTouchEnabled(false)
                  end
@@ -262,6 +263,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                      huojiang_bt:setTag(i)
                       if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
                          cell:setTouchEnabled(false)  --禁止点击
+                          activity_Panel:setTouchEnabled(true)
                         huojiang_bg:setColor(cc.c3b(100, 100, 100))
                         huojiang_bg:setTouchEnabled(false)
                      end

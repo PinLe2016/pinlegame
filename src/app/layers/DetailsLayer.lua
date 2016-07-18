@@ -8,7 +8,7 @@ end)
 GameScene = require("app.scenes.GameScene")
 function DetailsLayer:ctor(params)
        self:setNodeEventEnabled(true)--layer添加监听
-
+       self._ky=params._ky
        self.id=params.id
        self.image=params.image
        self.type=params.type--活动类型
@@ -25,7 +25,13 @@ function DetailsLayer:init(  )
 		if eventType == ccui.TouchEventType.ended then
 		     -- Util:scene_control("MainInterfaceScene",self.id)s
 		     -- self:removeFromParent()
-		     Util:scene_control("SurpriseScene")
+		     if self._ky=="sup" then
+		     	 Util:scene_control("SurpriseScene")
+		     else
+		     	 self:removeFromParent()
+		     end
+		    
+		    
 		end
 	end
 
