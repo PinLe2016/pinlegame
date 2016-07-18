@@ -82,9 +82,11 @@ function Server:setinvitecode_callback()
     end
 
     self:show_float_message("恭喜您邀请成功" )
-    LocalData:Instance():set_setinvitecode(tostring(self.params["invitecode"]))
-    -- LocalData:Instance():set_getgoldspoollist(self.data)--保存数据
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+    local fistname=LocalData:Instance():get_reward_setting_list()
+    fistname["invitecode"]=tostring(self.params["invitecode"])
+    LocalData:Instance():set_reward_setting_list(fistname)--保存数据
+
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.STECODE)
    
 end
 

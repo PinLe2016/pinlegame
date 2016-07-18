@@ -40,6 +40,7 @@ function FriendrequestLayer:init(  )
                 end
         end)
         self.friendlist_num=LocalData:Instance():get_reward_setting_list()  
+
         local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
         friend_num:setString(tostring(self.friendlist_num["friendcount"]) .. "人")
 
@@ -114,6 +115,12 @@ function FriendrequestLayer:init(  )
 end
 
 function FriendrequestLayer:pop_up(  )
+
+      if self.Friendsstep then
+         self.Friendsstep:removeFromParent()
+         self.Friendsstep=nil
+      end
+
        self.Friendsstep = cc.CSLoader:createNode("Friendsstep.csb")  --谈出框
        self:addChild(self.Friendsstep)
        self.Friendsstep:setVisible(false)
@@ -128,19 +135,18 @@ function FriendrequestLayer:pop_up(  )
        local res = "res/png/DLkuang.png"
        local width = 300
        local height = 40
-       
+      
+      local friendlist_code =LocalData:Instance():get_reward_setting_list() 
+      
+      if tostring(friendlist_code["invitecode"])~="0" then
 
-
-      local is_code=LocalData:Instance():get_setinvitecode()
-      if tostring(is_code)~="0" then
-
-               self.invitecode_num = cc.ui.UILabel.new({text = tostring(is_code),
+               self.invitecode_num = cc.ui.UILabel.new({text = tostring(friendlist_code["invitecode"]),
                         size = 28,
                         align = TEXT_ALIGN_CENTER,
                         font = "Arial",
                         color = cc.c4b(255,241,203),
                         })
-         self.invitecode_num:setAnchorPoint(0.5,0.5)
+         -- self.invitecode_num:setAnchorPoint(0.5,0.5)
 
          self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX()-130,_invitecodeNum:getPositionY()))
          self.invitecode_num:addTo(self.m_feedback,100)
@@ -182,7 +188,7 @@ function FriendrequestLayer:pop_up(  )
 	self:touch_callback(sender, eventType)
        end)
 
-   if tostring(is_code)~="0" then
+   if tostring(friendlist_code["invitecode"])~="0" then
       _backbt:setVisible(false)
       obtain_bt:setVisible(false)
    end
@@ -296,15 +302,15 @@ function FriendrequestLayer:onEnter()
                       		 self:init()
 
                       end)
-	 -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
-  --                      function()
-  --                     		print("个人信息修改")
-  --                     end)
+	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.STECODE, self,
+                       function()
+                      		self:pop_up()--弹出框
+                      end)
 end
 
 function FriendrequestLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self)
-     	 -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
+     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.STECODE, self)
 end
 
 return FriendrequestLayer

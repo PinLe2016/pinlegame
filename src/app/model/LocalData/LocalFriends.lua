@@ -59,15 +59,6 @@ function LocalData:get_reward_of_friends_levelup()
 end
 
 
---回馈邀请人
-function LocalData:set_setinvitecode(user_version)
-	cc.UserDefault:getInstance():setStringForKey("setinvitecode" ,user_version)
-end
-function LocalData:get_setinvitecode()
-	local user_version=cc.UserDefault:getInstance():getStringForKey("setinvitecode","0")
-	return user_version or "0"
-end
-
 
 
 
