@@ -126,7 +126,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	if tag==56 then --惊喜吧
 		 Util:scene_control("SurpriseScene")
 	elseif tag==72 then --活动码
-    self:addChild(activitycodeLayer.new())
+    self:addChild(activitycodeLayer.new(),1,255)
 		-- self.barrier_bg:setVisible(true)
 		-- self.kuang:setVisible(true)
 	elseif tag==37 then
@@ -364,7 +364,11 @@ function MainInterfaceScene:listener_home()
     self:addChild(layer)
     local function onKeyReleased(keyCode, event)
           if keyCode == cc.KeyCode.KEY_BACK then
-              device.showAlert("Confirm Exit", "Are you sure exit game ?", {"YES", "NO"}, function (event)  
+            if self:getChildByTag(255) then
+              self:removeChildByTag(255)
+              return
+            end
+              device.showAlert("Confirm Exit", "您确定要退出游戏？", {"YES", "NO"}, function (event)  
   
                 if event.buttonIndex == 1 then    
                     cc.Director:getInstance():endToLua()  
@@ -372,7 +376,7 @@ function MainInterfaceScene:listener_home()
                     device.cancelAlert()  --取消对话框   
                 end    
             end)             
-              
+
           end
     end
 
