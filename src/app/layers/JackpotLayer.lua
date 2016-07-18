@@ -14,13 +14,14 @@ GameScene = require("app.scenes.GameScene")--惊喜吧
 
 --标题 活动类型 
 function JackpotLayer:ctor(params)
+        dump(params)
          self.is_cooltime=true
          self.id=params.id
          self.adownerid=params.adownerid
           LocalData:Instance():set_user_oid(self.id)
          Server:Instance():getgoldspoolbyid(self.id)
          --Server:Instance():getgoldspooladlist(self.id)  --现在改成获取参与卷接口  禁止
-         Server:Instance():getgoldspoollist({pagesize=1,pageno=1,adownerid = self.adownerid})
+         Server:Instance():getgoldspoollist({pagesize=params.goldspoolcount,pageno=1,adownerid = self.adownerid})
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true
@@ -517,7 +518,8 @@ function JackpotLayer:act_began( )
            Server:Instance():prompt("参与券不够，请先获取参与券")
            return
        end
-
+       print("-----=========--------------")
+        dump(self.coolingtime)
         if tonumber(self.coolingtime)== -1 then
              self.ban_t:setVisible(true)
               Server:Instance():prompt("今天次数已完成,请明天再玩")
