@@ -79,7 +79,7 @@ function GoldprizeScene:data_init(  )
 
 						local tag=sender:getTag()
 
-						local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"] })
+						local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"],goldspoolcount=  jac_data[2*i]["goldspoolcount"] })
 
 						self:addChild(jackpotlayer)
 
