@@ -41,43 +41,30 @@ function LoginScene:progressbarScene(  )
         self.ProgressbarScene:runAction(self.roleAction)
          self.roleAction:gotoFrameAndPlay(0,41, true)
          -- self:fun_countdown( )
-         loadingBar:setPercent(0)
+        loadingBar:setPercent(0)
 end
  function LoginScene:countdown()
-           self._time=self._time+20
+           self._time=self._time+100
         
 
-            self.loadingBar:setPercent(self._time)
-            if self._time==110 then
+            loadingBar:setPercent(self._time)
+            if self._time==200 then
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
                  local login_info=LocalData:Instance():get_user_data()
                 if login_info~=nil  then
                     Util:scene_control("MainInterfaceScene")
                     return
                 end
-               self:landing_init()
-
---             self.loadingBar:setPercent(self._time)
---            print("333333", self._time)
---             if self._time==120 then
---                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
---                  local login_info=LocalData:Instance():get_user_data()
---                 if login_info~=nil  then
---                     Util:scene_control("MainInterfaceScene")
---                     return
---                 end
---                self:landing_init()
-
-             
+               self:landing_init()             
 
             end
 
 end
--- function LoginScene:fun_countdown( )
---       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
---                                 self:countdown()
---               end,1.0, false)
--- end
+function LoginScene:fun_countdown( )
+      self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self:countdown()
+              end,1.0, false)
+end
 
 
 
@@ -448,7 +435,7 @@ end
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
   if LocalData:Instance():get_music() then 
-    Util:player_music("LOGO",true )
+    Util:player_music("GAMEBG",true )
   end 
   
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
@@ -649,21 +636,23 @@ function LoginScene:getVersionInfo()
     local up_date=LocalData:Instance():get_version_date()
     dump(up_date)
     if tonumber(up_date["Isused"])~=1 then
-      print("走了没呢")
+      
       self.masterURL=up_date["masterURL"]
       self.url=up_date["url"]
       self:addChild(self:updateLayer())
       return
     end
 
-    local login_info=LocalData:Instance():get_user_data()
-    if login_info~=nil  then
-           Util:scene_control("MainInterfaceScene")
-            return
-    end
+    -- local login_info=LocalData:Instance():get_user_data()
+    -- if login_info~=nil  then
+    --        Util:scene_control("MainInterfaceScene")
+    --         return
+    -- end
         -- Util:scene_control("LoginScene")
 
-    self:landing_init()
+    -- self:landing_init()
+    self._time=0
+    self:fun_countdown()
 end
 
 

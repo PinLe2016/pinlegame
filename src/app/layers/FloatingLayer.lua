@@ -27,7 +27,7 @@ function FloatingLayer:show_http(is_show)
     loadingLayer:runAction(action)
     action:gotoFrameAndPlay(0,true)
 end
-function FloatingLayer:showFloat(dialogtextString)  --floatingLayer_init
+function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
     self.dialog = cc.CSLoader:createNode("Dialog.csb");
     self:addChild(self.dialog)
     dialogtext = self.dialog:getChildByTag(44)
@@ -52,7 +52,9 @@ function FloatingLayer:showFloat(dialogtextString)  --floatingLayer_init
         self:touch_callback(sender, eventType)
     end)
 
-    
+    if call then
+      self.call=call
+    end
     return  self.dialog
 end
 
@@ -62,6 +64,10 @@ function FloatingLayer:touch_callback( sender, eventType )
     end
     local tag=sender:getTag()
     if tag==43 then --确定
+            if self.call then
+              self.call(self)
+              -- return
+            end
              if  self.dialog then
                  self.dialog:removeFromParent()
              end

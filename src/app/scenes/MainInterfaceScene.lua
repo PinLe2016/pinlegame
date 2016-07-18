@@ -15,7 +15,7 @@ function MainInterfaceScene:ctor()
       self.count=0
        
       self:fun_init()
-
+      self:listener_home() --注册安卓返回键
    
 end
 function MainInterfaceScene:fun_init( )
@@ -126,7 +126,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	if tag==56 then --惊喜吧
 		 Util:scene_control("SurpriseScene")
 	elseif tag==72 then --活动码
-    self:addChild(activitycodeLayer.new())
+    self:addChild(activitycodeLayer.new(),1,255)
 		-- self.barrier_bg:setVisible(true)
 		-- self.kuang:setVisible(true)
 	elseif tag==37 then
@@ -174,8 +174,12 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==52 then  --邀请好友
             self:addChild(InvitefriendsLayer.new())
       elseif tag==266 then  --注销
-            LocalData:Instance():set_user_data(nil)
-            Util:scene_control("LoginScene")
+
+        self.floating_layer:showFloat("您确定要退出登录？",function ()
+                                  LocalData:Instance():set_user_data(nil)
+                                  Util:scene_control("LoginScene")
+                            end)
+           
 	end
 end
 
@@ -354,6 +358,35 @@ function MainInterfaceScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
 end
 
+--android 返回键 响应
+function MainInterfaceScene:listener_home() 
+    local  layer=cc.Layer:create()
+    self:addChild(layer)
+    local function onKeyReleased(keyCode, event)
+          if keyCode == cc.KeyCode.KEY_BACK then
+            if self:getChildByTag(255) then
+              self:removeChildByTag(255)
+              return
+            end
+              device.showAlert("Confirm Exit", "您确定要退出游戏？", {"YES", "NO"}, function (event)  
+  
+                if event.buttonIndex == 1 then    
+                    cc.Director:getInstance():endToLua()  
+                else    
+                    device.cancelAlert()  --取消对话框   
+                end    
+            end)             
+
+          end
+    end
+
+    local listener = cc.EventListenerKeyboard:create()--
+    listener:registerScriptHandler(onKeyReleased,cc.Handler.EVENT_KEYBOARD_RELEASED)
+
+    local eventDispatch = layer:getEventDispatcher()
+    eventDispatch:addEventListenerWithSceneGraphPriority(listener,layer)
+
+end
 
 function MainInterfaceScene:pushFloating(text)
    if is_resource then

@@ -461,7 +461,15 @@ function PerInformationLayer:perinformation_init(  )
         self.date_years:setString(date[1])
         self.date_month:setString(date[2])
         self.date_day:setString(date[3])
-        
+        self.scall_years="1990"
+        self.scall_month="06"
+        self.scall_day="07"
+
+        if userdt["birthday"]~="" then
+            self.scall_years=tostring(date[1])
+            self.scall_month=tostring(date[2])
+            self.scall_day=tostring(date[3])
+        end
 
         self:city_init()
 
@@ -731,6 +739,9 @@ function PerInformationLayer:fun_birthday(  )
         self.birthday_Itempicker=self:addItemPickerData(birthday_scrollview,birthday_years)
         self.birthday:getChildByTag(174):addChild(self.birthday_Itempicker)
 
+
+        local  m_offset_birthday=0
+        local name="1990"
         for i=1,70+7 do   
             local button =self.birthday_Itempicker:getCellLayout(cc.size(100,50))
             local cell=ccui.Text:create()
@@ -738,18 +749,29 @@ function PerInformationLayer:fun_birthday(  )
             cell:setAnchorPoint(cc.p(0.0,0.0));
             cell:setColor(cc.c4b(255,0,255))
             cell:setPositionX(5)
+            
             if i<70+5 and i-5>=0 then 
                 cell:setString(tostring(2016-(i-5)))
+                name=tostring(2016-(i-5))
             else
+                name="-1"
                 cell:setString(".")
                 cell:setOpacity(0)
             end
             -- dump(button:getContentSize())
+            local pos = string.find(self.scall_years, name)   
+            if pos then
+                m_offset_birthday=i-5;
+                print("e  ",self.scall_years,name,m_offset_birthday)
+            end
+
             cell:setTag(i)
             button:addChild(cell)
             self.birthday_Itempicker:pushBackItem(button)
         end
+        self.birthday_Itempicker:setOffsetLayout(m_offset_birthday)
         -- 
+
 
         --月
         local birthday_scrollview2=self.birthday:getChildByTag(174):getChildByTag(171)
@@ -759,6 +781,9 @@ function PerInformationLayer:fun_birthday(  )
 
         self.birthday_month_Itempicker=self:addItemPickerData(birthday_scrollview2,birthday_month)
         self.birthday:getChildByTag(174):addChild(self.birthday_month_Itempicker)
+
+        local  m_offset_month=0
+        local name="04"
         for i=1,12+7 do   
 
             local button =self.birthday_month_Itempicker:getCellLayout(cc.size(100,50))
@@ -769,21 +794,29 @@ function PerInformationLayer:fun_birthday(  )
             cell_month:setColor(cc.c4b(255,0,255))
             cell_month:setPositionX(20)
             cell_month:setTag(i)
+            
             if i<12+5 and i-5>=0 then 
                 if i<14 then
                      cell_month:setString("0" .. tostring(i-4))
+                     name="0" .. tostring(i-4)
                 else
                      cell_month:setString(tostring(i-4))
+                     name=tostring(i-4)
                 end
             else
+                name="-1"
                 cell_month:setString(".")
                 cell_month:setOpacity(0)
             end
 
+            local pos = string.find(self.scall_month, name)   
+            if pos then
+                m_offset_month=i-5;
+            end
             button:addChild(cell_month)
             self.birthday_month_Itempicker:pushBackItem(button)
         end
-
+        self.birthday_month_Itempicker:setOffsetLayout(m_offset_month)
 
         --日
         local birthday_scrollview3=self.birthday:getChildByTag(174):getChildByTag(173)
@@ -793,6 +826,8 @@ function PerInformationLayer:fun_birthday(  )
 
         self.birthday_daty_Itempicker=self:addItemPickerData(birthday_scrollview3,birthday_daty)
         self.birthday:getChildByTag(174):addChild(self.birthday_daty_Itempicker)
+        local  m_offset_daty=0
+        local name="04"
         for i=1,31+7 do   
             local button =self.birthday_daty_Itempicker:getCellLayout(cc.size(100,50))
 
@@ -801,22 +836,32 @@ function PerInformationLayer:fun_birthday(  )
             cell_day:setAnchorPoint(cc.p(0.0,0.0));
             cell_day:setColor(cc.c4b(255,0,255))
             cell_day:setPositionX(20)
-
+            
             if i<31+5 and i-5>=0 then 
                 if i<14 then
                      cell_day:setString("0" .. tostring(i-4))
+                     name="0" .. tostring(i-4)
                 else
                      cell_day:setString(tostring(i-4))
+                     name=tostring(i-4)
                 end
             else
                 cell_day:setString(".")
                 cell_day:setOpacity(0)
+                name="-1"
             end
+
+            local pos = string.find(self.scall_day, name)   
+            if pos then
+                m_offset_daty=i-5;
+            end
+
             button:addChild(cell_day)
              -- birthday_scrollview2:addChild(cell_month)
             self.birthday_daty_Itempicker:pushBackItem(button)
               
         end
+        self.birthday_daty_Itempicker:setOffsetLayout(m_offset_daty)
         -- self:scheduleUpdate()
 end
 
