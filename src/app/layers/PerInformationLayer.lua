@@ -119,6 +119,8 @@ function PerInformationLayer:add_init(  )
 end
 --新增加的邮件界面
 function PerInformationLayer:fun_mail(  )
+        local _getconsignee = LocalData:Instance():get_getconsignee()--保存数据
+
         self.Receivinginformation = cc.CSLoader:createNode("Receivinginformation.csb")
         self:addChild(self.Receivinginformation)
         local back_bt=self.Receivinginformation:getChildByTag(220):getChildByTag(234)  --返回
@@ -169,21 +171,37 @@ function PerInformationLayer:fun_mail(  )
     self.name_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.name_text_mail)
     self.name_text_mail:setPosition(cc.p(name_field:getPositionX(),name_field:getPositionY()))--( cc.p(130,438 ))  
-    self.name_text_mail:setPlaceHolder("您的姓名")
+    if _getconsignee["name"] == "" then
+        self.name_text_mail:setPlaceHolder("您的姓名")
+    else
+        self.name_text_mail:setPlaceHolder(tostring(_getconsignee["name"]))
+    end
+    
     self.name_text_mail:setAnchorPoint(0,0.5)  
     self.name_text_mail:setMaxLength(11)
 
     self.phone_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.phone_text_mail)
     self.phone_text_mail:setPosition(cc.p(phone_field:getPositionX(),phone_field:getPositionY()))--( cc.p(130,438 ))  
-    self.phone_text_mail:setPlaceHolder("您的手机号")
+     if _getconsignee["phone"] == "" then
+        self.phone_text_mail:setPlaceHolder("您的手机号")
+    else
+        self.phone_text_mail:setPlaceHolder(tostring(_getconsignee["phone"]))
+    end
+
     self.phone_text_mail:setAnchorPoint(0,0.5)  
     self.phone_text_mail:setMaxLength(11)
 
     self.ads_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.ads_text_mail)
     self.ads_text_mail:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
-    self.ads_text_mail:setPlaceHolder("详细地址")
+    if _getconsignee["address"] == "" then
+         self.ads_text_mail:setPlaceHolder("详细地址")
+    else
+        self.ads_text_mail:setPlaceHolder(tostring(_getconsignee["address"]))
+    end
+
+   
     self.ads_text_mail:setAnchorPoint(0,0.5)  
     self.ads_text_mail:setMaxLength(13)
 
@@ -230,11 +248,6 @@ function PerInformationLayer:fun_mail(  )
         -- self:fun_Conty()
         self:scheduleUpdate()
 
-
-
-
-
-
 end
 
 
@@ -252,7 +265,8 @@ function PerInformationLayer:touch_back( sender, eventType )
     elseif  tag==1410 then
          self:init()
     elseif  tag==190 then
-         self:fun_mail()
+        Server:Instance():getconsignee({functionparams=""})
+        -- self:fun_mail()
     elseif  tag==234 then
          if self.Receivinginformation then
             self:unscheduleUpdate()
@@ -1188,6 +1202,10 @@ function PerInformationLayer:onEnter()
                        function()
                             print("个人信息修改")
                       end)
+     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.EMAILADDRESS, self,
+                       function()
+                            self:fun_mail()
+                      end)
 end
 
 function PerInformationLayer:onExit()
@@ -1195,6 +1213,7 @@ function PerInformationLayer:onExit()
           NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REG, self)
 
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
+         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.EMAILADDRESS, self)
 end
 --拆分头像
 function PerInformationLayer:trim (s) 

@@ -87,6 +87,7 @@ function JackpotLayer:init(  )
                              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
                            end
                            Server:Instance():getgoldspoolbyid(self.tpid)
+                            LocalData:Instance():set_user_oid(self.tpid)
                     end
                    self._tid=self.tpid
 
@@ -113,6 +114,7 @@ function JackpotLayer:init(  )
         _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
          self.tpid=jaclayer_data[1]["id"]
         Server:Instance():getgoldspoolbyid(self.id)
+        LocalData:Instance():set_user_oid(self.tpid)
          self._jiliang:setString("1/"  ..  tostring(#jaclayer_data))
         --现在注销是因为后台返回一个图片
         if #jaclayer_data>=2 then

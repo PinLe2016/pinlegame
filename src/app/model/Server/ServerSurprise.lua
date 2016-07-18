@@ -312,6 +312,28 @@ function Server:setgamerecord_callback()
      NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GAMERECORD_POST)
 end
 
+--3.2.19   修改玩家收货地址(命令：getconsignee)
+
+function Server:getconsignee(functionparams)
+    local params = {}
+    params={
+            functionparams=functionparams
+        }
+    self:request_http("getconsignee" , params ); 
+end
+
+
+function Server:getconsignee_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("获取邮件失败:" .. self.data.err_msg)
+        return
+    end
+      LocalData:Instance():set_getconsignee(self.data)--保存数据
+      NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.EMAILADDRESS)
+end
+
+
 
 
 

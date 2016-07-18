@@ -98,6 +98,15 @@ function LocalData:get_isign()
 	return number or nil
 end
 
+--邮件地址
+function LocalData:set_getconsignee(functionparams)
+	self.functionparams=functionparams
+end
+
+function LocalData:get_getconsignee()
+	return self.functionparams or {}
+end
+
 
 
 
