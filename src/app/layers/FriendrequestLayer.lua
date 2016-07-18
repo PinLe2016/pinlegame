@@ -128,15 +128,33 @@ function FriendrequestLayer:pop_up(  )
        local res = "res/png/DLkuang.png"
        local width = 300
        local height = 40
-       --登陆
-      self.invitecode_num = ccui.EditBox:create(cc.size(width,height),res)
-      self.invitecode_num:setVisible(false)
-      self.m_feedback:addChild(self.invitecode_num)
-      self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX()-130,_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
-      self.invitecode_num:setPlaceHolder("请输入手机号码")
-      self.invitecode_num:setAnchorPoint(0,0.5)  
-      self.invitecode_num:setMaxLength(11)
+       
 
+
+      local is_code=LocalData:Instance():get_setinvitecode()
+      if tostring(is_code)~="0" then
+
+               self.invitecode_num = cc.ui.UILabel.new({text = tostring(is_code),
+                        size = 28,
+                        align = TEXT_ALIGN_CENTER,
+                        font = "Arial",
+                        color = cc.c4b(255,241,203),
+                        })
+         self.invitecode_num:setAnchorPoint(0.5,0.5)
+
+         self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX()-130,_invitecodeNum:getPositionY()))
+         self.invitecode_num:addTo(self.m_feedback,100)
+          -- self.invitecode_num:setPlaceHolder()
+          -- self.m_feedback:setTouchEnabled(false)
+        else
+                self.invitecode_num = ccui.EditBox:create(cc.size(width,height),res)
+                self.invitecode_num:setVisible(false)
+                self.m_feedback:addChild(self.invitecode_num)
+                self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX()-130,_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
+                self.invitecode_num:setPlaceHolder("请输入手机号码")
+                self.invitecode_num:setAnchorPoint(0,0.5)  
+                self.invitecode_num:setMaxLength(11)
+      end
 
 
        local friend_back=self.m_friend:getChildByTag(242)  --好友返回
@@ -163,6 +181,11 @@ function FriendrequestLayer:pop_up(  )
 	obtain_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
+
+   if tostring(is_code)~="0" then
+      _backbt:setVisible(false)
+      obtain_bt:setVisible(false)
+   end
 end
 
 function FriendrequestLayer:touch_callback( sender, eventType )

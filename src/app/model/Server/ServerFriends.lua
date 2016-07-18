@@ -75,12 +75,14 @@ end
 
 
 function Server:setinvitecode_callback()
-     dump(self.data)
+
     if self.data.err_code~=0  then
         self:show_float_message("" .. self.data.err_msg)
         return
     end
+
     self:show_float_message("恭喜您邀请成功" )
+    LocalData:Instance():set_setinvitecode(tostring(self.params["invitecode"]))
     -- LocalData:Instance():set_getgoldspoollist(self.data)--保存数据
     -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    

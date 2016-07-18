@@ -118,7 +118,8 @@ function Server:request_http(command , params)
     local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
     print("---url---",login_url,post_md5)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, login_url , "POST")
-
+    self.params=params
+    
     request:setPOSTData(post_md5)
     request:setTimeout(0.5)
     request:start()
@@ -157,7 +158,7 @@ function Server:on_request_finished_http(event , command)
    
     -- 保存到类方便调用
     self.data = self.jsondata
-    self.params = json.decode(self.jsondata.params)
+    -- self.params = json.decode(self.jsondata.params)
     self.last_command = command
     if (self.jsondata.timestamp) then
        	   self.timediff = os.time() - self.jsondata.timestamp
