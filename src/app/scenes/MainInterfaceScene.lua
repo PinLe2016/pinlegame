@@ -15,7 +15,7 @@ function MainInterfaceScene:ctor()
       self.count=0
        
       self:fun_init()
-
+      self:listener_home() --注册安卓返回键
    
 end
 function MainInterfaceScene:fun_init( )
@@ -358,6 +358,31 @@ function MainInterfaceScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
 end
 
+--android 返回键 响应
+function MainInterfaceScene:listener_home() 
+    local  layer=cc.Layer:create()
+    self:addChild(layer)
+    local function onKeyReleased(keyCode, event)
+          if keyCode == cc.KeyCode.KEY_BACK then
+              device.showAlert("Confirm Exit", "Are you sure exit game ?", {"YES", "NO"}, function (event)  
+  
+                if event.buttonIndex == 1 then    
+                    cc.Director:getInstance():endToLua()  
+                else    
+                    device.cancelAlert()  --取消对话框   
+                end    
+            end)             
+              
+          end
+    end
+
+    local listener = cc.EventListenerKeyboard:create()--
+    listener:registerScriptHandler(onKeyReleased,cc.Handler.EVENT_KEYBOARD_RELEASED)
+
+    local eventDispatch = layer:getEventDispatcher()
+    eventDispatch:addEventListenerWithSceneGraphPriority(listener,layer)
+
+end
 
 function MainInterfaceScene:pushFloating(text)
    if is_resource then
