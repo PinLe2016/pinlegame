@@ -10,13 +10,12 @@ local JackpotLayer = class("JackpotLayer", function()
             return display.newLayer("JackpotLayer")
 end)
 
-GameScene = require("app/scenes/GameScene")--惊喜吧
+GameScene = require("app.scenes.GameScene")--惊喜吧
 
 --标题 活动类型 
-function JackpotLayer:ctor(params)
+function JackpotLayer:ctor(params) 
 
         dump(params)
-        self._tid=""
          self.is_cooltime=true
          self.id=params.id
          self.adownerid=params.adownerid
@@ -26,6 +25,7 @@ function JackpotLayer:ctor(params)
          Server:Instance():getrecentgoldslist(10)-- 中奖信息
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true
+         LocalData:Instance():set_setgamerecord({})
          self.secondOne = 0
          self.time=0
           self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
@@ -82,14 +82,6 @@ function JackpotLayer:init(  )
                  if eventType == ccui.PageViewEventType.turning then
 
                     self.tpid=jaclayer_data[self.advertiPv:getCurPageIndex()+1]["id"]
-                    if self.tpid ~= self._tid then
-                           if self._Xscnum then
-                             cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
-                           end
-                           Server:Instance():getgoldspoolbyid(self.tpid)
-                            LocalData:Instance():set_user_oid(self.tpid)
-                    end
-                   self._tid=self.tpid
 
                     self._jiliang:setString( tostring(self.advertiPv:getCurPageIndex()+1)  ..  "/" ..  tostring(#jaclayer_data))
                     self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex())
@@ -109,11 +101,13 @@ function JackpotLayer:init(  )
                       end
                 end
         end)
+
+ print("11118989898989  999")
         local _advertiImg=advertiPa:getChildByTag(155)
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
          self.tpid=jaclayer_data[1]["id"]
-        Server:Instance():getgoldspoolbyid(self.id)
+        Server:Instance():getgoldspoolbyid(self.tpid)
         LocalData:Instance():set_user_oid(self.tpid)
          self._jiliang:setString("1/"  ..  tostring(#jaclayer_data))
         --现在注销是因为后台返回一个图片
@@ -164,7 +158,7 @@ function JackpotLayer:init(  )
                    
                    
         end)
-
+ print("11118989898989  9997777")
          --中奖信息排行
         self._ListView=self.JackpotScene:getChildByTag(31):getChildByTag(35)--中奖信息排行
         self._ListView:setItemModel(self._ListView:getItem(0))
@@ -176,7 +170,8 @@ end
 function  JackpotLayer:wininformation(  )
             self._ListView:removeAllItems() 
             local _table=LocalData:Instance():get_getrecentgoldslist()
-
+             print("11118989898989  99911111  ")
+             dump(_table)
             local goldslist=_table["goldslist"]
             if goldslist==0 then
                return
@@ -195,10 +190,7 @@ function  JackpotLayer:wininformation(  )
 end
 function JackpotLayer:information( )
              local  list_table=LocalData:Instance():get_getgoldspoolbyid()
-             dump(list_table)
              if not list_table  or  not self.JackpotScene then
-                print("888")
-               
                return
              end
              local title=self.JackpotScene:getChildByTag(138)  --标题
@@ -224,7 +216,6 @@ function JackpotLayer:information( )
               end)
              --新的冷却倒计时
              self.coll_bg=self.JackpotScene:getChildByTag(373)  -- 新的冷却时间
-             self.coll_bg:setVisible(false)
              self.coll_text=self.coll_bg:getChildByTag(374)
 
              self.ordinary_bt=self.JackpotScene:getChildByTag(44)  --普通
@@ -237,49 +228,71 @@ function JackpotLayer:information( )
              self.special_bt:addTouchEventListener(function(sender, eventType  )
                        self:touch_callback( sender, eventType )             
               end)
-              local obtain_bt=self.JackpotScene:getChildByTag(47)  --获取参与卷
-              self._obtainbt=obtain_bt
-             obtain_bt:addTouchEventListener(function(sender, eventType  )
+             self._obtainbt=self.JackpotScene:getChildByTag(47)  --获取参与卷
+             self._obtainbt:addTouchEventListener(function(sender, eventType  )
                        self:touch_callback( sender, eventType )             
               end)
 
              self.be_num=self.JackpotScene:getChildByTag(999)  --参与卷
              self.playcardamount=tonumber(list_table["playcardamount"])
-             -- dump(list_table)
-             
-             self.be_num:setString(list_table["playcardamount"])
+             self.be_num:setString(list_table["playcardamount"])  --
              self.coolingtime=list_table["coolingtime"]   --  0 可以玩  -1  今天不能玩
-             self.ban_t=self.JackpotScene:getChildByTag(948)  --结束
-             self.is_double = 2  --  1  是翻倍   2  不使用
-              if self.coolingtime==-1 or self.playcardamount<=0 then
-                 self.ban_t:setVisible(true)
-              else
-                self.ban_t:setVisible(false)
-              end
-          local is_start=LocalData:Instance():get_user_time(self.id)
-         if tonumber(self.coolingtime) ~=  0   and  tonumber(self.coolingtime)~= -1    then  --当coolingtime 不为-1  或 0 时开始进入倒计时
-            self:Xfun_countdown()
-            print("44444")
-          end
-end
-function JackpotLayer:vouchers(  )
+             self._obtainbt:setVisible(true)
 
+             self.getcardamount  =  tonumber(list_table["getcardamount"])   --初始化 还可以得到几张参与卷
+
+             local _table=LocalData:Instance():get_setgamerecord()
+             local goldspool=_table["goldspool"]
+             if goldspool  then
+               self:vouchers(  ) --真正的刷新
+              else
+                  if tonumber(self.coolingtime) ~=  0   and  tonumber(self.coolingtime)~= -1    then  --当coolingtime 不为-1  或 0 时开始进入倒计时
+                         print("888888888    ")
+                         self:Xfun_countdown()
+                         self._obtainbt:setVisible(false)
+                  end
+             end
+             
+
+        
+
+end
+--  拼完图刷新数据哦 
+function JackpotLayer:vouchers(  )
+          print("5545645645644    8")
          local _table=LocalData:Instance():get_setgamerecord()--保存数据
          dump(_table)
-         local goldspool=_table["goldspool"]
-         self.be_num:setString(goldspool["playcardamount"])
-         self.playcardamount=tonumber(goldspool["playcardamount"])
+         local goldspool=_table["goldspool"]    
+         self.be_num:setString(goldspool["playcardamount"])  --参与卷  
+         self.playcardamount=tonumber(goldspool["playcardamount"])  
+         self._carnum=tonumber(goldspool["doublecardamount"])  --翻倍卡
+         self._doublecardamount=tonumber(goldspool["doublecardamount"])  
+         self.car_num:setString(self._carnum)
+
+         self.coolingtime=goldspool["coolingtime"]  --冷却时间
+
+         --以下由于后台getcardamount  不准  所以毙了
+         -- self.getcardamount  = tonumber(goldspool["getcardamount"])
+         -- if  self.getcardamount  >=0   then   --如果可以获取参与卷大于0   拼完图就出现开始按钮
+         --     self.coll_bg:setVisible(false)   --这时候开始按钮出现
+         --     self._obtainbt:setVisible(false)
+         --     self.began_bt:setVisible(true)
+         -- else    --否则就出现获取参与卷
+         --    self._obtainbt:setVisible(true)    
+         -- end  
+
+
+          if  self.coolingtime  >=0   then   --如果冷却时间不为-1  说名拼完图还可以玩   拼完图就出现开始按钮
+             self.coll_bg:setVisible(false)   --这时候开始按钮出现
+             self._obtainbt:setVisible(false)
+             self.began_bt:setVisible(true)
+         else    --否则就出现获取参与卷
+            self._obtainbt:setVisible(true)    
+         end  
+
+
+
          
-
-
-          if self.coolingtime==-1 or self.playcardamount<=0 then
-                 self.ban_t:setVisible(true)
-              else
-                self.ban_t:setVisible(false)
-          end
-
-
-
 end
 function JackpotLayer:touch_callback( sender, eventType )
 
@@ -290,8 +303,6 @@ function JackpotLayer:touch_callback( sender, eventType )
       if self.curr_bright:getTag()==tag then
                   return
        end
-
-      dump(tag)
       if tag==46 then --开始
                
               self:act_began( )   
@@ -314,68 +325,78 @@ function JackpotLayer:touch_callback( sender, eventType )
             self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
             self:fun_slowdown()
-      elseif tag==47 then  --获取参与卷  local scene=GameScene.new({adid=self.id,type="surprise",image=" "}) 
-             if not self._Xscnum then
+      elseif tag==47 then  --获取参与卷 
+          --由于后端TNND这个字段getcardamount错误  于是乎只能毙了  
+           -- if self.getcardamount  >= 2  then    --如果还可以得到两张 参与卷  点击参与卷直接进拼图
+           --      local scene=GameScene.new({adid= self.tpid,type="audition",image=""})--拼图
+           --     cc.Director:getInstance():pushScene(scene)
+           --     LocalData:Instance():set_actid({act_id=self.tpid,image=" "})--保存数
 
-            else
-              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
-             end
-              local scene=GameScene.new({adid= self.tpid,type="audition",image=""})--_id   tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
-              cc.Director:getInstance():pushScene(scene)
-              LocalData:Instance():set_actid({act_id=self.tpid,image=" "})--保存数
+           --       self.coll_bg:setVisible(false)   --这时候开始按钮出现
+           --       self._obtainbt:setVisible(false)
+           --       self.began_bt:setVisible(true)
+           --  elseif self.getcardamount  == 1 then  --如果有一张的时候出现 TNND倒计时  
+           --      self.coll_bg:setVisible(false)   --这时候开始按钮出现
+           --      self._obtainbt:setVisible(false)
+           --      self.began_bt:setVisible(true)
+           --      self:Xfun_countdown() 
+           --  else                 --如果没有可以得到的参与卷了  就出现提示界面 
+           --      LocalData:Instance():set_user_time("1")  --主要是要确定点击后  要自动进入倒计时 
+           --      Server:Instance():prompt("获取参与券的机会已经用完啦,继续拼图只能获得积分")  --  然后点击确定于是乎出现倒计时画面
+
+           --  end
+
+
+
+            if self.coolingtime  ==   0   and tonumber(self.playcardamount)  == 0 then    --如果冷却时间为0  点击参与卷直接进拼图
+                local scene=GameScene.new({adid= self.tpid,type="audition",image=""})--拼图
+               cc.Director:getInstance():pushScene(scene)
+               LocalData:Instance():set_actid({act_id=self.tpid,image=" "})--保存数
+
+                 self.coll_bg:setVisible(false)   --这时候开始按钮出现
+                 self._obtainbt:setVisible(false)
+                 self.began_bt:setVisible(true)
+            elseif self.coolingtime  ==   0   and tonumber(self.playcardamount)  > 0 then  --如果大于0有一张的时候出现 TNND倒计时  
+                self.coll_bg:setVisible(true)   --倒计时
+                self._obtainbt:setVisible(false)
+                self.coolingtime=10    --好任性的需求
+                self:Xfun_countdown() 
+            else                 --如果出现-1  说明不能玩了   就出现提示界面 
+                LocalData:Instance():set_user_time("1")  --主要是要确定点击后  要自动进入倒计时 
+                Server:Instance():prompt("获取参与券的机会已经用完啦,继续拼图只能获得积分")  --  然后点击确定于是乎出现倒计时画面
+
+            end
+
+
+
+
 
       elseif tag==780 then
               
       end
       
 end
-
+--倒计时时间结束
  function JackpotLayer:Xcountdown()
- print("1111112333   ",self._Xtime)
+       
            self._Xtime=self._Xtime-1
            self.coll_text:setString(tostring(self._Xtime) .. "S")
-           if self._Xtime==0 then
-               LocalData:Instance():set_user_time(self.id,"0")
-                self.began_bt:setVisible(true)
-               self._rewardbt:setTouchEnabled(true)
-               self._obtainbt:setTouchEnabled(true)
-               self.coll_bg:setVisible(false)
-               self.end_bt:setTouchEnabled(true)
+           if self._Xtime==0 then    --倒计时后要进入拼图
+    
+              local scene=GameScene.new({adid= self.tpid,type="audition",image=""})--拼图
+              cc.Director:getInstance():pushScene(scene)
+              LocalData:Instance():set_actid({act_id=self.tpid,image=" "})--保存数
 
-              if self.coolingtime==-1 or self.playcardamount<=0 then
-                 self.ban_t:setVisible(true)
-              else
-                self.ban_t:setVisible(false)
-              end
-
+             
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
            end
 end
+--倒计时时间开始
 function JackpotLayer:Xfun_countdown( )
-      local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-      print("88888887777  ")
-      self.coll_bg:setVisible(true)-- 新的冷却倒计时s
-      if not  _tablegods then   --self.coolingtime
+   
         self.coll_text:setString(tostring(self.coolingtime)   ..   "S")
         self._Xtime=tonumber(self.coolingtime)
-      else
-          self.coolingtime=_tablegods["coolingtime"]
-           if tonumber(self.coolingtime)== -1 then
-               self.began_bt:setVisible(true)
-               self._rewardbt:setTouchEnabled(true)
-               self._obtainbt:setTouchEnabled(true)
-               self.coll_bg:setVisible(false)
-               self.end_bt:setTouchEnabled(true)
-               self.ban_t:setVisible(true)
-                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)--停止定时器
-              return
-           end
 
-        self.coll_text:setString(tostring(_tablegods["coolingtime"])  ..    "S")
-        self._Xtime=tonumber(_tablegods["coolingtime"])
-      end
-      
-      LocalData:Instance():set_user_time(self.id,"1")
       self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 if   self._Xscnum then
                                    self:Xcountdown()
@@ -403,8 +424,9 @@ end
                             self.shuiguo1:setVisible(false)
                             self.shuiguo2:setVisible(false)                
                          local function removeThis()
-                          print("8888888  ")
-                            self:Xfun_countdown( )--  新的倒计时 
+                          print("8888888  5555")
+                            --出现获取参与卷 
+                            self._obtainbt:setVisible(true)
                         end
                          self.shuiguo3:runAction( cc.Sequence:create(cc.Blink:create(3, 3),cc.CallFunc:create(removeThis)))
                      end
@@ -417,7 +439,6 @@ function JackpotLayer:fun_slowdown( )
       
 
       self.slowdown_num=3
-      self.end_bt:setTouchEnabled(false)
       self._slowdown=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:slowdown()
               end,0.1, false)
@@ -425,9 +446,13 @@ end
 
 function JackpotLayer:act_began( )
 
-       self.cunum=0
-       self.end_bt:setTouchEnabled(true)
        Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)  --
+       --此时结束按钮出现   
+       self.end_bt:setVisible(true)
+       self.began_bt:setVisible(false)
+       self.coll_bg:setVisible(false)
+       self._obtainbt:setVisible(false)
+
          
 end
 function JackpotLayer:cool_callback( sender, eventType)
@@ -474,6 +499,16 @@ function JackpotLayer:back( sender, eventType)
 
 end
 function JackpotLayer:onEnter()
+      --弹出提示框后出现 确定 进入拼图
+      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JIGSAWCOUNT, self,
+                       function()
+                         print("888888888    999")
+                local scene=GameScene.new({adid= self.tpid,type="audition",image=""})--拼图
+               cc.Director:getInstance():pushScene(scene)
+               LocalData:Instance():set_actid({act_id=self.tpid,image=" "})--保存数
+                      end)
+
+
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self,
                        function()
                        self:init_pic()
@@ -489,42 +524,27 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POS
                          self:information( )
                                
                       end)
+--拼完图刷新的数据   这是个伪消息
 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self,
                        function()
-                                if tonumber(self.coolingtime) ~=  0   and  tonumber(self.coolingtime)~= -1    then  --当coolingtime 不为-1  或 0 时开始进入倒计时
-                                  self:Xfun_countdown()
-                                 
-                                end
-                                print("jkjjklj ")
-                               self:vouchers(  )
+                              print("5545645645644    7")
+                               --  self:vouchers(  )
                                
                       end)
   --劲舞团开启停止后返回的后台随机金币数量
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self,
                        function()
                            local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-                           -- if tonumber(_tablegods["coolingtime"]) < 0 then
-                           --     Server:Instance():prompt("今天次数已完成,请明天再玩吧")
-                           --     return
-                           -- end
-
-                          self.roleAction:gotoFrameAndPlay(0,75, true)
-                             print("拥有参与卷")
-                           self.is_cooltime=false
-                          -- self.roleAction:gotoFrameAndPlay(0,75, true)
-                           self.playcardamount=_tablegods["playcardamount"]--self.playcardamount-1
-
-                           self.began_bt:setVisible(false)
-                           -- self:scheduleUpdate()
-                          self._rewardbt:setTouchEnabled(false)
-                          self._obtainbt:setTouchEnabled(false)
+             
                           if self._doublecardamount>0   and self.is_double==1 then
                               
-                             self._doublecardamount= _tablegods["doublecardamount"]
+                             self._doublecardamount= _tablegods["doublecardamount"]  --  翻倍卡刷新
                              self.car_num:setString(tostring(self._doublecardamount))
 
                           end  
+                          self.playcardamount= _tablegods["playcardamount"]  --参与卷
                            self.roleAction:setTimeSpeed(5)
+                           self.roleAction:gotoFrameAndPlay(0,75, true)
                            self.be_num:setString(tostring(self.playcardamount))
                            self.shuiguo1:setVisible(false)
                            self.shuiguo2:setVisible(false)
@@ -536,8 +556,9 @@ function JackpotLayer:onExit()
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self)
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self)
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
-        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
-        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JIGSAWCOUNT, self)
 end
 
 

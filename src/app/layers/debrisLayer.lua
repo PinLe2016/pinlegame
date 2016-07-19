@@ -203,15 +203,15 @@ function debrisLayer:saw_issuccess()
         local pos=self.fragment_poins[i]
         local pos_suss=self.fragment_success[i]
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then 
-                 --   local function stopAction()
-                 --             if self.type=="surprise" then
-                 --                        Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
-                 --                         return
-                 --            end
-                 --          Server:Instance():setgamerecord(self.adid)
-                 --   end
-                 --  local callfunc = cc.CallFunc:create(stopAction)
-                 -- self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                   local function stopAction()
+                             if self.type=="surprise" then
+                                        Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
+                                         return
+                            end
+                          Server:Instance():setgamerecord(self.adid)
+                   end
+                  local callfunc = cc.CallFunc:create(stopAction)
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
 
             return
         end
@@ -259,12 +259,11 @@ function debrisLayer:add_reward( )
           end)
 
          local _table=LocalData:Instance():get_setgamerecord()--保存数据
-
          if   not _table["goldspool"] then
              return
          end
           local goldspool=_table["goldspool"]
-         if tonumber(goldspool["getcardamount"]) ==0 then
+         if tonumber(goldspool["coolingtime"]) ==  -1 then
                jique:setVisible(false)
                jinyan:setVisible(true)
          else
@@ -286,7 +285,6 @@ function debrisLayer:touch_callback( sender, eventType )
               self.Rewardvouchers:removeFromParent()
           end
               cc.Director:getInstance():popScene()
-              --Server:Instance():setgamerecord(self.adid)  
               Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
               Server:Instance():sceneinformation()
       elseif tag==426 then   --再来一局
