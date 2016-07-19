@@ -34,7 +34,7 @@ function JackpotLayer:ctor(params)
 end
 function JackpotLayer:init(  )
 
-  	  self.JackpotScene = cc.CSLoader:createNode("JackpotScene.csb")
+      self.JackpotScene = cc.CSLoader:createNode("JackpotScene.csb")
         self:addChild(self.JackpotScene)
         self.roleAction = cc.CSLoader:createTimeline("JackpotScene.csb")
         self.JackpotScene:runAction(self.roleAction)
@@ -474,11 +474,11 @@ function JackpotLayer:back( sender, eventType)
 
 end
 function JackpotLayer:onEnter()
-	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self,
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self,
                        function()
                        self:init_pic()
                       end)
-	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self,
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self,
                        function()
                       self:init()
 
@@ -533,8 +533,8 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self,
                         end)
 end
 function JackpotLayer:onExit()
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self)
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self)
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self)
