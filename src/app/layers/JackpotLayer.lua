@@ -10,7 +10,7 @@ local JackpotLayer = class("JackpotLayer", function()
             return display.newLayer("JackpotLayer")
 end)
 
-GameScene = require("app.scenes.GameScene")--惊喜吧
+GameScene = require("app/scenes/GameScene")--惊喜吧
 
 --标题 活动类型 
 function JackpotLayer:ctor(params)

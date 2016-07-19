@@ -5,7 +5,7 @@ local SurpriseScene = class("SurpriseScene", function()
             return display.newScene("SurpriseScene")
 end)
 
-local GameScene = require("app.scenes.GameScene")
+local GameScene = require("app/scenes/GameScene")
 
 function SurpriseScene:ctor()
 

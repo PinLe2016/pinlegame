@@ -390,11 +390,11 @@ end
 
 
 
-require("app.model.Server.ServerLogin")
-require("app.model.Server.ServerSurprise")
-require("app.model.Server.ServerUserData")   
-require("app.model.Server.ServerJackpot") 
-require("app.model.Server.ServerFriends") 
+require("app/model/Server/ServerLogin")
+require("app/model/Server/ServerSurprise")
+require("app/model/Server/ServerUserData")   
+require("app/model/Server/ServerJackpot") 
+require("app/model/Server/ServerFriends") 
 
 
 

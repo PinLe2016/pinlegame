@@ -6,8 +6,8 @@ local LoginScene = class("LoginScene", function()
     return display.newScene("LoginScene")
 end)
 
-local  SurpriseScene=require("app.scenes.SurpriseScene")
-local FloatingLayerEx = require("app.layers.FloatingLayer")
+local  SurpriseScene=require("app/scenes/SurpriseScene")
+local FloatingLayerEx = require("app/layers/FloatingLayer")
 
 
 function LoginScene:ctor()
@@ -609,7 +609,7 @@ function LoginScene:updateLayer()
     getAssetsManager():update()
 
     local function reset(sender)
-        progressLable:setString("")
+
         print("--删除--")
         deleteDownloadDir(pathToSave)
 
@@ -618,6 +618,7 @@ function LoginScene:updateLayer()
         createDownloadDir()
     end
 
+    -- reset()
     local function reloadModule( moduleName )
 
         package.loaded[moduleName] = nil

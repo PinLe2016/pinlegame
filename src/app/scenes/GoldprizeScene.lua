@@ -2,7 +2,7 @@
 local GoldprizeScene = class("GoldprizeScene", function()
     return display.newScene("GoldprizeScene")
 end)
-local  jackpotlayer= require("app.layers.JackpotLayer")--
+local  jackpotlayer= require("app/layers/JackpotLayer")--
 
 
 function GoldprizeScene:ctor()
