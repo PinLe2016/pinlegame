@@ -50,6 +50,8 @@ function PerInformationLayer:add_init(  )
                    
                     local haer=string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
                      dump(haer)
+                    userdt["registertime"]=userdatainit["registertime"]  
+                     LocalData:Instance():set_userdata(userdt)
                     self.image_head1:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
                     
 
@@ -613,7 +615,7 @@ function PerInformationLayer:head( )
         self.PageView_head:addEventListener(function(sender, eventType  )
                  if eventType == ccui.PageViewEventType.turning then
                   self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex())
-                    self.head_index=tostring(self.PageView_head:getCurPageIndex())
+                    self._index=tostring(self.PageView_head:getCurPageIndex())
                 end
         end)
         local Panel=self.PageView_head:getChildByTag(27)
@@ -655,10 +657,11 @@ function PerInformationLayer:head_callback( sender, eventType)
                      self._Pname:setVisible(true)
                end
                 
-            elseif tag==24 then
-                self.image_head:loadTexture(tostring("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"))
-                self.image_head1:loadTexture(tostring("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg"))
-                LocalData:Instance():set_user_head("httpgame.pinlegame.comheadheadicon_" .. self.head_index .. ".jpg")
+            elseif tag==24 then  --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
+                print("jjjjjjjjjj   ",string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
+                self.image_head:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
+                self.image_head1:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))  --self.head_index 
+                LocalData:Instance():set_user_head(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
                  if  self.head_csb then
                     self._Pname:setVisible(true)
                     self.head_csb:removeFromParent()

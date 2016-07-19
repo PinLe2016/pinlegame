@@ -68,12 +68,17 @@ function FloatingLayer:touch_callback( sender, eventType )
               self.call(self)
               -- return
             end
+            -- print("7777···",   LocalData:Instance:get_user_time())
+            -- if tostring(LocalData:Instance:get_user_time()) == "1" then
+            --    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JIGSAWCOUNT)
+            -- end
              if  self.dialog then
                  self.dialog:removeFromParent()
              end
              if dialogdetermine==1 then
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PASSWOEDCHANGE)
              end
+
     elseif tag==42 then --返回
              if  self.dialog then
                  self.dialog:removeFromParent()

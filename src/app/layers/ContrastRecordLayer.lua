@@ -50,7 +50,7 @@ function ContrastRecordLayer:init(  )
       dengji_text:setString(userdt["rankname"])
 
       local head_image=self.ContrastRecordLayer:getChildByTag(108)--头像
-      head_image:loadTexture("cre/"..LocalData:Instance():get_user_head())--(self.head)
+      head_image:loadTexture(LocalData:Instance():get_user_head())--(self.head)
 	
       local _back=self.ContrastRecordLayer:getChildByTag(121)-- 返回
       _back:addTouchEventListener(function(sender, eventType  )
