@@ -306,7 +306,7 @@ end
 --日期转成时间戳
 function Util:dateTotimestamp(birthday)
   local secondOfToday = os.time({day=birthday.day, month=birthday.month,
-    year=birthday.year, hour=0, minute=0, second=0})
+    year=birthday.year, hour=1, minute=0, second=0})
 
   dump(secondOfToday)
   return secondOfToday
