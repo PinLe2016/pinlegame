@@ -114,7 +114,7 @@ end
 --provinceid    否   省份编号    String  String
 --cityid    否   城市编号    String  String
 --address   否   详细地址    String  
-function Server:setconsignee(name,phone,provinceId,cityId,address)
+function Server:setconsignee(name,phone,provinceId,cityId,address,provincename,cityname)
     local params = {}
      params={
             name=name,
@@ -122,6 +122,8 @@ function Server:setconsignee(name,phone,provinceId,cityId,address)
             provinceId=provinceId,
             cityId=cityId,
             address=address,
+            provincename=provincename,
+            cityname=cityname
         }
     self:request_http("setconsignee" , params); 
 end

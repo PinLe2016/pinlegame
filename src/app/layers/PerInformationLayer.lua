@@ -202,7 +202,10 @@ function PerInformationLayer:fun_mail(  )
     else
         self.ads_text_mail:setPlaceHolder(tostring(_getconsignee["address"]))
     end
-
+    if _getconsignee["provincename"]  ~=  "" then
+        self.Receivinginformation:getChildByTag(220):getChildByTag(233):setPlaceHolder(tostring(_getconsignee["provincename"])  ..   tostring(_getconsignee["cityname"]))
+    end
+   
    
     self.ads_text_mail:setAnchorPoint(0,0.5)  
     self.ads_text_mail:setMaxLength(13)
@@ -322,11 +325,11 @@ function PerInformationLayer:save_mail(cath)
 
     if cath==1 then
         --服务器保存收货地址
-       Server:Instance():setconsignee(self.name_text_mail:getText(),self.phone_text_mail:getText(),tostring(province_id),tostring(city_id),self.ads_text_mail:getText())
+       Server:Instance():setconsignee(self.name_text_mail:getText(),self.phone_text_mail:getText(),tostring(province_id),tostring(city_id),self.ads_text_mail:getText(),province,city)
        return
     end
         
-    self.Receivinginformation:getChildByTag(220):getChildByTag(233):setString(province..city..conty)
+    self.Receivinginformation:getChildByTag(220):getChildByTag(233):setPlaceHolder(province..city..conty)
 end
 
 function PerInformationLayer:init(  )
