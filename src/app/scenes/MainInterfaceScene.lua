@@ -368,7 +368,7 @@ function MainInterfaceScene:listener_home()
               self:removeChildByTag(255)
               return
             end
-              device.showAlert("Confirm Exit", "您确定要退出游戏？", {"YES", "NO"}, function (event)  
+              device.showAlert("拼乐游戏", "您确定要退出游戏？", {"是", "否"}, function (event)  
   
                 if event.buttonIndex == 1 then    
                     cc.Director:getInstance():endToLua()  
