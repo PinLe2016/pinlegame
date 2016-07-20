@@ -179,7 +179,7 @@ function LoginScene:landing_init()
     local height = 40
     --登陆
     self.Dphone_text = ccui.EditBox:create(cc.size(width,height),res)
-    phone_bg:addChild(self.Dphone_text,-1)
+    phone_bg:addChild(self.Dphone_text)
     self.Dphone_text:setVisible(true)
     self.Dphone_text:setPosition(cc.p(Editphone:getPositionX(),Editphone:getPositionY()))--( cc.p(107,77 ))  
     self.Dphone_text:setPlaceHolder("请输入手机号码")
@@ -188,7 +188,7 @@ function LoginScene:landing_init()
 
     self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
     self.Dpassword_text:setVisible(true)
-    phone_bg:addChild(self.Dpassword_text ,-1)
+    phone_bg:addChild(self.Dpassword_text )
     self.Dpassword_text :setPosition(cc.p(EditPassword:getPositionX(),EditPassword:getPositionY()))--( cc.p(107,25 ))  
     self.Dpassword_text :setPlaceHolder("请输入密码")
     self.Dpassword_text :setAnchorPoint(0,0.5)  
