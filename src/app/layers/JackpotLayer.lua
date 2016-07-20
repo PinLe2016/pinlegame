@@ -19,11 +19,11 @@ function JackpotLayer:ctor(params)
          self.is_cooltime=true
          self.id=params.id
          self.adownerid=params.adownerid
+          Server:Instance():getrecentgoldslist(10)
           LocalData:Instance():set_user_oid(self.id)
          --Server:Instance():getgoldspoolbyid(self.id)  --删除
-          Server:Instance():getrecentgoldslist(10)-- 中奖信息
+          -- 中奖信息
          Server:Instance():getgoldspoollist({pagesize=params.goldspoolcount,pageno=1,adownerid = self.adownerid})
-        
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true
          LocalData:Instance():set_setgamerecord({})
