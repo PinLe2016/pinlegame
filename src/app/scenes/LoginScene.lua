@@ -18,9 +18,8 @@ function LoginScene:ctor()
 
      if qqqq==0 then
       --请求版本更新链接
-        Server:Instance():getversion()
+        -- Server:Instance():getversion()
         self:progressbarScene()
-       qqqq=2
      else
        self:landing_init()
      end
@@ -434,6 +433,11 @@ end
 
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
+  if qqqq==0 then
+      --请求版本更新链接
+        Server:Instance():getversion()
+      qqqq=2
+  end
   if LocalData:Instance():get_music() then 
     Util:player_music("GAMEBG",true )
   end 

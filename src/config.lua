@@ -35,7 +35,7 @@ PINLE_VERSION="3.0.0"
 
 
 --四个公有文件引入
-require("app/model/Server.Server")--请求文件
+require("app/model/Server/Server")--请求文件
 require("app/model/NotificationCenter")--消息文件
 require("app/model/LocalData/LocalData")--数据文件
 DetailsLayer = require("app/layers/DetailsLayer")--活动详情
