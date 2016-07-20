@@ -46,7 +46,7 @@ function RankinglistofactiviesLayer:init(  )
       _integral:setString(_activitybyid["myrank"])
       
        local _head=self.RankinglistofactiviesLayer:getChildByTag(529) --头像
-       _head:loadTexture("cre/"..LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+       _head:loadTexture(LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
 
 
     	rank_list=self.RankinglistofactiviesLayer:getChildByTag(71)--排行榜列表

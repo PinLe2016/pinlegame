@@ -88,7 +88,8 @@ G_NOTIFICATION_EVENT = {
 	FRIENDSLEVELUP=					            "FRIENDSLEVELUP",--一键领取
 	BACKSUPPOR=					            "BACKSUPPOR",--参与卷返回
 	STECODE=								"setinvitecode",--邀请码刷新
-	EMAILADDRESS=							"EMAILADDRESS"--初始化邮件地址
+	EMAILADDRESS=							"EMAILADDRESS",--初始化邮件地址
+	JIGSAWCOUNT=							"JIGSAWCOUNT"--  点击弹出框确定
 	
 }
 

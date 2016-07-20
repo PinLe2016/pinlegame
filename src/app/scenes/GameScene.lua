@@ -18,7 +18,7 @@ function GameScene:ctor(params)
     self.floating_layer = FloatingLayerEx.new()
 
     self.floating_layer:addTo(self,-1)
-    self._time=10
+    self._time=8
 
     self.type=params.type
 
@@ -233,7 +233,8 @@ end
            self._time=self._time-1
            self._dajishi:setString(tostring(self._time))
            if self._time==0 then
-              Util:scene_control("SurpriseOverScene")
+              --Util:scene_control("SurpriseOverScene")
+              Util:scene_controlid("SurpriseOverScene",{id=self.adid})
                -- local scene=SurpriseOverScene.new({})
                -- cc.Director:getInstance():pushScene(scene)
 
@@ -253,12 +254,11 @@ function GameScene:tupian(  )
 
                      local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
                      local  _image=self.countdownLayer:getChildByTag(590)
-                    
+                    _image:setVisible(true)
                      local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"..tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
                      _image:loadTexture(path)
-                     dump(path)
                     self._dajishi=self.countdownLayer:getChildByTag(589)
-                    self._dajishi:setString("10")
+                    self._dajishi:setString("8")  --于是乎自己就决定了 
                     self:fun_countdown( )
 
 end

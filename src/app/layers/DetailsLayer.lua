@@ -38,7 +38,7 @@ function DetailsLayer:init(  )
 	local  function began_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
 		     -- Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
-		       local scene=GameScene.new({adid=self.id,type="surprise",image=" "})  --daojishi
+		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" "})  --daojishi
                       	       cc.Director:getInstance():pushScene(scene)
 		      --Util:scene_control("SurpriseOverScene")
 		      
@@ -79,7 +79,7 @@ function DetailsLayer:init(  )
 	status_text:setString(user["rankname"])
 
 	local head_image=details:getChildByTag(36)
-	head_image:loadTexture("cre/"..LocalData:Instance():get_user_head())
+	head_image:loadTexture(LocalData:Instance():get_user_head())
 
 	local Personalrecord_bt=details:getChildByTag(42)--个人记录
 	if self.type==3   or  self.type==4 then
