@@ -235,7 +235,7 @@ function MainInterfaceScene:fun_checkin( tm )
   if not self.checkinlayer then
     return
   end
-	 self.checkinlayer:setVisible(false)
+	 --self.checkinlayer:setVisible(false)
         --签到增加的金币
         if tm==2 then
           local _sig=LocalData:Instance():get_getcheckinhistory()
@@ -310,7 +310,7 @@ function MainInterfaceScene:init_checkin(  )
               _biaojitable[16]:loadTexture("png/Qprize.png")
               _biaojitable[16]:setVisible(true)
               if not days then
-                self.checkinlayer:setVisible(true)
+                --self.checkinlayer:setVisible(true)
                   return
               end
            
@@ -329,7 +329,7 @@ function MainInterfaceScene:init_checkin(  )
             	end
             end
 
-            self.checkinlayer:setVisible(true)
+            --self.checkinlayer:setVisible(true)
             --  if tonumber(days[#days]) ==tonumber(LocalData:Instance():get_isign()) then
             --     -- Server:Instance():prompt("今天您已经签到，请改天再签")
             --     self.check_button:setTouchEnabled(false)
