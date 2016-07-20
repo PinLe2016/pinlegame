@@ -112,7 +112,7 @@ function Server:request_http(command , params)
     end
     if self.login_url=="" then
         self.login_url="http://123.57.136.223:2036/Default.aspx?"
-            print("版本链接")
+            -- print("版本链接")
     end
     -- dump(self.login_url)
     local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
@@ -155,7 +155,7 @@ function Server:on_request_finished_http(event , command)
         self:show_float_message("服务器返回信息格式错误，无法解析",response)
         return
     end
-   
+
     -- 保存到类方便调用
     self.data = self.jsondata
     -- self.params = json.decode(self.jsondata.params)
