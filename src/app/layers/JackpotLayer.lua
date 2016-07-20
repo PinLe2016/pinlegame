@@ -348,7 +348,7 @@ function JackpotLayer:touch_callback( sender, eventType )
 
 
 
-            if self.coolingtime  ==   0   and tonumber(self.playcardamount)  == 0 then    --如果冷却时间为0  点击参与卷直接进拼图
+            if self.coolingtime  ==   0   and tonumber(self.getcardamount)  == 2 then    --如果冷却时间为0  点击参与卷直接进拼图  playcardamount
                 local scene=GameScene.new({adid= self.tpid,type="audition",image=""})--拼图
                cc.Director:getInstance():pushScene(scene)
                LocalData:Instance():set_actid({act_id=self.tpid,image=" "})--保存数
@@ -356,7 +356,7 @@ function JackpotLayer:touch_callback( sender, eventType )
                  self.coll_bg:setVisible(false)   --这时候开始按钮出现
                  self._obtainbt:setVisible(false)
                  self.began_bt:setVisible(true)
-            elseif self.coolingtime  ==   0   and tonumber(self.playcardamount)  > 0 then  --如果大于0有一张的时候出现 TNND倒计时  
+            elseif self.coolingtime  ==   10   and tonumber(self.getcardamount)  == 1    then  --如果大于0有一张的时候出现 TNND倒计时  
                 self.coll_bg:setVisible(true)   --倒计时
                 self._obtainbt:setVisible(false)
                 self.coolingtime=10    --好任性的需求
@@ -541,7 +541,9 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self,
                              self._doublecardamount= _tablegods["doublecardamount"]  --  翻倍卡刷新
                              self.car_num:setString(tostring(self._doublecardamount))
 
-                          end  
+                          end   
+                          self.coolingtime=_tablegods["coolingtime"]
+                          self.getcardamount=_tablegods["getcardamount"]
                           self.playcardamount= _tablegods["playcardamount"]  --参与卷
                            self.roleAction:setTimeSpeed(5)
                            self.roleAction:gotoFrameAndPlay(0,75, true)
