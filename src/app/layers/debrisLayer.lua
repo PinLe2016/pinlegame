@@ -203,26 +203,45 @@ function debrisLayer:saw_issuccess()
         local pos=self.fragment_poins[i]
         local pos_suss=self.fragment_success[i]
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then 
+
+                  local _originalimage = cc.CSLoader:createNode("originalimage.csb")
+                  _originalimage:setPosition(cc.p(self.point.x,self.point.y))
+                 local original=_originalimage:getChildByTag(118)
+                 local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+                 original:loadTexture(path .. tostring(self.filename))-- 任性的记住更换原图
+                 self:addChild(_originalimage,900)
+
                    local function stopAction()
                              if self.type=="surprise" then
                                         Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                                          return
                             end
                           Server:Instance():setgamerecord(self.adid)
+
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                 
 
             return
         end
     end
     print("成功")  --self.adid
-                 local function stopAction()
+
+                 local _originalimage = cc.CSLoader:createNode("originalimage.csb")
+                  _originalimage:setPosition(cc.p(self.point.x,self.point.y))
+                 local original=_originalimage:getChildByTag(118)
+                 local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+                 original:loadTexture(path .. tostring(self.filename))-- 记住更换原图
+                 self:addChild(_originalimage,900)
+
+                   local function stopAction()
                              if self.type=="surprise" then
                                         Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                                          return
                             end
                           Server:Instance():setgamerecord(self.adid)
+
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))

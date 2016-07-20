@@ -48,7 +48,7 @@ function PerInformationLayer:add_init(  )
                     -- dump(LocalData:Instance():get_user_head())
                     dump(tonumber(self._index))
                    
-                    local haer=string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
+                    local haer=LocalData:Instance():get_user_head()   --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
                      dump(haer)
                     userdt["registertime"]=userdatainit["registertime"]  
                      LocalData:Instance():set_userdata(userdt)
@@ -286,6 +286,7 @@ function PerInformationLayer:touch_back( sender, eventType )
         self.ads_bg:setVisible(false)
     elseif  tag==147 then
         self:save_mail(2)
+        self.ads_bg:setVisible(false)
          print("确定选择地址")
     end
 end
@@ -395,7 +396,7 @@ function PerInformationLayer:perinformation_init(  )
     self.image_head=bg:getChildByTag(67)  --头像
         -- self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
         dump(LocalData:Instance():get_user_head())
-        local haer=string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
+        local haer=LocalData:Instance():get_user_head()   --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
         self.image_head:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         
 

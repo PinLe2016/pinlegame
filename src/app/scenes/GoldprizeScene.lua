@@ -11,6 +11,7 @@ function GoldprizeScene:ctor()
    self.floating_layer:addTo(self,100000)
    self.sur_pageno=1
    self:init()
+   LocalData:Instance():set_getgoldspoollist(nil)
                
    self:listener_home() --注册安卓返回键         
 end
