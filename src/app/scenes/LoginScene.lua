@@ -157,7 +157,7 @@ end
 function LoginScene:landing_init()
     landing = cc.CSLoader:createNode("landing.csb");
     self:addChild(landing)
-
+    print("2222222222")
    -- local dialog=FloatingLayer:Instance():floatingLayer_init("多少分开始的")
    -- self:addChild(dialog)
    -- self:replaceScene(dialog)
@@ -558,14 +558,17 @@ function LoginScene:updateLayer()
 
     local function enter(sender)
 
-        if not isUpdateItemClicked then
-            local realPath = pathToSave .. "/package"
-            addSearchPath(realPath,true)
-        end
+        local writablePath = cc.FileUtils:getInstance():getWritablePath()
 
+        addSearchPath(writablePath.."tmpdir/package",true)
+        addSearchPath(writablePath.."tmpdir/package/src",true)
+        local login_info=LocalData:Instance():get_user_data()
+        package.loaded["app/scenes/MainInterfaceScene"] = nil
+        
         local login_info=LocalData:Instance():get_user_data()
       
         if login_info~=nil  then
+          package.loaded["app/scenes/MainInterfaceScene"] = nil
            Util:scene_control("MainInterfaceScene")
             return
         end
