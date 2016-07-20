@@ -21,8 +21,9 @@ function JackpotLayer:ctor(params)
          self.adownerid=params.adownerid
           LocalData:Instance():set_user_oid(self.id)
          --Server:Instance():getgoldspoolbyid(self.id)  --删除
+          Server:Instance():getrecentgoldslist(10)-- 中奖信息
          Server:Instance():getgoldspoollist({pagesize=params.goldspoolcount,pageno=1,adownerid = self.adownerid})
-         Server:Instance():getrecentgoldslist(10)-- 中奖信息
+        
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true
          LocalData:Instance():set_setgamerecord({})
