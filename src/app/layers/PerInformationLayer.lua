@@ -286,6 +286,7 @@ function PerInformationLayer:touch_back( sender, eventType )
         self.ads_bg:setVisible(false)
     elseif  tag==147 then
         self:save_mail(2)
+        self.ads_bg:setVisible(false)
          print("确定选择地址")
     end
 end

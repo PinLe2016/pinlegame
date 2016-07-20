@@ -3,7 +3,23 @@
 -- Date: 2016-05-31 10:53:20
 --
 function LocalData:set_getgoldspoollist(getgoldspoollist)
+	-- self.getgoldspoollist=getgoldspoollist
+
+
+	if  not getgoldspoollist then
+	     self.getgoldspoollist=getgoldspoollist
+	     return
+	end
+	if self.getgoldspoollist then
+		for k,v in pairs(getgoldspoollist["goldspools"]) do
+			table.insert(self.getgoldspoollist["goldspools"],v)
+		end
+		return
+	end
 	self.getgoldspoollist=getgoldspoollist
+
+
+	
 end
 function LocalData:get_getgoldspoollist()
 	return self.getgoldspoollist or {}
