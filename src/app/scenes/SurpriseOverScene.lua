@@ -259,7 +259,7 @@ function SurpriseOverScene:init_data(  )
             local rank_text=self.Laohuji:getChildByTag(64)--排名
             rank_text:setString(tostring(activitypoints["rank"]))
             local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
-             _betgolds:setString(tostring(activitypoints["betgolds"]))
+             _betgolds:setString(tostring(activitypoints["betgolds"]) ..   "/次")
               local _cishu=self.Laohuji:getChildByTag(101)   --  次数
 
               if tonumber(activitypoints["remaintimes"]) <0 then

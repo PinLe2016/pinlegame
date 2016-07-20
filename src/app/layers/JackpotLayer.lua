@@ -246,7 +246,7 @@ function JackpotLayer:information( )
              if goldspool  then
                self:vouchers(  ) --真正的刷新
               else
-                  if tonumber(self.coolingtime) ~=  0   and  tonumber(self.coolingtime)~= -1    then  --当coolingtime 不为-1  或 0 时开始进入倒计时
+                  if tonumber(self.coolingtime) ~=  0   and  tonumber(self.coolingtime)~= -1  and  self.getcardamount~=2   then  --当coolingtime 不为-1  或 0 时开始进入倒计时
                          print("888888888    ")
                          self:Xfun_countdown()
                          self._obtainbt:setVisible(false)
