@@ -2,7 +2,7 @@
 local GoldprizeScene = class("GoldprizeScene", function()
     return display.newScene("GoldprizeScene")
 end)
-local  jackpotlayer= require("app/layers/JackpotLayer")--
+
 
 
 function GoldprizeScene:ctor()
@@ -11,6 +11,7 @@ function GoldprizeScene:ctor()
    self.floating_layer:addTo(self,100000)
    self.sur_pageno=1
    self:init()
+   self._dtid=""
    LocalData:Instance():set_getgoldspoollist(nil)
                
    self:listener_home() --注册安卓返回键         
@@ -57,7 +58,6 @@ function GoldprizeScene:data_init(  )
 	 	else
 	 		_jioushu=#jac_data /  2
 		end
-		print("sdsfdsfdsfds  ","  ",_jioushu,"  ",#jac_data %  2)
 		self.jac_data_num=_jioushu  +  #jac_data %  2
 		local path=cc.FileUtils:getInstance():getWritablePath()
 
@@ -80,9 +80,22 @@ function GoldprizeScene:data_init(  )
 
 						local tag=sender:getTag()
 
-						local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"],goldspoolcount=  jac_data[2*i-1]["goldspoolcount"] })
+						 Server:Instance():getgoldspoolbyid(jac_data[2*i-1]["id"])   --主要是判断是否玩完两次
+						 self._dtid=jac_data[2*i-1]["id"]    --为了后面拼图id  准备
+						 self.adownerid  =   jac_data[2*i-1]["adownerid"]
+						 self.goldspoolcount  =  jac_data[2*i-1]["goldspoolcount"]
 
-						self:addChild(jackpotlayer)
+						 -- local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"],goldspoolcount=  jac_data[2*i-1]["goldspoolcount"] })
+
+						-- self:addChild(jackpotlayer)
+
+
+						 -- local scene=GameScene.new({adid= jac_data[2*i-1]["id"],type="audition",image=""})--拼图
+       --                                     			 cc.Director:getInstance():pushScene(scene)
+       --         					 LocalData:Instance():set_actid({act_id=jac_data[2*i-1]["id"],image=" "})--保存数
+
+
+
 
 				end)
 
@@ -120,10 +133,21 @@ function GoldprizeScene:data_init(  )
 					end
 
 					local tag=sender:getTag()
+					Server:Instance():getgoldspoolbyid(jac_data[2*i]["id"])   --主要是判断是否玩完两次
+					self._dtid=jac_data[2*i]["id"]  --为了后面拼图id  准备
+					self.adownerid  =   jac_data[2*i]["adownerid"]
+					self.goldspoolcount  =  jac_data[2*i]["goldspoolcount"]
 
-					local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"],  adownerid= jac_data[2*i]["adownerid"],goldspoolcount=  jac_data[2*i]["goldspoolcount"] })
 
-				    self:addChild(jackpotlayer)
+					-- local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"],  adownerid= jac_data[2*i]["adownerid"],goldspoolcount=  jac_data[2*i]["goldspoolcount"] })
+
+				 --            self:addChild(jackpotlayer)
+
+				    	-- local scene=GameScene.new({adid= jac_data[2*i]["id"],type="audition",image=""})--拼图
+         --                                   	            cc.Director:getInstance():pushScene(scene)
+         --       				LocalData:Instance():set_actid({act_id=jac_data[2*i]["id"],image=" "})--保存数
+
+
 			end)
 
 		    local end1=bg2:getChildByTag(89) --结束
@@ -189,6 +213,33 @@ function GoldprizeScene:onEnter()
                        function()
                        self:data_init()  --初始化
                       end)
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
+                       function()  
+                         local getgoldspoolbyid  = LocalData:Instance():get_getgoldspoolbyid()--获得玩了几次数据
+                         if tonumber(getgoldspoolbyid["coolingtime"]) == -1  or   tonumber(getgoldspoolbyid["getcardamount"]) == 0  then   --因为getcardamount这个后台不准，所以只能多加一个coolingtime来保险的判断是否玩过两次
+
+                         	LocalData:Instance():set_user_pintu("1")  --主要是要确定点击后  要自动拼图
+                                    Server:Instance():prompt("今日获得金币机会已经用完啦,继续拼图只能获得积分")  --  然并卵的提示语
+                         else
+                         
+                         	 print("88888dsf  ",self._dtid)
+                         	 local scene=GameScene.new({adid= self._dtid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+               	             cc.Director:getInstance():pushScene(scene)
+		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+                         end
+		
+                      end)
+  --点击弹出框点击确定自动进入拼图界面  够任性吧
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE, self,
+                       function()
+
+                       
+print("88888dsf  ",self._dtid)
+                        	local scene=GameScene.new({adid= self._dtid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+               	             cc.Director:getInstance():pushScene(scene)
+		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+
+                      end)
   
 
 end
@@ -198,6 +249,8 @@ function GoldprizeScene:onExit()
 	  Util:stop_music("GAMEBG")
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self)
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self)
+	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
+	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE, self)
   
 end
 

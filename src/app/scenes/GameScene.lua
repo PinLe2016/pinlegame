@@ -13,7 +13,7 @@ end)
 
 local debrisLayer = require("app/layers/debrisLayer")
 local SurpriseOverScene = require("app/scenes/SurpriseOverScene")
-
+local  jackpotlayer= require("app/layers/JackpotLayer")
 function GameScene:ctor(params)
     self.floating_layer = FloatingLayerEx.new()
 
@@ -27,6 +27,12 @@ function GameScene:ctor(params)
     self.adid=params.adid
 
     self.id=params.id
+
+     if params.adownerid then
+          self.adownerid = params.adownerid
+          self.goldspoolcount=params.goldspoolcount
+     end
+
 
       if self.type=="daojishi" then
          self.countdownLayer = cc.CSLoader:createNode("countdownLayer.csb")
@@ -89,9 +95,9 @@ function GameScene:funinit(  )
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                         local  jaclayer_data=list_table["adlist"]
 
-
+                        -- print("你猜",self.adid)
                       local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
-                     ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type})   --self.adid
+                     ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})   --self.adid
                       self._csb:addChild(deblayer)
 
                   end
@@ -300,7 +306,6 @@ function GameScene:onEnter()
       Server:Instance():getactivityadlist(self.adid)--发送请求
      end
     
-
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
                         print("什么鬼")
@@ -320,9 +325,15 @@ function GameScene:onEnter()
                             elseif self.type=="daojishi" then
                                  self:tupian(  )
                            end
-                           
-                           
                       end)
+      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS, self,
+                       function()
+                      
+                        local jackpotlayer= jackpotlayer.new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount })
+                         cc.Director:getInstance():pushScene(jackpotlayer)   --  奖池详情  我们就是硬生生的把一个layer 变成 scene  
+                       
+                      end)
+
 
 end
 
@@ -332,6 +343,7 @@ function GameScene:onExit()
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self)
+           NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS, self)
 end
 
 function GameScene:pushFloating(text)

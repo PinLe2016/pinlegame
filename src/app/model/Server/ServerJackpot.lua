@@ -86,7 +86,7 @@ end
 
 
 function Server:getrecentgoldslist_callback()
-     -- dump(self.data)
+      -- dump(self.data)
     if self.data.err_code~=0  then
          self:show_float_message("获取最近10次金币奖池金币奖励失败:" .. self.data.err_msg)
         return

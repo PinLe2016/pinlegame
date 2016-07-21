@@ -89,8 +89,9 @@ G_NOTIFICATION_EVENT = {
 	BACKSUPPOR=					            "BACKSUPPOR",--参与卷返回
 	STECODE=								"setinvitecode",--邀请码刷新
 	EMAILADDRESS=							"EMAILADDRESS",--初始化邮件地址
-	JIGSAWCOUNT=							"JIGSAWCOUNT"--  点击弹出框确定
-	
+	JIGSAWCOUNT=							"JIGSAWCOUNT",--  点击弹出框确定
+	AUTOMATICPUZZLE=						"AUTOMATICPUZZLE",--  点击弹出框确定自动拼图
+	PRIZEPOOLDETAILS=						"PRIZEPOOLDETAILS"   --切换奖池详情
 }
 
 G_SOUND={

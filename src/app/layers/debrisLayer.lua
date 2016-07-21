@@ -15,7 +15,6 @@
 local debrisLayer = class("debrisLayer", function()
     return display.newLayer()
 end)
-
 function debrisLayer:ctor(params)
     -- dump(params)
        self:setNodeEventEnabled(true)--layer添加监听
@@ -27,6 +26,12 @@ function debrisLayer:ctor(params)
         self.col=params.col
         self.count=params.row * params.col
         local path=cc.FileUtils:getInstance():getWritablePath()
+        if params.adownerid then
+          self.adownerid=params.adownerid
+          self.goldspoolcount=params.goldspoolcount
+        end
+       
+        
 
         self.content_size = self._size
          self.tp=params.tp
@@ -216,7 +221,10 @@ function debrisLayer:saw_issuccess()
                                         Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                                          return
                             end
-                          Server:Instance():setgamerecord(self.adid)
+                            print("jdfjskdjf  ",self.adid)
+                          Server:Instance():setgamerecord(self.adid)  
+                            -- local jackpotlayer= jackpotlayer.new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount })
+                            -- self:addChild(jackpotlayer)   --  奖池详情
 
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
@@ -286,8 +294,11 @@ function debrisLayer:add_reward( )
                jique:setVisible(false)
                jinyan:setVisible(true)
          else
-               jique:setVisible(true)
-               jinyan:setVisible(false)
+               -- jique:setVisible(true)
+               -- jinyan:setVisible(false)
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
+               --Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
+
          end
 end
 
@@ -305,7 +316,7 @@ function debrisLayer:touch_callback( sender, eventType )
           end
               cc.Director:getInstance():popScene()
               Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
-              Server:Instance():sceneinformation()
+              Server:Instance():sceneinformation()            
       elseif tag==426 then   --再来一局
          local _table=LocalData:Instance():get_actid()--保存数
          local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
@@ -315,15 +326,15 @@ function debrisLayer:touch_callback( sender, eventType )
            if self.Rewardvouchers then
               self.Rewardvouchers:removeFromParent()
           end
-           cc.Director:getInstance():popScene()
-           --Server:Instance():setgamerecord(self.adid) 
-            print("1215552121")
-           Server:Instance():sceneinformation()
+           -- cc.Director:getInstance():popScene()
+           -- Server:Instance():sceneinformation()
+           Util:scene_control("GoldprizeScene")     --  返回奖池首图列表
           
        elseif tag==107 then   --再来一局
         --Server:Instance():setgamerecord(self.adid) 
          local _table=LocalData:Instance():get_actid()--保存数
-         local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
+         local scene=GameScene.new({adid=self.adid,type="audition",image= ""})
+          local scene=GameScene.new({adid= LocalData:Instance():get_user_oid(),type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
          cc.Director:getInstance():popScene()
          cc.Director:getInstance():pushScene(scene)
              
@@ -331,11 +342,6 @@ function debrisLayer:touch_callback( sender, eventType )
 
 end
 function debrisLayer:onEnter()
-                -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
-                --        function()
-                --         print("拼图结束")
-                --         Util:scene_control("SurpriseOverScene")
-                -- end)
 
               NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
                        function()
@@ -347,7 +353,7 @@ function debrisLayer:onEnter()
 end
 
 function debrisLayer:onExit()
-              -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
+
                 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
 end
 

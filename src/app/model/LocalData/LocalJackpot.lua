@@ -78,6 +78,16 @@ function LocalData:get_user_adownerid()
 	local adownerid=cc.UserDefault:getInstance():getStringForKey("adownerid"," ")
 	return adownerid or nil
 end
+--主要是为了提示语后点击确定进入拼图
+function LocalData:set_user_pintu(pintu)
+	cc.UserDefault:getInstance():setStringForKey("pintu" ,pintu)
+end
+
+function LocalData:get_user_pintu()
+	local user_pintu=cc.UserDefault:getInstance():getStringForKey("pintu","0")
+	return user_pintu or nil
+end
+
 
 
 

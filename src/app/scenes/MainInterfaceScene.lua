@@ -138,7 +138,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==124 then
       self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       self:addChild(self.checkinlayer)
-      self.checkinlayer:setVisible(false)
+      self.checkinlayer:setVisible(true)
 
 	           Server:Instance():getcheckinhistory()  --签到http
       elseif tag==48 then  --设置
