@@ -5,10 +5,10 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
     return display.newScene("MainInterfaceScene")
 end)
 
-local PerInformationLayer = require("app/layers/PerInformationLayer")--惊喜吧  
-local FriendrequestLayer = require("app/layers/FriendrequestLayer")  --邀请好友
-local InvitefriendsLayer = require("app/layers/InvitefriendsLayer")  --邀请好友排行榜
-local activitycodeLayer = require("app/layers/activitycodeLayer")  --活动吗
+local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧  
+local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
+local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
+local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
 function MainInterfaceScene:ctor()
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
@@ -138,7 +138,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==124 then
       self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       self:addChild(self.checkinlayer)
-      self.checkinlayer:setVisible(false)
+      self.checkinlayer:setVisible(true)
 
 	           Server:Instance():getcheckinhistory()  --签到http
       elseif tag==48 then  --设置

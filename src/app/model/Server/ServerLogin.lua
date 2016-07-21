@@ -20,7 +20,7 @@ function Server:version_login_url()
 end
 
 function Server:version_login_url_callback()
-   dump(self.data)
+   -- dump(self.data)
    self.login_url=self.data
 
    --测试接口

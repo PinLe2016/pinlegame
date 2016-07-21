@@ -7,8 +7,6 @@ local MainScene = class("MainScene", function()
 end)
 
 
-local  debrisSprite=require("app/gamecontrol/DebrisSprite")
-
 function MainScene:ctor()
 	     ----  全局变量  服务器选择
    HttpOrSocket = "HTTP"

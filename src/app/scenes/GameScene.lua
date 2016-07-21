@@ -11,8 +11,8 @@ local GameScene = class("GameScene", function()
       return display.newScene("GameScene")
 end)
 
-local debrisLayer = require("app/layers/debrisLayer")
-local SurpriseOverScene = require("app/scenes/SurpriseOverScene")
+local debrisLayer = require("app.layers.debrisLayer")
+local SurpriseOverScene = require("app.scenes.SurpriseOverScene")
 
 function GameScene:ctor(params)
     self.floating_layer = FloatingLayerEx.new()
