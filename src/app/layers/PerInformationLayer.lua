@@ -202,6 +202,7 @@ function PerInformationLayer:fun_mail(  )
     else
         self.ads_text_mail:setPlaceHolder(tostring(_getconsignee["address"]))
     end
+
     if _getconsignee["provincename"]  then
         self.Receivinginformation:getChildByTag(220):getChildByTag(233):setPlaceHolder(tostring(_getconsignee["provincename"])  ..   tostring(_getconsignee["cityname"]))
     end

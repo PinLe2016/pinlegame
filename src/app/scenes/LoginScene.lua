@@ -6,8 +6,7 @@ local LoginScene = class("LoginScene", function()
     return display.newScene("LoginScene")
 end)
 
-local  SurpriseScene=require("app/scenes/SurpriseScene")
-local FloatingLayerEx = require("app/layers/FloatingLayer")
+local FloatingLayerEx = require("app.layers.FloatingLayer")
 
 
 function LoginScene:ctor()
@@ -556,41 +555,66 @@ function LoginScene:updateLayer()
     pathToSave = createDownloadDir()
 
 
-    local function enter(sender)
+    local function reload(is_upd)
 
-        local writablePath = cc.FileUtils:getInstance():getWritablePath()
+        if not is_upd then 
+            local login_info=LocalData:Instance():get_user_data()
 
-        addSearchPath(writablePath.."tmpdir/package",true)
-        addSearchPath(writablePath.."tmpdir/package/src",true)
-        local login_info=LocalData:Instance():get_user_data()
-        package.loaded["app/scenes/MainInterfaceScene"] = nil
-        
-        local login_info=LocalData:Instance():get_user_data()
-      
-        if login_info~=nil  then
-          package.loaded["app/scenes/MainInterfaceScene"] = nil
-           Util:scene_control("MainInterfaceScene")
+            if login_info~=nil  then
+              Util:scene_control("MainInterfaceScene")
+              return
+            end
+            Util:scene_control("LoginScene")
             return
         end
-        Util:scene_control("LoginScene")
+
+        local unReloadModule = {["common.string"] = 1,["common.class"]=1,["common.event"]=1,["common.luadata"]=1,["libs.protobuf"]=1,["pb.protoList"]=1}
+        for k,v in pairs(package.loaded) do
+
+            --只有lua模块卸载
+            local path = string.gsub(k, "%.", "/")
+
+            path = cc.FileUtils:getInstance():fullPathForFilename("src/"..path..".lua");
+            local file = io.open(path);
+            -- print("file---",file)
+            -- io.writefile(cc.FileUtils:getInstance():getWritablePath() .."costTime.lua", path.."\n","a+")
+            -- dump(path)
+            if file and unReloadModule[k]==nil then
+                file:close();
+                local parent = require(k);
+                if type(parent) == "table" then
+                    for k1,_ in pairs(parent) do
+                        parent[k1] = nil
+                    end
+                end
+                local pac=package.loaded[k]
+                package.loaded[k] = nil
+               
+                _G[k] = nil
+            end
+
+        end
+        -- package.loaded["src.app.model.Server.Server"] = nil
+        -- package.loaded["src.app.model.LocalData.LocalData"] = nil
+        xpcall(main, __G__TRACKBACK__)
+        require("app.MyApp").new():run()
+        -- require("main")
+
     end
 
-    local callbackFuncs =
-    {
-        enter
-    }
 
 
 
     local function onError(errorCode)
         if errorCode == cc.ASSETSMANAGER_NO_NEW_VERSION then
             loadingBar:setPercent(100)
-            callbackFuncs[1]()
+            reload(false)
         elseif errorCode == cc.ASSETSMANAGER_NETWORK then
             -- progressLable:setString("network error")
             self:pushFloating("请检查你的网络")
         end
     end
+
 
     local function onProgress( percent )
         -- local progress = string.format("downloading %d%%",percent)
@@ -600,9 +624,9 @@ function LoginScene:updateLayer()
 
     local function onSuccess()
         -- progressLable:setString("downloading ok")
-
+        reload(true)
         loadingBar:setPercent(100)
-        callbackFuncs[1]()
+        
     end
 
     local function getAssetsManager()--"https://raw.github.com/samuele3hu/AssetsManagerTest/master/package.zip"
@@ -622,8 +646,6 @@ function LoginScene:updateLayer()
 
         return assetsManager
     end
-    --版本下载更新中
-    getAssetsManager():update()
 
     local function reset(sender)
 
@@ -635,24 +657,19 @@ function LoginScene:updateLayer()
         createDownloadDir()
     end
 
+--版本下载更新中
+    getAssetsManager():update()
+    --清空当前，重新热更
     -- reset()
-    local function reloadModule( moduleName )
-
-        package.loaded[moduleName] = nil
-
-        return require(moduleName)
-    end
 
     
     return layer
 end
 
 
-
-
 function LoginScene:getVersionInfo()
     local up_date=LocalData:Instance():get_version_date()
-    dump(up_date)
+    -- dump(up_date)
     if tonumber(up_date["Isused"])~=1 then
       
       self.masterURL=up_date["masterURL"]

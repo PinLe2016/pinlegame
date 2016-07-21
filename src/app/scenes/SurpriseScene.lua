@@ -5,10 +5,10 @@ local SurpriseScene = class("SurpriseScene", function()
             return display.newScene("SurpriseScene")
 end)
 
-local GameScene = require("app/scenes/GameScene")
+local GameScene = require("app.scenes.GameScene")
 
 function SurpriseScene:ctor()
-
+  
       self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
       --self:addChild(SurpriseOverLayer.new())

@@ -4,7 +4,6 @@ local GoldprizeScene = class("GoldprizeScene", function()
 end)
 
 
-
 function GoldprizeScene:ctor()
 
    self.floating_layer = FloatingLayerEx.new()

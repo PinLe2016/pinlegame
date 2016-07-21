@@ -5,7 +5,7 @@
 local DetailsLayer = class("DetailsLayer", function()
             return display.newLayer("DetailsLayer")
 end)
-GameScene = require("app/scenes/GameScene")
+GameScene = require("app.scenes.GameScene")
 function DetailsLayer:ctor(params)
        self:setNodeEventEnabled(true)--layer添加监听
        self._ky=params._ky
