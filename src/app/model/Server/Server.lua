@@ -44,7 +44,7 @@ end
 
 function Server:show_http_buffer(is_buffer)
  
-   -- display.getRunningScene():push_buffer(is_buffer)
+    display.getRunningScene():push_buffer(is_buffer)
 end
 
 
