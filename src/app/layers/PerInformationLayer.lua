@@ -173,6 +173,8 @@ function PerInformationLayer:fun_mail(  )
     self.name_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.name_text_mail)
     self.name_text_mail:setPosition(cc.p(name_field:getPositionX(),name_field:getPositionY()))--( cc.p(130,438 ))  
+    self.name_text_mail:setPlaceholderFontColor(cc.c3b(96, 57, 19))
+
     if _getconsignee["name"] == "" then
         self.name_text_mail:setPlaceHolder("您的姓名")
     else
@@ -185,6 +187,7 @@ function PerInformationLayer:fun_mail(  )
     self.phone_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.phone_text_mail)
     self.phone_text_mail:setPosition(cc.p(phone_field:getPositionX(),phone_field:getPositionY()))--( cc.p(130,438 ))  
+    self.phone_text_mail:setPlaceholderFontColor(cc.c3b(96, 57, 19))
      if _getconsignee["phone"] == "" then
         self.phone_text_mail:setPlaceHolder("您的手机号")
     else
@@ -197,14 +200,15 @@ function PerInformationLayer:fun_mail(  )
     self.ads_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.ads_text_mail)
     self.ads_text_mail:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
+    self.ads_text_mail:setPlaceholderFontColor(cc.c3b(96, 57, 19))
     if _getconsignee["address"] == "" then
          self.ads_text_mail:setPlaceHolder("详细地址")
     else
         self.ads_text_mail:setPlaceHolder(tostring(_getconsignee["address"]))
     end
-
-    if _getconsignee["provincename"]  then
-        self.Receivinginformation:getChildByTag(220):getChildByTag(233):setPlaceHolder(tostring(_getconsignee["provincename"])  ..   tostring(_getconsignee["cityname"]))
+    self.diqu=self.Receivinginformation:getChildByTag(220):getChildByTag(233)
+    if _getconsignee["provincename"]  then  
+        self.diqu:setPlaceHolder(tostring(_getconsignee["provincename"])  ..   tostring(_getconsignee["cityname"]))
     end
    
    
