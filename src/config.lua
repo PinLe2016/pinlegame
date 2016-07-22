@@ -38,15 +38,15 @@ PINLE_VERSION="3.0.0"
 require("app.model.Server.Server")--请求文件
 require("app.model.NotificationCenter")--消息文件
 require("app.model.LocalData.LocalData")--数据文件
--- DetailsLayer = require("app.layers.DetailsLayer")--活动详情
--- ContrastRecordLayer = require("app.layers.ContrastRecordLayer")--对比积分排行榜
--- SurpriseOverScene = require("app.scenes.SurpriseOverScene")--惊喜吧结束界面
--- OnerecordLayer = require("app.layers.OnerecordLayer")--个人积分界面
--- RankinglistofactiviesLayer = require("app.layers.RankinglistofactiviesLayer")--排行榜界面
+DetailsLayer = require("app.layers.DetailsLayer")--活动详情
+ContrastRecordLayer = require("app.layers.ContrastRecordLayer")--对比积分排行榜
+SurpriseOverScene = require("app.scenes.SurpriseOverScene")--惊喜吧结束界面
+OnerecordLayer = require("app.layers.OnerecordLayer")--个人积分界面
+RankinglistofactiviesLayer = require("app.layers.RankinglistofactiviesLayer")--排行榜界面
 FloatingLayerEx = require("app.layers.FloatingLayer")--提示文件
 GameScene = require("app.scenes.GameScene")
--- MainInterfaceScene = require("app.scenes.MainInterfaceScene")--主界面
--- SurpriseScene = require("app.scenes.SurpriseScene")--惊喜吧
+MainInterfaceScene = require("app.scenes.MainInterfaceScene")--主界面
+SurpriseScene = require("app.scenes.SurpriseScene")--惊喜吧
 
 
 
