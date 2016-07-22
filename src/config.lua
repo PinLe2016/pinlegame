@@ -44,20 +44,10 @@ require("app.model.LocalData.LocalData")--数据文件
 -- OnerecordLayer = require("app.layers.OnerecordLayer")--个人积分界面
 -- RankinglistofactiviesLayer = require("app.layers.RankinglistofactiviesLayer")--排行榜界面
 FloatingLayerEx = require("app.layers.FloatingLayer")--提示文件
+GameScene = require("app.scenes.GameScene")
 -- MainInterfaceScene = require("app.scenes.MainInterfaceScene")--主界面
 -- SurpriseScene = require("app.scenes.SurpriseScene")--惊喜吧
-require("app.model.Server.ServerLogin")
-require("app.model.Server.ServerSurprise")
-require("app.model.Server.ServerUserData")   
-require("app.model.Server.ServerJackpot") 
-require("app.model.Server.ServerFriends") 
 
-require("app.model.LocalData.LocalLogin")
-require("app.model.LocalData.LocalSurprise")
-require("app.model.LocalData.LocalPerInformation")
-require("app.model.LocalData.LocalJackpot")
-require("app.model.LocalData.LocalUserdata")
-require("app.model.LocalData.LocalFriends")
 
 
 

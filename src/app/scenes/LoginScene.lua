@@ -558,13 +558,7 @@ function LoginScene:updateLayer()
     local function reload(is_upd)
 
         if not is_upd then 
-            local login_info=LocalData:Instance():get_user_data()
 
-            if login_info~=nil  then
-              Util:scene_control("MainInterfaceScene")
-              return
-            end
-            Util:scene_control("LoginScene")
             return
         end
 
@@ -594,8 +588,23 @@ function LoginScene:updateLayer()
             end
 
         end
-        -- package.loaded["src.app.model.Server.Server"] = nil
-        -- package.loaded["src.app.model.LocalData.LocalData"] = nil
+        --说明，安卓重新加载文件，不知为啥，model 文件数据必须重新添加，不然更新model 文件初始重加载不了
+        if device.platform=="android" then
+            require("app.model.Server.ServerLogin")
+            require("app.model.Server.ServerSurprise")
+            require("app.model.Server.ServerUserData")   
+            require("app.model.Server.ServerJackpot") 
+            require("app.model.Server.ServerFriends") 
+
+            require("app.model.LocalData.LocalLogin")
+            require("app.model.LocalData.LocalSurprise")
+            require("app.model.LocalData.LocalPerInformation")
+            require("app.model.LocalData.LocalJackpot")
+            require("app.model.LocalData.LocalUserdata")
+            require("app.model.LocalData.LocalFriends")
+        end
+       
+
         xpcall(main, __G__TRACKBACK__)
         require("app.MyApp").new():run()
         -- require("main")
@@ -607,7 +616,9 @@ function LoginScene:updateLayer()
 
     local function onError(errorCode)
         if errorCode == cc.ASSETSMANAGER_NO_NEW_VERSION then
-            loadingBar:setPercent(100)
+            -- loadingBar:setPercent(100)
+            self._time=0
+            self:fun_countdown()
             reload(false)
         elseif errorCode == cc.ASSETSMANAGER_NETWORK then
             -- progressLable:setString("network error")
@@ -657,11 +668,10 @@ function LoginScene:updateLayer()
         createDownloadDir()
     end
 
---版本下载更新中
-    getAssetsManager():update()
     --清空当前，重新热更
     -- reset()
-
+--版本下载更新中
+    getAssetsManager():update()
     
     return layer
 end
