@@ -84,6 +84,7 @@ function GoldprizeScene:data_init(  )
 						 self.adownerid  =   jac_data[2*i-1]["adownerid"]
 						 self.goldspoolcount  =  jac_data[2*i-1]["goldspoolcount"]
 						 self.image_name  =  path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":"))
+
 						 -- local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"],goldspoolcount=  jac_data[2*i-1]["goldspoolcount"] })
 
 						-- self:addChild(jackpotlayer)
@@ -222,6 +223,7 @@ function GoldprizeScene:onEnter()
                          else
                          
                          	 print("88888dsf  ",self._dtid, "  " ,self.adownerid)
+                         	  LocalData:Instance():set_user_img(self.image_name)
                          	 local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	             cc.Director:getInstance():pushScene(scene)
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
@@ -234,6 +236,7 @@ function GoldprizeScene:onEnter()
 
                        
 print("88888dsf  ",self._dtid)
+			 LocalData:Instance():set_user_img(self.image_name)
                         	local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	             cc.Director:getInstance():pushScene(scene)
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
