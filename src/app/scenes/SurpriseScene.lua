@@ -6,6 +6,7 @@ local SurpriseScene = class("SurpriseScene", function()
 end)
 
 local GameScene = require("app.scenes.GameScene")
+local DetailsLayer = require("app.layers.DetailsLayer")
 
 function SurpriseScene:ctor()
   

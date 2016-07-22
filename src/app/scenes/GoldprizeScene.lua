@@ -83,7 +83,7 @@ function GoldprizeScene:data_init(  )
 						 self._dtid=jac_data[2*i-1]["id"]    --为了后面拼图id  准备
 						 self.adownerid  =   jac_data[2*i-1]["adownerid"]
 						 self.goldspoolcount  =  jac_data[2*i-1]["goldspoolcount"]
-
+						 self.image_name  =  path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":"))
 						 -- local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"],goldspoolcount=  jac_data[2*i-1]["goldspoolcount"] })
 
 						-- self:addChild(jackpotlayer)
@@ -136,7 +136,7 @@ function GoldprizeScene:data_init(  )
 					self._dtid=jac_data[2*i]["id"]  --为了后面拼图id  准备
 					self.adownerid  =   jac_data[2*i]["adownerid"]
 					self.goldspoolcount  =  jac_data[2*i]["goldspoolcount"]
-
+					self.image_name  =  path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":"))
 
 					-- local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"],  adownerid= jac_data[2*i]["adownerid"],goldspoolcount=  jac_data[2*i]["goldspoolcount"] })
 
@@ -222,7 +222,7 @@ function GoldprizeScene:onEnter()
                          else
                          
                          	 print("88888dsf  ",self._dtid, "  " ,self.adownerid)
-                         	 local scene=GameScene.new({adid= self._dtid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+                         	 local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	             cc.Director:getInstance():pushScene(scene)
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                          end
@@ -234,7 +234,7 @@ function GoldprizeScene:onEnter()
 
                        
 print("88888dsf  ",self._dtid)
-                        	local scene=GameScene.new({adid= self._dtid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+                        	local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	             cc.Director:getInstance():pushScene(scene)
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
 

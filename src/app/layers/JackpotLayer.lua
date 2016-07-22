@@ -19,6 +19,9 @@ function JackpotLayer:ctor(params)
       self.floating_layer:addTo(self,100000)
 
         dump(params)
+        if params.image_name then
+          self.image_name=params.image_name
+        end
          self.is_cooltime=true
          self.id=params.id
          self.adownerid=params.adownerid  
@@ -127,10 +130,9 @@ function JackpotLayer:init(  )
 
         local _advertiImg=advertiPa:getChildByTag(155)
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-        _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
-        print("tupian  ",tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))
+        _advertiImg:loadTexture(self.image_name)--(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
          self.tpid=jaclayer_data[1]["id"]
-        Server:Instance():getgoldspoolbyid(self.tpid)
+        Server:Instance():getgoldspoolbyid(self.id)
         LocalData:Instance():set_user_oid(self.id)
          self._jiliang:setString("1/"  ..  tostring(#jaclayer_data))
         --现在注销是因为后台返回一个图片

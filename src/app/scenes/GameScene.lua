@@ -28,6 +28,9 @@ function GameScene:ctor(params)
     self.adid=params.adid
 
     self.id=params.id
+    if params.img then
+      self.img=params.img
+    end
 
      if params.adownerid then
           self.adownerid = params.adownerid
@@ -330,7 +333,7 @@ function GameScene:onEnter()
       NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS, self,
                        function()
                       
-                        local jackpotlayer= jackpotlayer.new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount })
+                        local jackpotlayer= jackpotlayer.new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=self.img})
                          cc.Director:getInstance():pushScene(jackpotlayer)   --  奖池详情  我们就是硬生生的把一个layer 变成 scene  
                        
                       end)
