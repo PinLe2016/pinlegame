@@ -3,7 +3,7 @@ local GoldprizeScene = class("GoldprizeScene", function()
     return display.newScene("GoldprizeScene")
 end)
 
-
+-- local GameScene = require("app.scenes.GameScene")
 function GoldprizeScene:ctor()
 
    self.floating_layer = FloatingLayerEx.new()
