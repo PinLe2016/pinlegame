@@ -48,12 +48,13 @@ end
             loadingBar:setPercent(self._time)
             if self._time==200 then
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
-                 local login_info=LocalData:Instance():get_user_data()
-                if login_info~=nil  then
-                    Util:scene_control("MainInterfaceScene")
-                    return
-                end
-               self:landing_init()             
+               self:_coverlayer()
+                --  local login_info=LocalData:Instance():get_user_data()
+                -- if login_info~=nil  then
+                --     Util:scene_control("MainInterfaceScene")
+                --     return
+                -- end
+              -- self:landing_init()             
 
             end
 
@@ -63,7 +64,47 @@ function LoginScene:fun_countdown( )
                                 self:countdown()
               end,1.0, false)
 end
+function LoginScene:_coverlayer( )
 
+      self.coverlayer = cc.CSLoader:createNode("coverlayer.csb")
+      self:addChild(self.coverlayer)
+
+      local advertiPv=self.coverlayer:getChildByTag(1531)
+      local advertiPa = advertiPv:getChildByTag(1532)
+
+      advertiPv:addEventListener(function(sender, eventType  )
+                
+                 if eventType == ccui.PageViewEventType.turning then
+
+                    advertiPv:scrollToPage(advertiPv:getCurPageIndex())
+                end
+        end)
+       local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+         for i=2, 4 do  --
+              local  call=advertiPa:clone() 
+              local advertiImg=call:getChildByTag(1533)--cover1.jpg
+              advertiImg:loadTexture("res/png/cover"  ..  tostring(i)   ..   ".jpg")--imgurl
+              if i==4 then
+                self.cover_touch=advertiImg
+                advertiImg:setTouchEnabled(true)
+              end
+              advertiPv:addPage(call)   
+        end
+
+        self.cover_touch:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+
+                local login_info=LocalData:Instance():get_user_data()
+                if login_info~=nil  then
+                        Util:scene_control("MainInterfaceScene")
+                        return
+                end
+                self:landing_init()  
+                print("封面")
+        end)
+end
 
 
  function LoginScene:registered_init()

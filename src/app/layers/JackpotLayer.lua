@@ -417,7 +417,7 @@ function JackpotLayer:touch_callback( sender, eventType )
 
       elseif tag==948 then
               print("在来一局")
-              self.again_bt:setTouchEnabled(false)
+              --self.again_bt:setTouchEnabled(true)
               local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
               if tonumber(_tablegods["coolingtime"] )== -1  or   tonumber(_tablegods["getcardamount"] )== 0 then
                  LocalData:Instance():set_user_pintu("1")
