@@ -242,7 +242,7 @@ function MainInterfaceScene:fun_checkin( tm )
           local userdt = LocalData:Instance():get_userdata()
           userdt["golds"]=_sig["playerinfo"]["golds"]
           LocalData:Instance():set_userdata(userdt) --  保存数据
-          Util:scene_control("MainInterfaceScene")
+          -- Util:scene_control("MainInterfaceScene")
         end
         
 
