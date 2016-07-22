@@ -221,7 +221,7 @@ function GoldprizeScene:onEnter()
                                     Server:Instance():prompt("今日获得金币机会已经用完啦,继续拼图只能获得积分")  --  然并卵的提示语
                          else
                          
-                         	 print("88888dsf  ",self._dtid)
+                         	 print("88888dsf  ",self._dtid, "  " ,self.adownerid)
                          	 local scene=GameScene.new({adid= self._dtid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	             cc.Director:getInstance():pushScene(scene)
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数

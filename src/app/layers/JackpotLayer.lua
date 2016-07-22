@@ -15,6 +15,9 @@ end)
 --标题 活动类型 
 function JackpotLayer:ctor(params) 
 
+        self.floating_layer = FloatingLayerEx.new()
+      self.floating_layer:addTo(self,100000)
+
         dump(params)
          self.is_cooltime=true
          self.id=params.id
@@ -22,6 +25,7 @@ function JackpotLayer:ctor(params)
          self.goldspoolcount=params.goldspoolcount
           Server:Instance():getrecentgoldslist(10)
           LocalData:Instance():set_user_oid(self.id)
+          LocalData:Instance():set_getgoldspoollist(nil)
          --Server:Instance():getgoldspoolbyid(self.id)  --删除
           -- 中奖信息
           self.is_double=2
@@ -86,6 +90,7 @@ function JackpotLayer:init(  )
 
        
         local  list_table=LocalData:Instance():get_getgoldspoollist()
+        dump(list_table)
         --以下三个禁
         self._dian1=self.JackpotScene:getChildByTag(810)  
         self._dian2=self.JackpotScene:getChildByTag(811)
@@ -95,38 +100,38 @@ function JackpotLayer:init(  )
 
         
         local  jaclayer_data=list_table["goldspools"]
-        self.advertiPv:addEventListener(function(sender, eventType  )
+        -- self.advertiPv:addEventListener(function(sender, eventType  )
                 
-                 if eventType == ccui.PageViewEventType.turning then
+        --          if eventType == ccui.PageViewEventType.turning then
 
-                    self.tpid=jaclayer_data[self.advertiPv:getCurPageIndex()+1]["id"]
+        --             self.tpid=jaclayer_data[self.advertiPv:getCurPageIndex()+1]["id"]
 
-                    self._jiliang:setString( tostring(self.advertiPv:getCurPageIndex()+1)  ..  "/" ..  tostring(#jaclayer_data))
-                    self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex())
-                      if self.advertiPv:getCurPageIndex()==0 then
-                           self._dian1:setSelected(true)
-                           self._dian2:setSelected(false)
-                           self._dian3:setSelected(false)
+        --             self._jiliang:setString( tostring(self.advertiPv:getCurPageIndex()+1)  ..  "/" ..  tostring(#jaclayer_data))
+        --             self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex())
+        --               if self.advertiPv:getCurPageIndex()==0 then
+        --                    self._dian1:setSelected(true)
+        --                    self._dian2:setSelected(false)
+        --                    self._dian3:setSelected(false)
 
-                       elseif self.advertiPv:getCurPageIndex()==1 then
-                           self._dian1:setSelected(false)
-                           self._dian2:setSelected(true)
-                           self._dian3:setSelected(false)
-                         elseif self.advertiPv:getCurPageIndex()==2 then
-                          self._dian1:setSelected(false)
-                           self._dian2:setSelected(false)
-                           self._dian3:setSelected(true)
-                      end
-                end
-        end)
+        --                elseif self.advertiPv:getCurPageIndex()==1 then
+        --                    self._dian1:setSelected(false)
+        --                    self._dian2:setSelected(true)
+        --                    self._dian3:setSelected(false)
+        --                  elseif self.advertiPv:getCurPageIndex()==2 then
+        --                   self._dian1:setSelected(false)
+        --                    self._dian2:setSelected(false)
+        --                    self._dian3:setSelected(true)
+        --               end
+        --         end
+        -- end)
 
- print("11118989898989  999")
         local _advertiImg=advertiPa:getChildByTag(155)
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         _advertiImg:loadTexture(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
+        print("tupian  ",tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))
          self.tpid=jaclayer_data[1]["id"]
         Server:Instance():getgoldspoolbyid(self.tpid)
-        LocalData:Instance():set_user_oid(self.tpid)
+        LocalData:Instance():set_user_oid(self.id)
          self._jiliang:setString("1/"  ..  tostring(#jaclayer_data))
         --现在注销是因为后台返回一个图片
         --现在只能返回一个  
@@ -158,8 +163,9 @@ function JackpotLayer:init(  )
                  self.advertiPv:scrollToPage(self.advertiPv:getCurPageIndex()+1)
                 
         end)
-         local back=self.JackpotScene:getChildByTag(137)  --返回
-         back:addTouchEventListener(function(sender, eventType  )
+         self.back=self.JackpotScene:getChildByTag(137)  --返回
+         self.back:setVisible(false)
+         self.back:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                 end
@@ -268,9 +274,20 @@ function JackpotLayer:information( )
                        self:touch_callback( sender, eventType )             
               end)
 
+             
+
+
              self.be_num=self.JackpotScene:getChildByTag(999)  --参与卷
              self.playcardamount=tonumber(list_table["playcardamount"])
              self.be_num:setString(list_table["playcardamount"])  --
+             --  零时的  明天后台改  
+             --  local  listd_table=LocalData:Instance():get_getgoldspoollist()
+             -- local  jaclayerd_data=list_table["goldspools"]
+             -- if tonumber(jaclayerd_data["goldspoolcount"])  >= tonumber(list_table["playcardamount"])   then
+             --      self.be_num:setString(jaclayerd_data["goldspoolcount"])  --
+             -- end
+
+
              self.coolingtime=list_table["coolingtime"]   --  0 可以玩  -1  今天不能玩
              self._obtainbt:setVisible(true)
 
@@ -398,11 +415,15 @@ function JackpotLayer:touch_callback( sender, eventType )
 
       elseif tag==948 then
               print("在来一局")
-              -- self.goldanimation:setVisible(false)
-              --  Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
-              --  self.roleAction:gotoFrameAndPlay(0,75, true)--  开始水果机动画 
               self.again_bt:setTouchEnabled(false)
+              local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
+              if tonumber(_tablegods["coolingtime"] )== -1  or   tonumber(_tablegods["getcardamount"] )== 0 then
+                 LocalData:Instance():set_user_pintu("1")
+                Server:Instance():prompt("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
+                return
 
+              end
+              
 
               local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
               cc.Director:getInstance():pushScene(scene)
@@ -461,26 +482,23 @@ end
                             self.shuiguo1:setVisible(false)
                             self.shuiguo2:setVisible(false)                
                          local function removeThis()
-                          --  在二货的没有逻辑的策划下  于是乎我只能自己策划了
-                            self.began_bt:setVisible(false)
-                            self.end_bt:setVisible(true)
-                            self.again_bt:setVisible(true)  --此时在来一局开始出现  好神奇啊  
-                            self.end_bt:setTouchEnabled(true)
-
-                            -- if tonumber(_tablegods["coolingtime"])  == -1   and  tonumber(_tablegods["playcardamount"])  == 0  then
-                            --     LocalData:Instance():set_user_pintu("2")  --主要是要确定点击后  要自动拼图
-                            --     Server:Instance():prompt("今日获得金币机会已经用完啦,继续拼图只能获得积分")  --  然并卵的提示语
-                            --     return
-                            -- end
+               
                             --  出现金币动画
                             print("金币动画")
                             self.goldanimation:setVisible(true)
                             self.goldnum:setString("+"  ..  tostring(_tablegods["golds"]))
                             self.goldroleAction:gotoFrameAndPlay(0,20, true)
-                            -- self.began_bt:setVisible(false)
-                            -- self.end_bt:setVisible(true)
-                            -- self.again_bt:setVisible(true)  --此时在来一局开始出现  好神奇啊  
-                            -- self.end_bt:setTouchEnabled(true)
+                           local function stopAction()
+                                  self.goldanimation:setVisible(false)
+                                  self.back:setVisible(true)
+                                  self.began_bt:setVisible(false)
+                                  self.end_bt:setVisible(true)
+                                  self.again_bt:setVisible(true)  --此时在来一局开始出现  好神奇啊  
+                                  self.end_bt:setTouchEnabled(true)
+                           end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                       self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                    
 
                         end
                          self.shuiguo3:runAction( cc.Sequence:create(cc.Blink:create(3, 3),cc.CallFunc:create(removeThis)))
@@ -537,6 +555,7 @@ function JackpotLayer:init_pic(  )
 
          --以下是测试
           local  list_table=LocalData:Instance():get_getgoldspoollist()
+          dump(list_table)
           local  jac_data=list_table["goldspools"]
           for i=1,#jac_data do
               local _table={}
@@ -544,6 +563,7 @@ function JackpotLayer:init_pic(  )
                       _table["max_pic_idx"]=#jac_data
                       _table["curr_pic_idx"]=i
                        Server:Instance():jackpotlayer_pic(jac_data[i]["imageurl"],_table) --下载图片
+                        print("tupian11  ",tostring(Util:sub_str(jac_data[i]["imageurl"], "/",":")))
           end
 
 
@@ -570,6 +590,7 @@ function JackpotLayer:onEnter()
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_INFOR_POST, self,
                        function()
+                        print("真的下载")
                        self:init_pic()
                       end)
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLISTPIC_INFOR_POST, self,
@@ -624,11 +645,14 @@ NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self,
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE, self,
                        function()
 
-                          local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+                           local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                           cc.Director:getInstance():pushScene(scene)
                           LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
 
+
                       end)
+
+
 
 
 end
@@ -640,7 +664,25 @@ function JackpotLayer:onExit()
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.BACKSUPPOR, self)
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JIGSAWCOUNT, self)
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE, self)
+
 end
+
+
+function JackpotLayer:pushFloating(text)
+   if is_resource then
+       self.floating_layer:showFloat(text)  
+   else
+       self.floating_layer:showFloat(text) 
+   end
+end 
+
+function JackpotLayer:push_buffer(is_buffer)
+       self.floating_layer:show_http(is_buffer) 
+       
+end 
+
+
+
 
 
 return JackpotLayer
