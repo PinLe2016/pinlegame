@@ -22,12 +22,39 @@ function SurpriseOverScene:ctor(params)--params
         self.actid=LocalData:Instance():get_actid()
         self:init()
         
-        self:listener_home() --注册安卓返回键
+        --self:listener_home() --注册安卓返回键
+end
+function SurpriseOverScene:ceshi( )
+       self.Laohuji = cc.CSLoader:createNode("Laohuji.csb")
+      self:addChild(self.Laohuji)
+      self.shareroleAction = cc.CSLoader:createTimeline("Laohuji.csb")
+       self.Laohuji:runAction(self.shareroleAction)
+
+       self.shareroleAction:gotoFrameAndPlay(0,50, true)
+
+
 end
 function SurpriseOverScene:init(  )
 
 	self.Laohuji = cc.CSLoader:createNode("Laohuji.csb")
     	self:addChild(self.Laohuji)
+      self.shareroleAction = cc.CSLoader:createTimeline("Laohuji.csb")
+       self.Laohuji:runAction(self.shareroleAction)
+
+       self.shareroleAction:setTimeSpeed(0.5)
+
+       self.shareroleAction:gotoFrameAndPlay(0,50, true)
+
+
+      --    local node = cc.CSLoader:createNode("battlestart.csb")
+      -- local action = cc.CSLoader:createTimeline("battlestart.csb")
+      -- action:setTimeSpeed(0.25)
+      -- node:runAction(action)
+      -- action:gotoFrameAndPlay(15,90,false)
+
+
+
+
 
       local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
       self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
@@ -96,7 +123,8 @@ function SurpriseOverScene:init(  )
     	back_bt:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
 	end)
-      local share_bt=self.Laohuji:getChildByTag(213)-- 分享
+      local share_bt=self.Laohuji:getChildByTag(213)-- 分
+      
       share_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)

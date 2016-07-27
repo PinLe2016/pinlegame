@@ -80,18 +80,23 @@ function LoginScene:_coverlayer( )
                 end
         end)
        local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+        local advertiImg1=advertiPa:getChildByTag(640)
+        advertiImg1:setVisible(false)
          for i=2, 4 do  --
               local  call=advertiPa:clone() 
-              local advertiImg=call:getChildByTag(1533)--cover1.jpg
-              advertiImg:loadTexture("res/png/cover"  ..  tostring(i)   ..   ".jpg")--imgurl
-              if i==4 then
-                self.cover_touch=advertiImg
-                advertiImg:setTouchEnabled(true)
+              local a_dvertiImg=call:getChildByTag(1533)--cover1.jpg
+              a_dvertiImg:loadTexture("res/png/cover"  ..  tostring(i)   ..   ".jpg")--imgurl
+              local advertiImg=call:getChildByTag(640)
+              if i< 4 then
+                advertiImg:setVisible(false)
+              elseif i==4 then
+                advertiImg:setVisible(true)
+              self. _advertiImg=advertiImg
               end
               advertiPv:addPage(call)   
         end
 
-        self.cover_touch:addTouchEventListener(function(sender, eventType  )
+        self. _advertiImg:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                 end

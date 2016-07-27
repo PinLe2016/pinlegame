@@ -19,7 +19,7 @@ function GameScene:ctor(params)
     self.floating_layer = FloatingLayerEx.new()
 
     self.floating_layer:addTo(self,-1)
-    self._time=8
+    self._time=5
 
     self.type=params.type
 
@@ -269,7 +269,7 @@ function GameScene:tupian(  )
                      local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"..tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
                      _image:loadTexture(path)
                     self._dajishi=self.countdownLayer:getChildByTag(589)
-                    self._dajishi:setString("8")  --于是乎自己就决定了 
+                    self._dajishi:setString("5")  --于是乎自己就决定了 
                     self:fun_countdown( )
 
 end

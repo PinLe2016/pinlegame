@@ -101,10 +101,14 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             local act_head=cell:getChildByTag(78) --头像
             act_head:loadTexture(tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")))
 
+            local leve_head=cell:getChildByTag(77) --皇冠
+
             local ranking_tag=cell:getChildByTag(86)  --排名数字
             if i<4 then 
                ranking_tag:loadTexture(string.format("png/PH_%d.png", i))
+               leve_head:loadTexture(string.format("png/HD%d.png", i))
             else
+                leve_head:setVisible(false)
                 ranking_tag:setVisible(false)
                 local ordinary_tag=cell:getChildByTag(87)
                 ordinary_tag:setVisible(true)
