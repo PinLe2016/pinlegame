@@ -95,7 +95,7 @@ function FriendrequestLayer:init(  )
        for i=1,#self.managerlist do    --   tag
           for j=1,#_table do
             if self.managerlist[i]["friendscount"]==_table[j] then  --
-                lo_img[j]:setTouchEnabled(true)
+                lo_img[j]:setTouchEnabled(false)
         end
           end
          
@@ -104,16 +104,19 @@ function FriendrequestLayer:init(  )
        for i=1,#_table do
         for j=1,#self.managerlist do
             if self.managerlist[j]["friendscount"]==_table[i]   then  --
-            print("777")
                   if tonumber(self.managerlist[j]["tag"]) ==1 then 
-                    print("778888")
                       lo_img[i]:setColor(cc.c3b(100,100,100))
                        lo_img[i]:setTouchEnabled(false)
                   end
             end
           end
       end
-
+      
+      for i=1,8 do  --self.friendlist_num["friendcount"]
+       if _table[i]<tonumber(self.friendlist_num["friendcount"]) then
+           lo_img[i]:setTouchEnabled(true)
+       end
+      end
  
 
 

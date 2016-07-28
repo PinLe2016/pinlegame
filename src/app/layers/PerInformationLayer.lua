@@ -37,7 +37,7 @@ function PerInformationLayer:add_init(  )
                  userdt["districtame"]=userdatainit["districtame"]
                  userdt["registertime"]=userdatainit["registertime"]  
                  LocalData:Instance():set_userdata(userdt)
-                dump(userdatainit)
+                --dump(userdatainit)
 
                 local haerd=userdatainit["imageUrl"]
                
@@ -61,7 +61,7 @@ function PerInformationLayer:add_init(  )
                     local nickname=userdata["loginname"]
                     local nick_sub=string.sub(nickname,1,3)
                     nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
-                    dump(userdt)
+                    --dump(userdt)
                     if userdt["nickname"]~="" then
                         nick_sub=userdt["nickname"]
                     end
@@ -99,6 +99,9 @@ function PerInformationLayer:add_init(  )
                  dump(userdt["cityname"])
                  if userdt["provincename"] then
                      self._provincename1:setString(userdt["provincename"] .. "-" .. userdt["cityname"] .. "-" .. area)
+                     if area  == "" then
+                         self._provincename1:setString(userdt["provincename"] .. "-" .. userdt["cityname"] )
+                     end
                  end
                  
 
@@ -373,12 +376,17 @@ function  PerInformationLayer:city_init( )
          self._cityname=self.Perinformation:getChildByTag(91)
          self._cityname:setString(userdt["cityname"])
          self._area=self.Perinformation:getChildByTag(92)
+         local  between=self.Perinformation:getChildByTag(26):getChildByTag(95)
          local area=""
          if userdt["districtame"] then
              area=userdt["districtame"]
          end
          self._area:setString(area)
          self._area:setVisible(true)
+         if area== "" then
+             self._area:setVisible(false)
+             between:setVisible(false)
+         end
 end
 --个人信息初始化
 function PerInformationLayer:perinformation_init(  )
@@ -413,8 +421,8 @@ function PerInformationLayer:perinformation_init(  )
         self.Dphone_text:setTouchEnabled(false)
         self.Dphone_text:setVisible(false)
         local res = "res/png/DLkuang.png"
-        local width = 350
-        local height = 40
+        local width = 360
+        local height = 60
         --登陆
         self._Pname = ccui.EditBox:create(cc.size(width,height),res)
         self.Perinformation:addChild(self._Pname)
@@ -432,7 +440,7 @@ function PerInformationLayer:perinformation_init(  )
         -- self._Pname:setPlaceHolder(nick_sub)
         self._Pname:setText(nick_sub)
         self._Pname:setAnchorPoint(0,0.5)  
-        self._Pname:setMaxLength(6)
+        self._Pname:setMaxLength(12)
 
         --self._Pname:setString(userdt["nickname"])
         local golds=self.Perinformation:getChildByTag(73)  --金币
