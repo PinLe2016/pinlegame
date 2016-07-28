@@ -49,9 +49,10 @@ function LocalData:set_music(_music)
 end
 
 function LocalData:get_music()
-	local _music=cc.UserDefault:getInstance():getBoolForKey("music")
+	-- cc.UserDefault:getInstance():removeFile("music")
+	local _music=cc.UserDefault:getInstance():getBoolForKey("music",true)
 	dump(_music)
-	return _music or false
+	return _music or true
 end
 --注册验证码
 function LocalData:set_sendmessage(server_code)

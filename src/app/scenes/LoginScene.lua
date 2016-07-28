@@ -48,13 +48,20 @@ end
             loadingBar:setPercent(self._time)
             if self._time==200 then
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
-               self:_coverlayer()
-                --  local login_info=LocalData:Instance():get_user_data()
-                -- if login_info~=nil  then
-                --     Util:scene_control("MainInterfaceScene")
-                --     return
-                -- end
-              -- self:landing_init()             
+               --判断是否是第一次登陆
+               local new_start=cc.UserDefault:getInstance():getStringForKey("new_start","0")
+               if new_start=="0" then
+                  self:_coverlayer()
+                  cc.UserDefault:getInstance():setStringForKey("new_start","1")
+                  return
+               end
+              
+              local login_info=LocalData:Instance():get_user_data()
+              if login_info~=nil  then
+                Util:scene_control("MainInterfaceScene")
+                return
+              end
+              self:landing_init()             
 
             end
 
@@ -400,6 +407,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                 local password = self.resetpasswordLayer:getChildByTag(302)
                 local _pass=self.Wpassword_text:getText()
                  print("提交",_pass,"  ",self._mobilephone)
+                
                  Server:Instance():changepassword(self._mobilephone,_pass)
               elseif tag==291 then
                   self.p_random=Util:rand(  ) --随机验证码\
@@ -421,11 +429,16 @@ end
 function LoginScene:_resetpasswordLayer(  )
 
             self._mobilephone=self.Wphone_text:getText()
+            if tostring(self._yanzhengma:getText())=="" then
+                Server:Instance():prompt("验证码不能为空,请重新输入")
+                return
+            end
 
             if tostring(self._yanzhengma:getText())  ~= tostring(self.p_random) then
               Server:Instance():prompt("验证码错误")
               return    
            end
+            
             if  tostring(self._mobilephone) == " "   then
                return
             end
