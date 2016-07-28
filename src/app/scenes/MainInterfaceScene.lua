@@ -22,12 +22,25 @@ function MainInterfaceScene:ctor()
 end
 
 function MainInterfaceScene:fun_init( )
+
+
+
+
+
       
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
 
       self.roleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
       self:runAction(self.roleAction)
+
+      self.signanimations = cc.CSLoader:createNode("signanimations.csb")
+      self:addChild(self.signanimations)
+      self.signanimationact = cc.CSLoader:createTimeline("signanimations.csb")
+      self.signanimations:runAction(self.signanimationact)
+      local flashing=self.signanimations:getChildByTag(286)
+      flashing:runAction( cc.Sequence:create(cc.Blink:create(3,100)))
+      self.signanimationact:gotoFrameAndPlay(0,65, true)
 
 
          
@@ -55,7 +68,7 @@ function MainInterfaceScene:fun_init( )
           head:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
-      local checkin_bt=self.MainInterfaceScene:getChildByTag(124)
+      local checkin_bt=self.signanimations:getChildByTag(290)  --self.MainInterfaceScene:getChildByTag(124)  --签到按钮
           checkin_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
@@ -78,7 +91,7 @@ function MainInterfaceScene:fun_init( )
       friends_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
-      local friend_bt=self.MainInterfaceScene:getChildByTag(288)--邀请好友
+      local friend_bt=self.signanimations:getChildByTag(291)--self.MainInterfaceScene:getChildByTag(288)--邀请好友
       friend_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
@@ -138,7 +151,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		self.activitycode_text:setString(" ")
 	elseif tag==97 then
 		Util:scene_control("GoldprizeScene")
-	elseif tag==124 then
+	elseif tag==290 then   --124
       self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       self:addChild(self.checkinlayer)
       self.checkinlayer:setVisible(true)
@@ -149,7 +162,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
             self.set_bg1:setVisible(false)
-      elseif tag==288 then  --邀请好友
+      elseif tag==291 then  --邀请好友  288
             self:addChild(FriendrequestLayer.new())
       elseif tag==54 then  --测试分享
             print("规则")

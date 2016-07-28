@@ -28,6 +28,7 @@ function JackpotLayer:ctor(params)
          self.goldspoolcount=params.goldspoolcount
           Server:Instance():getrecentgoldslist(10)
           LocalData:Instance():set_user_oid(self.id)
+          --Server:Instance():getgoldspooladlist(self.id)
           LocalData:Instance():set_getgoldspoollist(nil)
          --Server:Instance():getgoldspoolbyid(self.id)  --删除
           -- 中奖信息

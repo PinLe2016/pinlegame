@@ -301,11 +301,9 @@ function GameScene:onEnter()
      --audio.playMusic(G_SOUND["MENUMUSIC"],true)
      Util:player_music("MENUMUSIC",true )
      if self.type=="surprise" then
-       print("1111111111    ",self.adid)
         Server:Instance():getactivityadlist(self.adid)--发送请求
     elseif self.type=="audition" then
        --self:funinit()
-       print("22223214   ",self.adid)
        Server:Instance():getgoldspooladlist(self.adid)  --记住一会把消息改成上面的   
     elseif self.type=="daojishi" then
       Server:Instance():getactivityadlist(self.adid)--发送请求
@@ -313,18 +311,15 @@ function GameScene:onEnter()
     
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
-                        print("什么鬼")
                         --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
                       end)
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self,
                        function()
-                           print("下载图片")
                             self:imgurl_download()
 
                       end)
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self,
                        function()
-                           print("完成下载图片")
                            if self.type=="surprise"  or  self.type=="audition"   then
                                 self:funinit()
                             elseif self.type=="daojishi" then

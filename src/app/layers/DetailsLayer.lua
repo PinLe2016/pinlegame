@@ -14,6 +14,7 @@ function DetailsLayer:ctor(params)
        self.type=params.type--活动类型
        LocalData:Instance():set_actid({act_id=self.id,image=self.image})--保存数据
        Server:Instance():getactivitybyid(self.id)
+       --Server:Instance():getgoldspooladlist(self.id)   --  暂时停运  id  有误
  
 end
 function DetailsLayer:init(  )
