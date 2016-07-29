@@ -173,7 +173,17 @@ function MainInterfaceScene:touch_callback( sender, eventType )
              dump(login_info)
               local _key=login_info["loginname"]
               local _loginkey=login_info["loginkey"]
-             device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+
+              local webview = cc.WebView:create()
+              self:addChild(webview)
+              webview:setVisible(true)
+              webview:setScalesPageToFit(true)
+              webview:loadURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+              webview:setContentSize(cc.size(display.width,display.height)) -- 一定要设置大小才能显示
+              webview:reload()
+              webview:setPosition(display.cx,display.cy)
+
+             -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
