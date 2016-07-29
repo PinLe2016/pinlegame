@@ -187,20 +187,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
              self:fun_storebrowser()
 
-             local login_info=LocalData:Instance():get_user_data()
-             dump(login_info)
-              local _key=login_info["loginname"]
-              local _loginkey=login_info["loginkey"]
-
-              local webview = cc.WebView:create()
-              self:addChild(webview)
-              webview:setVisible(true)
-              webview:setScalesPageToFit(true)
-              webview:loadURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
-              webview:setContentSize(cc.size(display.width,display.height)) -- 一定要设置大小才能显示
-              webview:reload()
-              webview:setPosition(display.cx,display.cy)
-
+           
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
 
 
@@ -240,6 +227,24 @@ function MainInterfaceScene:fun_storebrowser(  )
       back:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
+
+
+        local login_info=LocalData:Instance():get_user_data()
+              local _key=login_info["loginname"]
+              local _loginkey=login_info["loginkey"]
+
+              local webview = cc.WebView:create()
+              self.Storebrowser:addChild(webview)
+              webview:setVisible(true)
+              webview:setScalesPageToFit(true)
+              webview:loadURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+              webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+              webview:reload()
+              webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
+
+
+
+
 
 end
 
