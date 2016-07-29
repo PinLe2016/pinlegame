@@ -178,11 +178,13 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
-             local login_info=LocalData:Instance():get_user_data()
-             dump(login_info)
-              local _key=login_info["loginname"]
-              local _loginkey=login_info["loginkey"]
-             device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+             -- local login_info=LocalData:Instance():get_user_data()
+             -- dump(login_info)
+             --  local _key=login_info["loginname"]
+             --  local _loginkey=login_info["loginkey"]
+             -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+
+             self:fun_storebrowser()
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
@@ -197,6 +199,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
       elseif tag==52 then  --邀请好友
             self:addChild(InvitefriendsLayer.new())
+      elseif tag==2122 then  --商城返回
+              print("返回")
+              if  self.Storebrowser then
+                 self.Storebrowser:removeFromParent()
+              end
       elseif tag==266 then  --注销
 
         self.floating_layer:showFloat("您确定要退出登录？",function ()
@@ -207,7 +214,16 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	end
 end
 
+function MainInterfaceScene:fun_storebrowser(  )
+      self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
+      self:addChild(self.Storebrowser)
+      local back=self.Storebrowser:getChildByTag(2122)
+      local store_size=self.Storebrowser:getChildByTag(2123)
+      back:addTouchEventListener(function(sender, eventType  )
+           self:touch_callback(sender, eventType)
+      end)
 
+end
 
 
 function MainInterfaceScene:funsetup(  )
