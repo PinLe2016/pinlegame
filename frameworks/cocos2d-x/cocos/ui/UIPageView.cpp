@@ -492,7 +492,7 @@ void PageView::handleReleaseLogic(Touch *touch)
         float curPageLocation = curPagePos.x;
         float pageWidth = getContentSize().width;
         if (!_usingCustomScrollThreshold) {
-            _customScrollThreshold = pageWidth / 2.0;
+            _customScrollThreshold = pageWidth / 10.0;
         }
         float boundary = _customScrollThreshold;
         if (curPageLocation <= -boundary)
