@@ -37,7 +37,7 @@
 #include "C2DXShareSDK.h"
 using namespace cn::sharesdk;
 #endif
-
+#include "lua_cocos2dx_experimental_webview_auto.hpp"
 using namespace CocosDenshion;
 
 USING_NS_CC;
@@ -65,6 +65,9 @@ static void quick_module_register(lua_State *L)
         register_assetsmanager_test_sample(L);
         // extra
         luaopen_cocos2dx_extra_luabinding(L);
+        //浏览器
+        register_all_cocos2dx_experimental_webview(L);
+        
         register_all_cocos2dx_extension_filter(L);
         register_all_cocos2dx_extension_nanovg(L);
         register_all_cocos2dx_extension_nanovg_manual(L);
@@ -72,6 +75,7 @@ static void quick_module_register(lua_State *L)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
         luaopen_cocos2dx_extra_ios_iap_luabinding(L);
 #endif
+       
     }
     lua_pop(L, 1);
 }
@@ -161,18 +165,18 @@ bool AppDelegate::applicationDidFinishLaunching()
 #endif
 
     stack->setXXTEAKeyAndSign("2dxLua", strlen("2dxLua"), "XXTEA", strlen("XXTEA"));
-    stack->loadChunksFromZIP("version.zip");
+    stack->loadChunksFromZIP("package.zip");
     //register custom function
     //LuaStack* stack = engine->getLuaStack();
     //register_custom_function(stack->getLuaState());
     
 #if (COCOS2D_DEBUG > 0 && CC_CODE_IDE_DEBUG_SUPPORT > 0)
     // NOTE:Please don't remove this call if you want to debug with Cocos Code IDE
-    if (_launchMode)
-    {
-        startRuntime();
-    }
-    else
+//    if (_launchMode)
+//    {
+//        startRuntime();
+//    }
+//    else
     {
         engine->executeScriptFile(ConfigParser::getInstance()->getEntryFile().c_str());
 //        engine->executeString(" require 'main' ");
@@ -256,6 +260,7 @@ void AppDelegate::initSearchPaths() {
     
     
     searchPaths.push_back(sharedFileUtils->getWritablePath() + "tmpdir/package");
+    
 //    searchPaths.push_back(sharedFileUtils->getWritablePath() + "upd/res");
 //    searchPaths.push_back("src/");
 //    searchPaths.push_back("res/");
