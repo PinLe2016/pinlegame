@@ -103,7 +103,7 @@ end
 function Server:login_callback()
     dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("账号密码登录失败:" .. self.data.err_msg)
+        self:show_float_message(self.data.err_msg)
          -- local a=FloatingLayer:Instance():floatingLayer_init(self.data.err_msg)
          -- display.addChild(a)
         return

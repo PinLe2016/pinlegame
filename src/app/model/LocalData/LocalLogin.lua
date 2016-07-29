@@ -52,7 +52,7 @@ function LocalData:get_music()
 	-- cc.UserDefault:getInstance():removeFile("music")
 	local _music=cc.UserDefault:getInstance():getBoolForKey("music",true)
 	dump(_music)
-	return _music or true
+	return _music 
 end
 --注册验证码
 function LocalData:set_sendmessage(server_code)
