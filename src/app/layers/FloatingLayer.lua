@@ -29,7 +29,7 @@ function FloatingLayer:show_http(is_show)
 end
 function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
     self.dialog = cc.CSLoader:createNode("Dialog.csb");
-    self:addChild(self.dialog)
+    self:addChild(self.dialog,20)
     dialogtext = self.dialog:getChildByTag(44)
     dialogtext:setString(dialogtextString)
    -- local name = cc.ui.UILabel.new({text = dialogtextString,

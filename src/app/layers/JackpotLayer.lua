@@ -488,10 +488,12 @@ end
                
                             --  出现金币动画
                             print("金币动画")
+                            Util:player_music("FALLMONEY",true)
                             self.goldanimation:setVisible(true)
                             self.goldnum:setString("+"  ..  tostring(_tablegods["golds"]))
                             self.goldroleAction:gotoFrameAndPlay(0,20, true)
                            local function stopAction()
+                                  audio.stopMusic(G_SOUND["FALLMONEY"])
                                   self.goldanimation:setVisible(false)
                                   self.back:setVisible(true)
                                   self.began_bt:setVisible(false)
