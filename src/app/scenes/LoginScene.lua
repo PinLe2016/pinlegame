@@ -11,7 +11,8 @@ local FloatingLayerEx = require("app.layers.FloatingLayer")
 
 function LoginScene:ctor()
    self.floating_layer = FloatingLayerEx.new()
-   self.floating_layer:addTo(self,100000)
+   --self.floating_layer:addTo(self,100)
+   self:addChild(self.floating_layer, 100)
 
       
 
@@ -209,13 +210,13 @@ end
 function LoginScene:landing_init()
     landing = cc.CSLoader:createNode("landing.csb");
     self:addChild(landing)
-    print("2222222222")
+
+    print("层级关系222",self.floating_layer:getLocalZOrder(),"  ",landing:getLocalZOrder())
    -- local dialog=FloatingLayer:Instance():floatingLayer_init("多少分开始的")
    -- self:addChild(dialog)
    -- self:replaceScene(dialog)
   phone_bg=landing:getChildByTag(6)
-  dump(phone_bg:getPosition())
-  print("顶顶顶顶",phone_bg:getPositionX(),phone_bg:getPositionY())
+
   local Editphone = landing:getChildByTag(6):getChildByTag(16)
   Editphone:setTouchEnabled(false)
   Editphone:setVisible(false)
@@ -231,12 +232,13 @@ function LoginScene:landing_init()
     local height = 40
     --登陆
     self.Dphone_text = ccui.EditBox:create(cc.size(width,height),res)
-    phone_bg:addChild(self.Dphone_text)
+    self.Dphone_text:setPlaceHolder("请输入手机号码")  --setString
     self.Dphone_text:setVisible(true)
     self.Dphone_text:setPosition(cc.p(Editphone:getPositionX(),Editphone:getPositionY()))--( cc.p(107,77 ))  
-    self.Dphone_text:setPlaceHolder("请输入手机号码")
     self.Dphone_text:setAnchorPoint(0,0.5)  
     self.Dphone_text:setMaxLength(11)
+    phone_bg:addChild(self.Dphone_text)
+    print("层级关系",self.Dphone_text:getLocalZOrder(),"  ",phone_bg:getLocalZOrder())
 
     self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
     self.Dpassword_text:setVisible(true)
@@ -251,14 +253,19 @@ function LoginScene:landing_init()
 
 
 
+
+
+
+
 local function go_btCallback(sender, eventType)
 
         if eventType == ccui.TouchEventType.ended then
-            self._gobt:setTouchEnabled(false)
+            
             if  self.Dphone_text:getText() == "" then
                 Server:Instance():prompt("填写的手机号不能为空哦！")
                return
             end
+            self._gobt:setTouchEnabled(false)
            Server:Instance():login(self.Dphone_text:getText(),self.Dpassword_text :getText())
            local function stopAction()
                           self._gobt:setTouchEnabled(true)
@@ -304,9 +311,9 @@ local function go_btCallback(sender, eventType)
     end
 
 
-   local go_bt = landing:getChildByTag(6):getChildByTag(11)--登陆
-   self._gobt=go_bt
-    go_bt:addTouchEventListener(go_btCallback)
+   self._gobt = landing:getChildByTag(6):getChildByTag(11)--登陆
+   --self._gobt=go_bt
+    self._gobt:addTouchEventListener(go_btCallback)
 
      local registered_bt = landing:getChildByTag(6):getChildByTag(12)--注册
     registered_bt:addTouchEventListener(registered_btCallback)

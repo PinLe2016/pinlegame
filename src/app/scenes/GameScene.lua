@@ -204,6 +204,7 @@ function GameScene:originalimage(dex)
            self._kuang:setLocalZOrder(200)
            self._kuang:addChild(self._originalimage)
            self.original=self._originalimage:getChildByTag(118)
+           self.tishi=self._originalimage:getChildByTag(2044)
 
            if self.type=="surprise" then
               local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
@@ -224,6 +225,7 @@ function GameScene:originalimage(dex)
               self.original:setTouchEnabled(true)
            elseif dex==1 then
               self.original:setTouchEnabled(false)
+              self.tishi:setVisible(false)
            end
            if self.original:isTouchEnabled() then
                self._restore_bt:setTouchEnabled(false)

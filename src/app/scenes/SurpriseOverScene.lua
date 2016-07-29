@@ -63,9 +63,16 @@ function SurpriseOverScene:init(  )
     
     	if self.tp==2 then
     		local image_name=self.Laohuji:getChildByTag(161)
-    	            image_name:setVisible(false)
+    	      image_name:setVisible(false)
 	    	local _imagename=self.Laohuji:getChildByTag(336)
 	    	_imagename:loadTexture(self.actid["image"])
+           _imagename:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+               device.openURL("http://games.pinlegame.com/x_Brand.aspx")
+            end)
+
 	 else
 	  	local image_name=self.Laohuji:getChildByTag(161)
     	            image_name:setVisible(false)
@@ -74,6 +81,15 @@ function SurpriseOverScene:init(  )
               local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
                  _imagename:loadTexture(path..self._imagetu)
 	    	--image_name:loadTexture(self._imagetu)--(self.actid["image"])
+             _imagename:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+               device.openURL("http://games.pinlegame.com/x_Brand.aspx")
+            end)
+
+
+
     	end
     	
       local activitybyid=LocalData:Instance():get_getactivitybyid()

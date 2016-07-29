@@ -115,11 +115,20 @@ end
 --用户数据
 function MainInterfaceScene:userdata(  )
        local userdt = LocalData:Instance():get_userdata()
-       dump(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
-       name:setString(userdt["nickname"])
+       local  userdata=LocalData:Instance():get_user_data()
+
+        local nickname=userdata["loginname"]
+        local nick_sub=string.sub(nickname,1,3)
+        nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
+        if userdt["nickname"]~="" then
+            nick_sub=userdt["nickname"]
+        end
+        name:setString(nick_sub)
+        --name:setString(userdt["nickname"])
+
        local crown_name=self.MainInterfaceScene:getChildByTag(41)-- 爵位
        crown_name:setString(userdt["rankname"])
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
