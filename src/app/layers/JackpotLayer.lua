@@ -254,7 +254,7 @@ function JackpotLayer:fun_storebrowser(  )
               self.Storebrowser:addChild(webview)
               webview:setVisible(true)
               webview:setScalesPageToFit(true)
-              webview:loadURL(Server:Instance():mall("http://games.pinlegame.com/x_Brand.aspx"))
+              webview:loadURL("http://games.pinlegame.com/x_Brand.aspx")
               webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
               webview:reload()
               webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
