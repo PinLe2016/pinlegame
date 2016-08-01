@@ -128,8 +128,16 @@ function JackpotLayer:init(  )
         --               end
         --         end
         -- end)
-
+       --  跳转网页
         local _advertiImg=advertiPa:getChildByTag(155)
+        _advertiImg:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+                self:fun_storebrowser()
+               --device.openURL("http://games.pinlegame.com/x_Brand.aspx")
+            end)
+
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         _advertiImg:loadTexture(self.image_name)--(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
          self.tpid=jaclayer_data[1]["id"]
@@ -224,6 +232,35 @@ function  JackpotLayer:wininformation(  )
                   local _gold=cell:getChildByTag(39)
                   _gold:setString(goldslist[i]["golds"])
           end
+
+end
+function JackpotLayer:fun_storebrowser(  )
+
+      self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
+      self:addChild(self.Storebrowser)
+      local back=self.Storebrowser:getChildByTag(2122)
+      local store_size=self.Storebrowser:getChildByTag(2123)
+       back:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+              if self.Storebrowser then
+                self.Storebrowser:removeFromParent()
+              end
+            end)
+
+              local webview = cc.WebView:create()
+              self.Storebrowser:addChild(webview)
+              webview:setVisible(true)
+              webview:setScalesPageToFit(true)
+              webview:loadURL(Server:Instance():mall("http://games.pinlegame.com/x_Brand.aspx"))
+              webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+              webview:reload()
+              webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
+
+
+
+
 
 end
 function JackpotLayer:information( )
