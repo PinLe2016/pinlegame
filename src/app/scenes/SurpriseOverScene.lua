@@ -88,7 +88,8 @@ function SurpriseOverScene:init(  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                 end
-               device.openURL("http://games.pinlegame.com/x_Brand.aspx")
+                self:fun_storebrowser()
+               --device.openURL("http://games.pinlegame.com/x_Brand.aspx")
             end)
 
 
