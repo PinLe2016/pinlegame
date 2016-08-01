@@ -61,6 +61,7 @@ function JackpotLayer:init(  )
         self.goldanimation:setVisible(false)
         self:addChild(self.goldanimation)
         self.goldroleAction = cc.CSLoader:createTimeline("goldanimation.csb")
+        self.goldroleAction:setTimeSpeed(0.5)
         self.goldanimation:runAction(self.goldroleAction)
         self.goldnum  =self.goldanimation:getChildByTag(781):getChildByTag(782)  --增加的金币数
 
@@ -528,7 +529,8 @@ end
                             Util:player_music("FALLMONEY",true)
                             self.goldanimation:setVisible(true)
                             self.goldnum:setString("+"  ..  tostring(_tablegods["golds"]))
-                            self.goldroleAction:gotoFrameAndPlay(0,20, true)
+                            self.goldroleAction:gotoFrameAndPlay(0,35, false)
+
                            local function stopAction()
                                   audio.stopMusic(G_SOUND["FALLMONEY"])
                                   self.goldanimation:setVisible(false)
@@ -539,7 +541,7 @@ end
                                   self.end_bt:setTouchEnabled(true)
                            end
                         local callfunc = cc.CallFunc:create(stopAction)
-                       self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
                     
 
                         end

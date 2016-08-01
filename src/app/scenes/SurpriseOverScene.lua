@@ -46,11 +46,13 @@ function SurpriseOverScene:init(  )
        self.shareroleAction:gotoFrameAndPlay(0,50, true)
 
 
-      --    local node = cc.CSLoader:createNode("battlestart.csb")
-      -- local action = cc.CSLoader:createTimeline("battlestart.csb")
-      -- action:setTimeSpeed(0.25)
-      -- node:runAction(action)
-      -- action:gotoFrameAndPlay(15,90,false)
+      --  新增加的拉杆动画
+      self.laohujiact = cc.CSLoader:createNode("laohujiact.csb")
+      self:addChild(self.laohujiact)
+      self.laohujiaction = cc.CSLoader:createTimeline("laohujiact.csb")
+      self.laohujiact:runAction(self.laohujiaction)
+      self.laohujiaction:setTimeSpeed(0.8)
+
 
 
 
@@ -70,7 +72,8 @@ function SurpriseOverScene:init(  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                 end
-               device.openURL("http://games.pinlegame.com/x_Brand.aspx")
+                self:fun_storebrowser()
+               --device.openURL("http://games.pinlegame.com/x_Brand.aspx")
             end)
 
 	 else
@@ -169,6 +172,59 @@ function SurpriseOverScene:init(  )
 
 end
 
+
+
+function SurpriseOverScene:fun_storebrowser(  )
+
+      self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
+      self:addChild(self.Storebrowser)
+      local back=self.Storebrowser:getChildByTag(2122)
+      local store_size=self.Storebrowser:getChildByTag(2123)
+       back:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+              if self.Storebrowser then
+                self.Storebrowser:removeFromParent()
+
+                self:goldact()
+              end
+            end)
+
+              local webview = cc.WebView:create()
+              self.Storebrowser:addChild(webview)
+              webview:setVisible(true)
+              webview:setScalesPageToFit(true)
+              webview:loadURL(Server:Instance():mall("http://games.pinlegame.com/x_Brand.aspx"))
+              webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+              webview:reload()
+              webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
+
+end
+
+function SurpriseOverScene:goldact(  )
+            
+            self._laohujigoldact = cc.CSLoader:createNode("laohujigoldact.csb")
+            self:addChild(self._laohujigoldact)
+            local laohujigoldaction = cc.CSLoader:createTimeline("laohujigoldact.csb")
+            self._laohujigoldact:runAction(laohujigoldaction)
+            laohujigoldaction:setTimeSpeed(0.5)
+            laohujigoldaction:gotoFrameAndPlay(0,50, false)
+
+
+
+            local function stopAction()
+                 if self._laohujigoldact then
+                    self._laohujigoldact:removeFromParent()
+                 end
+           end
+          local callfunc = cc.CallFunc:create(stopAction)
+         self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+
+
+
+end
+
 function SurpriseOverScene:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
 		return
@@ -197,6 +253,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
                self.began_bt:setTouchEnabled(false)
                audio.playMusic(G_SOUND["FALLMONEY"],true)
                Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
+                self.laohujiaction:gotoFrameAndPlay(0,42, false)
           end
 
           end
@@ -238,7 +295,7 @@ function SurpriseOverScene:L_end(  )
             userdt["golds"]=_laohujidata["golds"]
             userdt["points"]=_laohujidata["points"]
             LocalData:Instance():set_userdata(userdt) --  保存数据
-
+            self.laohujiaction:gotoFrameAndPlay(42,84, false)
 
 
 	local activitypoints=LocalData:Instance():get_getactivitypoints()
