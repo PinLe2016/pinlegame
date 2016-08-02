@@ -211,6 +211,7 @@ function Server:mall(username,password)
             loginname=username,
             password=crypto.md5(username ..  password),
         }
+        dump(self.login_url)
         local hp=self.login_url ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         return  hp
 end
