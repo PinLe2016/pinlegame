@@ -233,12 +233,14 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	local activitypoints=LocalData:Instance():get_getactivitypoints()
 	local tag=sender:getTag()
 	if tag==164 then --开始
-           local _table=LocalData:Instance():get_getactivitypoints()
-             if _table["remaintimes"]==0 then
+           
+          
+             local _table=LocalData:Instance():get_getactivitypoints()
+             if    _table["remaintimes"]==0   then
                    Server:Instance():prompt("您参与次数已经用完")   --  记得改特佳
                    self.began_bt:setTouchEnabled(false)
                    return
-                end
+            end
 
 
           local  cishu=LocalData:Instance():get_getactivitybyid()
@@ -270,6 +272,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		print("点我有惊喜")
 	elseif tag==160 then --返回
 		--Util:scene_control("MainInterfaceScene")
+    LocalData:Instance():set_getactivitypoints(nil)
     Server:Instance():getactivitybyid(self.id)
      cc.Director:getInstance():popScene()
 
