@@ -55,8 +55,12 @@ function Server:request_version(command , params)
 
     local platform=device.platform
     if platform=="mac" then platform="ios" end
-    local  version_data=string.format("http://test.pinlegame.com/geturl.aspx?os=%s&ver=%s",platform,PINLE_VERSION)
-
+    local url="http://test.pinlegame.com/geturl.aspx?os=%s&ver=%s"
+    if IS_RELEASE then
+          url="http://www.pinlegame.com/geturl.aspx?os=%s&ver=%s"
+    end
+    local  version_data=string.format(url,platform,PINLE_VERSION)
+    dump(version_data)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_version(event,command) end, version_data , "POST")
     -- local params_encoded = json.encode(params)
 
@@ -112,7 +116,7 @@ function Server:request_http(command , params)
     end
     if self.login_url=="" then
         self.login_url="http://123.57.136.223:2036/Default.aspx?"
-            -- print("版本链接")
+            print("版本链接")
     end
     -- dump(self.login_url)
     local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
