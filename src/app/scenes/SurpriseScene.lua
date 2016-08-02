@@ -235,6 +235,11 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             local type_image="png/J_" .. sup_data[i]["type"] .. ".png"
             local huojiang_bg=cell:getChildByTag(336)
             type:loadTexture(type_image)
+              if self.ser_status==0 then
+                local activity_acttie=cell:getChildByTag(37)
+             activity_acttie:setString("距离活动开始还有:")
+              end
+            
 
             local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
             if  self.ser_status==2 then   --往期获奖名单
