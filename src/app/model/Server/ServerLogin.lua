@@ -20,7 +20,7 @@ function Server:version_login_url()
 end
 
 function Server:version_login_url_callback()
-   -- dump(self.data)
+   dump(self.data)
    self.login_url=self.data
 
    --测试接口
@@ -43,7 +43,7 @@ function Server:reg(username,password)
     params={
             loginname=username,
             deviceid = device_id,
-            nickname="...",
+            nickname="",
             password=crypto.md5(password),
             latitude=55000000,
             longtitude=660000000,
@@ -84,7 +84,7 @@ function Server:login(username,password)
     params={
             loginname=username,
             deviceid = device_id,
-            nickname="...",
+            nickname="",
             password=crypto.md5(password),
             latitude=55000000,
             longtitude=660000000,
@@ -211,8 +211,8 @@ function Server:mall(username,password)
             loginname=username,
             password=crypto.md5(username ..  password),
         }
-        dump(self.login_url)
-        local hp=self.login_url ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
+        --local hp=self.login_url ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
+        local hp="http://123.57.136.223:3000/Z_Default.aspx?" ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         return  hp
 end
 
