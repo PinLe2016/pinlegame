@@ -99,8 +99,12 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             level_text:setString(tostring(sup_data[i]["title"]))
 
             local act_head=cell:getChildByTag(78) --头像
-           local path=cc.FileUtils:getInstance():getWritablePath().."res/png/"
-            act_head:loadTexture(path  .. tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")))
+
+            local _index=string.match(tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")),"%d")
+             print("hhhhhhhhh    ",_index)
+             --local path=cc.FileUtils:getInstance():getWritablePath().."res/png/"
+            --act_head:loadTexture( path .. tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")))
+            act_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 
             local leve_head=cell:getChildByTag(77) --皇冠
 
