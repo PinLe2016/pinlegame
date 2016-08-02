@@ -84,7 +84,7 @@ function Server:login(username,password)
     params={
             loginname=username,
             deviceid = device_id,
-            nickname="...",
+            nickname="",
             password=crypto.md5(password),
             latitude=55000000,
             longtitude=660000000,
