@@ -194,13 +194,13 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
 
-             local login_info=LocalData:Instance():get_user_data()
-             dump(login_info)
-              local _key=login_info["loginname"]
-              local _loginkey=login_info["loginkey"]
-             device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+             -- local login_info=LocalData:Instance():get_user_data()
+             -- dump(login_info)
+             --  local _key=login_info["loginname"]
+             --  local _loginkey=login_info["loginkey"]
+             -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
 
-             --self:fun_storebrowser()
+             self:fun_storebrowser()
 
            
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
