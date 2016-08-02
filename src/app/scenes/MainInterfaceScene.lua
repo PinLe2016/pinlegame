@@ -134,6 +134,12 @@ function MainInterfaceScene:userdata(  )
        crown_name:setString(userdt["rankname"])
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
        leve:setString(userdt["grade"])
+       local _gd= LocalData:Instance():get_getcheckinhistory()
+
+       if tonumber(_gd["rewardgolds"])   and   userdt["golds"]  < tonumber(_gd["rewardgolds"])    then
+          userdt["golds"] =  tonumber(_gd["rewardgolds"])
+       end
+       LocalData:Instance():set_user_data(userdt)
        local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
        --gold_text:setVisible(false)
        gold_text:setString(userdt["golds"])
@@ -418,6 +424,7 @@ function MainInterfaceScene:onEnter()
   Util:player_music("ACTIVITY",true )
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
+                        self:userdata(  )
                        self:fun_checkin(2)--签到后
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self,
