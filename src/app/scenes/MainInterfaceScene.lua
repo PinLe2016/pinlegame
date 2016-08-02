@@ -16,7 +16,7 @@ function MainInterfaceScene:ctor()
        
       self:fun_init()
       self:listener_home() --注册安卓返回键
-
+     
 
    
 end
@@ -33,6 +33,7 @@ function MainInterfaceScene:fun_init( )
 
       self.roleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
       self:runAction(self.roleAction)
+      self.roleAction:setTimeSpeed(0.3)
 
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self:addChild(self.signanimations)
@@ -134,8 +135,16 @@ function MainInterfaceScene:userdata(  )
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
        leve:setString(userdt["grade"])
        local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
-       print("hahhahhahahhahfewahiufhewfh")
+       --gold_text:setVisible(false)
        gold_text:setString(userdt["golds"])
+
+       -- local labelAtlas = ccui.TextAtlas:create()
+       -- labelAtlas:setProperty(tostring(userdt["golds"]), "font/goldttf.png", 25, 34, "0")
+       -- labelAtlas:setPosition(cc.p(gold_text:getPositionX(),gold_text:getPositionY()))  
+       -- self.MainInterfaceScene:addChild(labelAtlas)  
+
+
+
        local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 钻石
        diamond_text:setString("0")--loadingBar:setPercent(0)
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
@@ -179,13 +188,13 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
 
-             -- local login_info=LocalData:Instance():get_user_data()
-             -- dump(login_info)
-             --  local _key=login_info["loginname"]
-             --  local _loginkey=login_info["loginkey"]
-             -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+             local login_info=LocalData:Instance():get_user_data()
+             dump(login_info)
+              local _key=login_info["loginname"]
+              local _loginkey=login_info["loginkey"]
+             device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
 
-             self:fun_storebrowser()
+             --self:fun_storebrowser()
 
            
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
@@ -193,11 +202,13 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
+                  print("0000000")
                   self.actbg:setVisible(true)
-                  self.roleAction:gotoFrameAndPlay(40,81, false)
+                  self.roleAction:gotoFrameAndPlay(45,0, false)
             else
-                  self.roleAction:gotoFrameAndPlay(0,40, false)
-                  self.actbg:setVisible(true)
+              print("111111")
+                  self.roleAction:gotoFrameAndPlay(0,45, false)
+                  self.actbg:setVisible(false)
             end
       elseif tag==53 then  --设置
             self:funsetup(  )

@@ -135,8 +135,8 @@ function JackpotLayer:init(  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                 end
-                self:fun_storebrowser()
-               --device.openURL("http://games.pinlegame.com/x_Brand.aspx")
+                --self:fun_storebrowser()
+               device.openURL("http://games.pinlegame.com/x_Brand.aspx")
             end)
 
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
