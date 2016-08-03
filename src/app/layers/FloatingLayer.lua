@@ -32,16 +32,7 @@ function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
     self:addChild(self.dialog,20)
     dialogtext = self.dialog:getChildByTag(44)
     dialogtext:setString(dialogtextString)
-   -- local name = cc.ui.UILabel.new({text = dialogtextString,
-   --                      size = 28,
-   --                      align = TEXT_ALIGN_CENTER,
-   --                      font = "Arial",
-   --                      color = cc.c4b(255,241,203),
-   --                      })
-   --       name:setAnchorPoint(0.5,0.5)
 
-   --       name:setPosition(320, 480)
-   --       name:addTo(self,100)
 
     local dialogsure_bt=self.dialog:getChildByTag(43)
         dialogsure_bt:addTouchEventListener(function(sender, eventType  )
@@ -91,6 +82,24 @@ function FloatingLayer:touch_callback( sender, eventType )
     
     self:setTouchSwallowEnabled(false)--防止吞吃
 end
+
+function FloatingLayer:network_box(prompt_text )
+      self.networkbox = cc.CSLoader:createNode("networkbox.csb")
+      self:addChild(self.networkbox)
+      local back=self.networkbox:getChildByTag(171)
+      local _text=self.networkbox:getChildByTag(172)
+      _text:setString(prompt_text)
+       back:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                 end
+                if self.networkbox then
+                      self.networkbox:removeFromParent()
+                end
+       end)
+
+end
+
 
 
 -- function FloatingLayer:showFloat(text,is_resource,resourceType)

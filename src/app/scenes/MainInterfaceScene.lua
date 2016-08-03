@@ -14,20 +14,14 @@ function MainInterfaceScene:ctor()
       self.floating_layer:addTo(self,100000)
       self.count=0
        
-      self:fun_init()
-      self:listener_home() --注册安卓返回键
-     
+       self:fun_init()
+       self:listener_home() --注册安卓返回键
+    
 
    
 end
-
 function MainInterfaceScene:fun_init( )
 
-
-
-
-
-      
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
 

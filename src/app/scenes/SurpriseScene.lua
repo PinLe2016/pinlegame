@@ -168,6 +168,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           self.list_table=LocalData:Instance():get_getactivitylist()
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
+           --activity_ListView:removeAllItems() 
            if self.tablecout<self.sup_data_num then
                    print("小于",self.tablecout ,"  ",self.sup_data_num)
            elseif self.tablecout>self.sup_data_num then
@@ -204,12 +205,12 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           end  
           --活动列表进行排序
           local type_table={}
-          for i=1,#sup_data do
+          for i=self.tablecout+1,#sup_data do
                   type_table[i]=sup_data[i]["type"]
           end
-
-          for i=1,#type_table do
-                  for j=1,#type_table-i do
+          dump(type_table)
+          for i=self.tablecout+1,#type_table do
+                  for j=self.tablecout+1,#type_table-i do
                        if type_table[j]>type_table[j+1] then 
                               local  _data=sup_data[j]
                               sup_data[j]=sup_data[j+1]
@@ -221,7 +222,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           self.list_table=LocalData:Instance():get_getactivitylist()
           local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
           local  sup_data=self.list_table["game"]
-
+          dump(sup_data)
           for i=self.tablecout+1,#sup_data do
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)
@@ -229,6 +230,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             local activity_Panel=cell:getChildByTag(36)
             cell:addTouchEventListener(onImageViewClicked)
             activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            -- print("777777   ",Util:sub_str(sup_data[i]["ownerurl"], "/",":"),i,#sup_data)
             local Nameprize_text=cell:getChildByTag(42)
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
             local type=cell:getChildByTag(133)
