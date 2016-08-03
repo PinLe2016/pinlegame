@@ -263,6 +263,9 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                             self:_winners( )
 
                end))
+            elseif self.ser_status==0 then
+                    cell:setTouchEnabled(false)  --禁止点击
+                    activity_Panel:setTouchEnabled(true)
             elseif self.ser_status==3 and tonumber(_table1) < 0 then  --我的活动获奖名单
                     huojiang_bg:setVisible(true)
                      local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
