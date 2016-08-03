@@ -24,7 +24,7 @@ function MyApp:run()
    --生成DEVICE_ID
    self:init_userdefault()
    local writablePath = cc.FileUtils:getInstance():getWritablePath()
-   local  path_res=writablePath.."down_pic"
+   local  path_res=writablePath.."down_pic/"
 
    if device.platform=="android" then 
       MobClickForLua.startMobclick("57393a8ce0f55a5d76002008","")
@@ -50,7 +50,8 @@ function MyApp:run()
       -- package.path=package.path.."tmpdir/package"
       
       
-  Util:removeDirectory(path_res)
+  cc.FileUtils:getInstance():removeDirectory(path_res)
+
   lfs.mkdir(path_res)
   cc.FileUtils:getInstance():addSearchPath(path_res)
   
@@ -61,7 +62,7 @@ function MyApp:run()
   --     Util:scene_control("MainInterfaceScene")
   --     return
   -- end
-  Util:scene_control("LoginScene")
+      display.replaceScene(require("app.scenes.LoginScene"):new())
   -- Util:scene_control("UpgradeScene")
 
 

@@ -185,7 +185,7 @@ function Server:getversion()
     local params = {}
     local version=LocalData:Instance():get_version()
      params={
-            devicetype="ios",--device.platform,
+            devicetype=device.platform,
             versioncode="3.0",
         }
     self:request_http("getversion" , params); 
