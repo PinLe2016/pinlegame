@@ -47,6 +47,12 @@ function Server:show_http_buffer(is_buffer)
     display.getRunningScene():push_buffer(is_buffer)
 end
 
+function Server:network_box_buffer(prompt_text)
+ 
+    display.getRunningScene():networkbox_buffer(prompt_text)
+end
+
+
 
 
 
@@ -398,11 +404,12 @@ end
 function Server:NetworkStatus()
         local is_network=true
         if tonumber(network.getInternetConnectionStatus())==0 then --无网状态
+            self:network_box_buffer("当前网络不可用，请检查是否连接了可用的Wifi或移动网络")
             --提示框添加处 提示文字为 ---  "当前网络不可用\n请检查是否连接了可用的Wifi或移动网络"
-            device.showAlert("拼乐游戏", "当前网络不可用\n请检查是否连接了可用的Wifi或移动网络", {"是"}, function (event)  
+            --device.showAlert("拼乐游戏", "当前网络不可用\n请检查是否连接了可用的Wifi或移动网络", {"是"}, function (event)  
     
                 --     cc.Director:getInstance():endToLua()   --退出游戏  
-            end)             
+            --end)             
 
             is_network=false
         end

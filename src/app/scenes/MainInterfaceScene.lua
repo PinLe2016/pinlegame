@@ -13,21 +13,27 @@ function MainInterfaceScene:ctor()
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
       self.count=0
+
+       local userdt = LocalData:Instance():get_userdata()
+
+
+        local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
+        LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+
+       print("··555555  ·" ,LocalData:Instance():get_user_head(),"    ", Util:sub_str(userdt["imageUrl"], "/",":")) 
+      
+
+
        
-      self:fun_init()
-      self:listener_home() --注册安卓返回键
-     
+       self:fun_init()
+       self:listener_home() --注册安卓返回键
+
+    
 
    
 end
-
 function MainInterfaceScene:fun_init( )
 
-
-
-
-
-      
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
 
@@ -116,8 +122,9 @@ end
 --用户数据
 function MainInterfaceScene:userdata(  )
        local userdt = LocalData:Instance():get_userdata()
+       local ll = LocalData:Instance():get_user_data()--保存玩家数据
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
-       head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
+       head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
        local  userdata=LocalData:Instance():get_user_data()
 
@@ -484,6 +491,9 @@ end
 
 function MainInterfaceScene:push_buffer(is_buffer)
        self.floating_layer:show_http(is_buffer) 
+end 
+function MainInterfaceScene:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
 end 
 
 

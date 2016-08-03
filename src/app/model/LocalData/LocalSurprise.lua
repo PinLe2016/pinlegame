@@ -9,8 +9,10 @@ function LocalData:set_getactivitylist(getactivitylist)
 	     self.getactivitylist=getactivitylist
 	     return
 	end
+	-- dump(getactivitylist)
 	if self.getactivitylist then
 		for k,v in pairs(getactivitylist["game"]) do
+
 			table.insert(self.getactivitylist["game"],v)
 		end
 		return

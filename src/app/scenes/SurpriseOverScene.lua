@@ -427,7 +427,9 @@ function SurpriseOverScene:push_buffer(is_buffer)
        self.floating_layer:show_http(is_buffer) 
        
 end 
-
+function SurpriseOverScene:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end
 --android 返回键 响应
 function SurpriseOverScene:listener_home() 
     local  layer=cc.Layer:create()

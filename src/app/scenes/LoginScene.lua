@@ -591,7 +591,9 @@ end
 function LoginScene:push_buffer(is_buffer)
        self.floating_layer:show_http(is_buffer) 
 end 
-
+function LoginScene:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end
 
 
 
@@ -750,7 +752,7 @@ end
 
 function LoginScene:getVersionInfo()
     local up_date=LocalData:Instance():get_version_date()
-    dump(up_date)
+    --dump(up_date)
     if tonumber(up_date["Isused"])~=1 then
       
       self.masterURL=up_date["masterURL"]
