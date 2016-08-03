@@ -216,24 +216,27 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           end  
           --活动列表进行排序
           local type_table={}
-          for i=self.tablecout+1,#sup_data do
-                  type_table[i]=sup_data[i]["type"]
-          end
-          for i=self.tablecout+1,#type_table do
-                  for j=self.tablecout+1,#type_table-i do
-                       if type_table[j]>type_table[j+1] then 
-                              local  _data=sup_data[j]
-                              sup_data[j]=sup_data[j+1]
-                              sup_data[j+1]=_data
-                       end
-                  end
-          end
+          
+          -- for i=self.tablecout+1,#sup_data do
+          --          print("hhh  ",sup_data[i]["type"])
+          --         type_table[i]=sup_data[i]["type"]
+          -- end
+          -- dump(type_table)
+          -- for i=self.tablecout+1,#type_table do
+          --         for j=self.tablecout+1,#type_table-i do
+          --              if type_table[j]>type_table[j+1] then 
+          --                     local  _data=sup_data[j]
+          --                     sup_data[j]=sup_data[j+1]
+          --                     sup_data[j+1]=_data
+          --              end
+          --         end
+          -- end
 
-          self.list_table=LocalData:Instance():get_getactivitylist()
+          --self.list_table=LocalData:Instance():get_getactivitylist()
           local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-          local  sup_data=self.list_table["game"]
-          dump(sup_data)
+          --local  sup_data=self.list_table["game"]
           for i=self.tablecout+1,#sup_data do
+        
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)
             cell:setTag(i)

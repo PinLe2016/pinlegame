@@ -677,7 +677,6 @@ function PerInformationLayer:head_callback( sender, eventType)
                end
                 
             elseif tag==24 then  --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
-                print("jjjjjjjjjj   ",string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
                 self.image_head:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
                 self.image_head1:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))  --self.head_index 
                 LocalData:Instance():set_user_head(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
