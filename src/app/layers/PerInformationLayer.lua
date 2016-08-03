@@ -1,4 +1,4 @@
-
+LocalData:Instance():get_userdata()
 --
 local PerInformationLayer = class("PerInformationLayer", function()
             return display.newScene("PerInformationLayer")
@@ -681,6 +681,11 @@ function PerInformationLayer:head_callback( sender, eventType)
                 self.image_head:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
                 self.image_head1:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))  --self.head_index 
                 LocalData:Instance():set_user_head(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
+
+
+                  local user_dt = LocalData:Instance():get_userdata()
+                  user_dt["imageUrl"]=string.format("httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
+                  LocalData:Instance():set_userdata(user_dt)
                  if  self.head_csb then
                     self._Pname:setVisible(true)
                     self.head_csb:removeFromParent()
