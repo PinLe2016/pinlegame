@@ -95,6 +95,7 @@ function FloatingLayer:network_box(prompt_text )
                  end
                 if self.networkbox then
                       self.networkbox:removeFromParent()
+                      cc.Director:getInstance():endToLua()   --退出游戏  
                 end
        end)
 

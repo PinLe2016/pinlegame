@@ -724,6 +724,9 @@ function JackpotLayer:push_buffer(is_buffer)
        self.floating_layer:show_http(is_buffer) 
        
 end 
+function JackpotLayer:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end
 
 
 

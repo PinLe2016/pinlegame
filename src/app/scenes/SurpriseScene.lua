@@ -150,7 +150,13 @@ end
             if not sup_data then return end
             for i=1,#sup_data do
          	local  cell = activity_ListView:getItem(i-1)
-            local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
+            local   _table={}
+            if self.ser_status==0 then
+                _table=Util:FormatTime_colon((sup_data[i]["begintime"]-sup_data[i]["nowtime"])-self.time)
+            else
+                _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
+            end
+           
             local dayText=cell:getChildByTag(38)
             dayText:setString(tostring(_table[1]))
             local hoursText=cell:getChildByTag(39)
@@ -187,7 +193,12 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
                    local i=sender:getTag()
                    local  sup_data=self.list_table["game"]
-                   local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
+                   local  _table1={}
+                    if self.ser_status==0 then
+                             _table1=Util:FormatTime_colon((sup_data[i]["begintime"]-sup_data[i]["nowtime"])-self.time)
+                   else
+                             _table1=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
+                  end
                     if  self.ser_status==2   or self.ser_status==3 and tonumber(_table1) < 0  then
                           local  win_id=  sup_data[sender:getTag()]["id"]
                             Server:Instance():getactivitywinners(win_id)
@@ -208,7 +219,6 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           for i=self.tablecout+1,#sup_data do
                   type_table[i]=sup_data[i]["type"]
           end
-          dump(type_table)
           for i=self.tablecout+1,#type_table do
                   for j=self.tablecout+1,#type_table-i do
                        if type_table[j]>type_table[j+1] then 
@@ -370,6 +380,9 @@ function SurpriseScene:push_buffer(is_buffer)
        self.floating_layer:show_http(is_buffer) 
        
 end 
+function SurpriseScene:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end
 
 function SurpriseScene:onEnter()
       --audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
