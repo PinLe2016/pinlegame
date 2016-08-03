@@ -15,7 +15,7 @@ function MainInterfaceScene:ctor()
       self.count=0
 
        local userdt = LocalData:Instance():get_userdata()
-
+      -- local  LocalData:Instance():set_getuserinfo(self.data)
 
         local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
         LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
@@ -122,7 +122,6 @@ end
 --用户数据
 function MainInterfaceScene:userdata(  )
        local userdt = LocalData:Instance():get_userdata()
-       local ll = LocalData:Instance():get_user_data()--保存玩家数据
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
@@ -148,7 +147,9 @@ function MainInterfaceScene:userdata(  )
        end
        LocalData:Instance():set_user_data(userdt)
        local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
+
        --gold_text:setVisible(false)
+       
        gold_text:setString(userdt["golds"])
 
        -- local labelAtlas = ccui.TextAtlas:create()
@@ -434,6 +435,19 @@ function MainInterfaceScene:onEnter()
                         self:userdata(  )
                        self:fun_checkin(2)--签到后
                       end)
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
+                       function()
+                        local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
+                         local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
+                        gold_text:setString(getuserinfo["golds"])
+                         local userdt = LocalData:Instance():get_userdata()
+                         userdt["golds"]=getuserinfo["golds"]
+                         LocalData:Instance():set_userdata(userdt)
+
+
+                        
+                      end)
+
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self,
                        function()
                        self:fun_checkin(1)  --签到
@@ -445,6 +459,7 @@ function MainInterfaceScene:onExit()
   Util:stop_music("ACTIVITY")
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECK_POST, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
 end
 
 --android 返回键 响应

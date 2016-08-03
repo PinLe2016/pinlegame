@@ -206,7 +206,6 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                             return
                    end
 
-                    
                     if eventType == ccui.TouchEventType.ended then
                            self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
