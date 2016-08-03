@@ -60,7 +60,7 @@ function Server:request_version(command , params)
           url="http://www.pinlegame.com/geturl.aspx?os=%s&ver=%s"
     end
     local  version_data=string.format(url,platform,PINLE_VERSION)
-    dump(version_data)
+    -- dump(version_data)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_version(event,command) end, version_data , "POST")
     -- local params_encoded = json.encode(params)
 
@@ -99,6 +99,12 @@ end
     -- params --传输数据
 ]]
 function Server:request_http(command , params)
+
+    --判断网络
+    if not self:NetworkStatus() then
+        return
+    end
+
     self:show_http_buffer(true)-- 传输动画
     local parsms_md5={methodtype="json",createtime=os.time(),functionname=command,functionparams=params}
     local post_md5=json.encode(parsms_md5)
@@ -130,6 +136,7 @@ function Server:request_http(command , params)
 end
 
 
+  
 function Server:on_request_finished_http(event , command)
      
      
@@ -387,8 +394,21 @@ function Server:jackpotlayer_request_finished_pic(event , command)
 
 end
 
+--判断网络是否链接
+function Server:NetworkStatus()
+        local is_network=true
+        if tonumber(network.getInternetConnectionStatus())==0 then --无网状态
+            --提示框添加处 提示文字为 ---  "当前网络不可用\n请检查是否连接了可用的Wifi或移动网络"
+            device.showAlert("拼乐游戏", "当前网络不可用\n请检查是否连接了可用的Wifi或移动网络", {"是"}, function (event)  
+    
+                --     cc.Director:getInstance():endToLua()   --退出游戏  
+            end)             
 
+            is_network=false
+        end
 
+        return is_network
+end
 
 require("app.model.Server.ServerLogin")
 require("app.model.Server.ServerSurprise")

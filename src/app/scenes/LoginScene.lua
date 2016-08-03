@@ -745,7 +745,7 @@ end
 
 function LoginScene:getVersionInfo()
     local up_date=LocalData:Instance():get_version_date()
-    -- dump(up_date)
+    dump(up_date)
     if tonumber(up_date["Isused"])~=1 then
       
       self.masterURL=up_date["masterURL"]
