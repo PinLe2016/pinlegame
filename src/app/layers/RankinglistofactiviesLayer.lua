@@ -76,9 +76,22 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
 
                                     self:onImageViewClicked(sender, eventType)
                         end)
-            if tostring(sup_data[i]["playerid"])==tostring(_key)   then
+
+             local act_head=cell:getChildByTag(78) --头像
+
+            local _index=string.match(tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")),"%d")
+             print("hhhhhhhhh    ",_index)
+             --local path=cc.FileUtils:getInstance():getWritablePath().."res/png/"
+            --act_head:loadTexture( path .. tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")))
+            act_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+
+
+
+            if tostring(sup_data[i]["playerid"])==tostring(_key)   then   
                  local my_img=cell:getChildByTag(527)--提示自己
                  my_img:setVisible(true)
+                
+                 act_head:loadTexture(LocalData:Instance():get_user_head())
             else
                local my_img=cell:getChildByTag(527)--提示自己
                my_img:setVisible(false)
@@ -98,13 +111,7 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             local level_text=cell:getChildByTag(83) --等级
             level_text:setString(tostring(sup_data[i]["title"]))
 
-            local act_head=cell:getChildByTag(78) --头像
-
-            local _index=string.match(tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")),"%d")
-             print("hhhhhhhhh    ",_index)
-             --local path=cc.FileUtils:getInstance():getWritablePath().."res/png/"
-            --act_head:loadTexture( path .. tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")))
-            act_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+           
 
             local leve_head=cell:getChildByTag(77) --皇冠
 
