@@ -656,18 +656,23 @@ function LoginScene:updateLayer()
         end
         --说明，安卓重新加载文件，不知为啥，model 文件数据必须重新添加，不然更新model 文件初始重加载不了
         if device.platform=="android" then
+            require("app.model.Server.Server")
             require("app.model.Server.ServerLogin")
             require("app.model.Server.ServerSurprise")
             require("app.model.Server.ServerUserData")   
             require("app.model.Server.ServerJackpot") 
             require("app.model.Server.ServerFriends") 
 
+            require("app.model.LocalData.LocalData")
             require("app.model.LocalData.LocalLogin")
             require("app.model.LocalData.LocalSurprise")
             require("app.model.LocalData.LocalPerInformation")
             require("app.model.LocalData.LocalJackpot")
             require("app.model.LocalData.LocalUserdata")
             require("app.model.LocalData.LocalFriends")
+
+            require("app.model.NotificationCenter")
+            require("app.model.Util")
         end
        
 
