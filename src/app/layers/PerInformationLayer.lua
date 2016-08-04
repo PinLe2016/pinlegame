@@ -207,18 +207,23 @@ function PerInformationLayer:fun_mail(  )
     if _getconsignee["address"] == "" then
          self.ads_text_mail:setPlaceHolder("详细地址")
     else
-        self.ads_text_mail:setPlaceHolder(tostring(_getconsignee["address"]))
+          local sub_mail=string.sub(_getconsignee["address"],3,6)
+          dump(sub_mail)
+         -- dump(sub_mail)
+         --self.ads_text_mail:setMaxLength(8)
+        self.ads_text_mail:setPlaceHolder(tostring(sub_mail))  --_getconsignee["address"]
     end
     self.diqu=self.Receivinginformation:getChildByTag(220):getChildByTag(233)
     if _getconsignee["provincename"]  then  
+
         self.diqu:setPlaceHolder(tostring(_getconsignee["provincename"])  ..   tostring(_getconsignee["cityname"]))
     end
     self.ads_text_mail:setAnchorPoint(0,0.5) 
     self.ads_text_mail:setContentSize(300,40)  
     --self.ads_text_mail:setFontSize(0.2)
-   -- self.ads_text_mail:setFontName("Arial")
-     --self.ads_text_mail:setFontSize(10)
-    --self.ads_text_mail:setMaxLength(13)
+    self.ads_text_mail:setFontName("Arial")
+     self.ads_text_mail:setFontSize(5)
+    --self.ads_text_mail:setMaxLength(100)
 
         self.mail_h=3
         self.mail_dex=2
