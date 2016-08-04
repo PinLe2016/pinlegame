@@ -21,7 +21,7 @@ function activitycodeLayer:ctor()
          self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
         		self:update(dt)
     	end)
-          
+          self._typeevt=4
          self:init()
 end
 function activitycodeLayer:init(  )
@@ -95,7 +95,8 @@ function activitycodeLayer:_touchbak( sender, eventType )
 
                        LocalData:Instance():set_getactivitylist(nil)--数据制空
                         self.tablecout=0  
-                        Server:Instance():getactivitylist(tostring(4),1)
+                        self._typeevt=4
+                        Server:Instance():getactivitylist(tostring(self._typeevt),1)
                         self.activity_ListView:removeAllItems()
                         self:unscheduleUpdate()
 
@@ -103,7 +104,8 @@ function activitycodeLayer:_touchbak( sender, eventType )
 
                  LocalData:Instance():set_getactivitylist(nil)--数据制空
                    self.tablecout=0  
-                   Server:Instance():getactivitylist(tostring(5),1)
+                   self._typeevt=5
+                   Server:Instance():getactivitylist(tostring(self._typeevt),1)
                    self.activity_ListView:removeAllItems()
                    self:unscheduleUpdate()
             end
@@ -130,7 +132,8 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
 
               	       LocalData:Instance():set_getactivitylist(nil)--数据制空
                         self.tablecout=0  
-                        Server:Instance():getactivitylist(tostring(4),1)
+                        self._typeevt=4
+                        Server:Instance():getactivitylist(tostring(self._typeevt),1)
                         self.activity_ListView:removeAllItems()
                         self:unscheduleUpdate()
 
@@ -138,7 +141,8 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
 
               	 LocalData:Instance():set_getactivitylist(nil)--数据制空
                    self.tablecout=0  
-                   Server:Instance():getactivitylist(tostring(5),1)
+                   self._typeevt=5
+                   Server:Instance():getactivitylist(tostring(self._typeevt),1)
                    self.activity_ListView:removeAllItems()
                    self:unscheduleUpdate()
 
@@ -211,6 +215,10 @@ function activitycodeLayer:act_list()
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then
+                           if self._typeevt  == 5 then
+                              Server:Instance():prompt("活动已结束")
+                              return
+                           end
                            self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
@@ -246,8 +254,17 @@ function activitycodeLayer:act_list()
             local path=cc.FileUtils:getInstance():getWritablePath()
             activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             local type=cell:getChildByTag(751)
-            local type_image=sup_data[i]["type"] .. ".png"
+            local type_image=  "png/J_" .. sup_data[i]["type"] .. ".png"   --sup_data[i]["type"] .. ".png"  
             type:loadTexture(type_image)
+
+            if self._typeevt  == 5  then  --影藏标记
+               local _tag=cell:getChildByTag(753)
+               _tag:setVisible(false)
+               local time_bg=cell:getChildByTag(754)
+               time_bg:setVisible(false)
+               local time_=cell:getChildByTag(756)
+               time_:setVisible(false)
+            end
           end
            self:scheduleUpdate()
           self.tablecout=self.sup_data_num
@@ -264,6 +281,7 @@ end
             local _table=Util:FormatTime_colon(sup_data[i]["finishtime"]-sup_data[i]["begintime"]-self.time)
             local dayText=cell:getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
+
          
         end
   end
@@ -272,7 +290,8 @@ function activitycodeLayer:onEnter()
       Util:player_music("GAMEBG",true )
 	self.tablecout=0
       LocalData:Instance():set_getactivitylist(nil)
-	Server:Instance():getactivitylist(tostring(4),1)  --self.ser_status   self.sur_pageno
+      self._typeevt=4
+	Server:Instance():getactivitylist(tostring(self._typeevt),1)  --self.ser_status   self.sur_pageno
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
                          --print("7-------------")  --下载图片
@@ -288,7 +307,8 @@ function activitycodeLayer:onEnter()
                        function()
                         self:unscheduleUpdate()
                         LocalData:Instance():set_getactivitylist(nil)
-                         Server:Instance():getactivitylist(tostring(4),1)   --再次刷新
+                        self._typeevt=4
+                         Server:Instance():getactivitylist(tostring(self._typeevt),1)   --再次刷新
                       end)--
 
 end

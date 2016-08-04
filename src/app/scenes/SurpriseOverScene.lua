@@ -283,15 +283,22 @@ function SurpriseOverScene:touch_callback( sender, eventType )
              self.began_bt:setTouchEnabled(true)
              Util:stop_music("FALLMONEY")
              Util:player_music("PERSONALCHAGE",true )
-		self:L_end(  )
+		 self:L_end(  )
       elseif tag==213 then  --分享
            Util:share()
            print("fenxiagn")
 		
 	end
 end
-
-
+--金币动画 
+function SurpriseOverScene:Goldactmove(  )
+        self.goldactmove = cc.CSLoader:createNode("goldactmove.csb")
+        self:addChild(self.goldactmove)
+        self.goldactmove_nia = cc.CSLoader:createTimeline("goldactmove.csb")
+        self.goldactmove:runAction(self.goldactmove_nia)
+        self.goldactmove_nia:setTimeSpeed(5)
+        self.goldactmove_nia:gotoFrameAndPlay(0,25, true)
+end
 function SurpriseOverScene:L_end(  )
             -- 老虎机数据
             local _laohujidata=LocalData:Instance():get_getactivitypoints()
