@@ -256,7 +256,10 @@ function activitycodeLayer:act_list()
             local type=cell:getChildByTag(751)
             local type_image=  "png/J_" .. sup_data[i]["type"] .. ".png"   --sup_data[i]["type"] .. ".png"  
             type:loadTexture(type_image)
-
+             local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
+            local dayText=cell:getChildByTag(756)
+            dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
+            
             if self._typeevt  == 5  then  --影藏标记
                local _tag=cell:getChildByTag(753)
                _tag:setVisible(false)
@@ -278,7 +281,7 @@ end
             if not sup_data then return end
             for i=1,#sup_data do
          	local  cell = self.activity_ListView:getItem(i-1)
-            local _table=Util:FormatTime_colon(sup_data[i]["finishtime"]-sup_data[i]["begintime"]-self.time)
+            local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             local dayText=cell:getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
 
