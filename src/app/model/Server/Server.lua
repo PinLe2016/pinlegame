@@ -127,7 +127,7 @@ function Server:request_http(command , params)
 
     end
     if self.login_url=="" then
-        self.login_url="http://123.57.136.223:2036/Default.aspx?"
+        self.login_url="http://123.57.136.223:3000/Default.aspx?"
             print("版本链接")
     end
     -- dump(self.login_url)
