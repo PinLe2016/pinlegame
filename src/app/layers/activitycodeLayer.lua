@@ -191,7 +191,6 @@ function activitycodeLayer:actimages_list( )
          	com_["command"]=sup_data[i]["ownerurl"]
          	com_["max_pic_idx"]=#sup_data
          	com_["curr_pic_idx"]=i
-       
          	Server:Instance():request_pic(sup_data[i]["ownerurl"],com_) --下载图片
          end
 end
@@ -259,7 +258,7 @@ function activitycodeLayer:act_list()
              local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             local dayText=cell:getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
-            
+
             if self._typeevt  == 5  then  --影藏标记
                local _tag=cell:getChildByTag(753)
                _tag:setVisible(false)
@@ -284,8 +283,6 @@ end
             local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             local dayText=cell:getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
-
-         
         end
   end
 function activitycodeLayer:onEnter()

@@ -194,12 +194,13 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                    local i=sender:getTag()
                    local  sup_data=self.list_table["game"]
                    local  _table1={}
+                   local  _time=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
                     if self.ser_status==0 then
                              _table1=Util:FormatTime_colon((sup_data[i]["begintime"]-sup_data[i]["nowtime"])-self.time)
                    else
                              _table1=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
                   end
-                    if  self.ser_status==2   or self.ser_status==3 and tonumber(_table1) < 0  then
+                    if  (self.ser_status==2   or self.ser_status==3)  and tonumber(_time)<0  then   -- < 0
                           local  win_id=  sup_data[sender:getTag()]["id"]
                             Server:Instance():getactivitywinners(win_id)
                             self:_winners( )
