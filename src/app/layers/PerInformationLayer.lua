@@ -207,10 +207,10 @@ function PerInformationLayer:fun_mail(  )
     if _getconsignee["address"] == "" then
          self.ads_text_mail:setPlaceHolder("详细地址")
     else
-        self.ads_text_mail:setPlaceHolder(tostring(_getconsignee["address"]))
+        self.ads_text_mail:setText(_getconsignee["address"])
     end
     self.diqu=self.Receivinginformation:getChildByTag(220):getChildByTag(233)
-    if _getconsignee["provincename"]  then  
+    if _getconsignee["provincename"]  then 
         self.diqu:setPlaceHolder(tostring(_getconsignee["provincename"])  ..   tostring(_getconsignee["cityname"]))
     end
     self.ads_text_mail:setAnchorPoint(0,0.5) 
