@@ -18,7 +18,7 @@ function MyApp:run()
 
    -- local pinle_loclation=cc.PinLe_platform:Instance()
    -- pinle_loclation:getLocation()
-    Server:Instance():version_login_url()
+ 
     
    -- print("入口后台差异检测测试---")
    --生成DEVICE_ID

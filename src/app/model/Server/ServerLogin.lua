@@ -23,10 +23,7 @@ function Server:version_login_url_callback()
    dump(self.data)
    self.login_url=self.data
 
-   --测试接口
-   -- self:create_username_user("18210582992","111111")
-   -- self:login("18210582992","111111")
-   -- Server:Instance():getsactivitieslist("1")
+   NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.VERSION_LINK)
 end
 
 

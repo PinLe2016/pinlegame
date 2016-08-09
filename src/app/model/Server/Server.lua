@@ -65,6 +65,7 @@ function Server:request_version(command , params)
     if IS_RELEASE then
           url="http://www.pinlegame.com/geturl.aspx?os=%s&ver=%s"
     end
+    dump(url)
     local  version_data=string.format(url,platform,PINLE_VERSION)
     -- dump(version_data)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_version(event,command) end, version_data , "POST")
@@ -126,10 +127,11 @@ function Server:request_http(command , params)
         md5=crypto.md5(tostring(md5))
 
     end
-    if self.login_url=="" then
-        self.login_url="http://123.57.136.223:3000/Default.aspx?"
-            print("版本链接")
-    end
+    -- if self.login_url=="" then
+    --     -- self.login_url="http://123.57.136.223:3000/Default.aspx?"
+    --     self.login_url="http://playios.pinlegame.com/Default.aspx?"
+    --         print("版本链接")
+    -- end
     -- dump(self.login_url)
     local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
     print("---url---",login_url,post_md5)

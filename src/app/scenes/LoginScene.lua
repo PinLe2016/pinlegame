@@ -14,7 +14,6 @@ function LoginScene:ctor()
    --self.floating_layer:addTo(self,100)
    self:addChild(self.floating_layer, 100)
 
-      
 
      if qqqq==0 then
       --请求版本更新链接
@@ -508,15 +507,20 @@ end
 
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
-  if qqqq==0 then
-      --请求版本更新链接
-        Server:Instance():getversion()
-      qqqq=2
-  end
+   Server:Instance():version_login_url()  
   if LocalData:Instance():get_music() then 
     Util:player_music("GAMEBG",true )
   end 
   
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.VERSION_LINK, self,
+                       function()
+                              if qqqq==0 then
+                                  --请求版本更新链接
+                                  Server:Instance():getversion()
+                                  qqqq=2
+                              end
+                      end)
+
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
                         Util:scene_control("MainInterfaceScene")
@@ -576,7 +580,9 @@ function LoginScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self)
 
 
-    NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
+  
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERSION_LINK, self)
 
 
 end
@@ -752,7 +758,7 @@ end
 
 function LoginScene:getVersionInfo()
     local up_date=LocalData:Instance():get_version_date()
-    --dump(up_date)
+    dump(up_date)
     if tonumber(up_date["Isused"])~=1 then
       
       self.masterURL=up_date["masterURL"]
