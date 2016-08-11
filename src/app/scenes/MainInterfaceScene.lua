@@ -9,6 +9,7 @@ local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧
 local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
 local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
 local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
+local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面
 function MainInterfaceScene:ctor()
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
@@ -201,7 +202,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
-
+              --self:addChild(aboutdetailsLayer.new())
              -- local login_info=LocalData:Instance():get_user_data()
              -- dump(login_info)
              --  local _key=login_info["loginname"]
