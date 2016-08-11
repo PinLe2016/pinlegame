@@ -11,6 +11,7 @@ function DetailsLayer:ctor(params)
        self._ky=params._ky
        self.id=params.id
        self.image=params.image
+       self.ser_status=params.ser_status   --活动类型
        self.type=params.type--活动类型
        LocalData:Instance():set_actid({act_id=self.id,image=self.image})--保存数据
        Server:Instance():getactivitybyid(self.id)
@@ -38,6 +39,10 @@ function DetailsLayer:init(  )
 
 	local  function began_btCallback(sender, eventType)
 		if eventType == ccui.TouchEventType.ended then
+		     if self.ser_status ==  0 then
+		     	Server:Instance():prompt("活动还没有开始，敬请期待！")
+		     	return
+		     end
 		     -- Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
 		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" "})  --daojishi
                       	       cc.Director:getInstance():pushScene(scene)

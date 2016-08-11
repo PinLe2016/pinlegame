@@ -13,6 +13,7 @@ end)
 function activitycodeLayer:ctor()
          --audio.stopMusic("ACTIVITY")
          Util:stop_music("ACTIVITY")
+         self.sur_pageno=1
          --Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self.tablecout=1
          self:setNodeEventEnabled(true)--layer添加监听
@@ -41,6 +42,14 @@ function activitycodeLayer:init(  )
     	
             self.activity_ListView=self.inputcodeLayer:getChildByTag(748)--惊喜吧列表
             self.activity_ListView:setItemModel(self.activity_ListView:getItem(0))
+            self.activity_ListView:addScrollViewEventListener((function(sender, eventType  )
+                      if eventType  ==6 then
+                        self.sur_pageno=self.sur_pageno+1
+                        Server:Instance():getactivitylist(tostring(self._typeevt),self.sur_pageno)   --下拉刷新功能
+                        self:scheduleUpdate()
+                                 return
+                      end
+            end))
 
             self.activity_ListView:removeAllItems()
 
@@ -214,10 +223,17 @@ function activitycodeLayer:act_list()
           local  function onImageViewClicked(sender, eventType)
                     
                     if eventType == ccui.TouchEventType.ended then
-                           if self._typeevt  == 5 then
-                              Server:Instance():prompt("活动已结束")
-                              return
-                           end
+                           -- if self._typeevt  == 5 then
+                           --    Server:Instance():prompt("活动已结束")
+                           --    return
+                           -- end
+                             if self._typeevt  == 5  then     --获奖名单
+                                      local  win_id=  sup_data[sender:getTag()]["id"]
+                                      Server:Instance():getactivitywinners(win_id)
+                                      self:_winners( )
+                                      return
+                             end
+
                            self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
@@ -226,24 +242,24 @@ function activitycodeLayer:act_list()
           end  
           --活动列表进行排序
           local type_table={}
-          for i=1,#sup_data do
-                  type_table[i]=sup_data[i]["type"]
-          end
+          -- for i=1,#sup_data do
+          --         type_table[i]=sup_data[i]["type"]
+          -- end
 
-          for i=1,#type_table do
-                  for j=1,#type_table-i do
-                       if type_table[j]>type_table[j+1] then 
-                              local  _data=sup_data[j]
-                              sup_data[j]=sup_data[j+1]
-                              sup_data[j+1]=_data
-                       end
-                  end
-          end
+          -- for i=1,#type_table do
+          --         for j=1,#type_table-i do
+          --              if type_table[j]>type_table[j+1] then 
+          --                     local  _data=sup_data[j]
+          --                     sup_data[j]=sup_data[j+1]
+          --                     sup_data[j+1]=_data
+          --              end
+          --         end
+          -- end
 
-          self.list_table=LocalData:Instance():get_getactivitylist()
+          --self.list_table=LocalData:Instance():get_getactivitylist()
           -- dump(self.list_table)
           -- self.activity_ListView:removeAllItems()
-          local  sup_data=self.list_table["game"]
+         -- local  sup_data=self.list_table["game"]
           for i=self.tablecout+1,#sup_data do
           	self.activity_ListView:pushBackDefaultItem()
           	local  cell = self.activity_ListView:getItem(i-1)
@@ -266,11 +282,82 @@ function activitycodeLayer:act_list()
                time_bg:setVisible(false)
                local time_=cell:getChildByTag(756)
                time_:setVisible(false)
+               local time_string=cell:getChildByTag(780)
+               time_string:setVisible(false)
+               local huojiang_bg=cell:getChildByTag(781)
+               huojiang_bg:setVisible(true)
+                if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
+                        cell:setTouchEnabled(false)  --禁止点击
+                        activity_Panel:setTouchEnabled(true)
+                        huojiang_bg:setColor(cc.c3b(100, 100, 100))
+                        huojiang_bg:setTouchEnabled(false)
+             end
+
+
             end
           end
+
+          if tonumber(self.tablecout)~=0 then
+            dump(self.tablecout)
+             self.activity_ListView:jumpToPercentVertical(120)
+           else
+             self.activity_ListView:jumpToPercentVertical(0)
+          end
+
            self:scheduleUpdate()
-          self.tablecout=self.sup_data_num
+          self.tablecout=self.sup_data_num   
+
 end
+--初始化获奖名单
+function activitycodeLayer:_winners( )
+    self.Winners = cc.CSLoader:createNode("Winners.csb");
+    self:addChild(self.Winners)
+
+    local back_bt= self.Winners:getChildByTag(63)--返回
+    back_bt:addTouchEventListener((function(sender, eventType)
+            if eventType ~= ccui.TouchEventType.ended then
+                       return
+            end
+            if self.Winners then
+               self.Winners:removeFromParent()
+            end
+                         
+     end))
+
+    self.win_ListView=self.Winners:getChildByTag(69)--获奖列表
+    self.win_ListView:setItemModel(self.win_ListView:getItem(0))
+    self.win_ListView:removeAllItems()
+
+    self:winners_init()  --更新数据
+
+end
+--获奖名单中数据更新
+function activitycodeLayer:winners_init( )
+          self.win_table= LocalData:Instance():get_getactivitywinners()
+          local  sup_data=self.win_table["winnerlist"]
+          if not sup_data then
+            return
+          end
+        self.win_ListView:removeAllItems()
+          for i=1, #sup_data do  --#sup_data
+            self.win_ListView:pushBackDefaultItem()
+
+            local  cell = self.win_ListView:getItem(i-1)
+
+            local name_text=cell:getChildByTag(72)--昵称
+            name_text:setString(tostring(sup_data[i]["nickname"]))
+
+            local paiming_tex=cell:getChildByTag(71)--排名
+            paiming_tex:setString(tostring(i))
+
+             local points_text=cell:getChildByTag(73)--积分
+            points_text:setString(tostring(sup_data[i]["points"]))
+
+            local goodsname_text=cell:getChildByTag(74) --获奖物品
+            goodsname_text:setString(tostring(sup_data[i]["goodsname"]))
+          end  
+end
+
   function activitycodeLayer:update(dt)
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
@@ -278,7 +365,7 @@ end
             self.time=1+self.time
             local  sup_data=self.list_table["game"]
             if not sup_data then return end
-            for i=1,#sup_data do
+            for i=self.tablecout+1,#sup_data do
          	local  cell = self.activity_ListView:getItem(i-1)
             local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             local dayText=cell:getChildByTag(756)
@@ -310,11 +397,17 @@ function activitycodeLayer:onEnter()
                         self._typeevt=4
                          Server:Instance():getactivitylist(tostring(self._typeevt),1)   --再次刷新
                       end)--
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.WINNERS, self,
+                       function()
+
+                       --self:_winners( )-- 获奖名单
+                       self:winners_init()  --更新数据
+                      end)
 
 end
 
 function activitycodeLayer:onExit()
-      
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)
      	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYCODE, self)
