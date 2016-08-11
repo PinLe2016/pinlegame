@@ -114,6 +114,12 @@ function GoldprizeScene:data_init(  )
 		    bg2:setVisible(false)
 
 		    if i*2-1== #jac_data  then
+		    	if tonumber(self.sur_pageno)~=0 then
+		            dump(self.sur_pageno)
+		             self.jackpot_ListView:jumpToPercentVertical(110)
+		           else
+		             self.jackpot_ListView:jumpToPercentVertical(0)
+		          end
 		    	 return
 		    end
 
@@ -162,6 +168,14 @@ function GoldprizeScene:data_init(  )
 
 		    goldsremain1:setString(tostring(jac_data[2*i]["goldsamount"]))
 		end
+-- dump(self.sur_pageno)
+		if tonumber(self.sur_pageno)~=0 then
+            dump(self.sur_pageno)
+             self.jackpot_ListView:jumpToPercentVertical(120)
+           else
+             self.jackpot_ListView:jumpToPercentVertical(0)
+          end
+
 end
 
 --下载图片

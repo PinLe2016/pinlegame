@@ -148,7 +148,7 @@ end
             self.time=1+self.time
             local  sup_data=self.list_table["game"]
             if not sup_data then return end
-            for i=1,#sup_data do
+            for i=self.tablecout+1,#sup_data do
          	local  cell = activity_ListView:getItem(i-1)
             local   _table={}
             if self.ser_status==0 then
@@ -184,8 +184,9 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                  return
            end
 
+
+         
           
-           
           local  function onImageViewClicked(sender, eventType)
                    if eventType ~= ccui.TouchEventType.ended then
                                return
@@ -211,7 +212,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                            self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
-                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="sup"}))
+                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="sup",ser_status=self.ser_status}))
                     end
           end  
           --活动列表进行排序
@@ -257,6 +258,16 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             
 
             local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
+            local  _tabletime=Util:FormatTime_colon(_table1)
+             local dayText=cell:getChildByTag(38)
+            dayText:setString(tostring(_tabletime[1]))
+            local hoursText=cell:getChildByTag(39)
+            hoursText:setString(tostring(_tabletime[2]))
+            local pointsText=cell:getChildByTag(40)
+            pointsText:setString(tostring(_tabletime[3]))
+            local secondsText=cell:getChildByTag(41)
+            secondsText:setString(tostring(_tabletime[4]))
+
             if  self.ser_status==2 then   --往期获奖名单
                
                  huojiang_bg:setVisible(true)
@@ -278,9 +289,9 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                             self:_winners( )
 
                end))
-            elseif self.ser_status==0 then
-                    cell:setTouchEnabled(false)  --禁止点击
-                    activity_Panel:setTouchEnabled(true)
+            -- elseif self.ser_status==0 then
+            --         cell:setTouchEnabled(false)  --禁止点击
+            --         activity_Panel:setTouchEnabled(true)
             elseif self.ser_status==3 and tonumber(_table1) < 0 then  --我的活动获奖名单
                     huojiang_bg:setVisible(true)
                      local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
@@ -306,8 +317,15 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             end
 
           end
-
+          
           self:scheduleUpdate()
+          if tonumber(self.tablecout)~=0 then
+            dump(self.tablecout)
+             activity_ListView:jumpToPercentVertical(120)
+           else
+             activity_ListView:jumpToPercentVertical(0)
+          end
+         
           self.tablecout=self.sup_data_num
 end
 --初始化获奖名单
