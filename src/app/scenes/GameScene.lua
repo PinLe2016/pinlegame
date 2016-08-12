@@ -16,6 +16,8 @@ local debrisLayer = require("app.layers.debrisLayer")
 local SurpriseOverScene = require("app.scenes.SurpriseOverScene")
 
 function GameScene:ctor(params)
+    self.heroid=params.heroid
+    self.cycle=params.cycle
     self.floating_layer = FloatingLayerEx.new()
 
     self.floating_layer:addTo(self,-1)
@@ -247,7 +249,7 @@ end
            self._dajishi:setString(tostring(self._time))
            if self._time==0 then
               --Util:scene_control("SurpriseOverScene")
-              Util:scene_controlid("SurpriseOverScene",{id=self.adid})
+              Util:scene_controlid("SurpriseOverScene",{id=self.adid,cycle=self.cycle,heroid=self.heroid})
                -- local scene=SurpriseOverScene.new({})
                -- cc.Director:getInstance():pushScene(scene)
 
@@ -331,7 +333,14 @@ function GameScene:onEnter()
       NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS, self,
                        function()
                         local  _img= LocalData:Instance():get_user_img()
-                        local jackpotlayer= jackpotlayer.new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img})
+                        local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                        local  jaclayer_data=list_table["adlist"]
+                        local  _addetailurl = tostring(1)
+                        if jaclayer_data[1]["addetailurl"] then
+                           _addetailurl=jaclayer_data[1]["addetailurl"]
+                        end
+                
+                        local jackpotlayer= jackpotlayer.new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
                          cc.Director:getInstance():pushScene(jackpotlayer)   --  奖池详情  我们就是硬生生的把一个layer 变成 scene  
                        
                       end)

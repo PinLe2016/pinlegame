@@ -96,12 +96,26 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 	for i=1,count do
             self.rank_list:pushBackDefaultItem()
 		local  cell = self.rank_list:getItem(i-1)
+
+           local retroactive_bt=cell:getChildByTag(909)  --补签
+           retroactive_bt:setTag(i)
+          retroactive_bt:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+                local _tag=sender:getTag()
+                 local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=self.heroid})  --daojishi
+                 cc.Director:getInstance():pushScene(scene)
+            end)
+
+
             if #mypointslist ~=0  then
                  for j=1,#mypointslist do 
                   local one_integral=cell:getChildByTag(117)--积分
                   if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
                   
                   one_integral:setString(mypointslist[j]["points"])
+                   retroactive_bt:setVisible(false)
                    break
                 else
                   -- local one_integral=cell:getChildByTag(117)--积分
@@ -112,6 +126,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
             else
                  local one_integral=cell:getChildByTag(117)--积分
                   one_integral:setString("0")
+
             end
            
 		if #playerpointslist ~=0  then
@@ -132,6 +147,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
               hero_integral:setString("0")
           end
            
+         
 		
 
 

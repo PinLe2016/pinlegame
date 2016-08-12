@@ -15,6 +15,7 @@ end)
 --标题 活动类型 
 function JackpotLayer:ctor(params) 
 
+        self.addetailurl=params.addetailurl
         self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
 
@@ -236,7 +237,10 @@ function  JackpotLayer:wininformation(  )
 
 end
 function JackpotLayer:fun_storebrowser(  )
-
+      if tostring(self.addetailurl)   ==   tostring(1)   then
+        return
+      end
+        dump(self.addetailurl)
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
       self:addChild(self.Storebrowser)
       local back=self.Storebrowser:getChildByTag(2122)
@@ -254,7 +258,7 @@ function JackpotLayer:fun_storebrowser(  )
               self.Storebrowser:addChild(webview)
               webview:setVisible(true)
               webview:setScalesPageToFit(true)
-              webview:loadURL("http://games.pinlegame.com/x_Brand.aspx")
+              webview:loadURL(tostring(self.addetailurl))
               webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
               webview:reload()
               webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))

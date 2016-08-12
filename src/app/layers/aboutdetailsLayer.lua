@@ -43,6 +43,7 @@ function aboutdetailsLayer:init(  )
                      self:touch_btCallback(sender, eventType)
                end))
             self.businessback_bg=self.business_bg:getChildByTag(308)  --商务数据建议界面
+            self._businessname=self.businessback_bg:getChildByTag(354)  --商务名称
              local business_bt=self.businessback_bg:getChildByTag(364)  --商务界面提交
              business_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
@@ -130,6 +131,8 @@ function aboutdetailsLayer:cooperationlist(  )
 	                     self:touch_Callback(sender, eventType)
 	               end))
 	            cell:setTag(i)
+	             local name=cell:getChildByTag(371)  --商务名称
+	             name:setString("text"  ..  i)
 	           
             end
 
@@ -140,6 +143,8 @@ function aboutdetailsLayer:touch_Callback( sender, eventType )
              end 
              local tag=sender:getTag()
              self.cooperation_ListView:setVisible(false)
+             local name=sender:getChildByTag(371)  --商务名称 
+             self._businessname:setString(name:getString())
 	
 end
 function aboutdetailsLayer:businesscooperation( )

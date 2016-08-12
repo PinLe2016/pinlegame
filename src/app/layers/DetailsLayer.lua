@@ -44,7 +44,7 @@ function DetailsLayer:init(  )
 		     	return
 		     end
 		     -- Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
-		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" "})  --daojishi
+		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=-1,heroid=0})  --daojishi
                       	       cc.Director:getInstance():pushScene(scene)
 		      --Util:scene_control("SurpriseOverScene")
 		      

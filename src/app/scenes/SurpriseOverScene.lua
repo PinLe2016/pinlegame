@@ -15,6 +15,9 @@ local SurpriseOverScene = class("SurpriseOverScene", function()
             return display.newScene("SurpriseOverScene")
 end)
 function SurpriseOverScene:ctor(params)--params
+        self.heroid=params.heroid
+        self.cycle=params.cycle
+        print("发动机可分解的时空房间",self.cycle)
         self.id=params.id
         self.tp=params.tp
         self.floating_layer = FloatingLayerEx.new()
@@ -105,11 +108,16 @@ function SurpriseOverScene:init(  )
       rank_text:setString(tostring(activitybyid["myrank"]))
       local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
        _betgolds:setString(tostring(activitybyid["betgolds"] .. "/次"))
+      local  _nametext=self.Laohuji:getChildByTag(157):getChildByTag(35) 
+       if tonumber(self.cycle)   ~=  -1 then
+         _nametext:setString("补签剩余次数:")
+       end
+     
       local _cishu=self.Laohuji:getChildByTag(101)   --  次数
        if tonumber(activitybyid["remaintimes"]) <0  then
                 _cishu:setString("∞")
         else
-          _cishu:setString(tostring(activitybyid["remaintimes"])  ..   "次数")
+          _cishu:setString(tostring(activitybyid["remaintimes"])  ..   "/次数")
         end
 
 
@@ -247,7 +255,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
           if not  cishu then
                 self.began_bt:setTouchEnabled(false)
                audio.playMusic(G_SOUND["FALLMONEY"],true)
-               Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
+               Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle)  --老虎机测试
           else
              if  tonumber(cishu["remaintimes"]) == 0 then
             Server:Instance():prompt("您参与次数已经用完")
@@ -255,7 +263,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
             else
                self.began_bt:setTouchEnabled(false)
                audio.playMusic(G_SOUND["FALLMONEY"],true)
-               Server:Instance():getactivitypoints(self.actid["act_id"])  --老虎机测试
+               Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle)  --老虎机测试
                 self.laohujiaction:gotoFrameAndPlay(0,42, false)
           end
 
@@ -272,6 +280,12 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 		print("点我有惊喜")
 	elseif tag==160 then --返回
 		--Util:scene_control("MainInterfaceScene")
+     if tonumber(self.cycle)   ~=  -1 then
+       Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+        cc.Director:getInstance():popScene()
+        
+        return
+       end
     LocalData:Instance():set_getactivitypoints(nil)
     Server:Instance():getactivitybyid(self.id)
      cc.Director:getInstance():popScene()
@@ -377,7 +391,7 @@ function SurpriseOverScene:init_data(  )
               if tonumber(activitypoints["remaintimes"]) <0 then
                 _cishu:setString("∞")
               else
-                _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "次数")
+                _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "/次数")
               end
              
 
