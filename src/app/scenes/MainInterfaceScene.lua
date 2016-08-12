@@ -24,7 +24,7 @@ function MainInterfaceScene:ctor()
        print("··555555  ·" ,LocalData:Instance():get_user_head(),"    ", Util:sub_str(userdt["imageUrl"], "/",":")) 
       
 
-
+ 
        
        self:fun_init()
        self:listener_home() --注册安卓返回键
@@ -202,14 +202,14 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
-              --self:addChild(aboutdetailsLayer.new())
+            self:addChild(aboutdetailsLayer.new())
              -- local login_info=LocalData:Instance():get_user_data()
              -- dump(login_info)
              --  local _key=login_info["loginname"]
              --  local _loginkey=login_info["loginkey"]
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
 
-             self:fun_storebrowser()
+             --self:fun_storebrowser()
 
            
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))

@@ -148,12 +148,18 @@ function Server:getrankinglistofactivies_callback()
 end
 
 --3.5.7   获取用户活动老虎机积分（命令：getactivitypoints）
-function Server:getactivitypoints(activityid)
+function Server:getactivitypoints(activityid,cycle)
     local params = {}
     params={
             activityid =activityid,
         }
-    self:request_http("getactivitypoints" , params ); 
+
+        if tonumber(cycle) ~= -1 then
+            params.cycle=cycle
+
+        end
+
+self:request_http("getactivitypoints" , params ); 
 
 end
 
