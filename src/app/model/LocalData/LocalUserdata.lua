@@ -33,3 +33,12 @@ function LocalData:getusercitybyphone()
 	return self.getusercity or nil
 end
 
+----------邮件相关
+function LocalData:set_getaffiche(getaffiche)
+	self.getaffiche=getaffiche
+end
+
+function LocalData:get_getaffiche()
+	-- dump(self.getusercity)
+	return self.getaffiche or nil
+end

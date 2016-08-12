@@ -140,8 +140,24 @@ end
 
 
 
+-------邮件系统
 
+--3.4.8 获取公告消息（命令：getaffiche）
+function Server:getaffiche()
+    local params = {}
+ 
+    self:request_http("getaffiche" , params); 
+end
 
+function Server:getaffiche_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("获取邮件信息:" .. self.data.err_msg)
+        return
+    end
+
+    LocalData:Instance():set_getaffiche(self.data)--保存玩家数据
+end
 
 
 
