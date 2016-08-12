@@ -141,14 +141,13 @@ end
              self.curr_bright=sender
   end
   function SurpriseScene:update(dt)
-
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
-	self.secondOne=0
+	      self.secondOne=0
             self.time=1+self.time
             local  sup_data=self.list_table["game"]
             if not sup_data then return end
-            for i=self.tablecout+1,#sup_data do
+            for i=1,#sup_data do  --self.tablecout+
          	local  cell = activity_ListView:getItem(i-1)
             local   _table={}
             if self.ser_status==0 then
@@ -156,7 +155,6 @@ end
             else
                 _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             end
-           
             local dayText=cell:getChildByTag(38)
             dayText:setString(tostring(_table[1]))
             local hoursText=cell:getChildByTag(39)
@@ -317,7 +315,6 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             end
 
           end
-          
           self:scheduleUpdate()
           if tonumber(self.tablecout)~=0 then
             dump(self.tablecout)

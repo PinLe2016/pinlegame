@@ -365,7 +365,7 @@ end
             self.time=1+self.time
             local  sup_data=self.list_table["game"]
             if not sup_data then return end
-            for i=self.tablecout+1,#sup_data do
+            for i=1,#sup_data do
          	local  cell = self.activity_ListView:getItem(i-1)
             local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             local dayText=cell:getChildByTag(756)
