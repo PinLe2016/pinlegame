@@ -55,6 +55,27 @@ function JackpotLayer:ctor(params)
 
 
 end
+function JackpotLayer:jackgoldact( )
+      self.jackgoldact = cc.CSLoader:createNode("jackgoldact.csb")
+      self:addChild(self.jackgoldact)
+      self.jackgoldactction = cc.CSLoader:createTimeline("jackgoldact.csb")
+      self.jackgoldact:runAction(self.jackgoldactction)
+      self.jackgoldactction:gotoFrameAndPlay(0,50, true)
+       local connection=self.jackgoldact:getChildByTag(224)   --连接
+       connection:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+                print("连接")
+                self:fun_storebrowser()
+            end)
+       local connection_gold=self.jackgoldact:getChildByTag(223)   --连接增加的金币
+       connection_gold:setVisible(false)
+       local labelAtlas = ccui.TextAtlas:create()
+       labelAtlas:setProperty(11, "png/jackftt.png", 16, 20, "0")
+       labelAtlas:setPosition(cc.p(connection_gold:getPositionX(),connection_gold:getPositionY()))  
+       self.jackgoldact:addChild(labelAtlas) 
+end
 function JackpotLayer:init(  )
 
         --金币动画
@@ -66,7 +87,7 @@ function JackpotLayer:init(  )
         self.goldanimation:runAction(self.goldroleAction)
         self.goldnum  =self.goldanimation:getChildByTag(781):getChildByTag(782)  --增加的金币数
 
-
+        self:jackgoldact()
 
          local reward_bt=self.JackpotScene:getChildByTag(777)  -- 是否选择幸运卡
          self._rewardbt=reward_bt
