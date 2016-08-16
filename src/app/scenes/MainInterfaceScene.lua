@@ -24,7 +24,6 @@ function MainInterfaceScene:ctor()
        print("··555555  ·" ,LocalData:Instance():get_user_head(),"    ", Util:sub_str(userdt["imageUrl"], "/",":")) 
       
 
- 
        
        self:fun_init()
        self:listener_home() --注册安卓返回键

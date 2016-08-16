@@ -18,7 +18,6 @@ function LoginScene:ctor()
      if qqqq==0 then
       --请求版本更新链接
         self:progressbarScene()
-
      else
        self:landing_init()
      end
