@@ -196,7 +196,7 @@ void AppDelegate::initPlatformConfig()
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     //初始化ShareSDK
-    C2DXShareSDK::open("a1bb805aec94", false);
+    C2DXShareSDK::open("a1bb2a4cf752", false);
     
     
     //设置平台配置
@@ -205,8 +205,8 @@ void AppDelegate::initPlatformConfig()
     
     //微信
     __Dictionary *wcConfigDict = __Dictionary::create();
-    wcConfigDict -> setObject(String::create("wx2bfc9a2519eb8aa1"), "app_id");
-    wcConfigDict -> setObject(CCString::create("72eaf03458d3f9e20ae174e82164e93a"), "app_secret");
+    wcConfigDict -> setObject(String::create("wx9389b5e4d6e62685"), "app_id");
+    wcConfigDict -> setObject(CCString::create("d99360c9e13c53207f20f786a6902587"), "app_secret");
     C2DXShareSDK::setPlatformConfig(C2DXPlatTypeWeixiSession, wcConfigDict);
     C2DXShareSDK::setPlatformConfig(C2DXPlatTypeWeixiTimeline, wcConfigDict);
     C2DXShareSDK::setPlatformConfig(C2DXPlatTypeWeixiFav, wcConfigDict);
