@@ -251,21 +251,34 @@ function SurpriseOverScene:touch_callback( sender, eventType )
             end
 
 
+            if _table["betgolds"] then
+              if tonumber( _table["golds"])-tonumber( _table["betgolds"])<0 then
+                  Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
+                 self.began_bt:setTouchEnabled(false)
+                return
+              end
+            end
+
           local  cishu=LocalData:Instance():get_getactivitybyid()
+          dump(cishu)
+          -- activitybyid["betgolds"]
           if not  cishu then
-                self.began_bt:setTouchEnabled(false)
-               audio.playMusic(G_SOUND["FALLMONEY"],true)
-               Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle)  --老虎机测试
+                  self.began_bt:setTouchEnabled(false)
+                  audio.playMusic(G_SOUND["FALLMONEY"],true)
+                  Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle)  --老虎机测试
           else
-             if  tonumber(cishu["remaintimes"]) == 0 then
-            Server:Instance():prompt("您参与次数已经用完")
-             return
-            else
-               self.began_bt:setTouchEnabled(false)
-               audio.playMusic(G_SOUND["FALLMONEY"],true)
-               Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle)  --老虎机测试
-                self.laohujiaction:gotoFrameAndPlay(0,42, false)
-          end
+            local userdt = LocalData:Instance():get_userdata()
+               if  tonumber(cishu["remaintimes"]) == 0 then
+                    Server:Instance():prompt("您参与次数已经用完")
+                    return
+              elseif tonumber( userdt["golds"])-tonumber( cishu["betgolds"])<0 then
+                    Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
+              else
+                    self.began_bt:setTouchEnabled(false)
+                    audio.playMusic(G_SOUND["FALLMONEY"],true)
+                    Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle)  --老虎机测试
+                    self.laohujiaction:gotoFrameAndPlay(0,42, false)
+              end
 
           end
          

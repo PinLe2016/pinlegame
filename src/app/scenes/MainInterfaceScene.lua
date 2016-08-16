@@ -29,7 +29,7 @@ function MainInterfaceScene:ctor()
        self:fun_init()
        self:listener_home() --注册安卓返回键
 
-    
+      Server:Instance():getaffiche()
 
    
 end
@@ -124,6 +124,7 @@ end
 --用户数据
 function MainInterfaceScene:userdata(  )
        local userdt = LocalData:Instance():get_userdata()
+       dump(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
@@ -449,9 +450,10 @@ function MainInterfaceScene:onEnter()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
                         self:fun_checkin(2)--签到后
-                        self:userdata(  )
-                       
                        self.check_button:setVisible(false)
+                        self:userdata()
+                       
+
                       end)
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
                        function()
