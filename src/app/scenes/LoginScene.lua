@@ -122,8 +122,8 @@ end
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-          sender:setColor(cc.c3b(100, 100, 100))
-          sender:setTouchEnabled(false)
+          -- sender:setColor(cc.c3b(100, 100, 100))
+          -- sender:setTouchEnabled(false)
            self.layertype=1
            self._random=Util:rand(  ) --随机验证码
            print("邀请码".. self.phone_text:getText(),  self._random)
@@ -147,22 +147,22 @@ end
     --注册
     self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.phone_text)
-    self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX()-20,self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
+    self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX(),self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
     self.phone_text:setPlaceHolder("请输入手机号码")
     self.phone_text:setAnchorPoint(0.5,0.5)  
     self.phone_text:setMaxLength(11)
 
     self.Zpassword_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.Zpassword_text )
-    self.Zpassword_text :setPosition(cc.p(password_text:getPositionX()-20,password_text:getPositionY()))--( cc.p(130,380 ))  
+    self.Zpassword_text :setPosition(cc.p(password_text:getPositionX(),password_text:getPositionY()))--( cc.p(130,380 ))  
     self.Zpassword_text :setPlaceHolder("请输入密码")
     self.Zpassword_text :setAnchorPoint(0.5,0.5)  
     self.Zpassword_text :setMaxLength(19)
     self.Zpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
-    self.Zcode_text = ccui.EditBox:create(cc.size(120,40),res)
+    self.Zcode_text = ccui.EditBox:create(cc.size(160,40),res)
     self.registered:addChild(self.Zcode_text)
-    self.Zcode_text:setPosition(cc.p(verificationcode_text:getPositionX()-20,verificationcode_text:getPositionY()))--( cc.p(130,323 ))  
+    self.Zcode_text:setPosition(cc.p(verificationcode_text:getPositionX(),verificationcode_text:getPositionY()))--( cc.p(130,323 ))  
     self.Zcode_text:setPlaceHolder("验证码")
     self.Zcode_text:setAnchorPoint(0.5,0.5)  
     self.Zcode_text:setMaxLength(6)
@@ -370,7 +370,7 @@ function LoginScene:_passwordLayer( )
             self.Wphone_text:setAnchorPoint(0,0.5)  
             self.Wphone_text:setMaxLength(11)
 
-            self._yanzhengma = ccui.EditBox:create(cc.size(120,40),res)
+            self._yanzhengma = ccui.EditBox:create(cc.size(160,40),res)
             self.passwordLayer:addChild(self._yanzhengma)
             self._yanzhengma:setPosition(cc.p(Wcode_text:getPositionX(),Wcode_text:getPositionY()))--( cc.p(58,356 ))  
             self._yanzhengma:setPlaceHolder("验证码")

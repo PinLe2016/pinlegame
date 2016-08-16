@@ -34,8 +34,8 @@ function InvitefriendsLayer:init(  )
 	feedback_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
-       local obtain_bt=self.Invitefriends:getChildByTag(106):getChildByTag(116)  --一键获取
-	obtain_bt:addTouchEventListener(function(sender, eventType)
+      self.obtain_bt=self.Invitefriends:getChildByTag(106):getChildByTag(116)  --一键获取
+	self.obtain_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
 
@@ -80,6 +80,7 @@ function InvitefriendsLayer:friends_levelup(  )
 end
 function InvitefriendsLayer:fun_init(  )
             --以下都是测试
+            print("55555555")
              local friendlist_table =  LocalData:Instance():get_reward_friend_list()
              if  not friendlist_table then
              	return
@@ -93,7 +94,11 @@ function InvitefriendsLayer:fun_init(  )
             if not friendlist_table["one_points"] then
               return
             end
-            self.gold_text:setString(friendlist_table["one_golds"])
+             self.gold_text:setString(friendlist_table["one_golds"])
+            if tostring(friendlist_table["one_golds"])  ==  "0" then
+              self.obtain_bt:setColor(cc.c3b(100,100,100))  
+            end
+           
             if #friendlist_table["friendlist"]==0 then
             	return
             end

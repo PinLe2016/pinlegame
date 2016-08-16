@@ -62,7 +62,14 @@ end
 function LocalData:get_sendmessage()
 	return self.server_code
 end
+function LocalData:set_user_reg(_reg)
+	cc.UserDefault:getInstance():setStringForKey("_reg" ,_reg)
+end
 
+function LocalData:get_user_reg()
+	local user_pintu=cc.UserDefault:getInstance():getStringForKey("_reg","0")
+	return user_pintu or nil
+end
 
 
 

@@ -139,7 +139,7 @@ function JackpotLayer:init(  )
                 self:fun_storebrowser()
                --device.openURL("http://games.pinlegame.com/x_Brand.aspx")
             end)
-
+        
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         _advertiImg:loadTexture(self.image_name)--(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
          self.tpid=jaclayer_data[1]["id"]
@@ -291,6 +291,7 @@ function JackpotLayer:information( )
                        self:touch_callback( sender, eventType )             
               end)
              self.end_bt=self.JackpotScene:getChildByTag(155)  --结束
+             self.end_bt:setVisible(false)
              self.end_bt:addTouchEventListener(function(sender, eventType  )
                        self:touch_callback( sender, eventType )             
               end)
@@ -415,6 +416,7 @@ function JackpotLayer:touch_callback( sender, eventType )
             self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
             self.end_bt:setTouchEnabled(false)
+
             self:fun_slowdown()
       elseif tag==47 then  --获取参与卷 
           --由于后端TNND这个字段getcardamount错误  于是乎只能毙了  
@@ -473,6 +475,7 @@ function JackpotLayer:touch_callback( sender, eventType )
               local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
               cc.Director:getInstance():pushScene(scene)
               LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+              self.end_bt:setVisible(true)
 
 
 
@@ -543,6 +546,7 @@ end
                                   self.end_bt:setVisible(true)
                                   self.again_bt:setVisible(true)  --此时在来一局开始出现  好神奇啊  
                                   self.end_bt:setTouchEnabled(true)
+                                   self.end_bt:setVisible(false)
                            end
                         local callfunc = cc.CallFunc:create(stopAction)
                        self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
@@ -577,6 +581,7 @@ function JackpotLayer:act_began( )
        Server:Instance():getgoldspoolrandomgolds(self.id,self.is_double)
        self.roleAction:gotoFrameAndPlay(0,75, true)--  开始水果机动画 
        self.began_bt:setTouchEnabled(false)  --目的是在消息没有返回的时候 禁止在次点击
+       self.end_bt:setVisible(true)
      
          
 end

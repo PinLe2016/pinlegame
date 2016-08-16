@@ -65,12 +65,16 @@ function FloatingLayer:touch_callback( sender, eventType )
             if tostring(LocalData:Instance():get_user_pintu( ))  ==  "1"  then  
               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE)
             end
+            if tostring(LocalData:Instance():get_user_reg())  ==  "1"  then    --注册成功
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.REG)--注册相关消息
+            end
              if  self.dialog then
                  self.dialog:removeFromParent()
              end
              if dialogdetermine==1 then
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PASSWOEDCHANGE)
              end
+            
 
     elseif tag==42 then --返回
              if  self.dialog then
@@ -78,7 +82,7 @@ function FloatingLayer:touch_callback( sender, eventType )
              end
          
     end
-    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.REG)--注册相关消息
+    
     
     self:setTouchSwallowEnabled(false)--防止吞吃
 end

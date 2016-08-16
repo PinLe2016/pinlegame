@@ -43,6 +43,7 @@ function MainInterfaceScene:fun_init( )
       self.roleAction:setTimeSpeed(0.3)
 
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
+      self.signanimations:setVisible(false)
       self:addChild(self.signanimations)
       self.signanimationact = cc.CSLoader:createTimeline("signanimations.csb")
       self.signanimations:runAction(self.signanimationact)
@@ -76,7 +77,7 @@ function MainInterfaceScene:fun_init( )
           head:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
-      local checkin_bt=self.signanimations:getChildByTag(290)  --self.MainInterfaceScene:getChildByTag(124)  --签到按钮
+      local checkin_bt= self.MainInterfaceScene:getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
           checkin_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
@@ -99,7 +100,7 @@ function MainInterfaceScene:fun_init( )
       friends_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
-      local friend_bt=self.signanimations:getChildByTag(291)--self.MainInterfaceScene:getChildByTag(288)--邀请好友
+      local friend_bt=self.MainInterfaceScene:getChildByTag(288)--self.signanimations:getChildByTag(291)--  邀请好友
       friend_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
@@ -184,7 +185,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		self.activitycode_text:setString(" ")
 	elseif tag==97 then
 		Util:scene_control("GoldprizeScene")
-	elseif tag==290 then   --124
+	elseif tag==124 then   --  290
       self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       self:addChild(self.checkinlayer)
       self.checkinlayer:setVisible(true)
@@ -195,7 +196,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
             self.set_bg1:setVisible(false)
-      elseif tag==291 then  --邀请好友  288
+      elseif tag==288 then  --邀请好友  291
             self:addChild(FriendrequestLayer.new())
       elseif tag==54 then  --测试分享
             print("规则")
@@ -325,14 +326,24 @@ function MainInterfaceScene:fun_checkin( tm )
   if not self.checkinlayer then
     return
   end
-	 --self.checkinlayer:setVisible(false)
-        --签到增加的金币
+	 -- self.checkinlayer:setVisible(false)
+ 
+
+
         if tm==2 then
           local _sig=LocalData:Instance():get_getcheckinhistory()
           local userdt = LocalData:Instance():get_userdata()
           userdt["golds"]=_sig["playerinfo"]["golds"]
           LocalData:Instance():set_userdata(userdt) --  保存数据
-          -- Util:scene_control("MainInterfaceScene")
+
+          --       签到增加的金币
+      self.Signinact = cc.CSLoader:createNode("Signinact.csb")
+      self.checkinlayer:addChild(self.Signinact)
+      self.Signin_act = cc.CSLoader:createTimeline("Signinact.csb")
+      self.Signinact:runAction(self.Signin_act)
+      self.Signin_act:gotoFrameAndPlay(0,80, false)
+
+          -- Util:scene_control("MainInterfaceScene")  --禁止
         end
         
 
@@ -352,6 +363,7 @@ function MainInterfaceScene:fun_checkin( tm )
 	       if eventType ~= ccui.TouchEventType.ended then
 		return
 	       end
+
 	       Server:Instance():checkin()  --发送消息
 	end)
 
@@ -362,6 +374,9 @@ function MainInterfaceScene:fun_checkin( tm )
 end
 --签到 初始化
 function MainInterfaceScene:init_checkin(  )
+
+
+
 
 	local  day_bg=self.checkinlayer:getChildByTag(85)
 	local  day_text=day_bg:getChildByTag(86)
@@ -433,8 +448,10 @@ function MainInterfaceScene:onEnter()
   Util:player_music("ACTIVITY",true )
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
+                        self:fun_checkin(2)--签到后
                         self:userdata(  )
-                       self:fun_checkin(2)--签到后
+                       
+                       self.check_button:setVisible(false)
                       end)
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
                        function()
