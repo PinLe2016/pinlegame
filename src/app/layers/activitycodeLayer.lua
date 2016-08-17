@@ -207,7 +207,10 @@ function activitycodeLayer:act_list()
 	
           self.list_table=LocalData:Instance():get_getactivitylist()
           dump(self.list_table)
-          self.activity_ListView:removeAllItems() 
+          if  self.activity_ListView then
+            self.activity_ListView:removeAllItems() 
+          end
+          --self.activity_ListView:removeAllItems() 
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
            if self.tablecout<self.sup_data_num then
@@ -233,7 +236,7 @@ function activitycodeLayer:act_list()
                                       return
                              end
 
-                           self:unscheduleUpdate()
+                           --self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
                             local  l_time=sup_data[sender:getTag()]["nowtime"]-sup_data[sender:getTag()]["begintime"]
