@@ -46,7 +46,7 @@ function activitycodeLayer:init(  )
                       if eventType  ==6 then
                         self.sur_pageno=self.sur_pageno+1
                         Server:Instance():getactivitylist(tostring(self._typeevt),self.sur_pageno)   --下拉刷新功能
-                        self:scheduleUpdate()
+                        --self:scheduleUpdate()
                                  return
                       end
             end))
@@ -207,17 +207,16 @@ function activitycodeLayer:act_list()
 	
           self.list_table=LocalData:Instance():get_getactivitylist()
           dump(self.list_table)
+          self.activity_ListView:removeAllItems() 
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
            if self.tablecout<self.sup_data_num then
                    print("小于",self.tablecout ,"  ",self.sup_data_num)
-           elseif self.tablecout>self.sup_data_num then
+           elseif self.tablecout>=self.sup_data_num then
                  print("大于")
                  self.activity_ListView:removeAllItems() 
-            else
-                 return
            end
-
+            self:unscheduleUpdate()
           
            
           local  function onImageViewClicked(sender, eventType)
@@ -237,7 +236,14 @@ function activitycodeLayer:act_list()
                            self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
-                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="act"}))
+                            local  l_time=sup_data[sender:getTag()]["nowtime"]-sup_data[sender:getTag()]["begintime"]
+                            if tonumber(l_time) <=  0 then
+                              self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="act",ser_status=0}))
+                              return
+                            end
+
+                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="act",ser_status=1}))
+                 
                     end
           end  
           --活动列表进行排序
@@ -260,19 +266,25 @@ function activitycodeLayer:act_list()
           -- dump(self.list_table)
           -- self.activity_ListView:removeAllItems()
          -- local  sup_data=self.list_table["game"]
-          for i=self.tablecout+1,#sup_data do
+          for i=1,#sup_data do  --self.tablecout+
           	self.activity_ListView:pushBackDefaultItem()
           	local  cell = self.activity_ListView:getItem(i-1)
             cell:setTag(i)
             local activity_Panel=cell:getChildByTag(750)
             cell:addTouchEventListener(onImageViewClicked)
             local path=cc.FileUtils:getInstance():getWritablePath()
+            print("99999   ",tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             local type=cell:getChildByTag(751)
             local type_image=  "png/J_" .. sup_data[i]["type"] .. ".png"   --sup_data[i]["type"] .. ".png"  
             type:loadTexture(type_image)
              local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             local dayText=cell:getChildByTag(756)
+            local  _time=sup_data[i]["nowtime"]-sup_data[i]["begintime"]
+            if _time <=  0 then
+              local time_text=cell:getChildByTag(780)
+              time_text:setString("距离活动开始还有:")
+            end
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
 
             if self._typeevt  == 5  then  --影藏标记
@@ -367,7 +379,14 @@ end
             if not sup_data then return end
             for i=1,#sup_data do
          	local  cell = self.activity_ListView:getItem(i-1)
-            local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
+            local  _time=sup_data[i]["nowtime"]-sup_data[i]["begintime"]
+             local _table={}
+            if _time <=  0 then
+               _table=Util:FormatTime_colon(sup_data[i]["begintime"]-sup_data[i]["nowtime"]-self.time)
+            else
+               _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
+            end
+          
             local dayText=cell:getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
         end

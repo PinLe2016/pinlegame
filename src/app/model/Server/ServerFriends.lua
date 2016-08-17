@@ -129,7 +129,7 @@ end
 
 
 function Server:get_reward_friend_list_callback()
-     --dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
         return

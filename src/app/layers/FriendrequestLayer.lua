@@ -154,8 +154,8 @@ function FriendrequestLayer:pop_up(  )
        _invitecodeNum:setVisible(false)
        _invitecodeNum:setTouchEnabled(false)
        local res = "res/png/DLkuang.png"
-       local width = 300
-       local height = 40
+       local width = 350
+       local height = 50
       
       local friendlist_code =LocalData:Instance():get_reward_setting_list() 
       
@@ -169,17 +169,18 @@ function FriendrequestLayer:pop_up(  )
                         })
          -- self.invitecode_num:setAnchorPoint(0.5,0.5)
 
-         self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX()-130,_invitecodeNum:getPositionY()))
+         self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))
          self.invitecode_num:addTo(self.m_feedback,100)
+      
           -- self.invitecode_num:setPlaceHolder()
           -- self.m_feedback:setTouchEnabled(false)
         else
                 self.invitecode_num = ccui.EditBox:create(cc.size(width,height),res)
                 self.invitecode_num:setVisible(false)
                 self.m_feedback:addChild(self.invitecode_num)
-                self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX()-130,_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
+                self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
                 self.invitecode_num:setPlaceHolder("请输入手机号码")
-                self.invitecode_num:setAnchorPoint(0,0.5)  
+        
                 self.invitecode_num:setMaxLength(11)
       end
 

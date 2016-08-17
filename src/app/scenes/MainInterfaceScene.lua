@@ -28,7 +28,7 @@ function MainInterfaceScene:ctor()
        self:fun_init()
        self:listener_home() --注册安卓返回键
 
-      Server:Instance():getaffiche()
+      --Server:Instance():getaffiche()
 
    
 end
@@ -81,6 +81,16 @@ function MainInterfaceScene:fun_init( )
           checkin_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
+       local mail_bt= self.MainInterfaceScene:getChildByTag(580)  --邮件按钮
+       mail_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+
+       local task_bt= self.MainInterfaceScene:getChildByTag(581)  --任务按钮
+       task_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+
       local setup_bt=self.MainInterfaceScene:getChildByTag(48)  --设置
       setup_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
@@ -193,6 +203,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	           Server:Instance():getcheckinhistory()  --签到http
       elseif tag==48 then  --设置
             self:funsetup(  )
+      elseif tag==580 then  --邮箱
+            print("邮箱")
+            self:fun_mailLayer()
+      elseif tag==581 then  --任务
+            print("任务")
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
             self.set_bg1:setVisible(false)
@@ -245,7 +260,10 @@ function MainInterfaceScene:touch_callback( sender, eventType )
            
 	end
 end
-
+function MainInterfaceScene:fun_mailLayer( )
+      self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
+      self:addChild(self.mailLayer)
+end
 function MainInterfaceScene:fun_storebrowser(  )
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
       self:addChild(self.Storebrowser)
