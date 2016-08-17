@@ -51,7 +51,10 @@ function Server:network_box_buffer(prompt_text)
  
     display.getRunningScene():networkbox_buffer(prompt_text)
 end
-
+function Server:promptbox_box_buffer(prompt_text)
+ 
+    display.getRunningScene():promptbox_buffer(prompt_text)
+end
 
 
 

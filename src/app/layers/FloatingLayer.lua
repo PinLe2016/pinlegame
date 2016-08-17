@@ -104,6 +104,39 @@ function FloatingLayer:network_box(prompt_text )
        end)
 
 end
+function FloatingLayer:prompt_box(prompt_text )
+      self.networkbox = cc.CSLoader:createNode("networkbox.csb")
+      self:addChild(self.networkbox)
+      local back=self.networkbox:getChildByTag(171)
+      local _text=self.networkbox:getChildByTag(172)
+      _text:setString(prompt_text)
+       back:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                 end
+                if self.networkbox then
+                       self.networkbox:removeFromParent()
+                end
+                
+            if tostring(LocalData:Instance():get_user_time()) == "1" then
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JIGSAWCOUNT)
+            end
+            if tostring(LocalData:Instance():get_user_pintu( ))  ==  "1"  then  
+              NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE)
+            end
+            if tostring(LocalData:Instance():get_user_reg())  ==  "1"  then    --注册成功
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.REG)--注册相关消息
+            end
+             if  self.dialog then
+                 self.dialog:removeFromParent()
+             end
+             if dialogdetermine==1 then
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PASSWOEDCHANGE)
+             end
+
+       end)
+
+end
 
 
 

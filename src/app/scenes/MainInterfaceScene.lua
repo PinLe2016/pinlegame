@@ -73,7 +73,8 @@ function MainInterfaceScene:fun_init( )
           self:touch_callback(sender, eventType)
       end)
        local head=self.MainInterfaceScene:getChildByTag(37)
-          head:addTouchEventListener(function(sender, eventType  )
+       local per=self.MainInterfaceScene:getChildByTag(28):getChildByTag(29)  --新的需求
+          per:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
       local checkin_bt= self.MainInterfaceScene:getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
@@ -104,7 +105,6 @@ function MainInterfaceScene:fun_init( )
            self:touch_callback(sender, eventType)
       end)
        local fenxiang_bt=self.actbg:getChildByTag(54)--测试分享
-       fenxiang_bt:setVisible(false)--功能未铺，暂时关闭
       fenxiang_bt:addTouchEventListener(function(sender, eventType  )
            print("规则额")
            self:touch_callback(sender, eventType)
@@ -178,7 +178,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
     self:addChild(activitycodeLayer.new(),1,255)
 		-- self.barrier_bg:setVisible(true)
 		-- self.kuang:setVisible(true)
-	elseif tag==37 then
+	elseif tag==29 then  --37
 		self:addChild(PerInformationLayer.new())
 	elseif tag==399 then --弹出确定
 		Server:Instance():validateactivitycode(self.activitycode_text:getString())
@@ -199,11 +199,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==288 then  --邀请好友  291
             self:addChild(FriendrequestLayer.new())
       elseif tag==54 then  --测试分享
-            print("规则")
+            self:addChild(aboutdetailsLayer.new())
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
-            --self:addChild(aboutdetailsLayer.new())
+            
              -- local login_info=LocalData:Instance():get_user_data()
              -- dump(login_info)
              --  local _key=login_info["loginname"]
