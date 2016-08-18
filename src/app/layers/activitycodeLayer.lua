@@ -163,7 +163,7 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
                    Util:player_music("ACTIVITY",true )
                   self:unscheduleUpdate()
 
-              	     self.inputcodeLayer:removeFromParent()
+              	     self:removeFromParent()
               	end
               end
             
@@ -286,6 +286,10 @@ function activitycodeLayer:act_list()
             local  _time=sup_data[i]["nowtime"]-sup_data[i]["begintime"]
             if _time <=  0 then
               local time_text=cell:getChildByTag(780)
+              local time_label=cell:getChildByTag(753)
+              time_label:setVisible(false)
+              local time_label2=cell:getChildByTag(752)
+              time_label2:setVisible(false)
               time_text:setString("距离活动开始还有:")
             end
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
