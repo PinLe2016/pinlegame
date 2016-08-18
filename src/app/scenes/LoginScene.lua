@@ -18,6 +18,7 @@ function LoginScene:ctor()
      if qqqq==0 then
       --请求版本更新链接
         self:progressbarScene()
+
      else
        self:landing_init()
      end
@@ -121,8 +122,8 @@ end
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-          -- sender:setColor(cc.c3b(100, 100, 100))
-          -- sender:setTouchEnabled(false)
+          sender:setColor(cc.c3b(100, 100, 100))
+          sender:setTouchEnabled(false)
            self.layertype=1
            self._random=Util:rand(  ) --随机验证码
            print("邀请码".. self.phone_text:getText(),  self._random)
@@ -146,22 +147,22 @@ end
     --注册
     self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.phone_text)
-    self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX(),self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
+    self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX()-20,self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
     self.phone_text:setPlaceHolder("请输入手机号码")
     self.phone_text:setAnchorPoint(0.5,0.5)  
     self.phone_text:setMaxLength(11)
 
     self.Zpassword_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.Zpassword_text )
-    self.Zpassword_text :setPosition(cc.p(password_text:getPositionX(),password_text:getPositionY()))--( cc.p(130,380 ))  
+    self.Zpassword_text :setPosition(cc.p(password_text:getPositionX()-20,password_text:getPositionY()))--( cc.p(130,380 ))  
     self.Zpassword_text :setPlaceHolder("请输入密码")
     self.Zpassword_text :setAnchorPoint(0.5,0.5)  
     self.Zpassword_text :setMaxLength(19)
     self.Zpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
-    self.Zcode_text = ccui.EditBox:create(cc.size(160,40),res)
+    self.Zcode_text = ccui.EditBox:create(cc.size(120,40),res)
     self.registered:addChild(self.Zcode_text)
-    self.Zcode_text:setPosition(cc.p(verificationcode_text:getPositionX(),verificationcode_text:getPositionY()))--( cc.p(130,323 ))  
+    self.Zcode_text:setPosition(cc.p(verificationcode_text:getPositionX()-20,verificationcode_text:getPositionY()))--( cc.p(130,323 ))  
     self.Zcode_text:setPlaceHolder("验证码")
     self.Zcode_text:setAnchorPoint(0.5,0.5)  
     self.Zcode_text:setMaxLength(6)
@@ -173,8 +174,7 @@ end
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
         if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
-              --Server:Instance():prompt("验证码错误")
-              Server:Instance():promptbox_box_buffer("验证码错误")
+              Server:Instance():prompt("验证码错误")
              return    
         end
         if self._scode then
@@ -261,8 +261,7 @@ local function go_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
             
             if  self.Dphone_text:getText() == "" then
-                --Server:Instance():prompt("填写的手机号不能为空哦！")
-                  Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")
+                Server:Instance():prompt("填写的手机号不能为空哦！")
                return
             end
             self._gobt:setTouchEnabled(false)
@@ -371,7 +370,7 @@ function LoginScene:_passwordLayer( )
             self.Wphone_text:setAnchorPoint(0,0.5)  
             self.Wphone_text:setMaxLength(11)
 
-            self._yanzhengma = ccui.EditBox:create(cc.size(160,40),res)
+            self._yanzhengma = ccui.EditBox:create(cc.size(120,40),res)
             self.passwordLayer:addChild(self._yanzhengma)
             self._yanzhengma:setPosition(cc.p(Wcode_text:getPositionX(),Wcode_text:getPositionY()))--( cc.p(58,356 ))  
             self._yanzhengma:setPlaceHolder("验证码")
@@ -423,8 +422,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                    print(" 长度 ",string.len(self._mobilephone))
 
                    if string.len(self._mobilephone)~=11 then
-                       --Server:Instance():prompt("填写手机号码错误")
-                       Server:Instance():promptbox_box_buffer("填写手机号码错误")
+                       Server:Instance():prompt("填写手机号码错误")
                        return
                    end
                    sender:setTouchEnabled(false)
@@ -438,14 +436,12 @@ function LoginScene:_resetpasswordLayer(  )
 
             self._mobilephone=self.Wphone_text:getText()
             if tostring(self._yanzhengma:getText())=="" then
-                --Server:Instance():prompt("验证码不能为空,请重新输入")
-                Server:Instance():promptbox_box_buffer("验证码不能为空,请重新输入")
+                Server:Instance():prompt("验证码不能为空,请重新输入")
                 return
             end
 
             if tostring(self._yanzhengma:getText())  ~= tostring(self.p_random) then
-              --Server:Instance():prompt("验证码错误")
-              Server:Instance():promptbox_box_buffer("验证码错误")
+              Server:Instance():prompt("验证码错误")
               return    
            end
             
@@ -604,9 +600,7 @@ end
 function LoginScene:networkbox_buffer(prompt_text)
        self.floating_layer:network_box(prompt_text) 
 end
-function LoginScene:promptbox_buffer(prompt_text)
-       self.floating_layer:prompt_box(prompt_text) 
-end
+
 
 
 

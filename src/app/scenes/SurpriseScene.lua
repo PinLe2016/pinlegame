@@ -6,7 +6,7 @@ local SurpriseScene = class("SurpriseScene", function()
 end)
 
 local GameScene = require("app.scenes.GameScene")
-local DetailsLayer = require("app.layers.DetailsLayer")
+
 
 function SurpriseScene:ctor()
   
@@ -210,6 +210,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                            self:unscheduleUpdate()
                            self.act_id=sup_data[sender:getTag()]["id"]
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
+                           local DetailsLayer = require("app.layers.DetailsLayer")
                           self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="sup",ser_status=self.ser_status}))
                     end
           end  
