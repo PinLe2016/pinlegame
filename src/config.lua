@@ -93,7 +93,9 @@ G_NOTIFICATION_EVENT = {
 	JIGSAWCOUNT=							"JIGSAWCOUNT",--  点击弹出框确定
 	AUTOMATICPUZZLE=						"AUTOMATICPUZZLE",--  点击弹出框确定自动拼图
 	PRIZEPOOLDETAILS=						"PRIZEPOOLDETAILS",   --切换奖池详情
-	VERSION_LINK=							"VERSION_LINK"   --游戏链接
+	VERSION_LINK=							"VERSION_LINK" ,  --游戏链接  affichelist
+	AFFICHLIST=							"AFFICHLIST" ,  --邮件列表  
+	AFFICHDETAIL=							"AFFICHDETAIL"   --邮件详情 
 }
 
 G_SOUND={

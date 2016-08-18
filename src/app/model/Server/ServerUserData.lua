@@ -142,23 +142,43 @@ end
 
 -------邮件系统
 
---3.4.8 获取公告消息（命令：getaffiche）
-function Server:getaffiche()
-    local params = {}
+--3.4.8 获取公告消息（命令：getaffichelist ）
+function Server:getaffichelist (_pageno)
+    local params = {
+     pagesize=7,
+     pageno=_pageno
+}
  
-    self:request_http("getaffiche" , params); 
+    self:request_http("getaffichelist" , params); 
 end
 
-function Server:getaffiche_callback()
+function Server:getaffichelist_callback()
     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取邮件信息:" .. self.data.err_msg)
         return
     end
-
-    LocalData:Instance():set_getaffiche(self.data)--保存玩家数据
+    LocalData:Instance():set_getaffiche(self.data)--保存玩家数据  AFFICHLIST
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AFFICHLIST)
+end
+--3.4.9 获取公告详情
+function Server:getaffichedetail(_messageid )
+    local params = {
+     messageid=_messageid
+}
+ 
+    self:request_http("getaffichedetail" , params); 
 end
 
+function Server:getaffichedetail_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("获取邮件详情:" .. self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_getaffichedetail(self.data)--保存玩家数据  AFFICHLIST
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AFFICHDETAIL)
+end
 
 
 

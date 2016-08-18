@@ -35,10 +35,32 @@ end
 
 ----------邮件相关
 function LocalData:set_getaffiche(getaffiche)
+	--self.getaffiche=getaffiche
+	if  not getaffiche then
+	     self.getaffiche=getaffiche
+	     return
+	end
+	if self.getaffiche then
+		for k,v in pairs(getaffiche["affichelist"]) do
+
+			table.insert(self.getaffiche["affichelist"],v)
+		end
+		return
+	end
 	self.getaffiche=getaffiche
+
 end
 
 function LocalData:get_getaffiche()
 	-- dump(self.getusercity)
 	return self.getaffiche or nil
 end
+--邮件详情
+function LocalData:set_getaffichedetail(getaffichedetail)
+	self.getaffichedetail=getaffichedetail
+end
+
+function LocalData:get_getaffichedetail()
+	return self.getaffichedetail or nil
+end
+

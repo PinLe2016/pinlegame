@@ -28,8 +28,7 @@ function MainInterfaceScene:ctor()
        self:fun_init()
        self:listener_home() --注册安卓返回键
 
-      --Server:Instance():getaffiche()
-
+      
    
 end
 function MainInterfaceScene:fun_init( )
@@ -205,7 +204,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:funsetup(  )
       elseif tag==580 then  --邮箱
             print("邮箱")
-            self:fun_mailLayer()
+            local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
+            self:addChild(mailLayer.new())
       elseif tag==581 then  --任务
             print("任务")
       elseif tag==91 then  --设置返回
@@ -259,10 +259,6 @@ function MainInterfaceScene:touch_callback( sender, eventType )
                             end)
            
 	end
-end
-function MainInterfaceScene:fun_mailLayer( )
-      self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
-      self:addChild(self.mailLayer)
 end
 function MainInterfaceScene:fun_storebrowser(  )
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
