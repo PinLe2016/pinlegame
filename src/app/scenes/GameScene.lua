@@ -11,7 +11,7 @@ local GameScene = class("GameScene", function()
       return display.newScene("GameScene")
 end)
 
-local  jackpotlayer= require("app.layers.JackpotLayer")
+
 local debrisLayer = require("app.layers.debrisLayer")
 local SurpriseOverScene = require("app.scenes.SurpriseOverScene")
 
@@ -339,8 +339,8 @@ function GameScene:onEnter()
                         if jaclayer_data[1]["addetailurl"] then
                            _addetailurl=jaclayer_data[1]["addetailurl"]
                         end
-                
-                        local jackpotlayer= jackpotlayer.new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
+                        -- local  jackpotlayer= 
+                        local jackpotlayer= require("app.layers.JackpotLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
                          cc.Director:getInstance():pushScene(jackpotlayer)   --  奖池详情  我们就是硬生生的把一个layer 变成 scene  
                        
                       end)

@@ -5,11 +5,7 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
     return display.newScene("MainInterfaceScene")
 end)
 
-local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧  
-local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
-local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
-local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
-local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面
+ 
 function MainInterfaceScene:ctor()
 	self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
@@ -185,10 +181,12 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	if tag==56 then --惊喜吧
 		 Util:scene_control("SurpriseScene")
 	elseif tag==72 then --活动码
+    local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
     self:addChild(activitycodeLayer.new(),1,255)
 		-- self.barrier_bg:setVisible(true)
 		-- self.kuang:setVisible(true)
 	elseif tag==29 then  --37
+    local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
 		self:addChild(PerInformationLayer.new())
 	elseif tag==399 then --弹出确定
 		Server:Instance():validateactivitycode(self.activitycode_text:getString())
@@ -212,8 +210,10 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             --self.set_bg:setVisible(false)
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友  291
+        local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
             self:addChild(FriendrequestLayer.new())
       elseif tag==54 then  --测试分享
+          local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面
             self:addChild(aboutdetailsLayer.new())
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
@@ -245,6 +245,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:funsetup(  )
 
       elseif tag==52 then  --邀请好友
+        local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
             self:addChild(InvitefriendsLayer.new())
       elseif tag==2122 then  --商城返回
               print("返回")
