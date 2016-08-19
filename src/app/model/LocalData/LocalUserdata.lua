@@ -63,4 +63,20 @@ end
 function LocalData:get_getaffichedetail()
 	return self.getaffichedetail or nil
 end
+--删除邮件
+function LocalData:set_delaffichebyid(delaffichebyid)
+	self.delaffichebyid=delaffichebyid
+end
+
+function LocalData:get_delaffichebyid()
+	return self.delaffichebyid or nil
+end
+--领取邮件奖励
+function LocalData:set_getaffichereward(getaffichereward)
+	self.getaffichereward=getaffichereward
+end
+
+function LocalData:get_getaffichereward()
+	return self.getaffichereward or nil
+end
 

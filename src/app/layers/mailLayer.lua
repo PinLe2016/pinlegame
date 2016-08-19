@@ -33,7 +33,22 @@ function mailLayer:init(  )
                                     if eventType ~= ccui.TouchEventType.ended then
 		                return
 		            end
-			print("删除")
+			local affiche=LocalData:Instance():get_getaffiche()
+	                        local affichelist=affiche["affichelist"]
+	                        for i=1,#affichelist do
+	                        	 if tonumber(affichelist[i]["isread"]) == 1   then  --1已读  0未读 
+                  	                   		Server:Instance():delaffichebyid(tostring(affichelist[i]["id"]))  --依次删除
+                  	                   		return
+                          		 end
+                          		 if i == #affichelist    then
+                          		 	Server:Instance():prompt("没有可删除的邮件")
+                          		 	return
+                          		 end
+	                        end
+	                        if 0 == #affichelist    then
+                          		 	Server:Instance():prompt("没有可删除的邮件")
+                          		 end
+			
                         end)
             local receive_bt=self.mailLayer:getChildByTag(56)--快速领取
             receive_bt:addTouchEventListener(function(sender, eventType  )
@@ -48,7 +63,6 @@ function mailLayer:init(  )
             self.mail_list:removeAllItems()
             self.mail_list:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
-                      	 --LocalData:Instance():set_getaffiche(nil)
                         self.sur_pageno=self.sur_pageno+1
                         Server:Instance():getaffichelist(self.sur_pageno)   --下拉刷新功能
                                  return
@@ -108,12 +122,19 @@ function mailLayer:fun_emailcontentlayer( )
                                     if eventType ~= ccui.TouchEventType.ended then
 		                return
 		            end
-			print("领取")
+		            local affichedetail=LocalData:Instance():get_getaffichedetail()
+		            if tonumber(affichedetail["rewardgolds"])  <= 0  then
+		            	Server:Instance():prompt("没有可领取的金币")
+		            	return
+		            end
+			Server:Instance():getaffichereward(affichedetail["id"])
                         end)
             local title_text=self.emailcontentlayer:getChildByTag(63)--标题
             title_text:setString(tostring(affichedetail["title"]))
             local time_text=self.emailcontentlayer:getChildByTag(65)--时间
             time_text:setString(tostring(affichedetail["createtime"]))
+            self.rewardgolds=self.emailcontentlayer:getChildByTag(55)--领取金币
+            self.rewardgolds:setString("X" ..  tostring(affichedetail["rewardgolds"]))
             local _text=self.emailcontentlayer:getChildByTag(71):getChildByTag(72)--内容
             _text:setString(tostring(affichedetail["content"]))
 
@@ -128,11 +149,26 @@ function mailLayer:onEnter()
                        function()
                         self:fun_emailcontentlayer( )
                       end)
+	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.TAFFICHEDETAIL, self,
+                       function()
+                        local  affichedetail=LocalData:Instance():get_getaffichedetail()
+                        affichedetail["rewardgolds"] = 0  
+                        LocalData:Instance():set_getaffichedetail(affichedetail)
+                        self.rewardgolds:setString("X0")
+                      end)
+
+	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self,
+                       function()
+                        Server:Instance():getaffichelist(self.sur_pageno)
+                        LocalData:Instance():set_getaffiche(nil)
+                      end)
 end
 
 function mailLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHDETAIL, self)
+     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self)
+     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.TAFFICHEDETAIL, self)
 end
 
 

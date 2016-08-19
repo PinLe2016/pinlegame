@@ -96,55 +96,96 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 	for i=1,count do
             self.rank_list:pushBackDefaultItem()
 		local  cell = self.rank_list:getItem(i-1)
-
-           local retroactive_bt=cell:getChildByTag(909)  --补签
-           retroactive_bt:setTag(i)
-          retroactive_bt:addTouchEventListener(function(sender, eventType  )
+            local retroactive_bt=cell:getChildByTag(909)  --补签
+            retroactive_bt:setTag(i)
+            retroactive_bt:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                 end
                 local _tag=sender:getTag()
-                 local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=self.heroid})  --daojishi
-                 cc.Director:getInstance():pushScene(scene)
+                local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=self.heroid})  --daojishi
+                cc.Director:getInstance():pushScene(scene)
             end)
 
 
             if #mypointslist ~=0  then
                  for j=1,#mypointslist do 
-                  local one_integral=cell:getChildByTag(117)--积分
-                  if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
-                  
-                  one_integral:setString(mypointslist[j]["points"])
-                   retroactive_bt:setVisible(false)
-                   break
-                else
-                  -- local one_integral=cell:getChildByTag(117)--积分
-                  one_integral:setString("0")
-                end
+                         local one_integral=cell:getChildByTag(117)--积分
+                         -- one_integral:setVisible(false)--xin
+                         -- local labelAtlas1 = ccui.TextAtlas:create()
+                         -- labelAtlas1:setPosition(cc.p(one_integral:getPositionX(),one_integral:getPositionY()))  
+                         -- cell:addChild(labelAtlas1) 
+                         -- labelAtlas1:setProperty(0, "png/cou.png", 26, 35, "0")
 
-               end
+
+                        if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
+                  
+                                one_integral:setString(mypointslist[j]["points"])--xin
+                                -- labelAtlas1:setString(mypointslist[j]["points"])   --setProperty(mypointslist[j]["points"], "png/cou.png", 26, 35, "0")
+                                 retroactive_bt:setVisible(false)
+                                break
+                        else
+                                one_integral:setString("0")  --xin
+                                --labelAtlas1:setString("0")    --setProperty(0, "png/cou.png", 26, 35, "0")
+
+                        end
+
+                  end
             else
-                 local one_integral=cell:getChildByTag(117)--积分
+                  local one_integral=cell:getChildByTag(117)--积分
                   one_integral:setString("0")
+
+                   -- one_integral:setVisible(false)--xin
+                   -- local labelAtlas1 = ccui.TextAtlas:create()
+                   -- labelAtlas1:setPosition(cc.p(one_integral:getPositionX(),one_integral:getPositionY()))  
+                   -- labelAtlas1:setProperty(0, "png/cou.png", 26, 35, "0")
+                   -- cell:addChild(labelAtlas1) 
+
 
             end
            
+
+
+
 		if #playerpointslist ~=0  then
                   for k=1,#playerpointslist do
               
-             if playernum ~= 0 and playerpointslist[k]["cycle"]  == i  then
+                         if playernum ~= 0 and playerpointslist[k]["cycle"]  == i  then
              
-              local hero_integral=cell:getChildByTag(116)--积分
-              hero_integral:setString(playerpointslist[k]["points"])
-              break
-            else
-              local hero_integral=cell:getChildByTag(116)--积分
-              hero_integral:setString("0")
-            end
-           end
-         else
-            local hero_integral=cell:getChildByTag(116)--积分
-              hero_integral:setString("0")
+                               local hero_integral=cell:getChildByTag(116)--积分
+                               --hero_integral:setVisible(false)
+                               hero_integral:setString(playerpointslist[k]["points"])
+                               -- local labelAtlas = ccui.TextAtlas:create()
+                               -- labelAtlas:setProperty(playerpointslist[k]["points"], "png/cou.png", 26, 35, "0")
+                               -- labelAtlas:setPosition(cc.p(hero_integral:getPositionX(),hero_integral:getPositionY()))  
+                               -- cell:addChild(labelAtlas) 
+                               break
+                         else
+                                -- local hero_integral=cell:getChildByTag(116)--积分
+                                -- hero_integral:setString("0")
+                                 local hero_integral=cell:getChildByTag(116)--积分
+                                 --hero_integral:setVisible(false)
+                                 hero_integral:setString("0")
+                                 -- local labelAtlas = ccui.TextAtlas:create()
+                                 -- labelAtlas:setProperty(2, "png/cou.png", 26, 35, "0")
+                                 -- labelAtlas:setPosition(cc.p(hero_integral:getPositionX(),hero_integral:getPositionY()))  
+                                 -- cell:addChild(labelAtlas) 
+
+
+                         end
+                  end
+           else
+            -- local hero_integral=cell:getChildByTag(116)--积分
+            --   hero_integral:setString("0")
+
+               local hero_integral=cell:getChildByTag(116)--积分
+               --hero_integral:setVisible(false)
+               hero_integral:setString("0")
+               -- local labelAtlas = ccui.TextAtlas:create()
+               -- labelAtlas:setProperty(0, "png/cou.png", 26, 35, "0")
+               -- labelAtlas:setPosition(cc.p(hero_integral:getPositionX(),hero_integral:getPositionY()))  
+               -- cell:addChild(labelAtlas) 
+
           end
            
          
