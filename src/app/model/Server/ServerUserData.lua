@@ -180,8 +180,49 @@ function Server:getaffichedetail_callback()
     LocalData:Instance():set_getaffichedetail(self.data)--保存玩家数据  AFFICHLIST
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AFFICHDETAIL)
 end
+--3.4.10  删除公告
+function Server:delaffichebyid(_messageid )
+            local   messageid={}
+            messageid[1]=
+            {
+                 id=_messageid
+            }
 
+            local params = {
+                 messageid=messageid
+            }
 
+    self:request_http("delaffichebyid" , params); 
+end
+
+function Server:delaffichebyid_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("删除邮件:" .. self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_delaffichebyid(self.data)--保存玩家数据  AFFICHLIST
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.DELAFFICHEBYID)
+end
+--3.4.11  领取公告奖励
+function Server:getaffichereward(_messageid )
+    local params = {
+                messageid = _messageid
+
+}
+ 
+    self:request_http("getaffichereward" , params); 
+end
+
+function Server:getaffichereward_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("领取邮件奖励:" .. self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_getaffichereward(self.data)--保存玩家数据  AFFICHLIST
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TAFFICHEDETAIL)
+end
 
 
 

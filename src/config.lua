@@ -95,7 +95,9 @@ G_NOTIFICATION_EVENT = {
 	PRIZEPOOLDETAILS=						"PRIZEPOOLDETAILS",   --切换奖池详情
 	VERSION_LINK=							"VERSION_LINK" ,  --游戏链接  affichelist
 	AFFICHLIST=							"AFFICHLIST" ,  --邮件列表  
-	AFFICHDETAIL=							"AFFICHDETAIL"   --邮件详情 
+	AFFICHDETAIL=							"AFFICHDETAIL"  ,--邮件详情 delaffichebyid
+	DELAFFICHEBYID=							"DELAFFICHEBYID" ,--删除邮件 getaffichedetail
+	TAFFICHEDETAIL=							"TAFFICHEDETAIL"   --领取邮件奖励 
 }
 
 G_SOUND={
