@@ -223,7 +223,22 @@ function Server:getaffichereward_callback()
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TAFFICHEDETAIL)
 end
 
+--3.4.12  玩家反馈
+function Server:setfeedback(params)
+    local _params = params
 
+    self:request_http("setfeedback" , _params); 
+end
+
+function Server:setfeedback_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("玩家反馈:" .. self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_setfeedback(self.data)--保存玩家数据  AFFICHLIST
+    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.FEEDBACK)
+end
 
 
 

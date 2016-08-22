@@ -21,6 +21,7 @@ function PerInformationLayer:ctor()--params
 end
 --新增的个人信息界面
 function PerInformationLayer:add_init(  )
+    
               self.showinformation = cc.CSLoader:createNode("showinformation.csb")
               self:addChild(self.showinformation)
               

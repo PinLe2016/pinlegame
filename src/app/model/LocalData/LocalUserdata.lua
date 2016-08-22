@@ -79,4 +79,30 @@ end
 function LocalData:get_getaffichereward()
 	return self.getaffichereward or nil
 end
+--玩家反馈
+function LocalData:set_setfeedback(_setfeedback)
+	self._setfeedback=_setfeedback
+end
+
+function LocalData:get_setfeedback()
+	return self._setfeedback or nil
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

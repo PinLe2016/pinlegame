@@ -73,13 +73,19 @@ function FloatingLayer:touch_callback( sender, eventType )
              end
              if dialogdetermine==1 then
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PASSWOEDCHANGE)
-             end
+             end  
+              if tostring(LocalData:Instance():get_back()) == "1" then
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TFEDBACK)
+            end
             
 
     elseif tag==42 then --返回
              if  self.dialog then
                  self.dialog:removeFromParent()
              end
+              if tostring(LocalData:Instance():get_back()) == "1" then
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TFEDBACK)
+            end
          
     end
     

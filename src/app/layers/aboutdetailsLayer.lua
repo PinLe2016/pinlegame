@@ -104,7 +104,14 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            	      self.name_text:setVisible(false)
            	      self.content_text:setVisible(false)
            	elseif  tag==210 then   --提交  记住在正确时候消息这界面消失 
-           		print("提交", self.phone_text:getText())
+           		print("提交", self.phone_text:getText())     
+                  local _name=self.name_text:getText()
+                  local _tel=self.phone_text:getText()
+                  local _content=self.content_text:getText()
+                  --type    0为建议反馈，1为商务合作   
+                  LocalData:Instance():set_back("1") 
+                  Server:Instance():setfeedback({type="0",company="北京拼乐",name=_name,tel=_tel,content=_content})
+
            	elseif tag==307 then  --商务合作返回
            		self.business_bg:setVisible(false)
            		self.companyname_text:setVisible(false)
@@ -113,8 +120,16 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            	           self.contenttext:setVisible(false)
            	           self.cooperation_ListView:setVisible(false)
 
-           	elseif tag==364 then  --商务合作提交
+           	elseif tag==364 then  --商务合作提交  
            		print("商务提交")
+                  local _name=self.nametext:getText()
+                  local _tel=self.phonetext:getText()
+                  local _content=self.contenttext:getText()
+                  local _company=self.companyname_text:getText()
+                  LocalData:Instance():set_back("1")
+                  --type    0为建议反馈，1为商务合作    
+                  Server:Instance():setfeedback({type="1",company=_company,name=_name,tel=_tel,content=_content})
+
            	elseif tag==356 then  --商务合作条件
            		print("条件")
            		self:cooperationlist()
@@ -232,18 +247,37 @@ function aboutdetailsLayer:inputbox(  )
 end
 
 function aboutdetailsLayer:onEnter()
-      
-  -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.WINNERS, self,
-  --                      function()
+  --  提交建议  
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FEEDBACK, self,
+                       function()
 
-  --                      --self:_winners( )-- 获奖名单
-  --                      self:winners_init()  --更新数据
-  --                     end)
+                       Server:Instance():prompt("提交成功！！！")
+
+                       if self.content_text then  
+                         self.content_text:setVisible(false)
+                       end
+                        if self.contenttext then 
+                         self.contenttext:setVisible(false)
+                       end
+
+                      end)
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.TFEDBACK, self,
+                       function()
+                        LocalData:Instance():set_back("0")  
+
+                       if self.advice_bg:isVisible()  and  self.content_text then  
+                         self.content_text:setVisible(true)
+                       end
+                        if self.business_bg:isVisible()  and  self.contenttext then 
+                         self.contenttext:setVisible(true)
+                       end
+                      end)
 
 end
 
 function aboutdetailsLayer:onExit()
-      --NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FEEDBACK, self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.TFEDBACK, self)
      	
 end
 

@@ -70,7 +70,14 @@ function LocalData:get_user_reg()
 	local user_pintu=cc.UserDefault:getInstance():getStringForKey("_reg","0")
 	return user_pintu or nil
 end
+function LocalData:set_back(_setfedback)
+	cc.UserDefault:getInstance():setStringForKey("_setfedback" ,_setfedback)
+end
 
+function LocalData:get_back()
+	local user_pintu=cc.UserDefault:getInstance():getStringForKey("_setfedback","0")
+	return user_pintu or nil
+end
 
 
 

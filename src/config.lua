@@ -97,7 +97,11 @@ G_NOTIFICATION_EVENT = {
 	AFFICHLIST=							"AFFICHLIST" ,  --邮件列表  
 	AFFICHDETAIL=							"AFFICHDETAIL"  ,--邮件详情 delaffichebyid
 	DELAFFICHEBYID=							"DELAFFICHEBYID" ,--删除邮件 getaffichedetail
-	TAFFICHEDETAIL=							"TAFFICHEDETAIL"   --领取邮件奖励 
+	TAFFICHEDETAIL=							"TAFFICHEDETAIL"  , --领取邮件奖励 
+	FEEDBACK=							"FEEDBACK"   ,--玩家反馈  feedback 
+	TFEDBACK=							"TFEDBACK"   --   
+
+
 }
 
 G_SOUND={
