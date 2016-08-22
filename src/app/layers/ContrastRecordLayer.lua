@@ -104,6 +104,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                         return
                 end
                 local _tag=sender:getTag()
+                GameScene = require("app.scenes.GameScene")
                  local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=self.heroid})  --daojishi
                  cc.Director:getInstance():pushScene(scene)
             end)
