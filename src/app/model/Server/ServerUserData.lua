@@ -11,8 +11,9 @@ end
 
 
 function Server:setuserinfo_callback()
+    dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("保存用户数据失败:" .. self.data.err_msg)
+        self:show_float_message(self.data.err_msg)
         return
     end
     self:show_float_message("信息修改成功!")
