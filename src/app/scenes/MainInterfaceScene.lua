@@ -24,9 +24,10 @@ function MainInterfaceScene:ctor()
        self:fun_init()
        self:listener_home() --注册安卓返回键
 
-      
+     
    
 end
+
 function MainInterfaceScene:fun_init( )
 
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
@@ -44,8 +45,6 @@ function MainInterfaceScene:fun_init( )
       local flashing=self.signanimations:getChildByTag(286)
       flashing:runAction( cc.Sequence:create(cc.Blink:create(3,100)))
       self.signanimationact:gotoFrameAndPlay(0,65, true)
-
-
          
       local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)
           Surprise_bt:addTouchEventListener(function(sender, eventType  )
@@ -206,6 +205,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:addChild(mailLayer.new())
       elseif tag==581 then  --任务
             print("任务")
+            local taskLayer = require("app.layers.taskLayer")  --关于任务界面
+            self:addChild(taskLayer.new())
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
             self.set_bg1:setVisible(false)

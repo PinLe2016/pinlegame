@@ -235,7 +235,7 @@ function debrisLayer:saw_issuccess()
         end
     end
     print("成功")  --self.adid
-
+                  self:fun_endanimation()
                  local _originalimage = cc.CSLoader:createNode("originalimage.csb")
                   _originalimage:setPosition(cc.p(self.point.x,self.point.y))
                  local original=_originalimage:getChildByTag(118)
@@ -244,16 +244,54 @@ function debrisLayer:saw_issuccess()
                  self:addChild(_originalimage,900)
 
                    local function stopAction()
-                             if self.type=="surprise" then
-                                        Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
-                                         return
-                            end
-                            print("jdfjskdjf  ",self.adid)
-                          Server:Instance():setgamerecord(self.adid)  
+                          --    if self.type=="surprise" then
+                          --               Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
+                          --                return
+                          --   end
+                          --   print("jdfjskdjf  ",self.adid)
+                          -- Server:Instance():setgamerecord(self.adid)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
                  
+end
+function debrisLayer:fun_endanimation()
+      self._endanimation = cc.CSLoader:createNode("endanimation.csb")
+      self._endanimation:setPosition(cc.p(self.point.x,self.point.y))
+      self:addChild(self._endanimation)
+      self.endanimation = cc.CSLoader:createTimeline("endanimation.csb")
+      self.endanimation:setTimeSpeed(0.2)
+      self._endanimation:runAction(self.endanimation)
+      self.endanimation:gotoFrameAndPlay(0,60, true)
+
+
+
+
+      local  cliper = cc.ClippingNode:create()
+      local  _content=self._endanimation:getChildByTag(263)
+      _content:setVisible(false)
+      local content = display.newSprite("png/end_biaoti.png")
+      content:setPosition(cc.p(_content:getPositionX(),_content:getPositionY()))
+      local  stencil = content
+
+      local spark = display.newSprite("png/endguang.png")
+      spark:setPosition(cc.p(_content:getPositionX()-content:getContentSize().width/2,_content:getPositionY()));
+
+      cliper:setAlphaThreshold(0.5)
+      cliper:setStencil(stencil)
+      cliper:addChild(content)
+      cliper:addChild(spark)
+
+      self._endanimation:addChild(cliper)
+
+      local moveTo = cc.MoveTo:create(2.0,cc.p(_content:getPositionX()+content:getContentSize().width/2,_content:getPositionY()))
+      local moveBack = cc.MoveTo:create(2.0,cc.p(_content:getPositionX()-content:getContentSize().width/2,_content:getPositionY()))
+      local seq = cc.Sequence:create(moveTo,moveBack,NULL)
+      local action = cc.RepeatForever:create(seq)
+      spark:runAction(action)
+
+
+
 end
 --增加幸运卡
 function debrisLayer:add_reward( )
