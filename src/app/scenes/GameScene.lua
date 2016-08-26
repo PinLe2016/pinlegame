@@ -201,12 +201,14 @@ function GameScene:funsuspended( )
 end
 function GameScene:originalimage(dex)
            local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
-
            self._originalimage = cc.CSLoader:createNode("originalimage.csb")
            self._kuang:setLocalZOrder(200)
            self._kuang:addChild(self._originalimage)
            self.original=self._originalimage:getChildByTag(118)
            self.tishi=self._originalimage:getChildByTag(2044)
+           self.continue_bt=self._originalimage:getChildByTag(107)
+           self.masklayer=self._originalimage:getChildByTag(1050)
+           self.masklayer:setPosition(cc.p(-self._kuang:getPositionX(),-self._kuang:getPositionY()))
 
            if self.type=="surprise" then
               local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
@@ -224,7 +226,13 @@ function GameScene:originalimage(dex)
                
           end
            if dex==2 then
-              self.original:setTouchEnabled(true)
+              --self.original:setTouchEnabled(true)
+              self.masklayer:setVisible(true)
+              self.continue_bt:setVisible(true)
+              local actionBy = cc.ScaleBy:create(1, 1.5, 1.5)
+              self.continue_bt:runAction(cc.RepeatForever:create(cc.Sequence:create(actionBy, actionBy:reverse())))     
+
+
            elseif dex==1 then
               self.original:setTouchEnabled(false)
               self.tishi:setVisible(false)
@@ -234,6 +242,13 @@ function GameScene:originalimage(dex)
            end
 
            self.original:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                              return
+                    end
+                  self._originalimage:removeFromParent()
+                  self._restore_bt:setTouchEnabled(true)
+          end)
+           self.masklayer:addTouchEventListener(function(sender, eventType  )
                     if eventType ~= ccui.TouchEventType.ended then
                               return
                     end

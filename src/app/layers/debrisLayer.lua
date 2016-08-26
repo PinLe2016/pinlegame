@@ -244,12 +244,12 @@ function debrisLayer:saw_issuccess()
                  self:addChild(_originalimage,900)
 
                    local function stopAction()
-                          --    if self.type=="surprise" then
-                          --               Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
-                          --                return
-                          --   end
-                          --   print("jdfjskdjf  ",self.adid)
-                          -- Server:Instance():setgamerecord(self.adid)  
+                             if self.type=="surprise" then
+                                        Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
+                                         return
+                            end
+                            print("jdfjskdjf  ",self.adid)
+                          Server:Instance():setgamerecord(self.adid)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
@@ -264,9 +264,6 @@ function debrisLayer:fun_endanimation()
       self._endanimation:runAction(self.endanimation)
       self.endanimation:gotoFrameAndPlay(0,60, true)
 
-
-
-
       local  cliper = cc.ClippingNode:create()
       local  _content=self._endanimation:getChildByTag(263)
       _content:setVisible(false)
@@ -276,7 +273,7 @@ function debrisLayer:fun_endanimation()
 
       local spark = display.newSprite("png/endguang.png")
       spark:setPosition(cc.p(_content:getPositionX()-content:getContentSize().width/2,_content:getPositionY()));
-
+     -- spark:setColor(cc.c3b(250,100,30))
       cliper:setAlphaThreshold(0.5)
       cliper:setStencil(stencil)
       cliper:addChild(content)
@@ -284,15 +281,14 @@ function debrisLayer:fun_endanimation()
 
       self._endanimation:addChild(cliper)
 
-      local moveTo = cc.MoveTo:create(2.0,cc.p(_content:getPositionX()+content:getContentSize().width/2,_content:getPositionY()))
-      local moveBack = cc.MoveTo:create(2.0,cc.p(_content:getPositionX()-content:getContentSize().width/2,_content:getPositionY()))
-      local seq = cc.Sequence:create(moveTo,moveBack,NULL)
-      local action = cc.RepeatForever:create(seq)
-      spark:runAction(action)
-
-
-
-end
+      local moveTo = cc.MoveTo:create(4,cc.p(_content:getPositionX()+content:getContentSize().width/2,_content:getPositionY()))
+      local moveBack = cc.MoveTo:create(4,cc.p(_content:getPositionX()-content:getContentSize().width/2,_content:getPositionY()))  --moveTo:reverse()  --
+      local seq1=cc.Sequence:create(cc.FadeIn:create(4),cc.FadeOut:create(4))  --FadeOut
+      local seq = cc.Sequence:create(moveTo,moveBack)
+      local spawn = cc.Spawn:create( seq,seq1)
+      local SpeedTest_action1 = cc.Speed:create(cc.RepeatForever:create(spawn), 2.0)
+      spark:runAction(SpeedTest_action1)
+end  
 --增加幸运卡
 function debrisLayer:add_reward( )
         self.Rewardvouchers = cc.CSLoader:createNode("Rewardvouchers.csb")

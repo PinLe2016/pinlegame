@@ -24,10 +24,7 @@ function MainInterfaceScene:ctor()
        self:fun_init()
        self:listener_home() --注册安卓返回键
 
-     
-   
 end
-
 function MainInterfaceScene:fun_init( )
 
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")

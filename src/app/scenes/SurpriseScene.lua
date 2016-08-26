@@ -189,6 +189,13 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                    if eventType ~= ccui.TouchEventType.ended then
                                return
                     end
+                    local userinfo=LocalData:Instance():get_getuserinfo()
+                    dump(userinfo)
+                    if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"] and  userinfo["nickname"]  then
+                    else
+                      Server:Instance():prompt("完善个人信息奖励金币")
+                        return
+                    end
 
                    local i=sender:getTag()
                    local  sup_data=self.list_table["game"]
@@ -404,6 +411,7 @@ function SurpriseScene:networkbox_buffer(prompt_text)
 end
 
 function SurpriseScene:onEnter()
+   Server:Instance():getuserinfo() 
       --audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
       Util:player_music("PERSONALCHAGE",true )
       LocalData:Instance():set_getactivitylist(nil)

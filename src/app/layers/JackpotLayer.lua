@@ -72,20 +72,26 @@ function JackpotLayer:jackgoldact( )
        local connection_gold=self.jackgoldact:getChildByTag(223)   --连接增加的金币
        connection_gold:setVisible(false)
        local labelAtlas = ccui.TextAtlas:create()
-       labelAtlas:setProperty(11, "png/jackftt.png", 16, 20, "0")
+       local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+       local  jaclayer_data=list_table["adlist"]
+       if jaclayer_data[1]["adurlgold"] then
+          labelAtlas:setProperty(tostring(jaclayer_data[1]["adurlgold"]), "png/jackftt.png", 16, 20, "0")
+      else
+        labelAtlas:setProperty("0", "png/jackftt.png", 16, 20, "0")
+       end
        labelAtlas:setPosition(cc.p(connection_gold:getPositionX(),connection_gold:getPositionY()))  
        self.jackgoldact:addChild(labelAtlas) 
 end
 function JackpotLayer:init(  )
 
-        --金币动画
-        self.goldanimation = cc.CSLoader:createNode("goldanimation.csb")
-        self.goldanimation:setVisible(false)
-        self:addChild(self.goldanimation)
-        self.goldroleAction = cc.CSLoader:createTimeline("goldanimation.csb")
-        self.goldroleAction:setTimeSpeed(0.5)
-        self.goldanimation:runAction(self.goldroleAction)
-        self.goldnum  =self.goldanimation:getChildByTag(781):getChildByTag(782)  --增加的金币数
+        -- --金币动画
+        -- self.goldanimation = cc.CSLoader:createNode("goldanimation.csb")
+        -- self.goldanimation:setVisible(false)
+        -- self:addChild(self.goldanimation)
+        -- self.goldroleAction = cc.CSLoader:createTimeline("goldanimation.csb")
+        -- self.goldroleAction:setTimeSpeed(0.5)
+        -- self.goldanimation:runAction(self.goldroleAction)
+        -- self.goldnum  =self.goldanimation:getChildByTag(781):getChildByTag(782)  --增加的金币数
 
         self:jackgoldact()
 
@@ -555,9 +561,11 @@ end
                             --  出现金币动画
                             print("金币动画")
                             Util:player_music("FALLMONEY",true)
-                            self.goldanimation:setVisible(true)
+                            -- self.goldanimation:setVisible(true)
+                            self:fun_goldanimation()
                             self.goldnum:setString("+"  ..  tostring(_tablegods["golds"]))
-                            self.goldroleAction:gotoFrameAndPlay(0,35, false)
+                            --self.goldroleAction:gotoFrameAndPlay(0,35, false)
+
 
                            local function stopAction()
                                   audio.stopMusic(G_SOUND["FALLMONEY"])
@@ -578,7 +586,40 @@ end
                      end
                end
 end
+--水果机结束金币动画
+function JackpotLayer:fun_goldanimation( )
+        self.goldanimation = cc.CSLoader:createNode("goldanimation.csb")
+        self:addChild(self.goldanimation)
+        self.goldnum  =self.goldanimation:getChildByTag(782)  --水果机增加的金币数
+        local gold_act = self.goldanimation:getChildByTag(781)
+        local layer = display.newSprite("png/jinbi_1.png")
+        layer:setPosition(cc.p(gold_act:getPositionX(),gold_act:getPositionY()))
+        self:addChild(layer)
+        local animation = cc.Animation:create()
+        local number, name
+        for i = 1, 7 do
 
+            name = "png/jinbi_"..i..".png"
+            animation:addSpriteFrameWithFile(name)
+        end
+        animation:setDelayPerUnit(0.15)
+        animation:setRestoreOriginalFrame(true)
+    
+        local action = cc.Animate:create(animation)  
+        local action1=cc.Sequence:create(cc.MoveTo:create(0.4, cc.p(gold_act:getPositionX(),gold_act:getPositionY()+100)),cc.MoveTo:create(0.65, cc.p(gold_act:getPositionX(),gold_act:getPositionY()-100)))
+        layer:runAction(cc.Spawn:create(action,action1 ))
+
+        local function stopAction()
+              layer:setVisible(false)
+         
+        end
+        local callfunc = cc.CallFunc:create(stopAction)
+        self:runAction(cc.Sequence:create(cc.DelayTime:create(1.05),callfunc  ))
+
+
+
+
+end
 function JackpotLayer:fun_slowdown( )
       self.glodreward ={["7"]=0,["10"]=5,["1000"]=10,["5"]=15,["15"]=20,["50"]=25,["20"]=30,["200"]=35,
                                 ["9"]=40,["11"]=45,["500"]=50,["6"]=55,["19"]=60,["14"]=65,["16"]=70,["100"]=75}

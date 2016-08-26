@@ -20,7 +20,16 @@ end
 function aboutdetailsLayer:init(  )
 	self.aboutdetails = cc.CSLoader:createNode("aboutdetails.csb");
     	self:addChild(self.aboutdetails)
-    	--提交建议
+
+            --二维码
+            self.qr_code=self.aboutdetails:getChildByTag(67)  --二维码界面
+            self.qr_code:setVisible(false)
+            local qrcode_bt=self.qr_code:getChildByTag(68)
+            qrcode_bt:addTouchEventListener((function(sender, eventType  )
+                     self:touch_btCallback(sender, eventType)
+               end))
+
+    	      --提交建议
             self.advice_bg=self.aboutdetails:getChildByTag(200)  --提交建议界面
             self.advice_bg:setVisible(false)
             local adviceback_bt=self.advice_bg:getChildByTag(202)  --提交建议界面返回
@@ -98,6 +107,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                   self:businesscooperation()
            	elseif  tag==1296 then --扫描二维码
            	       print("扫描二维码")
+                   self.qr_code:setVisible(true)
            	elseif  tag==202 then --扫描二维码
            	      self.advice_bg:setVisible(false)
            	      self.phone_text:setVisible(false)
@@ -133,6 +143,8 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            	elseif tag==356 then  --商务合作条件
            		print("条件")
            		self:cooperationlist()
+            elseif tag==68 then
+              self.qr_code:setVisible(false)
            end
 
 end
