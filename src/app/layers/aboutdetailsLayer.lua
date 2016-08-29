@@ -121,7 +121,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                   --type    0为建议反馈，1为商务合作   
                   print("1111",_name,_tel,_content)
 
-                  if (_name=="请输入姓名"  or  _name== " ") or  (_tel=="请输入手机号码"  or  _tel== " ")  or  (_content=="请输入您的宝贵建议(200字以内)"  or  _content== " ") then
+                  if (_name=="请输入姓名"  or  _name== "")  or  (_tel=="请输入手机号码"  or  _tel== "")  or  (_content=="请输入您的宝贵建议(200字以内)"  or  _content== "") then  --
                             LocalData:Instance():set_back("1")
                             self.content_text:setVisible(false)
                             Server:Instance():prompt("请您完善信息")
@@ -145,7 +145,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                   local _tel=self.phonetext:getText()
                   local _content=self.contenttext:getText()
                   local _company=self.companyname_text:getText()
-                   if (_name=="请输入联系人姓名"  or  _name== " ") or (_tel=="请输入联系方式"  or  _tel== " ")  or (_content=="请输入您的宝贵建议(200字以内)"  or  _content== " ") or (_company=="请输入公司名称"  or  _company== " ")  then
+                   if (_name=="请输入联系人姓名"  or  _name== "") or (_tel=="请输入联系方式"  or  _tel== "")  or (_content=="请输入您的宝贵建议(200字以内)"  or  _content== "") or (_company=="请输入公司名称"  or  _company== "")  then
                             LocalData:Instance():set_back("1")
                             self.contenttext:setVisible(false)
                             Server:Instance():prompt("请您完善信息")
@@ -224,12 +224,13 @@ function aboutdetailsLayer:businesscooperation( )
     --  内容
     local _res = "res/png/guanyukuang.png"  
     self.contenttext = ccui.EditBox:create(cc.size(489,227),_res)
-    self.contenttext:setFontName("Arial")
+    self.contenttext:setFont("Arial",22)
     self.contenttext:setFontColor(cc.c3b(35,149,200))
-    self.contenttext:setFontSize(22)
+    self.contenttext:setPlaceholderFont("Arial",22)
     self.businessback_bg:addChild(self.contenttext)
     self.contenttext:setPosition(cc.p(self.Xcontent_text:getPositionX(),self.Xcontent_text:getPositionY()))--( cc.p(130,438 ))  
-    self.contenttext:setText("请输入您的宝贵建议(200字以内)")
+    self.contenttext:setPlaceHolder("请输入您的宝贵建议(200字以内)")
+
     self.contenttext:setAnchorPoint(0.5,0.5)  
     self.contenttext:setMaxLength(200)
 
@@ -263,9 +264,10 @@ function aboutdetailsLayer:inputbox(  )
     self.content_text:setFontName("Arial")
     self.content_text:setFontColor(cc.c3b(35,149,200))
     self.content_text:setFontSize(22)
+    self.content_text:setPlaceholderFont("Arial",22)
     self.advicedata_bg:addChild(self.content_text)
     self.content_text:setPosition(cc.p(self.Zcontent_text:getPositionX(),self.Zcontent_text:getPositionY()))--( cc.p(130,438 ))  
-    self.content_text:setText("请输入您的宝贵建议(200字以内)")
+    self.content_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
     self.content_text:setAnchorPoint(0.5,0.5)  
     self.content_text:setMaxLength(200)
 
