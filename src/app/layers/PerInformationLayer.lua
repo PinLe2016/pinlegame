@@ -71,7 +71,7 @@ function PerInformationLayer:add_init(  )
                     local golds=self.showinformation:getChildByTag(1413)   --金币
                     golds:setString(userdt["golds"])
                     local rankname=self.showinformation:getChildByTag(1414)   --等级
-                    rankname:setString("LV." .. userdt["rankname"])
+                    rankname:setString( userdt["rankname"])
 
                    
                     local registereday=self.showinformation:getChildByTag(1412)  --注册日期
@@ -420,16 +420,16 @@ function PerInformationLayer:perinformation_init(  )
         local haer=LocalData:Instance():get_user_head()   --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
         self.image_head:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         
-
-
         self.Dphone_text=self.Perinformation:getChildByTag(68)  --名字Dphone_text
         self.Dphone_text:setTouchEnabled(false)
         self.Dphone_text:setVisible(false)
-        local res = "res/png/DLkuang.png"
+        local res = " "--res/png/DLkuang.png
         local width = 360
-        local height = 60
+        local height = 50
         --登陆
         self._Pname = ccui.EditBox:create(cc.size(width,height),res)
+        self._Pname:setPlaceholderFontColor(cc.c3b(212, 100, 100))
+        self._Pname:setFontColor(cc.c3b(212, 141, 70))
         self.Perinformation:addChild(self._Pname)
         self._Pname:setVisible(true)
         self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  
@@ -451,7 +451,7 @@ function PerInformationLayer:perinformation_init(  )
         local golds=self.Perinformation:getChildByTag(73)  --金币
         golds:setString(userdt["golds"])
         local rankname=self.Perinformation:getChildByTag(76)  --等级
-        rankname:setString("LV." .. userdt["rankname"])
+        rankname:setString( userdt["rankname"])
 
        
         local registereday=self.Perinformation:getChildByTag(86)  --注册日期

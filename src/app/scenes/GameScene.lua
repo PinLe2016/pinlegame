@@ -227,12 +227,20 @@ function GameScene:originalimage(dex)
           end
            if dex==2 then
               --self.original:setTouchEnabled(true)
+              local userdata=LocalData:Instance():get_user_data()
+              if tostring(LocalData:Instance():get_continue(userdata["loginname"])) == "" then
+                self.continue_bt:setVisible(true)
+              else
+                self.continue_bt:setVisible(false)
+              end
+
               self.masklayer:setVisible(true)
-              self.continue_bt:setVisible(true)
+              
               local actionBy = cc.ScaleBy:create(1, 1.5, 1.5)
-              self.continue_bt:runAction(cc.RepeatForever:create(cc.Sequence:create(actionBy, actionBy:reverse())))     
+              self.continue_bt:runAction(cc.RepeatForever:create(cc.Sequence:create(actionBy, actionBy:reverse())))    
+              LocalData:Instance():set_continue(userdata["loginname"],userdata["loginname"]) 
 
-
+             
            elseif dex==1 then
               self.original:setTouchEnabled(false)
               self.tishi:setVisible(false)

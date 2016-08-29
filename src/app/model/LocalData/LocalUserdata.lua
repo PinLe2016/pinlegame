@@ -87,7 +87,15 @@ end
 function LocalData:get_setfeedback()
 	return self._setfeedback or nil
 end
+--惊喜吧点击屏幕继续
+function LocalData:set_continue(continue,key)
+	cc.UserDefault:getInstance():setStringForKey(continue ,key)
+end
 
+function LocalData:get_continue(continue)
+	local _key=cc.UserDefault:getInstance():getStringForKey(continue,key)
+	return _key or nil
+end
 
 
 

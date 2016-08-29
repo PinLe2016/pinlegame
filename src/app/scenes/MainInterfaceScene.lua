@@ -24,6 +24,27 @@ function MainInterfaceScene:ctor()
        self:fun_init()
        self:listener_home() --注册安卓返回键
 
+
+         self.labelAtlas1 = ccui.TextAtlas:create()
+         self.labelAtlas1:setPosition(cc.p(300,400))  
+         self:addChild(self.labelAtlas1) 
+         self.labelAtlas1:setProperty(0, "png/cou.png", 26, 35, "0")
+
+        --  for i=1,9 do
+        --      if i%2==0 then
+        --      self.labelAtlas1:setString(tostring(i*10))
+        --      self.labelAtlas1:setString(tostring(800000000*i))
+        --   else
+        --      self.labelAtlas1:setString(tostring(i*10))
+           
+        --   end
+         
+        -- end
+
+        
+
+
+
 end
 function MainInterfaceScene:fun_init( )
 
@@ -142,7 +163,7 @@ function MainInterfaceScene:userdata(  )
        local crown_name=self.MainInterfaceScene:getChildByTag(41)-- 爵位
        crown_name:setString(userdt["rankname"])
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
-       leve:setString(userdt["grade"])
+       leve:setString("LV."  ..   userdt["grade"])
        local _gd= LocalData:Instance():get_getcheckinhistory()
 
        if tonumber(_gd["rewardgolds"])   and   userdt["golds"]  < tonumber(_gd["rewardgolds"])    then
