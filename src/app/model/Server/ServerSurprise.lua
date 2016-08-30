@@ -10,7 +10,7 @@
 -- 4我的未结束活动码活动 5我的已结束活动码活动
 function Server:getactivitylist(status,pageno)
     local params = {}
-    params={
+    params={ 
             status=status ,
             pageno=pageno
         }
@@ -19,7 +19,7 @@ end
 
 
 function Server:getactivitylist_callback()
-       -- dump(self.data)
+        dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
@@ -31,11 +31,16 @@ end
 
 
 --3.5.2 获取指定活动详情  activitieid	是	活动ID	String	GUID
-function Server:getactivitybyid(activityid )
+function Server:getactivitybyid(activityid,cycle)
     local params = {}
     params={
             activityid=activityid
+
         }
+    self.cycle=cycle
+    if cycle  ~= 0 then
+        params.cycle=cycle
+    end
     self:request_http("getactivitybyid" , params ); 
 end
 
@@ -47,7 +52,10 @@ function Server:getactivitybyid_callback()
         return
     end
      LocalData:Instance():set_getactivitybyid(self.data)--保存数据
-     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE)
+     if self.cycle  == 0 then
+          NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE)
+     end
+    
 end
 
 

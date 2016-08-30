@@ -25,7 +25,7 @@ function SurpriseScene:ctor()
       	self:update(dt)
       end)
       self.tablecout=1
-
+      Server:Instance():getconsignee({functionparams=""})
       -- local pinle_loclation=cc.PinLe_platform:Instance()
       --   local city=pinle_loclation:getCity()
       --   dump(city)
@@ -246,7 +246,22 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
         
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)
-            cell:setTag(i)
+            cell:setTag(i) 
+            --prizewinning   无为没有中奖
+            local own_win=cell:getChildByTag(307)   --自己是否中奖
+            own_win:setVisible(false)
+            own_win:setTag(i)
+            if sup_data[i]["prizewinning"] then
+               own_win:setVisible(true)
+            end
+            own_win:addTouchEventListener((function(sender, eventType  )
+                      if eventType ~= ccui.TouchEventType.ended then
+                           return
+                     end
+                     print("我中奖了")
+                     self:fun_theirwin(sup_data[sender:getTag()]["gsname"])
+            end))
+
             local activity_Panel=cell:getChildByTag(36)
             cell:addTouchEventListener(onImageViewClicked)
             activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
@@ -332,6 +347,80 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           end
          
           self.tablecout=self.sup_data_num
+end
+--  自己获奖名单
+function SurpriseScene:fun_theirwin( _text)
+      self.theirwin = cc.CSLoader:createNode("Theirwin.csb")
+      self:addChild(self.theirwin)
+
+      local theirwin_name=self.theirwin:getChildByTag(312)--获奖名称
+      theirwin_name:setString("恭喜你获得一个" .. _text)
+      local _getconsignee = LocalData:Instance():get_getconsignee()
+      -- --收货人
+      -- local name=self.theirwin:getChildByTag(345)
+      -- self:fun_EditBox(280,40,name,_getconsignee["name"],13)
+      --   --手机号
+      -- local phone=self.theirwin:getChildByTag(346)
+      -- self:fun_EditBox(280,40,phone,_getconsignee["phone"],11)
+      --   --所在地区
+      -- local region=self.theirwin:getChildByTag(347)
+      -- self:fun_EditBox(280,40,region,_getconsignee["provincename"]  ..  _getconsignee["cityname"] ,14)
+      --   --详细地址
+      -- local address=self.theirwin:getChildByTag(348)
+      -- self:fun_EditBox(280,100,address,_getconsignee["address"],30)
+
+       --收货人
+      local name=self.theirwin:getChildByTag(350)
+      name:setString(_getconsignee["name"])
+        --手机号
+      local phone=self.theirwin:getChildByTag(351)
+      phone:setString(_getconsignee["phone"])
+        --所在地区
+      local region=self.theirwin:getChildByTag(352)
+      region:setString(_getconsignee["provincename"]  ..  _getconsignee["cityname"])
+        --详细地址
+      local address=self.theirwin:getChildByTag(353)
+      address:setString(_getconsignee["address"])
+
+
+      local back_bt= self.theirwin:getChildByTag(311)--返回
+      back_bt:addTouchEventListener((function(sender, eventType)
+              if eventType ~= ccui.TouchEventType.ended then
+                         return
+              end
+              if self.theirwin then
+                 self.theirwin:removeFromParent()
+              end
+                   
+      end))
+
+      local determine_bt= self.theirwin:getChildByTag(349)--确定
+      determine_bt:addTouchEventListener((function(sender, eventType)
+                if eventType ~= ccui.TouchEventType.ended then
+                           return
+                end
+
+                 if self.theirwin then
+                     self.theirwin:removeFromParent()
+                end
+  
+      end))
+
+end
+--EditBox  封装
+function SurpriseScene:fun_EditBox( width ,height,_object,_content,length)
+       local res = " "
+       local _theirwin = ccui.EditBox:create(cc.size(width,height),res)
+        _theirwin:setFontName("Arial")
+       self.theirwin:addChild(_theirwin)
+       _theirwin:setPosition(cc.p(_object:getPositionX(),_object:getPositionY()))--( cc.p(130,438 ))  
+       _theirwin:setText(_content)
+       _theirwin:setAnchorPoint(0.5,0.5)  
+       _theirwin:setMaxLength(length)
+       _theirwin:setFontSize(22)
+       return _theirwin:getText()
+
+  
 end
 --初始化获奖名单
 function SurpriseScene:_winners( )

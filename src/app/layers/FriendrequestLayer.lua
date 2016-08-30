@@ -42,7 +42,13 @@ function FriendrequestLayer:init(  )
         self.friendlist_num=LocalData:Instance():get_reward_setting_list()  
 
         local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
-        friend_num:setString(tostring(self.friendlist_num["friendcount"]) .. "人")
+        friend_num:setVisible(false)
+        local labelAtlas1 = ccui.TextAtlas:create()
+         labelAtlas1:setPosition(cc.p(friend_num:getPositionX(),friend_num:getPositionY()))  
+         labelAtlas1:setProperty(tostring(self.friendlist_num["friendcount"]), "png/cou.png", 26, 35, "0")
+         self.Friendrequest:addChild(labelAtlas1) 
+
+        --friend_num:setString(tostring(self.friendlist_num["friendcount"]) .. "人")
 
        
        local _list=self.Friendrequest:getChildByTag(1291):getChildByTag(1292)
@@ -153,7 +159,7 @@ function FriendrequestLayer:pop_up(  )
        local _invitecodeNum=self.m_feedback:getChildByTag(236) -- 输入邀请码
        _invitecodeNum:setVisible(false)
        _invitecodeNum:setTouchEnabled(false)
-       local res = "res/png/DLkuang.png"
+       local res = " "
        local width = 350
        local height = 50
       
@@ -163,11 +169,11 @@ function FriendrequestLayer:pop_up(  )
 
                self.invitecode_num = cc.ui.UILabel.new({text = tostring(friendlist_code["invitecode"]),
                         size = 28,
-                        align = TEXT_ALIGN_CENTER,
+                        --align = TEXT_ALIGN_CENTER,
                         font = "Arial",
                         color = cc.c4b(255,241,203),
                         })
-         -- self.invitecode_num:setAnchorPoint(0.5,0.5)
+          self.invitecode_num:setAnchorPoint(1,0.5)
 
          self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))
          self.invitecode_num:addTo(self.m_feedback,100)
