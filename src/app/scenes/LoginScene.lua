@@ -10,7 +10,7 @@ local FloatingLayerEx = require("app.layers.FloatingLayer")
 
 
 function LoginScene:ctor()
-   self.floating_layer = FloatingLayerEx.new()
+   self.floating_layer = require("app.layers.FloatingLayer").new()
    --self.floating_layer:addTo(self,100)
    self:addChild(self.floating_layer, 100)
 
@@ -761,6 +761,24 @@ end
 function LoginScene:getVersionInfo()
     local up_date=LocalData:Instance():get_version_date()
     dump(up_date)
+
+    --检测是否需要下载新版本
+
+    if tonumber(up_date["downloadIsused"])==1 then
+        if tonumber(up_date["downloadupdate"])==1 then
+              self.floating_layer:showFloat("发现新版本请更新",function (sender, eventType)
+                                 if eventType==1 then
+                                    device.openURL(up_date["downloadurl"])
+                                    -- device.openURL("http://www.allchina.cn/news/xinwenAD_post_90987.html")
+                                  else
+                                     cc.Director:getInstance():endToLua()   --退出游戏
+                                 end
+                            end)
+            return
+        end
+    end
+
+
     if tonumber(up_date["Isused"])~=1 then
       
       self.masterURL=up_date["masterURL"]

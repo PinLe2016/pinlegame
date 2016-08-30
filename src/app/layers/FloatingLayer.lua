@@ -56,7 +56,7 @@ function FloatingLayer:touch_callback( sender, eventType )
     local tag=sender:getTag()
     if tag==43 then --确定
             if self.call then
-              self.call(self)
+              self.call(self,1)
               -- return
             end
             if tostring(LocalData:Instance():get_user_time()) == "1" then
@@ -80,6 +80,10 @@ function FloatingLayer:touch_callback( sender, eventType )
             
 
     elseif tag==42 then --返回
+            if self.call then
+              self.call(self,2)
+              -- return
+            end
              if  self.dialog then
                  self.dialog:removeFromParent()
              end
