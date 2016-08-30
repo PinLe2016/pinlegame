@@ -24,27 +24,6 @@ function MainInterfaceScene:ctor()
        self:fun_init()
        self:listener_home() --注册安卓返回键
 
-
-         self.labelAtlas1 = ccui.TextAtlas:create()
-         self.labelAtlas1:setPosition(cc.p(300,400))  
-         self:addChild(self.labelAtlas1) 
-         self.labelAtlas1:setProperty(0, "png/cou.png", 26, 35, "0")
-
-        --  for i=1,9 do
-        --      if i%2==0 then
-        --      self.labelAtlas1:setString(tostring(i*10))
-        --      self.labelAtlas1:setString(tostring(800000000*i))
-        --   else
-        --      self.labelAtlas1:setString(tostring(i*10))
-           
-        --   end
-         
-        -- end
-
-        
-
-
-
 end
 function MainInterfaceScene:fun_init( )
 

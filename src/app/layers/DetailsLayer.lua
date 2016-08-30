@@ -136,31 +136,23 @@ function DetailsLayer:_btCallback(sender, eventType)
               end
             self.curr_bright:setBright(true)
             sender:setBright(false)
-	if tag==810 then 
-	      self:is_visible(  )
-	      local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(803)
-	      _text1:setVisible(true)
+            local _text1=""
+	if tag==810 then   
+		  _text1=self.Ruledescription:getChildByTag(802):getChildByTag(803)
 	elseif tag==811 then
-		 self:is_visible(  )
-		 local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(804)
-	             _text1:setVisible(true)
+		  _text1=self.Ruledescription:getChildByTag(802):getChildByTag(804) 
 	elseif tag==812 then
-		self:is_visible(  )
-		 local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(805)
-	            _text1:setVisible(true)
+		  _text1=self.Ruledescription:getChildByTag(802):getChildByTag(805)
 	elseif tag==813 then
-		self:is_visible(  )
-		 local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(806)
-	             _text1:setVisible(true)
+		  _text1=self.Ruledescription:getChildByTag(802):getChildByTag(806)
 	elseif tag==814 then
-		self:is_visible(  )
-		 local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(807)
-	            _text1:setVisible(true)
+		  _text1=self.Ruledescription:getChildByTag(802):getChildByTag(807)
 	elseif tag==815 then
-		self:is_visible(  )
-	            local _text1=self.Ruledescription:getChildByTag(802):getChildByTag(808)
-	            _text1:setVisible(true)
+	             _text1=self.Ruledescription:getChildByTag(802):getChildByTag(808)
 	end
+	self:is_visible(  )
+	_text1:setVisible(true)
+	--_text1:setFontName("png/chuti.ttf")
 	self.curr_bright=sender
 end
 function DetailsLayer:is_visible(  )
