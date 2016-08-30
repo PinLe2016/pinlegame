@@ -252,9 +252,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
               end
       elseif tag==266 then  --注销
 
-        self.floating_layer:showFloat("您确定要退出登录？",function ()
-                                  LocalData:Instance():set_user_data(nil)
-                                  Util:scene_control("LoginScene")
+        self.floating_layer:showFloat("您确定要退出登录？",function (sender, eventType)
+                                  if eventType==1 then
+                                    LocalData:Instance():set_user_data(nil)
+                                    Util:scene_control("LoginScene")
+                                  end
                             end)
            
 	end
