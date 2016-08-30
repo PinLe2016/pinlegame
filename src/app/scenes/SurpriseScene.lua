@@ -247,20 +247,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)
             cell:setTag(i) 
-            --prizewinning   无为没有中奖
-            local own_win=cell:getChildByTag(307)   --自己是否中奖
-            own_win:setVisible(false)
-            own_win:setTag(i)
-            if sup_data[i]["prizewinning"] then
-               own_win:setVisible(true)
-            end
-            own_win:addTouchEventListener((function(sender, eventType  )
-                      if eventType ~= ccui.TouchEventType.ended then
-                           return
-                     end
-                     print("我中奖了")
-                     self:fun_theirwin(sup_data[sender:getTag()]["gsname"])
-            end))
+
 
             local activity_Panel=cell:getChildByTag(36)
             cell:addTouchEventListener(onImageViewClicked)
@@ -276,6 +263,25 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                 local activity_acttie=cell:getChildByTag(37)
              activity_acttie:setString("距离活动开始还有:")
               end
+
+                          --prizewinning   无为没有中奖
+            local own_win=cell:getChildByName("Button_8")   --自己是否中奖
+            if   own_win:isVisible() then
+              own_win:setVisible(false)
+            end
+            
+            own_win:setTag(i)
+            if sup_data[i]["prizewinning"] then
+               own_win:setVisible(true)
+            end
+            own_win:addTouchEventListener((function(sender, eventType  )
+                      if eventType ~= ccui.TouchEventType.ended then
+                           return
+                     end
+                     print("我中奖了")
+                     self:fun_theirwin(sup_data[sender:getTag()]["gsname"])
+            end))
+
             
 
             local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])

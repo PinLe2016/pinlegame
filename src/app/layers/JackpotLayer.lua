@@ -278,6 +278,7 @@ function JackpotLayer:fun_storebrowser(  )
                 end
               if self.Storebrowser then
                 self.Storebrowser:removeFromParent()
+                self:goldact()
               end
             end)
 
@@ -289,10 +290,25 @@ function JackpotLayer:fun_storebrowser(  )
               webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
               webview:reload()
               webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
+end
+function JackpotLayer:goldact(  )
+            
+            self._laohujigoldact = cc.CSLoader:createNode("laohujigoldact.csb")
+            self:addChild(self._laohujigoldact)
+            local laohujigoldaction = cc.CSLoader:createTimeline("laohujigoldact.csb")
+            self._laohujigoldact:runAction(laohujigoldaction)
+            laohujigoldaction:setTimeSpeed(0.5)
+            laohujigoldaction:gotoFrameAndPlay(0,50, false)
 
 
 
-
+            local function stopAction()
+                 if self._laohujigoldact then
+                    self._laohujigoldact:removeFromParent()
+                 end
+           end
+          local callfunc = cc.CallFunc:create(stopAction)
+         self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
 
 end
 function JackpotLayer:information( )

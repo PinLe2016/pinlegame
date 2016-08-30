@@ -428,8 +428,8 @@ function PerInformationLayer:perinformation_init(  )
         local height = 50
         --登陆
         self._Pname = ccui.EditBox:create(cc.size(width,height),res)
-        self._Pname:setPlaceholderFontColor(cc.c3b(212, 100, 100))
-        self._Pname:setFontColor(cc.c3b(212, 141, 70))
+        self._Pname:setPlaceholderFontColor(cc.c3b(210, 150, 100))
+        self._Pname:setFontColor(cc.c3b(200, 130, 80))
         self.Perinformation:addChild(self._Pname)
         self._Pname:setVisible(true)
         self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  

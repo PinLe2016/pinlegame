@@ -282,10 +282,6 @@ function MainInterfaceScene:fun_storebrowser(  )
               webview:reload()
               webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
 
-
-
-
-
 end
 
 
