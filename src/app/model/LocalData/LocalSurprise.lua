@@ -99,6 +99,15 @@ function LocalData:get_isign()
 	local number=cc.UserDefault:getInstance():getStringForKey("music",1)
 	return number or nil
 end
+--记录签到
+function LocalData:set_sign(sign)
+	cc.UserDefault:getInstance():setStringForKey("sign" ,sign)
+end
+
+function LocalData:get_sign()
+	local number=cc.UserDefault:getInstance():getStringForKey("sign",100)
+	return number or nil
+end
 
 --邮件地址
 function LocalData:set_getconsignee(functionparams)

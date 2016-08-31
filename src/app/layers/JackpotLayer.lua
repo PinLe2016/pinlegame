@@ -311,13 +311,19 @@ function JackpotLayer:goldact(  )
          self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
 
 end
+
 function JackpotLayer:information( )
              local  list_table=LocalData:Instance():get_getgoldspoolbyid()
              if not list_table  or  not self.JackpotScene then
                return
              end
              local title=self.JackpotScene:getChildByTag(138)  --标题
-             title:setString(tostring(list_table["title"]))
+             title:setString(tostring(list_table["title"])) 
+             if title:getStringLength()==5  or   title:getStringLength()==6   then
+               title:setFontSize(40)
+            elseif  title:getStringLength()>6   then
+              title:setFontSize(30)
+             end
 
              local gold=self.JackpotScene:getChildByTag(140)  --剩余金币
              gold:setString(list_table["remaingolds"])

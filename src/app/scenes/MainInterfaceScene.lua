@@ -445,14 +445,13 @@ function MainInterfaceScene:init_checkin(  )
             	end
             end
 
-            --self.checkinlayer:setVisible(true)
-            --  if tonumber(days[#days]) ==tonumber(LocalData:Instance():get_isign()) then
-            --     -- Server:Instance():prompt("今天您已经签到，请改天再签")
-            --     self.check_button:setTouchEnabled(false)
-            -- else
-            --    self.check_button:setTouchEnabled(true)
-            -- end
-            -- LocalData:Instance():set_isign(days[#days])
+             if tonumber(#days) ==tonumber(LocalData:Instance():get_sign()) then
+                self.check_button:setVisible(false)
+                return
+            else
+               self.check_button:setVisible(true)
+            end
+            LocalData:Instance():set_sign(#days)
 end
 function MainInterfaceScene:onEnter()
   --audio.playMusic(G_SOUND["ACTIVITY"],true)

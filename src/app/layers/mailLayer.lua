@@ -117,18 +117,7 @@ function mailLayer:fun_emailcontentlayer( )
 		            end
 			self.emailcontentlayer:removeFromParent()
                         end)
-            local receive_bt=self.emailcontentlayer:getChildByTag(66)--领取
-            receive_bt:addTouchEventListener(function(sender, eventType  )
-                                    if eventType ~= ccui.TouchEventType.ended then
-		                return
-		            end
-		            local affichedetail=LocalData:Instance():get_getaffichedetail()
-		            if tonumber(affichedetail["rewardgolds"])  <= 0  then
-		            	Server:Instance():prompt("没有可领取的金币")
-		            	return
-		            end
-			Server:Instance():getaffichereward(affichedetail["id"])
-                        end)
+
             local title_text=self.emailcontentlayer:getChildByTag(63)--标题
             title_text:setString(tostring(affichedetail["title"]))
             local time_text=self.emailcontentlayer:getChildByTag(65)--时间
@@ -137,6 +126,30 @@ function mailLayer:fun_emailcontentlayer( )
             self.rewardgolds:setString("X" ..  tostring(affichedetail["rewardgolds"]))
             local _text=self.emailcontentlayer:getChildByTag(71):getChildByTag(72)--内容
             _text:setString(tostring(affichedetail["content"]))
+
+
+            local receive_bt=self.emailcontentlayer:getChildByTag(66)--领取
+            local receive_bt1=self.emailcontentlayer:getChildByTag(67)--领取
+            if tonumber(affichedetail["rewardgolds"])  <= 0 then
+               receive_bt:setVisible(false)
+               receive_bt1:setVisible(false)
+            else
+               receive_bt:setVisible(true)
+               receive_bt1:setVisible(true)
+            end
+            receive_bt:addTouchEventListener(function(sender, eventType  )
+                        if eventType ~= ccui.TouchEventType.ended then
+                      return
+                end
+                local affichedetail=LocalData:Instance():get_getaffichedetail()
+                if tonumber(affichedetail["rewardgolds"])  <= 0  then
+                  Server:Instance():prompt("没有可领取的金币")
+                  return
+                end
+             Server:Instance():getaffichereward(affichedetail["id"])
+                        end)
+
+
 
 
 end
