@@ -174,7 +174,7 @@ end
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
         if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
-              Server:Instance():prompt("验证码错误")
+              Server:Instance():promptbox_box_buffer("验证码错误")
              return    
         end
         if self._scode then
@@ -259,10 +259,9 @@ function LoginScene:landing_init()
 local function go_btCallback(sender, eventType)
 
         if eventType == ccui.TouchEventType.ended then
-            
             if  self.Dphone_text:getText() == "" then
-                Server:Instance():prompt("填写的手机号不能为空哦！")
-               return
+                Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
+                return
             end
             self._gobt:setTouchEnabled(false)
            Server:Instance():login(self.Dphone_text:getText(),self.Dpassword_text :getText())
@@ -278,8 +277,7 @@ local function go_btCallback(sender, eventType)
     end
 
     local function registered_btCallback(sender, eventType)
-   
-    
+
         if eventType == ccui.TouchEventType.ended then
            print("注册")
             self.registered = cc.CSLoader:createNode("registered.csb");
@@ -377,12 +375,6 @@ function LoginScene:_passwordLayer( )
             self._yanzhengma:setAnchorPoint(0,0.5)  
             self._yanzhengma:setMaxLength(6)
 
-            
-
-
-
-
-
 end
 function LoginScene:touch_Callback( sender, eventType  )
               if eventType ~= ccui.TouchEventType.ended then
@@ -422,7 +414,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                    print(" 长度 ",string.len(self._mobilephone))
 
                    if string.len(self._mobilephone)~=11 then
-                       Server:Instance():prompt("填写手机号码错误")
+                       Server:Instance():promptbox_box_buffer("填写手机号码错误")
                        return
                    end
                    sender:setTouchEnabled(false)
@@ -436,12 +428,12 @@ function LoginScene:_resetpasswordLayer(  )
 
             self._mobilephone=self.Wphone_text:getText()
             if tostring(self._yanzhengma:getText())=="" then
-                Server:Instance():prompt("验证码不能为空,请重新输入")
+                Server:Instance():promptbox_box_buffer("验证码不能为空,请重新输入")
                 return
             end
 
             if tostring(self._yanzhengma:getText())  ~= tostring(self.p_random) then
-              Server:Instance():prompt("验证码错误")
+              Server:Instance():promptbox_box_buffer("验证码错误")
               return    
            end
             
@@ -603,9 +595,6 @@ end
 function LoginScene:promptbox_buffer(prompt_text)
        self.floating_layer:prompt_box(prompt_text) 
 end
-
-
-
 
 function LoginScene:updateLayer()
 
