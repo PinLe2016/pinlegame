@@ -206,7 +206,7 @@ end
 function activitycodeLayer:act_list()
 	
           self.list_table=LocalData:Instance():get_getactivitylist()
-          dump(self.list_table)
+          -- dump(self.list_table)
           if  self.activity_ListView then
             self.activity_ListView:removeAllItems() 
           end
@@ -317,7 +317,7 @@ function activitycodeLayer:act_list()
           end
 
           if tonumber(self.tablecout)~=0 then
-            dump(self.tablecout)
+            -- dump(self.tablecout)
              self.activity_ListView:jumpToPercentVertical(120)
            else
              self.activity_ListView:jumpToPercentVertical(0)

@@ -330,11 +330,11 @@ function PerInformationLayer:save_mail(cath)
     local province_id=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["id"]--所选省份ID
     local city_id=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["id"]--所选城市ID
 
-     dump(province_id)
-    dump(city_id)
-     dump(province)
-     dump(city)
-     dump(conty)
+    --  dump(province_id)
+    -- dump(city_id)
+    --  dump(province)
+    --  dump(city)
+    --  dump(conty)
 
     if cath==1 then
         --服务器保存收货地址

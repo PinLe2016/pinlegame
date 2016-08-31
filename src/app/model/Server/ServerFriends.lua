@@ -22,7 +22,7 @@ end
 
 
 function Server:setfriend_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("好友添加/删除/通过验证:" .. self.data.err_msg)
         return

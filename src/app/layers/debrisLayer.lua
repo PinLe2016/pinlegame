@@ -163,7 +163,7 @@ function debrisLayer:touch_event_move(event,clipnode)
 end
 function debrisLayer:sort_sure()
     local po =self._size
-    dump(po)
+    -- dump(po)
     local pos_x, pos_y = self.point.x,self.point.y
     local dex = 1
     for i=1,self.row do --
@@ -176,9 +176,9 @@ function debrisLayer:sort_sure()
 end
 function debrisLayer:touchEnd(event,clipnode,pos)
        
-        dump(clipnode:getPosition())
+        -- dump(clipnode:getPosition())
         clipnode:setLocalZOrder(3)
-        dump(tonumber(clipnode:getTag()))
+        -- dump(tonumber(clipnode:getTag()))
         
     for i=1,#self.fragment_table do
         local clipnode_1=self.fragment_table[i]

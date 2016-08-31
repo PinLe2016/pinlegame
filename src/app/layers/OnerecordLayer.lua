@@ -37,7 +37,7 @@ function OnerecordLayer:Onerecord_init(  )
      local _ble={"月","周","天","天"}
 	self.rank_list:removeAllItems()
 	self.list_table=LocalData:Instance():get_getactivitypointsdetail()
-  dump(self.list_table)
+  -- dump(self.list_table)
             local  One_data=self.list_table["mypointslist"]
             if next(One_data) ==nil then
               return

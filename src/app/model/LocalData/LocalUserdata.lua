@@ -14,7 +14,7 @@ function LocalData:get_userdata()
 end
 
 function LocalData:set_user_head(userdata)
-	dump(userdata)
+	-- dump(userdata)
 	cc.UserDefault:getInstance():setStringForKey("user_head" ,userdata)
 end
 

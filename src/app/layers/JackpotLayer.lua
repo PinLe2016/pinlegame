@@ -19,7 +19,7 @@ function JackpotLayer:ctor(params)
         self.floating_layer = FloatingLayerEx.new()
       self.floating_layer:addTo(self,100000)
 
-        dump(params)
+        -- dump(params)
         if params.image_name then
           self.image_name=params.image_name
         end
@@ -123,7 +123,7 @@ function JackpotLayer:init(  )
 
        
         local  list_table=LocalData:Instance():get_getgoldspoollist()
-        dump(list_table)
+        -- dump(list_table)
         --以下三个禁
         self._dian1=self.JackpotScene:getChildByTag(810)  
         self._dian2=self.JackpotScene:getChildByTag(811)
@@ -267,7 +267,7 @@ function JackpotLayer:fun_storebrowser(  )
       if tostring(self.addetailurl)   ==   tostring(1)   then
         return
       end
-        dump(self.addetailurl)
+        -- dump(self.addetailurl)
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
       self:addChild(self.Storebrowser)
       local back=self.Storebrowser:getChildByTag(2122)
@@ -383,7 +383,7 @@ function JackpotLayer:information( )
              self.getcardamount  =  tonumber(list_table["getcardamount"])   --初始化 还可以得到几张参与卷
              print(22222222222 )
              local _table=LocalData:Instance():get_setgamerecord()
-             dump(_table)
+             -- dump(_table)
              local goldspool=_table["goldspool"]
              if goldspool  then
                self:vouchers(  ) --真正的刷新
@@ -396,7 +396,7 @@ end
 --  拼完图刷新数据哦 
 function JackpotLayer:vouchers(  )
          local _table=LocalData:Instance():get_setgamerecord()--保存数据
-         dump(_table)
+         -- dump(_table)
          local goldspool=_table["goldspool"]    
          self.be_num:setString(goldspool["playcardamount"])  --参与卷  
          self.playcardamount=tonumber(goldspool["playcardamount"])  
@@ -686,7 +686,7 @@ function JackpotLayer:init_pic(  )
 
          --以下是测试
           local  list_table=LocalData:Instance():get_getgoldspoollist()
-          dump(list_table)
+          -- dump(list_table)
           local  jac_data=list_table["goldspools"]
           for i=1,#jac_data do
               local _table={}
