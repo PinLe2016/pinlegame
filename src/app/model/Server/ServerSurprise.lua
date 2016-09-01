@@ -350,6 +350,74 @@ end
 
 
 
+---------------任务相关接口-------------------
+--3.8.1 获取任务列表接口（命令：gettasklist）
+
+function Server:gettasklist()
+    local params = {}
+    
+    self:request_http("gettasklist" , params )
+end
+
+
+function Server:gettasklist_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("任务列表获取失败" .. self.data.err_msg)
+        return
+    end
+      LocalData:Instance():set_gettasklist(self.data)--保存数据
+      -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.EMAILADDRESS)
+end
+
+
+--3.8.2 任务目标记录接口（命令：settasktarget
+--targetid    是   任务目标编号id    Guid    GUID
+--goal  否   积分或者金币数量    Int 只用在奖池和活动
+--objectid  否   奖池或者活动编号ID      
+
+function Server:settasktarget(targetid,goal,objectid)
+    local params = {}
+    params={
+            targetid=targetid,
+            goal=goal,
+            objectid=objectid,
+        }
+    self:request_http("settasktarget" , params ); 
+end
+
+
+function Server:settasktarget_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("上传任务失败:" .. self.data.err_msg)
+        return
+    end
+      -- LocalData:Instance():set_settasktarget(self.data)--保存数据
+      -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.EMAILADDRESS)
+end
+
+--3.8.3 领取完成任务奖励接口（命令：settasktargetrecord）
+function Server:settasktargetrecord(targetid)
+    local params = {}
+    params={
+            targetid=targetid,
+        }
+    self:request_http("settasktargetrecord" , params ); 
+end
+
+
+function Server:settasktargetrecord_callback()
+    dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("领取任务奖励失败:" .. self.data.err_msg)
+        return
+    end
+      -- LocalData:Instance():set_settasktarget(self.data)--保存数据
+      -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.EMAILADDRESS)
+end
+
+
 
 
 

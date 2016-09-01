@@ -119,6 +119,43 @@ function LocalData:get_getconsignee()
 end
 
 
+---任务相关
+
+function LocalData:set_gettasklist(gettasklist)
+	self.gettasklist=gettasklist
+end
+
+function LocalData:get_gettasklist()
+	return self.gettasklist or nil
+end
+
+-- function LocalData:set_gettasklist(gettasklist)
+-- 	self.gettasklist=gettasklist
+-- end
+
+-- function LocalData:get_gettasklist()
+-- 	return self.gettasklist or nil
+-- end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
