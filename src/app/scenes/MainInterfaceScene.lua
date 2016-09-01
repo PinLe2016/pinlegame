@@ -17,10 +17,6 @@ function MainInterfaceScene:ctor()
         local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
         LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 
-       print("··555555  ·" ,LocalData:Instance():get_user_head(),"    ", Util:sub_str(userdt["imageUrl"], "/",":")) 
-      
-
-       
        self:fun_init()
        self:listener_home() --注册安卓返回键
 
@@ -189,9 +185,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==97 then
 		Util:scene_control("GoldprizeScene")
 	elseif tag==124 then   --  290
-      self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
-      self:addChild(self.checkinlayer)
-      self.checkinlayer:setVisible(true)
+      -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
+      -- self:addChild(self.checkinlayer)
+      -- self.checkinlayer:setVisible(true)
 
 	           Server:Instance():getcheckinhistory()  --签到http
       elseif tag==48 then  --设置
@@ -334,25 +330,27 @@ end
 --签到
 function MainInterfaceScene:fun_checkin( tm )
 
-  if not self.checkinlayer then
-    return
-  end
-	 -- self.checkinlayer:setVisible(false)
- 
-
-
-        if tm==2 then
-          local _sig=LocalData:Instance():get_getcheckinhistory()
-          local userdt = LocalData:Instance():get_userdata()
-          userdt["golds"]=_sig["playerinfo"]["golds"]
-          LocalData:Instance():set_userdata(userdt) --  保存数据
+      if not self.checkinlayer then
+         self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
+         self:addChild(self.checkinlayer)
+         self.checkinlayer:setVisible(true)
+      end
+      if not self.checkinlayer then
+        return
+      end
+      
+      if tm==2 then
+            local _sig=LocalData:Instance():get_getcheckinhistory()
+            local userdt = LocalData:Instance():get_userdata()
+            userdt["golds"]=_sig["playerinfo"]["golds"]
+            LocalData:Instance():set_userdata(userdt) --  保存数据
 
           --       签到增加的金币
-      self.Signinact = cc.CSLoader:createNode("Signinact.csb")
-      self.checkinlayer:addChild(self.Signinact)
-      self.Signin_act = cc.CSLoader:createTimeline("Signinact.csb")
-      self.Signinact:runAction(self.Signin_act)
-      self.Signin_act:gotoFrameAndPlay(0,80, false)
+            self.Signinact = cc.CSLoader:createNode("Signinact.csb")
+            self.checkinlayer:addChild(self.Signinact)
+            self.Signin_act = cc.CSLoader:createTimeline("Signinact.csb")
+            self.Signinact:runAction(self.Signin_act)
+            self.Signin_act:gotoFrameAndPlay(0,80, false)
 
           -- Util:scene_control("MainInterfaceScene")  --禁止
         end
@@ -372,9 +370,12 @@ function MainInterfaceScene:fun_checkin( tm )
       self.check_button=check_bt
 	check_bt:addTouchEventListener(function(sender, eventType  )
 	       if eventType ~= ccui.TouchEventType.ended then
-		return
+		     return
 	       end
-
+             if LocalData:Instance():get_tasktable() then
+               Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+             end
+             LocalData:Instance():set_tasktable(nil)--制空
 	       Server:Instance():checkin()  --发送消息
 	end)
 
@@ -385,8 +386,7 @@ function MainInterfaceScene:fun_checkin( tm )
 end
 --签到 初始化
 function MainInterfaceScene:init_checkin(  )
-
-
+     
 
 
 	local  day_bg=self.checkinlayer:getChildByTag(85)

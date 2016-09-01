@@ -99,7 +99,8 @@ G_NOTIFICATION_EVENT = {
 	DELAFFICHEBYID=							"DELAFFICHEBYID" ,--删除邮件 getaffichedetail
 	TAFFICHEDETAIL=							"TAFFICHEDETAIL"  , --领取邮件奖励 
 	FEEDBACK=							"FEEDBACK"   ,--玩家反馈  feedback 
-	TFEDBACK=							"TFEDBACK"   --   
+	TFEDBACK=							"TFEDBACK"  , --   gettasklist
+	GETTASKLIST=							"GETTASKLIST"  , --   获取任务列表
 
 
 }

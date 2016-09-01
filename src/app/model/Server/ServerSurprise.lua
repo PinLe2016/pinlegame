@@ -367,7 +367,7 @@ function Server:gettasklist_callback()
         return
     end
       LocalData:Instance():set_gettasklist(self.data)--保存数据
-      -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.EMAILADDRESS)
+       NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GETTASKLIST)
 end
 
 

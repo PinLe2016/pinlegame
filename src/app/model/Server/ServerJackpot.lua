@@ -126,6 +126,26 @@ function Server:sceneinformation()
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.BACKSUPPOR)
      
 end
+--领取金币奖池广告链接金币
+function Server:setgoldspooladurlreward(adid )
+       local _params ={}
+       _params={
+            adid =adid 
+   }
+   
+    self:request_http("setgoldspooladurlreward" , _params ); 
+end
+
+
+function Server:setgoldspooladurlreward_callback()
+      dump(self.data)
+    if self.data.err_code~=0  then
+         self:show_float_message("领取金币奖池广告链接金币:" .. self.data.err_msg)
+        return
+    end
+    
+   
+end
 
 
 

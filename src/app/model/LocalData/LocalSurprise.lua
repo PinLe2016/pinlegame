@@ -129,13 +129,13 @@ function LocalData:get_gettasklist()
 	return self.gettasklist or nil
 end
 
--- function LocalData:set_gettasklist(gettasklist)
--- 	self.gettasklist=gettasklist
--- end
+function LocalData:set_tasktable(tasktable)
+	self.tasktable=tasktable
+end
 
--- function LocalData:get_gettasklist()
--- 	return self.gettasklist or nil
--- end
+function LocalData:get_tasktable()
+	return self.tasktable or nil
+end
 
 
 
