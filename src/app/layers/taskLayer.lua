@@ -11,11 +11,6 @@ function taskLayer:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
        self.sur_pageno=1
        Server:Instance():gettasklist()
-       local _type={"Server:Instance():getcheckinhistory()","1","2"}
-        self.type_table={}
-        for i=1,#_type do
-          self.type_table[i]=_type[i]
-        end
        
 end
 function taskLayer:init(  )
@@ -72,7 +67,6 @@ function taskLayer:data_init(  )
                      gold_number:setString("X" ..  tasklist[i]["rewardamount"])
                   end
                   
-
                   local  loadingbar_text=cell:getChildByTag(198)--进度条数值
                   loadingbar_text:setString(tasklist[i]["targetgoal"]  ..  "/"   ..   tasklist[i]["progress"])
                    local loadingbar=cell:getChildByTag(199)-- 进度条
@@ -101,9 +95,20 @@ function taskLayer:touch_Callback( sender, eventType )
        local tasklist=_table["tasklist"]
        LocalData:Instance():set_tasktable(tasklist[tag]["targetid"])  --记录
        local targettype=tasklist[tag]["targettype"]  --0为签到，1为邀请好友，2为分享，3为惊喜吧，4为奖池,5为获得金币数，6为获得积分数
-	Server:Instance():getcheckinhistory()
-
-        
+       if  tonumber(targettype) == 0  then
+            Server:Instance():getcheckinhistory()
+       elseif  tonumber(targettype) == 1 then ---待定
+             local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
+            self:addChild(FriendrequestLayer.new())
+      elseif  tonumber(targettype) == 2 then  --分享
+            --  local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
+            -- self:addChild(FriendrequestLayer.new())
+      elseif  tonumber(targettype) == 3 then
+            Util:scene_control("SurpriseScene")
+      elseif  tonumber(targettype) == 4 then
+             Util:scene_control("GoldprizeScene")
+       end
+  
 
 end 
 

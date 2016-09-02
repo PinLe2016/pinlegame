@@ -17,7 +17,7 @@ function JackpotLayer:ctor(params)
 
         self.addetailurl=params.addetailurl
         self.floating_layer = FloatingLayerEx.new()
-      self.floating_layer:addTo(self,100000)
+        self.floating_layer:addTo(self,100000)
 
         -- dump(params)
         if params.image_name then
@@ -51,7 +51,7 @@ function JackpotLayer:ctor(params)
         self.roleAction = cc.CSLoader:createTimeline("JackpotScene.csb")
         self.JackpotScene:runAction(self.roleAction)
         self.roleAction:setTimeSpeed(5)
-
+        self._rewardgold=0
 
 end
 function JackpotLayer:jackgoldact( )
@@ -162,7 +162,7 @@ function JackpotLayer:init(  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                 end
-                self:fun_storebrowser()
+               self:fun_storebrowser()
                --device.openURL("http://games.pinlegame.com/x_Brand.aspx")
             end)
         
@@ -288,9 +288,16 @@ function JackpotLayer:fun_storebrowser(  )
               webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
               webview:reload()
               webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
-              local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-              local  jaclayer_data=list_table["adlist"]
-             Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
+              if self._rewardgold==0 then
+                 local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                 local  jaclayer_data=list_table["adlist"]
+                Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
+                self._rewardgold=1
+                if self.jackgoldact  then
+                  self.jackgoldact:removeFromParent()
+                end
+              end
+             
 
 end
 function JackpotLayer:goldact(  )
@@ -668,6 +675,11 @@ function JackpotLayer:act_began( )
        self.roleAction:gotoFrameAndPlay(0,75, true)--  开始水果机动画 
        self.began_bt:setTouchEnabled(false)  --目的是在消息没有返回的时候 禁止在次点击
        self.end_bt:setVisible(true)
+
+       if LocalData:Instance():get_tasktable() then
+             Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+      end
+      LocalData:Instance():set_tasktable(nil)--制空
      
          
 end
@@ -704,10 +716,6 @@ function JackpotLayer:init_pic(  )
                        Server:Instance():jackpotlayer_pic(jac_data[i]["imageurl"],_table) --下载图片
                         print("tupian11  ",tostring(Util:sub_str(jac_data[i]["imageurl"], "/",":")))
           end
-
-
-         
-
 end
 function JackpotLayer:back( sender, eventType)
             if eventType ~= ccui.TouchEventType.ended then
