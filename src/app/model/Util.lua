@@ -280,6 +280,7 @@ function Util:share()
    
    local share=cc.UM_Share:createWithShare(file,login_info["playerid"])
    share:addTo(display.getRunningScene(),1000)
+   return share
 end
 
 

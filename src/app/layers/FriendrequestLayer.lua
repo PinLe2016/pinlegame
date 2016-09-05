@@ -292,7 +292,7 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		-- self.Friendsstep:setVisible(true)
 		-- self.m_friend:setVisible(true)
     print("分享11")
-    Util:share()
+    self.share=Util:share()
 
 	elseif tag==162 then  --回馈邀请人
 		self.Friendsstep:setVisible(true)
