@@ -281,7 +281,10 @@ function SurpriseOverScene:touch_callback( sender, eventType )
               end
 
           end
-         
+           if LocalData:Instance():get_tasktable() then
+               Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+             end
+          LocalData:Instance():set_tasktable(nil)--制空
          --self.began_bt:setButtonEnabled(false)
            --w:setFocusEnabled(false)
            -- self.began_bt:setColor(cc.c3b(255, 255,   0))
