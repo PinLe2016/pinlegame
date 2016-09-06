@@ -453,6 +453,17 @@ function JackpotLayer:touch_callback( sender, eventType )
                   return
        end
       if tag==46 then --开始
+
+            local _table=LocalData:Instance():get_gettasklist()
+            local tasklist=_table["tasklist"]
+           for i=1,#tasklist  do 
+                 if  tonumber(tasklist[i]["targettype"])   ==  4   then
+                      LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+                 end
+                 
+           end
+
+
                
               self:act_began( )   
       elseif tag==44 then
@@ -474,7 +485,6 @@ function JackpotLayer:touch_callback( sender, eventType )
             self.car_num:setString(tostring(self._carnum) )
       elseif tag==155 then  --劲舞团结束  测试动画 
             self.end_bt:setTouchEnabled(false)
-
             self:fun_slowdown()
       elseif tag==47 then  --获取参与卷 
           --由于后端TNND这个字段getcardamount错误  于是乎只能毙了  

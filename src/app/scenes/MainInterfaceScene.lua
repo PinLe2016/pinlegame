@@ -19,6 +19,8 @@ function MainInterfaceScene:ctor()
 
        self:fun_init()
        self:listener_home() --注册安卓返回键
+        Server:Instance():gettasklist()   --  初始化任务
+
 
 end
 function MainInterfaceScene:fun_init( )
@@ -188,6 +190,15 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       -- self:addChild(self.checkinlayer)
       -- self.checkinlayer:setVisible(true)
+      --任务记录
+       local _table=LocalData:Instance():get_gettasklist()
+       local tasklist=_table["tasklist"]
+       for i=1,#tasklist  do 
+             if  tonumber(tasklist[i]["targettype"])   ==  0   then
+                  LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+             end
+             
+       end
 
 	           Server:Instance():getcheckinhistory()  --签到http
       elseif tag==48 then  --设置
@@ -364,6 +375,7 @@ function MainInterfaceScene:fun_checkin( tm )
 	       end
          self.checkinlayer:removeFromParent()
              self.checkinlayer=nil
+             Server:Instance():gettasklist()   --目的是刷新任务数据
 	       
 	end)
 	local check_bt=self.checkinlayer:getChildByTag(87)
@@ -445,13 +457,13 @@ function MainInterfaceScene:init_checkin(  )
             	end
             end
 
-             if tonumber(#days) ==tonumber(LocalData:Instance():get_sign()) then
+            local tm = os.date("*t")
+            if tm.day ==tonumber(os.date("%d",days[1])) then   --  获取系统时间
                 self.check_button:setVisible(false)
                 return
             else
                self.check_button:setVisible(true)
             end
-            LocalData:Instance():set_sign(#days)
 end
 function MainInterfaceScene:onEnter()
   --audio.playMusic(G_SOUND["ACTIVITY"],true)

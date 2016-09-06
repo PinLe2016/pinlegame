@@ -281,10 +281,22 @@ function SurpriseOverScene:touch_callback( sender, eventType )
               end
 
           end
-           if LocalData:Instance():get_tasktable() then
-               Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
-             end
+
+           local _table=LocalData:Instance():get_gettasklist()
+            local tasklist=_table["tasklist"]
+           for i=1,#tasklist  do 
+                 if  tonumber(tasklist[i]["targettype"])   ==  3   then
+                      LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+                 end
+                 
+           end
+
           LocalData:Instance():set_tasktable(nil)--制空
+
+
+           
+
+
          --self.began_bt:setButtonEnabled(false)
            --w:setFocusEnabled(false)
            -- self.began_bt:setColor(cc.c3b(255, 255,   0))
@@ -313,6 +325,12 @@ function SurpriseOverScene:touch_callback( sender, eventType )
              Util:stop_music("FALLMONEY")
              Util:player_music("PERSONALCHAGE",true )
 		 self:L_end(  )
+             if  LocalData:Instance():get_tasktable()    then   --  判断惊喜吧是否做完任务
+                       Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                       LocalData:Instance():set_tasktable(nil)--制空
+            end
+
+
       elseif tag==213 then  --分享
            Util:share()
            print("fenxiagn")
@@ -438,7 +456,7 @@ function SurpriseOverScene:onEnter()
                   for i=1,#self. _table do
                       self. _table[i]:startGo()
                   end
-                  dump(self.actid["act_id"])
+                
 
 
                       end)

@@ -14,12 +14,11 @@ function taskLayer:ctor()
        
 end
 function taskLayer:init(  )
+        LocalData:Instance():set_sign(2)
+        self.taskLayer = cc.CSLoader:createNode("taskLayer.csb");
+        self:addChild(self.taskLayer)
 
-
-	self.taskLayer = cc.CSLoader:createNode("taskLayer.csb");
-    	self:addChild(self.taskLayer)
-    
-            local back_bt=self.taskLayer:getChildByTag(141)  --返回
+         local back_bt=self.taskLayer:getChildByTag(141)  --返回
             back_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
@@ -32,7 +31,7 @@ function taskLayer:init(  )
                         --Server:Instance():getaffichelist(self.sur_pageno)   --下拉刷新功能
                                  return
                       end
-             end))
+             end))          
 
             self:data_init()  --测试
 end
@@ -53,7 +52,17 @@ function taskLayer:data_init(  )
 
                   local  task_but=cell:getChildByTag(178)--按钮
                   task_but:setTag(i)
-                  task_but:setTitleText(tasklist[i]["title"])
+                   if  tonumber(tasklist[i]["status"]) == 1   then   --1未完成  2已完成未领取  3已完成所有任务且已领取
+                      task_but:setTitleText(tasklist[i]["title"])
+                  elseif tonumber(tasklist[i]["status"]) == 2 then
+                      task_but:setTitleText("领 取")
+                  elseif tonumber(tasklist[i]["status"]) == 3 then
+                      task_but:setTitleText("已领取")
+                      task_but:setColor(cc.c3b(100,100,100))
+                      task_but:setTouchEnabled(false)
+                  end
+
+                  
                   task_but:addTouchEventListener(function(sender, eventType  )
 
                                     self:touch_Callback(sender, eventType)
@@ -63,14 +72,15 @@ function taskLayer:data_init(  )
                   title:setString(tasklist[i]["description"])
 
                   local  gold_number=cell:getChildByTag(195)--获得金币   后续的改
+
                   if tasklist[i]["rewardtype"] == 0  then  --0为金币，1为积分，2为道具，3为商品
                      gold_number:setString("X" ..  tasklist[i]["rewardamount"])
                   end
                   
                   local  loadingbar_text=cell:getChildByTag(198)--进度条数值
-                  loadingbar_text:setString(tasklist[i]["targetgoal"]  ..  "/"   ..   tasklist[i]["progress"])
+                  loadingbar_text:setString(tasklist[i]["progress"]  ..  "/"   ..   tasklist[i]["targetgoal"])  
                    local loadingbar=cell:getChildByTag(199)-- 进度条
-      	       local jindu= tonumber(tasklist[i]["targetgoal"]) /  tonumber(tasklist[i]["progress"])  *100
+      	       local jindu= tonumber(tasklist[i]["progress"]) /  tonumber(tasklist[i]["targetgoal"])  *100
       	       loadingbar:setPercent(jindu)
             end
 end
@@ -82,6 +92,8 @@ function taskLayer:touch_btCallback( sender, eventType )
            if tag==141 then  --返回
            	  if self.taskLayer then
            		self:removeFromParent()
+              Util:scene_control("MainInterfaceScene")
+              LocalData:Instance():set_sign(1)
            	 end
            end  
 end
@@ -95,6 +107,10 @@ function taskLayer:touch_Callback( sender, eventType )
        local tasklist=_table["tasklist"]
        LocalData:Instance():set_tasktable(tasklist[tag]["targetid"])  --记录
        local targettype=tasklist[tag]["targettype"]  --0为签到，1为邀请好友，2为分享，3为惊喜吧，4为奖池,5为获得金币数，6为获得积分数
+       if tonumber(tasklist[tag]["status"]) == 2 then
+               Server:Instance():settasktargetrecord(tasklist[tag]["targetid"])  --领取奖励
+               return
+       end
        if  tonumber(targettype) == 0  then
             Server:Instance():getcheckinhistory()
        elseif  tonumber(targettype) == 1 then ---待定
@@ -104,9 +120,16 @@ function taskLayer:touch_Callback( sender, eventType )
             --  local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
             -- self:addChild(FriendrequestLayer.new())
       elseif  tonumber(targettype) == 3 then
-            Util:scene_control("SurpriseScene")
+            -- Util:scene_control("SurpriseScene")
+             local scene=SurpriseScene.new()
+            cc.Director:getInstance():pushScene(scene)
+
       elseif  tonumber(targettype) == 4 then
-             Util:scene_control("GoldprizeScene")
+             --Util:scene_control("GoldprizeScene")
+             local GoldprizeScene = require("app.scenes.GoldprizeScene")--主界面
+              local scene=GoldprizeScene.new()
+            cc.Director:getInstance():pushScene(scene)
+
        end
   
 
@@ -119,11 +142,17 @@ function taskLayer:onEnter()
                        function()
                                   self:init()
                       end)
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.TASKTARGETRECORD, self,
+                       function()
+                                  LocalData:Instance():set_gettasklist(nil)
+                                  Server:Instance():gettasklist()
+                      end)
   
 end
 
 function taskLayer:onExit()
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.TASKTARGETRECORD, self)
      
      	
 end

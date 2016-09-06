@@ -414,7 +414,7 @@ function Server:settasktargetrecord_callback()
         return
     end
       -- LocalData:Instance():set_settasktarget(self.data)--保存数据
-      -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.EMAILADDRESS)
+       NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TASKTARGETRECORD)
 end
 
 

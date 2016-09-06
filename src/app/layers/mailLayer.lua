@@ -27,6 +27,7 @@ function mailLayer:init(  )
 		                return
 		            end
 			self:removeFromParent()
+                  Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
                         end)
             local delete_bt=self.mailLayer:getChildByTag(54)--删除
             delete_bt:addTouchEventListener(function(sender, eventType  )
@@ -148,9 +149,6 @@ function mailLayer:fun_emailcontentlayer( )
                 end
              Server:Instance():getaffichereward(affichedetail["id"])
                         end)
-
-
-
 
 end
 function mailLayer:onEnter()

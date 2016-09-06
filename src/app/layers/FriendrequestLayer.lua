@@ -14,6 +14,15 @@ function FriendrequestLayer:ctor()--params
       
 end
 function FriendrequestLayer:init(  )
+      
+       local _table=LocalData:Instance():get_gettasklist()
+       local tasklist=_table["tasklist"]
+       for i=1,#tasklist  do 
+             if  tonumber(tasklist[i]["targettype"])   ==  1   then
+                  LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+             end
+             
+       end
 
 
        self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
@@ -252,8 +261,18 @@ function FriendrequestLayer:touch_callback( sender, eventType )
     end
 
 	if tag==123 then --返回
-		print("fanh ")
-          Util:scene_control("MainInterfaceScene")
+
+		if self.share then
+                   if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
+                       Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                        LocalData:Instance():set_tasktable(nil)--制空
+                 end
+            end
+          if tonumber(LocalData:Instance():get_sign()) ~=  2 then
+            Util:scene_control("MainInterfaceScene")
+          end
+          
+          Server:Instance():gettasklist()
           Server:Instance():getuserinfo() -- 初始化数据
 		self:removeFromParent()
 	elseif tag==135 then
@@ -292,7 +311,7 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 		-- self.Friendsstep:setVisible(true)
 		-- self.m_friend:setVisible(true)
     print("分享11")
-    Util:share()
+    self.share=Util:share()
 
 	elseif tag==162 then  --回馈邀请人
 		self.Friendsstep:setVisible(true)

@@ -136,7 +136,14 @@ end
                        self:unscheduleUpdate()
               elseif tag==28 then
                        self:unscheduleUpdate()
-                        Util:scene_control("MainInterfaceScene")
+                        --Util:scene_control("MainInterfaceScene")
+                        if tonumber(LocalData:Instance():get_sign()) ~=  2 then
+                            Util:scene_control("MainInterfaceScene")
+                        else
+                            cc.Director:getInstance():popScene()
+                            Server:Instance():gettasklist()
+                        end
+                        
               end
              self.curr_bright=sender
   end

@@ -105,7 +105,7 @@ function LocalData:set_sign(sign)
 end
 
 function LocalData:get_sign()
-	local number=cc.UserDefault:getInstance():getStringForKey("sign",100)
+	local number=cc.UserDefault:getInstance():getStringForKey("sign",1)
 	return number or nil
 end
 

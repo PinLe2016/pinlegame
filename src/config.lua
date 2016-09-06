@@ -100,8 +100,8 @@ G_NOTIFICATION_EVENT = {
 	TAFFICHEDETAIL=							"TAFFICHEDETAIL"  , --领取邮件奖励 
 	FEEDBACK=							"FEEDBACK"   ,--玩家反馈  feedback 
 	TFEDBACK=							"TFEDBACK"  , --   gettasklist
-	GETTASKLIST=							"GETTASKLIST"  , --   获取任务列表
-
+	GETTASKLIST=							"GETTASKLIST"  , --   获取任务列表 
+	TASKTARGETRECORD=					 "TASKTARGETRECORD"  , --   领取任务列表 settasktargetrecord
 
 }
 

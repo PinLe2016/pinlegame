@@ -198,7 +198,12 @@ function GoldprizeScene:touch_callback( sender, eventType )
 	end
 	local tag=sender:getTag()
 	if tag==57 then --返回
-		 Util:scene_control("MainInterfaceScene")
+		if tonumber(LocalData:Instance():get_sign()) ~=  2 then
+                            Util:scene_control("MainInterfaceScene")
+                        else
+                            cc.Director:getInstance():popScene()
+                            Server:Instance():gettasklist()
+                        end
 	elseif tag==58 then --说明
 		 self:fun_prizepoolules()
 	elseif tag==1044 then

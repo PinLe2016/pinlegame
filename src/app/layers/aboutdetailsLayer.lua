@@ -15,6 +15,7 @@ local aboutdetailsLayer = class("aboutdetailsLayer", function()
 end)
 function aboutdetailsLayer:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
+
        self:init()
 end
 function aboutdetailsLayer:init(  )
@@ -68,9 +69,16 @@ function aboutdetailsLayer:init(  )
              self.cooperation_ListView=self.businessback_bg:getChildByTag(369)--惊喜吧列表
              self.cooperation_ListView:setVisible(false)
              self.cooperation_ListView:setItemModel(self.cooperation_ListView:getItem(0))
-   	 self.cooperation_ListView:removeAllItems()
+   	      self.cooperation_ListView:removeAllItems()
 
+             local describe_text=self.aboutdetails:getChildByTag(1293)  --返回
 
+             if  device.platform  ==  "android" then
+                     describe_text:setString("拼乐 for android  版本号v3.0")
+            elseif device.platform  ==  "mac"  or    device.platform  ==  "ios" then
+                     describe_text:setString("拼乐 for iphone  版本号v3.0")
+             end
+             
 
              local back_bt=self.aboutdetails:getChildByTag(1290)  --返回
              back_bt:addTouchEventListener((function(sender, eventType  )
