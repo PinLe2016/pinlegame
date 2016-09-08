@@ -276,30 +276,31 @@ function JackpotLayer:fun_storebrowser(  )
                 end
               if self.Storebrowser then
                 self.Storebrowser:removeFromParent()
-                if self._rewardgold==0 then
+                print("哈哈 ",self._rewardgold)
+                if self._rewardgold==1 then
                    self:goldact()
                 end
                 
               end
             end)
 
-              local webview = cc.WebView:create()
-              self.Storebrowser:addChild(webview)
-              webview:setVisible(true)
-              webview:setScalesPageToFit(true)
-              webview:loadURL(tostring(self.addetailurl))
-              webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
-              webview:reload()
-              webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
+              -- local webview = cc.WebView:create()
+              -- self.Storebrowser:addChild(webview)
+              -- webview:setVisible(true)
+              -- webview:setScalesPageToFit(true)
+              -- webview:loadURL(tostring(self.addetailurl))
+              -- webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+              -- webview:reload()
+              -- webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
               if self._rewardgold==0 then
                  local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                  local  jaclayer_data=list_table["adlist"]
                 Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
-                self._rewardgold=1
                 if self.jackgoldact  then
                   self.jackgoldact:removeFromParent()
                 end
               end
+              self._rewardgold=self._rewardgold+1
              
 
 end

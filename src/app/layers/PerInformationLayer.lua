@@ -45,7 +45,7 @@ function PerInformationLayer:add_init(  )
             
                  
                     self.image_head1=self.showinformation:getChildByTag(1401)  --头像
-                    self._index=string.sub(haerd,-5,-5)--string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
+                      self._index=string.sub(haerd,-5,-5)--string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
                     -- dump(LocalData:Instance():get_user_head())
                     dump(tonumber(self._index))
                    
@@ -648,7 +648,14 @@ function PerInformationLayer:head( )
             head_image:loadTexture( "png/httpgame.pinlegame.comheadheadicon_" .. tostring(i) .. ".jpg")--初始化头像
             self.PageView_head:addPage(call)   --添加头像框
         end
-        self.PageView_head:scrollToPage(self._index)   --拿到需要索引的图
+
+         local userdt12 = LocalData:Instance():get_userdata()
+        local _index12=string.match(tostring(Util:sub_str(userdt12["imageUrl"], "/",":")),"%d%d")
+        if _index12==nil then
+          _index12=string.match(tostring(Util:sub_str(userdt12["imageUrl"], "/",":")),"%d")
+        end
+
+        self.PageView_head:scrollToPage(_index12)   --拿到需要索引的图
 
         local head_reduce=self.head_csb:getChildByTag(21):getChildByTag(23)  --减
         head_reduce:addTouchEventListener(function(sender, eventType  )

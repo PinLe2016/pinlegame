@@ -61,7 +61,7 @@ function taskLayer:data_init(  )
                       task_text:setString("领 取")
                   elseif tonumber(tasklist[i]["status"]) == 3 then
                       task_text:setString("已领取")
-                      tasktask_text_but:setColor(cc.c3b(100,100,100))
+                      task_but:setColor(cc.c3b(100,100,100))
                       task_but:setTouchEnabled(false)
                   end
                   print("ajfkdsaj几点上课范德萨发就",task_text:getStringLength())

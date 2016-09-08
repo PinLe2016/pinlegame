@@ -153,6 +153,10 @@ function mailLayer:fun_emailcontentlayer( )
                   return
                 end
              Server:Instance():getaffichereward(affichedetail["id"])
+              local userdt = LocalData:Instance():get_userdata()
+             userdt["golds"]=tonumber(affichedetail["rewardgolds"])
+             LocalData:Instance():set_userdata(userdt)
+                         
                         end)
 
 end

@@ -291,7 +291,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
                  
            end
 
-          LocalData:Instance():set_tasktable(nil)--制空
+         
 
 
            
@@ -328,6 +328,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
              Util:stop_music("FALLMONEY")
              Util:player_music("PERSONALCHAGE",true )
 		 self:L_end(  )
+             print("就封ID金佛山嗲  ",LocalData:Instance():get_tasktable())
              if  LocalData:Instance():get_tasktable()    then   --  判断惊喜吧是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                        LocalData:Instance():set_tasktable(nil)--制空
