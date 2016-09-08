@@ -27,6 +27,7 @@ function mailLayer:init(  )
 		                return
 		            end
 			self:removeFromParent()
+                  LocalData:Instance():set_getaffiche(nil)
                   Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
                         end)
             local delete_bt=self.mailLayer:getChildByTag(54)--删除
@@ -85,6 +86,7 @@ function mailLayer:init(  )
                   end
                   local  mail_title=cell:getChildByTag(52)--邮件标题
                   mail_title:setString(tostring(affichelist[i]["title"]))
+                 
                   local  mail_content=cell:getChildByTag(53)--邮件内容
                   mail_content:setString(tostring(affichelist[i]["createtime"]))
             end
@@ -125,13 +127,16 @@ function mailLayer:fun_emailcontentlayer( )
             time_text:setString(tostring(affichedetail["createtime"]))
             self.rewardgolds=self.emailcontentlayer:getChildByTag(55)--领取金币
             self.rewardgolds:setString("X" ..  tostring(affichedetail["rewardgolds"]))
+             self.rewardquan=self.emailcontentlayer:getChildByTag(1230)--领取juan
+            self.rewardquan:setString("X" ..  tostring(affichedetail["rewardcards"]))
+
             local _text=self.emailcontentlayer:getChildByTag(71):getChildByTag(72)--内容
             _text:setString(tostring(affichedetail["content"]))
 
 
             local receive_bt=self.emailcontentlayer:getChildByTag(66)--领取
             local receive_bt1=self.emailcontentlayer:getChildByTag(67)--领取
-            if tonumber(affichedetail["rewardgolds"])  <= 0 then
+            if tonumber(affichedetail["rewardgolds"])  <= 0   and  tonumber(affichedetail["rewardcards"])  <= 0  then
                receive_bt:setVisible(false)
                receive_bt1:setVisible(false)
             else
