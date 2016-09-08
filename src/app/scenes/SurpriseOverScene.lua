@@ -309,8 +309,11 @@ function SurpriseOverScene:touch_callback( sender, eventType )
 	elseif tag==160 then --返回
 		--Util:scene_control("MainInterfaceScene")
      if tonumber(self.cycle)   ~=  -1 then
+ 
+      print("返回  ",self.id,self.heroid)
        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
         cc.Director:getInstance():popScene()
+        Server:Instance():getactivitybyid(self.id,1)
         return
        end
     LocalData:Instance():set_getactivitypoints(nil)

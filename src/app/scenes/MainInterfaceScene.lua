@@ -14,7 +14,11 @@ function MainInterfaceScene:ctor()
        local userdt = LocalData:Instance():get_userdata()
       -- local  LocalData:Instance():set_getuserinfo(self.data)
 
-        local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
+        local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d%d")
+        if _index==nil then
+          _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
+        end
+         print("哈哈  ",_index,tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 
        self:fun_init()
@@ -122,7 +126,7 @@ end
 --用户数据
 function MainInterfaceScene:userdata(  )
        local userdt = LocalData:Instance():get_userdata()
-       dump(userdt)
+       print("touxiang   ",LocalData:Instance():get_user_head())
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
