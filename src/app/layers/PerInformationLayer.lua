@@ -37,7 +37,7 @@ function PerInformationLayer:add_init(  )
                  userdt["provincename"]=userdatainit["provincename"]  
                  userdt["districtame"]=userdatainit["districtame"]
                  userdt["registertime"]=userdatainit["registertime"]  
-                 LocalData:Instance():set_userdata(userdt)
+                 -- xin LocalData:Instance():set_userdata(userdt)
                 --dump(userdatainit)
 
                 local haerd=userdatainit["imageUrl"]
@@ -52,7 +52,7 @@ function PerInformationLayer:add_init(  )
                     local haer=LocalData:Instance():get_user_head()   --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
                      dump(haer)
                     userdt["registertime"]=userdatainit["registertime"]  
-                     LocalData:Instance():set_userdata(userdt)
+                    -- xin LocalData:Instance():set_userdata(userdt)
                     self.image_head1:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
                     
 
@@ -411,7 +411,7 @@ function PerInformationLayer:perinformation_init(  )
      userdt["registertime"]=userdatainit["registertime"]
      userdt["provincename"]=userdatainit["provincename"]  
      userdt["districtame"]=userdatainit["districtame"]  
-     LocalData:Instance():set_userdata(userdt)
+     -- xin LocalData:Instance():set_userdata(userdt)
 
     local  bg=self.Perinformation:getChildByTag(26)
     self.image_head=bg:getChildByTag(67)  --头像
@@ -639,6 +639,7 @@ function PerInformationLayer:head( )
                   self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex())
                     self._index=tostring(self.PageView_head:getCurPageIndex())
                 end
+
         end)
         local Panel=self.PageView_head:getChildByTag(27)
         for i=1,15 do
@@ -682,6 +683,7 @@ function PerInformationLayer:head_callback( sender, eventType)
             elseif tag==24 then  --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
                 self.image_head:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
                 self.image_head1:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))  --self.head_index 
+                print("头像 ",self._index)
                 LocalData:Instance():set_user_head(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
 
 
@@ -732,7 +734,7 @@ function PerInformationLayer:savedata( )
     -- 
 
     local birthday=Util:dateTotimestamp(birthday_time)
-    print("birthday  ",birthday)
+    print("birthday  ",birthday,self._index)
     local  provinceid=userdata["provinceid"] 
     local  imageurl=self._index
             if self.head_index==100 then

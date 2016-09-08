@@ -13,6 +13,7 @@ function OnerecordLayer:ctor(params)
          self._type=params._type
          Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self:setNodeEventEnabled(true)--layer添加监听
+          Server:Instance():getactivitybyid(self.id,1)
 end
 function OnerecordLayer:init(  )
 	self.OnerecordLayer = cc.CSLoader:createNode("OnerecordLayer.csb");
@@ -39,9 +40,9 @@ function OnerecordLayer:Onerecord_init(  )
 	self.list_table=LocalData:Instance():get_getactivitypointsdetail()
   -- dump(self.list_table)
             local  One_data=self.list_table["mypointslist"]
-            if next(One_data) ==nil then
-              return
-            end
+            -- if next(One_data) ==nil then
+            --   return
+            -- end
             local num=One_data[#One_data]["cycle"]
             if num==0 then
                 return
@@ -50,23 +51,36 @@ function OnerecordLayer:Onerecord_init(  )
                   self.rank_list:pushBackDefaultItem()
             	local  cell = self.rank_list:getItem(i-1)
 
+                         local retroactive_bt=cell:getChildByTag(959)  --补签
+
+                        retroactive_bt:setTag(i)
+                        retroactive_bt:addTouchEventListener(function(sender, eventType  )
+                             if eventType ~= ccui.TouchEventType.ended then
+                                    return
+                            end
+                            local _tag=sender:getTag()
+                            GameScene = require("app.scenes.GameScene")
+                             local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=""})  --daojishi
+                             cc.Director:getInstance():pushScene(scene)
+                        end)
+
+                        
+                        local integral_text=cell:getChildByTag(93)--积分
                        for j=1,#One_data do
                            if One_data[j]["cycle"]  ==i then
-                             local integral_text=cell:getChildByTag(93)--积分
+                             
                              integral_text:setString(One_data[j]["points"])
+
                              break
                         else
-                             local integral_text=cell:getChildByTag(93)--积分
+                            -- local integral_text=cell:getChildByTag(93)--积分
                                integral_text:setString("0")
+                              
                         end
                        end
-            	-- if One_data[i]["cycle"]  ==i then
-            	-- 	 local integral_text=cell:getChildByTag(93)--积分
-	           	-- 	 integral_text:setString(One_data[i]["points"])
-	            -- else
-	            -- 	 local integral_text=cell:getChildByTag(93)--积分
-	            --        integral_text:setString("0")
-            	-- end
+                        if integral_text:getString()  ~= "0" then
+                            retroactive_bt:setVisible(false)
+                        end
             	
 	            local time_text=cell:getChildByTag(95)--时间
                     if self._type<3 then
@@ -77,6 +91,7 @@ function OnerecordLayer:Onerecord_init(  )
                     else
                              time_text:setString("第"  .. i  ..  "天")  --零时
                      end
+                    
 	            
             end
 

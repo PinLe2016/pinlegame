@@ -276,7 +276,10 @@ function JackpotLayer:fun_storebrowser(  )
                 end
               if self.Storebrowser then
                 self.Storebrowser:removeFromParent()
-                self:goldact()
+                if self._rewardgold==0 then
+                   self:goldact()
+                end
+                
               end
             end)
 

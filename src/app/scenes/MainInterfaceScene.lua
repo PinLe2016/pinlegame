@@ -14,19 +14,27 @@ function MainInterfaceScene:ctor()
        local userdt = LocalData:Instance():get_userdata()
       -- local  LocalData:Instance():set_getuserinfo(self.data)
 
-        local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
+        local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d%d")
+        if _index==nil then
+          _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
+        end
+         print("哈哈  ",_index,tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 
-       self:fun_init()
+       
        self:listener_home() --注册安卓返回键
+       Server:Instance():getaffichelist(1)
         Server:Instance():gettasklist()   --  初始化任务
-
+        self:fun_init()
 
 end
 function MainInterfaceScene:fun_init( )
 
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
+
+       self.biao_ji=self.MainInterfaceScene:getChildByTag(1164)--
+       self.biao_ji:setVisible(false) 
 
       self.roleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
       self:runAction(self.roleAction)
@@ -122,7 +130,7 @@ end
 --用户数据
 function MainInterfaceScene:userdata(  )
        local userdt = LocalData:Instance():get_userdata()
-       dump(userdt)
+       print("touxiang   ",LocalData:Instance():get_user_head())
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
@@ -165,6 +173,11 @@ function MainInterfaceScene:userdata(  )
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
        local jindu=userdt["grade"]/8 *100
        loadingbar:setPercent(jindu)
+
+
+      
+      
+
 end
 function MainInterfaceScene:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
@@ -493,6 +506,27 @@ function MainInterfaceScene:onEnter()
                        function()
                        self:fun_checkin(1)  --签到
                       end)
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
+                       function()
+                        print("哈哈哈哈哈哈哈")
+                               
+                               self.biao_ji:setVisible(false) 
+                               local affiche=LocalData:Instance():get_getaffiche()
+                                local affichelist=affiche["affichelist"]
+                                if #affichelist==0 then
+                                   return
+                                end
+                                 print("哈哈哈哈哈哈哈",#affichelist)
+                                for i=1,#affichelist do
+                                  print("哈哈哈哈哈哈哈",tonumber(affichelist[i]["isread"]))
+                                   if tonumber(affichelist[i]["isread"]) == 0   then  --1已读  0未读 
+                                                 self.biao_ji:setVisible(true)
+                                                 print("哈哈哈哈哈哈哈qqqqq",#affichelist)
+                                                return
+                                     end
+                              end
+                      end)
+
 end
 
 function MainInterfaceScene:onExit()
@@ -501,6 +535,7 @@ function MainInterfaceScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECK_POST, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
 end
 
 --android 返回键 响应

@@ -52,14 +52,25 @@ function taskLayer:data_init(  )
 
                   local  task_but=cell:getChildByTag(178)--按钮
                   task_but:setTag(i)
+                   local  task_text=cell:getChildByTag(1227)--按钮
+                   
+
                    if  tonumber(tasklist[i]["status"]) == 1   then   --1未完成  2已完成未领取  3已完成所有任务且已领取
-                      task_but:setTitleText(tasklist[i]["title"])
+                      task_text:setString(tasklist[i]["title"])
                   elseif tonumber(tasklist[i]["status"]) == 2 then
-                      task_but:setTitleText("领 取")
+                      task_text:setString("领 取")
                   elseif tonumber(tasklist[i]["status"]) == 3 then
-                      task_but:setTitleText("已领取")
-                      task_but:setColor(cc.c3b(100,100,100))
+                      task_text:setString("已领取")
+                      tasktask_text_but:setColor(cc.c3b(100,100,100))
                       task_but:setTouchEnabled(false)
+                  end
+                  print("ajfkdsaj几点上课范德萨发就",task_text:getStringLength())
+                  if task_text:getStringLength() <= 4   then
+                     task_text:setFontSize(28)
+                  elseif  task_text:getStringLength() > 4   and   task_text:getStringLength() <=  6   then
+                    task_text:setFontSize(20)
+                  else
+                    task_text:setFontSize(15)
                   end
 
                   
@@ -70,6 +81,13 @@ function taskLayer:data_init(  )
 
                   local  title=cell:getChildByTag(196)--描述
                   title:setString(tasklist[i]["description"])
+                  
+                  if title:getStringLength() <= 7     then
+                     title:setFontSize(23)
+                  elseif  title:getStringLength() >= 7   then
+                    title:setFontSize(12)
+                  end
+
 
                   local  gold_number=cell:getChildByTag(195)--获得金币   后续的改
 
