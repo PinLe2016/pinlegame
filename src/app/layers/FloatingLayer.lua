@@ -62,6 +62,9 @@ function FloatingLayer:touch_callback( sender, eventType )
             if tostring(LocalData:Instance():get_user_time()) == "1" then
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JIGSAWCOUNT)
             end
+            if tostring(LocalData:Instance():get_per()) == "1" then
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PERFECT)
+            end
             if tostring(LocalData:Instance():get_user_pintu( ))  ==  "1"  then  
               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE)
             end

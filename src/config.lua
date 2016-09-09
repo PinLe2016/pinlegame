@@ -102,6 +102,7 @@ G_NOTIFICATION_EVENT = {
 	TFEDBACK=							"TFEDBACK"  , --   gettasklist
 	GETTASKLIST=							"GETTASKLIST"  , --   获取任务列表 
 	TASKTARGETRECORD=					 "TASKTARGETRECORD"  , --   领取任务列表 settasktargetrecord
+	PERFECT=					 "PERFECT"  , --   领取任务列表 perfect
 
 }
 

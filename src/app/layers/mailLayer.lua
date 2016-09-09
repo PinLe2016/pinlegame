@@ -143,6 +143,17 @@ function mailLayer:fun_emailcontentlayer( )
                receive_bt:setVisible(true)
                receive_bt1:setVisible(true)
             end
+            if tonumber(affichedetail["rewardgolds"])  <= 0 then
+               local receive_icogold=self.emailcontentlayer:getChildByTag(61)--
+               receive_icogold:setVisible(false)
+               self.rewardgolds:setVisible(false)
+            end
+             if tonumber(affichedetail["rewardcards"])  <= 0 then
+               local receive_icocard=self.emailcontentlayer:getChildByTag(1228)--
+               receive_icocard:setVisible(false)
+               self.rewardquan:setVisible(false)
+            end
+
             receive_bt:addTouchEventListener(function(sender, eventType  )
                         if eventType ~= ccui.TouchEventType.ended then
                       return
@@ -154,9 +165,9 @@ function mailLayer:fun_emailcontentlayer( )
                 end
              Server:Instance():getaffichereward(affichedetail["id"])
               local userdt = LocalData:Instance():get_userdata()
-             userdt["golds"]=tonumber(affichedetail["rewardgolds"])
+             userdt["golds"]=userdt["golds"] + tonumber(affichedetail["rewardgolds"])
              LocalData:Instance():set_userdata(userdt)
-                         
+
                         end)
 
 end

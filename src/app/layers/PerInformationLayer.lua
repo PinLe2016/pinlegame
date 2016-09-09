@@ -277,8 +277,13 @@ function PerInformationLayer:touch_back( sender, eventType )
     local tag=sender:getTag()
     if tag==1399 then --返回
         if self.showinformation then
+            if  tostring(LocalData:Instance():get_per())  ==  "1" then
+                 self:removeFromParent()
+                 LocalData:Instance():set_per("0")
+                 return
+            end
             Util:scene_control("MainInterfaceScene")
-            self:removeFromParent()
+            
         end
     elseif  tag==1410 then
          self:init()
@@ -714,6 +719,11 @@ function PerInformationLayer:savedata( )
                 self.genderman1="女"
             end
            self.genderman1="  "
+           
+           if  self._provincename:getString() == nil then
+               Server:Instance():show_float_message("请完善城市信息")
+               return
+           end
 
     local  userdata=LocalData:Instance():get_user_data()
  

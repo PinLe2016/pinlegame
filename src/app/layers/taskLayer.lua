@@ -53,16 +53,24 @@ function taskLayer:data_init(  )
                   local  task_but=cell:getChildByTag(178)--按钮
                   task_but:setTag(i)
                    local  task_text=cell:getChildByTag(1227)--按钮
+                   local  task_ico=cell:getChildByTag(200)--按钮
+                   task_ico:loadTexture("png/task" ..  tonumber(tasklist[i]["targettype"])  ..  ".png")
                    
 
                    if  tonumber(tasklist[i]["status"]) == 1   then   --1未完成  2已完成未领取  3已完成所有任务且已领取
                       task_text:setString(tasklist[i]["title"])
                   elseif tonumber(tasklist[i]["status"]) == 2 then
+                      if tonumber(tasklist[i]["targettype"])  ==  0  then
+                         task_text:setVisible(false)
+                         task_but:loadTextures("png/taskcomplete2.png","","")
+                         task_but:setTouchEnabled(false)
+                         return
+                      end
                       task_text:setString("领 取")
                   elseif tonumber(tasklist[i]["status"]) == 3 then
-                      task_text:setString("已领取")
-                      task_but:setColor(cc.c3b(100,100,100))
-                      task_but:setTouchEnabled(false)
+                        task_text:setVisible(false)
+                         task_but:loadTextures("png/taskcomplete1.png","","")
+                         task_but:setTouchEnabled(false)
                   end
                   print("ajfkdsaj几点上课范德萨发就",task_text:getStringLength())
                   if task_text:getStringLength() <= 4   then
@@ -90,11 +98,15 @@ function taskLayer:data_init(  )
 
 
                   local  gold_number=cell:getChildByTag(195)--获得金币   后续的改
+                  local  gold_image=cell:getChildByTag(179)
 
                   if tasklist[i]["rewardtype"] == 0  then  --0为金币，1为积分，2为道具，3为商品
                      gold_number:setString("X" ..  tasklist[i]["rewardamount"])
                   end
-                  
+                  if tonumber(tasklist[i]["rewardamount"])  ==  0 then
+                     gold_number:setVisible(false)
+                     gold_image:setVisible(false)
+                  end
                   local  loadingbar_text=cell:getChildByTag(198)--进度条数值
                   loadingbar_text:setString(tasklist[i]["progress"]  ..  "/"   ..   tasklist[i]["targetgoal"])  
                    local loadingbar=cell:getChildByTag(199)-- 进度条
