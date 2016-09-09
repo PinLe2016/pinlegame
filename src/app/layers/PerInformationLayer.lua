@@ -719,8 +719,7 @@ function PerInformationLayer:savedata( )
                 self.genderman1="女"
             end
            self.genderman1="  "
-           
-           if  self._provincename:getString() == nil then
+           if  self._provincename:getString() == "" then
                Server:Instance():show_float_message("请完善城市信息")
                return
            end
