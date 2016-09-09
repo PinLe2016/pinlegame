@@ -200,6 +200,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                     dump(userinfo)
                     if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"] and  userinfo["nickname"]  then
                     else
+                      LocalData:Instance():set_per("1")
                       Server:Instance():prompt("完善个人信息奖励金币")
                         return
                     end
@@ -536,6 +537,13 @@ function SurpriseScene:onEnter()
                        --self:_winners( )-- 获奖名单
                        self:winners_init()  --更新数据
                       end)
+      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PERFECT, self,
+                       function()
+                        print("FJKSDFJSKFJDSJFKDSJFSAKFJ")
+                        local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
+                        self:addChild(PerInformationLayer.new())
+                       
+                      end)
 end
 
 function SurpriseScene:onExit()
@@ -544,6 +552,7 @@ function SurpriseScene:onExit()
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PERFECT, self)
 
 end
 --android 返回键 响应

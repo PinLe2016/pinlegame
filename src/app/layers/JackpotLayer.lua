@@ -284,14 +284,14 @@ function JackpotLayer:fun_storebrowser(  )
               end
             end)
 
-              -- local webview = cc.WebView:create()
-              -- self.Storebrowser:addChild(webview)
-              -- webview:setVisible(true)
-              -- webview:setScalesPageToFit(true)
-              -- webview:loadURL(tostring(self.addetailurl))
-              -- webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
-              -- webview:reload()
-              -- webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
+              local webview = cc.WebView:create()
+              self.Storebrowser:addChild(webview)
+              webview:setVisible(true)
+              webview:setScalesPageToFit(true)
+              webview:loadURL(tostring(self.addetailurl))
+              webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+              webview:reload()
+              webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
               if self._rewardgold==0 then
                  local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                  local  jaclayer_data=list_table["adlist"]

@@ -96,6 +96,15 @@ function LocalData:get_continue(continue)
 	local _key=cc.UserDefault:getInstance():getStringForKey(continue,key)
 	return _key or nil
 end
+--完善信息
+function LocalData:set_per(per)
+	cc.UserDefault:getInstance():setStringForKey("per" ,per)
+end
+
+function LocalData:get_per()
+	local _key=cc.UserDefault:getInstance():getStringForKey("per")
+	return _key or nil
+end
 
 
 

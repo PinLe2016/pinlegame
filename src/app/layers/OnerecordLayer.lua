@@ -13,7 +13,7 @@ function OnerecordLayer:ctor(params)
          self._type=params._type
          Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self:setNodeEventEnabled(true)--layer添加监听
-          Server:Instance():getactivitybyid(self.id,1)
+          --Server:Instance():getactivitybyid(self.id,1)
 end
 function OnerecordLayer:init(  )
 	self.OnerecordLayer = cc.CSLoader:createNode("OnerecordLayer.csb");
@@ -61,6 +61,7 @@ function OnerecordLayer:Onerecord_init(  )
                             local _tag=sender:getTag()
                             GameScene = require("app.scenes.GameScene")
                              local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=""})  --daojishi
+                             Server:Instance():getactivitybyid(self.id,_tag)
                              cc.Director:getInstance():pushScene(scene)
                         end)
 
