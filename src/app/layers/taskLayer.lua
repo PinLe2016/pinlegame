@@ -120,14 +120,15 @@ function taskLayer:touch_btCallback( sender, eventType )
            local tag=sender:getTag()
            if tag==141 then  --返回
            	  if self.taskLayer then
-                 local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
-                 local userdt = LocalData:Instance():get_userdata()
-                 userdt["golds"]=getuserinfo["golds"]
-                 LocalData:Instance():set_userdata(userdt)
+                 -- local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
+                 -- local userdt = LocalData:Instance():get_userdata()
+                 -- userdt["golds"]=getuserinfo["golds"]
+                 -- LocalData:Instance():set_userdata(userdt)
 
 
            		self:removeFromParent()
-              Util:scene_control("MainInterfaceScene")
+              --Util:scene_control("MainInterfaceScene")
+              Server:Instance():getuserinfo() 
               LocalData:Instance():set_sign(1)
            	 end
            end  
