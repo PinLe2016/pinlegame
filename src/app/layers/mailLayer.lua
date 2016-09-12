@@ -184,8 +184,10 @@ function mailLayer:onEnter()
                        function()
                         local  affichedetail=LocalData:Instance():get_getaffichedetail()
                         affichedetail["rewardgolds"] = 0  
+                        affichedetail["rewardcards"] = 0  
                         LocalData:Instance():set_getaffichedetail(affichedetail)
                         self.rewardgolds:setString("X0")
+                        self.rewardquan:setString("X0")--
                       end)
 
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self,
