@@ -104,8 +104,8 @@ function SurpriseOverScene:init(  )
       allscore_text:setString(tostring(activitybyid["mypoints"]))
       local bestscore_text=self.Laohuji:getChildByTag(62)--最佳积分
       bestscore_text:setString(tostring(activitybyid["mypoints"]))
-      local rank_text=self.Laohuji:getChildByTag(64)--排名
-      rank_text:setString(tostring(activitybyid["myrank"]))
+      -- local rank_text=self.Laohuji:getChildByTag(64)--排名
+      -- rank_text:setString(tostring(activitybyid["myrank"]))
       local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
        _betgolds:setString(tostring(activitybyid["betgolds"] .. "/次"))
       local  _nametext=self.Laohuji:getChildByTag(157):getChildByTag(35) 
@@ -120,6 +120,12 @@ function SurpriseOverScene:init(  )
           _cishu:setString(tostring(activitybyid["remaintimes"])  ..   "/次数")
         end
 
+         local rank_text=self.Laohuji:getChildByTag(64)--排名
+              if tonumber(activitybyid["remaintimes"])   ==  0 then
+                rank_text:setString(tostring(activitybyid["myrank"]))
+              else
+                rank_text:setString("/")
+              end
 
 
 
@@ -427,8 +433,7 @@ function SurpriseOverScene:init_data(  )
             allscore_text:setString(tostring(activitypoints["totalPoints"]))
             local bestscore_text=self.Laohuji:getChildByTag(62)--最佳积分
             bestscore_text:setString(tostring(activitypoints["bestpoints"]))
-            local rank_text=self.Laohuji:getChildByTag(64)--排名
-            rank_text:setString(tostring(activitypoints["rank"]))
+           
             local _betgolds=self.Laohuji:getChildByTag(99)   --  押注金币
              _betgolds:setString(tostring(activitypoints["betgolds"]) ..   "/次")
               local _cishu=self.Laohuji:getChildByTag(101)   --  次数
@@ -438,7 +443,13 @@ function SurpriseOverScene:init_data(  )
               else
                 _cishu:setString(tostring(activitypoints["remaintimes"])  ..   "/次数")
               end
-             
+              local rank_text=self.Laohuji:getChildByTag(64)--排名
+              if tonumber(activitypoints["remaintimes"])   ==  0 then
+                rank_text:setString(tostring(activitypoints["rank"]))
+              else
+                rank_text:setString("/")
+              end
+            
 
 
     --         local function stopAction()

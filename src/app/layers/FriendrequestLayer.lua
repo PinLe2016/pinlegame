@@ -261,7 +261,6 @@ function FriendrequestLayer:touch_callback( sender, eventType )
     end
 
 	if tag==123 then --返回
-
 		if self.share then
                    if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())

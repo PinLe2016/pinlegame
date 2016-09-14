@@ -15,7 +15,14 @@ function InvitefriendsLayer:ctor()--params
 
        Server:Instance():get_reward_friend_list() --好友列表
 
-       
+              local _table=LocalData:Instance():get_gettasklist()
+       local tasklist=_table["tasklist"]
+       for i=1,#tasklist  do 
+             if  tonumber(tasklist[i]["targettype"])   ==  2   then
+                  LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+             end
+             
+       end
 
 end
 function InvitefriendsLayer:init(  )
@@ -180,13 +187,21 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	end
 	local tag=sender:getTag()
 	if tag==82 then --返回
+            print("sdfdsf   ",LocalData:Instance():get_tasktable())
+            if self.share then
+                   if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
+                       Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                        LocalData:Instance():set_tasktable(nil)--制空
+                 end
+            end
+
             Server:Instance():getuserinfo() -- 初始化数据
             Util:scene_control("MainInterfaceScene")
 		self:removeFromParent()
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)
 		-- self.m_friend:setVisible(true)
-    Util:share()
+    self.share = Util:share()
 	elseif tag==118 then
 		self.Friendsstep:setVisible(true)
 		self.m_feedback:setVisible(true)

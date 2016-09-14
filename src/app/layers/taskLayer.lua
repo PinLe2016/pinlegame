@@ -55,7 +55,17 @@ function taskLayer:data_init(  )
                    local  task_text=cell:getChildByTag(1227)--按钮
                    local  task_ico=cell:getChildByTag(200)--按钮
                    task_ico:loadTexture("png/task" ..  tonumber(tasklist[i]["targettype"])  ..  ".png")
-                   
+                  if  tonumber(tasklist[i]["targettype"])  ==  0 then
+                        local  LoadingBar_1=cell:getChildByTag(197)--
+                        LoadingBar_1:setVisible(false)
+                        local  LoadingBar_2=cell:getChildByTag(177)--
+                         LoadingBar_2:setVisible(false)
+                        local  LoadingBar_3=cell:getChildByTag(199)--
+                         LoadingBar_3:setVisible(false)
+                         local  LoadingBar_4=cell:getChildByTag(198)--
+                         LoadingBar_4:setVisible(false)
+
+                  end
 
                    if  tonumber(tasklist[i]["status"]) == 1   then   --1未完成  2已完成未领取  3已完成所有任务且已领取
                       task_text:setString(tasklist[i]["title"])
@@ -142,6 +152,7 @@ function taskLayer:touch_Callback( sender, eventType )
        local _table=LocalData:Instance():get_gettasklist()
        local tasklist=_table["tasklist"]
        LocalData:Instance():set_tasktable(tasklist[tag]["targetid"])  --记录
+       print("范德萨发生地方  ",tasklist[tag]["targetid"])
        local targettype=tasklist[tag]["targettype"]  --0为签到，1为邀请好友，2为分享，3为惊喜吧，4为奖池,5为获得金币数，6为获得积分数
        if tonumber(tasklist[tag]["status"]) == 2 then
                Server:Instance():getuserinfo() 
@@ -154,7 +165,7 @@ function taskLayer:touch_Callback( sender, eventType )
              local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
             self:addChild(FriendrequestLayer.new())
       elseif  tonumber(targettype) == 2 then  --分享
-             local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
+             local FriendrequestLayer = require("app.layers.InvitefriendsLayer")  --邀请好友
             self:addChild(FriendrequestLayer.new())
       elseif  tonumber(targettype) == 3 then
             -- Util:scene_control("SurpriseScene")
