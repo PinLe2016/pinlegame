@@ -768,7 +768,7 @@ function LoginScene:getVersionInfo()
     end
 
 
-    if tonumber(up_date["Isused"])~=1 then
+    if tonumber(up_date["Isused"])==1 then
       
       self.masterURL=up_date["masterURL"]
       self.url=up_date["url"]
