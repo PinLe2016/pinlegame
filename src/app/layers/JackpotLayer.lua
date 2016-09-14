@@ -30,11 +30,11 @@ function JackpotLayer:ctor(params)
           Server:Instance():getrecentgoldslist(10)
           LocalData:Instance():set_user_oid(self.id)
           --Server:Instance():getgoldspooladlist(self.id)
-          LocalData:Instance():set_getgoldspoollist(nil)
+          --  LocalData:Instance():set_getgoldspoollist(nil)
          --Server:Instance():getgoldspoolbyid(self.id)  --删除
           -- 中奖信息
           self.is_double=2
-         Server:Instance():getgoldspoollist({pagesize=params.goldspoolcount,pageno=1,adownerid = self.adownerid})
+         -- Server:Instance():getgoldspoollist({pagesize=params.goldspoolcount,pageno=1,adownerid = self.adownerid})
          self:setNodeEventEnabled(true)--layer添加监听
          self.is_bright=true
          LocalData:Instance():set_setgamerecord({})
@@ -52,6 +52,8 @@ function JackpotLayer:ctor(params)
         self.JackpotScene:runAction(self.roleAction)
         self.roleAction:setTimeSpeed(5)
         self._rewardgold=0
+
+         self:init()
 
 end
 function JackpotLayer:jackgoldact( )
@@ -122,7 +124,7 @@ function JackpotLayer:init(  )
 
        
         local  list_table=LocalData:Instance():get_getgoldspoollist()
-        -- dump(list_table)
+         --dump(list_table)
         --以下三个禁
         self._dian1=self.JackpotScene:getChildByTag(810)  
         self._dian2=self.JackpotScene:getChildByTag(811)
@@ -169,7 +171,7 @@ function JackpotLayer:init(  )
         local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         _advertiImg:loadTexture(self.image_name)--(path..tostring(Util:sub_str(jaclayer_data[1]["imageurl"], "/",":")))--
          self.tpid=jaclayer_data[1]["id"]
-        Server:Instance():getgoldspoolbyid(self.id)
+           Server:Instance():getgoldspoolbyid(self.id)
         LocalData:Instance():set_user_oid(self.id)
          self._jiliang:setString("1/"  ..  tostring(#jaclayer_data))
         --现在注销是因为后台返回一个图片
@@ -231,7 +233,7 @@ function JackpotLayer:init(  )
                           self:wininformation()
                 end
                 local callfunc = cc.CallFunc:create(stopAction)
-               self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+               self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
             else
                self:wininformation()
             end

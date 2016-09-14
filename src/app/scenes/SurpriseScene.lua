@@ -137,6 +137,7 @@ end
               elseif tag==28 then
                        self:unscheduleUpdate()
                         --Util:scene_control("MainInterfaceScene")
+                      
                         if tonumber(LocalData:Instance():get_sign()) ~=  2 then
                             Util:scene_control("MainInterfaceScene")
                         else
@@ -529,7 +530,16 @@ function SurpriseScene:onEnter()
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
 
-                       self:Surprise_list()
+                local function stopAction()
+                          self:Surprise_list()
+                end
+                local callfunc = cc.CallFunc:create(stopAction)
+               self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+            
+
+
+
+                      
                       end)
       NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.WINNERS, self,
                        function()

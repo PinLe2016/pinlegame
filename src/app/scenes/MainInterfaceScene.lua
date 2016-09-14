@@ -13,7 +13,7 @@ function MainInterfaceScene:ctor()
 
        local userdt = LocalData:Instance():get_userdata()
       -- local  LocalData:Instance():set_getuserinfo(self.data)
-
+      LocalData:Instance():set_sign(1)
         local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d%d")
         if _index==nil then
           _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
