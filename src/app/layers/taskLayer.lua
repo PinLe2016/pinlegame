@@ -55,7 +55,8 @@ function taskLayer:data_init(  )
                    local  task_text=cell:getChildByTag(1227)--按钮
                    local  task_ico=cell:getChildByTag(200)--按钮
                    task_ico:loadTexture("png/task" ..  tonumber(tasklist[i]["targettype"])  ..  ".png")
-                  if  tonumber(tasklist[i]["targettype"])  ==  0 then
+                   local dt=tonumber(tasklist[i]["targettype"])
+                  if    dt==  0  or   dt  ==  1  or    dt  ==  2 then
                         local  LoadingBar_1=cell:getChildByTag(197)--
                         LoadingBar_1:setVisible(false)
                         local  LoadingBar_2=cell:getChildByTag(177)--

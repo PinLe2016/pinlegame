@@ -137,6 +137,7 @@ end
               elseif tag==28 then
                        self:unscheduleUpdate()
                         --Util:scene_control("MainInterfaceScene")
+                      
                         if tonumber(LocalData:Instance():get_sign()) ~=  2 then
                             Util:scene_control("MainInterfaceScene")
                         else
