@@ -24,7 +24,9 @@ function MainInterfaceScene:ctor()
        
        self:listener_home() --注册安卓返回键
        Server:Instance():getaffichelist(1)
-        Server:Instance():gettasklist()   --  初始化任务
+      Server:Instance():gettasklist()   --  初始化任务
+               --手机归属请求
+       Server:Instance():getusercitybyphone()--手机归属
         self:fun_init()
 
 end
