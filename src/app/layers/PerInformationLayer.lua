@@ -37,11 +37,12 @@ function PerInformationLayer:add_init(  )
                  userdt["provincename"]=userdatainit["provincename"]  
                  userdt["districtame"]=userdatainit["districtame"]
                  userdt["registertime"]=userdatainit["registertime"]  
-
+                print("发的说法就是咖啡  ",userdt["provincename"] )
                 if userdt["provincename"] == nil  then
                     local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+                    dump(phone_location)
                     if phone_location then
-                            print("手机归属")
+                            print("手机归属",phone_location["provincename"])
                             userdt["provincename"]=phone_location["provincename"]
                             userdt["cityname"]=phone_location["cityname"]
                             userdt["districtame"]=""
@@ -1070,7 +1071,11 @@ function PerInformationLayer:fun_city_info( )
         if userdatainit["provincename"] then
             str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] .. "-" .. area
         end
-        
+
+        if area == "" then
+           str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] 
+        end
+
         city_curr:setString(str)
         self.city_now=Util:lua_string_split(str, "-")  --当前城市
 
