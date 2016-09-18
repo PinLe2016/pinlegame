@@ -262,10 +262,11 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             cell:addTouchEventListener(onImageViewClicked)
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             if not  file then
-              table.insert(self.image,{obj =  activity_Panel ,name=path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":"))})
-              activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+              table.insert(self.image,{obj =  cell ,name=path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":"))})
+             else
+                activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             end
-            activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            
             local Nameprize_text=cell:getChildByTag(42)
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
             local type=cell:getChildByTag(133)
@@ -376,9 +377,10 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                       return
                   end
                   for i=1,#self.image do
-                    -- print("放得开撒酒疯肯定是   ",#self.image, self.image[i].obj,self.image[i].name)
-                    -- dump(self.image[i].obj)
-                     self.image[i].obj:loadTexture(self.image[i].name)
+                    print("放得开撒酒疯肯定是   ",#self.image, self.image[i].obj,self.image[i].name)
+                    dump(self.image[i].obj)
+                       local activity_Panel=self.image[i].obj:getChildByTag(36)
+                     activity_Panel:loadTexture(self.image[i].name)
                   end
           end
           local callfunc = cc.CallFunc:create(stopAction)
