@@ -196,7 +196,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             end
 
             Server:Instance():getuserinfo() -- 初始化数据
-            Util:scene_control("MainInterfaceScene")
+            --Util:scene_control("MainInterfaceScene")
 		self:removeFromParent()
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)

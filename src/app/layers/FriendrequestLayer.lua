@@ -267,9 +267,9 @@ function FriendrequestLayer:touch_callback( sender, eventType )
                         LocalData:Instance():set_tasktable(nil)--制空
                  end
             end
-          if tonumber(LocalData:Instance():get_sign()) ~=  2 then
-            Util:scene_control("MainInterfaceScene")
-          end
+          -- if tonumber(LocalData:Instance():get_sign()) ~=  2 then
+          --   Util:scene_control("MainInterfaceScene")
+          -- end
           
           Server:Instance():gettasklist()
           Server:Instance():getuserinfo() -- 初始化数据
