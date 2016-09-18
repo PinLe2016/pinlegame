@@ -31,7 +31,7 @@ function SurpriseScene:ctor()
       --   dump(city)
 
       self:listener_home() --注册安卓返回键
-
+      self.image={}
 end
 
 function SurpriseScene:Surpriseinit()  --floatingLayer_init
@@ -81,7 +81,7 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
                       if eventType  ==6 then
                         self.sur_pageno=self.sur_pageno+1
                         Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)   --下拉刷新功能
-                        self:scheduleUpdate()
+                        --self:scheduleUpdate()
                                  return
                       end
      end))
@@ -137,7 +137,7 @@ end
               elseif tag==28 then
                        self:unscheduleUpdate()
                         --Util:scene_control("MainInterfaceScene")
-                      
+
                         if tonumber(LocalData:Instance():get_sign()) ~=  2 then
                             Util:scene_control("MainInterfaceScene")
                         else
@@ -260,8 +260,12 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
             local activity_Panel=cell:getChildByTag(36)
             cell:addTouchEventListener(onImageViewClicked)
+            local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            if not  file then
+              table.insert(self.image,{obj =  activity_Panel ,name=path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":"))})
+              activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            end
             activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
-            -- print("777777   ",Util:sub_str(sup_data[i]["ownerurl"], "/",":"),i,#sup_data)
             local Nameprize_text=cell:getChildByTag(42)
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
             local type=cell:getChildByTag(133)
@@ -353,7 +357,9 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             end
 
           end
-          self:scheduleUpdate()
+
+    
+          -- self:scheduleUpdate()
           if tonumber(self.tablecout)~=0 then
             dump(self.tablecout)
              activity_ListView:jumpToPercentVertical(120)
@@ -362,6 +368,24 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           end
          
           self.tablecout=self.sup_data_num
+
+           local function stopAction()
+                   self:scheduleUpdate()
+
+                  if #self.image==0 then
+                      return
+                  end
+                  for i=1,#self.image do
+                    -- print("放得开撒酒疯肯定是   ",#self.image, self.image[i].obj,self.image[i].name)
+                    -- dump(self.image[i].obj)
+                     self.image[i].obj:loadTexture(self.image[i].name)
+                  end
+          end
+          local callfunc = cc.CallFunc:create(stopAction)
+         self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+   
+
+         
 end
 --  自己获奖名单
 function SurpriseScene:fun_theirwin( _text)
@@ -530,11 +554,11 @@ function SurpriseScene:onEnter()
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
 
-                local function stopAction()
-                          self:Surprise_list()
-                end
-                local callfunc = cc.CallFunc:create(stopAction)
-               self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+               --  local function stopAction()
+                           self:Surprise_list()
+               --  end
+               --  local callfunc = cc.CallFunc:create(stopAction)
+               -- self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
             
 
 

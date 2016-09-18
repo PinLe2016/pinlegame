@@ -113,12 +113,13 @@ function mailLayer:fun_emailcontentlayer( )
              local back_bt=self.emailcontentlayer:getChildByTag(62)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
                                     if eventType ~= ccui.TouchEventType.ended then
-		                return
-		            end
+            		                return
+            		            end
 		            if self.emailcontentlayer then
-		            	--todo
+                              Server:Instance():getaffichelist(self.sur_pageno)
+		            	self.emailcontentlayer:removeFromParent()
 		            end
-			self.emailcontentlayer:removeFromParent()
+			
                         end)
 
             local title_text=self.emailcontentlayer:getChildByTag(63)--标题
