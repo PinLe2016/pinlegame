@@ -37,7 +37,19 @@ function PerInformationLayer:add_init(  )
                  userdt["provincename"]=userdatainit["provincename"]  
                  userdt["districtame"]=userdatainit["districtame"]
                  userdt["registertime"]=userdatainit["registertime"]  
-                 -- xin LocalData:Instance():set_userdata(userdt)
+
+                if userdt["provincename"] == nil  then
+                    local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+                    if phone_location then
+                            print("手机归属")
+                            userdt["provincename"]=phone_location["provincename"]
+                            userdt["cityname"]=phone_location["cityname"]
+                            userdt["districtame"]=""
+                    end
+                end 
+
+
+                  LocalData:Instance():set_userdata(userdt)
                 --dump(userdatainit)
 
                 local haerd=userdatainit["imageUrl"]
@@ -415,8 +427,17 @@ function PerInformationLayer:perinformation_init(  )
      -- userdt["points"]=userdatainit["points"]
      userdt["registertime"]=userdatainit["registertime"]
      userdt["provincename"]=userdatainit["provincename"]  
-     userdt["districtame"]=userdatainit["districtame"]  
-     -- xin LocalData:Instance():set_userdata(userdt)
+     userdt["districtame"]=userdatainit["districtame"] 
+     if userdt["provincename"] == nil  then
+            local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+            if phone_location then
+                print("手机归属")
+                userdt["provincename"]=phone_location["provincename"]
+                userdt["cityname"]=phone_location["cityname"]
+                userdt["districtame"]=""
+            end
+      end 
+     LocalData:Instance():set_userdata(userdt)  --必须打开
 
     local  bg=self.Perinformation:getChildByTag(26)
     self.image_head=bg:getChildByTag(67)  --头像
@@ -471,7 +492,8 @@ function PerInformationLayer:perinformation_init(  )
                             self.genderman:setSelected(true)
                             self.gendergirl:setSelected(false)
                      elseif eventType == ccui.CheckBoxEventType.unselected then
-                             print("关闭")
+                             self.genderman:setSelected(false)
+                             self.gendergirl:setSelected(true)
                      end
             end)
 
@@ -480,7 +502,8 @@ function PerInformationLayer:perinformation_init(  )
                             self.genderman:setSelected(false)
                             self.gendergirl:setSelected(true)
                      elseif eventType == ccui.CheckBoxEventType.unselected then
-                             print("关闭")
+                             self.genderman:setSelected(true)
+                             self.gendergirl:setSelected(false)
                      end
             end)
            

@@ -233,6 +233,7 @@ function GoldprizeScene:touch_callback( sender, eventType )
                             Util:scene_control("MainInterfaceScene")
                         else
                             cc.Director:getInstance():popScene()
+                            cc.Director:getInstance():popScene()
                             Server:Instance():gettasklist()
                         end
 	elseif tag==58 then --说明
@@ -274,8 +275,9 @@ function GoldprizeScene:onEnter()
                          
                          	 print("88888dsf  ",self._dtid, "  " ,self.adownerid)
                          	  LocalData:Instance():set_user_img(self.image_name)
-                         	 local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
-               	             cc.Director:getInstance():pushScene(scene)
+                         	 -- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+               	           --   cc.Director:getInstance():pushScene(scene)
+               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                          end
 		
@@ -287,8 +289,9 @@ function GoldprizeScene:onEnter()
                        
 print("88888dsf  ",self._dtid)
 			 LocalData:Instance():set_user_img(self.image_name)
-                        	local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
-               	             cc.Director:getInstance():pushScene(scene)
+                        	-- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+               	         --     cc.Director:getInstance():pushScene(scene)
+               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
 
                       end)

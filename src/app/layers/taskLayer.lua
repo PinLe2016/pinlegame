@@ -120,8 +120,12 @@ function taskLayer:data_init(  )
                   local  loadingbar_text=cell:getChildByTag(198)--进度条数值
                   loadingbar_text:setString(tasklist[i]["progress"]  ..  "/"   ..   tasklist[i]["targetgoal"])  
                    local loadingbar=cell:getChildByTag(199)-- 进度条
+                   if tonumber(tasklist[i]["progress"]) > tonumber(tasklist[i]["targetgoal"])    then
+                     tonumber(tasklist[i]["progress"])  =  tonumber(tasklist[i]["targetgoal"])
+                   end
       	       local jindu= tonumber(tasklist[i]["progress"]) /  tonumber(tasklist[i]["targetgoal"])  *100
       	       loadingbar:setPercent(jindu)
+
             end
 end
 function taskLayer:touch_btCallback( sender, eventType )

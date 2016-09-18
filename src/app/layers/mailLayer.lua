@@ -72,6 +72,7 @@ function mailLayer:init(  )
              end))
 
              for i=1,#affichelist do
+
                   self.mail_list:pushBackDefaultItem()
                   local  cell = self.mail_list:getItem(i-1)
                   local  touch_image=cell:getChildByTag(49)--点击事件
@@ -117,6 +118,7 @@ function mailLayer:fun_emailcontentlayer( )
             		            end
 		            if self.emailcontentlayer then
                               Server:Instance():getaffichelist(self.sur_pageno)
+                              LocalData:Instance():set_getaffiche(nil)
 		            	self.emailcontentlayer:removeFromParent()
 		            end
 			
