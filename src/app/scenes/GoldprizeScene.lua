@@ -13,7 +13,8 @@ function GoldprizeScene:ctor()
    self._dtid=""
    LocalData:Instance():set_getgoldspoollist(nil)
                
-   self:listener_home() --注册安卓返回键         
+   self:listener_home() --注册安卓返回键    
+   self.image={}     
 end
 
 
@@ -69,7 +70,14 @@ function GoldprizeScene:data_init(  )
 		        local bg1_image=bg1:getChildByTag(121)
 		        local bg1_jibiao=bg1:getChildByTag(986)
 		        local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-				bg1_image:loadTexture(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
+				--bg1_image:loadTexture(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
+				local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))
+			            if not  file then
+			              table.insert(self.image,{obj =  bg1_image ,name=path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":"))})
+			             else
+			                bg1_image:loadTexture(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))
+			            end
+
 				bg1_image:setTag(2*i-1)
 				bg1_jibiao:setString(tostring(jac_data[2*i-1]["goldspoolcount"]))
 				bg1_image:addTouchEventListener(function(sender, eventType  )
@@ -129,7 +137,14 @@ function GoldprizeScene:data_init(  )
 			local bg2_img=bg2:getChildByTag(91)
 			local bg2_jiaobiao=bg2:getChildByTag(985)
 			local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-			bg2_img:loadTexture(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
+			--bg2_img:loadTexture(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
+			local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))
+		            if not  file then
+		              table.insert(self.image,{obj =  bg2_img ,name=path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":"))})
+		             else
+		               bg2_img:loadTexture(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
+		            end
+
 			bg2_img:setTag(2*i)
 			bg2_jiaobiao:setString(tostring(jac_data[2*i]["goldspoolcount"]))
 			bg2_img:addTouchEventListener(function(sender, eventType  )
@@ -168,13 +183,29 @@ function GoldprizeScene:data_init(  )
 
 		    goldsremain1:setString(tostring(jac_data[2*i]["goldsamount"]))
 		end
--- dump(self.sur_pageno)
+
 		if tonumber(self.sur_pageno)~=0 then
-            dump(self.sur_pageno)
-             self.jackpot_ListView:jumpToPercentVertical(120)
-           else
-             self.jackpot_ListView:jumpToPercentVertical(0)
-          end
+	            dump(self.sur_pageno)
+	             self.jackpot_ListView:jumpToPercentVertical(120)
+	           else
+	             self.jackpot_ListView:jumpToPercentVertical(0)
+	          end
+
+	          local function stopAction()
+		  if #self.image~=0 then
+
+			for i=1,#self.image do
+				local file=cc.FileUtils:getInstance():isFileExist(self.image[i].name)
+				if file  then
+					self.image[i].obj:loadTexture(self.image[i].name)
+				end
+			end
+			
+		  end
+	          end
+	          local callfunc = cc.CallFunc:create(stopAction)
+	         self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+
 
 end
 

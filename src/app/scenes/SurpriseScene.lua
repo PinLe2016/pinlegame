@@ -32,6 +32,7 @@ function SurpriseScene:ctor()
 
       self:listener_home() --注册安卓返回键
       self.image={}
+
 end
 
 function SurpriseScene:Surpriseinit()  --floatingLayer_init
@@ -80,8 +81,8 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     activity_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
                         self.sur_pageno=self.sur_pageno+1
+                        self:unscheduleUpdate()
                         Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)   --下拉刷新功能
-                        --self:scheduleUpdate()
                                  return
                       end
      end))
@@ -109,6 +110,7 @@ end
                        Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                        activity_ListView:removeAllItems()
                        self:unscheduleUpdate()
+                       self.image={nil}
 
               elseif tag==30 then
                       LocalData:Instance():set_getactivitylist(nil)--数据制空
@@ -118,6 +120,7 @@ end
                       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
+                      self.image={nil}
               elseif tag==31 then
                       LocalData:Instance():set_getactivitylist(nil)--数据制空
                       self.tablecout=0
@@ -126,6 +129,7 @@ end
                       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                       activity_ListView:removeAllItems()
                       self:unscheduleUpdate()
+                      self.image={nil}
               elseif tag==117 then
                        LocalData:Instance():set_getactivitylist(nil)--数据制空
                        self.tablecout=0
@@ -134,6 +138,7 @@ end
                        Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                        activity_ListView:removeAllItems()
                        self:unscheduleUpdate()
+                       self.image={nil}
               elseif tag==28 then
                        self:unscheduleUpdate()
                         --Util:scene_control("MainInterfaceScene")
@@ -148,6 +153,8 @@ end
               end
              self.curr_bright=sender
   end
+
+
   function SurpriseScene:update(dt)
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
@@ -172,6 +179,27 @@ end
             local secondsText=cell:getChildByTag(41)
             secondsText:setString(tostring(_table[4]))
         end
+
+          if #self.image~=0 then
+               -- dump(self.image)
+               local next_num=0
+              for i=1,#self.image do
+                  local file=cc.FileUtils:getInstance():isFileExist(self.image[i].name)
+                  if file and self.image[i].obj then
+                      local activity_Panel=self.image[i].obj:getChildByTag(36)
+                      activity_Panel:loadTexture(self.image[i].name)
+                      -- table.remove(self.image, {})
+                      self.image[i].obj=nil
+                      next_num=next_num+1
+                  end
+              end
+              if next_num == #self.image then
+                 self.image={}
+              end
+          end
+         
+                -- dump(self.image)
+
   end
 
         
@@ -373,18 +401,10 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
            local function stopAction()
                    self:scheduleUpdate()
 
-                  if #self.image==0 then
-                      return
-                  end
-                  for i=1,#self.image do
-                    print("放得开撒酒疯肯定是   ",#self.image, self.image[i].obj,self.image[i].name)
-                    dump(self.image[i].obj)
-                       local activity_Panel=self.image[i].obj:getChildByTag(36)
-                     activity_Panel:loadTexture(self.image[i].name)
-                  end
           end
+
           local callfunc = cc.CallFunc:create(stopAction)
-         self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+         self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
    
 
          

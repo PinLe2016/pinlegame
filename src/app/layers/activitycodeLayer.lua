@@ -24,6 +24,7 @@ function activitycodeLayer:ctor()
     	end)
           self._typeevt=4
          self:init()
+         self.image={}
 end
 function activitycodeLayer:init(  )
 	self.inputcodeLayer = cc.CSLoader:createNode("inputcodeLayer.csb");
@@ -46,7 +47,7 @@ function activitycodeLayer:init(  )
                       if eventType  ==6 then
                         self.sur_pageno=self.sur_pageno+1
                         Server:Instance():getactivitylist(tostring(self._typeevt),self.sur_pageno)   --下拉刷新功能
-                        --self:scheduleUpdate()
+                        self:unscheduleUpdate()
                                  return
                       end
             end))
@@ -108,6 +109,7 @@ function activitycodeLayer:_touchbak( sender, eventType )
                         Server:Instance():getactivitylist(tostring(self._typeevt),1)
                         self.activity_ListView:removeAllItems()
                         self:unscheduleUpdate()
+                        self.image={nil}
 
               elseif tag==917 then
 
@@ -117,6 +119,7 @@ function activitycodeLayer:_touchbak( sender, eventType )
                    Server:Instance():getactivitylist(tostring(self._typeevt),1)
                    self.activity_ListView:removeAllItems()
                    self:unscheduleUpdate()
+                   self.image={nil}
             end
              self.curr_bright=sender
 end
@@ -276,8 +279,15 @@ function activitycodeLayer:act_list()
             local activity_Panel=cell:getChildByTag(750)
             cell:addTouchEventListener(onImageViewClicked)
             local path=cc.FileUtils:getInstance():getWritablePath()
-            print("99999   ",tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
-            activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            -- print("99999   ",tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            -- activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            if not  file then
+              table.insert(self.image,{obj =  cell ,name=path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":"))})
+             else
+                activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
+            end
+
             local type=cell:getChildByTag(751)
             local type_image=  "png/J_" .. sup_data[i]["type"] .. ".png"   --sup_data[i]["type"] .. ".png"  
             type:loadTexture(type_image)
@@ -341,7 +351,15 @@ function activitycodeLayer:act_list()
              self.activity_ListView:jumpToPercentVertical(0)
           end
 
-           self:scheduleUpdate()
+           --self:scheduleUpdate()
+            local function stopAction()
+                   self:scheduleUpdate()
+
+          end
+
+          local callfunc = cc.CallFunc:create(stopAction)
+         self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+
           self.tablecout=self.sup_data_num   
 
 end
@@ -475,6 +493,27 @@ end
             local dayText=cell:getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
         end
+
+
+         if #self.image~=0 then
+               -- dump(self.image)
+               local next_num=0
+              for i=1,#self.image do
+                  local file=cc.FileUtils:getInstance():isFileExist(self.image[i].name)
+                  if file and self.image[i].obj then
+                      local activity_Panel=self.image[i].obj:getChildByTag(750)
+                      activity_Panel:loadTexture(self.image[i].name)
+                      -- table.remove(self.image, {})
+                      self.image[i].obj=nil
+                      next_num=next_num+1
+                  end
+              end
+              if next_num == #self.image then
+                 self.image={}
+              end
+          end
+
+
   end
 function activitycodeLayer:onEnter()
       --audio.playMusic(G_SOUND["GAMEBG"],true)
