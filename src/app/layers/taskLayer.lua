@@ -121,7 +121,7 @@ function taskLayer:data_init(  )
                   loadingbar_text:setString(tasklist[i]["progress"]  ..  "/"   ..   tasklist[i]["targetgoal"])  
                    local loadingbar=cell:getChildByTag(199)-- 进度条
                    if tonumber(tasklist[i]["progress"]) > tonumber(tasklist[i]["targetgoal"])    then
-                     tonumber(tasklist[i]["progress"])  =  tonumber(tasklist[i]["targetgoal"])
+                     tasklist[i]["progress"] =  tonumber(tasklist[i]["targetgoal"])
                    end
       	       local jindu= tonumber(tasklist[i]["progress"]) /  tonumber(tasklist[i]["targetgoal"])  *100
       	       loadingbar:setPercent(jindu)

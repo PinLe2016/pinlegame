@@ -15,6 +15,7 @@ function GoldprizeScene:ctor()
                
    self:listener_home() --注册安卓返回键    
    self.image={}     
+   --LocalData:Instance():set_sign(1)
 end
 
 
@@ -232,8 +233,7 @@ function GoldprizeScene:touch_callback( sender, eventType )
 		if tonumber(LocalData:Instance():get_sign()) ~=  2 then
                             Util:scene_control("MainInterfaceScene")
                         else
-                            cc.Director:getInstance():popScene()
-                            cc.Director:getInstance():popScene()
+                            cc.Director:getInstance():popToRootScene()
                             Server:Instance():gettasklist()
                         end
 	elseif tag==58 then --说明
