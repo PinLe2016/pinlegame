@@ -10,12 +10,13 @@ end)
 function taskLayer:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
        self.sur_pageno=1
+       LocalData:Instance():set_gettasklist(nil)
        Server:Instance():gettasklist()
        
 end
 function taskLayer:init(  )
         LocalData:Instance():set_sign(2)
-        self.taskLayer = cc.CSLoader:createNode("taskLayer.csb");
+        self.taskLayer = cc.CSLoader:createNode("taskLayer.csb")
         self:addChild(self.taskLayer)
 
          local back_bt=self.taskLayer:getChildByTag(141)  --返回
@@ -37,6 +38,7 @@ function taskLayer:init(  )
 end
 function taskLayer:data_init(  )
       local _table=LocalData:Instance():get_gettasklist()
+              --dump(_table)
       local tasklist=_table["tasklist"]
       if #tasklist==0 then
         self.task_list:setVisible(false)
@@ -68,21 +70,7 @@ function taskLayer:data_init(  )
 
                   end
 
-                   if  tonumber(tasklist[i]["status"]) == 1   then   --1未完成  2已完成未领取  3已完成所有任务且已领取
-                      task_text:setString(tasklist[i]["title"])
-                  elseif tonumber(tasklist[i]["status"]) == 2 then
-                      if tonumber(tasklist[i]["targettype"])  ==  0  then
-                         task_text:setVisible(false)
-                         task_but:loadTextures("png/taskcomplete2.png","","")
-                         task_but:setTouchEnabled(false)
-                         return
-                      end
-                      task_text:setString("领 取")
-                  elseif tonumber(tasklist[i]["status"]) == 3 then
-                        task_text:setVisible(false)
-                         task_but:loadTextures("png/taskcomplete1.png","","")
-                         task_but:setTouchEnabled(false)
-                  end
+                 
                   if task_text:getStringLength() <= 4   then
                      task_text:setFontSize(28)
                   elseif  task_text:getStringLength() > 4   and   task_text:getStringLength() <=  6   then
@@ -113,7 +101,8 @@ function taskLayer:data_init(  )
                   if tasklist[i]["rewardtype"] == 0  then  --0为金币，1为积分，2为道具，3为商品
                      gold_number:setString("X" ..  tasklist[i]["rewardamount"])
                   end
-                  if tonumber(tasklist[i]["rewardamount"])  ==  0 then
+                  print("发的是开发商可",tonumber(tasklist[i]["targettype"]))
+                  if tonumber(tasklist[i]["targettype"])  ==  0 then
                      gold_number:setVisible(false)
                      gold_image:setVisible(false)
                   end
@@ -125,6 +114,23 @@ function taskLayer:data_init(  )
                    end
       	       local jindu= tonumber(tasklist[i]["progress"]) /  tonumber(tasklist[i]["targetgoal"])  *100
       	       loadingbar:setPercent(jindu)
+
+                 if  tonumber(tasklist[i]["status"]) == 1   then   --1未完成  2已完成未领取  3已完成所有任务且已领取
+                      task_text:setString(tasklist[i]["title"])
+                  elseif tonumber(tasklist[i]["status"]) == 2 then
+                      if tonumber(tasklist[i]["targettype"])  ==  0  then
+                         task_text:setVisible(false)
+                         task_but:loadTextures("png/taskcomplete2.png","","")
+                         task_but:setTouchEnabled(false)
+                         return
+                      end
+                      task_text:setString("领 取")
+                  elseif tonumber(tasklist[i]["status"]) == 3 then
+                        task_text:setVisible(false)
+                         task_but:loadTextures("png/taskcomplete1.png","","")
+                         task_but:setTouchEnabled(false)
+                  end
+                  
 
             end
 end
@@ -184,6 +190,7 @@ function taskLayer:touch_Callback( sender, eventType )
             cc.Director:getInstance():pushScene(scene)
 
        end
+       LocalData:Instance():set_gettasklist(nil)
   
 
 end 

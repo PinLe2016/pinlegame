@@ -391,7 +391,7 @@ function MainInterfaceScene:fun_checkin( tm )
 	       end
          self.checkinlayer:removeFromParent()
              self.checkinlayer=nil
-             Server:Instance():gettasklist()   --目的是刷新任务数据
+             --Server:Instance():gettasklist()   --目的是刷新任务数据
 	       
 	end)
 	local check_bt=self.checkinlayer:getChildByTag(87)
