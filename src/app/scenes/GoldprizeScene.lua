@@ -233,8 +233,10 @@ function GoldprizeScene:touch_callback( sender, eventType )
 		if tonumber(LocalData:Instance():get_sign()) ~=  2 then
                             Util:scene_control("MainInterfaceScene")
                         else
-                            cc.Director:getInstance():popToRootScene()
-                            Server:Instance():gettasklist()
+                            -- cc.Director:getInstance():popToRootScene()
+                            -- Server:Instance():gettasklist()
+                              local taskLayer = require("app.layers.taskLayer")  --关于任务界面
+            self:addChild(taskLayer.new())
                         end
 	elseif tag==58 then --说明
 		 self:fun_prizepoolules()

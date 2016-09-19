@@ -150,7 +150,7 @@ function taskLayer:touch_btCallback( sender, eventType )
 
 
            		self:removeFromParent()
-              --Util:scene_control("MainInterfaceScene")
+              Util:scene_control("MainInterfaceScene")
               Server:Instance():getuserinfo() 
               LocalData:Instance():set_sign(1)
            	 end
