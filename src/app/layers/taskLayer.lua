@@ -86,7 +86,7 @@ function taskLayer:data_init(  )
                        task_but:setTouchEnabled(false)
                 end
 
-                 print("发的是开发商可",task_text:getStringLength())
+                 --print("发的是开发商可",task_text:getStringLength())
                   if task_text:getStringLength() <= 4   then
                      task_text:setFontSize(28)
                   elseif  task_text:getStringLength() > 4   and   task_text:getStringLength() <=  6   then
