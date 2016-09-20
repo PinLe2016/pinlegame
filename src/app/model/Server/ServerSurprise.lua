@@ -46,7 +46,7 @@ end
 
 
 function Server:getactivitybyid_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code==0  then
             LocalData:Instance():set_getactivitybyid(self.data)--保存数据
             if self.cycle  == 0 then
@@ -221,11 +221,12 @@ function Server:getactivitypointsdetail_callback()
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
     end
+    -- dump(self.data)
     LocalData:Instance():set_getactivitypointsdetail(self.data)--保存数据
-    if self.data["playerpointslist"] then
+    -- if self.data["playerpointslist"] then
         NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE)
-    end
-      NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.ONERECORD_LAYER_IMAGE)
+    -- end
+    --   NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.ONERECORD_LAYER_IMAGE)
 end
 
 

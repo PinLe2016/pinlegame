@@ -222,6 +222,7 @@ end
 function ContrastRecordLayer:onEnter()
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self,
                        function()
+                        -- print("ffefe排行榜")
                         self:init()
                       end)
 end

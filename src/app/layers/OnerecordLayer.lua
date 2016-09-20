@@ -38,6 +38,7 @@ function OnerecordLayer:Onerecord_init(  )
      local _ble={"月","周","天","天"}
 	self.rank_list:removeAllItems()
 	self.list_table=LocalData:Instance():get_getactivitypointsdetail()
+    -- dump(self.list_table)
             local  One_data=self.list_table["mypointslist"]
             if next(One_data) ==nil then
               return
@@ -106,14 +107,15 @@ function OnerecordLayer:back( sender, eventType)
 
 end
 function OnerecordLayer:onEnter()
-	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ONERECORD_LAYER_IMAGE, self,
+	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self,
                        function()
+                        -- print("个人记录")
                         self:init()
                       end)
 end
 
 function OnerecordLayer:onExit()
-     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ONERECORD_LAYER_IMAGE, self)
+     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self)
 end
 
 
