@@ -246,7 +246,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
              --  local _loginkey=login_info["loginkey"]
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
 
-             self:fun_storebrowser()
+             --self:fun_storebrowser()
+             Util:scene_control("MallScene")
 
            
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))

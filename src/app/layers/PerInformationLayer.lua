@@ -272,7 +272,16 @@ function PerInformationLayer:fun_mail(  )
         self.province="1"
         self.city="2"
         self.conty="3"
-
+        dump(_getconsignee)
+        
+         if  _getconsignee["provincename"]   then
+            self.province=tostring(_getconsignee["provincename"])
+        end
+        if _getconsignee["cityname"] then
+            self.city=tostring(_getconsignee["cityname"])
+        end
+        
+        print(" hfjsdhfsdhfs   ",self.province ,self.city)
         self.province_index=-1
         self.city_index=-1
 
@@ -363,8 +372,9 @@ function PerInformationLayer:save_mail(cath)
        Server:Instance():setconsignee(self.name_text_mail:getText(),self.phone_text_mail:getText(),tostring(province_id),tostring(city_id),self.ads_text_mail:getText(),province,city)
        return
     end
-        
+        --save_mail
     self.Receivinginformation:getChildByTag(220):getChildByTag(233):setPlaceHolder(province..city..conty)
+    
 end
 
 function PerInformationLayer:init(  )

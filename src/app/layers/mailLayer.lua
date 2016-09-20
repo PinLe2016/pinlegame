@@ -33,8 +33,8 @@ function mailLayer:init(  )
             local delete_bt=self.mailLayer:getChildByTag(54)--删除
             delete_bt:addTouchEventListener(function(sender, eventType  )
                                     if eventType ~= ccui.TouchEventType.ended then
-		                return
-		            end
+		                             return
+		                        end
 			local affiche=LocalData:Instance():get_getaffiche()
 	                        local affichelist=affiche["affichelist"]
 	                        for i=1,#affichelist do
