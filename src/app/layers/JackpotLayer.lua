@@ -278,7 +278,6 @@ function JackpotLayer:fun_storebrowser(  )
                 end
               if self.Storebrowser then
                 self.Storebrowser:removeFromParent()
-                print("哈哈 ",self._rewardgold)
                 if self._rewardgold==1 then
                    self:goldact()
                 end

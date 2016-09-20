@@ -510,21 +510,16 @@ function MainInterfaceScene:onEnter()
                        self:fun_checkin(1)  --签到
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
-                       function()
-                        print("哈哈哈哈哈哈哈")
-                               
+                       function()                    
                                self.biao_ji:setVisible(false) 
                                local affiche=LocalData:Instance():get_getaffiche()
                                 local affichelist=affiche["affichelist"]
                                 if #affichelist==0 then
                                    return
                                 end
-                                 print("哈哈哈哈哈哈哈",#affichelist)
                                 for i=1,#affichelist do
-                                  print("哈哈哈哈哈哈哈",tonumber(affichelist[i]["isread"]))
                                    if tonumber(affichelist[i]["isread"]) == 0   then  --1已读  0未读 
                                                  self.biao_ji:setVisible(true)
-                                                 print("哈哈哈哈哈哈哈qqqqq",#affichelist)
                                                 return
                                      end
                               end

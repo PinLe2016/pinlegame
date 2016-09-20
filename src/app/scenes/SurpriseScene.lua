@@ -170,14 +170,17 @@ end
             else
                 _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             end
-            local dayText=cell:getChildByTag(38)
-            dayText:setString(tostring(_table[1]))
-            local hoursText=cell:getChildByTag(39)
-            hoursText:setString(tostring(_table[2]))
-            local pointsText=cell:getChildByTag(40)
-            pointsText:setString(tostring(_table[3]))
-            local secondsText=cell:getChildByTag(41)
-            secondsText:setString(tostring(_table[4]))
+            if  cell:getChildByTag(38) then
+                local dayText=cell:getChildByTag(38)
+                dayText:setString(tostring(_table[1]))
+                local hoursText=cell:getChildByTag(39)
+                hoursText:setString(tostring(_table[2]))
+                local pointsText=cell:getChildByTag(40)
+                pointsText:setString(tostring(_table[3]))
+                local secondsText=cell:getChildByTag(41)
+                secondsText:setString(tostring(_table[4]))
+            end
+           
         end
 
           if #self.image~=0 then

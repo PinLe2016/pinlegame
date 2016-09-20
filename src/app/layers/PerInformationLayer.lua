@@ -33,6 +33,10 @@ function PerInformationLayer:add_init(  )
                  userdt["cityid"]=userdatainit["cityid"]
                  userdt["cityname"]=userdatainit["cityname"]
                  userdt["gender"]=userdatainit["gender"]
+                 if userdatainit["gender"] == nil then
+                     userdt["gender"]=1
+                 end
+                 
                  userdt["nickname"]=userdatainit["nickname"]
                  userdt["provincename"]=userdatainit["provincename"]  
                  userdt["districtame"]=userdatainit["districtame"]
@@ -416,13 +420,17 @@ function PerInformationLayer:perinformation_init(  )
 
      local  userdata=LocalData:Instance():get_user_data() --用户数据
      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-      -- dump(userdatainit)
+       --dump(userdatainit)
 
      local userdt = LocalData:Instance():get_userdata()--
      userdt["birthday"]=userdatainit["birthday"]
      userdt["cityid"]=userdatainit["cityid"]
      userdt["cityname"]=userdatainit["cityname"]
      userdt["gender"]=userdatainit["gender"]
+     print("正是新别 ",userdatainit["gender"])
+      if userdatainit["gender"]  ==  nil  then
+         userdt["gender"]=1
+     end
      userdt["nickname"]=userdatainit["nickname"]
      -- userdt["golds"]=userdatainit["golds"]
      -- userdt["points"]=userdatainit["points"]
@@ -509,7 +517,7 @@ function PerInformationLayer:perinformation_init(  )
             end)
            
 
-
+        print("性别  ",userdt["gender"])
         if userdt["gender"]==0 then    --0女1男2未知
             self.genderman:setSelected(false)
             self.gendergirl:setSelected(true)
@@ -734,7 +742,7 @@ function PerInformationLayer:head_callback( sender, eventType)
             end
 end
 function PerInformationLayer:savedata( )
-            local  gender="2"  --默认无
+            local  gender="true"  --默认无
             if self.genderman:isSelected() then
                 gender="true"
                 self.genderman1="男"
