@@ -271,10 +271,15 @@ function PerInformationLayer:fun_mail(  )
         --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属
         self.province="1"
         self.city="2"
-        self.conty="3"
+        self.conty="1"
 
         self.province_index=-1
         self.city_index=-1
+
+        if _getconsignee["provincename"]  then 
+            self.province=tostring(_getconsignee["provincename"])
+            self.city=tostring(_getconsignee["cityname"])
+        end
 
         self.city_data=Util:read_json("res/city.json")
 
@@ -1161,15 +1166,17 @@ function PerInformationLayer:fun_Province( ... )
             
             cell_month:setString(json_province[i-2-self.mail_dex]["name"])
             name=json_province[i-2-self.mail_dex]["name"]
+            
            local pos = string.find(self.province, name)   
             if pos then
-                m_offset_cell=i-3;
+                m_offset_cell=i-3-self.mail_dex;
             end
         end
 
         
          self.adress_province_Itempicker:pushBackItem(button)
     end
+    dump(m_offset_cell)
     self.adress_province_Itempicker:setOffsetLayout(m_offset_cell)
 
 end
@@ -1208,7 +1215,7 @@ function PerInformationLayer:fun_City()
            local pos = string.find(self.city, name)   
             if pos then
 
-                m_offset_cell=i-3;
+                m_offset_cell=i-3-self.mail_dex;
             end
         end
 
@@ -1254,7 +1261,7 @@ function PerInformationLayer:fun_Conty()
             name=json_conty[i-2-self.mail_dex]["name"]
            local pos = string.find(self.conty, name)   
             if pos then
-                m_offset_cell=i-3;
+                m_offset_cell=i-3-self.mail_dex;
             end
         end
 

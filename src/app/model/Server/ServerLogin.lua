@@ -183,7 +183,7 @@ function Server:getversion()
     local params = {}
      params={
             devicetype=device.platform,
-            versioncode="3.0.0",
+            versioncode=PINLE_VERSION,
         }
     self:request_http("getversion" , params); 
 end
@@ -208,8 +208,13 @@ function Server:mall(username,password)
             loginname=username,
             password=crypto.md5(username ..  password),
         }
+        local url="http://www.pinlegame.com/geturl.aspx?os=Shop&ver=" ..PINLE_VERSION
+        if not IS_RELEASE then
+            url=" http://test.pinlegame.com/geturl.aspx?os=Shop&ver="..PINLE_VERSION
+        end
+
         --local hp=self.login_url ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
-        local hp="http://123.57.136.223:3000/Z_Default.aspx?" ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
+        local hp=url.."id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         return  hp
 end
 
