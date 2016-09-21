@@ -135,6 +135,7 @@ function Server:setconsignee_callback()
         self:show_float_message("修改玩家收货地址:" .. self.data.err_msg)
         return
     end
+    print("保存成功")
     self:show_float_message("保存成功！")
     -- LocalData:Instance():set_getusercitybyphone(self.data)--保存玩家数据
 end

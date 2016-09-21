@@ -28,9 +28,9 @@ function FloatingLayer:show_http(is_show)
     action:gotoFrameAndPlay(0,true)
 end
 function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
-   if  self.dialog then
-          return
-    end
+   -- if  self.dialog then
+   --        return
+   --  end
     self.dialog = cc.CSLoader:createNode("Dialog.csb");
     self:addChild(self.dialog,20)
     dialogtext = self.dialog:getChildByTag(44)

@@ -118,41 +118,16 @@ function taskLayer:data_init(  )
                   title:setColor(cc.c3b(31, 119, 222))
                   title:setString(tasklist[i]["description"])
 
-                  --  local function stopAction()
-                  --        forver_move()
-                  -- end
-
-                  -- function forver_move( )
-                        
-                        local move = cc.MoveTo:create((title:getContentSize().width)/50, cc.p(-(title:getContentSize().width), 10))
-                        --local move_back = move:reverse()
-                        
-
-                         local callfunc = cc.CallFunc:create(function(node, value)
-                                title:setPosition(cc.p(title:getContentSize().width,10))
-                              end, {tag=0})
-
-                         local seq = cc.Sequence:create(move,cc.DelayTime:create(3),callfunc  )
-                        -- local callfunc = cc.CallFunc:create(function( ... )
-                              
-                        -- end)
-                        -- title:stopAllActions()
-                        -- title:runAction()
-                        local rep = cc.RepeatForever:create(seq)
-                        title:runAction(rep)
-                  -- end
-
-                  -- forver_move()
-                   
-                  --   local callfunc = cc.CallFunc:create(forver_move)
-                  --  self:runAction(cc.Sequence:create(cc.DelayTime:create(3),callfunc  ))
-            
-                 
-
-
-
-
-                  
+                        --描述动画
+                    local move = cc.MoveTo:create((title:getContentSize().width)/50, cc.p(-(title:getContentSize().width), 10))
+                    --local move_back = move:reverse()
+                     local callfunc = cc.CallFunc:create(function(node, value)
+                            title:setPosition(cc.p(title:getContentSize().width,10))
+                          end, {tag=0})
+                     local seq = cc.Sequence:create(move,cc.DelayTime:create(3),callfunc  ) 
+                    local rep = cc.RepeatForever:create(seq)
+                    title:runAction(rep)
+              
                   -- if title:getStringLength() <= 7     then
                   --    title:setFontSize(23)
                   -- elseif  title:getStringLength() >= 7   then

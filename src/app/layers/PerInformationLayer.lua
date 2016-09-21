@@ -332,8 +332,16 @@ function PerInformationLayer:touch_back( sender, eventType )
          end
     elseif  tag==235 then
          print("确定")
-         self.phone_text_mail:setVisible(false)
-         self.ads_text_mail:setVisible(false)
+         if self.name_text_mail:isVisible() then
+             self.name_text_mail:setVisible(false)
+             self.phone_text_mail:setVisible(false)
+            self.ads_text_mail:setVisible(false)
+        else
+             self.name_text_mail:setVisible(true)
+             self.phone_text_mail:setVisible(true)
+             self.ads_text_mail:setVisible(true)
+         end
+         
          self:save_mail(1)
     elseif  tag==227 then
          self.ads_bg:setVisible(true)
@@ -1296,6 +1304,11 @@ function PerInformationLayer:onEnter()
                             if  self.phone_text_mail then
                                self.phone_text_mail:setVisible(true)
                                self.ads_text_mail:setVisible(true)
+                               self.name_text_mail:setVisible(true)
+                            end
+                            if self.Receivinginformation then
+                                self:unscheduleUpdate()
+                                self.Receivinginformation:removeFromParent()
                             end
                                   
                            
