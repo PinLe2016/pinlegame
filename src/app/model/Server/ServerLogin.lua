@@ -66,11 +66,12 @@ function Server:reg(username,password)
     local device_id = cc.UserDefault:getInstance():getStringForKey("device_id")
     if platform=="mac" then platform="IOS" end
     local params = {}
-
+    local nick_sub=string.sub(username,1,3)
+     nick_sub=nick_sub.."****"..string.sub(username,8,11)
     params={
             loginname=username,
             deviceid = device_id,
-            nickname="",
+            nickname=nick_sub,
             password=crypto.md5(password),
             latitude=55000000,
             longtitude=660000000,
