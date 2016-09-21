@@ -57,31 +57,45 @@ function JackpotLayer:ctor(params)
 
 end
 function JackpotLayer:jackgoldact( )
-      self.jackgoldact = cc.CSLoader:createNode("jackgoldact.csb")
-      self:addChild(self.jackgoldact)
-      self.jackgoldactction = cc.CSLoader:createTimeline("jackgoldact.csb")
-      self.jackgoldact:runAction(self.jackgoldactction)
-      self.jackgoldactction:gotoFrameAndPlay(0,50, true)
-       local connection=self.jackgoldact:getChildByTag(224)   --连接
-       connection:addTouchEventListener(function(sender, eventType  )
+      -- self.jackgoldact = cc.CSLoader:createNode("jackgoldact.csb")
+      -- self.jackgoldact :setVisible(false)
+      -- self:addChild(self.jackgoldact)
+      -- self.jackgoldactction = cc.CSLoader:createTimeline("jackgoldact.csb")
+      -- self.jackgoldact:runAction(self.jackgoldactction)
+      -- self.jackgoldactction:gotoFrameAndPlay(0,50, true)
+      --  local connection=self.jackgoldact:getChildByTag(224)   --连接
+      --  connection:addTouchEventListener(function(sender, eventType  )
+      --            if eventType ~= ccui.TouchEventType.ended then
+      --                   return
+      --           end
+      --           print("连接")
+      --           self:fun_storebrowser()
+      --       end)
+      
+       -- local labelAtlas = ccui.TextAtlas:create()
+       local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+       local  jaclayer_data=list_table["adlist"]
+         local connection_gold=self.JackpotScene:getChildByTag(1673):getChildByTag(1675)--self.jackgoldact:getChildByTag(223)   --连接增加的金币
+         local connection12=self.JackpotScene:getChildByTag(1673)   --连接
+        connection12:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                 end
-                print("连接")
+                print("连接",jaclayer_data[1]["adurlgold"])
                 self:fun_storebrowser()
             end)
-       local connection_gold=self.jackgoldact:getChildByTag(223)   --连接增加的金币
-       connection_gold:setVisible(false)
-       local labelAtlas = ccui.TextAtlas:create()
-       local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-       local  jaclayer_data=list_table["adlist"]
+       --connection_gold:setVisible(false)
+
        if jaclayer_data[1]["adurlgold"] then
-          labelAtlas:setProperty(tostring(jaclayer_data[1]["adurlgold"]), "png/jackftt.png", 16, 20, "0")
+          --labelAtlas:setProperty(tostring(jaclayer_data[1]["adurlgold"]), "png/jackftt.png", 16, 20, "0")
+          connection_gold:setString(tostring(jaclayer_data[1]["adurlgold"]))
       else
-        labelAtlas:setProperty("0", "png/jackftt.png", 16, 20, "0")
+        --labelAtlas:setProperty("0", "png/jackftt.png", 16, 20, "0")
+        connection12:setVisible(false)
+        connection_gold:setString("0")
        end
-       labelAtlas:setPosition(cc.p(connection_gold:getPositionX(),connection_gold:getPositionY()))  
-       self.jackgoldact:addChild(labelAtlas) 
+      -- labelAtlas:setPosition(cc.p(-connection_gold:getPositionX(),-connection_gold:getPositionY()))  
+      -- self.jackgoldact:addChild(labelAtlas) 
 end
 function JackpotLayer:init(  )
 

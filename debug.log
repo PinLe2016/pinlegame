@@ -40,207 +40,414 @@ LOAD LUA FILE: /Users/lixin/Documents/quick-3.3/projest/pinlegame/src/main.lua
 libpng warning: iCCP: known incorrect sRGB profile
 [LUA-print] [INFO] # CONFIG_SCREEN_AUTOSCALE      = FIXED_WIDTH
 [LUA-print] [INFO] # CONFIG_SCREEN_WIDTH          = 640.00
-[LUA-print] [INFO] # CONFIG_SCREEN_HEIGHT         = 1136.00
+[LUA-print] [INFO] # CONFIG_SCREEN_HEIGHT         = 960.00
 [LUA-print] [INFO] # display.widthInPixels        = 640.00
-[LUA-print] [INFO] # display.heightInPixels       = 1136.00
+[LUA-print] [INFO] # display.heightInPixels       = 960.00
 [LUA-print] [INFO] # display.contentScaleFactor   = 1.00
 [LUA-print] [INFO] # display.width                = 640.00
-[LUA-print] [INFO] # display.height               = 1136.00
+[LUA-print] [INFO] # display.height               = 960.00
 [LUA-print] [INFO] # display.cx                   = 320.00
-[LUA-print] [INFO] # display.cy                   = 568.00
+[LUA-print] [INFO] # display.cy                   = 480.00
 [LUA-print] [INFO] # display.left                 = 0.00
 [LUA-print] [INFO] # display.right                = 640.00
-[LUA-print] [INFO] # display.top                  = 1136.00
+[LUA-print] [INFO] # display.top                  = 960.00
 [LUA-print] [INFO] # display.bottom               = 0.00
 [LUA-print] [INFO] # display.c_left               = -320.00
 [LUA-print] [INFO] # display.c_right              = 320.00
-[LUA-print] [INFO] # display.c_top                = 568.00
-[LUA-print] [INFO] # display.c_bottom             = -568.00
+[LUA-print] [INFO] # display.c_top                = 480.00
+[LUA-print] [INFO] # display.c_bottom             = -480.00
 [LUA-print] [INFO] #
 libpng warning: iCCP: known incorrect sRGB profile
-[LUA-print] 入口后台差异检测测试---
 [LUA-print] create device_id 8d60d8965be7e2d05d8d09ba1ee842e5
 suffix = csb
 textureSize = 0
 classname = Node
-size = 26
+size = 3
+classname = ImageView
+callBackName  cannot be found
+size = 4
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a205800
+classname = ImageView
+libpng warning: iCCP: known incorrect sRGB profile
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a986800
+classname = ImageView
+libpng warning: iCCP: known incorrect sRGB profile
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a98aa00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a98bc00
+child = 0x7f8d5a204600
+classname = LoadingBar
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a997a00
+classname = Sprite
+size = 0
+child = 0x7f8d5a999c00
+suffix = csb
+frameType = TextureFrame
+[LUA-print] dump from: [string "app/model/Server/Server.lua"]:71: in function 'request_version'
+[LUA-print] - "<var>" = "http://test.pinlegame.com/geturl.aspx?os=%s&ver=%s"
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:54: in function 'get_music'
+[LUA-print] - "<var>" = false
+[LUA-print] VERSION_LINK
+[LUA-print] SURPRIS_SCENE
+[LUA-print] REGISTRATIONCODE
+[LUA-print] REG
+[LUA-print] PASSWOEDCHANGE
+[LUA-print] VERRSION
+[LUA-print] dump from: [string "app/model/Server/ServerLogin.lua"]:23: in function 'version_login_url_callback'
+[LUA-print] - "<var>" = "http://123.57.136.223:2036/Default.aspx?"
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a00b800
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a856200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a290000
+child = 0x7f8d5a20aa00
+suffix = csb
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=PINLEGAME&md5=528c1a479334b0371b77ec9ea420c3a1	{"functionparams":{"devicetype":"mac","versioncode":"3.0.0"},"methodtype":"json","functionname":"getversion","createtime":1474423428}
+[LUA-print] dump from: [string "app/scenes/LoginScene.lua"]:752: in function 'getVersionInfo'
+[LUA-print] - "<var>" = {
+[LUA-print] -     "Isused"         = 0
+[LUA-print] -     "downloadIsused" = 0
+[LUA-print] -     "downloadupdate" = 0
+[LUA-print] -     "err_code"       = 0
+[LUA-print] -     "forcedupdate"   = 1
+[LUA-print] -     "masterURL"      = "http://playios.pinlegame.com/Version.aspx"
+[LUA-print] -     "masterVersion"  = "1.0.6"
+[LUA-print] -     "url"            = "http://www.pinlegame.com/download/IOS/package.zip"
+[LUA-print] -     "versioncode"    = "1.0.6"
+[LUA-print] - }
+[LUA-print] 哈哈  	0	httpgame.PinleGame.comheadheadicon_0.jpg
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a0d6400
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a244000
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a251c00
+child = 0x7f8d5a005a00
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{"pageno":1,"pagesize":7},"methodtype":"json","functionname":"getaffichelist","createtime":1474423430}
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a923000
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9e3200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9f0c00
+child = 0x7f8d5a9d9400
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{},"methodtype":"json","functionname":"gettasklist","createtime":1474423430}
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9ea000
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9fb600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa09200
+child = 0x7f8d5a9e2600
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{},"methodtype":"json","functionname":"getusercitybyphone","createtime":1474423430}
+suffix = csb
+textureSize = 0
+classname = Node
+size = 34
 classname = ImageView
 callBackName  cannot be found
 size = 8
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d0c3600
+child = 0x7f8d5a256c00
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d0fa600
+child = 0x7f8d5a2afc00
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c23ea00
+child = 0x7f8d5a2b1e00
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c8cfa00
+child = 0x7f8d5a2b4000
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c8a1a00
+child = 0x7f8d5a2b6200
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c8ba600
+child = 0x7f8d5a2b8400
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d0f2c00
+child = 0x7f8d5a2ba800
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c8bb800
-child = 0x7f8a1d0c2400
+child = 0x7f8d5a2bca00
+child = 0x7f8d5a245000
+classname = ImageView
+Get data from file(cre/Mlabalan.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2bec00
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d0fb200
-classname = ImageView
-callBackName  cannot be found
-size = 0
-child = 0x7f8a1d0fd400
+child = 0x7f8d5a2bf800
 classname = Text
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d0ff600
+child = 0x7f8d5a2c1a00
 classname = Text
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d110400
+child = 0x7f8d5a2d6a00
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d11e000
+child = 0x7f8d5a2e3600
 classname = Text
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d120c00
+child = 0x7f8d5a2e5800
+classname = Button
+libpng warning: iCCP: known incorrect sRGB profile
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2f4200
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d12da00
-classname = Button
-callBackName  cannot be found
-size = 0
-child = 0x7f8a1d133800
+child = 0x7f8d5a32c400
 classname = Text
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d13ac00
+child = 0x7f8d5aa02800
 classname = Text
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d13f000
+child = 0x7f8d5aa17e00
 classname = ImageView
+Get data from file(cre/Mshezhikuang.png) failed!
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d146000
-classname = ImageView
-callBackName  cannot be found
-size = 3
+child = 0x7f8d5a337a00
 classname = Button
+Get data from file(cre/Mshezhianniu.png) failed!
+Get data from file(cre/Mshezhianniu.png) failed!
+Get data from file(cre/Mshezhianniu.png) failed!
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d148e00
-classname = Button
-callBackName  cannot be found
-size = 0
-child = 0x7f8a1d14e200
-classname = Button
-callBackName  cannot be found
-size = 0
-child = 0x7f8a1d16c800
-child = 0x7f8a1d141400
-classname = Button
-callBackName  cannot be found
-size = 0
-child = 0x7f8a1d157000
-classname = Button
-callBackName  cannot be found
-size = 0
-child = 0x7f8a1d15e400
+child = 0x7f8d5a335800
 classname = LoadingBar
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d17f200
+child = 0x7f8d5aa0f800
+classname = Button
+libpng warning: iCCP: known incorrect sRGB profile
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa22400
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d11ec00
+child = 0x7f8d5aa2dc00
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d167c00
+child = 0x7f8d5aa33600
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d187a00
+child = 0x7f8d5aa2a200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa39000
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d19da00
+child = 0x7f8d5aa3b800
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a295800
+classname = Button
+libpng warning: iCCP: known incorrect sRGB profile
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa7a600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa40200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2a0200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2a1400
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a303000
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a304200
 classname = ImageView
 Get data from file(Default/ImageFile.png) failed!
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c278c00
+child = 0x7f8d5a305400
 classname = ImageView
+Get data from file(cre/1activity_phblistBG.png) failed!
 callBackName  cannot be found
 size = 3
 classname = ImageView
+Get data from file(cre/1activity_button_down.png) failed!
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c2a5a00
+child = 0x7f8d5a2f9600
 classname = TextField
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c2aca00
+child = 0x7f8d5a2fa200
+classname = Button
+Get data from file(cre/1activity_button7.png) failed!
+Get data from file(cre/1activity_button8.png) failed!
+Get data from file(cre/1activity_button7.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa43c00
+child = 0x7f8d5a306000
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c2b6600
-child = 0x7f8a1c29a000
-classname = Button
-callBackName  cannot be found
+child = 0x7f8d5a2fb600
+classname = Sprite
+Get data from file(png/shezhi6.png) failed!
 size = 0
-child = 0x7f8a1d1a5400
-classname = ImageView
-callBackName  cannot be found
-size = 0
-child = 0x7f8a1d1b8600
+child = 0x7f8d5a307200
 classname = ImageView
 callBackName  cannot be found
 size = 4
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2cfe00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a308a00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a30e400
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a30f600
+child = 0x7f8d5a307800
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a311a00
+classname = ImageView
+callBackName  cannot be found
+size = 6
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a31a200
 classname = Text
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d1b3e00
+child = 0x7f8d5a37bc00
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d1b0e00
+child = 0x7f8d5aa4ee00
 classname = CheckBox
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d196600
+child = 0x7f8d5aa47c00
 classname = CheckBox
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c2c6a00
-child = 0x7f8a1c2d1800
+child = 0x7f8d5aa4b200
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c2c9400
+child = 0x7f8d5aa56a00
+child = 0x7f8d5a319000
 suffix = csb
 frameType = PositionFrame
 frameType = ScaleFrame
@@ -255,61 +462,1131 @@ size = 6
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d17fe00
+child = 0x7f8d5a2a2600
 classname = ImageView
 callBackName  cannot be found
-size = 1
-classname = Text
+size = 0
+child = 0x7f8d5a2a3800
+classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c8d2e00
-child = 0x7f8a1d0f0400
+child = 0x7f8d5a2a4a00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2a5c00
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c2d5600
+child = 0x7f8d5a2a6e00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a38f600
+suffix = csb
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+[LUA-print] touxiang   	png/httpgame.pinlegame.comheadheadicon_0.jpg
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:54: in function 'get_music'
+[LUA-print] - "<var>" = false
+[LUA-print] [INFO] audio.stopMusic() - isReleaseData: true
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:54: in function 'get_music'
+[LUA-print] - "<var>" = false
+[LUA-print] 抱歉无法播放音乐
+[LUA-print] CHECK_POST
+[LUA-print] USERINFOINIT_LAYER_IMAGE
+[LUA-print] CHECKINHISTORY_POST
+[LUA-print] AFFICHLIST
+cocos2d: removeChildByTag(tag = 250): child not found!
+[LUA-print] dump from: [string "app/model/Server/ServerUserData.lua"]:157: in function 'getaffichelist_callback'
+[LUA-print] - "<var>" = {
+[LUA-print] -     "affichelist" = {
+[LUA-print] -         1 = {
+[LUA-print] -             "createtime" = "2016-09-18"
+[LUA-print] -             "id"         = "acdd314c-e08c-4d6f-99e7-6fe120348ba0"
+[LUA-print] -             "isread"     = 0
+[LUA-print] -             "title"      = "8"
+[LUA-print] -         }
+[LUA-print] -         2 = {
+[LUA-print] -             "createtime" = "2016-09-18"
+[LUA-print] -             "id"         = "7d82ee52-618a-4898-ae1c-cd5160af4c85"
+[LUA-print] -             "isread"     = 0
+[LUA-print] -             "title"      = "7"
+[LUA-print] -         }
+[LUA-print] -         3 = {
+[LUA-print] -             "createtime" = "2016-09-18"
+[LUA-print] -             "id"         = "613eeb19-50bd-4dff-a7ca-211d81560974"
+[LUA-print] -             "isread"     = 0
+[LUA-print] -             "title"      = "6"
+[LUA-print] -         }
+[LUA-print] -         4 = {
+[LUA-print] -             "createtime" = "2016-09-18"
+[LUA-print] -             "id"         = "06b220f3-2481-4016-ad64-0b733ab192cf"
+[LUA-print] -             "isread"     = 0
+[LUA-print] -             "title"      = "5"
+[LUA-print] -         }
+[LUA-print] -         5 = {
+[LUA-print] -             "createtime" = "2016-09-18"
+[LUA-print] -             "id"         = "a7bfd1ec-b889-4b7b-b8d3-3e1b0eacd21e"
+[LUA-print] -             "isread"     = 0
+[LUA-print] -             "title"      = "4"
+[LUA-print] -         }
+[LUA-print] -         6 = {
+[LUA-print] -             "createtime" = "2016-09-18"
+[LUA-print] -             "id"         = "ce91cdf5-07d0-4a73-ba8a-ea335e9797df"
+[LUA-print] -             "isread"     = 0
+[LUA-print] -             "title"      = "3"
+[LUA-print] -         }
+[LUA-print] -         7 = {
+[LUA-print] -             "createtime" = "2016-09-18"
+[LUA-print] -             "id"         = "12340f62-9749-45fa-afeb-5dec4fb6397a"
+[LUA-print] -             "isread"     = 0
+[LUA-print] -             "title"      = "2"
+[LUA-print] -         }
+[LUA-print] -     }
+[LUA-print] -     "err_code"    = 0
+[LUA-print] - }
+cocos2d: removeChildByTag(tag = 250): child not found!
+cocos2d: removeChildByTag(tag = 250): child not found!
+[LUA-print] dump from: [string "app/model/Server/ServerUserData.lua"]:101: in function 'getusercitybyphone_callback'
+[LUA-print] - "<var>" = {
+[LUA-print] -     "cityid"       = 551
+[LUA-print] -     "cityname"     = "北京"
+[LUA-print] -     "err_code"     = 0
+[LUA-print] -     "provinceid"   = 264
+[LUA-print] -     "provincename" = "北京"
+[LUA-print] - }
+suffix = csb
+textureSize = 0
+classname = Node
+size = 4
+classname = ImageView
+callBackName  cannot be found
+size = 1
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a005a00
+child = 0x7f8d5a2c6000
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a051c00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a379800
+classname = ListView
+callBackName  cannot be found
+size = 1
+classname = Panel
+callBackName  cannot be found
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 13
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4aba00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4a4a00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4adc00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4aee00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4a9800
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4b0400
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4b1600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4c4a00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4cec00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4dbe00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa38400
+classname = ImageView
+libpng warning: iCCP: known incorrect sRGB profile
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa12600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a857a00
+child = 0x7f8d5a4a2800
+classname = ImageView
+callBackName  cannot be found
+size = 13
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac4ec00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac4fe00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac51000
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac52200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac53400
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac54600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac55800
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac72e00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac79e00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac85400
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac91200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac94800
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac95a00
+child = 0x7f8d5a986800
+child = 0x7f8d5a334400
+child = 0x7f8d5a2cc200
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:54: in function 'get_music'
+[LUA-print] - "<var>" = false
+[LUA-print] [INFO] audio.stopMusic() - isReleaseData: true
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:54: in function 'get_music'
+[LUA-print] - "<var>" = false
+[LUA-print] 抱歉无法播放音乐
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa4d600
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9fac00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9a9800
+child = 0x7f8d5aa26600
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{"adownerid":"","pageno":1,"pagesize":6},"methodtype":"json","functionname":"getgoldspoollist","createtime":1474423432}
+[LUA-print] JACKPOTLIST_POST
+[LUA-print] JACKPOTLIST_PIC_POST
+[LUA-print] AUTOMATICPUZZLE
+Inner height <= scrollview height, it will be force sized!
+[LUA-print] dump from: [string "app/model/Server/ServerJackpot.lua"]:17: in function 'getgoldspoollist_callback'
+[LUA-print] - "<var>" = {
+[LUA-print] -     "err_code"   = 0
+[LUA-print] -     "goldspools" = {
+[LUA-print] -         1 = {
+[LUA-print] -             "adowner"        = "青岛拼乐广告主"
+[LUA-print] -             "adownerid"      = "744ff926-1c0f-43b1-95f8-2c85423c860c"
+[LUA-print] -             "begintime"      = 1472695200
+[LUA-print] -             "finishtime"     = 1475200800
+[LUA-print] -             "goldsamount"    = 500000
+[LUA-print] -             "goldspoolcount" = 1
+[LUA-print] -             "goldsremain"    = 499047
+[LUA-print] -             "id"             = "f5277aa8-8c10-4e2a-b587-3d1fa29ce999"
+[LUA-print] -             "imageurl"       = "http://www.PinleGame.com/GameImage/735f7b23-81ac-4e04-bb51-f1f27878fb73.jpg"
+[LUA-print] -             "name"           = "徽盐证券"
+[LUA-print] -             "playtimes"      = 2
+[LUA-print] -         }
+[LUA-print] -         2 = {
+[LUA-print] -             "adowner"        = "北京拼乐广告主"
+[LUA-print] -             "adownerid"      = "acd1a305-2e27-4e43-aaa1-9e1d443af94f"
+[LUA-print] -             "begintime"      = 1474250400
+[LUA-print] -             "finishtime"     = 1482112800
+[LUA-print] -             "goldsamount"    = 500000
+[LUA-print] -             "goldspoolcount" = 1
+[LUA-print] -             "goldsremain"    = 499952
+[LUA-print] -             "id"             = "663951c0-2122-423c-b9ce-6f5833175873"
+[LUA-print] -             "imageurl"       = "http://www.PinleGame.com/GameImage/81441cfb-5e7d-43ee-baac-0dbb17e3e849.jpg"
+[LUA-print] -             "name"           = "有线宽带"
+[LUA-print] -             "playtimes"      = 0
+[LUA-print] -         }
+[LUA-print] -         3 = {
+[LUA-print] -             "adowner"        = "北京拼乐广告主"
+[LUA-print] -             "adownerid"      = "acd1a305-2e27-4e43-aaa1-9e1d443af94f"
+[LUA-print] -             "begintime"      = 1474250400
+[LUA-print] -             "finishtime"     = 1482112800
+[LUA-print] -             "goldsamount"    = 500000
+[LUA-print] -             "goldspoolcount" = 1
+[LUA-print] -             "goldsremain"    = 499941
+[LUA-print] -             "id"             = "aa3bceca-94a4-4d9f-b8f2-ec6ca988964e"
+[LUA-print] -             "imageurl"       = "http://www.PinleGame.com/GameImage/db62bf8d-1bf2-4884-a99d-35adeed8643b.jpg"
+[LUA-print] -             "name"           = "速普母婴"
+[LUA-print] -             "playtimes"      = 0
+[LUA-print] -         }
+[LUA-print] -         4 = {
+[LUA-print] -             "adowner"        = "北京拼乐广告主"
+[LUA-print] -             "adownerid"      = "acd1a305-2e27-4e43-aaa1-9e1d443af94f"
+[LUA-print] -             "begintime"      = 1474250400
+[LUA-print] -             "finishtime"     = 1479520800
+[LUA-print] -             "goldsamount"    = 500000
+[LUA-print] -             "goldspoolcount" = 1
+[LUA-print] -             "goldsremain"    = 499949
+[LUA-print] -             "id"             = "27e12d12-2673-414d-af38-7f6d9064ea85"
+[LUA-print] -             "imageurl"       = "http://www.PinleGame.com/GameImage/326f7132-09f3-4fa4-b9b4-5bad336eb2c8.jpg"
+[LUA-print] -             "name"           = "创维电视"
+[LUA-print] -             "playtimes"      = 0
+[LUA-print] -         }
+[LUA-print] -         5 = {
+[LUA-print] -             "adowner"        = "北京拼乐广告主"
+[LUA-print] -             "adownerid"      = "acd1a305-2e27-4e43-aaa1-9e1d443af94f"
+[LUA-print] -             "begintime"      = 1474250400
+[LUA-print] -             "finishtime"     = 1482112800
+[LUA-print] -             "goldsamount"    = 500000
+[LUA-print] -             "goldspoolcount" = 1
+[LUA-print] -             "goldsremain"    = 499913
+[LUA-print] -             "id"             = "2cf3d056-64f1-4433-92ff-8bf9d577c3f8"
+[LUA-print] -             "imageurl"       = "http://www.PinleGame.com/GameImage/63594f0a-1ded-45bb-9d6d-adba3234b1ab.jpg"
+[LUA-print] -             "name"           = "奥古特"
+[LUA-print] -             "playtimes"      = 0
+[LUA-print] -         }
+[LUA-print] -     }
+[LUA-print] -     "totalgolds" = 3504447
+[LUA-print] - }
+[LUA-print] dump from: [string "app/scenes/GoldprizeScene.lua"]:127: in function 'data_init'
+[LUA-print] - "<var>" = 1
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a33be00
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a04ac00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a340a00
+child = 0x7f8d5a316800
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{"goldspoolid":"f5277aa8-8c10-4e2a-b587-3d1fa29ce999"},"methodtype":"json","functionname":"getgoldspoolbyid","createtime":1474423437}
+[LUA-print] dump from: [string "app/model/Server/ServerJackpot.lua"]:66: in function 'getgoldspoolbyid_callback'
+[LUA-print] - "<var>" = {
+[LUA-print] -     "adownerid"        = "744ff926-1c0f-43b1-95f8-2c85423c860c"
+[LUA-print] -     "begintime"        = 1472695200
+[LUA-print] -     "coolingtime"      = 0
+[LUA-print] -     "doublecardamount" = 0
+[LUA-print] -     "err_code"         = 0
+[LUA-print] -     "finishtime"       = 1475200800
+[LUA-print] -     "getcardamount"    = 2
+[LUA-print] -     "id"               = "f5277aa8-8c10-4e2a-b587-3d1fa29ce999"
+[LUA-print] -     "playcardamount"   = 2
+[LUA-print] -     "remaingolds"      = 499047
+[LUA-print] -     "title"            = "徽盐证券"
+[LUA-print] -     "totalgolds"       = 500000
+[LUA-print] - }
+[LUA-print] 88888dsf  	f5277aa8-8c10-4e2a-b587-3d1fa29ce999	  	744ff926-1c0f-43b1-95f8-2c85423c860c
+suffix = csb
+textureSize = 0
+classname = Node
+size = 17
+classname = ImageView
+callBackName  cannot be found
+size = 8
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5b104200
+classname = ImageView
+Get data from file(cre/main_headBG.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a316800
+classname = ImageView
+Get data from file(cre/main_line.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4bc600
+classname = ImageView
+Get data from file(cre/Battle_timeNum.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a107000
+classname = ImageView
+Get data from file(cre/Battle_runNum.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a04ac00
+classname = ImageView
+Get data from file(cre/main_barBG.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a28fc00
+classname = ImageView
+Get data from file(cre/public_gold.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4c4000
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a337600
+child = 0x7f8d5aa7c800
+classname = ImageView
+Get data from file(cre/main_head1.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4de000
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a37d800
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2fd600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4b4a00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a38f600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2ac000
+classname = Button
+Get data from file(cre/Battle_backUp.png) failed!
+Get data from file(cre/Battle_backDown.png) failed!
+Get data from file(cre/Battle_backDown.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a308200
+classname = Button
+Get data from file(cre/Battle_voiceUp.png) failed!
+Get data from file(cre/Battle_voiceDown.png) failed!
+Get data from file(cre/Battle_voiceDown.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2d9800
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4e9000
+classname = LoadingBar
+Get data from file(cre/main_bar.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2e0800
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2e1400
+classname = ImageView
+Get data from file(cre/over_lhj_liang2.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2d6400
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2d0000
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2a1400
+classname = ImageView
+callBackName  cannot be found
+size = 7
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2a4800
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a85c000
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac63200
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9f0600
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a522800
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a52a600
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a526a00
+child = 0x7f8d5a2a2600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a52e200
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:54: in function 'get_music'
+[LUA-print] - "<var>" = false
+[LUA-print] [INFO] audio.stopMusic() - isReleaseData: true
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:54: in function 'get_music'
+[LUA-print] - "<var>" = false
+[LUA-print] 抱歉无法播放音乐
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5acb1a00
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa26600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa19c00
+child = 0x7f8d5aa1aa00
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{"goldspoolid":"f5277aa8-8c10-4e2a-b587-3d1fa29ce999"},"methodtype":"json","functionname":"getgoldspooladlist","createtime":1474423437}
+[LUA-print] ACTIVITYYADLIST_LAYER_IMAGE
+[LUA-print] ACTIVITYYADLISTPIC_LAYER_IMAGE
+[LUA-print] PRIZEPOOLDETAILS
+[LUA-print] dump from: [string "app/model/Server/ServerJackpot.lua"]:43: in function 'getgoldspooladlist_callback'
+[LUA-print] - "<var>" = {
+[LUA-print] -     "adlist" = {
+[LUA-print] -         1 = {
+[LUA-print] -             "addetailurl" = "http://qq.com"
+[LUA-print] -             "adid"        = "2aecbb26-548b-4115-9df8-7559df28cab3"
+[LUA-print] -             "adtitle"     = "2"
+[LUA-print] -             "adurlgold"   = 20
+[LUA-print] -             "imgurl"      = "http://www.PinleGame.com/GameImage/2b26deb4-3da6-4694-a435-3fc1ca145d94.jpg"
+[LUA-print] -         }
+[LUA-print] -     }
+[LUA-print] -     "err_code"    = 0
+[LUA-print] -     "goldspoolid" = "f5277aa8-8c10-4e2a-b587-3d1fa29ce999"
+[LUA-print] - }
+[LUA-print] dump from: [string "app/model/Server/Server.lua"]:287: in function 'acton_request_finished_pic'
+[LUA-print] - "<var>" = "/Users/lixin/Documents/quick-3.3/projest/pinlegame/down_pic/httpwww.PinleGame.comGameImage2b26deb4-3da6-4694-a435-3fc1ca145d94.jpg"
+suffix = csb
+textureSize = 0
+classname = Node
+size = 4
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a1c4800
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a211a00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a316e00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a970200
+[LUA-print] 6666666666555 .	httpwww.PinleGame.comGameImage2b26deb4-3da6-4694-a435-3fc1ca145d94.jpg
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa86400
+classname = Sprite
+Get data from file(cre/1activity_publiclight.png) failed!
+size = 0
+child = 0x7f8d5ad01800
+suffix = csb
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+frameType = TextureFrame
+[LUA-print] 开心  	1
+[LUA-print] GAMERECORD_POST
+[LUA-print] 22222222
+[LUA-print] 22222222
+[LUA-print] 22222222
+[LUA-print] 22222222
+[LUA-print] 22222222
+[LUA-print] 22222222
+[LUA-print] 成功
+suffix = csb
+textureSize = 0
+classname = Node
+size = 4
+classname = Sprite
+size = 0
+child = 0x7f8d5a316e00
+classname = ImageView
+Get data from file(png/guang.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a211a00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a31e000
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa86400
+suffix = csb
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+suffix = csb
+textureSize = 0
+classname = Node
+size = 4
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a8e7e00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a952800
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a80d600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa4d600
+[LUA-print] jdfjskdjf  	2aecbb26-548b-4115-9df8-7559df28cab3
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a857a00
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5acad800
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a30bc00
+child = 0x7f8d5aa0f800
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{"adid":"2aecbb26-548b-4115-9df8-7559df28cab3","imageid":"9D2E7A7B-369C-4719-B4D8-0A4EBC5DDE57","time":"54","steps":"steps1","finishtime":1474423449,"gamesettingid":"FE9ABC0E-CEE5-4F11-9BC3-16E0EE4A342C","starttime":1474423449},"methodtype":"json","functionname":"setgamerecord","createtime":1474423449}
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 5
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a856200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a30bc00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2fee00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a044200
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a0dc600
+child = 0x7f8d5aa0f800
+classname = ImageView
+callBackName  cannot be found
+size = 4
 classname = ImageView
 callBackName  cannot be found
 size = 2
 classname = ImageView
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c2e8800
+child = 0x7f8d5a0fe200
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2c1a00
+child = 0x7f8d5a178a00
 classname = Text
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1c2e9a00
-child = 0x7f8a1c2e6600
+child = 0x7f8d5a37c200
 classname = Button
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d832c00
+child = 0x7f8d5a385a00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4c4600
+child = 0x7f8d5a4a8200
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9fac00
+classname = ImageView
+callBackName  cannot be found
+size = 2
 classname = Text
 callBackName  cannot be found
 size = 0
-child = 0x7f8a1d87c400
-[LUA-print] dump from: [string "app/scenes/MainInterfaceScene.lua"]:107: in function 'userdata'
-[LUA-print] - "<var>" = {
-[LUA-print] -     "birthday"     = 631123200
-[LUA-print] -     "cityid"       = 1
-[LUA-print] -     "cityname"     = "烟台"
-[LUA-print] -     "err_code"     = 0
-[LUA-print] -     "gender"       = 0
-[LUA-print] -     "golds"        = 20157
-[LUA-print] -     "grade"        = 0
-[LUA-print] -     "imageUrl"     = "http://game.PinleGame.com/head/headicon_0.jpg"
-[LUA-print] -     "loginkey"     = "B12F224B927C6056DE0CB1DFAE0C1EA8"
-[LUA-print] -     "loginname"    = "12345678912"
-[LUA-print] -     "nickname"     = "昵称55555"
-[LUA-print] -     "points"       = 1368
-[LUA-print] -     "provincename" = "山东"
-[LUA-print] -     "rankname"     = "平民"
-[LUA-print] - }
-[LUA-print] hahhahhahahhahfewahiufhewfh
-[LUA-print] dump from: [string "app/model/Server/ServerLogin.lua"]:23: in function 'version_login_url_callback'
-[LUA-print] - "<var>" = "http://123.57.136.223:2036/Default.aspx?"
-[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:51: in function 'get_music'
+child = 0x7f8d5a988e00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a392200
+child = 0x7f8d5a99c200
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{"count":10},"methodtype":"json","functionname":"getrecentgoldslist","createtime":1474423449}
+suffix = csb
+textureSize = 0
+classname = Node
+size = 33
+classname = ImageView
+callBackName  cannot be found
+size = 7
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a2c9400
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a0e0a00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a1a8200
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a989400
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4edc00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5b818600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5b81b600
+child = 0x7f8d5a143200
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5b81f400
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5b858000
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a8f8800
+classname = PageView
+callBackName  cannot be found
+size = 1
+classname = Panel
+callBackName  cannot be found
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a9aa400
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a94a200
+child = 0x7f8d5a980000
+child = 0x7f8d5aa23400
+classname = Button
+Get data from file(cre/Mtianjiakuang.png) failed!
+Get data from file(cre/Mtianjiakuang.png) failed!
+Get data from file(cre/Mtianjiakuang.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5acfe000
+classname = Button
+Get data from file(cre/Mtianjiakuang.png) failed!
+Get data from file(cre/Mtianjiakuang.png) failed!
+Get data from file(cre/Mtianjiakuang.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a529a00
+classname = ListView
+callBackName  cannot be found
+size = 1
+classname = Panel
+callBackName  cannot be found
+size = 2
+classname = CheckBox
+Get data from file(cre/Battle_See.png) failed!
+Get data from file(cre/Battle_See.png) failed!
+Get data from file(cre/1activity_hguang.png) failed!
+Get data from file(cre/Battle_See.png) failed!
+Get data from file(Default/CheckBoxNode_Disable.png) failed!
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a1c6e00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a318400
+child = 0x7f8d5a2eac00
+child = 0x7f8d5a2d5a00
+classname = ImageView
+Get data from file(cre/landingbg_2.png) failed!
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4cc800
+classname = ListView
+callBackName  cannot be found
+size = 1
+classname = Panel
+callBackName  cannot be found
+size = 3
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a95f600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5aa1ea00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a966200
+child = 0x7f8d5ac7cc00
+child = 0x7f8d5a9dea00
+child = 0x7f8d5a4cbc00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac94600
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad2ac00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a955400
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac99400
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac8a400
+classname = ImageView
+callBackName  cannot be found
+size = 3
+classname = Sprite
+size = 0
+child = 0x7f8d5ad67e00
+classname = Sprite
+size = 0
+child = 0x7f8d5ad63c00
+classname = Sprite
+size = 0
+child = 0x7f8d5ad64200
+child = 0x7f8d5ad68a00
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5acf5600
+classname = ImageView
+libpng warning: iCCP: known incorrect sRGB profile
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5acee600
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5acf0800
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad25600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad29c00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad15200
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad1a600
+classname = ImageView
+callBackName  cannot be found
+size = 1
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad6ca00
+child = 0x7f8d5ad20a00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad77a00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad88200
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad89400
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a295000
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a108e00
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a4bb800
+classname = CheckBox
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a185200
+classname = ImageView
+callBackName  cannot be found
+size = 1
+classname = Sprite
+size = 1
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a109600
+child = 0x7f8d5a1e0000
+child = 0x7f8d5a1dee00
+classname = ImageView
+callBackName  cannot be found
+size = 5
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a1e4000
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a1e5200
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad94e00
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5b0f8800
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5b0fc600
+child = 0x7f8d5a14ec00
+classname = Button
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ad9c600
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5adaa400
+child = 0x7f8d5b10c400
+suffix = csb
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+frameType = PositionFrame
+frameType = ScaleFrame
+frameType = RotationSkewFrame
+frameType = TextureFrame
+suffix = csb
+textureSize = 0
+classname = Node
+size = 2
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a0ff200
+classname = ImageView
+callBackName  cannot be found
+size = 2
+classname = Text
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a311a00
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a196000
+child = 0x7f8d5a347000
+suffix = csb
+[LUA-print] ---url---	http://123.57.136.223:2036/Default.aspx?type=json&key=18810673238&md5=521ba132e3cb837f8c1a2d85b26821c9	{"functionparams":{"goldspoolid":"f5277aa8-8c10-4e2a-b587-3d1fa29ce999"},"methodtype":"json","functionname":"getgoldspoolbyid","createtime":1474423449}
+[LUA-print] dump from: [string "app/model/LocalData/LocalLogin.lua"]:54: in function 'get_music'
 [LUA-print] - "<var>" = false
-[LUA-print] 抱歉无法播放音乐
-[LUA-print] CHECK_POST
-[LUA-print] CHECKINHISTORY_POST
+[LUA-print] [INFO] audio.stopMusic() - isReleaseData: true
+[LUA-print] JIGSAWCOUNT
+[LUA-print] JACKPOTLIST_INFOR_POST
+[LUA-print] JACKPOTLISTPIC_INFOR_POST
+[LUA-print] BACKSUPPOR
+[LUA-print] poolrandomgolds
+Inner height <= scrollview height, it will be force sized!
+cocos2d: removeChildByTag(tag = 250): child not found!
+[LUA-print] dump from: [string "app/model/Server/ServerJackpot.lua"]:66: in function 'getgoldspoolbyid_callback'
+[LUA-print] - "<var>" = {
+[LUA-print] -     "adownerid"        = "744ff926-1c0f-43b1-95f8-2c85423c860c"
+[LUA-print] -     "begintime"        = 1472695200
+[LUA-print] -     "coolingtime"      = 0
+[LUA-print] -     "doublecardamount" = 0
+[LUA-print] -     "err_code"         = 0
+[LUA-print] -     "finishtime"       = 1475200800
+[LUA-print] -     "getcardamount"    = 2
+[LUA-print] -     "id"               = "f5277aa8-8c10-4e2a-b587-3d1fa29ce999"
+[LUA-print] -     "playcardamount"   = 2
+[LUA-print] -     "remaingolds"      = 499047
+[LUA-print] -     "title"            = "徽盐证券"
+[LUA-print] -     "totalgolds"       = 500000
+[LUA-print] - }
+[LUA-print] 劲舞团
+[LUA-print] 22222222222
+cocos2d: removeChildByTag(tag = 250): child not found!
+[LUA-print] 连接	20
+suffix = csb
+textureSize = 0
+classname = Node
+size = 3
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ac7a600
+classname = Button
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5ada8800
+classname = ImageView
+callBackName  cannot be found
+size = 0
+child = 0x7f8d5a213400
+[LUA-print] ----------------------------------------
+[LUA-print] LUA ERROR: [string "app/layers/JackpotLayer.lua"]:302: attempt to index field 'WebView' (a nil value)
+
+[LUA-print] 
+stack traceback:
+	[string "app/layers/JackpotLayer.lua"]:302: in function 'fun_storebrowser'
+	[string "app/layers/JackpotLayer.lua"]:85: in function <[string "app/layers/JackpotLayer.lua"]:80>
+[LUA-print] ----------------------------------------
