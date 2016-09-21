@@ -23,6 +23,9 @@ function SurpriseOverScene:ctor(params)--params
         self.floating_layer = FloatingLayerEx.new()
         self.floating_layer:addTo(self,1000)
         self.actid=LocalData:Instance():get_actid()
+
+        LocalData:Instance():set_getactivitypoints(nil)
+        
         self:init()
         
         --self:listener_home() --注册安卓返回键

@@ -281,7 +281,17 @@ function PerInformationLayer:fun_mail(  )
         if _getconsignee["provincename"]  then 
             self.province=tostring(_getconsignee["provincename"])
             self.city=tostring(_getconsignee["cityname"])
+        else
+            local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+ 
+            if phone_location then
+                print("手机归属")
+                self.province=phone_location["provincename"]
+                self.city=phone_location["cityname"]
+            end
+            -- self.conty="1"
         end
+
 
         self.city_data=Util:read_json("res/city.json")
 
