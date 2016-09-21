@@ -101,14 +101,63 @@ function taskLayer:data_init(  )
                                     self:touch_Callback(sender, eventType)
                    end)
 
-                  local  title=cell:getChildByTag(196)--描述
+                  local  alert=cell:getChildByTag(196)--描述
+                  alert:setVisible(false)
+                  local title_bg=cell:getChildByTag(175)--描述=cell:getChildByTag(175)--描述
+                 
+
+                  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,184,28))
+                  crn:setPosition(cc.p(120,70))
+                  title_bg:addChild(crn)
+
+                  local title = ccui.Text:create()
+                  title:setPosition(cc.p(title:getContentSize().width,10))--alert:getPositionX(),alert:getPositionY()
+                  title:setAnchorPoint(cc.p(0,0.5))
+                  crn:addChild(title)
+                  title:setFontSize(23)
+                  title:setColor(cc.c3b(31, 119, 222))
                   title:setString(tasklist[i]["description"])
+
+                  --  local function stopAction()
+                  --        forver_move()
+                  -- end
+
+                  -- function forver_move( )
+                        
+                        local move = cc.MoveTo:create((title:getContentSize().width)/50, cc.p(-(title:getContentSize().width), 10))
+                        --local move_back = move:reverse()
+                        
+
+                         local callfunc = cc.CallFunc:create(function(node, value)
+                                title:setPosition(cc.p(title:getContentSize().width,10))
+                              end, {tag=0})
+
+                         local seq = cc.Sequence:create(move,cc.DelayTime:create(3),callfunc  )
+                        -- local callfunc = cc.CallFunc:create(function( ... )
+                              
+                        -- end)
+                        -- title:stopAllActions()
+                        -- title:runAction()
+                        local rep = cc.RepeatForever:create(seq)
+                        title:runAction(rep)
+                  -- end
+
+                  -- forver_move()
+                   
+                  --   local callfunc = cc.CallFunc:create(forver_move)
+                  --  self:runAction(cc.Sequence:create(cc.DelayTime:create(3),callfunc  ))
+            
+                 
+
+
+
+
                   
-                  if title:getStringLength() <= 7     then
-                     title:setFontSize(23)
-                  elseif  title:getStringLength() >= 7   then
-                    title:setFontSize(12)
-                  end
+                  -- if title:getStringLength() <= 7     then
+                  --    title:setFontSize(23)
+                  -- elseif  title:getStringLength() >= 7   then
+                  --   title:setFontSize(12)
+                  -- end
 
 
                   local  gold_number=cell:getChildByTag(195)--获得金币   后续的改
