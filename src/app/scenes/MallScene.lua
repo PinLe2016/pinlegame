@@ -33,16 +33,15 @@ function MallScene:ctor()
         local login_info=LocalData:Instance():get_user_data()
 	      local _key=login_info["loginname"]
 	      local _loginkey=login_info["loginkey"]
-        Server:Instance():mall(tostring(_key),tostring(_loginkey))
-
-	      -- local webview = cc.WebView:create()
-	      -- self.Storebrowser:addChild(webview)
-	      -- webview:setVisible(true)
-	      -- webview:setScalesPageToFit(true)
-	      -- webview:loadURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
-	      -- webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
-	      -- webview:reload()
-	      -- webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
+        
+	      local webview = cc.WebView:create()
+	      self.Storebrowser:addChild(webview)
+	      webview:setVisible(true)
+	      webview:setScalesPageToFit(true)
+	      webview:loadURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+	      webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+	      webview:reload()
+	      webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
 
 end
 
