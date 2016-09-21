@@ -77,6 +77,7 @@ function JackpotLayer:jackgoldact( )
        local  jaclayer_data=list_table["adlist"]
          local connection_gold=self.JackpotScene:getChildByTag(1673):getChildByTag(1675)--self.jackgoldact:getChildByTag(223)   --连接增加的金币
          local connection12=self.JackpotScene:getChildByTag(1673)   --连接
+         self.connection13=connection12
         connection12:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
@@ -311,8 +312,8 @@ function JackpotLayer:fun_storebrowser(  )
                  local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                  local  jaclayer_data=list_table["adlist"]
                 Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
-                if self.jackgoldact  then
-                  self.jackgoldact:removeFromParent()
+                if self.connection13  then
+                 self.connection13:setVisible(false)
                 end
               end
               self._rewardgold=self._rewardgold+1
