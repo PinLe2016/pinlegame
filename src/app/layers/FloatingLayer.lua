@@ -96,6 +96,7 @@ function FloatingLayer:touch_callback( sender, eventType )
               if tostring(LocalData:Instance():get_back()) == "1" then
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TFEDBACK)
             end
+            NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.REG)
          
     end
     
