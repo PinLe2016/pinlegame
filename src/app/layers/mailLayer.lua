@@ -13,23 +13,61 @@ function mailLayer:ctor()
          self.sur_pageno=1
          Server:Instance():getaffichelist(self.sur_pageno)
           LocalData:Instance():set_getaffiche(nil)
+          self.tablecout  =  0  
+          self.sup_data_num =0 
 
-end
-function mailLayer:init(  )
-	local affiche=LocalData:Instance():get_getaffiche()
-	local affichelist=affiche["affichelist"]
-	self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
+
+           self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
             self:addChild(self.mailLayer)
 
             local back_bt=self.mailLayer:getChildByTag(46)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
                                     if eventType ~= ccui.TouchEventType.ended then
-		                return
-		            end
-			self:removeFromParent()
+                    return
+                end
+          self:removeFromParent()
                   LocalData:Instance():set_getaffiche(nil)
                   Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
                         end)
+
+          
+
+            self.mail_list=self.mailLayer:getChildByTag(47)--邮箱列表
+            self.mail_list:setItemModel(self.mail_list:getItem(0))
+            self.mail_list:removeAllItems()
+            self.mail_list:addScrollViewEventListener((function(sender, eventType  )
+                      if eventType  ==6 then
+                        self.sur_pageno=self.sur_pageno+1
+                        Server:Instance():getaffichelist(self.sur_pageno)   --下拉刷新功能
+                                 return
+                      end
+             end))
+
+
+
+
+
+
+
+end
+
+function mailLayer:init(  )
+  print("fadsjfhdsjfhdshf dsfjksafkjds ")
+	local affiche=LocalData:Instance():get_getaffiche()
+	local affichelist=affiche["affichelist"]
+  dump(affiche)
+	-- self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
+ --            self:addChild(self.mailLayer)
+
+ --            local back_bt=self.mailLayer:getChildByTag(46)--返回
+ --            back_bt:addTouchEventListener(function(sender, eventType  )
+ --                                    if eventType ~= ccui.TouchEventType.ended then
+	-- 	                return
+	-- 	            end
+	-- 		self:removeFromParent()
+ --                  LocalData:Instance():set_getaffiche(nil)
+ --                  Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
+ --                        end)
             local delete_bt=self.mailLayer:getChildByTag(54)--删除
             delete_bt:addTouchEventListener(function(sender, eventType  )
                                     if eventType ~= ccui.TouchEventType.ended then
@@ -39,6 +77,7 @@ function mailLayer:init(  )
 	                        local affichelist=affiche["affichelist"]
 	                        for i=1,#affichelist do
 	                        	 if tonumber(affichelist[i]["isread"]) == 1   then  --1已读  0未读 
+                              self.tablecout=0
                   	                   		Server:Instance():delaffichebyid(tostring(affichelist[i]["id"]))  --依次删除
                   	                   		return
                           		 end
@@ -60,18 +99,33 @@ function mailLayer:init(  )
 			print("领取")
                         end)
 
-            self.mail_list=self.mailLayer:getChildByTag(47)--邮箱列表
-            self.mail_list:setItemModel(self.mail_list:getItem(0))
-            self.mail_list:removeAllItems()
-            self.mail_list:addScrollViewEventListener((function(sender, eventType  )
-                      if eventType  ==6 then
-                        self.sur_pageno=self.sur_pageno+1
-                        Server:Instance():getaffichelist(self.sur_pageno)   --下拉刷新功能
-                                 return
-                      end
-             end))
+            -- self.mail_list=self.mailLayer:getChildByTag(47)--邮箱列表
+            -- self.mail_list:setItemModel(self.mail_list:getItem(0))
+            -- --self.mail_list:removeAllItems()
+            -- self.mail_list:addScrollViewEventListener((function(sender, eventType  )
+            --           if eventType  ==6 then
+            --             self.sur_pageno=self.sur_pageno+1
+            --             Server:Instance():getaffichelist(self.sur_pageno)   --下拉刷新功能
+            --                      return
+            --           end
+            --  end))
 
-             for i=1,#affichelist do
+              -- if self.tablecout  ==  0  then
+              --    self.mail_list:removeAllItems() 
+              -- end
+              
+              self.sup_data_num   =   #affichelist
+           if self.tablecout<self.sup_data_num then
+                   print("小于",self.tablecout ,"  ",self.sup_data_num)
+                   
+           elseif self.tablecout>self.sup_data_num then
+                 print("大于")
+                self.mail_list:removeAllItems()
+            else
+                 --return
+           end
+
+             for i=self.tablecout+1, #affichelist  do
 
                   self.mail_list:pushBackDefaultItem()
                   local  cell = self.mail_list:getItem(i-1)
@@ -90,7 +144,15 @@ function mailLayer:init(  )
                  
                   local  mail_content=cell:getChildByTag(53)--邮件内容
                   mail_content:setString(tostring(affichelist[i]["createtime"]))
+                  print("哈哈哈哈哈   ",i-self.tablecout)
             end
+              if tonumber(self.tablecout)~=0 then
+
+             self.mail_list:jumpToPercentVertical(120)
+           else
+             self.mail_list:jumpToPercentVertical(0)
+          end
+             self.tablecout=self.sup_data_num
 
 end
 
@@ -117,8 +179,10 @@ function mailLayer:fun_emailcontentlayer( )
             		                return
             		            end
 		            if self.emailcontentlayer then
+                  self.sur_pageno=1
                               Server:Instance():getaffichelist(self.sur_pageno)
                               LocalData:Instance():set_getaffiche(nil)
+                              --self.mail_list:removeAllItems() 
 		            	self.emailcontentlayer:removeFromParent()
 		            end
 			
@@ -196,6 +260,7 @@ function mailLayer:onEnter()
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self,
                        function()
                         Server:Instance():getaffichelist(self.sur_pageno)
+                        self.mail_list:removeAllItems() 
                         LocalData:Instance():set_getaffiche(nil)
                       end)
 end
