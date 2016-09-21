@@ -56,7 +56,7 @@ end
 function Server:reg_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:promptbox_box_buffer("注册失败:" .. self.data.err_msg)
+        self:promptbox_box_buffer( self.data.err_msg)
 
         return
     end
@@ -137,7 +137,7 @@ end
 function Server:changepassword_callback()
     dump(self.data)
     if self.data.err_code~=0  then
-        self:promptbox_box_buffer("修改密码失败:" .. self.data.err_msg)
+        self:promptbox_box_buffer(self.data.err_msg)
         return
     end
     self:promptbox_box_buffer("修改密码成功")
@@ -167,7 +167,7 @@ end
 function Server:sendmessage_callback()
     dump(self.data)
     if self.data.err_code~=0  then
-        self:promptbox_box_buffer("账号密码登录失败:" .. self.data.err_msg)
+        self:promptbox_box_buffer(self.data.err_msg)
         return
     end
      LocalData:Instance():set_sendmessage(self.data)--
