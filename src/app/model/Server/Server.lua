@@ -62,16 +62,9 @@ end
 --版本接口请求
 function Server:request_version(command , params)
 
-    local platform=device.platform
-    if platform=="mac" then platform="ios" end
-    local url="http://test.pinlegame.com/geturl.aspx?os=%s&ver=%s"
-    if IS_RELEASE then
-          url="http://www.pinlegame.com/geturl.aspx?os=%s&ver=%s"
-    end
-    dump(url)
-    local  version_data=string.format(url,platform,PINLE_VERSION)
-    -- dump(version_data)
-    local request = network.createHTTPRequest(function(event) self:on_request_finished_version(event,command) end, version_data , "POST")
+
+    dump(params)
+    local request = network.createHTTPRequest(function(event) self:on_request_finished_version(event,command) end, params , "POST")
     -- local params_encoded = json.encode(params)
 
     request:setTimeout(0.5)

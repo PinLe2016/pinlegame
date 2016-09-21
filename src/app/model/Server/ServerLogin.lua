@@ -14,8 +14,16 @@ end
 
 --根据版本获取登陆注册信息
 function Server:version_login_url()
+    local platform=device.platform
+    if platform=="mac" then platform="ios" end
+        local url="http://test.pinlegame.com/geturl.aspx?os=%s&ver=%s"
+    if IS_RELEASE then
+        url="http://www.pinlegame.com/geturl.aspx?os=%s&ver=%s"
+    end
+    dump(url)
+    local  version_data=string.format(url,platform,tostring(PINLE_VERSION))
 
-    self:request_version("version_login_url")
+    self:request_version("version_login_url",version_data)
 
 end
 
@@ -23,8 +31,30 @@ function Server:version_login_url_callback()
    dump(self.data)
    self.login_url=self.data
 
+   self:version_shop_url()--请求商城链接
    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.VERSION_LINK)
 end
+
+
+--商城链接请求
+function Server:version_shop_url()
+
+     local url="http://www.pinlegame.com/geturl.aspx?os=Shop&ver=" ..tostring(PINLE_VERSION)
+        if not IS_RELEASE then
+            url=" http://test.pinlegame.com/geturl.aspx?os=Shop&ver="..tostring(PINLE_VERSION)
+        end
+
+    self:request_version("version_shop_url",url)
+
+end
+
+function Server:version_shop_url_callback()
+   dump(self.data)
+   self.shop_url=self.data
+
+   -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.VERSION_LINK)
+end
+
 
 
 
@@ -208,13 +238,10 @@ function Server:mall(username,password)
             loginname=username,
             password=crypto.md5(username ..  password),
         }
-        local url="http://www.pinlegame.com/geturl.aspx?os=Shop&ver=" ..PINLE_VERSION
-        if not IS_RELEASE then
-            url=" http://test.pinlegame.com/geturl.aspx?os=Shop&ver="..PINLE_VERSION
-        end
+       
 
         --local hp=self.login_url ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
-        local hp=url.."id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
+        local hp=self.shop_url.."id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         return  hp
 end
 

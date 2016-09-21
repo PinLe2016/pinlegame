@@ -74,9 +74,9 @@ function aboutdetailsLayer:init(  )
              local describe_text=self.aboutdetails:getChildByTag(1293)  --返回
 
              if  device.platform  ==  "android" then
-                     describe_text:setString("拼乐 for android  版本号v"..PINLE_VERSION)
+                     describe_text:setString("拼乐 for android  版本号v"..tostring(PINLE_VERSION))
             elseif device.platform  ==  "mac"  or    device.platform  ==  "ios" then
-                     describe_text:setString("拼乐 for iphone  版本号v"..PINLE_VERSION)
+                     describe_text:setString("拼乐 for iphone  版本号v"..tostring(PINLE_VERSION))
              end
              
 
