@@ -278,10 +278,10 @@ function PerInformationLayer:fun_mail(  )
         self.province_index=-1
         self.city_index=-1
 
-        if _getconsignee["provincename"]  then 
-            self.province=tostring(_getconsignee["provincename"])
-            self.city=tostring(_getconsignee["cityname"])
-        else
+        -- if _getconsignee["provincename"]  then 
+        --     self.province=tostring(_getconsignee["provincename"])
+        --     self.city=tostring(_getconsignee["cityname"])
+        -- else
             local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
  
             if phone_location then
@@ -290,7 +290,7 @@ function PerInformationLayer:fun_mail(  )
                 self.city=phone_location["cityname"]
             end
             -- self.conty="1"
-        end
+        -- end
 
 
         self.city_data=Util:read_json("res/city.json")
