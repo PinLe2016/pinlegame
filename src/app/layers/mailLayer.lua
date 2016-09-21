@@ -55,7 +55,6 @@ function mailLayer:init(  )
   print("fadsjfhdsjfhdshf dsfjksafkjds ")
 	local affiche=LocalData:Instance():get_getaffiche()
 	local affichelist=affiche["affichelist"]
-  dump(affiche)
 	-- self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
  --            self:addChild(self.mailLayer)
 
@@ -180,9 +179,11 @@ function mailLayer:fun_emailcontentlayer( )
             		            end
 		            if self.emailcontentlayer then
                   self.sur_pageno=1
+                  self.tablecout=0
                               Server:Instance():getaffichelist(self.sur_pageno)
                               LocalData:Instance():set_getaffiche(nil)
-                              --self.mail_list:removeAllItems() 
+
+                              self.mail_list:removeAllItems() 
 		            	self.emailcontentlayer:removeFromParent()
 		            end
 			
@@ -242,6 +243,7 @@ function mailLayer:onEnter()
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
                        function()
                         self:init()
+
                       end)
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHDETAIL, self,
                        function()
@@ -259,6 +261,7 @@ function mailLayer:onEnter()
 
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self,
                        function()
+                        self.sur_pageno=1
                         Server:Instance():getaffichelist(self.sur_pageno)
                         self.mail_list:removeAllItems() 
                         LocalData:Instance():set_getaffiche(nil)
