@@ -728,15 +728,6 @@ function LoginScene:updateLayer()
         return assetsManager
     end
 
-    local function reset(sender)
-
-        print("--删除--")
-        deleteDownloadDir(pathToSave)
-
-        getAssetsManager():deleteVersion()
-
-        createDownloadDir()
-    end
 
     --清空当前，重新热更
     -- reset()
@@ -757,6 +748,7 @@ function LoginScene:getVersionInfo()
         if tonumber(up_date["downloadupdate"])==1 then
               self.floating_layer:showFloat("发现新版本请更新",function (sender, eventType)
                                  if eventType==1 then
+                                    self:reset()--更新删除缓存
                                     device.openURL(up_date["downloadurl"])
                                     -- device.openURL("http://www.allchina.cn/news/xinwenAD_post_90987.html")
                                   else
@@ -789,7 +781,15 @@ function LoginScene:getVersionInfo()
 end
 
 
+function LoginScene:reset()
+        print("--删除--")
+        pathToSave = createDownloadDir()
+        deleteDownloadDir(pathToSave)
 
+        -- getAssetsManager():deleteVersion()
+
+        createDownloadDir()
+ end
 
 
 
