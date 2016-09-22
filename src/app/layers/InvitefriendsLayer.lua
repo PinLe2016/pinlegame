@@ -196,6 +196,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             end
 
             Server:Instance():getuserinfo() -- 初始化数据
+            Server:Instance():gettasklist()
             --Util:scene_control("MainInterfaceScene")
 		self:removeFromParent()
 	elseif tag==117 then
