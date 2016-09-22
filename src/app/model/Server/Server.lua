@@ -91,6 +91,7 @@ function Server:on_request_finished_version(event , command)
     local response = request:getResponseString()
     self.jsondata = response
     self.data=self.jsondata
+    dump(self.data)
     local callback = loadstring("Server:Instance():" .. command .. "_callback()")
     callback()
 end
