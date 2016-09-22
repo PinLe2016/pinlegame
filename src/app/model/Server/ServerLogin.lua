@@ -41,7 +41,7 @@ function Server:version_shop_url()
 
      local url="http://www.pinlegame.com/geturl.aspx?os=Shop&ver=" ..tostring(PINLE_VERSION)
         if not IS_RELEASE then
-            url=" http://test.pinlegame.com/geturl.aspx?os=Shop&ver="..tostring(PINLE_VERSION)
+            url="http://test.pinlegame.com/geturl.aspx?os=Shop&ver="..tostring(PINLE_VERSION)
         end
 
     self:request_version("version_shop_url",url)
