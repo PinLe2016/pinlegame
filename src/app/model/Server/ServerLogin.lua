@@ -214,7 +214,7 @@ function Server:getversion()
     local params = {}
      params={
             devicetype=device.platform,
-            versioncode=PINLE_VERSION,
+            versioncode=tostring(PINLE_VERSION),
         }
     self:request_http("getversion" , params); 
 end
