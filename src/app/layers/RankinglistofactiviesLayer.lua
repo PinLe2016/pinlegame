@@ -14,6 +14,7 @@ function RankinglistofactiviesLayer:ctor(params)
       self:setNodeEventEnabled(true)--layer添加监听
       local userdt = LocalData:Instance():get_userdata()
       Server:Instance():getranklistbyactivityid(self.id,self.count)  --排行榜HTTP
+      self.leve_instructions={"伯爵","大公","公爵","国王","侯爵","男爵","平民","亲王","骑士","王储","勋爵","子爵",}
 
 end
 function RankinglistofactiviesLayer:init(  )
@@ -37,7 +38,13 @@ function RankinglistofactiviesLayer:init(  )
       _name:setString(userdt["nickname"])
 
        local _leve=self.RankinglistofactiviesLayer:getChildByTag(90) -- 等级
-      _leve:setString(userdt["rankname"])
+      --_leve:setString(userdt["rankname"])
+      local _leveimage=self.RankinglistofactiviesLayer:getChildByTag(197)
+       for j=1,#self.leve_instructions do
+              if self.leve_instructions[j]  == tostring(userdt["rankname"])  then
+                 _leveimage:loadTexture(string.format("png/dengji_%d.png", j))
+              end
+       end
 
       local _gold=self.RankinglistofactiviesLayer:getChildByTag(532) -- 积分  
       _gold:setString(_activitybyid["mypoints"])
@@ -109,7 +116,15 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             name_text:setString(tostring(sup_data[i]["nickname"]))
 
             local level_text=cell:getChildByTag(83) --等级
-            level_text:setString(tostring(sup_data[i]["title"]))
+            --level_text:setString(tostring(sup_data[i]["title"]))
+
+            local level_image=cell:getChildByTag(198) --等级
+
+            for j=1,#self.leve_instructions do
+              if self.leve_instructions[j]  == tostring(sup_data[i]["title"])  then
+                 level_image:loadTexture(string.format("png/dengji_%d.png", j))
+              end
+            end
 
            
 

@@ -186,6 +186,7 @@ function DetailsLayer:guizelayer(  )
 	type_bt:addTouchEventListener(function(sender, eventType  )
 		self:_btCallback(sender, eventType)
 	end)
+	 
 	type_bt:setBright(false)
             self.curr_bright=type_bt--记录当前高亮
 

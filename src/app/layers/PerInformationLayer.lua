@@ -92,7 +92,11 @@ function PerInformationLayer:add_init(  )
 
                    
                     local registereday=self.showinformation:getChildByTag(1412)  --注册日期
-                    registereday:setString(tostring(os.date("%Y年%m月%d日",userdt["registertime"])))
+                    registereday:setString(tostring(os.date("%Y",userdt["registertime"])))
+                     local registereday1=self.showinformation:getChildByTag(123)  --注册日期
+                    registereday1:setString(tostring(os.date("%m",userdt["registertime"])))
+                     local registereday2=self.showinformation:getChildByTag(124)  --注册日期
+                    registereday2:setString(tostring(os.date("%d",userdt["registertime"])))
                     self.genderman1=self.showinformation:getChildByTag(1403)  --性别
                    
                     if userdt["gender"]==0 then    --0女1男2未知
@@ -146,6 +150,8 @@ function PerInformationLayer:fun_mail(  )
 
         self.Receivinginformation = cc.CSLoader:createNode("Receivinginformation.csb")
         self:addChild(self.Receivinginformation)
+           local move = cc.MoveTo:create(1, cc.p(0,0))
+        self.Receivinginformation:runAction(cc.Sequence:create(move))
         local back_bt=self.Receivinginformation:getChildByTag(220):getChildByTag(234)  --返回
         back_bt:addTouchEventListener(function(sender, eventType  )
               self:touch_back(sender, eventType)
@@ -187,8 +193,8 @@ function PerInformationLayer:fun_mail(  )
          adm_g:setVisible(false)
 
 --新增的邮件box控件
-    local res = "res/png/DLkuang.png"
-    local width = 300
+    local res = "res/png/GR_Kdikuang.png"
+    local width = 280
     local height = 40
     
     self.name_text_mail = ccui.EditBox:create(cc.size(width,height),res)
@@ -218,10 +224,21 @@ function PerInformationLayer:fun_mail(  )
     self.phone_text_mail:setAnchorPoint(0,0.5)  
     self.phone_text_mail:setMaxLength(11)
 
-    self.ads_text_mail = ccui.EditBox:create(cc.size(width,height),res)
+    local res1 = "res/png/dikuang.png"
+    local width1 = 280
+    local height1 = 80
+
+    self.ads_text_mail = ccui.EditBox:create(cc.size(width1,height1),res1)
+    self.ads_text_mail:setFont("Arial",22)
+    self.ads_text_mail:setPlaceholderFont("Arial",22)
     em_bg:addChild(self.ads_text_mail)
     self.ads_text_mail:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
     self.ads_text_mail:setPlaceholderFontColor(cc.c3b(96, 57, 19))
+
+
+
+
+
     if _getconsignee["address"] == "" then
          self.ads_text_mail:setPlaceHolder("详细地址")
     else
@@ -234,28 +251,28 @@ function PerInformationLayer:fun_mail(  )
         self.diqu:setPlaceHolder(tostring(_getconsignee["provincename"])  ..   tostring(_getconsignee["cityname"]))
     end
     self.ads_text_mail:setAnchorPoint(0,0.5) 
-    self.ads_text_mail:setContentSize(300,40)  
-    --self.ads_text_mail:setFontSize(0.2)
-    -- self.ads_text_mail:setFontName("Arial")
+    --self.ads_text_mail:setContentSize(300,40)  
+    -- self.ads_text_mail:setFontSize(0.2)
+     --self.ads_text_mail:setFontName("Arial")
     --  self.ads_text_mail:setFontSize(5)
-    --self.ads_text_mail:setMaxLength(100)
+    -- self.ads_text_mail:setMaxLength(100)
 
-        self.mail_h=3
-        self.mail_dex=2
+        self.mail_h=0
+        self.mail_dex=0
      --省
         local province_scrollview=self.Receivinginformation:getChildByTag(119):getChildByTag(149)
         -- local province_text=province_scrollview:getChildByTag(95)
           
         -- local adress_province_y= province_text:getPositionY()
 
-        self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,cc.size(130, 320))
+        self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,cc.size(130, 200))
         self.Receivinginformation:getChildByTag(119):addChild(self.adress_province_Itempicker)
 
         --市
         local city_scrollview=self.Receivinginformation:getChildByTag(119):getChildByTag(150)
         -- local city_text=city_scrollview:getChildByTag(96)
 
-        self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,cc.size(230, 320))
+        self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,cc.size(230, 200))
         self.adress_city_Itempicker:setPositionX(self.adress_city_Itempicker:getPositionX())
         self.Receivinginformation:getChildByTag(119):addChild(self.adress_city_Itempicker)
 
@@ -263,7 +280,7 @@ function PerInformationLayer:fun_mail(  )
         local area_scrollview=self.Receivinginformation:getChildByTag(119):getChildByTag(151)
         -- local area_text=area_scrollview:getChildByTag(97)
         
-        self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,cc.size(200, 320))
+        self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,cc.size(200, 200))
         self.adress_conty_Itempicker:setPositionX(self.adress_conty_Itempicker:getPositionX()+20)
         self.Receivinginformation:getChildByTag(119):addChild(self.adress_conty_Itempicker)
 
@@ -489,8 +506,8 @@ function PerInformationLayer:perinformation_init(  )
         local height = 50
         --登陆
         self._Pname = ccui.EditBox:create(cc.size(width,height),res)
-        self._Pname:setPlaceholderFontColor(cc.c3b(210, 150, 100))
-        self._Pname:setFontColor(cc.c3b(200, 130, 80))
+        self._Pname:setPlaceholderFontColor(cc.c3b(195,141,141))
+        self._Pname:setFontColor(cc.c3b(195,141,141))
         self.Perinformation:addChild(self._Pname)
         self._Pname:setVisible(true)
         self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  
@@ -516,8 +533,11 @@ function PerInformationLayer:perinformation_init(  )
 
        
         local registereday=self.Perinformation:getChildByTag(86)  --注册日期
-        
-        registereday:setString(tostring(os.date("%Y年%m月%d日",userdt["registertime"])))  --
+        registereday:setString(tostring(os.date("%Y",userdt["registertime"])))  --
+        local registereday2=self.Perinformation:getChildByTag(192)  --注册日期
+        registereday2:setString(tostring(os.date("%m",userdt["registertime"])))  --
+        local registereday3=self.Perinformation:getChildByTag(193)  --注册日期
+        registereday3:setString(tostring(os.date("%d",userdt["registertime"])))  --
         self.genderman=self.Perinformation:getChildByTag(79)  --性别男
         self.gendergirl=self.Perinformation:getChildByName("CheckBox_2")  --getChildByTag(79)  --性别女
       
@@ -835,6 +855,9 @@ end
 function PerInformationLayer:fun_birthday(  )
         self.birthday = cc.CSLoader:createNode("Birthday.csb")
         self:addChild(self.birthday)
+           local move = cc.MoveTo:create(1,cc.p(0,0))
+        self.birthday:runAction(cc.Sequence:create(move))
+
         local birthday_back=self.birthday:getChildByTag(174):getChildByTag(49)
             birthday_back:addTouchEventListener(function(sender, eventType  )
             self:touch_callback(sender, eventType)
@@ -861,17 +884,17 @@ function PerInformationLayer:fun_birthday(  )
 
         local  m_offset_birthday=0
         local name="1990"
-        for i=1,70+7 do   
-            local button =self.birthday_Itempicker:getCellLayout(cc.size(100,50))
+        for i=1,70+4 do   
+            local button =self.birthday_Itempicker:getCellLayout(cc.size(100,40))
             local cell=ccui.Text:create()
             cell:setFontSize(38);
             cell:setAnchorPoint(cc.p(0.0,0.0));
-            cell:setColor(cc.c4b(255,0,255))
+            cell:setColor(cc.c4b(195,141,141))
             cell:setPositionX(5)
             
-            if i<70+5 and i-5>=0 then 
-                cell:setString(tostring(2016-(i-5)))
-                name=tostring(2016-(i-5))
+            if i<70+3 and i-3>=0 then 
+                cell:setString(tostring(2016-(i-3)))
+                name=tostring(2016-(i-3))
             else
                 name="-1"
                 cell:setString(".")
@@ -880,7 +903,7 @@ function PerInformationLayer:fun_birthday(  )
             -- dump(button:getContentSize())
             local pos = string.find(self.scall_years, name)   
             if pos then
-                m_offset_birthday=i-5;
+                m_offset_birthday=i-3;
                 print("e  ",self.scall_years,name,m_offset_birthday)
             end
 
@@ -903,24 +926,24 @@ function PerInformationLayer:fun_birthday(  )
 
         local  m_offset_month=0
         local name="04"
-        for i=1,12+7 do   
+        for i=1,12+4 do   
 
-            local button =self.birthday_month_Itempicker:getCellLayout(cc.size(100,50))
+            local button =self.birthday_month_Itempicker:getCellLayout(cc.size(100,40))
 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(38);
             cell_month:setAnchorPoint(cc.p(0.0,0.0));
-            cell_month:setColor(cc.c4b(255,0,255))
+            cell_month:setColor(cc.c4b(195,141,141))
             cell_month:setPositionX(20)
             cell_month:setTag(i)
             
-            if i<12+5 and i-5>=0 then 
-                if i<14 then
-                     cell_month:setString("0" .. tostring(i-4))
-                     name="0" .. tostring(i-4)
+            if i<12+3 and i-3>=0 then 
+                if i<12 then
+                     cell_month:setString("0" .. tostring(i-2))
+                     name="0" .. tostring(i-2)
                 else
-                     cell_month:setString(tostring(i-4))
-                     name=tostring(i-4)
+                     cell_month:setString(tostring(i-2))
+                     name=tostring(i-2)
                 end
             else
                 name="-1"
@@ -930,7 +953,7 @@ function PerInformationLayer:fun_birthday(  )
 
             local pos = string.find(self.scall_month, name)   
             if pos then
-                m_offset_month=i-5;
+                m_offset_month=i-3;
             end
             button:addChild(cell_month)
             self.birthday_month_Itempicker:pushBackItem(button)
@@ -947,22 +970,22 @@ function PerInformationLayer:fun_birthday(  )
         self.birthday:getChildByTag(174):addChild(self.birthday_daty_Itempicker)
         local  m_offset_daty=0
         local name="04"
-        for i=1,31+7 do   
-            local button =self.birthday_daty_Itempicker:getCellLayout(cc.size(100,50))
+        for i=1,31+4 do   
+            local button =self.birthday_daty_Itempicker:getCellLayout(cc.size(100,40))
 
             local cell_day=ccui.Text:create()
             cell_day:setFontSize(38);
             cell_day:setAnchorPoint(cc.p(0.0,0.0));
-            cell_day:setColor(cc.c4b(255,0,255))
+            cell_day:setColor(cc.c4b(195,141,141))
             cell_day:setPositionX(20)
             
-            if i<31+5 and i-5>=0 then 
-                if i<14 then
-                     cell_day:setString("0" .. tostring(i-4))
-                     name="0" .. tostring(i-4)
+            if i<31+3 and i-3>=0 then 
+                if i<12 then
+                     cell_day:setString("0" .. tostring(i-2))
+                     name="0" .. tostring(i-2)
                 else
-                     cell_day:setString(tostring(i-4))
-                     name=tostring(i-4)
+                     cell_day:setString(tostring(i-2))
+                     name=tostring(i-2)
                 end
             else
                 cell_day:setString(".")
@@ -972,7 +995,7 @@ function PerInformationLayer:fun_birthday(  )
 
             local pos = string.find(self.scall_day, name)   
             if pos then
-                m_offset_daty=i-5;
+                m_offset_daty=i-3;
             end
 
             button:addChild(cell_day)
@@ -987,15 +1010,29 @@ end
 
 function  PerInformationLayer:addItemPickerData(scorll,size)
 
-    local dex=0--960-display.height
+    -- local dex=0--960-display.height
+    -- local picker =cc.ItemPicker:create()
+    -- picker:setDirection(scorll:getDirection())
+    -- picker:setContSize(cc.size(150, 400))--
+    -- -- picker:setInnerContainerSize(cc.size(220,50*34))
+    -- picker:setParameter(cc.size(100,50),8)
+    -- picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
+    -- picker:setAnchorPoint(0,0)
+    -- scorll:removeFromParent()
+
+
+     local dex=0--960-display.height
     local picker =cc.ItemPicker:create()
     picker:setDirection(scorll:getDirection())
-    picker:setContSize(cc.size(150, 400))--
+    picker:setContSize(cc.size(150, 200))--cc.size(150, 200)
     -- picker:setInnerContainerSize(cc.size(220,50*34))
-    picker:setParameter(cc.size(100,50),8)
+    picker:setParameter(cc.size(size.width,40),5)--cc.size(140,40)
     picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
     picker:setAnchorPoint(0,0)
     scorll:removeFromParent()
+    
+
+
     
     return picker;
 end
@@ -1020,6 +1057,8 @@ end
 function PerInformationLayer:fun_city_info( )
         self.adress = cc.CSLoader:createNode("Adress.csb")
         self:addChild(self.adress)
+        local move = cc.MoveTo:create(1,cc.p(0,0))
+        self.adress:runAction(cc.Sequence:create(move))
 
          self.city_present=self.adress:getChildByTag(131)  --当前城市按钮
          self.city_present:addEventListener(function(sender, eventType  )
@@ -1178,7 +1217,7 @@ function PerInformationLayer:fun_Province( ... )
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(34)
             cell_month:setAnchorPoint(cc.p(0.5,0.0));
-            cell_month:setColor(cc.c4b(255,0,255))
+            cell_month:setColor(cc.c4b(195,141,141))
             cell_month:setPositionX(55)
             cell_month:setTag(i)
 
@@ -1224,7 +1263,7 @@ function PerInformationLayer:fun_City()
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(22)
             cell_month:setAnchorPoint(cc.p(0.5,0.0));
-            cell_month:setColor(cc.c4b(255,0,255))
+            cell_month:setColor(cc.c4b(195,141,141))
             cell_month:setPositionX(140)
             cell_month:setTag(i)
 
@@ -1271,7 +1310,7 @@ function PerInformationLayer:fun_Conty()
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(22)
             cell_month:setAnchorPoint(cc.p(0.0,0.0));
-            cell_month:setColor(cc.c4b(255,0,255))
+            cell_month:setColor(cc.c4b(195,141,141))
             cell_month:setPositionX(20)
             cell_month:setTag(i)
 

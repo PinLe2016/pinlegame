@@ -115,11 +115,11 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 
                   local one_integral=cell:getChildByTag(117)--积分
 
-                         one_integral:setVisible(false)--xin
-                         self.labelAtlas1 = ccui.TextAtlas:create()
-                         self.labelAtlas1:setPosition(cc.p(one_integral:getPositionX(),one_integral:getPositionY()))  
-                         cell:addChild(self.labelAtlas1) 
-                         self.labelAtlas1:setProperty(2222, "png/cou.png", 26, 35, "0")
+                         --one_integral:setVisible(false)--xin
+                         -- self.labelAtlas1 = ccui.TextAtlas:create()
+                         -- self.labelAtlas1:setPosition(cc.p(one_integral:getPositionX(),one_integral:getPositionY()))  
+                         -- cell:addChild(self.labelAtlas1) 
+                         -- self.labelAtlas1:setProperty(2222, "png/cou.png", 26, 35, "0")
              
                  for j=1,#mypointslist do 
                      
@@ -127,27 +127,27 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 
                         if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
                               
-                                --one_integral:setString(mypointslist[j]["points"])--xin
-                                 self.labelAtlas1:setString(tostring(mypointslist[j]["points"]))   --setProperty(mypointslist[j]["points"], "png/cou.png", 26, 35, "0")
-                                 retroactive_bt:setVisible(false)
+                                one_integral:setString(mypointslist[j]["points"])--xin
+                                 -- self.labelAtlas1:setString(tostring(mypointslist[j]["points"]))   --setProperty(mypointslist[j]["points"], "png/cou.png", 26, 35, "0")
+                                 -- retroactive_bt:setVisible(false)
                                   break
                         else
-                                --one_integral:setString("0")  --xin
+                                one_integral:setString("0")  --xin
                           
-                               self.labelAtlas1:setString("0")  
+                               --self.labelAtlas1:setString("0")  
 
                         end
 
                   end
             else
                   local one_integral=cell:getChildByTag(117)--积分
-                  --one_integral:setString("0")
+                  one_integral:setString("0")
 
-                   one_integral:setVisible(false)--xin
-                   local labelAtlas1 = ccui.TextAtlas:create()
-                   labelAtlas1:setPosition(cc.p(one_integral:getPositionX(),one_integral:getPositionY()))  
-                   labelAtlas1:setProperty(0, "png/cou.png", 26, 35, "0")
-                   cell:addChild(labelAtlas1) 
+                   -- one_integral:setVisible(false)--xin
+                   -- local labelAtlas1 = ccui.TextAtlas:create()
+                   -- labelAtlas1:setPosition(cc.p(one_integral:getPositionX(),one_integral:getPositionY()))  
+                   -- labelAtlas1:setProperty(0, "png/cou.png", 26, 35, "0")
+                   -- cell:addChild(labelAtlas1) 
 
 
             end
@@ -158,12 +158,12 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 		if #playerpointslist ~=0  then
       
          local hero_integral=cell:getChildByTag(116)--积分
-                               hero_integral:setVisible(false)
-                               --hero_integral:setString(playerpointslist[k]["points"])
-                               local labelAtlas = ccui.TextAtlas:create()
-                               labelAtlas:setProperty(0, "png/cou.png", 26, 35, "0")
-                               labelAtlas:setPosition(cc.p(hero_integral:getPositionX(),hero_integral:getPositionY()))  
-                               cell:addChild(labelAtlas) 
+                              -- hero_integral:setVisible(false)
+                               hero_integral:setString(playerpointslist[k]["points"])
+                               -- local labelAtlas = ccui.TextAtlas:create()
+                               -- labelAtlas:setProperty(0, "png/cou.png", 26, 35, "0")
+                               -- labelAtlas:setPosition(cc.p(hero_integral:getPositionX(),hero_integral:getPositionY()))  
+                               -- cell:addChild(labelAtlas) 
 
                   for k=1,#playerpointslist do
                    
@@ -192,12 +192,12 @@ function ContrastRecordLayer:ContrastRecord_init(  )
             --   hero_integral:setString("0")
 
                local hero_integral=cell:getChildByTag(116)--积分
-               hero_integral:setVisible(false)
-               --hero_integral:setString("0")
-               local labelAtlas = ccui.TextAtlas:create()
-               labelAtlas:setProperty(0, "png/cou.png", 26, 35, "0")
-               labelAtlas:setPosition(cc.p(hero_integral:getPositionX(),hero_integral:getPositionY()))  
-               cell:addChild(labelAtlas) 
+               --hero_integral:setVisible(false)
+               hero_integral:setString("0")
+               -- local labelAtlas = ccui.TextAtlas:create()
+               -- labelAtlas:setProperty(0, "png/cou.png", 26, 35, "0")
+               -- labelAtlas:setPosition(cc.p(hero_integral:getPositionX(),hero_integral:getPositionY()))  
+               -- cell:addChild(labelAtlas) 
 
           end
            

@@ -29,12 +29,20 @@ function aboutdetailsLayer:init(  )
             qrcode_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
+             local qrcode_bt1=self.qr_code:getChildByTag(97)
+            qrcode_bt1:addTouchEventListener((function(sender, eventType  )
+                     self:touch_btCallback(sender, eventType)
+               end))
 
     	      --提交建议
             self.advice_bg=self.aboutdetails:getChildByTag(200)  --提交建议界面
             self.advice_bg:setVisible(false)
             local adviceback_bt=self.advice_bg:getChildByTag(202)  --提交建议界面返回
             adviceback_bt:addTouchEventListener((function(sender, eventType  )
+                     self:touch_btCallback(sender, eventType)
+               end))
+             local adviceback_bt1=self.advice_bg:getChildByTag(204):getChildByTag(98)  --提交建议界面返回
+            adviceback_bt1:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
             self.advicedata_bg=self.advice_bg:getChildByTag(204)  --提交数据建议界面
@@ -50,6 +58,10 @@ function aboutdetailsLayer:init(  )
             self.business_bg:setVisible(false)
              local businessback_bt=self.business_bg:getChildByTag(307)  --商务合作界面返回
             businessback_bt:addTouchEventListener((function(sender, eventType  )
+                     self:touch_btCallback(sender, eventType)
+               end))
+             local businessback_bt1=self.business_bg:getChildByTag(308):getChildByTag(99)  --商务合作界面返回
+            businessback_bt1:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
             self.businessback_bg=self.business_bg:getChildByTag(308)  --商务数据建议界面
@@ -117,10 +129,16 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            	       print("扫描二维码")
                    self.qr_code:setVisible(true)
            	elseif  tag==202 then --扫描二维码
-           	      self.advice_bg:setVisible(false)
-           	      self.phone_text:setVisible(false)
-           	      self.name_text:setVisible(false)
-           	      self.content_text:setVisible(false)
+           	      -- self.advice_bg:setVisible(false)
+           	      -- self.phone_text:setVisible(false)
+           	      -- self.name_text:setVisible(false)
+           	      -- self.content_text:setVisible(false)
+                  self:removeFromParent()
+            elseif  tag==98 then --扫描二维码
+                  self.advice_bg:setVisible(false)
+                  self.phone_text:setVisible(false)
+                  self.name_text:setVisible(false)
+                  self.content_text:setVisible(false)
            	elseif  tag==210 then   --提交  记住在正确时候消息这界面消失   
            		print("提交", self.phone_text:getText())     
                   local _name=self.name_text:getText()
@@ -140,12 +158,20 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                   Server:Instance():setfeedback({type="0",company="北京拼乐",name=_name,tel=_tel,content=_content})
 
            	elseif tag==307 then  --商务合作返回
-           		self.business_bg:setVisible(false)
-           		self.companyname_text:setVisible(false)
-           	            self.nametext:setVisible(false)
-           	            self.phonetext:setVisible(false)
-           	           self.contenttext:setVisible(false)
-           	           self.cooperation_ListView:setVisible(false)
+           		-- self.business_bg:setVisible(false)
+           		-- self.companyname_text:setVisible(false)
+           	 --            self.nametext:setVisible(false)
+           	 --            self.phonetext:setVisible(false)
+           	 --           self.contenttext:setVisible(false)
+           	 --           self.cooperation_ListView:setVisible(false)
+             self:removeFromParent()
+            elseif tag==99 then  --商务合作返回
+              self.business_bg:setVisible(false)
+              self.companyname_text:setVisible(false)
+                        self.nametext:setVisible(false)
+                        self.phonetext:setVisible(false)
+                       self.contenttext:setVisible(false)
+                       self.cooperation_ListView:setVisible(false)
 
            	elseif tag==364 then  --商务合作提交  
            		print("商务提交")
@@ -168,6 +194,8 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            		print("条件")
            		self:cooperationlist()
             elseif tag==68 then
+              self:removeFromParent()
+            elseif tag==97 then
               self.qr_code:setVisible(false)
            end
 

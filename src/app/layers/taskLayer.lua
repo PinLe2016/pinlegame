@@ -88,11 +88,11 @@ function taskLayer:data_init(  )
 
                  --print("发的是开发商可",task_text:getStringLength())
                   if task_text:getStringLength() <= 4   then
-                     task_text:setFontSize(28)
+                     task_text:setFontSize(20)
                   elseif  task_text:getStringLength() > 4   and   task_text:getStringLength() <=  6   then
-                    task_text:setFontSize(20)
+                    task_text:setFontSize(17)
                   else
-                    task_text:setFontSize(15)
+                    task_text:setFontSize(13)
                   end
 
                   
@@ -107,7 +107,7 @@ function taskLayer:data_init(  )
                  
 
                   local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,184,28))
-                  crn:setPosition(cc.p(120,70))
+                  crn:setPosition(cc.p(120,60))
                   title_bg:addChild(crn)
 
                   local title = ccui.Text:create()
@@ -115,7 +115,7 @@ function taskLayer:data_init(  )
                   title:setAnchorPoint(cc.p(0,0.5))
                   crn:addChild(title)
                   title:setFontSize(23)
-                  title:setColor(cc.c3b(31, 119, 222))
+                  title:setColor(cc.c3b(195, 141, 141))
                   title:setString(tasklist[i]["description"])
 
                         --描述动画

@@ -426,6 +426,9 @@ function MainInterfaceScene:init_checkin(  )
 	local  days=checkindata["days"]
 
             local  totaydays=checkindata["totaldays"]
+            local check_data=self.checkinlayer:getChildByTag(40)
+            local check_biaoji=self.checkinlayer:getChildByTag(39)
+             check_data:loadTexture(string.format("png/qiandao_%d.png", totaydays))
             local  _table={}
             local  _biaojitable={}
             for i=1, math.ceil(totaydays/7-1) do
@@ -466,7 +469,7 @@ function MainInterfaceScene:init_checkin(  )
             	for j=1,#days do
             		if i==tonumber(os.date("%d",days[j])) then
                               if i==16 then
-                                _biaojitable[i]:loadTexture("res/png/Qprizeopen.png")
+                                _biaojitable[i]:loadTexture("res/png/Qprize.png")
                               end
             			_table[i]:setColor(cc.c3b(125, 125, 100))
                               _biaojitable[i]:setVisible(true)
@@ -477,6 +480,7 @@ function MainInterfaceScene:init_checkin(  )
             local tm = os.date("*t")
             if tm.day ==tonumber(os.date("%d",days[1])) then   --  获取系统时间
                 self.check_button:setVisible(false)
+                check_biaoji:setVisible(true)
                 return
             else
                self.check_button:setVisible(true)
@@ -489,6 +493,7 @@ function MainInterfaceScene:onEnter()
                        function()
                         self:fun_checkin(2)--签到后
                        self.check_button:setVisible(false)
+                       check_biaoji:setVisible(true)
                         self:userdata()
                        
 
