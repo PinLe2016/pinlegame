@@ -760,7 +760,7 @@ function LoginScene:getVersionInfo()
     end
 
 
-    if tonumber(up_date["Isused"])==1 then
+    if tonumber(up_date["Isused"])~=1 then--Isused 0.开启热更，1 关闭热更
       
       self.masterURL=up_date["masterURL"]
       self.url=up_date["url"]
