@@ -150,7 +150,7 @@ function PerInformationLayer:fun_mail(  )
 
         self.Receivinginformation = cc.CSLoader:createNode("Receivinginformation.csb")
         self:addChild(self.Receivinginformation)
-           local move = cc.MoveTo:create(1, cc.p(0,0))
+           local move = cc.MoveTo:create(0.5, cc.p(0,0))
         self.Receivinginformation:runAction(cc.Sequence:create(move))
         local back_bt=self.Receivinginformation:getChildByTag(220):getChildByTag(234)  --返回
         back_bt:addTouchEventListener(function(sender, eventType  )
@@ -855,7 +855,7 @@ end
 function PerInformationLayer:fun_birthday(  )
         self.birthday = cc.CSLoader:createNode("Birthday.csb")
         self:addChild(self.birthday)
-           local move = cc.MoveTo:create(1,cc.p(0,0))
+           local move = cc.MoveTo:create(0.5,cc.p(0,0))
         self.birthday:runAction(cc.Sequence:create(move))
 
         local birthday_back=self.birthday:getChildByTag(174):getChildByTag(49)
@@ -1057,7 +1057,7 @@ end
 function PerInformationLayer:fun_city_info( )
         self.adress = cc.CSLoader:createNode("Adress.csb")
         self:addChild(self.adress)
-        local move = cc.MoveTo:create(1,cc.p(0,0))
+        local move = cc.MoveTo:create(0.5,cc.p(0,0))
         self.adress:runAction(cc.Sequence:create(move))
 
          self.city_present=self.adress:getChildByTag(131)  --当前城市按钮

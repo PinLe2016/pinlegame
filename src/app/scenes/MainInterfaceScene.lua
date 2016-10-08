@@ -200,8 +200,13 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		Server:Instance():validateactivitycode(self.activitycode_text:getString())
 		self.activitycode_text:setString(" ")
 	elseif tag==97 then
-		Util:scene_control("GoldprizeScene")
-    -- Util:scene_control("PhysicsScene")
+		--Util:scene_control("GoldprizeScene")
+     --Util:scene_control("PhysicsScene")
+
+       local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
+     self:addChild(HitVolesLayer.new())
+    --Util:scene_control("HitVolesLayer")
+
 	elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       -- self:addChild(self.checkinlayer)

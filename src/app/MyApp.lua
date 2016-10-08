@@ -37,6 +37,7 @@ function MyApp:run()
       cc.FileUtils:getInstance():addSearchPath("res/csb")
       cc.FileUtils:getInstance():addSearchPath("res/cre")
       cc.FileUtils:getInstance():addSearchPath("res/down_pic")
+      cc.FileUtils:getInstance():addSearchPath("res/HitVoles")
       -- cc.FileUtils:getInstance():addSearchPath("res/png")
       
       --热更路径
