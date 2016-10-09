@@ -23,10 +23,6 @@ function MainInterfaceScene:ctor()
 
        
        self:listener_home() --注册安卓返回键
-       Server:Instance():getaffichelist(1)
-      Server:Instance():gettasklist()   --  初始化任务
-               --手机归属请求
-       Server:Instance():getusercitybyphone()--手机归属
         self:fun_init()
 
 end
@@ -496,6 +492,12 @@ function MainInterfaceScene:init_checkin(  )
 end
 function MainInterfaceScene:onEnter()
   --audio.playMusic(G_SOUND["ACTIVITY"],true)
+
+   Server:Instance():getaffichelist(1)
+    Server:Instance():gettasklist()   --  初始化任务
+         --手机归属请求
+    Server:Instance():getusercitybyphone()--手机归属
+       
   Util:player_music("ACTIVITY",true )
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
