@@ -23,10 +23,6 @@ function MainInterfaceScene:ctor()
 
        
        self:listener_home() --注册安卓返回键
-       Server:Instance():getaffichelist(1)
-      Server:Instance():gettasklist()   --  初始化任务
-               --手机归属请求
-       Server:Instance():getusercitybyphone()--手机归属
         self:fun_init()
 
 end
@@ -34,6 +30,8 @@ function MainInterfaceScene:fun_init( )
 
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
+     
+
 
        self.biao_ji=self.MainInterfaceScene:getChildByTag(1164)--
        self.biao_ji:setVisible(false) 
@@ -200,12 +198,13 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		Server:Instance():validateactivitycode(self.activitycode_text:getString())
 		self.activitycode_text:setString(" ")
 	elseif tag==97 then
+		 -- Util:scene_control("GoldprizeScene")
+    Util:scene_control("PhysicsScene")
 		--Util:scene_control("GoldprizeScene")
      --Util:scene_control("PhysicsScene")
 
-       local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
-     self:addChild(HitVolesLayer.new())
-    --Util:scene_control("HitVolesLayer")
+     --   local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
+     -- self:addChild(HitVolesLayer.new())
 
 	elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
@@ -493,6 +492,12 @@ function MainInterfaceScene:init_checkin(  )
 end
 function MainInterfaceScene:onEnter()
   --audio.playMusic(G_SOUND["ACTIVITY"],true)
+
+   Server:Instance():getaffichelist(1)
+    Server:Instance():gettasklist()   --  初始化任务
+         --手机归属请求
+    Server:Instance():getusercitybyphone()--手机归属
+       
   Util:player_music("ACTIVITY",true )
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
