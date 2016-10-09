@@ -34,6 +34,8 @@ function MainInterfaceScene:fun_init( )
 
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
+     
+
 
        self.biao_ji=self.MainInterfaceScene:getChildByTag(1164)--
        self.biao_ji:setVisible(false) 
@@ -200,8 +202,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		Server:Instance():validateactivitycode(self.activitycode_text:getString())
 		self.activitycode_text:setString(" ")
 	elseif tag==97 then
-		Util:scene_control("GoldprizeScene")
-    -- Util:scene_control("PhysicsScene")
+		 -- Util:scene_control("GoldprizeScene")
+    Util:scene_control("PhysicsScene")
 	elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       -- self:addChild(self.checkinlayer)
