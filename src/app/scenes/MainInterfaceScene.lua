@@ -204,6 +204,12 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==97 then
 		 -- Util:scene_control("GoldprizeScene")
     Util:scene_control("PhysicsScene")
+		--Util:scene_control("GoldprizeScene")
+     --Util:scene_control("PhysicsScene")
+
+     --   local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
+     -- self:addChild(HitVolesLayer.new())
+
 	elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       -- self:addChild(self.checkinlayer)
