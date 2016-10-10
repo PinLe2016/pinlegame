@@ -56,7 +56,7 @@ function MyApp:run()
   lfs.mkdir(path_res)
   cc.FileUtils:getInstance():addSearchPath(path_res)
   
- 
+ -- LocalData:Instance():set_user_data(nil)
   local login_info=LocalData:Instance():get_user_data()
     
   -- if login_info~=nil  then

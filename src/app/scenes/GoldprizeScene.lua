@@ -49,7 +49,7 @@ end
 
 function GoldprizeScene:data_init(  )
 		self.jackpot_ListView:removeAllItems()
-
+		self.image={}
 		local  list_table=LocalData:Instance():get_getgoldspoollist()
 		local  jac_data=list_table["goldspools"]
 		local jioushu=math.floor(tonumber(#jac_data)) % 2  == 1 and 1 or 2   --判段奇数 偶数
@@ -195,10 +195,14 @@ function GoldprizeScene:data_init(  )
 	          local function stopAction()
 		  if #self.image~=0 then
 
+		  	-- dump(self.image)
 			for i=1,#self.image do
 				local file=cc.FileUtils:getInstance():isFileExist(self.image[i].name)
-				if file  then
-					self.image[i].obj:loadTexture(self.image[i].name)
+				if file and self.image[i]["obj"] then
+					-- dump(self.image[i])
+					print("----",#self.image,i,self.image[1].name)
+					self.image[i]["obj"]:loadTexture(self.image[i].name)
+					self.image[i]["obj"]=nil
 				end
 			end
 			

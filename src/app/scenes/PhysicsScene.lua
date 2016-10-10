@@ -26,7 +26,7 @@ local ROD_B_POPINT=0--台球杆的初始高度
 local ROD_E_POPINT=130--台球杆的初始高度
 local ROD_M_TIME=0.07---台球杆的移动时间
 
-local BOLL_S_V=3000---台球的初始速度
+local BOLL_S_V=2000---台球的初始速度
 
 function PhysicsScene:ctor()
     -- create touch layer
@@ -75,8 +75,8 @@ function PhysicsScene:ctor()
     -- self:addChild(wallBox)
 
     -- add debug node
-    self:getPhysicsWorld():setDebugDrawMask(
-        true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
+    -- self:getPhysicsWorld():setDebugDrawMask(
+    --     true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
 	
 
 
@@ -99,9 +99,11 @@ function PhysicsScene:ctor()
             local body=contact:getShapeA():getBody()
 
             if tag1==255 or tag2==255 then --处理力度不够没有弹上去的情况
-                self.rod_coinBody:setGravityEnable(false)
+
+                -- self.rod_coinBody:setGravityEnable(false)
+                dump(self.rod_spr:getPositionX())
                 self.coinSprite:setPosition(self.rod_spr:getPositionX(), ROD_B_POPINT+225)
-                return
+                return true
             end
             if tag1==1 then 
                 node=node2
@@ -136,11 +138,11 @@ end
 
 
 function PhysicsScene:add_ui()
-
+     self:getPhysicsWorld():setDebugDrawMask(
+        true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
     -- cc.Director:getInstance():getCamera():setCenterXYZ(100,0,100);
 
     self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
-
     self:addChild(self.phy_bg)
 
     local sp_bg=self.phy_bg:getChildByTag(1791)
@@ -186,10 +188,11 @@ function PhysicsScene:add_ui()
                end))
 
     self.rod_spr=self.phy_bg:getChildByTag(27)--棒子
+    -- self.rod_spr:setVisible(false)
     ROD_B_POPINT=self.rod_spr:getPositionY()--记录台球杆的初始高度
 
-
-    self:createCoin(self.rod_spr:getPositionX(), self.rod_spr:getPositionY()+225)--小球
+    -- dump(self.rod_spr:getPositionX())
+    self:createCoin(self.rod_spr:getPositionX()+0, self.rod_spr:getPositionY()+225)--小球
 
     self:add_obstacle()--障碍小球
 
@@ -209,7 +212,7 @@ function PhysicsScene:add_obstacle()
 
 			-- print("---fe ",math.floor(j%2))
             if (math.floor(j%2)==1 and i~=10) or math.floor(j%2)==0 then
-                modeSprite:setPosition(modeSprite1:getPositionX()+(modeSprite2:getPositionX()-modeSprite1:getPositionX()-0.7)*i+20*math.floor(j%2),modeSprite1:getPositionY()-j*(modeSprite1:getPositionY()-modeSprite3:getPositionY()-4))
+                modeSprite:setPosition(modeSprite1:getPositionX()+(modeSprite2:getPositionX()-modeSprite1:getPositionX()-0.5)*i+20*math.floor(j%2),modeSprite1:getPositionY()-j*(modeSprite1:getPositionY()-modeSprite3:getPositionY()-2))
                 modeSprite:setTag(2)
 
                 self.phy_bg:addChild(modeSprite)
@@ -235,9 +238,10 @@ function PhysicsScene:add_obstacle()
     dangban:setRotation(90)
     dangban:setPosition(self.rod_spr:getPositionX(), self.rod_spr:getPositionY()+210)
     dangban:setOpacity(0)
-    local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 0)
+    local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 500)
     local coinBody = cc.PhysicsBody:createBox(cc.size(8,35),
         material)
+    coinBody:setContactTestBitmask(0x03)  
     coinBody:setDynamic(false)
     dangban:setPhysicsBody(coinBody)
     dangban:setTag(255)   
@@ -249,13 +253,15 @@ function PhysicsScene:add_obstacle()
         modeSprite:setTag(-2)
         self.phy_bg:addChild(modeSprite)
 
-         modeSprite:setPosition(modeSprite_ban_1:getPositionX()+(modeSprite_ban_2:getPositionX()-modeSprite_ban_1:getPositionX()-1)*i,modeSprite_ban_1:getPositionY())
+         modeSprite:setPosition(modeSprite_ban_1:getPositionX()-8+(modeSprite_ban_2:getPositionX()-modeSprite_ban_1:getPositionX())*i,modeSprite_ban_1:getPositionY())
          local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 0)
          local coinBody = cc.PhysicsBody:createBox(cc.size(8,35),
                 material)
         coinBody:setDynamic(false)
         modeSprite:setPhysicsBody(coinBody)
     end
+    modeSprite_ban_1:removeFromParent()
+    modeSprite_ban_2:removeFromParent()
 
     --碰分小球
     local modeSprite_ban_3 =self.phy_bg:getChildByTag(1792)
@@ -271,7 +277,7 @@ function PhysicsScene:add_obstacle()
         modeSprite:setTag(arr_ball[i+1]*10)
 
          local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 0)
-         local coinBody = cc.PhysicsBody:createCircle(COIN_RADIUS,
+         local coinBody = cc.PhysicsBody:createCircle(8,
                 material)
         coinBody:setMass(COIN_MASS)
         coinBody:setGravityEnable(false)
@@ -300,7 +306,6 @@ end
 function PhysicsScene:createCoin(x, y)
     -- add sprite to scene
     self.coinSprite = display.newSprite("png/baiqiu.png")
-    -- coinSprite:setScale(0.8)
     self.phy_bg:addChild(self.coinSprite)
 
     self.rod_coinBody = cc.PhysicsBody:createCircle(COIN_RADIUS,
@@ -310,9 +315,7 @@ function PhysicsScene:createCoin(x, y)
     -- coinBody:setTag(1)
     self.rod_coinBody:setRotationEnable(false)
     self.rod_coinBody:setGravityEnable(false)
-    -- coinBody:setDynamic(false)
-    -- coinBody:setCategoryBitmask(1)
-    -- coinBody:setContactTestBitmask(1)
+
 
     --设置碰撞掩码  
     self.rod_coinBody:setCategoryBitmask(0x03)  
@@ -351,6 +354,12 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                 local cal= cc.CallFunc:create(function() 
 
                     local speed_rod=BOLL_S_V*(ROD_B_POPINT-ROD_E_POPINT-(curr_point-ROD_E_POPINT))/(ROD_B_POPINT-ROD_E_POPINT)
+                    -- dump(speed_rod)
+                    -- speed_rod=speed_rod+500
+                    if speed_rod>1600 and speed_rod<2500 then
+                        speed_rod=speed_rod+400
+                    end
+                    dump(speed_rod)
                     -- print("1111    ",speed_rod,(ROD_B_POPINT-ROD_E_POPINT-(curr_point-ROD_E_POPINT))/(ROD_B_POPINT-ROD_E_POPINT))
                      self.rod_coinBody:setGravityEnable(true)
                      self.rod_coinBody:setVelocity(cc.p(0,speed_rod))
@@ -374,7 +383,7 @@ function PhysicsScene:onTouch(event, x, y)
 end
 
 function PhysicsScene:onEnter()
-    -- self.layer:setTouchEnabled(true)
+
     self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, handler(self, self.onEnterFrame))
     self.world:setAutoStep(false);
     self:scheduleUpdate()
