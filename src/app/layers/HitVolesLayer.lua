@@ -241,8 +241,9 @@ local function createPlayLayer()
     local spriteHammer = cc.Sprite:create()  
     local spriteCoins = cc.Sprite:create()
 
-    layerPlay:addChild(spriteboy)
-    layerPlay:addChild(spritegirl)
+    -- layerPlay:addChild(spriteboy)
+    -- layerPlay:addChild(spritegirl)
+    --  以上两个已删除   
     --layerPlay:addChild(spriteVole)
     layerPlay:addChild(spriteVole, 0, kTagSprite3)
     layerPlay:addChild(spriteHammer, 0, kTagSprite4)
@@ -321,8 +322,10 @@ function callback(dt)
     local action3 = cc.Sequence:create(animate3,animate3:reverse())
 
     local node = layerPlay:getChildByTag(kTagSprite3)
+    --  地鼠随机出动的位置
     local randomWidth = math.random(visibleSize.width)
     local randomHeight = math.random(visibleSize.height)
+
     node:setPosition(origin.x+randomWidth,origin.y+randomHeight/2)
     --print(origin.x+randomWidth,origin.y+randomHeight/2)
     --print(visibleSize.width,visibleSize.height)
@@ -348,12 +351,22 @@ function coinAction(x,y)
     local animate = cc.Animate:create(animation)
 
     --创建执行序列
-    local action = cc.Sequence:create(animate,animate:reverse())
+    --local action = cc.Sequence:create(animate,animate:reverse())
 
     --附加行为方式
     --local perform = CCRepeatForever:create(action)
 
     local node = layerPlay:getChildByTag(kTagSprite5)
+
+    node:setVisible(true)
+    local function logSprRotation(sender)
+	node:setVisible(false)
+   end
+
+
+     local action = cc.Sequence:create(animate,animate:reverse(),cc.CallFunc:create(logSprRotation))
+
+
 
     node:setPosition(x,y)
 
@@ -380,17 +393,33 @@ function hammerAction(x,y)
     local animate = cc.Animate:create(animation)
 
     --创建执行序列
-    local action = cc.Sequence:create(animate,animate:reverse())
+   
 
     --附加行为方式
     --local perform = CCRepeatForever:create(action)
 
     local node = layerPlay:getChildByTag(kTagSprite4)
+node:setVisible(true)
+    local function logSprRotation(sender)
+	node:setVisible(false)
+   end
+
+
+     local action = cc.Sequence:create(animate,animate:reverse(),cc.CallFunc:create(logSprRotation))
 
     node:setPosition(x,y)
 
+
+     -- local action = cc.Sequence:create(
+     --    cc.MoveBy:create(2, cc.p(200,0)),
+     --    cc.CallFunc:create(doRemoveFromParentAndCleanup,{true}))
+
+
+
+    
     --run
     node:runAction(action)
+   
 
 end
 
@@ -408,6 +437,11 @@ local function createGameScene()
 
     --添加背景层到场景
     mainScene:addChild(createFarmLayer())
+
+
+    self:refresh_table()
+
+
     --添加精灵动画层到场景
     mainScene:addChild(createPlayLayer())
     --添加分数层到场景
@@ -419,59 +453,74 @@ end
 
 -----------------------------------------------------------------------------------------
  function HitVolesLayer:ctor()
-    print("kkkk1")
-    --scene1 = cc.Scene:create()
-    local layer = cc.Layer:create()
-    local sprite = cc.Sprite:create("start_background.png")
-    sprite:setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2)
-    layer:addChild(sprite)
-    --local bgLayer = CCLayerColor:create(ccc4(0,0,255,255))
-    --layer:addChild(bgLayer, -1)
-    local menueStart = cc.Menu:create()
-    layer:addChild(menueStart)
+    -- print("kkkk1")
+    -- --scene1 = cc.Scene:create()
+    -- local layer = cc.Layer:create()
+    -- local sprite = cc.Sprite:create("start_background.png")
+    -- sprite:setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2)
+    -- layer:addChild(sprite)
+    -- --local bgLayer = CCLayerColor:create(ccc4(0,0,255,255))
+    -- --layer:addChild(bgLayer, -1)
+    -- local menueStart = cc.Menu:create()
+    -- layer:addChild(menueStart)
 
     
 
-        -- Font Item
-    --local  spriteNormal = CCSprite:create(pic, CCRectMake(0,23*2,115,23))
-    local  spriteNormal = cc.Sprite:create("start_normal.png")
-    local  spriteSelected = cc.Sprite:create("start_select.png")
-    local  spriteDisabled = cc.Sprite:create("start_end.png")
+    --     -- Font Item
+    -- --local  spriteNormal = CCSprite:create(pic, CCRectMake(0,23*2,115,23))
+    -- local  spriteNormal = cc.Sprite:create("start_normal.png")
+    -- local  spriteSelected = cc.Sprite:create("start_select.png")
+    -- local  spriteDisabled = cc.Sprite:create("start_end.png")
 
-    local  item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
-    item1:registerScriptTapHandler(menuStartCallback)
+    -- local  item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
+    -- item1:registerScriptTapHandler(menuStartCallback)
 
-    menueStart:addChild(item1)
+    -- menueStart:addChild(item1)
 
     
-    menueStart:setPosition(cc.p(s.width/2, s.height/2))
-    --------------------------------------------------------------
-    local menueQuit = cc.Menu:create()
-    layer:addChild(menueQuit)
-    spriteNormal = cc.Sprite:create("quit_normal.png")
-    spriteSelected = cc.Sprite:create("quit_select.png")
-    spriteDisabled = cc.Sprite:create("quit_select.png")
+    -- menueStart:setPosition(cc.p(s.width/2, s.height/2))
+    -- --------------------------------------------------------------
+    -- local menueQuit = cc.Menu:create()
+    -- layer:addChild(menueQuit)
+    -- spriteNormal = cc.Sprite:create("quit_normal.png")
+    -- spriteSelected = cc.Sprite:create("quit_select.png")
+    -- spriteDisabled = cc.Sprite:create("quit_select.png")
 
-    item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
-    item1:registerScriptTapHandler(menuQuitCallback)
-    menueQuit:addChild(item1)
-    menueQuit:setPosition(cc.p(s.width/2, s.height/2-200))
-    ------------------------------------------------------------------
-    local menueAbout = cc.Menu:create()
-    layer:addChild(menueAbout)
-    spriteNormal = cc.Sprite:create("about_normal.png")
-    spriteSelected = cc.Sprite:create("about_select.png")
-    spriteDisabled = cc.Sprite:create("about_select.png")
+    -- item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
+    -- item1:registerScriptTapHandler(menuQuitCallback)
+    -- menueQuit:addChild(item1)
+    -- menueQuit:setPosition(cc.p(s.width/2, s.height/2-200))
+    -- ------------------------------------------------------------------
+    -- local menueAbout = cc.Menu:create()
+    -- layer:addChild(menueAbout)
+    -- spriteNormal = cc.Sprite:create("about_normal.png")
+    -- spriteSelected = cc.Sprite:create("about_select.png")
+    -- spriteDisabled = cc.Sprite:create("about_select.png")
 
-    item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
-    item1:registerScriptTapHandler(menuAboutCallback)
-    menueAbout:addChild(item1)
-    menueAbout:setPosition(cc.p(s.width/2, s.height/2-100))
+    -- item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
+    -- item1:registerScriptTapHandler(menuAboutCallback)
+    -- menueAbout:addChild(item1)
+    -- menueAbout:setPosition(cc.p(s.width/2, s.height/2-100))
 
 
 
-    self:addChild(layer)
+    -- self:addChild(layer)
     --return scene1
+
+mainScene=self
+     mainScene:addChild(createFarmLayer())
+
+
+    self:refresh_table()
+
+
+    --添加精灵动画层到场景
+    mainScene:addChild(createPlayLayer())
+    --添加分数层到场景
+    mainScene:addChild(createScoreLayer())
+
+
+
 end
 
 local function createScene2()
@@ -558,4 +607,122 @@ end
 -- end
 
  --xpcall(Enter, __G__TRACKBACK__)
+
+
+function HitVolesLayer:RandomIndex(indexNum, tabNum)
+
+    indexNum = indexNum or tabNum
+
+    local t = {}
+
+    local rt = {}
+
+    for i = 1,indexNum do
+
+        local ri = math.random(1,tabNum + 1 - i)
+
+        local v = ri
+
+        for j = 1,tabNum do
+
+            if not t[j] then
+
+                ri = ri - 1
+
+                if ri == 0 then
+
+                    table.insert(rt,j)
+
+                    t[j] = true
+
+                end
+
+            end
+
+        end
+   end
+    --dump(rt)
+    return rt
+  
+end
+ function HitVolesLayer:refresh_table()
+--  新增加
+ 	self.row=3
+ 	self.col=4
+ 	self.point=cc.p(57,100)
+ 	
+ 	 
+
+    local row_rand=self:RandomIndex(self.row,self.row)
+    local col_rand=self:RandomIndex(self.col,self.col)
+
+    local pos_x, pos_y =self.point.x,self.point.y
+    local row ,col =self.row,self.col 
+     local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+   for i=1,row do
+        for j=1,col do
+                -- local fragment_sprite = display.newScale9Sprite(path..self.filename, 0,0, cc.size(self._size.width,self._size.height))
+                local fragment_sprite = display.newSprite("HitVoles/kkkkk.jpg")
+                fragment_sprite:setScaleX(0.703)
+                fragment_sprite:setScaleY(0.703)
+                --fragment_sprite:setRotation(45)
+                fragment_sprite:setAnchorPoint(0, 0)
+
+                --新增加
+                local po={}
+ 	po.width=527.25
+ 	po.height=703
+	self.content_size=po
+	print("款款  ",self.content_size.width)
+
+                local rect = cc.rect(0,0, po.width/row-3, po.height/col-3)
+                --创建一个裁剪区域用于裁剪图块
+                local clipnode = cc.ClippingRegionNode:create()
+                clipnode:setClippingRegion(rect)--设置裁剪区域的大小
+                clipnode:setContentSize(self.content_size.width/row-3, self.content_size.height/col-3)
+                clipnode:addChild(fragment_sprite)--添加图片
+                -- clipnode:setAnchorPoint(0.5,0.5)
+                fragment_sprite:setPosition(0 - (i-1)*self.content_size.width/row, 0 - (j-1)*self.content_size.height/col)--设置图片显示的部分
+                self:addChild(clipnode)
+               
+                -- clipnode:setTag(#self.fragment_table + 1)
+                -- self.fragment_poins[#self.fragment_table + 1]=cc.p(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
+                -- self.fragment_table[#self.fragment_table + 1] = clipnode
+
+                clipnode:setPosition(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
+                clipnode:setPosition(pos_x + (i-1)*po.width/row, pos_y + (j-1)*po.height/col)
+
+
+                -- clipnode:setTouchEnabled(true)
+                -- clipnode:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
+                --                         --self:touch_event(clipnode,event)--监听回调
+                --                         local position = cc.p(clipnode:getPosition())
+                --                         local boundingBox = cc.rect(position.x, position.y, self.content_size.width/self.row, self.content_size.height/self.col) --getCascadeBoundingBox()方法获得的rect大小为整张图片的大小，此处重新计算图块的rect。
+
+                --                         if "began" == event.name and not cc.rectContainsPoint(boundingBox, cc.p(event.x, event.y)) then
+                                                
+                --                                 clipnode:setTouchSwallowEnabled(false)
+                --                                 return false
+                --                         end
+
+                --                         if "began" == event.name then
+                --                             print("22222222")
+                --                                 clipnode:setTouchSwallowEnabled(false)--吞噬触摸，防止响应下层的图块。
+                --                                 clipnode:setLocalZOrder(4)
+                --                                 return true
+                --                         elseif "moved" == event.name then
+                --                               self:touch_event_move(event,clipnode)
+                --                         elseif "ended" == event.name then
+                --                                 self:touchEnd(event,clipnode)
+
+                --                         end
+                --             end)
+
+                end
+       end  
+end
+
+
+
+
 return  HitVolesLayer
