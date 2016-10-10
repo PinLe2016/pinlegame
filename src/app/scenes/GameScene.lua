@@ -14,10 +14,12 @@ end)
 
 local debrisLayer = require("app.layers.debrisLayer")
 local SurpriseOverScene = require("app.scenes.SurpriseOverScene")
+local PhysicsScene = require("app.scenes.PhysicsScene")
 
 function GameScene:ctor(params)
     self.heroid=params.heroid
     self.cycle=params.cycle
+    self.phyimage=params.phyimage
     self.floating_layer = FloatingLayerEx.new()
 
     self.floating_layer:addTo(self,-1)
@@ -271,8 +273,9 @@ end
            self._time=self._time-1
            self._dajishi:setString(tostring(self._time))
            if self._time==0 then
-              --Util:scene_control("SurpriseOverScene")
-              Util:scene_controlid("SurpriseOverScene",{id=self.adid,cycle=self.cycle,heroid=self.heroid})
+              --Util:scene_control("SurpriseOverScene")  PhysicsScene
+              --Util:scene_controlid("SurpriseOverScene",{id=self.adid,cycle=self.cycle,heroid=self.heroid})  --,phyimage=self.phyimage
+               Util:scene_controlid("PhysicsScene",{id=self.adid,cycle=self.cycle,heroid=self.heroid,phyimage=self.phyimage})
                -- local scene=SurpriseOverScene.new({})
                -- cc.Director:getInstance():pushScene(scene)
 

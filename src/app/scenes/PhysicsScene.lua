@@ -20,21 +20,56 @@ local COIN_ELASTICITY = 0.15---摩擦力
 local COIN_ELASTICITY_tow = 0.2---摩擦力
 -- local WALL_ELASTICITY = 0.0--摩擦系数
 --PhysicsMaterial 参数1、density（密度）2、restiution（弹性）3、friction（摩擦力）
+
+local BOLL_OFF_SET=0
+
 local is_Shots=false
 local ROD_V=3.0
 local ROD_B_POPINT=0--台球杆的初始高度
-local ROD_E_POPINT=130--台球杆的初始高度
+local ROD_E_POPINT=130+BOLL_OFF_SET--台球杆的初始高度
 local ROD_M_TIME=0.07---台球杆的移动时间
 
 local BOLL_S_V=2000---台球的初始速度
 
-function PhysicsScene:ctor()
+
+
+function PhysicsScene:pushFloating(text)
+    if is_resource then
+        self.floating_layer:showFloat(text)  
+        
+    else
+        if self.barrier_bg then 
+            self.barrier_bg:setVisible(false)
+        end
+        self.floating_layer:showFloat(text)
+    end
+end 
+
+function PhysicsScene:push_buffer(is_buffer)
+
+       self.floating_layer:show_http(is_buffer) 
+       
+end 
+function PhysicsScene:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end
+
+
+
+function PhysicsScene:ctor(params)
+        self.heroid=params.heroid
+        self.cycle=params.cycle
+        self.id=params.id
+        self.phyimage=params.phyimage
+       
     -- create touch layer
 
 
     -- display.addSpriteFrames(GAME_TEXTURE_DATA_FILENAME, GAME_TEXTURE_IMAGE_FILENAME)
     
     self:setNodeEventEnabled(true)--layer添加监听
+       self.floating_layer = FloatingLayerEx.new()
+   self.floating_layer:addTo(self,100000)
 
     
     -- create label
@@ -102,7 +137,8 @@ function PhysicsScene:ctor()
 
                 -- self.rod_coinBody:setGravityEnable(false)
                 dump(self.rod_spr:getPositionX())
-                self.coinSprite:setPosition(self.rod_spr:getPositionX(), ROD_B_POPINT+225)
+                self.coinSprite:setPosition(self.rod_spr:getPositionX(),ROD_B_POPINT+225)
+                self.start_bt:setTouchEnabled(true)
                 return true
             end
             if tag1==1 then 
@@ -119,6 +155,7 @@ function PhysicsScene:ctor()
                node:loadTexture("png/Physicshongqiu-xiao-liang.png") 
                node:runAction(seq)
            else
+
                body:setGravityEnable(true)
                self.score_spr=node
            end
@@ -138,12 +175,29 @@ end
 
 
 function PhysicsScene:add_ui()
-     self:getPhysicsWorld():setDebugDrawMask(
-        true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
+     -- self:getPhysicsWorld():setDebugDrawMask(
+     --    true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
     -- cc.Director:getInstance():getCamera():setCenterXYZ(100,0,100);
 
     self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
     self:addChild(self.phy_bg)
+
+        --弹球广告图
+        local activitybyid=LocalData:Instance():get_getactivitybyid()
+        local _imagename=self.phy_bg:getChildByTag(87)
+        _imagename:loadTexture(self.phyimage)
+        --弹球最高得分
+        self.bestscore_text=self.phy_bg:getChildByTag(1803)
+        self.bestscore_text:setString(tostring(activitybyid["mypoints"]))
+        --弹球累计得分
+        self.allscore_text=self.phy_bg:getChildByTag(1802)
+        self.allscore_text:setString(tostring(activitybyid["mypoints"]))
+        --  押注金币
+        local _betgolds=self.phy_bg:getChildByTag(1799)   
+       _betgolds:setString(tostring(activitybyid["betgolds"] .. "金币/次"))
+
+
+
 
     local sp_bg=self.phy_bg:getChildByTag(1791)
 
@@ -182,17 +236,21 @@ function PhysicsScene:add_ui()
                end))
 
      --qidong
-    local start_bt=self.phy_bg:getChildByTag(1795)
-     start_bt:addTouchEventListener((function(sender, eventType  )
+     self.start_bt=self.phy_bg:getChildByTag(1795)
+     self.start_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
 
     self.rod_spr=self.phy_bg:getChildByTag(27)--棒子
+    self.rod_spr:setPositionY(BOLL_OFF_SET+self.rod_spr:getPositionY())
     -- self.rod_spr:setVisible(false)
     ROD_B_POPINT=self.rod_spr:getPositionY()--记录台球杆的初始高度
 
     -- dump(self.rod_spr:getPositionX())
-    self:createCoin(self.rod_spr:getPositionX()+0, self.rod_spr:getPositionY()+225)--小球
+     self.yangqiu=self.phy_bg:getChildByTag(1789)
+     self.yangqiu:setVisible(false)
+     dump(self.rod_spr:getPositionX())
+    self:createCoin(self.rod_spr:getPositionX()+0,  self.rod_spr:getPositionY()+225-BOLL_OFF_SET)--小球
 
     self:add_obstacle()--障碍小球
 
@@ -342,14 +400,23 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                 return
             end 
 
-           
+           if tag==167 then
+               self.phy_bg:removeFromParent()
+               --self:add_ui()
+              self.PhysicsPop:removeFromParent()
+              cc.Director:getInstance():popScene()
+           end
+            if tag==166 then
+              print("好像是客服")
+           end
            if tag==31 then  --返回
-                Util:scene_control("MainInterfaceScene")
+                --Util:scene_control("MainInterfaceScene")
+                 cc.Director:getInstance():popScene()
            end
 
            if tag==1795 then  --开启按钮
                 is_Shots=false
-
+            self.start_bt:setTouchEnabled(false)
                 local curr_point=self.rod_spr:getPositionY()
                 local cal= cc.CallFunc:create(function() 
 
@@ -363,6 +430,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                     -- print("1111    ",speed_rod,(ROD_B_POPINT-ROD_E_POPINT-(curr_point-ROD_E_POPINT))/(ROD_B_POPINT-ROD_E_POPINT))
                      self.rod_coinBody:setGravityEnable(true)
                      self.rod_coinBody:setVelocity(cc.p(0,speed_rod))
+                     
                 end )
                 local move=cc.MoveTo:create(ROD_M_TIME,cc.p(self.rod_spr:getPositionX(),ROD_B_POPINT))
                local seq=transition.sequence({move,cal})--
@@ -411,13 +479,55 @@ function PhysicsScene:onEnterFrame(dt)
         end
 
         if  self.score_spr and self.score_spr:getPositionY()<200.0  then
+
+            dump(self.score_spr:getTag())
+            self._score1=self.score_spr:getTag()/10
             self.score_spr:removeFromParent()
             self.score_spr=nil
-            self.phy_bg:removeFromParent()
-            self:add_ui()
+            --self.phy_bg:removeFromParent()
+            --self:add_ui()
+
+            self:Phypop_up()
         end
 end
+--弹出框关闭
+function PhysicsScene:Phypop_up(  )
 
+            self.PhysicsPop = cc.CSLoader:createNode("PhysicsPop.csb");
+            self:addChild(self.PhysicsPop)
+
+            local back=self.PhysicsPop:getChildByTag(167)  --  关闭按钮
+            back:addTouchEventListener(function(sender, eventType  )
+            self:touch_btCallback(sender, eventType)
+            end)
+
+            local customer_button =self.PhysicsPop:getChildByTag(166)  --  客服
+            customer_button :addTouchEventListener(function(sender, eventType  )
+            self:touch_btCallback(sender, eventType)
+            end)
+
+            local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+            self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
+            local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+            local advert =self.PhysicsPop:getChildByTag(165)  --  广告
+            advert:loadTexture(path..self._imagetu)
+
+            local score_text1 =self.PhysicsPop:getChildByTag(171)  --  分数1
+            score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",self._score1 ))
+            local score_text2 =self.PhysicsPop:getChildByTag(168)  --  分数2
+            local score2=math.random(8)
+            score_text2:loadTexture(string.format("png/Physicstaiqiu-%d.png",score2 ))
+            local score_text3 =self.PhysicsPop:getChildByTag(169)  --  分数3
+            local score3=math.random(8)
+            score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", score3))
+            local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
+            local score4=math.random(8)
+            score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", score4))
+
+
+            
+
+end
 
 
 
