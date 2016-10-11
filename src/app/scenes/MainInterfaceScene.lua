@@ -5,6 +5,16 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
     return display.newScene("MainInterfaceScene")
 end)
 
+function MainInterfaceScene:extend12()
+       self.Laohuji = cc.CSLoader:createNode("HitVolesLayer.csb")
+       self:addChild(self.Laohuji)
+
+          local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
+         self.Laohuji:addChild(HitVolesLayer.new())
+   
+
+
+end
  
 function MainInterfaceScene:ctor()
 	self.floating_layer = FloatingLayerEx.new()
@@ -23,14 +33,18 @@ function MainInterfaceScene:ctor()
 
        
        self:listener_home() --注册安卓返回键
-        self:fun_init()
+       Server:Instance():getaffichelist(1)
+      Server:Instance():gettasklist()   --  初始化任务
+               --手机归属请求
+       Server:Instance():getusercitybyphone()--手机归属
+        --self:fun_init()
+        self:extend12()
 
 end
 function MainInterfaceScene:fun_init( )
 
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
-     
 
 
        self.biao_ji=self.MainInterfaceScene:getChildByTag(1164)--
@@ -198,13 +212,10 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		Server:Instance():validateactivitycode(self.activitycode_text:getString())
 		self.activitycode_text:setString(" ")
 	elseif tag==97 then
-		 -- Util:scene_control("GoldprizeScene")
-    Util:scene_control("PhysicsScene")
-		--Util:scene_control("GoldprizeScene")
+		Util:scene_control("GoldprizeScene")
      --Util:scene_control("PhysicsScene")
 
-     --   local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
-     -- self:addChild(HitVolesLayer.new())
+    
 
 	elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
@@ -492,12 +503,6 @@ function MainInterfaceScene:init_checkin(  )
 end
 function MainInterfaceScene:onEnter()
   --audio.playMusic(G_SOUND["ACTIVITY"],true)
-
-   Server:Instance():getaffichelist(1)
-    Server:Instance():gettasklist()   --  初始化任务
-         --手机归属请求
-    Server:Instance():getusercitybyphone()--手机归属
-       
   Util:player_music("ACTIVITY",true )
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()

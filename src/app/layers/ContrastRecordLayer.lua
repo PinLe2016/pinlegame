@@ -129,7 +129,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                               
                                 one_integral:setString(mypointslist[j]["points"])--xin
                                  -- self.labelAtlas1:setString(tostring(mypointslist[j]["points"]))   --setProperty(mypointslist[j]["points"], "png/cou.png", 26, 35, "0")
-                                 -- retroactive_bt:setVisible(false)
+                                  retroactive_bt:setVisible(false)
                                   break
                         else
                                 one_integral:setString("0")  --xin
@@ -159,7 +159,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
       
          local hero_integral=cell:getChildByTag(116)--积分
                               -- hero_integral:setVisible(false)
-                               hero_integral:setString(playerpointslist[k]["points"])
+                               --hero_integral:setString(playerpointslist[k]["points"])
                                -- local labelAtlas = ccui.TextAtlas:create()
                                -- labelAtlas:setProperty(0, "png/cou.png", 26, 35, "0")
                                -- labelAtlas:setPosition(cc.p(hero_integral:getPositionX(),hero_integral:getPositionY()))  
@@ -170,7 +170,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 
               
                          if playernum ~= 0 and playerpointslist[k]["cycle"]  == i  then
-                                  labelAtlas:setString(playerpointslist[k]["points"])
+                                  hero_integral:setString(playerpointslist[k]["points"])
                              
                                break
                          else

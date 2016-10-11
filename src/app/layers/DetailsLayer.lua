@@ -44,7 +44,7 @@ function DetailsLayer:init(  )
 		     	return
 		     end
 		     -- Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
-		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=-1,heroid=0})  --daojishi
+		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=0,heroid=0,phyimage=self.image})  --daojishi
                       	       cc.Director:getInstance():pushScene(scene)
 		      --Util:scene_control("SurpriseOverScene")
 		      
@@ -215,6 +215,7 @@ end
 function DetailsLayer:onEnter()
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
+                       		print("详情")
                       		 self:init()--活动详情初始化
                       end)
 end

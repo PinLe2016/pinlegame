@@ -61,7 +61,7 @@ function PhysicsScene:ctor(params)
         self.cycle=params.cycle
         self.id=params.id
         self.phyimage=params.phyimage
-       
+        self.actid=LocalData:Instance():get_actid()
     -- create touch layer
 
 
@@ -395,6 +395,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
             local tag=sender:getTag()
             if eventType == ccui.TouchEventType.began and tag==1795 then
                 is_Shots=true
+                
             end
             if eventType ~= ccui.TouchEventType.ended then
                 return
@@ -404,14 +405,42 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                self.phy_bg:removeFromParent()
                --self:add_ui()
               self.PhysicsPop:removeFromParent()
-              cc.Director:getInstance():popScene()
+              -- cc.Director:getInstance():popScene()
+              -- Server:Instance():getactivitybyid(self.id,self.cycle)
+            if tonumber(self.cycle)   ~=  -1 then
+                        local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
+                        local userdt = LocalData:Instance():get_userdata()
+                        userdt["golds"]=getuserinfo["golds"]
+                        LocalData:Instance():set_userdata(userdt)
+                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        cc.Director:getInstance():popScene()
+                        Server:Instance():getactivitybyid(self.id,self.cycle)
+                return
+            end
+            LocalData:Instance():set_getactivitypoints(nil)
+            Server:Instance():getactivitybyid(self.id,0)
+            cc.Director:getInstance():popScene()
            end
             if tag==166 then
               print("好像是客服")
            end
            if tag==31 then  --返回
-                --Util:scene_control("MainInterfaceScene")
-                 cc.Director:getInstance():popScene()
+             --Util:scene_control("MainInterfaceScene")
+             -- cc.Director:getInstance():popScene()
+             -- Server:Instance():getactivitybyid(self.id,self.cycle)   --  跟新详情数据
+            if tonumber(self.cycle)   ~=  -1 then
+                        local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
+                        local userdt = LocalData:Instance():get_userdata()
+                        userdt["golds"]=getuserinfo["golds"]
+                        LocalData:Instance():set_userdata(userdt)
+                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        cc.Director:getInstance():popScene()
+                        Server:Instance():getactivitybyid(self.id,self.cycle)
+                return
+            end
+            LocalData:Instance():set_getactivitypoints(nil)
+            Server:Instance():getactivitybyid(self.id,0)
+            cc.Director:getInstance():popScene()
            end
 
            if tag==1795 then  --开启按钮
@@ -455,7 +484,27 @@ function PhysicsScene:onEnter()
     self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, handler(self, self.onEnterFrame))
     self.world:setAutoStep(false);
     self:scheduleUpdate()
+    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
+                       function()
+                         self:fun_data()
+                      end)
+
 end
+function PhysicsScene:fun_data( )
+       local activitypoints = LocalData:Instance():get_getactivitypoints()
+
+       --弹球最高得分
+        self.bestscore_text=self.phy_bg:getChildByTag(1803)
+        self.bestscore_text:setString(tostring(activitypoints["bestpoints"]))
+        --弹球累计得分
+        self.allscore_text=self.phy_bg:getChildByTag(1802)
+        self.allscore_text:setString(tostring(activitypoints["totalPoints"]))
+
+end
+function PhysicsScene:onExit()
+         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
+end
+
 
 function PhysicsScene:onEnterFrame(dt)
      
@@ -523,11 +572,16 @@ function PhysicsScene:Phypop_up(  )
             local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
             local score4=math.random(8)
             score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", score4))
-
+            --给后端发送请求  保存数据
+            local  _score=  self._score1 ..   score4  ..   score2  ..   score3 
+            print("发送分数  ;",_score)
+            Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
 
             
 
 end
+
+
 
 
 

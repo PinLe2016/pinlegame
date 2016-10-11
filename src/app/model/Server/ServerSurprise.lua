@@ -47,6 +47,7 @@ end
 
 function Server:getactivitybyid_callback()
     -- dump(self.data)
+    print("详情111")
     if self.data.err_code==0  then
             LocalData:Instance():set_getactivitybyid(self.data)--保存数据
             if self.cycle  == 0 then
@@ -157,10 +158,11 @@ function Server:getrankinglistofactivies_callback()
 end
 
 --3.5.7   获取用户活动老虎机积分（命令：getactivitypoints）
-function Server:getactivitypoints(activityid,cycle)
+function Server:getactivitypoints(activityid,cycle,_score)
     local params = {}
     params={
             activityid =activityid,
+            points=_score
         }
 
         if tonumber(cycle) ~= -1 then
