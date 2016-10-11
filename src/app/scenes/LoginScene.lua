@@ -730,7 +730,8 @@ function LoginScene:updateLayer()
 
 
     --清空当前，重新热更
-    -- reset()
+    -- self:reset()
+    -- getAssetsManager():deleteVersion()
 --版本下载更新中
     getAssetsManager():update()
     

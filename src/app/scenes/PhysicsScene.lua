@@ -21,10 +21,10 @@ local COIN_ELASTICITY_tow = 0.2---摩擦力
 -- local WALL_ELASTICITY = 0.0--摩擦系数
 --PhysicsMaterial 参数1、density（密度）2、restiution（弹性）3、friction（摩擦力）
 
-local BOLL_OFF_SET=0
+local BOLL_OFF_SET=60--台球杆初始位置调整的偏移量
 
 local is_Shots=false
-local ROD_V=3.0
+local ROD_V=4.0
 local ROD_B_POPINT=0--台球杆的初始高度
 local ROD_E_POPINT=130+BOLL_OFF_SET--台球杆的初始高度
 local ROD_M_TIME=0.07---台球杆的移动时间
@@ -137,7 +137,7 @@ function PhysicsScene:ctor(params)
 
                 -- self.rod_coinBody:setGravityEnable(false)
                 dump(self.rod_spr:getPositionX())
-                self.coinSprite:setPosition(self.rod_spr:getPositionX(),ROD_B_POPINT+225)
+                self.coinSprite:setPosition(self.rod_spr:getPositionX(),ROD_B_POPINT+225-BOLL_OFF_SET)
                 self.start_bt:setTouchEnabled(true)
                 return true
             end
@@ -250,7 +250,7 @@ function PhysicsScene:add_ui()
      self.yangqiu=self.phy_bg:getChildByTag(1789)
      self.yangqiu:setVisible(false)
      dump(self.rod_spr:getPositionX())
-    self:createCoin(self.rod_spr:getPositionX()+0,  self.rod_spr:getPositionY()+225-BOLL_OFF_SET)--小球
+    self:createCoin(self.rod_spr:getPositionX()+0,  ROD_B_POPINT+225-BOLL_OFF_SET)--小球
 
     self:add_obstacle()--障碍小球
 
@@ -294,7 +294,7 @@ function PhysicsScene:add_obstacle()
 
     local dangban=modeSprite_ban_1:clone()
     dangban:setRotation(90)
-    dangban:setPosition(self.rod_spr:getPositionX(), self.rod_spr:getPositionY()+210)
+    dangban:setPosition(self.rod_spr:getPositionX(), self.rod_spr:getPositionY()+210-BOLL_OFF_SET)
     dangban:setOpacity(0)
     local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 500)
     local coinBody = cc.PhysicsBody:createBox(cc.size(8,35),
@@ -484,8 +484,8 @@ function PhysicsScene:onEnterFrame(dt)
             self._score1=self.score_spr:getTag()/10
             self.score_spr:removeFromParent()
             self.score_spr=nil
-            --self.phy_bg:removeFromParent()
-            --self:add_ui()
+            -- self.phy_bg:removeFromParent()
+            -- self:add_ui()
 
             self:Phypop_up()
         end
