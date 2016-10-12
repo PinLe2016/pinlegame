@@ -220,14 +220,14 @@ local function createPlayLayer()
 
     local function onTouch(eventType, x, y)
         if eventType == "began" then
-        	print("---", x, y)
+        	-- print("---", x, y)
             return true
         elseif eventType == "ended" then
         local hight_=cc.pGetDistance(cc.p(0,y), cc.p(0,0))
         local off_y=math.cos(math.rad(65))*hight_ 
         local width_=cc.pGetDistance(cc.p(x,0), cc.p(0,0))
         local off_x=math.cos(math.rad(65))*width_ 
-         print("222---", off_x)
+         -- print("222---", off_x)
              return onTouchEnded(x+off_x/2,y,y+off_y)
         end
     end
@@ -246,7 +246,7 @@ local function createPlayLayer()
     local spriteVole = cc.Sprite:create()
     --spriteVole:setPosition(origin.x + (visibleSize.width / 3)*2, origin.y + visibleSize.height / 3)
     local spriteHammer = cc.Sprite:create()  
-    spriteHammer:setAnchorPoint(cc.p(0.5,1))
+    spriteHammer:setAnchorPoint(cc.p(0.5,1.0))
 
     local spriteCoins = cc.Sprite:create()
 
@@ -301,7 +301,7 @@ local function createPlayLayer()
     --run
     --spriteVole:runAction(perform3)
 
-    schedulHandle = scheduler:scheduleScriptFunc(callback, 4.0, false)
+    schedulHandle = scheduler:scheduleScriptFunc(callback, 2.0, false)
 
     return layerPlay
 end
@@ -320,7 +320,7 @@ function callback(dt)
 	mainScene.yangtu=donghua
 	--donghua:setVisible(false)
 	--donghua:setScale(1.2, 1.2)
-	local fragment_sprite = display.newSprite("png/Dmakuang.png")
+	local fragment_sprite = display.newSprite("png/dadishu-1.png")
 	 fragment_sprite:setColor(cc.c3b(math.random(250),math.random(250),math.random(250)))
 	-- fragment_sprite:setScaleX(0.703)
 	-- fragment_sprite:setScaleY(0.703)
@@ -331,27 +331,32 @@ function callback(dt)
             -- mainScene:addChild(streak,20)  --donghua:getPositionX()-45,donghua:getPositionY()-45
 
 
-	fragment_sprite:setContentSize(donghua:getContentSize().width,donghua:getContentSize().height)
-	fragment_sprite:setScale(0.5)
-	fragment_sprite:setAnchorPoint(0.3, 0.3)
-	fragment_sprite:setPosition(cc.p(donghua:getPositionX()-5,donghua:getPositionY()-5))
-	mainScene:addChild(fragment_sprite,-11)
+	-- fragment_sprite:setContentSize(donghua:getContentSize().width,donghua:getContentSize().height)
+	-- fragment_sprite:setScale(0.5)
+ --    fragment_sprite:setScaleX(1.3)    
+	fragment_sprite:setAnchorPoint(0.0, 0.06)
+	-- fragment_sprite:setPosition(cc.p(donghua:getPositionX()-5,donghua:getPositionY()-5))
+	donghua:addChild(fragment_sprite)
 
-            local move = cc.MoveTo:create(2, cc.p(fragment_sprite:getPositionX()-45,fragment_sprite:getPositionY()-45))
-	local function CallFucnCallback4(sender)
-	    fragment_sprite:setVisible(false)
-	end
-	local moveBack = cc.MoveTo:create(2, cc.p(fragment_sprite:getPositionX(),fragment_sprite:getPositionY()))
-	local seq = cc.Sequence:create(move,moveBack,cc.CallFunc:create(CallFucnCallback4))
-	fragment_sprite:runAction(seq)
+ --            local move = cc.MoveTo:create(2, cc.p(fragment_sprite:getPositionX()-45,fragment_sprite:getPositionY()-45))
+	-- local function CallFucnCallback4(sender)
+	--     fragment_sprite:setVisible(false)
+	-- end
+	-- local moveBack = cc.MoveTo:create(2, cc.p(fragment_sprite:getPositionX(),fragment_sprite:getPositionY()))
+	-- local seq = cc.Sequence:create(move,moveBack,cc.CallFunc:create(CallFucnCallback4))
+	-- fragment_sprite:runAction(seq)
 
-	local move = cc.MoveTo:create(2, cc.p(donghua:getPositionX()-45,donghua:getPositionY()-45))
-	local function CallFucnCallback3(sender)
-	    donghua:setScale(1, 1)
-	end
-	local moveBack = cc.MoveTo:create(2, cc.p(donghua:getPositionX(),donghua:getPositionY()))
-	local seq = cc.Sequence:create(move,moveBack,cc.CallFunc:create(CallFucnCallback3))
-	donghua:runAction(seq)
+	-- local move = cc.MoveTo:create(2, cc.p(donghua:getPositionX()-45,donghua:getPositionY()-45))
+	-- local function CallFucnCallback3(sender)
+	--     donghua:setScale(1, 1)
+	-- end
+	-- local moveBack = cc.MoveTo:create(2, cc.p(donghua:getPositionX(),donghua:getPositionY()))
+	-- local seq = cc.Sequence:create(move,moveBack,cc.CallFunc:create(CallFucnCallback3))
+	-- donghua:runAction(seq)
+     local rate=cc.RotateBy:create(1.0, {x=-5,y=0,z=0})--,cc.CallFunc:create(CallFucnCallback3)
+    local seq = cc.Sequence:create(rate,rate:reverse())
+    donghua:stopAllActions()
+    donghua:runAction(seq)
 
 
 
@@ -516,37 +521,6 @@ cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
     -- mainScene:addChild(createScoreLayer())
 end
 
-local function createScene2()
-    return createGameScene() 
-end
-
-local function createScene3()
-    scene3 = cc.Scene:create()
-    local layer = cc.Layer:create()
-    local sprite = cc.Sprite:create("about.png")
-    sprite:setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2)
-    layer:addChild(sprite)
-    --local bgLayer = CCLayerColor:create(ccc4(0,0,255,255))
-    --layer:addChild(bgLayer, -1)
-    local menue = cc.Menu:create()
-    menue:setPosition(cc.p(s.width-50,s.height/10))
-    layer:addChild(menue)
-
-        -- Font Item
-    --local  spriteNormal = CCSprite:create(pic, CCRectMake(0,23*2,115,23))
-    local  spriteNormal = cc.Sprite:create("back_normal.png")
-    local  spriteSelected = cc.Sprite:create("back_select.png")
-    local  spriteDisabled = cc.Sprite:create("back_normal.png")
-
-    local  item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
-    item1:registerScriptTapHandler(backMenuCallback)
-
-    menue:addChild(item1)
-
-    scene3:addChild(layer)
-
-    return scene3
-end
 
 function translateScene()
     --local scene = nextAction()
@@ -622,7 +596,7 @@ end
                 local fragment_sprite = cc.Sprite:create()
                 
                 --fragment_sprite:setRotation(45)
-                fragment_sprite:setAnchorPoint(0, 0)
+                fragment_sprite:setAnchorPoint(0.5, 1)
 
                 --新增加
                 local po={}
@@ -636,7 +610,7 @@ end
                  fragment_sprite:setTexture(cache)
                  fragment_sprite:setTextureRect(rect)
 
-                fragment_sprite:setPosition(-55+(i-1)*self.content_size.width/row, 400 +(3-j)*self.content_size.height/col)--设置图片显示的部分
+                fragment_sprite:setPosition(70+(i-1)*self.content_size.width/row, 550 +(3-j)*self.content_size.height/col)--设置图片显示的部分
                 layer:addChild(fragment_sprite)
                
                 -- clipnode:setTag(#self.fragment_table + 1)
@@ -679,82 +653,7 @@ end
                  
        end  
 end
- function HitVolesLayer:refresh_table1()
-           --  新增加
-     self.row=3
-     self.col=4
-    self.point=cc.p(57,100)
-    local row_rand=self:RandomIndex(self.row,self.row)
-    local col_rand=self:RandomIndex(self.col,self.col)
-
-    local pos_x, pos_y =self.point.x,self.point.y
-    local row ,col =self.row,self.col 
-    local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-    for i=1,row do
-         for j=1,col do
-                -- local fragment_sprite = display.newScale9Sprite(path..self.filename, 0,0, cc.size(self._size.width,self._size.height))
-                local fragment_sprite = display.newSprite("HitVoles/kkkkk.jpg")
-                fragment_sprite:setScaleX(0.5)--(0.703)
-                fragment_sprite:setScaleY(0.5)--(0.703)
-                --fragment_sprite:setRotation(45)
-                fragment_sprite:setAnchorPoint(0, 0)
-
-                --新增加
-                local po={}
- 	    po.width=375--527.25
- 	    po.height=500--703
-	    self.content_size=po
-	    print("款款  ",self.content_size.width)
-
-                local rect = cc.rect(0,0, po.width/row-3, po.height/col-3)
-                --创建一个裁剪区域用于裁剪图块
-                local clipnode = cc.ClippingRegionNode:create()
-                clipnode:setClippingRegion(rect)--设置裁剪区域的大小
-                clipnode:setContentSize(self.content_size.width/row-3, self.content_size.height/col-3)
-                clipnode:addChild(fragment_sprite)--添加图片
-               -- fragment_sprite:setColor(cc.c3b(math.random(250),math.random(250),math.random(250)))
-
-                -- clipnode:setAnchorPoint(0.5,0.5)
-                fragment_sprite:setPosition(0 - (i-1)*self.content_size.width/row, 0 - (j-1)*self.content_size.height/col)--设置图片显示的部分
-                self:addChild(clipnode)
-               --赋值
-                 clipnode:setTag(#mainScene.fragment_table + 1)
-                -- self.fragment_poins[#self.fragment_table + 1]=cc.p(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
-                 mainScene.fragment_table[#mainScene.fragment_table + 1] = clipnode
-
-                clipnode:setPosition(60 + (row_rand[i]-1)*po.width/row, 230 + (col_rand[j]-1)*po.height/col)
-                --clipnode:setPosition(pos_x + (i-1)*po.width/row, pos_y + (j-1)*po.height/col)
-
-
-                -- clipnode:setTouchEnabled(true)
-                -- clipnode:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
-                --                         --self:touch_event(clipnode,event)--监听回调
-                --                         local position = cc.p(clipnode:getPosition())
-                --                         local boundingBox = cc.rect(position.x, position.y, self.content_size.width/self.row, self.content_size.height/self.col) --getCascadeBoundingBox()方法获得的rect大小为整张图片的大小，此处重新计算图块的rect。
-
-                --                         if "began" == event.name and not cc.rectContainsPoint(boundingBox, cc.p(event.x, event.y)) then
-                                                
-                --                                 clipnode:setTouchSwallowEnabled(false)
-                --                                 return false
-                --                         end
-
-                --                         if "began" == event.name then
-                --                             print("22222222")
-                --                                 clipnode:setTouchSwallowEnabled(false)--吞噬触摸，防止响应下层的图块。
-                --                                 clipnode:setLocalZOrder(4)
-                --                                 return true
-                --                         elseif "moved" == event.name then
-                --                               self:touch_event_move(event,clipnode)
-                --                         elseif "ended" == event.name then
-                --                                 self:touchEnd(event,clipnode)
-
-                --                         end
-                --             end)
-
-                end
-       end  
-end
-
+ 
 
 
 
