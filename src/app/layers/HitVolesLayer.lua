@@ -194,19 +194,19 @@ local function createPlayLayer()
 
         -- Font Item
     --local  spriteNormal = CCSprite:create(pic, CCRectMake(0,23*2,115,23))
-    local  spriteNormal = cc.Sprite:create("back_normal.png")
-    local  spriteSelected = cc.Sprite:create("back_select.png")
-    local  spriteDisabled = cc.Sprite:create("back_normal.png")
+    -- local  spriteNormal = cc.Sprite:create("back_normal.png")
+    -- local  spriteSelected = cc.Sprite:create("back_select.png")
+    -- local  spriteDisabled = cc.Sprite:create("back_normal.png")
 
-    local  item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
-    item1:registerScriptTapHandler(backMenuCallback)
+    -- local  item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
+    -- item1:registerScriptTapHandler(backMenuCallback)
 
-    menue:addChild(item1)
+    -- menue:addChild(item1)
 
-    local function onTouchEnded(x, y)
+    local function onTouchEnded(x,y,y1)
         local s = layerPlay:getChildByTag(kTagSprite4)
         --s:stopAllActions()
-        hammerAction(x,y)
+        hammerAction(x,y1)
         --fuck()
         --检测锤子和地鼠的碰撞
         if checkClision(x,y) then
@@ -223,11 +223,12 @@ local function createPlayLayer()
         	print("---", x, y)
             return true
         elseif eventType == "ended" then
-        local hight_=cc.pGetDistance(cc.p(x,y), cc.p(0,800))
-
-         local roat=math.cos(60)*5
-         dump(roat)
-             return onTouchEnded(x, y)
+        local hight_=cc.pGetDistance(cc.p(0,y), cc.p(0,0))
+        local off_y=math.cos(math.rad(65))*hight_ 
+        local width_=cc.pGetDistance(cc.p(x,0), cc.p(0,0))
+        local off_x=math.cos(math.rad(65))*width_ 
+         print("222---", off_x)
+             return onTouchEnded(x+off_x/2,y,y+off_y)
         end
     end
 
@@ -245,6 +246,8 @@ local function createPlayLayer()
     local spriteVole = cc.Sprite:create()
     --spriteVole:setPosition(origin.x + (visibleSize.width / 3)*2, origin.y + visibleSize.height / 3)
     local spriteHammer = cc.Sprite:create()  
+    spriteHammer:setAnchorPoint(cc.p(0.5,1))
+
     local spriteCoins = cc.Sprite:create()
 
     -- layerPlay:addChild(spriteboy)
@@ -313,7 +316,7 @@ function callback(dt)
 
 
 	local donghua=mainScene.fragment_table[math.random(#mainScene.fragment_table)]
-	dump(donghua)
+	-- dump(donghua)
 	mainScene.yangtu=donghua
 	--donghua:setVisible(false)
 	--donghua:setScale(1.2, 1.2)
@@ -509,8 +512,8 @@ cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
 
     --添加精灵动画层到场景
     mainScene:addChild(createPlayLayer())
-    --添加分数层到场景
-    mainScene:addChild(createScoreLayer())
+    -- --添加分数层到场景
+    -- mainScene:addChild(createScoreLayer())
 end
 
 local function createScene2()
