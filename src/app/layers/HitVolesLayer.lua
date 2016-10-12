@@ -301,7 +301,7 @@ local function createPlayLayer()
     --run
     --spriteVole:runAction(perform3)
 
-    schedulHandle = scheduler:scheduleScriptFunc(callback, 2.0, false)
+    schedulHandle = scheduler:scheduleScriptFunc(callback, 1.0, false)
 
     return layerPlay
 end
@@ -322,8 +322,8 @@ function callback(dt)
 	--donghua:setScale(1.2, 1.2)
 	local fragment_sprite = display.newSprite("png/dadishu-1.png")
 	 fragment_sprite:setColor(cc.c3b(math.random(250),math.random(250),math.random(250)))
-	-- fragment_sprite:setScaleX(0.703)
-	-- fragment_sprite:setScaleY(0.703)
+	fragment_sprite:setScaleX(247/204)
+	fragment_sprite:setScaleY(247/190)
 	--fragment_sprite:setRotation(45)
 
 	--local fragment_sprite = cc.MotionStreak:create(1.0, 20, 250.0, cc.c3b(255, 255, 0), "png/Dmakuang.png")
@@ -347,15 +347,15 @@ function callback(dt)
 	-- fragment_sprite:runAction(seq)
 
 	-- local move = cc.MoveTo:create(2, cc.p(donghua:getPositionX()-45,donghua:getPositionY()-45))
-	-- local function CallFucnCallback3(sender)
-	--     donghua:setScale(1, 1)
-	-- end
+	local function CallFucnCallback3(sender)
+	    fragment_sprite:removeFromParent()
+	end
 	-- local moveBack = cc.MoveTo:create(2, cc.p(donghua:getPositionX(),donghua:getPositionY()))
 	-- local seq = cc.Sequence:create(move,moveBack,cc.CallFunc:create(CallFucnCallback3))
 	-- donghua:runAction(seq)
-     local rate=cc.RotateBy:create(1.0, {x=-5,y=0,z=0})--,cc.CallFunc:create(CallFucnCallback3)
-    local seq = cc.Sequence:create(rate,rate:reverse())
-    donghua:stopAllActions()
+     local rate=cc.RotateBy:create(0.5, {x=-5,y=0,z=0})--,
+    local seq = cc.Sequence:create(rate,rate:reverse(),cc.CallFunc:create(CallFucnCallback3))
+    -- donghua:stopAllActions()
     donghua:runAction(seq)
 
 
@@ -606,7 +606,7 @@ end
             	
 
                 local rect = cc.rect((i-1)*self.content_size.width/row, (j-1)*self.content_size.height/col, self.content_size.width/row-3, self.content_size.height/col-3)
-
+                print("---",self.content_size.width/row-3,self.content_size.height/col-3)
                  fragment_sprite:setTexture(cache)
                  fragment_sprite:setTextureRect(rect)
 
