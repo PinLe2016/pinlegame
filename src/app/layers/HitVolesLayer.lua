@@ -46,38 +46,53 @@ local layerPlay = nil
 --显示分数层
 local layerScore= nil
 
+--打地鼠炸弹类型和时间
+--score为-1 的情况是进度条倒计时相关，不计入实际加分项
+local rand_Date =nil --记录选中容器数据
+ local color_Mode={
+    {color_type=cc.c3b(0, 0, 0),time=3,score=1},
+    {color_type=cc.c3b(242, 21, 16),time=2,score=4},
+    {color_type=cc.c3b(242, 16, 147),time=3,score=3},
+    {color_type=cc.c3b(62, 12, 223),time=1,score=1},
+    {color_type=cc.c3b(22, 155, 240),time=1.5,score=0},
+    {color_type=cc.c3b(22, 240, 169),time=3.5,score=10},
 
--- -- for CCLuaEngine traceback
- function __G__TRACKBACK__(msg)
-     print("----------------------------------------")
-     print("LUA ERROR: " .. tostring(msg) .. "\n")
-     print(debug.traceback())
-     print("----------------------------------------")
-     print("")
- end
+    {color_type=cc.c3b(85, 240, 22),time=3,score=-1},
+    {color_type=cc.c3b(240, 185, 22),time=-3,score=-1},
+    {color_type=cc.c3b(242, 250, 8),time=-6,score=-1}
+}
+-- local color_Mode={}
+-- color_Mode[1]={color_type=cc.cc.c3b(0, 0, 0),time=3,score=1}
+    
+    
+
+
+
+
 
  local function checkClision(x,y)
-      local sVole = mainScene.yangtu  --layerPlay:getChildByTag(kTagSprite3)
-      --dump(layerPlay)
-      local sHammer = layerPlay:getChildByTag(kTagSprite4)
-      -- local rectVole = sVole:boundingBox()
-      -- local rectHammer = sHammer:boundingBox()
+        local sVole = mainScene.yangtu  --layerPlay:getChildByTag(kTagSprite3)
+        if not sVole then
+          return
+        end
+
+        -- mainScene.yangtu=nil
+
+        local sHammer = layerPlay:getChildByTag(kTagSprite4)
+        -- local rectVole = sVole:boundingBox()
+        -- local rectHammer = sHammer:boundingBox()
 
 
-local rect   = sVole:getBoundingBox()
+        local rect   = sVole:getBoundingBox()
 
-local rect1   = sHammer:getBoundingBox()
+        local rect1   = sHammer:getBoundingBox()
 
         if cc.rectContainsPoint(rect, rect1) then
-
---print("碰撞")
-
-      --if rectVole:intersectsRect(rectHammer) then
-          coinAction(x,y)
-          return true
-      else
-          return false
-      end
+              coinAction(x,y)
+              return true
+        else
+              return false
+        end
  end
 
  -------------------------------------------------------------
@@ -88,7 +103,7 @@ LabelAtlasTest.__index = LabelAtlasTest
 local m_time = 0
 
 function LabelAtlasTest.step()
-    m_time = m_time + 1
+    m_time = m_time +1
     local string = string.format("Score:")
 
     local label1_origin = LabelAtlasTest.layer:getChildByTag(kTagSprite1)
@@ -97,7 +112,9 @@ function LabelAtlasTest.step()
 
     local label2_origin = LabelAtlasTest.layer:getChildByTag(kTagSprite2)
     local label2 = tolua.cast(label2_origin, "CCLabelAtlas")
-    string = string.format("%d", m_time)
+    dump(rand_Date["score"])
+
+    string = string.format("%d",m_time )
 
     label2_origin:setString(string)
 end
@@ -118,18 +135,18 @@ function LabelAtlasTest.create()
     layer:addChild(label1, 0, kTagSprite1)
     label1:setPosition( cc.p(origin.x+s.width/100 ,s.height-s.height/10))
     label1:setColor(cc.c3b(255, 0, 0))
-    --label1:setOpacity( 200 )
+    label1:setOpacity( 200 )
 
-    local label2 = cc.LabelAtlas:_create("0", "fonts/tuffy_bold_italic-charmap.plist")
+    local label2 = cc.LabelAtlas:_create("0", "HitVoles/fonts/tuffy_bold_italic-charmap.plist")
     layer:addChild(label2, 0, kTagSprite2)
     label2:setPosition( cc.p(origin.x+s.width/100 * 40 ,s.height-s.height/10))
-    label2:setColor(cc.c3b(0, 0, 255))
-    --label2:setOpacity( 32 )
+    label2:setColor(cc.c3b(255, 0, 0))
+    label2:setOpacity(200 )
 
-    --layer:scheduleUpdateWithPriorityLua(LabelAtlasTest.step, 0)
+    -- layer:scheduleUpdateWithPriorityLua(LabelAtlasTest.step, 0)
 
-    ---Helper.titleLabel:setString("LabelAtlas")
-    ---Helper.subtitleLabel:setString("Updating label should be fast")
+    -- Helper.titleLabel:setString("LabelAtlas")
+    -- Helper.subtitleLabel:setString("Updating label should be fast")
 
     layer:registerScriptHandler(LabelAtlasTest.onNodeEvent)
     return layer
@@ -210,8 +227,17 @@ local function createPlayLayer()
         --fuck()
         --检测锤子和地鼠的碰撞
         if checkClision(x,y) then
+
+             if rand_Date["score"]==-1 then --倒计时进度条+-时间相关
+
+                     --写入倒计时进度条控制情况
+        
+                return
+            end
+
             --分数累加
             print("已经检测出碰撞  分数增加")
+            
             LabelAtlasTest.step()
         end
         
@@ -257,51 +283,9 @@ local function createPlayLayer()
     layerPlay:addChild(spriteVole, 0, kTagSprite3)
     layerPlay:addChild(spriteHammer, 0, kTagSprite4)
     layerPlay:addChild(spriteCoins, 0, kTagSprite5)
-    --layerPlay:setPosition(origin.x,origin.y)
 
-    --创建动画序列
-    local animation = cc.Animation:create()
-    local number,name
-    for i=1,14 do
-      if i <10 then
-        number="0"..i
-      else
-        number = i 
-      end 
-      name = "animation/grossini_dance_"..number..".png"
-      animation:addSpriteFrameWithFile(name)
-    end
 
-    animation:setDelayPerUnit(2.8/14.0)
-    animation:setRestoreOriginalFrame(true)
-
-    --创建动作
-    local animate = cc.Animate:create(animation)
-
-    --创建执行序列
-    local action = cc.Sequence:create(animate,animate:reverse())
-
-    --附加行为方式
-    local perform = cc.RepeatForever:create(action)
-
-    --run
-    spriteboy:runAction(perform)
-
-    --------------------------------------
-    local cache = cc.AnimationCache:getInstance()
-    cache:addAnimations("animations-2.plist")
-    local animation2 = cache:getAnimation("dance_1")
-
-    local action2 = cc.Animate:create(animation2)
-    spritegirl:runAction(cc.RepeatForever:create(cc.Sequence:create(action2, action2:reverse())))
-    -------------------------------------------------------------------
-    --附加行为方式
-   -- local perform3 = CCRepeatForever:create(action3)
-
-    --run
-    --spriteVole:runAction(perform3)
-
-    schedulHandle = scheduler:scheduleScriptFunc(callback, 1.0, false)
+    schedulHandle = scheduler:scheduleScriptFunc(callback, 4.0, false)
 
     return layerPlay
 end
@@ -313,81 +297,32 @@ end
 --地鼠钻地动画定时器回调函数
 function callback(dt)
 
-
-
 	local donghua=mainScene.fragment_table[math.random(#mainScene.fragment_table)]
 	-- dump(donghua)
 	mainScene.yangtu=donghua
-	--donghua:setVisible(false)
-	--donghua:setScale(1.2, 1.2)
+
+    rand_Date=color_Mode[math.random(9)]
+
+
 	local fragment_sprite = display.newSprite("png/dadishu-1.png")
-	 fragment_sprite:setColor(cc.c3b(math.random(250),math.random(250),math.random(250)))
+
+	fragment_sprite:setColor(rand_Date["color_type"])
 	fragment_sprite:setScaleX(247/204)
 	fragment_sprite:setScaleY(247/190)
-	--fragment_sprite:setRotation(45)
-
-	--local fragment_sprite = cc.MotionStreak:create(1.0, 20, 250.0, cc.c3b(255, 255, 0), "png/Dmakuang.png")
-            -- streak:setPosition(cc.p(200,300))
-            -- mainScene:addChild(streak,20)  --donghua:getPositionX()-45,donghua:getPositionY()-45
-
-
-	-- fragment_sprite:setContentSize(donghua:getContentSize().width,donghua:getContentSize().height)
-	-- fragment_sprite:setScale(0.5)
- --    fragment_sprite:setScaleX(1.3)    
+    
 	fragment_sprite:setAnchorPoint(0.0, 0.06)
-	-- fragment_sprite:setPosition(cc.p(donghua:getPositionX()-5,donghua:getPositionY()-5))
 	donghua:addChild(fragment_sprite)
 
- --            local move = cc.MoveTo:create(2, cc.p(fragment_sprite:getPositionX()-45,fragment_sprite:getPositionY()-45))
-	-- local function CallFucnCallback4(sender)
-	--     fragment_sprite:setVisible(false)
-	-- end
-	-- local moveBack = cc.MoveTo:create(2, cc.p(fragment_sprite:getPositionX(),fragment_sprite:getPositionY()))
-	-- local seq = cc.Sequence:create(move,moveBack,cc.CallFunc:create(CallFucnCallback4))
-	-- fragment_sprite:runAction(seq)
-
-	-- local move = cc.MoveTo:create(2, cc.p(donghua:getPositionX()-45,donghua:getPositionY()-45))
 	local function CallFucnCallback3(sender)
 	    fragment_sprite:removeFromParent()
 	end
-	-- local moveBack = cc.MoveTo:create(2, cc.p(donghua:getPositionX(),donghua:getPositionY()))
-	-- local seq = cc.Sequence:create(move,moveBack,cc.CallFunc:create(CallFucnCallback3))
-	-- donghua:runAction(seq)
+
      local rate=cc.RotateBy:create(0.5, {x=-5,y=0,z=0})--,
-    local seq = cc.Sequence:create(rate,rate:reverse(),cc.CallFunc:create(CallFucnCallback3))
-    -- donghua:stopAllActions()
+
+    local seq = cc.Sequence:create(rate,cc.DelayTime:create(rand_Date["time"]-1.0),rate:reverse(),cc.CallFunc:create(CallFucnCallback3))
+
     donghua:runAction(seq)
 
-
-
-	    local animation3 = cc.Animation:create()
-
-	    local number2,name2
-	    for i=0,4 do
-	      number2 = i
-	      name2= "laoshu_"..number2..".png"
-	      animation3:addSpriteFrameWithFile(name2)
-	    end
-
-	    animation3:setDelayPerUnit(1.0/5.0)
-	    animation3:setRestoreOriginalFrame(true)
-
-	    --创建动作
-	    local animate3 = cc.Animate:create(animation3)
-	 
-	    --创建执行序列
-	    local action3 = cc.Sequence:create(animate3,animate3:reverse())
-
-	    local node = layerPlay:getChildByTag(kTagSprite3)
-	    --  地鼠随机出动的位置
-	    local randomWidth = math.random(visibleSize.width)
-	    local randomHeight = math.random(visibleSize.height)
-
-	    node:setPosition(origin.x+randomWidth,origin.y+randomHeight/2)
-	    --print(origin.x+randomWidth,origin.y+randomHeight/2)
-	    --print(visibleSize.width,visibleSize.height)
-	    node:setVisible(false)
-	    node:runAction(action3)
 end
 --
 --金币动画
@@ -465,11 +400,6 @@ function hammerAction(x,y)
     node:setPosition(x,y)
 
 
-     -- local action = cc.Sequence:create(
-     --    cc.MoveBy:create(2, cc.p(200,0)),
-     --    cc.CallFunc:create(doRemoveFromParentAndCleanup,{true}))
-
-    --run
     node:runAction(action)
    
 
@@ -518,7 +448,7 @@ cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
     --添加精灵动画层到场景
     mainScene:addChild(createPlayLayer())
     -- --添加分数层到场景
-    -- mainScene:addChild(createScoreLayer())
+    mainScene:addChild(createScoreLayer())
 end
 
 
@@ -568,18 +498,12 @@ function backMenuCallback()
 end
 
 
- --xpcall(Enter, __G__TRACKBACK__
  function HitVolesLayer:refresh_table()
 --  新增加
  	self.row=3
  	self.col=4
  	self.point=cc.p(57,100)
  	
- 	 -- cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
-   --    self:setRotation3D({x=-30,y=0,z=0})
-
-    -- local row_rand=self:RandomIndex(self.row,self.row)
-    -- local col_rand=self:RandomIndex(self.col,self.col)
 
     local pos_x, pos_y =self.point.x,self.point.y
     local row ,col =self.row,self.col 
@@ -592,63 +516,26 @@ end
     layer:addTo(self)
    for i=1,row do
         for j=1,col do
-                -- local fragment_sprite = display.newScale9Sprite(path..self.filename, 0,0, cc.size(self._size.width,self._size.height))
-                local fragment_sprite = cc.Sprite:create()
-                
-                --fragment_sprite:setRotation(45)
-                fragment_sprite:setAnchorPoint(0.5, 1)
-
-                --新增加
-                local po={}
-             	po.width=750
-             	po.height=1000
-            	self.content_size=po
-            	
-
-                local rect = cc.rect((i-1)*self.content_size.width/row, (j-1)*self.content_size.height/col, self.content_size.width/row-3, self.content_size.height/col-3)
-                print("---",self.content_size.width/row-3,self.content_size.height/col-3)
-                 fragment_sprite:setTexture(cache)
-                 fragment_sprite:setTextureRect(rect)
-
-                fragment_sprite:setPosition(70+(i-1)*self.content_size.width/row, 550 +(3-j)*self.content_size.height/col)--设置图片显示的部分
-                layer:addChild(fragment_sprite)
-               
-                -- clipnode:setTag(#self.fragment_table + 1)
-                -- self.fragment_poins[#self.fragment_table + 1]=cc.p(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
-                 --self.fragment_table[#self.fragment_table + 1] = fragment_sprite
-
-                  mainScene.fragment_table[#mainScene.fragment_table + 1] = fragment_sprite
-
-                -- clipnode:setPosition(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
-                -- clipnode:setPosition(pos_x + (i-1)*po.width/row, pos_y + (j-1)*po.height/col)
+            local fragment_sprite = cc.Sprite:create()
+            fragment_sprite:setAnchorPoint(0.5, 1)
+            --新增加
+            local po={}
+            po.width=750
+            po.height=1000
+            self.content_size=po
 
 
-                -- clipnode:setTouchEnabled(true)
-                -- clipnode:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
-                --                         --self:touch_event(clipnode,event)--监听回调
-                --                         local position = cc.p(clipnode:getPosition())
-                --                         local boundingBox = cc.rect(position.x, position.y, self.content_size.width/self.row, self.content_size.height/self.col) --getCascadeBoundingBox()方法获得的rect大小为整张图片的大小，此处重新计算图块的rect。
+            local rect = cc.rect((i-1)*self.content_size.width/row, (j-1)*self.content_size.height/col, self.content_size.width/row-3, self.content_size.height/col-3)
+            fragment_sprite:setTexture(cache)
+            fragment_sprite:setTextureRect(rect)
 
-                --                         if "began" == event.name and not cc.rectContainsPoint(boundingBox, cc.p(event.x, event.y)) then
-                                                
-                --                                 clipnode:setTouchSwallowEnabled(false)
-                --                                 return false
-                --                         end
+            fragment_sprite:setPosition(70+(i-1)*self.content_size.width/row, 550 +(3-j)*self.content_size.height/col)--设置图片显示的部分
+            layer:addChild(fragment_sprite)
 
-                --                         if "began" == event.name then
-                --                             print("22222222")
-                --                                 clipnode:setTouchSwallowEnabled(false)--吞噬触摸，防止响应下层的图块。
-                --                                 clipnode:setLocalZOrder(4)
-                --                                 return true
-                --                         elseif "moved" == event.name then
-                --                               self:touch_event_move(event,clipnode)
-                --                         elseif "ended" == event.name then
-                --                                 self:touchEnd(event,clipnode)
 
-                --                         end
-                --             end)
+            mainScene.fragment_table[#mainScene.fragment_table + 1] = fragment_sprite
 
-                end
+            end
 
                  
        end  

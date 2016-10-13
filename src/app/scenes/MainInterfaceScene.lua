@@ -6,11 +6,14 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
 end)
 
 function MainInterfaceScene:extend12()
-       self.Laohuji = cc.CSLoader:createNode("HitVolesLayer.csb")
-       self:addChild(self.Laohuji)
+       -- self.Laohuji = cc.CSLoader:createNode("HitVolesLayer.csb")
+       -- self:addChild(self.Laohuji)
+       local spr=display.newSprite("png/dadishu.png")
+       spr:setAnchorPoint(cc.p(0,0.0))
+         self:addChild(spr)
 
           local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
-         self.Laohuji:addChild(HitVolesLayer.new())
+         self:addChild(HitVolesLayer.new())
    
 
 
@@ -33,11 +36,11 @@ function MainInterfaceScene:ctor()
 
        
        self:listener_home() --注册安卓返回键
-       Server:Instance():getaffichelist(1)
-      Server:Instance():gettasklist()   --  初始化任务
-               --手机归属请求
-       Server:Instance():getusercitybyphone()--手机归属
-        --self:fun_init()
+      --  Server:Instance():getaffichelist(1)
+      -- Server:Instance():gettasklist()   --  初始化任务
+      --          --手机归属请求
+      --  Server:Instance():getusercitybyphone()--手机归属
+      --   self:fun_init()
         self:extend12()
 
 end
