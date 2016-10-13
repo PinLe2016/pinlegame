@@ -24,10 +24,10 @@ local COIN_ELASTICITY_tow = 0.2---摩擦力
 local BOLL_OFF_SET=60--台球杆初始位置调整的偏移量
 
 local is_Shots=false
-local ROD_V=4.0
+local ROD_V=8.0
 local ROD_B_POPINT=0--台球杆的初始高度
 local ROD_E_POPINT=130+BOLL_OFF_SET--台球杆的初始高度
-local ROD_M_TIME=0.07---台球杆的移动时间
+local ROD_M_TIME=0.05---台球杆的移动时间
 
 local BOLL_S_V=2000---台球的初始速度
 
@@ -325,7 +325,7 @@ function PhysicsScene:add_obstacle()
     --碰分小球
     local modeSprite_ban_3 =self.phy_bg:getChildByTag(1792)
 
-    local arr_ball={8,7,6,5,4,3,2,1,2,3,4,5,6,7,8}
+    local arr_ball={9,8,7, 6, 5, 4, 3, 2, 1, 7, 6, 5, 4, 3, 2}
 
     for i=0,14 do
         local modeSprite=modeSprite_ban_3:clone()
