@@ -4,10 +4,34 @@
 
 --  大转盘
 local bigwheelLayer = class("bigwheelLayer", function()
-            return display.newLayer("bigwheelLayer")
+            return display.newScene("bigwheelLayer")
 end)
-function bigwheelLayer:ctor()
-	self:setNodeEventEnabled(true)--layer添加监听
+function bigwheelLayer:pushFloating(text)
+    if is_resource then
+        self.floating_layer:showFloat(text)  
+        
+    else
+        if self.barrier_bg then 
+            self.barrier_bg:setVisible(false)
+        end
+        self.floating_layer:showFloat(text)
+    end
+end 
+
+function bigwheelLayer:push_buffer(is_buffer)
+
+       self.floating_layer:show_http(is_buffer) 
+       
+end 
+function bigwheelLayer:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end
+
+function bigwheelLayer:ctor(params)
+	self:setNodeEventEnabled(true)--layer添加监听     
+	self.floating_layer = FloatingLayerEx.new()
+	self.floating_layer:addTo(self,100000)
+	print("--fe-----")
 	self.m_turnBg=nil
 	self.m_turnArr=nil
 	self.m_pBg=nil
@@ -18,16 +42,45 @@ function bigwheelLayer:ctor()
 	self.fragment_table={ }
 	self.x_rand=nil
 	self._rand=nil
-	self.gridNumer=6    --   一共的格子数
+	self.gridNumer=12    --   一共的格子数
 	self.gridAngle=360/self.gridNumer   --   每个格子的度数
+	self.adid=params.id
+
+	 if params.image_name then
+                self.image_name=params.image_name
+             end
+
+
+	self.bigwheelLayer = cc.CSLoader:createNode("bigwheelLayer.csb")
+            self:addChild(self.bigwheelLayer)
+
+             self._rewardgold=0
+
+             self.cotion_gold={}
+             self._table={
+             {gold_b=5,gold_e=10},
+             {gold_b=50,gold_e=200},
+             {gold_b=1000,gold_e=1000},
+             {gold_b=20,gold_e=50},
+             {gold_b=15,gold_e=20},
+             {gold_b=10,gold_e=15},
+             {gold_b=50,gold_e=200},
+             {gold_b=10,gold_e=15},
+             {gold_b=5,gold_e=10},
+             {gold_b=20,gold_e=50},
+             {gold_b=500,gold_e=500},
+             {gold_b=10,gold_e=15}
+         }
+
 	self:init(  )
-	print("真的吗")
+
        
 end
 function bigwheelLayer:init(  )
         
 
         	 local function menuCallback()
+
 		     self.x_rand=math.random(1,self.gridNumer)
 		     print("随机是几  ", self.x_rand)
 		     table.insert(self.fragment_table,{_shuzi = self.x_rand})
@@ -57,28 +110,42 @@ function bigwheelLayer:init(  )
 
 	    local  bgSize = cc.Director:getInstance():getWinSize()
 	    
-	    m_pBg = cc.Sprite:create("LotteryTurn/bg_big.png");
+	    m_pBg = cc.Sprite:create();
 	    m_pBg:setPosition(cc.p(bgSize.width / 2,bgSize.height / 2));
 	    self:addChild(m_pBg);
 	    
 	
 	    --添加转盘
-	    m_turnBg = cc.Sprite:create("LotteryTurn/turn_bg.png");
-	    m_turnBg:setPosition(cc.p(bgSize.width / 2,bgSize.height / 2));
-	    m_pBg:addChild(m_turnBg);
+	    m_turnBg = self.bigwheelLayer:getChildByTag(41) --cc.Sprite:create("LotteryTurn/turn_bg.png");
+	    self.m_turnArr = self.bigwheelLayer:getChildByTag(44)
+	    self.m_turnArr:addTouchEventListener(function(sender, eventType  )
+	          self:touch_callback(sender, eventType)
+	      end)
+	     local  _back = self.bigwheelLayer:getChildByTag(130)  --  返回
+	     _back:addTouchEventListener(function(sender, eventType  )
+	          self:touch_callback(sender, eventType)
+	      end)
+	     local _advertiImg=self.bigwheelLayer:getChildByTag(128)  --  上面广告图
+	      _advertiImg:loadTexture(  self.image_name) 
 
-	    --添加指针
-	    local  arrNor = cc.Sprite:create("LotteryTurn/turn_arrow.png");
-	    local  arrSel = cc.Sprite:create("LotteryTurn/turn_arrow.png");
-	    arrSel:setColor(cc.c3b(190,190,190));
-	    self.m_turnArr= cc.MenuItemSprite:create(arrNor, arrSel)   	   
-	    self.m_turnArr:registerScriptTapHandler(menuCallback)
-	    self.m_turnArr:setPosition(cc.p(bgSize.width / 2,bgSize.height * 0.557));
-	    self.m_turnArr:setScale(0.7);
-	    local  pMenu = cc.Menu:create(self.m_turnArr);
-	    pMenu:setPosition(cc.p(0,0));
-	    m_pBg:addChild(pMenu);
-	    
+	     local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                 local  jaclayer_data=list_table["adlist"]
+	     local connection12=self.bigwheelLayer:getChildByTag(129)   --连接
+	       self.connection13=connection12
+	      connection12:addTouchEventListener(function(sender, eventType  )
+	                  if eventType ~= ccui.TouchEventType.ended then
+	                        return
+	                  end
+	                  self:fun_storebrowser()
+                  end)
+	     local connection_gold=self.bigwheelLayer:getChildByTag(129):getChildByTag(131)--  显示金币数
+	     if jaclayer_data[1]["adurlgold"] then
+	          connection_gold:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
+	     else
+	        connection12:setVisible(false)
+	        connection_gold:setString("+0")
+	      end
+
 	    --添加中奖之后的简单界面
 	    local  awardLayer = cc.LayerColor:create(cc.c4b(0,0,0,100), 0,0)
 	    awardLayer:setTag(100);
@@ -86,28 +153,126 @@ function bigwheelLayer:init(  )
 	    awardLayer:setVisible(false);
 
 end
+function bigwheelLayer:fun_began(  )
+	  local function CallFucnCallback3(sender)
+                       self.m_turnArr:setEnabled(true);
+               end
 
-function bigwheelLayer:touch_btCallback( sender, eventType )
-            if eventType ~= ccui.TouchEventType.ended then
-                return
-            end 
-           local tag=sender:getTag()
-           if tag==141 then  --返回
-           	 
-           end  
+	 -- self.x_rand=math.random(1,self.gridNumer)
+	    
+	     table.insert(self.fragment_table,{_shuzi = self.x_rand})
+	    -- kk.push_back(x_rand);
+	    local   _int = #self.fragment_table  --kk.size();
+	    --print("需要几  ",self.x_rand,"   ",#self.fragment_table);
+	    --防止多次点击
+	    self.m_turnArr:setEnabled(false);
+	    if (_int>1)   then 
+		        local  xin = self.fragment_table[_int-1]._shuzi--kk.at(_int-2);
+		        --print("ziyun  ","   ",self.x_rand  ,  "   ",xin);
+		        if (self.x_rand > xin)   then 
+		            self.x_rand = self.x_rand - xin;
+		        else
+		            self.x_rand = self.gridNumer+  (self.x_rand - xin);
+		        end
+	    end
+	    --print("需要几111   ",self.x_rand);
+	    self._rand= (self.x_rand  *  self.gridAngle   ) ;-- +rand() % 60;
+	    local  angleZ = self._rand + 720;  --// +
+	    local  pAction = cc.EaseExponentialOut:create(cc.RotateBy:create(4,angleZ));
+	    m_turnBg:runAction(cc.Sequence:create(pAction,cc.CallFunc:create(CallFucnCallback3)))
 end
+function bigwheelLayer:touch_callback( sender, eventType )
+	if eventType ~= ccui.TouchEventType.ended then
+		return
+	end
+	local tag=sender:getTag()
+	if tag==44 then --开始
+	   Server:Instance():getgoldspoolrandomgolds(self.adid,0)  --  转盘随机数
+                
+            elseif tag==130 then
+            	Util:scene_control("GoldprizeScene")
+	end
+end
+--  网页链接
+function bigwheelLayer:fun_storebrowser(  )
+      if tostring(self.addetailurl)   ==   tostring(1)   then
+        return
+      end
+      self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
+      self:addChild(self.Storebrowser)
+      local back=self.Storebrowser:getChildByTag(2122)
+      local store_size=self.Storebrowser:getChildByTag(2123)
+       back:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                end
+              if self.Storebrowser then
+                self.Storebrowser:removeFromParent()
+                if self._rewardgold==1 then
+                   self:goldact()
+                end
+                
+              end
+            end)
 
+              local webview = cc.WebView:create()
+              self.Storebrowser:addChild(webview)
+              webview:setVisible(true)
+              webview:setScalesPageToFit(true)
+              webview:loadURL(tostring(self.addetailurl))
+              webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+              webview:reload()
+              webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
+              if self._rewardgold==0 then
+                 local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                 local  jaclayer_data=list_table["adlist"]
+                Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
+                if self.connection13  then
+                 self.connection13:setVisible(false)
+                end
+              end
+              self._rewardgold=self._rewardgold+1
+             
+
+end
+function bigwheelLayer:goldact(  )
+            
+            self._laohujigoldact = cc.CSLoader:createNode("laohujigoldact.csb")
+            self:addChild(self._laohujigoldact)
+            local laohujigoldaction = cc.CSLoader:createTimeline("laohujigoldact.csb")
+            self._laohujigoldact:runAction(laohujigoldaction)
+            laohujigoldaction:setTimeSpeed(0.5)
+            laohujigoldaction:gotoFrameAndPlay(0,50, false)
+
+
+
+            local function stopAction()
+                 if self._laohujigoldact then
+                    self._laohujigoldact:removeFromParent()
+                 end
+           end
+          local callfunc = cc.CallFunc:create(stopAction)
+         self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+
+end
 function bigwheelLayer:onEnter()
-   
-  -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self,
-  --                      function()
-                               
-  --                     end)
+   self.x_rand=7
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self,
+                       function()
+                       	local _gold=LocalData:Instance():get_getgoldspoolrandomgolds()
+                               for i=1,#self._table do
+                               	if _gold["golds"]>=self._table[i]["gold_b"] and _gold["golds"]<=self._table[i]["gold_e"] then
+                               		table.insert(self.cotion_gold,i)
+                               	end
+                               end
+                               self.x_rand=self.cotion_gold[math.random(1,#self.cotion_gold)]
+                               self:fun_began()
+                      end)
   
 end
 
 function bigwheelLayer:onExit()
-     -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self)
+     NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
      
      
      	

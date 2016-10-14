@@ -14,6 +14,8 @@
 local HitVolesLayer = class("HitVolesLayer", function()
     return display.newLayer("HitVolesLayer")
 end)
+-- 倒计时
+local  countdown_time =60
 --分数标签
 local kTagSprite1 = 1
 --分数
@@ -24,7 +26,7 @@ local kTagSprite3 = 3
 local kTagSprite4 = 4
 --金币
 local kTagSprite5 = 5
-
+local rand_tag=1
 local scene1 = nil 
 local scene2 = nil 
 local scene3 = nil
@@ -49,8 +51,11 @@ local layerScore= nil
 --打地鼠炸弹类型和时间
 --score为-1 的情况是进度条倒计时相关，不计入实际加分项
 local rand_Date =nil --记录选中容器数据
+
+local curr_tag=0--连击同一个对象标记TAG 初始为0
+local curr_tag1=0
  local color_Mode={
-    {color_type=cc.c3b(0, 0, 0),time=3,score=1},
+    {color_type=cc.c3b(0, 0, 0),time=3,score=1},       
     {color_type=cc.c3b(242, 21, 16),time=2,score=4},
     {color_type=cc.c3b(242, 16, 147),time=3,score=3},
     {color_type=cc.c3b(62, 12, 223),time=1,score=1},
@@ -58,41 +63,41 @@ local rand_Date =nil --记录选中容器数据
     {color_type=cc.c3b(22, 240, 169),time=3.5,score=10},
 
     {color_type=cc.c3b(85, 240, 22),time=3,score=-1},
-    {color_type=cc.c3b(240, 185, 22),time=-3,score=-1},
-    {color_type=cc.c3b(242, 250, 8),time=-6,score=-1}
+    {color_type=cc.c3b(240, 185, 22),time=3,score=-1},
+    {color_type=cc.c3b(242, 250, 8),time=6,score=-1}
 }
 -- local color_Mode={}
 -- color_Mode[1]={color_type=cc.cc.c3b(0, 0, 0),time=3,score=1}
     
-    
-
-
-
-
-
  local function checkClision(x,y)
-        local sVole = mainScene.yangtu  --layerPlay:getChildByTag(kTagSprite3)
-        if not sVole then
-          return
-        end
+      rand_Date=nil
+       for i=1,#mainScene.target_table do
+            local sVole=mainScene.target_table[i].target
+            if sVole then
+                local sHammer = layerPlay:getChildByTag(kTagSprite4)
+                local rect   = sVole:getBoundingBox()
 
-        -- mainScene.yangtu=nil
+                local rect1   = sHammer:getBoundingBox()
+                
+                if cc.rectContainsPoint(rect, rect1) then
+                         -- print("------",curr_tag,sVole:getTag())
+                         curr_tag=sVole:getTag()
+                        -- if  curr_tag~=sVole:getTag()  then
+                        --     curr_tag=sVole:getTag()
+                        -- else
+                        --       curr_tag=0
+                        -- end
+                      
+                         coinAction(x,y)
+                         rand_Date=mainScene.target_table[i]._randdate
+                         return true
+                end
+            end
 
-        local sHammer = layerPlay:getChildByTag(kTagSprite4)
-        -- local rectVole = sVole:boundingBox()
-        -- local rectHammer = sHammer:boundingBox()
-
-
-        local rect   = sVole:getBoundingBox()
-
-        local rect1   = sHammer:getBoundingBox()
-
-        if cc.rectContainsPoint(rect, rect1) then
-              coinAction(x,y)
-              return true
-        else
-              return false
-        end
+       end
+        --local sVole = mainScene.yangtu  --layerPlay:getChildByTag(kTagSprite3)
+        curr_tag=0
+         return false
  end
 
  -------------------------------------------------------------
@@ -103,7 +108,13 @@ LabelAtlasTest.__index = LabelAtlasTest
 local m_time = 0
 
 function LabelAtlasTest.step()
-    m_time = m_time +1
+    dump(rand_Date)
+    if  curr_tag1~=curr_tag then
+        m_time=m_time+rand_Date["score"]
+    else
+         m_time = m_time +1
+    end
+   curr_tag1=curr_tag
     local string = string.format("Score:")
 
     local label1_origin = LabelAtlasTest.layer:getChildByTag(kTagSprite1)
@@ -112,9 +123,9 @@ function LabelAtlasTest.step()
 
     local label2_origin = LabelAtlasTest.layer:getChildByTag(kTagSprite2)
     local label2 = tolua.cast(label2_origin, "CCLabelAtlas")
-    dump(rand_Date["score"])
+    -- dump(rand_Date["score"])
 
-    string = string.format("%d",m_time )
+    string = string.format("    %d",m_time )
 
     label2_origin:setString(string)
 end
@@ -228,7 +239,7 @@ local function createPlayLayer()
         --检测锤子和地鼠的碰撞
         if checkClision(x,y) then
 
-             if rand_Date["score"]==-1 then --倒计时进度条+-时间相关
+             if  rand_Date and   rand_Date["score"]==-1 then --倒计时进度条+-时间相关
 
                      --写入倒计时进度条控制情况
         
@@ -285,7 +296,7 @@ local function createPlayLayer()
     layerPlay:addChild(spriteCoins, 0, kTagSprite5)
 
 
-    schedulHandle = scheduler:scheduleScriptFunc(callback, 4.0, false)
+    schedulHandle = scheduler:scheduleScriptFunc(callback, 1.0, false)
 
     return layerPlay
 end
@@ -296,33 +307,76 @@ end
 
 --地鼠钻地动画定时器回调函数
 function callback(dt)
+         countdown_time=countdown_time-1
+         print("倒计时  ",countdown_time)
+         if countdown_time <= 0 then
+              --  local bigwheelLayer = require("app.layers.bigwheelLayer")--惊喜吧 
+              -- mainScene:addChild(bigwheelLayer.new())
+              Server:Instance():setgamerecord(mainScene.adid)    --  打完地鼠上传的数据
+              
+           NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
+             scheduler:unscheduleScriptEntry(schedulHandle)
+             return
+         end
+        
+        for i=1,#mainScene.target_table do
+            if mainScene.target_table[i]["target"]==nil then
+                              
+                                local donghua=mainScene.fragment_table[math.random(#mainScene.fragment_table)]
+           
+                                local   _rand=color_Mode[math.random(9)]--
+                                -- local v={target=donghua,_randdate=_rand}
+                                
+                                -- dump(_rand)
+                                -- donghua:setTag(mainScene.target_table[i]["tag"])
 
-	local donghua=mainScene.fragment_table[math.random(#mainScene.fragment_table)]
-	-- dump(donghua)
-	mainScene.yangtu=donghua
+                                mainScene.target_table[i]["target"]=donghua
+                                 mainScene.target_table[i]["_randdate"]=_rand
 
-    rand_Date=color_Mode[math.random(9)]
+                                local fragment_sprite = display.newSprite("png/dadishu-1.png")
 
+                                fragment_sprite:setColor(_rand["color_type"])
+                                fragment_sprite:setScaleX(247/204)
+                                fragment_sprite:setScaleY(247/190)
 
-	local fragment_sprite = display.newSprite("png/dadishu-1.png")
+                                    fragment_sprite:setTag(#mainScene.target_table)
+                                fragment_sprite:setAnchorPoint(0.0, 0.06)
+                                donghua:addChild(fragment_sprite,1,1)
 
-	fragment_sprite:setColor(rand_Date["color_type"])
-	fragment_sprite:setScaleX(247/204)
-	fragment_sprite:setScaleY(247/190)
-    
-	fragment_sprite:setAnchorPoint(0.0, 0.06)
-	donghua:addChild(fragment_sprite)
+                                local function CallFucnCallback3(sender)
+                                       
+                                        for i=1,#mainScene.target_table do
+                                            -- print("----",sender:getTag(),mainScene.target_table[i].target:getTag())
+                                            if mainScene.target_table[i].target and sender:getTag()==mainScene.target_table[i].target:getTag() then
+                                                dump(sender:getTag())
+                                                  mainScene.target_table[i]["target"]=nil
+                                                  mainScene.target_table[i]["_randdate"]=nil
+                                                  if curr_tag==sender:getTag() then
+                                                      curr_tag=0
+                                                  end
+                                                   sender:getChildByTag(1):removeFromParent()
+                                            end
+                                        end
 
-	local function CallFucnCallback3(sender)
-	    fragment_sprite:removeFromParent()
-	end
+                               
+                                end
 
-     local rate=cc.RotateBy:create(0.5, {x=-5,y=0,z=0})--,
+                                 local rate=cc.RotateTo:create(0.5, {x=-5,y=0,z=0})--,
+                                  local rate1=cc.RotateTo:create(0.5, {x=0,y=0,z=0})
+                                local time=_rand["time"]-1.0
 
-    local seq = cc.Sequence:create(rate,cc.DelayTime:create(rand_Date["time"]-1.0),rate:reverse(),cc.CallFunc:create(CallFucnCallback3))
-
-    donghua:runAction(seq)
-
+                                if time<0 then  time=2   end
+                                   
+                              
+                                local seq = cc.Sequence:create(rate,cc.DelayTime:create(time),rate1,cc.CallFunc:create(CallFucnCallback3))
+                                -- for i=1,#mainScene.target_table do
+                                --      mainScene.target_table[i].target:
+                                --  end
+                                donghua:stopAllActions()
+                                donghua:runAction(seq)
+                    return
+            end
+        end
 end
 --
 --金币动画
@@ -433,9 +487,11 @@ local function createGameScene()
 
 end
 
+
+-- filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
+--                       ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount
 -----------------------------------------------------------------------------------------
- function HitVolesLayer:ctor()
-  
+ function HitVolesLayer:ctor(params)
    
 cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
       self:setRotation3D({x=-25,y=0,z=0})	
@@ -443,12 +499,23 @@ cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
      mainScene=self
      mainScene:addChild(createFarmLayer())
      mainScene.fragment_table={}
+     mainScene.target_table={
+      {target=nil,_randdate=nil},
+      {target=nil,_randdate=nil},
+      {target=nil,_randdate=nil}
+ }
+
+    mainScene.filename=params.filename
+    mainScene.adid=params.adid
+
      self:refresh_table()
 
     --添加精灵动画层到场景
     mainScene:addChild(createPlayLayer())
     -- --添加分数层到场景
     mainScene:addChild(createScoreLayer())
+
+   
 end
 
 
@@ -509,8 +576,10 @@ end
     local row ,col =self.row,self.col 
      local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 
-
-    local cache = cc.Director:getInstance():getTextureCache():addImage("HitVoles/kkkkk.jpg")
+      local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+      print("图片",mainScene.filename)
+    local cache = cc.Director:getInstance():getTextureCache():addImage(path  ..  mainScene.filename)
+   
     local layer=cc.Layer:create()
     layer:setScale(0.85)--(0.703)
     layer:addTo(self)
@@ -531,7 +600,7 @@ end
 
             fragment_sprite:setPosition(70+(i-1)*self.content_size.width/row, 550 +(3-j)*self.content_size.height/col)--设置图片显示的部分
             layer:addChild(fragment_sprite)
-
+            fragment_sprite:setTag(#mainScene.fragment_table + 1)
 
             mainScene.fragment_table[#mainScene.fragment_table + 1] = fragment_sprite
 
