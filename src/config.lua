@@ -27,14 +27,14 @@ CONFIG_SCREEN_AUTOSCALE = "FIXED_WIDTH"
 --传输加密Key
 MD5_KEY="PINLEGAME"
 --版本号
-PINLE_VERSION="3.1.0"
+PINLE_VERSION="3.2.0"
 
 --公共
  qqqq=0
  dialogdetermine=0  --弹出提示框
 
 --测试版本还是正式版本标记
-IS_RELEASE=false --false 测试版 ，true 正式版
+IS_RELEASE=true --false 测试版 ，true 正式版
 
 --四个公有文件引入
 require("app.model.Server.Server")--请求文件
