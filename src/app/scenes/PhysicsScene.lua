@@ -62,14 +62,15 @@ function PhysicsScene:ctor(params)
         self.id=params.id
         self.phyimage=params.phyimage
         self.actid=LocalData:Instance():get_actid()
+        LocalData:Instance():set_getactivitypoints(nil)
     -- create touch layer
 
 
     -- display.addSpriteFrames(GAME_TEXTURE_DATA_FILENAME, GAME_TEXTURE_IMAGE_FILENAME)
     
-    self:setNodeEventEnabled(true)--layer添加监听
+       self:setNodeEventEnabled(true)--layer添加监听
        self.floating_layer = FloatingLayerEx.new()
-   self.floating_layer:addTo(self,100000)
+       self.floating_layer:addTo(self,100000)
 
     
     -- create label
@@ -409,15 +410,18 @@ function PhysicsScene:touch_btCallback( sender, eventType )
               -- Server:Instance():getactivitybyid(self.id,self.cycle)
             if tonumber(self.cycle)   ~=  -1 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
-                        local userdt = LocalData:Instance():get_userdata()
-                        userdt["golds"]=getuserinfo["golds"]
+                         local activitypoints = LocalData:Instance():get_getactivitypoints()
+                          local userdt = LocalData:Instance():get_userdata()
+                         if activitypoints["golds"]  then
+                             userdt["golds"]=activitypoints["golds"]
+                         end
                         LocalData:Instance():set_userdata(userdt)
+                        print("1211111111   ",self.heroid)
                         Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
                         Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
             end
-            LocalData:Instance():set_getactivitypoints(nil)
             Server:Instance():getactivitybyid(self.id,0)
             cc.Director:getInstance():popScene()
            end
@@ -431,14 +435,17 @@ function PhysicsScene:touch_btCallback( sender, eventType )
             if tonumber(self.cycle)   ~=  -1 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                         local userdt = LocalData:Instance():get_userdata()
-                        userdt["golds"]=getuserinfo["golds"]
+                         local activitypoints = LocalData:Instance():get_getactivitypoints()
+                         if activitypoints["golds"]   then
+                             userdt["golds"]=activitypoints["golds"]
+                         end
+                         print("1211111111   ",self.heroid)
                         LocalData:Instance():set_userdata(userdt)
                         Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
                         Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
             end
-            LocalData:Instance():set_getactivitypoints(nil)
             Server:Instance():getactivitybyid(self.id,0)
             cc.Director:getInstance():popScene()
            end
