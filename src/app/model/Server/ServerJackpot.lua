@@ -100,11 +100,13 @@ end
  --goldspoolid  是 金币奖池ID  string
  --usedoublecard  否 是否使用增倍卡 Integer 1是使用，不填或者其他数字代表不使用
 function Server:getgoldspoolrandomgolds(goldspoolid,usedoublecard)
+
        local _params ={}
        _params={
             usedoublecard=usedoublecard,
             goldspoolid=goldspoolid,
    }
+   dump(_params)
    
     self:request_http("getgoldspoolrandomgolds" , _params ); 
 end

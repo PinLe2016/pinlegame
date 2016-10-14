@@ -14,7 +14,8 @@ function GoldprizeScene:ctor()
    LocalData:Instance():set_getgoldspoollist(nil)
                
    self:listener_home() --注册安卓返回键    
-   self.image={}     
+   self.image={}    
+   self.choose=0 --1p拼图   2   打地鼠
    --LocalData:Instance():set_sign(1)
 end
 
@@ -85,26 +86,10 @@ function GoldprizeScene:data_init(  )
 						if eventType ~= ccui.TouchEventType.ended then
 								return
 						end
+						self:fun_selectbox( 2*i-1 )
+
 
 						local tag=sender:getTag()
-
-						 Server:Instance():getgoldspoolbyid(jac_data[2*i-1]["id"])   --主要是判断是否玩完两次
-						 self._dtid=jac_data[2*i-1]["id"]    --为了后面拼图id  准备
-						 self.adownerid  =   jac_data[2*i-1]["adownerid"]
-						 self.goldspoolcount  =  jac_data[2*i-1]["goldspoolcount"]
-						 self.image_name  =  path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":"))
-
-						 -- local jackpotlayer= jackpotlayer.new({id=jac_data[2*i-1]["id"],  adownerid= jac_data[2*i-1]["adownerid"],goldspoolcount=  jac_data[2*i-1]["goldspoolcount"] })
-
-						-- self:addChild(jackpotlayer)
-
-
-						 -- local scene=GameScene.new({adid= jac_data[2*i-1]["id"],type="audition",image=""})--拼图
-       --                                     			 cc.Director:getInstance():pushScene(scene)
-       --         					 LocalData:Instance():set_actid({act_id=jac_data[2*i-1]["id"],image=" "})--保存数
-
-
-
 
 				end)
 
@@ -153,21 +138,14 @@ function GoldprizeScene:data_init(  )
 					if eventType ~= ccui.TouchEventType.ended then
 						return
 					end
+					self:fun_selectbox( 2*i )
+					-- local tag=sender:getTag()
+					-- Server:Instance():getgoldspoolbyid(jac_data[2*i]["id"])   --主要是判断是否玩完两次
+					-- self._dtid=jac_data[2*i]["id"]  --为了后面拼图id  准备
+					-- self.adownerid  =   jac_data[2*i]["adownerid"]
+					-- self.goldspoolcount  =  jac_data[2*i]["goldspoolcount"]
+					-- self.image_name  =  path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":"))
 
-					local tag=sender:getTag()
-					Server:Instance():getgoldspoolbyid(jac_data[2*i]["id"])   --主要是判断是否玩完两次
-					self._dtid=jac_data[2*i]["id"]  --为了后面拼图id  准备
-					self.adownerid  =   jac_data[2*i]["adownerid"]
-					self.goldspoolcount  =  jac_data[2*i]["goldspoolcount"]
-					self.image_name  =  path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":"))
-
-					-- local jackpotlayer= jackpotlayer.new({id=jac_data[2*i]["id"],  adownerid= jac_data[2*i]["adownerid"],goldspoolcount=  jac_data[2*i]["goldspoolcount"] })
-
-				 --            self:addChild(jackpotlayer)
-
-				    	-- local scene=GameScene.new({adid= jac_data[2*i]["id"],type="audition",image=""})--拼图
-         --                                   	            cc.Director:getInstance():pushScene(scene)
-         --       				LocalData:Instance():set_actid({act_id=jac_data[2*i]["id"],image=" "})--保存数
 
 
 			end)
@@ -213,7 +191,56 @@ function GoldprizeScene:data_init(  )
 
 
 end
+function GoldprizeScene:fun_selectbox( _tag )
+	self.Selectbox = cc.CSLoader:createNode("Selectbox.csb")
+            self:addChild(self.Selectbox)
 
+
+             local back=self.Selectbox:getChildByTag(145)   --返回
+       	 back:addTouchEventListener(function(sender, eventType  )
+	                 if eventType ~= ccui.TouchEventType.ended then
+	                        return
+                              end
+                              if self.Selectbox then
+                              	self.Selectbox:removeFromParent()
+                              end
+            end)
+
+       	 local pintu=self.Selectbox:getChildByTag(142)   --拼图
+       	 pintu:addTouchEventListener(function(sender, eventType  )
+	                 if eventType ~= ccui.TouchEventType.ended then
+	                        return
+	                  end
+	                  self.choose=1
+	                  local path=cc.FileUtils:getInstance():getWritablePath()
+	            
+		       local  list_table=LocalData:Instance():get_getgoldspoollist()
+		       local  jac_data=list_table["goldspools"]
+	                   Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
+		       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
+		       self.adownerid  =   jac_data[_tag]["adownerid"]
+		       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
+		       self.image_name  =  path..tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+            end)
+
+
+       	 local dadishu=self.Selectbox:getChildByTag(143)   --打地鼠
+       	 dadishu:addTouchEventListener(function(sender, eventType  )
+	                 if eventType ~= ccui.TouchEventType.ended then
+	                        return
+                              end
+                              local path=cc.FileUtils:getInstance():getWritablePath()
+                              self.choose=2
+                               local  list_table=LocalData:Instance():get_getgoldspoollist()
+		       local  jac_data=list_table["goldspools"]
+                               Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
+		       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
+		       self.adownerid  =   jac_data[_tag]["adownerid"]
+		       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
+		       self.image_name  =  path..tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+            end)
+
+end
 --下载图片
 function GoldprizeScene:imgurl_download(  )
           local  list_table=LocalData:Instance():get_getgoldspoollist()
@@ -280,10 +307,11 @@ function GoldprizeScene:onEnter()
                          else
                          
                          	 print("88888dsf  ",self._dtid, "  " ,self.adownerid)
+                         	  print("有意义有意义111 ",self.choose)
                          	  LocalData:Instance():set_user_img(self.image_name)
                          	 -- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	           --   cc.Director:getInstance():pushScene(scene)
-               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})
+               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                          end
 		
@@ -297,7 +325,7 @@ print("88888dsf  ",self._dtid)
 			 LocalData:Instance():set_user_img(self.image_name)
                         	-- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	         --     cc.Director:getInstance():pushScene(scene)
-               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})
+               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
 
                       end)

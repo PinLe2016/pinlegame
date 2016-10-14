@@ -30,7 +30,7 @@ function GameScene:ctor(params)
     self.image= params.image
 
     self.adid=params.adid
-
+    self.choose=params.choose
     self.id=params.id
     if params.img then
       self.img=params.img
@@ -46,7 +46,7 @@ function GameScene:ctor(params)
          self.countdownLayer = cc.CSLoader:createNode("countdownLayer.csb")
          self:addChild(self.countdownLayer)
       else
-         local csb = cc.CSLoader:createNode("XSHGameScene.csb")
+      local csb = cc.CSLoader:createNode("XSHGameScene.csb")
       self._csb=csb
       self:addChild(csb)
       end
@@ -101,12 +101,28 @@ function GameScene:funinit(  )
                      -- ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=2})
                      --  self._csb:addChild(deblayer)
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                       -- dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
+                        if self.choose==1 then  --  1  拼图   2   打地鼠
+                              -- print("你猜",self.adid)
+                                  local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
+                                 ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})   --self.adid
+                                  self._csb:addChild(deblayer)
+                        elseif self.choose==2  then
+                                    local spr=display.newSprite("png/dadishu.png")
+                                   spr:setAnchorPoint(cc.p(0,0.0))
+                                     self:addChild(spr)
+                               --Server:Instance():getgoldspoolrandomgolds(self.adid,0)   --测试
+                                      local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
+                                     self:addChild(HitVolesLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
+                                  ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount}) )  --self.adid
 
-                        -- print("你猜",self.adid)
-                      local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
-                     ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})   --self.adid
-                      self._csb:addChild(deblayer)
+                        end
+
+                    
+
+
+                     
 
                   end
 
@@ -365,9 +381,22 @@ function GameScene:onEnter()
                         if jaclayer_data[1]["addetailurl"] then
                            _addetailurl=jaclayer_data[1]["addetailurl"]
                         end
-                        -- local  jackpotlayer= 
-                        local jackpotlayer= require("app.layers.JackpotLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
-                         cc.Director:getInstance():pushScene(jackpotlayer)   --  奖池详情  我们就是硬生生的把一个layer 变成 scene  
+                        if  self.choose==1 then
+                              -- local jackpotlayer= require("app.layers.JackpotLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
+                              --  cc.Director:getInstance():pushScene(jackpotlayer)   --  奖池详情  我们就是硬生生的把一个layer 变成 scene  
+
+                                local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
+                               cc.Director:getInstance():pushScene(bigwheelLayer) 
+
+                               
+                        elseif self.choose==2 then
+                                local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
+                               cc.Director:getInstance():pushScene(bigwheelLayer) 
+                        end
+                       
+                        
+                      
+                     
                        
                       end)
 

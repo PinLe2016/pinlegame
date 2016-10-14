@@ -109,7 +109,7 @@ end
 function OnerecordLayer:onEnter()
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self,
                        function()
-                        -- print("个人记录")
+                         print("个人记录")
                         self:init()
                       end)
 end
