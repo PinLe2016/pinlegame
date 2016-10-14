@@ -30,7 +30,7 @@ local rand_tag=1
 local scene1 = nil 
 local scene2 = nil 
 local scene3 = nil
-local pic = "menuitemsprite.png"
+--local pic = "menuitemsprite.png"
 local flag = 1
 local loadResource = false
 
@@ -142,13 +142,13 @@ function LabelAtlasTest.create()
     --Helper.initWithLayer(layer)
     LabelAtlasTest.layer = layer
 
-    local label1 = cc.LabelAtlas:_create("Score:", "fonts/tuffy_bold_italic-charmap.plist")
+    local label1 = cc.LabelAtlas:_create("Score:", "png/tuffy_bold_italic-charmap.plist")
     layer:addChild(label1, 0, kTagSprite1)
     label1:setPosition( cc.p(origin.x+s.width/100 ,s.height-s.height/10))
     label1:setColor(cc.c3b(255, 0, 0))
     label1:setOpacity( 200 )
 
-    local label2 = cc.LabelAtlas:_create("0", "HitVoles/fonts/tuffy_bold_italic-charmap.plist")
+    local label2 = cc.LabelAtlas:_create("0", "png/tuffy_bold_italic-charmap.plist")
     layer:addChild(label2, 0, kTagSprite2)
     label2:setPosition( cc.p(origin.x+s.width/100 * 40 ,s.height-s.height/10))
     label2:setColor(cc.c3b(255, 0, 0))
@@ -189,12 +189,12 @@ end
 
 local function createFarmLayer()
     layerFarm = cc.Layer:create()
-    local spriteFarm = cc.Sprite:create("farm.jpg")
-    --spriteFarm:setScale(0.5)
-    spriteFarm:setVisible(false)
-    spriteFarm:setRotation(0)
-    spriteFarm:setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2)
-    layerFarm:addChild(spriteFarm)
+    -- local spriteFarm = cc.Sprite:create("farm.jpg")
+    -- --spriteFarm:setScale(0.5)
+    -- spriteFarm:setVisible(false)
+    -- spriteFarm:setRotation(0)
+    -- spriteFarm:setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2)
+    -- layerFarm:addChild(spriteFarm)
 
     --load land to farm
     -- for i=1,2 do
@@ -273,12 +273,9 @@ local function createPlayLayer()
     layerPlay:registerScriptTouchHandler(onTouch)
 
 
-    local spriteboy = cc.Sprite:create("animation/grossini.png")
-    spriteboy:setPosition(origin.x + visibleSize.width / 8, origin.y + (visibleSize.height / 3)*2)
-    spriteboy:setScale(0.5)
+    
 
-    local spritegirl = cc.Sprite:create()
-    spritegirl:setPosition(origin.x + (visibleSize.width / 8)*7, origin.y + visibleSize.height / 2 )
+
 
     local spriteVole = cc.Sprite:create()
     --spriteVole:setPosition(origin.x + (visibleSize.width / 3)*2, origin.y + visibleSize.height / 3)
@@ -287,8 +284,6 @@ local function createPlayLayer()
 
     local spriteCoins = cc.Sprite:create()
 
-    -- layerPlay:addChild(spriteboy)
-    -- layerPlay:addChild(spritegirl)
     --  以上两个已删除   
     --layerPlay:addChild(spriteVole)
     layerPlay:addChild(spriteVole, 0, kTagSprite3)
@@ -386,7 +381,7 @@ function coinAction(x,y)
     local number,name
     for i=0,2 do
       number = i 
-      name = "jinbi_"..number..".png"
+      name = "png/dajinbi_"..number..".png"
       animation:addSpriteFrameWithFile(name)
     end
 
@@ -428,7 +423,7 @@ function hammerAction(x,y)
     local number,name
     for i=0,2 do
       number = i 
-      name = "chuizi_"..number..".png"
+      name = "png/chuizi_"..number..".png"
       animation:addSpriteFrameWithFile(name)
     end
 
