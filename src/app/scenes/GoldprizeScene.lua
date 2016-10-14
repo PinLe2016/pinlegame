@@ -300,11 +300,12 @@ function GoldprizeScene:onEnter()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
                        function()  
                          local getgoldspoolbyid  = LocalData:Instance():get_getgoldspoolbyid()--获得玩了几次数据
-                         if tonumber(getgoldspoolbyid["coolingtime"]) == -1  or   tonumber(getgoldspoolbyid["getcardamount"]) == 0  then   --因为getcardamount这个后台不准，所以只能多加一个coolingtime来保险的判断是否玩过两次
+                         -- if tonumber(getgoldspoolbyid["coolingtime"]) == -1  or   tonumber(getgoldspoolbyid["getcardamount"]) == 0  then   --因为getcardamount这个后台不准，所以只能多加一个coolingtime来保险的判断是否玩过两次
 
-                         	LocalData:Instance():set_user_pintu("1")  --主要是要确定点击后  要自动拼图
-                                    Server:Instance():prompt("今日获得金币机会已经用完啦,继续拼图只能获得积分")  --  然并卵的提示语
-                         else
+                         -- 	LocalData:Instance():set_user_pintu("1")  --主要是要确定点击后  要自动拼图
+                         --            Server:Instance():prompt("今日获得金币机会已经用完啦,继续只能获得积分")  --  然并卵的提示语
+                         --            self.choose=2
+                         -- else
                          
                          	 print("88888dsf  ",self._dtid, "  " ,self.adownerid)
                          	  print("有意义有意义111 ",self.choose)
@@ -313,7 +314,7 @@ function GoldprizeScene:onEnter()
                	           --   cc.Director:getInstance():pushScene(scene)
                	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
-                         end
+                        -- end
 		
                       end)
   --点击弹出框点击确定自动进入拼图界面  够任性吧
