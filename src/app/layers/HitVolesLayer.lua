@@ -15,7 +15,7 @@ local HitVolesLayer = class("HitVolesLayer", function()
     return display.newLayer("HitVolesLayer")
 end)
 -- 倒计时
-local  countdown_time =60
+local  countdown_time =2
 --分数标签
 local kTagSprite1 = 1
 --分数
@@ -272,11 +272,6 @@ local function createPlayLayer()
     layerPlay:setTouchEnabled(true)
     layerPlay:registerScriptTouchHandler(onTouch)
 
-
-    
-
-
-
     local spriteVole = cc.Sprite:create()
     --spriteVole:setPosition(origin.x + (visibleSize.width / 3)*2, origin.y + visibleSize.height / 3)
     local spriteHammer = cc.Sprite:create()  
@@ -305,9 +300,8 @@ function callback(dt)
          countdown_time=countdown_time-1
          print("倒计时  ",countdown_time)
          if countdown_time <= 0 then
-              --  local bigwheelLayer = require("app.layers.bigwheelLayer")--惊喜吧 
-              -- mainScene:addChild(bigwheelLayer.new())
-              Server:Instance():setgamerecord(mainScene.adid)    --  打完地鼠上传的数据
+             
+              --Server:Instance():setgamerecord(mainScene.adid)    --  打完地鼠上传的数据
               
            NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
              scheduler:unscheduleScriptEntry(schedulHandle)
@@ -352,8 +346,6 @@ function callback(dt)
                                                    sender:getChildByTag(1):removeFromParent()
                                             end
                                         end
-
-                               
                                 end
 
                                  local rate=cc.RotateTo:create(0.5, {x=-5,y=0,z=0})--,

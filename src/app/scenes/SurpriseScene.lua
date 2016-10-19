@@ -301,7 +301,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             local Nameprize_text=cell:getChildByTag(42)
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
             local type=cell:getChildByTag(133)
-            local type_image="png/J_" .. sup_data[i]["type"] .. ".png"
+            local type_image="png/huodongma-type-" .. sup_data[i]["type"] .. ".png"
             local huojiang_bg=cell:getChildByTag(336)
             type:loadTexture(type_image)
               if self.ser_status==0 then
@@ -486,10 +486,22 @@ function SurpriseScene:fun_EditBox( width ,height,_object,_content,length)
 
   
 end
+function SurpriseScene:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
 --初始化获奖名单
 function SurpriseScene:_winners( )
+  self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self:addChild(self.fragment_sprite)
+
     self.Winners = cc.CSLoader:createNode("Winners.csb");
     self:addChild(self.Winners)
+      self:move_layer(self.Winners)
 
     local back_bt= self.Winners:getChildByTag(63)--返回
     back_bt:addTouchEventListener((function(sender, eventType)
@@ -497,6 +509,7 @@ function SurpriseScene:_winners( )
                        return
             end
             if self.Winners then
+              self.fragment_sprite:removeFromParent()
                self.Winners:removeFromParent()
             end
                          

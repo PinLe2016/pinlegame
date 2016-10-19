@@ -133,6 +133,7 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               elseif tag==761 then
               	if self.ActivitycodeLayer then
                             self:unscheduleUpdate()
+                            self.fragment_sprite:removeFromParent()
               	     self.ActivitycodeLayer:removeFromParent()
               	end
               elseif  tag==764 then
@@ -173,10 +174,23 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
             
 
 end
+function activitycodeLayer:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
 function activitycodeLayer:huodong(  )
+       self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+        self:addChild(self.fragment_sprite)
+
 	self.ActivitycodeLayer = cc.CSLoader:createNode("ActivitycodeLayer.csb");
     	self:addChild(self.ActivitycodeLayer)
     	self. _sing=self.ActivitycodeLayer:getChildByTag(765)--活动码输入框
+      self:move_layer(self.ActivitycodeLayer)
     
     	local back_bt=self.ActivitycodeLayer:getChildByTag(761)--关闭
              back_bt:addTouchEventListener((function(sender, eventType  )
@@ -289,7 +303,7 @@ function activitycodeLayer:act_list()
             end
 
             local type=cell:getChildByTag(751)
-            local type_image=  "png/J_" .. sup_data[i]["type"] .. ".png"   --sup_data[i]["type"] .. ".png"  
+            local type_image=  "png/huodongma-type-" .. sup_data[i]["type"] .. ".png"   --sup_data[i]["type"] .. ".png"  
             type:loadTexture(type_image)
              local _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
                          --prizewinning   无为没有中奖

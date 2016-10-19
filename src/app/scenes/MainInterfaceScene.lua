@@ -95,7 +95,7 @@ function MainInterfaceScene:fun_init( )
       end)
        local head=self.MainInterfaceScene:getChildByTag(37)
        local per=self.MainInterfaceScene:getChildByTag(28):getChildByTag(29)  --新的需求
-          per:addTouchEventListener(function(sender, eventType  )
+          head:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
       local checkin_bt= self.MainInterfaceScene:getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
@@ -122,12 +122,12 @@ function MainInterfaceScene:fun_init( )
       end)
       self.actbg=self.MainInterfaceScene:getChildByTag(51)--加动画
       self.actbg:setVisible(false)
-      local setup_bt=self.actbg:getChildByTag(53)  --设置按钮
+      local setup_bt=self.MainInterfaceScene:getChildByTag(53)  --设置按钮
       setup_bt:addTouchEventListener(function(sender, eventType  )
 
            self:touch_callback(sender, eventType)
       end)
-      local friends_bt=self.actbg:getChildByTag(52)  --邀请好友排行
+      local friends_bt=self.MainInterfaceScene:getChildByTag(52)  --邀请好友排行
       friends_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
@@ -215,7 +215,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
     self:addChild(activitycodeLayer.new(),1,255)
 		-- self.barrier_bg:setVisible(true)
 		-- self.kuang:setVisible(true)
-	elseif tag==29 then  --37
+	elseif tag==37 then  --37
     local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
 		self:addChild(PerInformationLayer.new())
 	elseif tag==399 then --弹出确定
@@ -254,6 +254,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:addChild(taskLayer.new())
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
+            if self.fragment_sprite1 then
+              self.fragment_sprite1:removeFromParent()
+            end
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友  291
         local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
@@ -339,7 +342,13 @@ end
 function MainInterfaceScene:funsetup(  )
         -- self.set_bg=self.MainInterfaceScene:getChildByTag(88)
         -- self.set_bg:setVisible(true)
+        self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self:addChild(self.fragment_sprite1)
+        self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png")
+         self.fragment_sprite1:getChildByTag(135):setTouchEnabled(false) 
+
         self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
+          self:move_layer(self.set_bg1)
         self.set_bg1:setVisible(true)
         local set_back=self.set_bg1:getChildByTag(91)
         set_back:addTouchEventListener(function(sender, eventType  )
@@ -380,14 +389,43 @@ function MainInterfaceScene:funsetup(  )
          end)
 
 end
+-- function function_name( ... )
+
+--       local function CallFucnCallback3(sender)
+--                      local check_bt=self.checkinlayer:getChildByTag(81) 
+--                      check_bt:setVisible(true)                                     
+--       end
+--      local move = cc.MoveTo:create(0.5, cc.p(0,0))
+--      local move1 = cc.MoveTo:create(0.2, cc.p(0,10))
+--      local move2 = cc.MoveTo:create(0.2, cc.p(0,0))
+--      local move3 = cc.MoveTo:create(0.1, cc.p(0,8))
+--      local move4 = cc.MoveTo:create(0.1, cc.p(0,0))
+--      self.checkinlayer:runAction(cc.Sequence:create(move,move1,move2,move3,move4,cc.CallFunc:create(CallFucnCallback3)))
+-- end
+
+function MainInterfaceScene:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
+
 --签到
 function MainInterfaceScene:fun_checkin( tm )
 
-      if not self.checkinlayer then
+      if not self.checkinlayer then   --GRzhezhaoceng
+         self.fragment_sprite = display.newSprite("png/GRzhezhaoceng.png")
+         self.fragment_sprite:setPosition(display.width/2, display.height/2)
+         self.fragment_sprite:setTouchEnabled(true)
+         self:addChild(self.fragment_sprite)
          self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
          self:addChild(self.checkinlayer)
          self.checkinlayer:setVisible(true)
+         self:move_layer(self.checkinlayer)
       end
+
       if not self.checkinlayer then
         return
       end
@@ -415,6 +453,7 @@ function MainInterfaceScene:fun_checkin( tm )
 	       if eventType ~= ccui.TouchEventType.ended then
 		      return
 	       end
+         self.fragment_sprite:setVisible(false)
          self.checkinlayer:removeFromParent()
              self.checkinlayer=nil
              Server:Instance():gettasklist()   --目的是刷新任务数据
@@ -453,7 +492,7 @@ function MainInterfaceScene:init_checkin(  )
             local  totaydays=checkindata["totaldays"]
             local check_data=self.checkinlayer:getChildByTag(40)
             local check_biaoji=self.checkinlayer:getChildByTag(39)
-             check_data:loadTexture(string.format("png/qiandao_%d.png", totaydays))
+             --check_data:loadTexture(string.format("png/qiandao_%d.png", totaydays))
             local  _table={}
             local  _biaojitable={}
             for i=1, math.ceil(totaydays/7-1) do
@@ -465,7 +504,7 @@ function MainInterfaceScene:init_checkin(  )
                                day_text:setString((i-1)*7+j)
                                _table[(i-1)*7+j]=day_text
                                _biaojitable[(i-1)*7+j]=biaoji
-            	       _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(j-1),_bg:getPositionY()-_size.height* math.ceil(i-1)))
+            	       _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+8)*(j-1),_bg:getPositionY()-_size.height* math.ceil(i-1)))
             	       self.checkinlayer:addChild(_bg)
         		      
         		end
@@ -477,11 +516,11 @@ function MainInterfaceScene:init_checkin(  )
                          day_text:setString( math.ceil(totaydays/7-1)*7+i)
                          _table[math.ceil(totaydays/7-1)*7+i]=day_text
                          _biaojitable[math.ceil(totaydays/7-1)*7+i]=biaoji
-            	 _bg:setPosition(cc.p(_bg:getPositionX()+_size.width*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
+            	 _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+8)*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
             	 self.checkinlayer:addChild(_bg)
         	end
               _biaojitable[16]:loadTexture("png/Qprize.png")
-              _biaojitable[16]:setVisible(true)
+              --_biaojitable[16]:setVisible(true)
               if not days then
                 --self.checkinlayer:setVisible(true)
                   return
@@ -496,8 +535,8 @@ function MainInterfaceScene:init_checkin(  )
                               if i==16 then
                                 _biaojitable[i]:loadTexture("res/png/Qprize.png")
                               end
-            			_table[i]:setColor(cc.c3b(125, 125, 100))
-                              _biaojitable[i]:setVisible(true)
+            			_table[i]:setColor(cc.c3b(62, 165, 216))
+                              --_biaojitable[i]:setVisible(true)
             		end
             	end
             end

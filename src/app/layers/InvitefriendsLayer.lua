@@ -25,9 +25,24 @@ function InvitefriendsLayer:ctor()--params
        end
 
 end
+function InvitefriendsLayer:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
+
 function InvitefriendsLayer:init(  )
+      
+        self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+        self:addChild(self.fragment_sprite)
+
        self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
        self:addChild(self.Invitefriends)
+       self:move_layer(self.Invitefriends)
         self:pop_up()--  弹出框
        local back_bt=self.Invitefriends:getChildByTag(82)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
@@ -194,6 +209,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
                         LocalData:Instance():set_tasktable(nil)--制空
                  end
             end
+
 
             Server:Instance():getuserinfo() -- 初始化数据
             Server:Instance():gettasklist()

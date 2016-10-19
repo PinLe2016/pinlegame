@@ -5,6 +5,15 @@
 local OnerecordLayer = class("OnerecordLayer", function()
             return display.newLayer("OnerecordLayer")
 end)
+function OnerecordLayer:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
+
 --标题 活动类型 
 function OnerecordLayer:ctor(params)
          self.type=params.type
@@ -16,8 +25,12 @@ function OnerecordLayer:ctor(params)
         -- Server:Instance():getactivitybyid(self.id,1)
 end
 function OnerecordLayer:init(  )
+            self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  
+           self:addChild(self.fragment_sprite)
+
 	self.OnerecordLayer = cc.CSLoader:createNode("OnerecordLayer.csb");
     	self:addChild(self.OnerecordLayer)
+            self:move_layer(self.OnerecordLayer)
 
     	local title_text=self.OnerecordLayer:getChildByTag(87)--标题
             title_text:setString(self.title)

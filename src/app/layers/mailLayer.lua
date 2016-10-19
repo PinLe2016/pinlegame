@@ -6,7 +6,14 @@
 local mailLayer = class("mailLayer", function()
             return display.newLayer("mailLayer")
 end)
-
+function mailLayer:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
 function mailLayer:ctor()
 
          self:setNodeEventEnabled(true)--layer添加监听
@@ -16,9 +23,15 @@ function mailLayer:ctor()
           self.tablecout  =  0  
           self.sup_data_num =0 
 
+        self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+        self:addChild(self.fragment_sprite)
+
 
            self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
             self:addChild(self.mailLayer)
+
+            self:move_layer(self.mailLayer)
 
             local back_bt=self.mailLayer:getChildByTag(46)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
@@ -169,8 +182,12 @@ function mailLayer:touch_back(sender, eventType)
 end
 function mailLayer:fun_emailcontentlayer( )
 	local affichedetail=LocalData:Instance():get_getaffichedetail()
+    self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+     self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+        self:addChild(self.fragment_sprite1)
 	self.emailcontentlayer = cc.CSLoader:createNode("emailcontentlayer.csb")
             self:addChild(self.emailcontentlayer)
+              self:move_layer(self.emailcontentlayer)
 
              local back_bt=self.emailcontentlayer:getChildByTag(62)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
@@ -184,6 +201,7 @@ function mailLayer:fun_emailcontentlayer( )
                               LocalData:Instance():set_getaffiche(nil)
 
                               self.mail_list:removeAllItems() 
+                              self.fragment_sprite1:removeFromParent()
 		            	self.emailcontentlayer:removeFromParent()
 		            end
 			

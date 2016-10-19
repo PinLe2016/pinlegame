@@ -141,20 +141,20 @@ end
      verificationcode_text:setVisible(false)
      verificationcode_text:setTouchEnabled(false)
 
-    local res = "res/png/DLkuang.png"
+    local res = "  "--res/png/DLkuang.png"
     local width = 300
     local height = 40
     --注册
     self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.phone_text)
-    self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX()-20,self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
+    self.phone_text:setPosition(cc.p(self.Zphone_text:getPositionX(),self.Zphone_text:getPositionY()))--( cc.p(130,438 ))  
     self.phone_text:setPlaceHolder("请输入手机号码")
     self.phone_text:setAnchorPoint(0.5,0.5)  
     self.phone_text:setMaxLength(11)
 
     self.Zpassword_text = ccui.EditBox:create(cc.size(width,height),res)
     self.registered:addChild(self.Zpassword_text )
-    self.Zpassword_text :setPosition(cc.p(password_text:getPositionX()-20,password_text:getPositionY()))--( cc.p(130,380 ))  
+    self.Zpassword_text :setPosition(cc.p(password_text:getPositionX(),password_text:getPositionY()))--( cc.p(130,380 ))  
     self.Zpassword_text :setPlaceHolder("请输入密码")
     self.Zpassword_text :setAnchorPoint(0.5,0.5)  
     self.Zpassword_text :setMaxLength(19)
@@ -226,7 +226,7 @@ function LoginScene:landing_init()
   EditPassword:setVisible(false)
 
 
-    local res = "res/png/DLkuang.png"
+    local res = " "--res/png/DLkuang.png"
     local width = 350
     local height = 40
     --登陆
@@ -357,7 +357,7 @@ function LoginScene:_passwordLayer( )
             Wcode_text:setVisible(false)
             Wcode_text:setTouchEnabled(false)
 
-            local res = "res/png/DLkuang.png"
+            local res = "  "--res/png/DLkuang.png"
             local width = 300
             local height = 40
             --忘记密码
@@ -456,7 +456,7 @@ function LoginScene:_resetpasswordLayer(  )
              local password1 = self.resetpasswordLayer:getChildByTag(302)
              password1:setVisible(false)
              password1:setTouchEnabled(false)
-              local res = "res/png/DLkuang.png"
+              local res = "  "--res/png/DLkuang.png"
               local width = 350
               local height = 40
              --修改密码
@@ -761,7 +761,7 @@ function LoginScene:getVersionInfo()
     end
 
 
-    if tonumber(up_date["Isused"])~=1 then--Isused 0.开启热更，1 关闭热更
+    if tonumber(up_date["Isused"])==1 then--Isused 0.开启热更，1 关闭热更
       
       self.masterURL=up_date["masterURL"]
       self.url=up_date["url"]

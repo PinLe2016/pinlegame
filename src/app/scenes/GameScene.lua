@@ -109,8 +109,9 @@ function GameScene:funinit(  )
                                  ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})   --self.adid
                                   self._csb:addChild(deblayer)
                         elseif self.choose==2  then
+                                   self._csb:setVisible(false)
                                     local spr=display.newSprite("png/dadishu.png")
-                                   spr:setAnchorPoint(cc.p(0,0.0))
+                                    spr:setAnchorPoint(cc.p(0,0.0))
                                      self:addChild(spr)
                                --Server:Instance():getgoldspoolrandomgolds(self.adid,0)   --测试
                                       local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
@@ -118,11 +119,6 @@ function GameScene:funinit(  )
                                   ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount}) )  --self.adid
 
                         end
-
-                    
-
-
-                     
 
                   end
 
@@ -292,6 +288,7 @@ end
               --Util:scene_control("SurpriseOverScene")  PhysicsScene
               --Util:scene_controlid("SurpriseOverScene",{id=self.adid,cycle=self.cycle,heroid=self.heroid})  --,phyimage=self.phyimage
                Util:scene_controlid("PhysicsScene",{id=self.adid,cycle=self.cycle,heroid=self.heroid,phyimage=self.phyimage})
+
                -- local scene=SurpriseOverScene.new({})
                -- cc.Director:getInstance():pushScene(scene)
 

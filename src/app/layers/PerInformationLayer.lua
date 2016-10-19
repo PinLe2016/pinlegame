@@ -21,9 +21,13 @@ function PerInformationLayer:ctor()--params
 end
 --新增的个人信息界面
 function PerInformationLayer:add_init(  )
-    
+             self.fragment_sprite  = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+             self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+             self:addChild(self.fragment_sprite)
+     
               self.showinformation = cc.CSLoader:createNode("showinformation.csb")
               self:addChild(self.showinformation)
+              self:move_layer(self.showinformation)
               
                  local  userdata=LocalData:Instance():get_user_data() --用户数据
                  local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
@@ -94,9 +98,9 @@ function PerInformationLayer:add_init(  )
                     local registereday=self.showinformation:getChildByTag(1412)  --注册日期
                     registereday:setString(tostring(os.date("%Y",userdt["registertime"])))
                      local registereday1=self.showinformation:getChildByTag(123)  --注册日期
-                    registereday1:setString(tostring(os.date("%m",userdt["registertime"])))
+                    registereday1:setString("-"  ..   tostring(os.date("%m",userdt["registertime"])))
                      local registereday2=self.showinformation:getChildByTag(124)  --注册日期
-                    registereday2:setString(tostring(os.date("%d",userdt["registertime"])))
+                    registereday2:setString("-"  .. tostring(os.date("%d",userdt["registertime"])))
                     self.genderman1=self.showinformation:getChildByTag(1403)  --性别
                    
                     if userdt["gender"]==0 then    --0女1男2未知
@@ -186,26 +190,26 @@ function PerInformationLayer:fun_mail(  )
          local phone_field=em_bg:getChildByTag(230)
          local adm_field=em_bg:getChildByTag(231)
          local name_g=em_bg:getChildByTag(225)
-         name_g:setVisible(false)
+         --name_g:setVisible(false)
          local phone_g=em_bg:getChildByTag(226)
-         phone_g:setVisible(false)
+         --phone_g:setVisible(false)
          local adm_g=em_bg:getChildByTag(228)
-         adm_g:setVisible(false)
+         --adm_g:setVisible(false)
 
 --新增的邮件box控件
-    local res = "res/png/GR_Kdikuang.png"
-    local width = 280
+    local res = " "--res/png/gerenxinxi-shang-1.png"
+    local width = 300
     local height = 40
     
     self.name_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.name_text_mail)
     self.name_text_mail:setPosition(cc.p(name_field:getPositionX(),name_field:getPositionY()))--( cc.p(130,438 ))  
-    self.name_text_mail:setPlaceholderFontColor(cc.c3b(96, 57, 19))
+    self.name_text_mail:setPlaceholderFontColor(cc.c3b(250, 250, 250))
 
     if _getconsignee["name"] == "" then
         self.name_text_mail:setPlaceHolder("您的姓名")
     else
-        self.name_text_mail:setPlaceHolder(tostring(_getconsignee["name"]))
+        self.name_text_mail:setPlaceHolder( tostring(_getconsignee["name"]))
     end
     
     self.name_text_mail:setAnchorPoint(0,0.5)  
@@ -214,26 +218,26 @@ function PerInformationLayer:fun_mail(  )
     self.phone_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.phone_text_mail)
     self.phone_text_mail:setPosition(cc.p(phone_field:getPositionX(),phone_field:getPositionY()))--( cc.p(130,438 ))  
-    self.phone_text_mail:setPlaceholderFontColor(cc.c3b(96, 57, 19))
+    self.phone_text_mail:setPlaceholderFontColor(cc.c3b(250, 250, 250))
      if _getconsignee["phone"] == "" then
         self.phone_text_mail:setPlaceHolder("您的手机号")
     else
-        self.phone_text_mail:setPlaceHolder(tostring(_getconsignee["phone"]))
+        self.phone_text_mail:setPlaceHolder( tostring(_getconsignee["phone"]))
     end
 
     self.phone_text_mail:setAnchorPoint(0,0.5)  
     self.phone_text_mail:setMaxLength(11)
 
-    local res1 = "res/png/dikuang.png"
-    local width1 = 280
-    local height1 = 80
+    local res1 = "  "--res/png/gerenxinxi-xia-kuang-da.png"
+    local width1 = 300
+    local height1 = 89
 
     self.ads_text_mail = ccui.EditBox:create(cc.size(width1,height1),res1)
-    self.ads_text_mail:setFont("Arial",22)
-    self.ads_text_mail:setPlaceholderFont("Arial",22)
+    self.ads_text_mail:setFont("Arial",20)
+    self.ads_text_mail:setPlaceholderFont("Arial",20)
     em_bg:addChild(self.ads_text_mail)
     self.ads_text_mail:setPosition(cc.p(adm_field:getPositionX(),adm_field:getPositionY()))--( cc.p(130,323 ))  
-    self.ads_text_mail:setPlaceholderFontColor(cc.c3b(96, 57, 19))
+    self.ads_text_mail:setPlaceholderFontColor(cc.c3b(250, 250, 250))
 
 
 
@@ -329,6 +333,7 @@ function PerInformationLayer:touch_back( sender, eventType )
     if tag==1399 then --返回
         if self.showinformation then
             if  tostring(LocalData:Instance():get_per())  ==  "1" then
+                self.fragment_sprite:setVisible(false)
                  self:removeFromParent()
                  LocalData:Instance():set_per("0")
                  return
@@ -409,11 +414,24 @@ function PerInformationLayer:save_mail(cath)
     self.Receivinginformation:getChildByTag(220):getChildByTag(233):setPlaceHolder(province..city..conty)
     
 end
+function PerInformationLayer:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
 
 function PerInformationLayer:init(  )
-
+       
+       self.fragment_sprite1  = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+         self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+         self:addChild(self.fragment_sprite1)
        self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
        self:addChild(self.Perinformation)
+       self:move_layer(self.Perinformation)
+
         self.birthday_bt=self.Perinformation:getChildByTag(26):getChildByTag(245)
         self.birthday_bt:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
@@ -502,12 +520,12 @@ function PerInformationLayer:perinformation_init(  )
         self.Dphone_text:setTouchEnabled(false)
         self.Dphone_text:setVisible(false)
         local res = " "--res/png/DLkuang.png
-        local width = 360
-        local height = 50
+        local width = 265
+        local height = 30
         --登陆
         self._Pname = ccui.EditBox:create(cc.size(width,height),res)
-        self._Pname:setPlaceholderFontColor(cc.c3b(195,141,141))
-        self._Pname:setFontColor(cc.c3b(195,141,141))
+        self._Pname:setPlaceholderFontColor(cc.c3b(234,82,30))
+        self._Pname:setFontColor(cc.c3b(234,82,30))
         self.Perinformation:addChild(self._Pname)
         self._Pname:setVisible(true)
         self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  
@@ -535,9 +553,9 @@ function PerInformationLayer:perinformation_init(  )
         local registereday=self.Perinformation:getChildByTag(86)  --注册日期
         registereday:setString(tostring(os.date("%Y",userdt["registertime"])))  --
         local registereday2=self.Perinformation:getChildByTag(192)  --注册日期
-        registereday2:setString(tostring(os.date("%m",userdt["registertime"])))  --
+        registereday2:setString("-"  .. tostring(os.date("%m",userdt["registertime"])))  --
         local registereday3=self.Perinformation:getChildByTag(193)  --注册日期
-        registereday3:setString(tostring(os.date("%d",userdt["registertime"])))  --
+        registereday3:setString("-"  .. tostring(os.date("%d",userdt["registertime"])))  --
         self.genderman=self.Perinformation:getChildByTag(79)  --性别男
         self.gendergirl=self.Perinformation:getChildByName("CheckBox_2")  --getChildByTag(79)  --性别女
       
@@ -635,6 +653,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
     elseif tag==97 then 
                  if self.Perinformation then
                     self._Pname=nil
+                     self.fragment_sprite1:setVisible(false)
                        self.Perinformation:removeFromParent()
                        
 

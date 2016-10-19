@@ -220,7 +220,7 @@ function GoldprizeScene:fun_selectbox( _tag )
 		       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
 		       self.adownerid  =   jac_data[_tag]["adownerid"]
 		       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
-		       self.image_name  =  path..tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+		       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
             end)
 
 
@@ -237,7 +237,7 @@ function GoldprizeScene:fun_selectbox( _tag )
 		       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
 		       self.adownerid  =   jac_data[_tag]["adownerid"]
 		       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
-		       self.image_name  =  path..tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+		       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
             end)
 
 end

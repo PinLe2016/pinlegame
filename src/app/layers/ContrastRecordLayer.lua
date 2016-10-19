@@ -22,9 +22,23 @@ function ContrastRecordLayer:ctor(params)
        --Server:Instance():getactivitybyid(self.id,1)
        
 end
+function ContrastRecordLayer:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
 function ContrastRecordLayer:init(  )
+
+        self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self:addChild(self.fragment_sprite)
+
 	self.ContrastRecordLayer = cc.CSLoader:createNode("ContrastRecordLayer.csb");
     	self:addChild(self.ContrastRecordLayer)
+
+      self:move_layer(self.ContrastRecordLayer)
 
     	local activitybyid=LocalData:Instance():get_getactivitybyid()
       local userdt = LocalData:Instance():get_userdata()--

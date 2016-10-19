@@ -132,7 +132,7 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
 
             local ranking_tag=cell:getChildByTag(86)  --排名数字
             if i<4 then 
-               ranking_tag:loadTexture(string.format("png/PH_%d.png", i))
+               ranking_tag:loadTexture(string.format("png/paihangbang-mingci-%d.png", i))
                leve_head:loadTexture(string.format("png/HD%d.png", i))
             else
                 leve_head:setVisible(false)

@@ -45,14 +45,33 @@ function bigwheelLayer:ctor(params)
 	self.gridNumer=12    --   一共的格子数
 	self.gridAngle=360/self.gridNumer   --   每个格子的度数
 	self.adid=params.id
+	self.count=0
 
 	 if params.image_name then
                 self.image_name=params.image_name
              end
 
-
 	self.bigwheelLayer = cc.CSLoader:createNode("bigwheelLayer.csb")
             self:addChild(self.bigwheelLayer)
+            self.roleAction = cc.CSLoader:createTimeline("bigwheelLayer.csb")
+            self.bigwheelLayer:runAction(self.roleAction)
+            self.roleAction:setTimeSpeed(7)
+            self.roleAction:gotoFrameAndPlay(0,120, true)
+           
+          	--风叶
+          	self._blades=self.bigwheelLayer:getChildByTag(41):getChildByTag(48)
+          	--选中
+          	self._selected=self.bigwheelLayer:getChildByTag(46)
+
+            -- 灯
+            self._lamp=self.bigwheelLayer:getChildByTag(41):getChildByTag(43)  
+            self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                if   self._Xscnum then
+                                   self:run_callback()
+                                end
+                                
+              end,0.5, false)
+
 
              self._rewardgold=0
 
@@ -75,6 +94,15 @@ function bigwheelLayer:ctor(params)
 	self:init(  )
 
        
+end
+function bigwheelLayer:run_callback(dt)
+		self.count=self.count+1
+		
+		if self.count%2==0 then
+			self._lamp:setVisible(false)
+		else
+			self._lamp:setVisible(true)
+		end
 end
 function bigwheelLayer:init(  )
         
@@ -126,11 +154,11 @@ function bigwheelLayer:init(  )
 	          self:touch_callback(sender, eventType)
 	      end)
 	     local _advertiImg=self.bigwheelLayer:getChildByTag(128)  --  上面广告图
-	      _advertiImg:loadTexture(  self.image_name) 
+	      _advertiImg:loadTexture( self.image_name) 
 
 	     local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                  local  jaclayer_data=list_table["adlist"]
-	     local connection12=self.bigwheelLayer:getChildByTag(129)   --连接
+	     local connection12=self.bigwheelLayer:getChildByTag(39):getChildByTag(129)   --连接
 	       self.connection13=connection12
 	      connection12:addTouchEventListener(function(sender, eventType  )
 	                  if eventType ~= ccui.TouchEventType.ended then
@@ -138,7 +166,7 @@ function bigwheelLayer:init(  )
 	                  end
 	                  self:fun_storebrowser()
                   end)
-	     local connection_gold=self.bigwheelLayer:getChildByTag(129):getChildByTag(131)--  显示金币数
+	     local connection_gold=self.bigwheelLayer:getChildByTag(39):getChildByTag(129):getChildByTag(131)--  显示金币数
 	     if jaclayer_data[1]["adurlgold"] then
 	          connection_gold:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
 	     else
@@ -156,8 +184,13 @@ end
 function bigwheelLayer:fun_began(  )
 	  local function CallFucnCallback3(sender)
                        self.m_turnArr:setEnabled(true);
-               end
+                       self._blades:setVisible(false)
+                       self._selected:setVisible(true)
 
+               end
+               --self.roleAction:gotoFrameAndPlay(0,120, true)  --   风页转动
+               self._blades:setVisible(true)
+               self._selected:setVisible(false)
 	 -- self.x_rand=math.random(1,self.gridNumer)
 	    
 	     table.insert(self.fragment_table,{_shuzi = self.x_rand})
@@ -191,6 +224,9 @@ function bigwheelLayer:touch_callback( sender, eventType )
                 
             elseif tag==130 then
             	Util:scene_control("GoldprizeScene")
+            	 if self._Xscnum then
+	                    cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
+	             end
 	end
 end
 --  网页链接
@@ -255,6 +291,16 @@ function bigwheelLayer:goldact(  )
          self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
 
 end
+
+  function bigwheelLayer:update(dt)
+	self.secondOne = self.secondOne+dt
+	if self.secondOne <1 then return end
+	      self.secondOne=0
+                  self.time=1+self.time
+           
+  end
+
+
 function bigwheelLayer:onEnter()
    self.x_rand=7
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self,
@@ -274,8 +320,6 @@ end
 function bigwheelLayer:onExit()
      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
      
-     
-     	
 end
 
 

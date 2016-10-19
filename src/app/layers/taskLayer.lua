@@ -14,10 +14,26 @@ function taskLayer:ctor()
        Server:Instance():gettasklist()
        
 end
+function taskLayer:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
+
+
 function taskLayer:init(  )
+         self.fragment_sprite =cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+          self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+        self:addChild(self.fragment_sprite)
+
         LocalData:Instance():set_sign(2)
         self.taskLayer = cc.CSLoader:createNode("taskLayer.csb")
         self:addChild(self.taskLayer)
+
+        self:move_layer(self.taskLayer)
 
          local back_bt=self.taskLayer:getChildByTag(141)  --返回
             back_bt:addTouchEventListener((function(sender, eventType  )
@@ -67,6 +83,11 @@ function taskLayer:data_init(  )
                          LoadingBar_3:setVisible(false)
                          local  LoadingBar_4=cell:getChildByTag(198)--
                          LoadingBar_4:setVisible(false)
+                          local  LoadingBar_5=cell:getChildByTag(147)--
+                         LoadingBar_5:setVisible(false)
+                         local  LoadingBar_6=cell:getChildByTag(146)--
+                         LoadingBar_6:setVisible(false)
+
 
                   end
 
@@ -104,10 +125,11 @@ function taskLayer:data_init(  )
                   local  alert=cell:getChildByTag(196)--描述
                   alert:setVisible(false)
                   local title_bg=cell:getChildByTag(175)--描述=cell:getChildByTag(175)--描述
+                  --local title_bg=cell:getChildByTag(175)
                  
 
-                  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,184,28))
-                  crn:setPosition(cc.p(120,60))
+                  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,190,25))
+                  crn:setPosition(cc.p(143,65))
                   title_bg:addChild(crn)
 
                   local title = ccui.Text:create()
@@ -115,7 +137,7 @@ function taskLayer:data_init(  )
                   title:setAnchorPoint(cc.p(0,0.5))
                   crn:addChild(title)
                   title:setFontSize(23)
-                  title:setColor(cc.c3b(195, 141, 141))
+                  title:setColor(cc.c3b(255, 255, 255))
                   title:setString(tasklist[i]["description"])
 
                         --描述动画
@@ -172,7 +194,7 @@ function taskLayer:touch_btCallback( sender, eventType )
                  -- userdt["golds"]=getuserinfo["golds"]
                  -- LocalData:Instance():set_userdata(userdt)
 
-
+                  self.fragment_sprite:setVisible(false)
            		self:removeFromParent()
               Util:scene_control("MainInterfaceScene")
               Server:Instance():getuserinfo() 
