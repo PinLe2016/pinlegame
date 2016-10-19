@@ -29,7 +29,7 @@ local ROD_B_POPINT=0--台球杆的初始高度
 local ROD_E_POPINT=130+BOLL_OFF_SET--台球杆的初始高度
 local ROD_M_TIME=0.05---台球杆的移动时间
 
-local BOLL_S_V=2000---台球的初始速度
+local BOLL_S_V=2100---台球的初始速度
 
 
 
@@ -134,12 +134,15 @@ function PhysicsScene:ctor(params)
             local node=node1
             local body=contact:getShapeA():getBody()
 
+            
+
             if tag1==255 or tag2==255 then --处理力度不够没有弹上去的情况
 
                 -- self.rod_coinBody:setGravityEnable(false)
                 dump(self.rod_spr:getPositionX())
                 self.coinSprite:setPosition(self.rod_spr:getPositionX(),ROD_B_POPINT+225-BOLL_OFF_SET)
                 self.start_bt:setTouchEnabled(true)
+                -- Util:player_music("PHYSICS",false )
                 return true
             end
             if tag1==1 then 
@@ -148,6 +151,7 @@ function PhysicsScene:ctor(params)
             end
             
             local cal= cc.CallFunc:create(function() 
+                Util:player_music("PHYSICS",false)
                 node:loadTexture("png/Physicshongqiu-xiao.png")
             end )
            local seq=transition.sequence({cc.DelayTime:create(0.3),cal})--屏幕抖动
@@ -156,7 +160,7 @@ function PhysicsScene:ctor(params)
                node:loadTexture("png/Physicshongqiu-xiao-liang.png") 
                node:runAction(seq)
            else
-
+                Util:player_music("PHYSICS",false)
                body:setGravityEnable(true)
                self.score_spr=node
            end
@@ -545,9 +549,10 @@ function PhysicsScene:onEnterFrame(dt)
 
             self:Phypop_up()
         end
+
 end
 --弹出框关闭
-function PhysicsScene:Phypop_up(  )
+function PhysicsScene:Phypop_up()
 
             self.PhysicsPop = cc.CSLoader:createNode("PhysicsPop.csb");
             self:addChild(self.PhysicsPop)
@@ -584,12 +589,50 @@ function PhysicsScene:Phypop_up(  )
             print("发送分数  ;",_score)
             Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
 
-            
 
+
+            self:play_action(score_text2)
+            self:play_action(score_text3)
+            self:play_action(score_text4)
+
+            -- score_text1:cleanup()
+            -- score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",score2+1))
+
+           
 end
 
 
+function PhysicsScene:play_action(spritt)
+    -- spritt:setOpacity(0)
+     local animation = cc.Animation:create()
+            local number,name
+            for i=1,9 do
+                number = math.random(9)
+                name = "png/Physicstaiqiu-"..number..".png"
+                animation:addSpriteFrameWithFile(name)
+            end
+
+            animation:setDelayPerUnit(0.2)
+            animation:setRestoreOriginalFrame(true)
+
+            --创建动作
+            local animate = cc.Animate:create(animation)
+
+             local spr=display.newSprite()
+             spr:setAnchorPoint(0,0)
+            spritt:addChild(spr,100)
+            -- spr:setPosition(spritt:getPositionX(), spritt:getPositionY())
+            local function logSprRotation(sender)
+                -- spritt:setOpacity(255)
+            end
 
 
+     local action = cc.Sequence:create(animate,animate:reverse(),cc.CallFunc:create(logSprRotation))
+
+            -- local action = cc.Sequence:create(animate,animate:reverse())
+
+            spr:runAction(action)
+
+end
 
 return PhysicsScene

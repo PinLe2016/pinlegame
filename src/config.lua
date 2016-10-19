@@ -27,7 +27,7 @@ CONFIG_SCREEN_AUTOSCALE = "FIXED_WIDTH"
 --传输加密Key
 MD5_KEY="PINLEGAME"
 --版本号
-PINLE_VERSION="3.2.0"
+PINLE_VERSION="3.1.0"
 
 --公共
  qqqq=0
@@ -128,6 +128,8 @@ G_SOUND={
 	PREVIEW="sound/effect/preview.mp3",
 	SETTING="sound/effect/setting.mp3",
 	WIN="sound/effect/win.mp3",
+	--弹球音效
+	PHYSICS="sound/effect/click.mp3",
 }
 
 
