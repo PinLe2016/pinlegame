@@ -192,26 +192,9 @@ function GoldprizeScene:data_init(  )
 
 end
 function GoldprizeScene:fun_selectbox( _tag )
-	self.Selectbox = cc.CSLoader:createNode("Selectbox.csb")
-            self:addChild(self.Selectbox)
 
 
-             local back=self.Selectbox:getChildByTag(145)   --返回
-       	 back:addTouchEventListener(function(sender, eventType  )
-	                 if eventType ~= ccui.TouchEventType.ended then
-	                        return
-                              end
-                              if self.Selectbox then
-                              	self.Selectbox:removeFromParent()
-                              end
-            end)
-
-       	 local pintu=self.Selectbox:getChildByTag(142)   --拼图
-       	 pintu:addTouchEventListener(function(sender, eventType  )
-	                 if eventType ~= ccui.TouchEventType.ended then
-	                        return
-	                  end
-	                  self.choose=1
+	 self.choose=1
 	                  local path=cc.FileUtils:getInstance():getWritablePath()
 	            
 		       local  list_table=LocalData:Instance():get_getgoldspoollist()
@@ -221,24 +204,53 @@ function GoldprizeScene:fun_selectbox( _tag )
 		       self.adownerid  =   jac_data[_tag]["adownerid"]
 		       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
 		       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
-            end)
+	-- self.Selectbox = cc.CSLoader:createNode("Selectbox.csb")
+ --            self:addChild(self.Selectbox)
 
 
-       	 local dadishu=self.Selectbox:getChildByTag(143)   --打地鼠
-       	 dadishu:addTouchEventListener(function(sender, eventType  )
-	                 if eventType ~= ccui.TouchEventType.ended then
-	                        return
-                              end
-                              local path=cc.FileUtils:getInstance():getWritablePath()
-                              self.choose=2
-                               local  list_table=LocalData:Instance():get_getgoldspoollist()
-		       local  jac_data=list_table["goldspools"]
-                               Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
-		       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
-		       self.adownerid  =   jac_data[_tag]["adownerid"]
-		       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
-		       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
-            end)
+ --             local back=self.Selectbox:getChildByTag(145)   --返回
+ --       	 back:addTouchEventListener(function(sender, eventType  )
+	--                  if eventType ~= ccui.TouchEventType.ended then
+	--                         return
+ --                              end
+ --                              if self.Selectbox then
+ --                              	self.Selectbox:removeFromParent()
+ --                              end
+ --            end)
+
+ --       	 local pintu=self.Selectbox:getChildByTag(142)   --拼图
+ --       	 pintu:addTouchEventListener(function(sender, eventType  )
+	--                  if eventType ~= ccui.TouchEventType.ended then
+	--                         return
+	--                   end
+	--                   self.choose=1
+	--                   local path=cc.FileUtils:getInstance():getWritablePath()
+	            
+	-- 	       local  list_table=LocalData:Instance():get_getgoldspoollist()
+	-- 	       local  jac_data=list_table["goldspools"]
+	--                    Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
+	-- 	       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
+	-- 	       self.adownerid  =   jac_data[_tag]["adownerid"]
+	-- 	       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
+	-- 	       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+ --            end)
+
+
+ --       	 local dadishu=self.Selectbox:getChildByTag(143)   --打地鼠
+ --       	 dadishu:addTouchEventListener(function(sender, eventType  )
+	--                  if eventType ~= ccui.TouchEventType.ended then
+	--                         return
+ --                              end
+ --                              local path=cc.FileUtils:getInstance():getWritablePath()
+ --                              self.choose=2
+ --                               local  list_table=LocalData:Instance():get_getgoldspoollist()
+	-- 	       local  jac_data=list_table["goldspools"]
+ --                               Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
+	-- 	       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
+	-- 	       self.adownerid  =   jac_data[_tag]["adownerid"]
+	-- 	       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
+	-- 	       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+ --            end)
 
 end
 --下载图片
