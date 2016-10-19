@@ -115,7 +115,9 @@ end
 function Server:getgoldspoolrandomgolds_callback()
       dump(self.data)
     if self.data.err_code~=0  then
-         self:show_float_message( self.data.err_msg)
+
+        self:show_float_message("" .. self.data.err_msg)
+
         return
     end
     LocalData:Instance():set_getgoldspoolrandomgolds(self.data)--保存数据

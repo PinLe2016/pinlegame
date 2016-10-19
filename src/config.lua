@@ -34,7 +34,7 @@ PINLE_VERSION="3.1.0"
  dialogdetermine=0  --弹出提示框
 
 --测试版本还是正式版本标记
-IS_RELEASE=false --false 测试版 ，true 正式版
+IS_RELEASE=true --false 测试版 ，true 正式版
 
 --四个公有文件引入
 require("app.model.Server.Server")--请求文件
@@ -128,6 +128,8 @@ G_SOUND={
 	PREVIEW="sound/effect/preview.mp3",
 	SETTING="sound/effect/setting.mp3",
 	WIN="sound/effect/win.mp3",
+	--弹球音效
+	PHYSICS="sound/effect/click.mp3",
 }
 
 

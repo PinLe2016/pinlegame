@@ -108,7 +108,7 @@ LabelAtlasTest.__index = LabelAtlasTest
 local m_time = 0
 
 function LabelAtlasTest.step()
-    dump(rand_Date)
+    -- dump(rand_Date)
     if  curr_tag1~=curr_tag then
         m_time=m_time+rand_Date["score"]
     else
@@ -247,7 +247,7 @@ local function createPlayLayer()
             end
 
             --分数累加
-            print("已经检测出碰撞  分数增加")
+            -- print("已经检测出碰撞  分数增加")
             
             LabelAtlasTest.step()
         end
@@ -337,7 +337,7 @@ function callback(dt)
                                         for i=1,#mainScene.target_table do
                                             -- print("----",sender:getTag(),mainScene.target_table[i].target:getTag())
                                             if mainScene.target_table[i].target and sender:getTag()==mainScene.target_table[i].target:getTag() then
-                                                dump(sender:getTag())
+                                                -- dump(sender:getTag())
                                                   mainScene.target_table[i]["target"]=nil
                                                   mainScene.target_table[i]["_randdate"]=nil
                                                   if curr_tag==sender:getTag() then
@@ -497,9 +497,9 @@ cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
 
      self:refresh_table()
 
-    --添加精灵动画层到场景
+    -- --添加精灵动画层到场景
     mainScene:addChild(createPlayLayer())
-    -- --添加分数层到场景
+    -- -- --添加分数层到场景
     mainScene:addChild(createScoreLayer())
 
    
