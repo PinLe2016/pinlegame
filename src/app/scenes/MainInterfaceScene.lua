@@ -45,6 +45,7 @@ function MainInterfaceScene:ctor()
        self:listener_home() --注册安卓返回键
        Server:Instance():getaffichelist(1)
       Server:Instance():gettasklist()   --  初始化任务
+
                --手机归属请求
        Server:Instance():getusercitybyphone()--手机归属
         self:fun_init()
@@ -461,6 +462,7 @@ function MainInterfaceScene:fun_checkin( tm )
          self.checkinlayer:removeFromParent()
              self.checkinlayer=nil
              Server:Instance():gettasklist()   --目的是刷新任务数据
+
 	       
 	end)
 	local check_bt=self.checkinlayer:getChildByTag(87)
@@ -496,6 +498,7 @@ function MainInterfaceScene:init_checkin(  )
             local  totaydays=checkindata["totaldays"]
             local check_data=self.checkinlayer:getChildByTag(40)
             self.check_biaoji=self.checkinlayer:getChildByTag(39)
+
              --check_data:loadTexture(string.format("png/qiandao_%d.png", totaydays))
             local  _table={}
             local  _biaojitable={}
@@ -549,7 +552,9 @@ function MainInterfaceScene:init_checkin(  )
             local tm = os.date("*t")
             if tm.day ==tonumber(os.date("%d",days[1])) then   --  获取系统时间
                 self.check_button:setVisible(false)
+
                 self.check_biaoji:setVisible(true)
+
                 return
             else
                self.check_button:setVisible(true)
@@ -558,11 +563,15 @@ end
 function MainInterfaceScene:onEnter()
   --audio.playMusic(G_SOUND["ACTIVITY"],true)
   Util:player_music("ACTIVITY",true )
+  Server:Instance():getuserinfo()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
+                        Server:Instance():getuserinfo() -- 初始化数据
                         self:fun_checkin(2)--签到后
                        self.check_button:setVisible(false)
+
                        self.check_biaoji:setVisible(true)
+
                         self:userdata()
                        
 

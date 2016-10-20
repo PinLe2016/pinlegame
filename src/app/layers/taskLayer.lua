@@ -25,17 +25,20 @@ end
 
 
 function taskLayer:init(  )
-         self.fragment_sprite =cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-          self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-        self:addChild(self.fragment_sprite)
 
-        LocalData:Instance():set_sign(2)
-        self.taskLayer = cc.CSLoader:createNode("taskLayer.csb")
-        self:addChild(self.taskLayer)
+        if not self.taskLayer then
+            self.fragment_sprite =cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+            self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+            self:addChild(self.fragment_sprite)
 
-        self:move_layer(self.taskLayer)
+            LocalData:Instance():set_sign(2)
+            self.taskLayer = cc.CSLoader:createNode("taskLayer.csb")
+            self:addChild(self.taskLayer)
 
-         local back_bt=self.taskLayer:getChildByTag(141)  --返回
+            self:move_layer(self.taskLayer)
+
+
+            local back_bt=self.taskLayer:getChildByTag(141)  --返回
             back_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
@@ -49,6 +52,12 @@ function taskLayer:init(  )
                                  return
                       end
              end))          
+          else
+            self.task_list:removeAllItems()
+        end
+        
+
+         
 
             self:data_init()  --测试
 end
@@ -233,6 +242,7 @@ function taskLayer:touch_Callback( sender, eventType )
 
       elseif  tonumber(targettype) == 4 then
              --Util:scene_control("GoldprizeScene")
+             print("--------e---")
              local GoldprizeScene = require("app.scenes.GoldprizeScene")--主界面
               local scene=GoldprizeScene.new()
             cc.Director:getInstance():pushScene(scene)

@@ -32,7 +32,7 @@ function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
    --        return
    --  end
     self.dialog = cc.CSLoader:createNode("Dialog.csb");
-    self:addChild(self.dialog,20)
+    self:addChild(self.dialog,20,20)
     dialogtext = self.dialog:getChildByTag(44)
     dialogtext:setString(dialogtextString)
 
@@ -90,9 +90,10 @@ function FloatingLayer:touch_callback( sender, eventType )
               self.call(self,2)
               -- return
             end
-             if  self.dialog then
-                 self.dialog:removeFromParent()
-             end
+            self:removeChildByTag(20)
+             -- if  self.dialog then
+             --     self.dialog:removeFromParent()
+             -- end
               if tostring(LocalData:Instance():get_back()) == "1" then
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TFEDBACK)
             end
