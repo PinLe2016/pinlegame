@@ -82,6 +82,18 @@ function DetailsLayer:init(  )
 	local integral_text=details:getChildByTag(40)
 	integral_text:setString(activitybyid["mypoints"])
 
+	local integral_text1=details:getChildByTag(1187)--  金币数
+	integral_text1:setString(activitybyid["betgolds"]    ..   "金币/次")  
+
+	local integral_text2=details:getChildByTag(1188)  --   剩余次数
+	if tonumber(activitybyid["remaintimes"]) < 0 then
+		integral_text2:setString("/")
+	else
+		integral_text2:setString("剩余次数:"   ..   activitybyid["remaintimes"]  )
+	end
+	
+
+
 	local rank_text=details:getChildByTag(41)
 	rank_text:setString(activitybyid["myrank"])
 

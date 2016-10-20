@@ -46,6 +46,7 @@ end
 
 
 function Server:getactivitybyid_callback()
+    dump(self.data)
     if self.data.err_code==0  then
             LocalData:Instance():set_getactivitybyid(self.data)--保存数据
             if self.cycle  == 0 then

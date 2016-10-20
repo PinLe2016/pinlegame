@@ -139,6 +139,7 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               elseif  tag==764 then
               	Server:Instance():validateactivitycode(self. _sing:getString())
               	if self.ActivitycodeLayer then
+                  self.fragment_sprite:removeFromParent()
               	     self.ActivitycodeLayer:removeFromParent()
               	end
               elseif tag==916 then
