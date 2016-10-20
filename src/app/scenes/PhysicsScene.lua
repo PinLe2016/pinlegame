@@ -595,6 +595,12 @@ function PhysicsScene:Phypop_up()
             self:play_action(score_text3)
             self:play_action(score_text4)
 
+             if  LocalData:Instance():get_tasktable()    then   --  判断惊喜吧是否做完任务
+                       Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                       LocalData:Instance():set_tasktable(nil)--制空
+            end
+            
+
             -- score_text1:cleanup()
             -- score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",score2+1))
 
