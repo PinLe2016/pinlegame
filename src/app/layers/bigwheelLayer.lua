@@ -166,6 +166,9 @@ function bigwheelLayer:init(  )
        _back:setVisible(false)
 	     local _advertiImg=self.bigwheelLayer:getChildByTag(128)  --  上面广告图
 	      _advertiImg:loadTexture( self.image_name) 
+        local  list_table=LocalData:Instance():get_getgoldspoolbyid()
+        local _title=self.bigwheelLayer:getChildByTag(133)  --  上面广告图
+        _title:setString(tostring(list_table["title"]))
 
 	     local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                  local  jaclayer_data=list_table["adlist"]

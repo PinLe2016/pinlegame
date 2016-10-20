@@ -302,6 +302,7 @@ function GameScene:fun_countdown( )
 end
 
 function GameScene:tupian(  )
+
                  local _back=self.countdownLayer:getChildByTag(587)  --返回键
                    _back:setVisible(false)
                    local path=cc.FileUtils:getInstance():getWritablePath()
