@@ -199,7 +199,7 @@ function PerInformationLayer:fun_mail(  )
 --新增的邮件box控件
     local res = " "--res/png/gerenxinxi-shang-1.png"
     local width = 300
-    local height = 40
+    local height = 30
     
     self.name_text_mail = ccui.EditBox:create(cc.size(width,height),res)
     em_bg:addChild(self.name_text_mail)
@@ -425,12 +425,12 @@ end
 
 function PerInformationLayer:init(  )
        
-       self.fragment_sprite1  = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-         self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-         self:addChild(self.fragment_sprite1)
+       -- self.fragment_sprite1  = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+       --   self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+       --   self:addChild(self.fragment_sprite1)
        self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
        self:addChild(self.Perinformation)
-       self:move_layer(self.Perinformation)
+       --self:move_layer(self.Perinformation)
 
         self.birthday_bt=self.Perinformation:getChildByTag(26):getChildByTag(245)
         self.birthday_bt:addTouchEventListener(function(sender, eventType  )
@@ -521,7 +521,7 @@ function PerInformationLayer:perinformation_init(  )
         self.Dphone_text:setVisible(false)
         local res = " "--res/png/DLkuang.png
         local width = 265
-        local height = 30
+        local height = 45
         --登陆
         self._Pname = ccui.EditBox:create(cc.size(width,height),res)
         self._Pname:setPlaceholderFontColor(cc.c3b(234,82,30))
@@ -653,7 +653,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
     elseif tag==97 then 
                  if self.Perinformation then
                     self._Pname=nil
-                     self.fragment_sprite1:setVisible(false)
+                     --self.fragment_sprite1:setVisible(false)
                        self.Perinformation:removeFromParent()
                        
 
@@ -810,12 +810,12 @@ function PerInformationLayer:savedata( )
             local  gender="true"  --默认无
             if self.genderman:isSelected() then
                 gender="true"
-                self.genderman1="男"
+                self.genderman1:setString("男")
             elseif self.gendergirl:isSelected() then
                 gender="false"
-                self.genderman1="女"
+                self.genderman1:setString("女")
             end
-           self.genderman1="  "
+           --self.genderman1="  "
            if  self._provincename:getString() == "" then
                Server:Instance():show_float_message("请完善城市信息")
                return

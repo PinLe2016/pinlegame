@@ -137,7 +137,7 @@ function taskLayer:data_init(  )
                   title:setAnchorPoint(cc.p(0,0.5))
                   crn:addChild(title)
                   title:setFontSize(23)
-                  title:setColor(cc.c3b(255, 255, 255))
+                  title:setColor(cc.c3b(48, 133, 205))
                   title:setString(tasklist[i]["description"])
 
                         --描述动画

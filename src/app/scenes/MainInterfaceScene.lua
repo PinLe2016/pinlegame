@@ -254,9 +254,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:addChild(taskLayer.new())
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
-            if self.fragment_sprite1 then
-              self.fragment_sprite1:removeFromParent()
-            end
+            
+              self.set_Xbg:setVisible(false)
+          
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友  291
         local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
@@ -342,12 +342,17 @@ end
 function MainInterfaceScene:funsetup(  )
         -- self.set_bg=self.MainInterfaceScene:getChildByTag(88)
         -- self.set_bg:setVisible(true)
-        self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-        self:addChild(self.fragment_sprite1)
-        self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png")
-         self.fragment_sprite1:getChildByTag(135):setTouchEnabled(false) 
-
+        
         self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
+        self.set_Xbg=self.MainInterfaceScene:getChildByTag(563)
+        self.set_Xbg:setVisible(true)
+        -- self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        -- self:addChild(self.fragment_sprite1)
+        -- self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png")
+        --  self.fragment_sprite1:getChildByTag(135):setTouchEnabled(false) 
+
+
+
           self:move_layer(self.set_bg1)
         self.set_bg1:setVisible(true)
         local set_back=self.set_bg1:getChildByTag(91)
@@ -416,10 +421,9 @@ end
 function MainInterfaceScene:fun_checkin( tm )
 
       if not self.checkinlayer then   --GRzhezhaoceng
-         self.fragment_sprite = display.newSprite("png/GRzhezhaoceng.png")
-         self.fragment_sprite:setPosition(display.width/2, display.height/2)
-         self.fragment_sprite:setTouchEnabled(true)
-         self:addChild(self.fragment_sprite)
+         self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self:addChild(self.fragment_sprite)
+        self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
          self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
          self:addChild(self.checkinlayer)
          self.checkinlayer:setVisible(true)
@@ -491,7 +495,7 @@ function MainInterfaceScene:init_checkin(  )
 
             local  totaydays=checkindata["totaldays"]
             local check_data=self.checkinlayer:getChildByTag(40)
-            local check_biaoji=self.checkinlayer:getChildByTag(39)
+            self.check_biaoji=self.checkinlayer:getChildByTag(39)
              --check_data:loadTexture(string.format("png/qiandao_%d.png", totaydays))
             local  _table={}
             local  _biaojitable={}
@@ -513,6 +517,7 @@ function MainInterfaceScene:init_checkin(  )
         		 local _bg=day_bg:clone()
         		 local  day_text=_bg:getChildByTag(86)
                    local biaoji=_bg:getChildByTag(484)
+                   biaoji:setVisible(false)
                          day_text:setString( math.ceil(totaydays/7-1)*7+i)
                          _table[math.ceil(totaydays/7-1)*7+i]=day_text
                          _biaojitable[math.ceil(totaydays/7-1)*7+i]=biaoji
@@ -536,7 +541,7 @@ function MainInterfaceScene:init_checkin(  )
                                 _biaojitable[i]:loadTexture("res/png/Qprize.png")
                               end
             			_table[i]:setColor(cc.c3b(62, 165, 216))
-                              --_biaojitable[i]:setVisible(true)
+                              _biaojitable[i]:setVisible(true)
             		end
             	end
             end
@@ -544,7 +549,7 @@ function MainInterfaceScene:init_checkin(  )
             local tm = os.date("*t")
             if tm.day ==tonumber(os.date("%d",days[1])) then   --  获取系统时间
                 self.check_button:setVisible(false)
-                check_biaoji:setVisible(true)
+                self.check_biaoji:setVisible(true)
                 return
             else
                self.check_button:setVisible(true)
@@ -557,7 +562,7 @@ function MainInterfaceScene:onEnter()
                        function()
                         self:fun_checkin(2)--签到后
                        self.check_button:setVisible(false)
-                       check_biaoji:setVisible(true)
+                       self.check_biaoji:setVisible(true)
                         self:userdata()
                        
 

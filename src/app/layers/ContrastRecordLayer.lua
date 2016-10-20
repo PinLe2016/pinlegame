@@ -19,6 +19,7 @@ function ContrastRecordLayer:ctor(params)
        print("dsfdsfdsfdsg  ",self.id,"   ",self.heroid)
        Server:Instance():getactivitypointsdetail(self.id,self.heroid)  --对比排行榜HTTP
        self:setNodeEventEnabled(true)--layer添加监听
+       self.leve_instructions={"伯爵","大公","公爵","国王","侯爵","男爵","平民","亲王","骑士","王储","勋爵","子爵",}
        --Server:Instance():getactivitybyid(self.id,1)
        
 end
@@ -52,13 +53,20 @@ function ContrastRecordLayer:init(  )
       title_text:setString(self.title)
 
       local level_text=self.ContrastRecordLayer:getChildByTag(105)--等级
-      level_text:setString(userdt["grade"])
+      level_text:setString(self.allscore)--(userdt["grade"])
+
+       local level_image=self.ContrastRecordLayer:getChildByTag(98):getChildByTag(972)--等级
+       for j=1,#self.leve_instructions do
+              if self.leve_instructions[j]  == tostring(self.level)  then
+                 level_image:loadTexture(string.format("png/dengji_%d.png", j))
+              end
+       end
 
       local name_text=self.ContrastRecordLayer:getChildByTag(106)--名称  rankname
-      name_text:setString(userdt["nickname"])
+      name_text:setString(self.name)--(userdt["nickname"])
 
       local rank_text=self.ContrastRecordLayer:getChildByTag(107)--排名
-      rank_text:setString(activitybyid["myrank"])
+      rank_text:setString(self.rank)--(activitybyid["myrank"])
 
       local dengji_text=self.ContrastRecordLayer:getChildByTag(101)--等级
       dengji_text:setString(userdt["rankname"])
