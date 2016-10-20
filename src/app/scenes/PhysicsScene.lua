@@ -587,7 +587,7 @@ function PhysicsScene:Phypop_up()
             --给后端发送请求  保存数据
             local  _score=  self._score1 ..   score4  ..   score2  ..   score3 
             print("发送分数  ;",_score)
-            Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
+            
 
 
 
@@ -599,11 +599,19 @@ function PhysicsScene:Phypop_up()
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                        LocalData:Instance():set_tasktable(nil)--制空
             end
-            
+
+
+           
 
             -- score_text1:cleanup()
             -- score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",score2+1))
+            local function logSprRotation(sender)
+                 Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
+            end
 
+            local action = cc.Sequence:create(cc.DelayTime:create(3.6),cc.CallFunc:create(logSprRotation))
+            self:runAction(action)
+     
            
 end
 
