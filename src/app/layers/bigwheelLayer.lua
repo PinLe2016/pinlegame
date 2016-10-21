@@ -258,12 +258,14 @@ function bigwheelLayer:try_again()
     self.floating_layer:showFloat("再来一局？",function (sender, eventType)
                                   if eventType==1 then
 
-
+                                          IF_VOER=false
                                           local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-                                          dump(_tablegods)
-                                          if  tonumber(_tablegods["getcardamount"] )== 0 then
+                                          -- dump(_tablegods)
+                                          dump(_tablegods["getcardamount"])
+                                          if  tonumber(_tablegods["getcardamount"])== 0 then
+                                            
                                               LocalData:Instance():set_user_pintu("1")
-                                              self.floating_layer:show_http("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
+                                              self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
 
                                               return
 
@@ -271,7 +273,7 @@ function bigwheelLayer:try_again()
 
                                           GameScene = require("app.scenes.GameScene")--惊喜吧
                                           local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
-                                          cc.Director:getInstance():pushScene(scene)
+                                          cc.Director:getInstance():replaceScene(scene)
                                           LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                                           -- self.end_bt:setVisible(true)
                                   end
