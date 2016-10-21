@@ -44,7 +44,8 @@ function GameScene:ctor(params)
 
       if self.type=="daojishi" then
          self.countdownLayer = cc.CSLoader:createNode("countdownLayer.csb")
-         self:addChild(self.countdownLayer)
+         self:addChild(self.countdownLayer) 
+        --Util:scene_controlid("PhysicsScene",{id=self.adid,cycle=self.cycle,heroid=self.heroid,phyimage=self.phyimage})  -- 10-21
       else
       local csb = cc.CSLoader:createNode("XSHGameScene.csb")
       self._csb=csb
@@ -350,7 +351,7 @@ function GameScene:onEnter()
        --self:funinit()
        Server:Instance():getgoldspooladlist(self.adid)  --记住一会把消息改成上面的   
     elseif self.type=="daojishi" then
-      Server:Instance():getactivityadlist(self.adid)--发送请求
+      Server:Instance():getactivityadlist(self.adid)--发送请求   10-21
      end
     
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
@@ -367,7 +368,8 @@ function GameScene:onEnter()
                            if self.type=="surprise"  or  self.type=="audition"   then
                                 self:funinit()
                             elseif self.type=="daojishi" then
-                                 self:tupian(  )
+                                 self:tupian(  )   --  10-21
+                                 
                            end
                       end)
       NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS, self,

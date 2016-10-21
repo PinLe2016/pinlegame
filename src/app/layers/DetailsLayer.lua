@@ -51,8 +51,12 @@ function DetailsLayer:init(  )
 		     	return
 		     end
 		     -- Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
-		       local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=0,heroid=0,phyimage=self.image})  --daojishi
-                      	       cc.Director:getInstance():pushScene(scene)
+		       -- local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=0,heroid=0,phyimage=self.image})  --daojishi
+         --              	       cc.Director:getInstance():pushScene(scene)
+         		        local PhysicsScene = require("app.scenes.PhysicsScene")
+         		        Server:Instance():getactivityadlist(self.id)
+         		        local scene=PhysicsScene.new({id=self.id,cycle=0,heroid=0,phyimage=self.image})
+                      	        cc.Director:getInstance():pushScene(scene)
 		      --Util:scene_control("SurpriseOverScene")
 		      
 		end

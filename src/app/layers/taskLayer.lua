@@ -138,7 +138,7 @@ function taskLayer:data_init(  )
                  
 
                   local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,190,25))
-                  crn:setPosition(cc.p(143,65))
+                  crn:setPosition(cc.p(140,65))
                   title_bg:addChild(crn)
 
                   local title = ccui.Text:create()

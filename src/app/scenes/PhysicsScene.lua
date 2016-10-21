@@ -57,6 +57,7 @@ end
 
 
 function PhysicsScene:ctor(params)
+        dump(params)
         self.heroid=params.heroid
         self.cycle=params.cycle
         self.id=params.id
@@ -551,6 +552,36 @@ function PhysicsScene:onEnterFrame(dt)
         end
 
 end
+function PhysicsScene:fun_countdown( )
+      self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self:countdown()
+              end,1.0, false)
+end
+ function PhysicsScene:countdown()
+           self._time=self._time-1
+           self._dajishi:setString(tostring(self._time))
+           if self._time<0 then
+               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
+               self.phy_bg:removeFromParent()
+               self.PhysicsPop:removeFromParent()
+                if tonumber(self.cycle)   ~=  -1 then
+                            local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
+                             local activitypoints = LocalData:Instance():get_getactivitypoints()
+                              local userdt = LocalData:Instance():get_userdata()
+                             if activitypoints["golds"]  then
+                                 userdt["golds"]=activitypoints["golds"]
+                             end
+                            LocalData:Instance():set_userdata(userdt)
+                            Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                            cc.Director:getInstance():popScene()
+                            Server:Instance():getactivitybyid(self.id,self.cycle)
+                    return
+                end
+                Server:Instance():getactivitybyid(self.id,0)
+                cc.Director:getInstance():popScene()
+
+           end
+end
 --弹出框关闭
 function PhysicsScene:Phypop_up()
 
@@ -586,7 +617,10 @@ function PhysicsScene:Phypop_up()
             score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", score4))
             --给后端发送请求  保存数据
             local  _score=  self._score1 ..   score4  ..   score2  ..   score3 
-            print("发送分数  ;",_score)
+            self._dajishi=self.PhysicsPop:getChildByTag(192)
+            self._dajishi:setString("5")  --于是乎自己就决定了
+            self._time=5
+            self:fun_countdown( )
             
 
 
@@ -626,7 +660,7 @@ function PhysicsScene:play_action(spritt)
                 animation:addSpriteFrameWithFile(name)
             end
 
-            animation:setDelayPerUnit(0.2)
+            animation:setDelayPerUnit(0.3)
             animation:setRestoreOriginalFrame(true)
 
             --创建动作

@@ -49,6 +49,7 @@ function bigwheelLayer:ctor(params)
 	self.gridAngle=360/self.gridNumer   --   每个格子的度数
 	self.adid=params.id
 	self.count=0
+      self.CheckBox_volume=0
 
 	 if params.image_name then
                 self.image_name=params.image_name
@@ -65,14 +66,17 @@ function bigwheelLayer:ctor(params)
             self:addChild(self.bigwheelLayer)
             self.roleAction = cc.CSLoader:createTimeline("bigwheelLayer.csb")
             self.bigwheelLayer:runAction(self.roleAction)
-            self.roleAction:setTimeSpeed(7)
+            self.roleAction:setTimeSpeed(1)
             self.roleAction:gotoFrameAndPlay(0,120, true)
            
           	--风叶
           	self._blades=self.bigwheelLayer:getChildByTag(41):getChildByTag(48)
           	--选中
           	self._selected=self.bigwheelLayer:getChildByTag(46)
+            self._selected:setVisible(false)
 
+            self._Instead=self.bigwheelLayer:getChildByTag(99)
+            self._Instead:setVisible(false)
             -- 灯
             self._lamp=self.bigwheelLayer:getChildByTag(41):getChildByTag(43)  
             self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
@@ -155,6 +159,25 @@ function bigwheelLayer:init(  )
 	
 	    --添加转盘
 	    m_turnBg = self.bigwheelLayer:getChildByTag(41) --cc.Sprite:create("LotteryTurn/turn_bg.png");
+          self.caideng = m_turnBg:getChildByTag(33)
+          self.caideng:setVisible(false)
+
+           local  list_table=LocalData:Instance():get_getgoldspoolbyid()
+          self.volume_num = self.bigwheelLayer:getChildByTag(36)  --  翻倍卡
+          self.volume_num:setString(list_table["doublecardamount"] )
+
+          self.CheckBox = self.bigwheelLayer:getChildByTag(34)  --  卷
+          self.CheckBox:addEventListener(function(sender, eventType  )
+               if eventType == ccui.CheckBoxEventType.selected then
+                     
+               elseif eventType == ccui.CheckBoxEventType.unselected then
+                       if tonumber(self.volume_num:getString()) <=0 then
+                            self.floating_layer:show_http("您的翻倍卡不够") 
+                       end
+               end
+            end)
+
+
 	    self.m_turnArr = self.bigwheelLayer:getChildByTag(44)
 	    self.m_turnArr:addTouchEventListener(function(sender, eventType  )
 	          self:touch_callback(sender, eventType)
@@ -166,7 +189,7 @@ function bigwheelLayer:init(  )
        _back:setVisible(false)
 	     local _advertiImg=self.bigwheelLayer:getChildByTag(128)  --  上面广告图
 	      _advertiImg:loadTexture( self.image_name) 
-        local  list_table=LocalData:Instance():get_getgoldspoolbyid()
+       -- local  list_table=LocalData:Instance():get_getgoldspoolbyid()
         local _title=self.bigwheelLayer:getChildByTag(133)  --  上面广告图
         _title:setString(tostring(list_table["title"]))
 
@@ -196,17 +219,24 @@ function bigwheelLayer:init(  )
 
 end
 function bigwheelLayer:fun_began(  )
+
+
+        self.caideng:setVisible(true)
 	  local function CallFucnCallback3(sender)
+    self.roleAction:setTimeSpeed(0.5)
+                      self.caideng:setVisible(false)
                        self.m_turnArr:setEnabled(true);
                        self._blades:setVisible(false)
                        self._selected:setVisible(true)
                        self.bigwheelLayer:getChildByTag(130):setVisible(true)
+                       self._Instead:setVisible(true)
 
                end
-               --self.roleAction:gotoFrameAndPlay(0,120, true)  --   风页转动
+             
                self._blades:setVisible(true)
                self._selected:setVisible(false)
-	 -- self.x_rand=math.random(1,self.gridNumer)
+               self._Instead:setVisible(false)
+	 -- self.x_rand=math.random(1,self.gridNumer)  --测试
 	    
 	     table.insert(self.fragment_table,{_shuzi = self.x_rand})
 	    -- kk.push_back(x_rand);
@@ -225,9 +255,10 @@ function bigwheelLayer:fun_began(  )
 	    end
 	    --print("需要几111   ",self.x_rand);
 	    self._rand= (self.x_rand  *  self.gridAngle   ) ;-- +rand() % 60;
-	    local  angleZ = self._rand + 720;  --// +
-	    local  pAction = cc.EaseExponentialOut:create(cc.RotateBy:create(4,angleZ));
-	    m_turnBg:runAction(cc.Sequence:create(pAction,cc.CallFunc:create(CallFucnCallback3)))
+	    local  angleZ = self._rand + 720;  --// +EaseExponentialIn
+          local  pAction1 = cc.EaseExponentialOut:create(cc.RotateBy:create(8,720+angleZ))
+	    -- local  pAction = cc.EaseExponentialOut:create(cc.RotateBy:create(2,angleZ));
+	    m_turnBg:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
 end
 function bigwheelLayer:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
@@ -240,7 +271,13 @@ function bigwheelLayer:touch_callback( sender, eventType )
         return 
       end
       IF_VOER=true
-	   Server:Instance():getgoldspoolrandomgolds(self.adid,0)  --  转盘随机数
+         if self.CheckBox:isSelected() then   --选中是关  
+             self.CheckBox_volume=0
+        else
+            self.CheckBox_volume=1
+            self.volume_num:setString(tostring(self.volume_num:getString()-1))
+         end
+	   Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume)  --  转盘随机数
         if LocalData:Instance():get_tasktable() then
              Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
 	     end
