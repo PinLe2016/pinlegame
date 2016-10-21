@@ -386,12 +386,12 @@ function GameScene:onEnter()
                               --  cc.Director:getInstance():pushScene(jackpotlayer)   --  奖池详情  我们就是硬生生的把一个layer 变成 scene  
 
                                 local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
-                               cc.Director:getInstance():pushScene(bigwheelLayer) 
+                               cc.Director:getInstance():replaceScene(bigwheelLayer) 
 
                                
                         elseif self.choose==2 then
                                 local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
-                               cc.Director:getInstance():pushScene(bigwheelLayer) 
+                               cc.Director:getInstance():replaceScene(bigwheelLayer) 
                         end
                        
                         
