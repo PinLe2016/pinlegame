@@ -51,7 +51,7 @@ end
 function LocalData:get_music()
 	-- cc.UserDefault:getInstance():removeFile("music")
 	local _music=cc.UserDefault:getInstance():getBoolForKey("music",true)
-	dump(_music)
+	-- dump(_music)
 	return _music 
 end
 --注册验证码

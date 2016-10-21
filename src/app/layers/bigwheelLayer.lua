@@ -277,7 +277,17 @@ function bigwheelLayer:touch_callback( sender, eventType )
             self.CheckBox_volume=1
             self.volume_num:setString(tostring(self.volume_num:getString()-1))
          end
-	   Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume)  --  转盘随机数
+	     Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume)  --  转盘随机数
+        local _table=LocalData:Instance():get_gettasklist()
+        local tasklist=_table["tasklist"]
+         for i=1,#tasklist  do 
+               if  tonumber(tasklist[i]["targettype"])   ==  4   then
+                    LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+               end
+               
+         end
+
+
         if LocalData:Instance():get_tasktable() then
              Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
 	     end
@@ -302,7 +312,15 @@ function bigwheelLayer:try_again()
                                           if  tonumber(_tablegods["getcardamount"])== 0 then
                                             
                                               LocalData:Instance():set_user_pintu("1")
-                                              self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
+                                              self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分",function (sender, eventType)
+                                                if eventType==1 then
+                                                       GameScene = require("app.scenes.GameScene")--惊喜吧
+                                                      local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
+                                                      cc.Director:getInstance():replaceScene(scene)
+                                                      LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+                                                end
+                                              end)  
+                                              -- self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
 
                                               return
 

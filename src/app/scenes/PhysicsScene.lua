@@ -629,6 +629,15 @@ function PhysicsScene:Phypop_up()
             self:play_action(score_text3)
             self:play_action(score_text4)
 
+             local _table=LocalData:Instance():get_gettasklist()
+            local tasklist=_table["tasklist"]
+           for i=1,#tasklist  do 
+                 if  tonumber(tasklist[i]["targettype"])   ==  3   then
+                      LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+                 end
+                 
+           end
+           
              if  LocalData:Instance():get_tasktable()    then   --  判断惊喜吧是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                        LocalData:Instance():set_tasktable(nil)--制空
