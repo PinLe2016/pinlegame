@@ -155,7 +155,7 @@ function Server:getaffichelist (_pageno)
 end
 
 function Server:getaffichelist_callback()
-    -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取邮件信息:" .. self.data.err_msg)
         return

@@ -43,12 +43,13 @@ function MainInterfaceScene:ctor()
 
        
        self:listener_home() --注册安卓返回键
-       Server:Instance():getaffichelist(1)
+      
       Server:Instance():gettasklist()   --  初始化任务
 
                --手机归属请求
        Server:Instance():getusercitybyphone()--手机归属
         self:fun_init()
+         Server:Instance():getaffichelist(1)
         --self:extend12()
 
 end
@@ -593,19 +594,22 @@ function MainInterfaceScene:onEnter()
                        function()
                        self:fun_checkin(1)  --签到
                       end)
-   
+
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
                        function() 
                                 print("邮件按钮")                   
-                               self.biao_ji:setVisible(false) 
+                               --self.biao_ji:setVisible(false) 
                                local affiche=LocalData:Instance():get_getaffiche()
                                 local affichelist=affiche["affichelist"]
                                 dump(affiche)
                                 if #affichelist==0 then
                                    return
                                 end
-                                for i=1,#affichelist do        
+                                print("邮件按钮111") 
+                                for i=1,#affichelist do   
+                                print("邮件按钮22222")      
                                    if tonumber(affichelist[i]["isread"]) == 0   then  --1已读  0未读 
+                                    print("邮件按钮3333") 
                                                  self.biao_ji:setVisible(true)
                                                 return
                                      end
