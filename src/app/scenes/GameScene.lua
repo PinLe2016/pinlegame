@@ -107,7 +107,7 @@ function GameScene:funinit(  )
                         if self.choose==1 then  --  1  拼图   2   打地鼠
                               -- print("你猜",self.adid)
                                   local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
-                                 ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})   --self.adid
+                                 ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,pintuid=self.adid})   --self.adid
                                   self._csb:addChild(deblayer)
                         elseif self.choose==2  then
                                    self._csb:setVisible(false)

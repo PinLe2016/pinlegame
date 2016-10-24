@@ -18,8 +18,8 @@ function mailLayer:ctor()
 
          self:setNodeEventEnabled(true)--layer添加监听
          self.sur_pageno=1
-         Server:Instance():getaffichelist(self.sur_pageno)
           LocalData:Instance():set_getaffiche(nil)
+         Server:Instance():getaffichelist(self.sur_pageno) 
           self.tablecout  =  0  
           self.sup_data_num =0 
 
@@ -67,6 +67,7 @@ end
 function mailLayer:init(  )
   print("fadsjfhdsjfhdshf dsfjksafkjds ")
 	local affiche=LocalData:Instance():get_getaffiche()
+  dump(affiche)
 	local affichelist=affiche["affichelist"]
 	-- self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
  --            self:addChild(self.mailLayer)

@@ -29,7 +29,10 @@ function debrisLayer:ctor(params)
         if params.adownerid then
           self.adownerid=params.adownerid
           self.goldspoolcount=params.goldspoolcount
-        end
+        end  
+           if params.pintuid then
+          self.pintuid=params.pintuid 
+        end  
        
         
 
@@ -325,16 +328,16 @@ function debrisLayer:add_reward( )
              return
          end
           local goldspool=_table["goldspool"]
-         -- if tonumber(goldspool["coolingtime"]) ==  -1 then
-         --       jique:setVisible(false)
-         --       jinyan:setVisible(true)
-         -- else
+         if tonumber(goldspool["coolingtime"]) ==  -1 then
+               jique:setVisible(false)
+               jinyan:setVisible(true)
+         else
                -- jique:setVisible(true)
                -- jinyan:setVisible(false)
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
                --Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
 
-         -- end
+         end
 end
 
 
@@ -367,11 +370,17 @@ function debrisLayer:touch_callback( sender, eventType )
           
        elseif tag==107 then   --再来一局
         --Server:Instance():setgamerecord(self.adid) 
-         local _table=LocalData:Instance():get_actid()--保存数
-         local scene=GameScene.new({adid=self.adid,type="audition",image= ""})
-          local scene=GameScene.new({adid= LocalData:Instance():get_user_oid(),type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
-         cc.Director:getInstance():popScene()
-         cc.Director:getInstance():pushScene(scene)
+         -- local _table=LocalData:Instance():get_actid()--保存数
+         -- local scene=GameScene.new({adid=self.adid,type="audition",image= ""})
+         --  local scene=GameScene.new({adid= LocalData:Instance():get_user_oid(),type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+         -- cc.Director:getInstance():popScene()
+         -- cc.Director:getInstance():pushScene(scene)
+--Util:scene_controlid("GameScene",{adid= self.adid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})
+
+         GameScene = require("app.scenes.GameScene")--惊喜吧
+          local scene=GameScene.new({adid=self.pintuid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
+          cc.Director:getInstance():replaceScene(scene)
+          LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
              
      end
 
