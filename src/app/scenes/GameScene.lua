@@ -337,10 +337,6 @@ function GameScene:imgurl_download(  )
          local imgurl=list_table[1]["imgurl"]
           _table["imgurl"]=list_table[1]["imgurl"]
           Server:Instance():actrequest_pic(imgurl,_table) --下载图片
-
-    
-
-
 end
 function GameScene:onEnter()
      --audio.playMusic(G_SOUND["MENUMUSIC"],true)

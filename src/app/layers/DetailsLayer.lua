@@ -235,16 +235,44 @@ function DetailsLayer:guizelayer(  )
 	end)
 
 end
+function DetailsLayer:imgurl_download(  )
+        if self.type=="audition" then
+           local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+          local  jaclayer_data=list_table["adlist"]
+          for i=1,#jaclayer_data do
+              local _table={}
+              _table["imgurl"]=jaclayer_data[i]["imgurl"]
+                _table["max_pic_idx"]=#jaclayer_data
+                _table["curr_pic_idx"]=i
+                 Server:Instance():actrequest_pic(jaclayer_data[i]["imgurl"],_table) --下载图片
+          end
+          return
+        end
+
+         local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+         local _table={}
+         local imgurl=list_table[1]["imgurl"]
+          _table["imgurl"]=list_table[1]["imgurl"]
+          Server:Instance():actrequest_pic(imgurl,_table) --下载图片
+end
+
 function DetailsLayer:onEnter()
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
                        		print("详情")
                       		 self:init()--活动详情初始化
                       end)
+	  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self,
+                       function()
+                            self:imgurl_download()
+
+                      end)
+
 end
 
 function DetailsLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
+     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self)
 end
 
 return DetailsLayer

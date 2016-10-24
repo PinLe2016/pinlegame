@@ -600,6 +600,7 @@ function PhysicsScene:Phypop_up()
 
             local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
             self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
+            print("是什么图片",self._imagetu)
             local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
             local advert =self.PhysicsPop:getChildByTag(165)  --  广告
             advert:loadTexture(path..self._imagetu)

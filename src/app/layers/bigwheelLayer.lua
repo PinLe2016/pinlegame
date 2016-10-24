@@ -66,8 +66,8 @@ function bigwheelLayer:ctor(params)
             self:addChild(self.bigwheelLayer)
             self.roleAction = cc.CSLoader:createTimeline("bigwheelLayer.csb")
             self.bigwheelLayer:runAction(self.roleAction)
-            self.roleAction:setTimeSpeed(1)
-            self.roleAction:gotoFrameAndPlay(0,120, true)
+            -- self.roleAction:setTimeSpeed(0.01)
+            -- self.roleAction:gotoFrameAndPlay(0,120, true)
            
           	--风叶
           	self._blades=self.bigwheelLayer:getChildByTag(41):getChildByTag(48)
@@ -104,19 +104,32 @@ function bigwheelLayer:ctor(params)
              {gold_b=500,gold_e=500},
              {gold_b=10,gold_e=15}
          }
+         self:run_blades()
 
 	self:init(  )
 
        
+end
+--风叶旋转动画 
+function bigwheelLayer:run_blades(  )
+        local function stopAction()
+              self:run_blades()
+        end     
+        local callfunc = cc.CallFunc:create(stopAction)
+        self.pAction =cc.RotateBy:create(0.1,30)
+        self.pAction1 = cc.DelayTime:create(0.3)
+        self._blades:runAction(cc.Sequence:create(self.pAction,self.pAction1,callfunc)) 
 end
 function bigwheelLayer:run_callback(dt)
 		self.count=self.count+1
 		
 		if self.count%2==0 then
 			self._lamp:setVisible(false)
+                
 		else
 			self._lamp:setVisible(true)
 		end
+           
 end
 function bigwheelLayer:init(  )
         

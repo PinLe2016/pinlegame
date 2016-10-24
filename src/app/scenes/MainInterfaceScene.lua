@@ -594,14 +594,16 @@ function MainInterfaceScene:onEnter()
                        self:fun_checkin(1)  --签到
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
-                       function()                    
+                       function() 
+                                print("邮件按钮")                   
                                self.biao_ji:setVisible(false) 
                                local affiche=LocalData:Instance():get_getaffiche()
                                 local affichelist=affiche["affichelist"]
+                                dump(affiche)
                                 if #affichelist==0 then
                                    return
                                 end
-                                for i=1,#affichelist do
+                                for i=1,#affichelist do        
                                    if tonumber(affichelist[i]["isread"]) == 0   then  --1已读  0未读 
                                                  self.biao_ji:setVisible(true)
                                                 return
