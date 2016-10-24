@@ -593,6 +593,7 @@ function MainInterfaceScene:onEnter()
                        function()
                        self:fun_checkin(1)  --签到
                       end)
+   
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
                        function() 
                                 print("邮件按钮")                   

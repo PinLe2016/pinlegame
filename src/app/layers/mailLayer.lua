@@ -138,6 +138,7 @@ function mailLayer:init(  )
                  --return
            end
 
+
              for i=self.tablecout+1, #affichelist  do
 
                   self.mail_list:pushBackDefaultItem()
