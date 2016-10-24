@@ -325,16 +325,16 @@ function debrisLayer:add_reward( )
              return
          end
           local goldspool=_table["goldspool"]
-         if tonumber(goldspool["coolingtime"]) ==  -1 then
-               jique:setVisible(false)
-               jinyan:setVisible(true)
-         else
+         -- if tonumber(goldspool["coolingtime"]) ==  -1 then
+         --       jique:setVisible(false)
+         --       jinyan:setVisible(true)
+         -- else
                -- jique:setVisible(true)
                -- jinyan:setVisible(false)
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
                --Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
 
-         end
+         -- end
 end
 
 
