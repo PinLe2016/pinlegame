@@ -253,7 +253,7 @@ function bigwheelLayer:fun_began(  )
                        self._blades:setVisible(false)
                        self._selected:setVisible(true)
                        self.bigwheelLayer:getChildByTag(130):setVisible(true)
-                       self._Instead:setVisible(true)
+                      -- self._Instead:setVisible(true)
 
                end
              
@@ -283,6 +283,12 @@ function bigwheelLayer:fun_began(  )
           local  pAction1 = cc.EaseExponentialOut:create(cc.RotateBy:create(8,720+angleZ))
 	    -- local  pAction = cc.EaseExponentialOut:create(cc.RotateBy:create(2,angleZ));
 	    m_turnBg:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
+
+          -- local  pAction2 = cc.EaseExponentialOut:create(cc.RotateBy:create(7,self._rand))
+      -- local  pAction = cc.EaseExponentialOut:create(cc.RotateBy:create(2,angleZ));
+      --self._Instead:runAction(cc.Sequence:create(pAction2))
+
+
 end
 function bigwheelLayer:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
