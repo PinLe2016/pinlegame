@@ -81,7 +81,7 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     activity_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
                         self.sur_pageno=self.sur_pageno+1
-                        self:unscheduleUpdate()
+                        --self:unscheduleUpdate()
                         Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)   --下拉刷新功能
                                  return
                       end
