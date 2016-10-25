@@ -54,6 +54,7 @@ function bigwheelLayer:ctor(params)
 	 if params.image_name then
                 self.image_name=params.image_name
              end
+      self.addetailurl=params.addetailurl
 
     self.id=params.id
     self.adownerid=params.adownerid  
@@ -202,6 +203,13 @@ function bigwheelLayer:init(  )
        _back:setVisible(false)
 	     local _advertiImg=self.bigwheelLayer:getChildByTag(128)  --  上面广告图
 	      _advertiImg:loadTexture( self.image_name) 
+         _advertiImg:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                          return
+                    end
+                    self:fun_storebrowser()
+                  end)
+
        -- local  list_table=LocalData:Instance():get_getgoldspoolbyid()
         local _title=self.bigwheelLayer:getChildByTag(133)  --  上面广告图
         _title:setString(tostring(list_table["title"]))
@@ -220,9 +228,12 @@ function bigwheelLayer:init(  )
 	     if jaclayer_data[1]["adurlgold"] then
 	          connection_gold:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
 	     else
-	        connection12:setVisible(false)
+	        --
 	        connection_gold:setString("+0")
 	      end
+           if tostring(self.addetailurl)   ==   tostring(1) then
+              connection12:setVisible(false)
+           end
 
 	    --添加中奖之后的简单界面
 	    local  awardLayer = cc.LayerColor:create(cc.c4b(0,0,0,100), 0,0)
@@ -351,7 +362,7 @@ end
 --  网页链接
 function bigwheelLayer:fun_storebrowser(  )
       if tostring(self.addetailurl)   ==   tostring(1)   then
-        return
+         return
       end
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
       self:addChild(self.Storebrowser)
@@ -360,31 +371,33 @@ function bigwheelLayer:fun_storebrowser(  )
        back:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
-                end
-              if self.Storebrowser then
-                self.Storebrowser:removeFromParent()
-                if self._rewardgold==1 then
-                   self:goldact()
-                end
-                
-              end
+                  end
+                  if self.Storebrowser then
+                        self.Storebrowser:removeFromParent()
+                        if self._rewardgold==1 then
+                           self:goldact()
+                        end
+                    
+                  end
             end)
 
-              local webview = cc.WebView:create()
-              self.Storebrowser:addChild(webview)
-              webview:setVisible(true)
-              webview:setScalesPageToFit(true)
-              webview:loadURL(tostring(self.addetailurl))
-              webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
-              webview:reload()
-              webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
+              -- local webview = cc.WebView:create()
+              -- self.Storebrowser:addChild(webview)
+              -- webview:setVisible(true)
+              -- webview:setScalesPageToFit(true)
+              -- webview:loadURL(tostring(self.addetailurl))
+              -- webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+              -- webview:reload()
+              -- webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
               if self._rewardgold==0 then
-                 local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-                 local  jaclayer_data=list_table["adlist"]
-                Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
-                if self.connection13  then
-                 self.connection13:setVisible(false)
-                end
+                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                         local  jaclayer_data=list_table["adlist"]
+                        Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
+                        if self.connection13  then
+                              self.connection13:setVisible(true)
+                        end
+                else
+                         self.connection13:setVisible(false)
               end
               self._rewardgold=self._rewardgold+1
              
