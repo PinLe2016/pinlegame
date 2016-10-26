@@ -408,6 +408,12 @@ function PerInformationLayer:save_mail(cath)
     if cath==1 then
         --服务器保存收货地址
        Server:Instance():setconsignee(self.name_text_mail:getText(),self.phone_text_mail:getText(),tostring(province_id),tostring(city_id),self.ads_text_mail:getText(),province,city)
+          if self.Receivinginformation then
+             self:unscheduleUpdate()
+             self.phone_text_mail=nil
+             self.Receivinginformation:removeFromParent()
+          end
+
        return
     end
         --save_mail
@@ -1375,6 +1381,13 @@ function PerInformationLayer:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
                        function()
                             print("个人信息修改")
+                              if self.Perinformation then
+                                   self._Pname=nil
+                              self.Perinformation:removeFromParent()
+                       
+
+                 end
+
                       end)
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.EMAILADDRESS, self,
                        function()

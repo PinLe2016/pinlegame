@@ -38,23 +38,18 @@ function MainInterfaceScene:ctor()
         if _index==nil then
           _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
         end
-         print("哈哈  ",_index,tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 
-       
-       self:listener_home() --注册安卓返回键
-      
-      Server:Instance():gettasklist()   --  初始化任务
 
-               --手机归属请求
-       Server:Instance():getusercitybyphone()--手机归属
-        self:fun_init()
-         Server:Instance():getaffichelist(1)
-        --self:extend12()
+      self:listener_home() --注册安卓返回键
+      Server:Instance():gettasklist()   --  初始化任务
+      --手机归属请求
+      Server:Instance():getusercitybyphone()--手机归属
+      self:fun_init()
+      Server:Instance():getaffichelist(1)
 
 end
 function MainInterfaceScene:fun_init( )
-
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
 
@@ -150,13 +145,15 @@ function MainInterfaceScene:fun_init( )
 
       self.activitycode_text = self.kuang:getChildByTag(58)
 
-      self:userdata()
+      -- self:userdata()
 
 end
 --用户数据
 function MainInterfaceScene:userdata(  )
-       local userdt = LocalData:Instance():get_userdata()
-       print("touxiang   ",LocalData:Instance():get_user_head())
+        local userdt = LocalData:Instance():get_userdata()
+        local _getuserinfo=LocalData:Instance():get_getuserinfo()
+       userdt["grade"]=_getuserinfo["grade"]
+       LocalData:Instance():set_userdata(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
@@ -170,7 +167,6 @@ function MainInterfaceScene:userdata(  )
         end
         name:setString(nick_sub)
         --name:setString(userdt["nickname"])
-
        local crown_name=self.MainInterfaceScene:getChildByTag(41)-- 爵位
        crown_name:setString(userdt["rankname"])
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
@@ -182,28 +178,12 @@ function MainInterfaceScene:userdata(  )
        end
        LocalData:Instance():set_user_data(userdt)
        local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
-
-       --gold_text:setVisible(false)
-       
        gold_text:setString(userdt["golds"])
-
-       -- local labelAtlas = ccui.TextAtlas:create()
-       -- labelAtlas:setProperty(tostring(userdt["golds"]), "font/goldttf.png", 25, 34, "0")
-       -- labelAtlas:setPosition(cc.p(gold_text:getPositionX(),gold_text:getPositionY()))  
-       -- self.MainInterfaceScene:addChild(labelAtlas)  
-
-
-
        local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 钻石
        diamond_text:setString("0")--loadingBar:setPercent(0)
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
        local jindu=userdt["grade"]/8 *100
        loadingbar:setPercent(jindu)
-
-
-      
-      
-
 end
 function MainInterfaceScene:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
@@ -585,8 +565,7 @@ function MainInterfaceScene:onEnter()
                          local userdt = LocalData:Instance():get_userdata()
                          userdt["golds"]=getuserinfo["golds"]
                          LocalData:Instance():set_userdata(userdt)
-
-
+                         self:userdata()  --  等级刷新
                         
                       end)
 

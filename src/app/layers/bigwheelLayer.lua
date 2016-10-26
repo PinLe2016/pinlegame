@@ -247,46 +247,56 @@ function bigwheelLayer:fun_began(  )
 
         self.caideng:setVisible(true)
 	  local function CallFucnCallback3(sender)
-    self.roleAction:setTimeSpeed(0.5)
                       self.caideng:setVisible(false)
                        self.m_turnArr:setEnabled(true);
                        self._blades:setVisible(false)
                        self._selected:setVisible(true)
                        self.bigwheelLayer:getChildByTag(130):setVisible(true)
-                      -- self._Instead:setVisible(true)
+                       self._Instead:setVisible(false)
+
+                      --  local function CallFucnCallback2(sender)
+                      --          self.caideng:setVisible(false)
+                      --          self.m_turnArr:setEnabled(true);
+                      --          self._blades:setVisible(false)
+                      --          self._selected:setVisible(true)
+                      --          self.bigwheelLayer:getChildByTag(130):setVisible(true)
+                      --          self._Instead:setVisible(true)
+                      -- end
+
+
+
+                      --  local  pAction2 = cc.RotateBy:create(1,self._rand)  --测试
+                      --  self._Instead:runAction(cc.Sequence:create(pAction2,cc.CallFunc:create(CallFucnCallback2)))
+                      
 
                end
              
                self._blades:setVisible(true)
                self._selected:setVisible(false)
-               self._Instead:setVisible(false)
+               self._Instead:setVisible(false)  --测试
+                --m_turnBg:setVisible(false)  --测试
 	 -- self.x_rand=math.random(1,self.gridNumer)  --测试
 	    
 	     table.insert(self.fragment_table,{_shuzi = self.x_rand})
-	    -- kk.push_back(x_rand);
-	    local   _int = #self.fragment_table  --kk.size();
-	    --print("需要几  ",self.x_rand,"   ",#self.fragment_table);
+	    local   _int = #self.fragment_table  
 	    --防止多次点击
 	    self.m_turnArr:setEnabled(false);
 	    if (_int>1)   then 
-		        local  xin = self.fragment_table[_int-1]._shuzi--kk.at(_int-2);
-		        --print("ziyun  ","   ",self.x_rand  ,  "   ",xin);
+		        local  xin = self.fragment_table[_int-1]._shuzi
 		        if (self.x_rand > xin)   then 
 		            self.x_rand = self.x_rand - xin;
 		        else
 		            self.x_rand = self.gridNumer+  (self.x_rand - xin);
 		        end
 	    end
-	    --print("需要几111   ",self.x_rand);
-	    self._rand= (self.x_rand  *  self.gridAngle   ) ;-- +rand() % 60;
-	    local  angleZ = self._rand + 720;  --// +EaseExponentialIn
+	    self._rand= (self.x_rand  *  self.gridAngle   ) ;
+	    local  angleZ = self._rand + 720;  
           local  pAction1 = cc.EaseExponentialOut:create(cc.RotateBy:create(8,720+angleZ))
-	    -- local  pAction = cc.EaseExponentialOut:create(cc.RotateBy:create(2,angleZ));
 	    m_turnBg:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
+        -- local  pAction2 = cc.RotateBy:create(3,self._rand)  --测试
+        -- self._Instead:runAction(pAction2)
 
-          -- local  pAction2 = cc.EaseExponentialOut:create(cc.RotateBy:create(7,self._rand))
-      -- local  pAction = cc.EaseExponentialOut:create(cc.RotateBy:create(2,angleZ));
-      --self._Instead:runAction(cc.Sequence:create(pAction2))
+         
 
 
 end

@@ -380,6 +380,11 @@ function activitycodeLayer:act_list()
 end
 --初始化获奖名单
 function activitycodeLayer:_winners( )
+
+    self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self:addChild(self.fragment_sprite1)
+
+
     self.Winners = cc.CSLoader:createNode("Winners.csb");
     self:addChild(self.Winners)
 
@@ -389,6 +394,7 @@ function activitycodeLayer:_winners( )
                        return
             end
             if self.Winners then
+              self.fragment_sprite1:removeFromParent()
                self.Winners:removeFromParent()
             end
                          
