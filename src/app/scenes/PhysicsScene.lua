@@ -330,15 +330,24 @@ function PhysicsScene:add_obstacle()
     --碰分小球
     local modeSprite_ban_3 =self.phy_bg:getChildByTag(1792)
 
-    local arr_ball={9,8,7, 6, 5, 4, 3, 2, 1, 7, 6, 5, 4, 3, 2}
+    local arr_ball={8,7, 6, 5, 4, 3, 2, 1, 7, 6, 5, 4, 3, 2}
+      for i=1,#arr_ball do
+       self._randTable=self:RandomIndex(#arr_ball,#arr_ball) 
+    end
+
 
     for i=0,14 do
         local modeSprite=modeSprite_ban_3:clone()
         self.phy_bg:addChild(modeSprite)
-
-        modeSprite:loadTexture(string.format("png/Physicstaiqiu-%d.png", arr_ball[i+1]))
+        if i == 0 then
+             self._dt = 9
+        else
+             self._dt=arr_ball[self._randTable[i]]
+        end
+       
+        modeSprite:loadTexture(string.format("png/Physicstaiqiu-%d.png", self._dt))--arr_ball[self._randTable[i+1]]))  --_randt))--
         modeSprite:setPosition(modeSprite_ban_3:getPositionX()+30*i,modeSprite_ban_3:getPositionY())
-        modeSprite:setTag(arr_ball[i+1]*10)
+        modeSprite:setTag(self._dt*10)--(arr_ball[self._randTable[i+1]]*10)  --(_randt*10)--
 
          local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 0)
          local coinBody = cc.PhysicsBody:createCircle(8,
@@ -354,6 +363,44 @@ function PhysicsScene:add_obstacle()
     modeSprite_ban_3:removeFromParent()
   
 end
+--随机数
+function PhysicsScene:RandomIndex(indexNum, tabNum)
+
+    indexNum = indexNum or tabNum
+
+    local t = {}
+
+    local rt = {}
+
+    for i = 1,indexNum do
+
+        local ri = math.random(1,tabNum + 1 - i)
+
+        local v = ri
+
+        for j = 1,tabNum do
+
+            if not t[j] then
+
+                ri = ri - 1
+
+                if ri == 0 then
+
+                    table.insert(rt,j)
+
+                    t[j] = true
+
+                end
+
+            end
+
+        end
+   end
+    --dump(rt)
+    return rt
+  
+end
+
 
 --添加静态刚体
 function PhysicsScene:add_Rigidbody(material)
