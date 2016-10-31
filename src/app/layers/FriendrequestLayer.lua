@@ -116,21 +116,24 @@ function FriendrequestLayer:init(  )
          
        end
 
-       for i=1,#_table do
+     
+      
+      for i=1,8 do  --self.friendlist_num["friendcount"]
+       if _table[i]==tonumber(self.friendlist_num["friendcount"])   then
+           lo_img[i]:setTouchEnabled(true)
+       end
+      end
+
+
+        for i=1,#_table do
         for j=1,#self.managerlist do
-            if self.managerlist[j]["friendscount"]==_table[i]   then  --
+            if self.managerlist[j]["friendscount"]==_table[i]   then  
                   if tonumber(self.managerlist[j]["tag"]) ==1 then 
                       lo_img[i]:setColor(cc.c3b(100,100,100))
                        lo_img[i]:setTouchEnabled(false)
                   end
             end
           end
-      end
-      
-      for i=1,8 do  --self.friendlist_num["friendcount"]
-       if _table[i]<tonumber(self.friendlist_num["friendcount"]) then
-           lo_img[i]:setTouchEnabled(true)
-       end
       end
  
 
@@ -277,34 +280,42 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 	elseif tag==135 then
 		print("hahahdfsfdsfdsf 1")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
+            Server:Instance():get_friend_reward_setting_list()
             Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==138 then
 		print("hahahdfsfdsfdsf 2")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
+            Server:Instance():get_friend_reward_setting_list()
             Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==141 then
 		print("hahahdfsfdsfdsf 3")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
+            Server:Instance():get_friend_reward_setting_list()
             Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==144 then
 		print("hahahdfsfdsfdsf 4")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
+            Server:Instance():get_friend_reward_setting_list()
             Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==1599 then
 		print("hahahdfsfdsfdsf 5")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
+            Server:Instance():get_friend_reward_setting_list()
             Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==1600 then
 		print("hahahdfsfdsfdsf 6")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
+            Server:Instance():get_friend_reward_setting_list()
             Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==1601 then
 		print("hahahdfsfdsfdsf 7")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
+            Server:Instance():get_friend_reward_setting_list()
             Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==1602 then
 		print("hahahdfsfdsfdsf 8")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
+            Server:Instance():get_friend_reward_setting_list()
             Server:Instance():prompt("恭喜您领取成功")
 	elseif tag==161 then  --好友邀请
 		-- self.Friendsstep:setVisible(true)

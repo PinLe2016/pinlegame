@@ -54,8 +54,31 @@ function PhysicsScene:networkbox_buffer(prompt_text)
        self.floating_layer:network_box(prompt_text) 
 end
 
+-- 倒计时
+function PhysicsScene:fun_time(  )
 
+      local node = cc.CSLoader:createNode("countdownLayer.csb")
+      local action = cc.CSLoader:createTimeline("countdownLayer.csb")
 
+      local advert =node:getChildByTag(590)  --  广告
+       local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+      self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
+      local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+      advert:loadTexture(path..self._imagetu)
+
+      action:setTimeSpeed(0.25)
+      node:runAction(action)
+      action:gotoFrameAndPlay(0,80,false)
+      local function stopAction()
+              if node then
+                node:removeFromParent()
+              end
+      end
+      local callfunc = cc.CallFunc:create(stopAction)
+      node:runAction(cc.Sequence:create(cc.DelayTime:create(6),callfunc  ))
+      self:addChild(node)
+
+end
 function PhysicsScene:ctor(params)
         dump(params)
         self.heroid=params.heroid
@@ -187,6 +210,7 @@ function PhysicsScene:add_ui()
 
     self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
     self:addChild(self.phy_bg)
+    self:fun_time(  )--  倒计时
 
         --弹球广告图
         local activitybyid=LocalData:Instance():get_getactivitybyid()
@@ -468,7 +492,6 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                              userdt["golds"]=activitypoints["golds"]
                          end
                         LocalData:Instance():set_userdata(userdt)
-                        print("1211111111   ",self.heroid)
                         Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
                         Server:Instance():getactivitybyid(self.id,self.cycle)
@@ -491,7 +514,6 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                          if activitypoints["golds"]   then
                              userdt["golds"]=activitypoints["golds"]
                          end
-                         print("1211111111   ",self.heroid)
                         LocalData:Instance():set_userdata(userdt)
                         Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
@@ -636,6 +658,7 @@ function PhysicsScene:Phypop_up()
             self:addChild(self.PhysicsPop)
 
             local back=self.PhysicsPop:getChildByTag(167)  --  关闭按钮
+            back:setVisible(true)
             back:addTouchEventListener(function(sender, eventType  )
             self:touch_btCallback(sender, eventType)
             end)
@@ -665,10 +688,11 @@ function PhysicsScene:Phypop_up()
             score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", score4))
             --给后端发送请求  保存数据
             local  _score=  self._score1 ..   score4  ..   score2  ..   score3 
-            self._dajishi=self.PhysicsPop:getChildByTag(192)
-            self._dajishi:setString("5")  --于是乎自己就决定了
-            self._time=5
-            self:fun_countdown( )
+            --需求
+            -- self._dajishi=self.PhysicsPop:getChildByTag(192)
+            -- self._dajishi:setString("5")  --于是乎自己就决定了
+            -- self._time=5
+            -- self:fun_countdown( )
             
 
 

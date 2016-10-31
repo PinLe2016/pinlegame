@@ -15,6 +15,7 @@ function DetailsLayer:ctor(params)
        self.type=params.type--活动类型
        LocalData:Instance():set_actid({act_id=self.id,image=self.image})--保存数据
        Server:Instance():getactivitybyid(self.id,0)
+       Server:Instance():getactivityadlist(self.id)
        --Server:Instance():getgoldspooladlist(self.id)   --  暂时停运  id  有误
  
 end
@@ -50,13 +51,15 @@ function DetailsLayer:init(  )
 		     	Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
 		     	return
 		     end
-		     -- Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前暂停
+		     --Util:scene_controlid("GameScene",{adid=self.id,type="daojishi",image=" "}) -- 目前早就暂停
 		       -- local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=0,heroid=0,phyimage=self.image})  --daojishi
          --              	       cc.Director:getInstance():pushScene(scene)
+                      	       --暂时废了
          		        local PhysicsScene = require("app.scenes.PhysicsScene")
-         		        Server:Instance():getactivityadlist(self.id)
+         		        -- Server:Instance():getactivityadlist(self.id)
          		        local scene=PhysicsScene.new({id=self.id,cycle=0,heroid=0,phyimage=self.image})
                       	        cc.Director:getInstance():pushScene(scene)
+
 		      --Util:scene_control("SurpriseOverScene")
 		      
 		end
