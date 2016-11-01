@@ -7,7 +7,7 @@ local bigwheelLayer = class("bigwheelLayer", function()
             return display.newScene("bigwheelLayer")
 end)
 
-local IF_VOER=false
+
 
 function bigwheelLayer:pushFloating(text)
     if is_resource then
@@ -31,6 +31,9 @@ function bigwheelLayer:networkbox_buffer(prompt_text)
 end
 
 function bigwheelLayer:ctor(params)
+  
+      self.IF_VOER=false
+        print("IF_VOER1 ",self.IF_VOER)
 	self:setNodeEventEnabled(true)--layer添加监听     
 	self.floating_layer = FloatingLayerEx.new()
 	self.floating_layer:addTo(self,100000)
@@ -228,7 +231,7 @@ function bigwheelLayer:init(  )
 	     if jaclayer_data[1]["adurlgold"] then
 	          connection_gold:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
 	     else
-	        --
+	        connection12:setVisible(false)
 	        connection_gold:setString("+0")
 	      end
            if tostring(self.addetailurl)   ==   tostring(1) then
@@ -246,6 +249,7 @@ function bigwheelLayer:fun_began(  )
 
 
         self.caideng:setVisible(true)
+        self.CheckBox:setTouchEnabled(false)
 	  local function CallFucnCallback3(sender)
                       self.caideng:setVisible(false)
                        self.m_turnArr:setEnabled(true);
@@ -253,6 +257,7 @@ function bigwheelLayer:fun_began(  )
                        self._selected:setVisible(true)
                        self.bigwheelLayer:getChildByTag(130):setVisible(true)
                        self._Instead:setVisible(false)
+                       self.CheckBox:setTouchEnabled(true)
 
                       --  local function CallFucnCallback2(sender)
                       --          self.caideng:setVisible(false)
@@ -306,11 +311,14 @@ function bigwheelLayer:touch_callback( sender, eventType )
 	end
 	local tag=sender:getTag()
 	if tag==44 then --开始
-      if IF_VOER then
+    print("IF_VOERkaisi ",self.IF_VOER)
+      if self.IF_VOER then
         self:try_again()
         return 
       end
-      IF_VOER=true
+      self.IF_VOER=true
+
+      print("IF_VOERoooo",self.IF_VOER)
          if self.CheckBox:isSelected() then   --选中是关  
              self.CheckBox_volume=0
         else
@@ -342,10 +350,11 @@ end
 
 --再来一局提示
 function bigwheelLayer:try_again()
+  print("IF_VOER666 ",self.IF_VOER)
     self.floating_layer:showFloat("再来一局？",function (sender, eventType)
                                   if eventType==1 then
 
-                                          IF_VOER=false
+                                          self.IF_VOER=false
                                           local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
                                           -- dump(_tablegods)
                                           dump(_tablegods["getcardamount"])
