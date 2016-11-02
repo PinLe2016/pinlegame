@@ -49,12 +49,15 @@ function PerInformationLayer:add_init(  )
                 if userdt["provincename"] == nil  then
                     local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
                     dump(phone_location)
-                    if phone_location then
+                    if phone_location["provincename"] then
                             print("手机归属",phone_location["provincename"])
                             userdt["provincename"]=phone_location["provincename"]
                             userdt["cityname"]=phone_location["cityname"]
                             userdt["districtame"]=""
-                
+                    else
+                       userdt["provincename"]="北京"
+                        userdt["cityname"]="北京"
+                        userdt["districtame"]="海淀区"
                     end
                 end 
    
@@ -72,7 +75,7 @@ function PerInformationLayer:add_init(  )
                     dump(tonumber(self._index))
                    
                     local haer=LocalData:Instance():get_user_head()   --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
-                     dump(haer)
+                     -- dump(haer)
                     userdt["registertime"]=userdatainit["registertime"]  
                     -- xin LocalData:Instance():set_userdata(userdt)
                     self.image_head1:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
@@ -123,7 +126,7 @@ function PerInformationLayer:add_init(  )
                      area=userdt["districtame"]
                  end
                
-                 dump(userdt["cityname"])
+                 -- dump(userdt["cityname"])
                  if userdt["provincename"] then
                      self._provincename1:setString(userdt["provincename"] .. "-" .. userdt["cityname"] .. "-" .. area)
                      if area  == "" then
@@ -1156,8 +1159,9 @@ function PerInformationLayer:fun_city_info( )
         self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
 
         local  userdata=LocalData:Instance():get_getuserinfo()
-        -- dump(userdata)
+        dump(userdata)
          local  userdatainit=LocalData:Instance():get_user_data() --用户数据
+         dump(userdatainit)
         local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
         local area=""
         if userdatainit["districtame"]  then
@@ -1171,7 +1175,7 @@ function PerInformationLayer:fun_city_info( )
             str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] .. "-" .. area
         end
 
-        if area == "" then
+        if area == "" and userdatainit["provincename"] then
            str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] 
         end
 
