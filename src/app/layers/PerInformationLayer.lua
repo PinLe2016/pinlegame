@@ -54,6 +54,10 @@ function PerInformationLayer:add_init(  )
                             userdt["provincename"]=phone_location["provincename"]
                             userdt["cityname"]=phone_location["cityname"]
                             userdt["districtame"]=""
+                    else
+                       userdt["provincename"]="北京"
+                        userdt["cityname"]="北京"
+                        userdt["districtame"]="海淀区"
                     end
                 end 
 
