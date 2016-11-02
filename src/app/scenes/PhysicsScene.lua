@@ -224,7 +224,13 @@ function PhysicsScene:add_ui()
         self.allscore_text:setString(tostring(activitybyid["mypoints"]))
         --  押注金币
         local _betgolds=self.phy_bg:getChildByTag(1799)   
-       _betgolds:setString(tostring(activitybyid["betgolds"] .. "金币/次"))
+        if tonumber(activitybyid["remaintimes"]) < 0 then
+          _betgolds:setString("/")
+        else
+          _betgolds:setString("剩余弹珠次数:"   ..   activitybyid["remaintimes"]  )
+        end
+  
+       -- _betgolds:setString(tostring(activitybyid["betgolds"] .. "金币/次"))
 
 
 

@@ -54,9 +54,10 @@ function PerInformationLayer:add_init(  )
                             userdt["provincename"]=phone_location["provincename"]
                             userdt["cityname"]=phone_location["cityname"]
                             userdt["districtame"]=""
+                
                     end
                 end 
-
+   
 
                   LocalData:Instance():set_userdata(userdt)
                 --dump(userdatainit)
