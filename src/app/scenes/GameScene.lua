@@ -162,6 +162,8 @@ function GameScene:funsuspended( )
            local mask_layer=self._csb:getChildByTag(46)  -- 遮罩层
            mask_layer:setVisible(true)
            local panel=self._csb:getChildByTag(47)  -- 面板
+          local _panel1=panel:getChildByTag(1000)  -- 面板
+          _panel1:setVisible(true)
            panel:setLocalZOrder(20)
            panel:setVisible(true)
            local back_bt=panel:getChildByTag(49)  -- 返回
