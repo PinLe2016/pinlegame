@@ -158,10 +158,24 @@ function GameScene:csb_btCallback(sender, eventType)
 
 
 end
+function GameScene:move_layer(_layer)
+     
+    local curr_y=_layer:getPositionY()
+    _layer:setPositionY(curr_y+_layer:getContentSize().height)
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+      _layer:runAction(sque)
+end
 function GameScene:funsuspended( )
            local mask_layer=self._csb:getChildByTag(46)  -- 遮罩层
            mask_layer:setVisible(true)
+        -- self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        -- self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+        -- self:addChild(self.fragment_sprite)
+        
+
            local panel=self._csb:getChildByTag(47)  -- 面板
+           self:move_layer(panel)
           local _panel1=panel:getChildByTag(1000)  -- 面板
           _panel1:setVisible(true)
            panel:setLocalZOrder(20)
