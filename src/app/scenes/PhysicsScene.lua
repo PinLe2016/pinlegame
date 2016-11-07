@@ -223,11 +223,11 @@ function PhysicsScene:add_ui()
         self.allscore_text=self.phy_bg:getChildByTag(1802)
         self.allscore_text:setString(tostring(activitybyid["mypoints"]))
         --  押注金币
-        local _betgolds=self.phy_bg:getChildByTag(1799)   
+        self._betgolds=self.phy_bg:getChildByTag(1799)   
         if tonumber(activitybyid["remaintimes"]) < 0 then
-          _betgolds:setString("/")
+          self._betgolds:setString("/")
         else
-          _betgolds:setString("剩余弹珠次数:"   ..   activitybyid["remaintimes"]  )
+          self._betgolds:setString("剩余弹珠次数:"   ..   activitybyid["remaintimes"]  )
         end
   
        -- _betgolds:setString(tostring(activitybyid["betgolds"] .. "金币/次"))
@@ -586,6 +586,14 @@ function PhysicsScene:fun_data( )
         --弹球累计得分
         self.allscore_text=self.phy_bg:getChildByTag(1802)
         self.allscore_text:setString(tostring(activitypoints["totalPoints"]))
+
+        self._betgolds=self.phy_bg:getChildByTag(1799)   
+        if tonumber(activitypoints["remaintimes"]) < 0 then
+          self._betgolds:setString("/")
+        else
+          self._betgolds:setString("剩余弹珠次数:"   ..   activitypoints["remaintimes"]  )
+        end
+        
 
 end
 function PhysicsScene:onExit()

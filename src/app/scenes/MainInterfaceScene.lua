@@ -74,10 +74,20 @@ function MainInterfaceScene:fun_init( )
           Surprise_bt:addTouchEventListener(function(sender, eventType  )
          self:touch_callback(sender, eventType)
       end)
+      self.gamecenter_bt=self.MainInterfaceScene:getChildByTag(444)   --游戏中心
+          self.gamecenter_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+      self.list_bt=self.MainInterfaceScene:getChildByTag(125)   --  排行榜
+          self.list_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+
       local activitycode_bt=self.MainInterfaceScene:getChildByTag(72)
           activitycode_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
+
       local mall_bt=self.MainInterfaceScene:getChildByTag(626)  --商城
       mall_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
@@ -145,7 +155,7 @@ function MainInterfaceScene:fun_init( )
 
       self.activitycode_text = self.kuang:getChildByTag(58)
 
-      -- self:userdata()
+       
 
 end
 --用户数据
@@ -206,8 +216,14 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==97 then
 		Util:scene_control("GoldprizeScene")
      --Util:scene_control("PhysicsScene")
+      elseif tag==444 then  
+            
+            self:fun_showtip(self.gamecenter_bt,sender:getPositionX(),sender:getPositionY() )
+            --self.gamecenter_bt:setTouchEnabled(false)
 
-    
+      elseif tag==125 then 
+              self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
+              --self.list_bt:setTouchEnabled(false)
 
 	elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
@@ -633,9 +649,27 @@ function MainInterfaceScene:listener_home()
 
     local eventDispatch = layer:getEventDispatcher()
     eventDispatch:addEventListenerWithSceneGraphPriority(listener,layer)
-
 end
+--  零时加的  
+function MainInterfaceScene:fun_showtip(bt_obj,_x,_y )
+          if self.showtip_image~=nil then
+            return
+          end
+          self.showtip_image= display.newSprite("png/jingqingqidai-zi.png")
+          self.showtip_image:setScale(0)
+          self.showtip_image:setAnchorPoint(0, 0)
+          self:addChild(self.showtip_image)
+          self.showtip_image:setPosition(_x, _y)
 
+          local function removeThis()
+                if self.showtip_image then
+                   self.showtip_image:removeFromParent()
+                   self.showtip_image=nil
+                end
+          end
+          local actionTo = cc.ScaleTo:create(0.5, 1)
+          self.showtip_image:runAction( cc.Sequence:create(actionTo,cc.DelayTime:create(0.3 ),cc.CallFunc:create(removeThis)))
+end
 function MainInterfaceScene:pushFloating(text)
    if is_resource then
        self.floating_layer:showFloat(text)  
