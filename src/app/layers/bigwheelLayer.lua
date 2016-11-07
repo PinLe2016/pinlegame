@@ -189,7 +189,7 @@ function bigwheelLayer:init(  )
                      
                elseif eventType == ccui.CheckBoxEventType.unselected then
                        if tonumber(self.volume_num:getString()) <=0 then
-                            self.floating_layer:show_http("您的翻倍卡不够") 
+                            Server:Instance():prompt("您的翻倍卡不够") 
                        end
                end
             end)
