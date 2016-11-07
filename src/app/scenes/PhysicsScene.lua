@@ -24,7 +24,8 @@ local COIN_ELASTICITY_tow = 0.2---摩擦力
 local BOLL_OFF_SET=60--台球杆初始位置调整的偏移量
 
 local is_Shots=false
-local ROD_V=8.0
+local is_Down=true
+local ROD_V=3.0
 local ROD_B_POPINT=0--台球杆的初始高度
 local ROD_E_POPINT=130+BOLL_OFF_SET--台球杆的初始高度
 local ROD_M_TIME=0.05---台球杆的移动时间
@@ -602,11 +603,24 @@ function PhysicsScene:onEnterFrame(dt)
 
         if self.rod_spr and is_Shots then
             -- print("---",self.rod_spr:getPositionY())
-            self.rod_spr:setPositionY(self.rod_spr:getPositionY()-ROD_V)
             if self.rod_spr:getPositionY()<=ROD_E_POPINT then
-                self.rod_spr:setPositionY(ROD_E_POPINT)
-                is_Shots=false
+              is_Down=false
+              self.rod_spr:setPositionY(ROD_E_POPINT)
+            elseif self.rod_spr:getPositionY()>=ROD_B_POPINT then
+              is_Down=true
+              self.rod_spr:setPositionY(ROD_B_POPINT)
             end
+            -- if self.rod_spr:getPositionY()<=ROD_E_POPINT then
+            --     self.rod_spr:setPositionY(ROD_E_POPINT)
+            --     -- is_Shots=false
+            -- end
+            if is_Down then
+              self.rod_spr:setPositionY(self.rod_spr:getPositionY()-ROD_V)
+            else
+              self.rod_spr:setPositionY(self.rod_spr:getPositionY()+ROD_V)
+            end
+            
+            
         end
         -- print("----",self.coinSprite:getPositionY())
         if  self.coinSprite and self.coinSprite:getPositionY()<200.0  then
