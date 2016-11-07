@@ -507,6 +507,22 @@ function PhysicsScene:touch_btCallback( sender, eventType )
             Server:Instance():getactivitybyid(self.id,0)
             cc.Director:getInstance():popScene()
            end
+           if tag==774 then
+              local activitypoints = LocalData:Instance():get_getactivitypoints()
+              if tonumber(activitypoints["golds"]) <=0 then
+                  Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
+                  return
+              end
+              if tonumber(activitypoints["remaintimes"]) <=0 then
+                Server:Instance():prompt("您参与次数已经用完")
+                return
+              end
+              self.start_bt:setTouchEnabled(true)
+              self.PhysicsPop:removeFromParent()
+              self.phy_bg:removeFromParent()
+                 self:add_ui()--再来一次
+
+           end
             if tag==166 then
               print("好像是客服")
            end
@@ -594,6 +610,8 @@ function PhysicsScene:fun_data( )
         else
           self._betgolds:setString("剩余弹珠次数:"   ..   activitypoints["remaintimes"]  )
         end
+        self.again_bt:setTouchEnabled(true)
+
         
 
 end
@@ -688,6 +706,12 @@ function PhysicsScene:Phypop_up()
             local back=self.PhysicsPop:getChildByTag(167)  --  关闭按钮
             back:setVisible(true)
             back:addTouchEventListener(function(sender, eventType  )
+            self:touch_btCallback(sender, eventType)
+            end)
+
+            self.again_bt=self.PhysicsPop:getChildByTag(774)  --  在来一句
+            self.again_bt:setTouchEnabled(false)
+            self.again_bt:addTouchEventListener(function(sender, eventType  )
             self:touch_btCallback(sender, eventType)
             end)
 
