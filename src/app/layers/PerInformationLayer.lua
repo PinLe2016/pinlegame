@@ -45,12 +45,9 @@ function PerInformationLayer:add_init(  )
                  userdt["provincename"]=userdatainit["provincename"]  
                  userdt["districtame"]=userdatainit["districtame"]
                  userdt["registertime"]=userdatainit["registertime"]  
-                print("发的说法就是咖啡  ",userdt["provincename"] )
                 if userdt["provincename"] == nil  then
                     local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
-                    -- dump(phone_location)
                     if phone_location["provincename"] then
-                            print("手机归属",phone_location["provincename"])
                             userdt["provincename"]=phone_location["provincename"]
                             userdt["cityname"]=phone_location["cityname"]
                             userdt["districtame"]=""
@@ -346,7 +343,9 @@ function PerInformationLayer:touch_back( sender, eventType )
             
         end
     elseif  tag==1410 then
+        --self:fun_shuji()
          self:init()
+
     elseif  tag==190 then
         Server:Instance():getconsignee({functionparams=""})
         -- self:fun_mail()
@@ -379,7 +378,34 @@ function PerInformationLayer:touch_back( sender, eventType )
          print("确定选择地址")
     end
 end
-
+function PerInformationLayer:fun_shuji(  )
+     local userdt = LocalData:Instance():get_userdata()--
+      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
+     userdt["birthday"]=userdatainit["birthday"]
+     userdt["cityid"]=userdatainit["cityid"]
+     userdt["cityname"]=userdatainit["cityname"]
+     userdt["gender"]=userdatainit["gender"]
+     print("正是新别 ",userdatainit["gender"])
+      if userdatainit["gender"]  ==  nil  then
+         userdt["gender"]=1
+     end
+     userdt["nickname"]=userdatainit["nickname"]
+     -- userdt["golds"]=userdatainit["golds"]
+     -- userdt["points"]=userdatainit["points"]
+     userdt["registertime"]=userdatainit["registertime"]
+     userdt["provincename"]=userdatainit["provincename"]  
+     userdt["districtame"]=userdatainit["districtame"] 
+     if userdt["provincename"] == nil  then
+            local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+            if phone_location then
+                print("手机归属")
+                userdt["provincename"]=phone_location["provincename"]
+                userdt["cityname"]=phone_location["cityname"]
+                userdt["districtame"]=""
+            end
+      end 
+     LocalData:Instance():set_userdata(userdt)  --必须打开
+end
 -- cath 1 保存邮寄信息上传服务器
 --      2 选择邮寄城市的确认
 function PerInformationLayer:save_mail(cath)
@@ -491,7 +517,6 @@ function PerInformationLayer:perinformation_init(  )
 
      local  userdata=LocalData:Instance():get_user_data() --用户数据
      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-       --dump(userdatainit)
 
      local userdt = LocalData:Instance():get_userdata()--
      userdt["birthday"]=userdatainit["birthday"]
@@ -503,15 +528,12 @@ function PerInformationLayer:perinformation_init(  )
          userdt["gender"]=1
      end
      userdt["nickname"]=userdatainit["nickname"]
-     -- userdt["golds"]=userdatainit["golds"]
-     -- userdt["points"]=userdatainit["points"]
      userdt["registertime"]=userdatainit["registertime"]
      userdt["provincename"]=userdatainit["provincename"]  
      userdt["districtame"]=userdatainit["districtame"] 
      if userdt["provincename"] == nil  then
             local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
             if phone_location then
-                print("手机归属")
                 userdt["provincename"]=phone_location["provincename"]
                 userdt["cityname"]=phone_location["cityname"]
                 userdt["districtame"]=""
@@ -590,8 +612,6 @@ function PerInformationLayer:perinformation_init(  )
                      end
             end)
            
-
-        print("性别  ",userdt["gender"])
         if userdt["gender"]==0 then    --0女1男2未知
             self.genderman:setSelected(false)
             self.gendergirl:setSelected(true)
@@ -832,10 +852,6 @@ function PerInformationLayer:savedata( )
            end
 
     local  userdata=LocalData:Instance():get_user_data()
- 
-    -- print("nanannana   ",self._Pname:getText())
-    -- print("wwww   ",self._Pname:getPlaceHolder())
-    dump(userdata)
     local  loginname= userdata["loginname"]
     local  nickname=self._Pname:getText()  
     userdata["nickname"]=nickname
@@ -879,7 +895,16 @@ function PerInformationLayer:savedata( )
             districtid=districtid,
         }
         dump(params)
-    Server:Instance():setuserinfo(params) 
+            local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
+            userdatainit["birthday"]=birthday
+            userdatainit["cityid"]=cityid
+            userdatainit["cityname"]=cityname
+            userdatainit["gender"]=gender
+            userdatainit["nickname"]=nickname
+            userdatainit["provincename"]=provincename
+            userdatainit["districtame"] =self._area:getString()
+            LocalData:Instance():set_getuserinfo(userdatainit)  --必须打开
+            Server:Instance():setuserinfo(params) 
 end
 function PerInformationLayer:fun_birthday(  )
         self.birthday = cc.CSLoader:createNode("Birthday.csb")
@@ -1389,6 +1414,7 @@ function PerInformationLayer:onEnter()
                               if self.Perinformation then
                                    self._Pname=nil
                               self.Perinformation:removeFromParent()
+                             
                        
 
                  end
