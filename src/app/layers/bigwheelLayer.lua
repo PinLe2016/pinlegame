@@ -90,6 +90,15 @@ function bigwheelLayer:ctor(params)
                                 
               end,0.5, false)
 
+            self._prize=self.bigwheelLayer:getChildByTag(1303)
+            self._prize:setVisible(false)
+            self._prizetext=self._prize:getChildByTag(1307)
+            self._prizebt=self._prize:getChildByTag(1311)
+            self._prizebt:addTouchEventListener(function(sender, eventType  )
+                  self:touch_callback(sender, eventType)
+            end)
+
+
 
              self._rewardgold=0
 
@@ -259,21 +268,7 @@ function bigwheelLayer:fun_began(  )
                        self.bigwheelLayer:getChildByTag(130):setVisible(true)
                        self._Instead:setVisible(false)
                        self.CheckBox:setTouchEnabled(true)
-
-                      --  local function CallFucnCallback2(sender)
-                      --          self.caideng:setVisible(false)
-                      --          self.m_turnArr:setEnabled(true);
-                      --          self._blades:setVisible(false)
-                      --          self._selected:setVisible(true)
-                      --          self.bigwheelLayer:getChildByTag(130):setVisible(true)
-                      --          self._Instead:setVisible(true)
-                      -- end
-
-
-
-                      --  local  pAction2 = cc.RotateBy:create(1,self._rand)  --测试
-                      --  self._Instead:runAction(cc.Sequence:create(pAction2,cc.CallFunc:create(CallFucnCallback2)))
-                      
+                       self._prize:setVisible(true)
 
                end
              
@@ -311,6 +306,9 @@ function bigwheelLayer:touch_callback( sender, eventType )
 		return
 	end
 	local tag=sender:getTag()
+      if tag==1311 then
+          self._prize:setVisible(false)
+      end
 	if tag==44 then --开始
     print("IF_VOERkaisi ",self.IF_VOER)
       if self.IF_VOER then
@@ -470,6 +468,7 @@ function bigwheelLayer:onEnter()
                                end
                                self.x_rand=self.cotion_gold[math.random(1,#self.cotion_gold)]
                                self:fun_began()
+                              self._prizetext:setString(tostring(_gold["golds"]))
                       end)
   
 end

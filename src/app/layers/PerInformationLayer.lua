@@ -57,15 +57,8 @@ function PerInformationLayer:add_init(  )
                         userdt["districtame"]="海淀区"
                     end
                 end 
-   
-
                   LocalData:Instance():set_userdata(userdt)
-                --dump(userdatainit)
-
                 local haerd=userdatainit["imageUrl"]
-               
-            
-                 
                     self.image_head1=self.showinformation:getChildByTag(1401)  --头像
                       self._index=string.sub(haerd,-5,-5)--string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
                     -- dump(LocalData:Instance():get_user_head())
