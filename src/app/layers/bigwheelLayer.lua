@@ -188,8 +188,9 @@ function bigwheelLayer:init(  )
                if eventType == ccui.CheckBoxEventType.selected then
                      
                elseif eventType == ccui.CheckBoxEventType.unselected then
+                       self.CheckBox:setSelected(true)
                        if tonumber(self.volume_num:getString()) <=0 then
-                            Server:Instance():prompt("您的翻倍卡不够") 
+                            Server:Instance():prompt("您的幸运卡数量不够,通过邀请好友和签到可以快速获得呦~") 
                        end
                end
             end)
@@ -393,13 +394,15 @@ function bigwheelLayer:fun_storebrowser(  )
       self:addChild(self.Storebrowser)
       local back=self.Storebrowser:getChildByTag(2122)
       local store_size=self.Storebrowser:getChildByTag(2123)
+      local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+      local  jaclayer_data=list_table["adlist"]
        back:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
                   end
                   if self.Storebrowser then
                         self.Storebrowser:removeFromParent()
-                        if self._rewardgold==1 then
+                        if self._rewardgold==1  and   jaclayer_data[1]["adurlgold"] then
                            self:goldact()
                         end
                     
@@ -415,17 +418,14 @@ function bigwheelLayer:fun_storebrowser(  )
               webview:reload()
               webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
               if self._rewardgold==0 then
-                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-                         local  jaclayer_data=list_table["adlist"]
-                        Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
-                        if self.connection13  then
-                              self.connection13:setVisible(true)
+                         Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
+                        if self.connection13   and    jaclayer_data[1]["adurlgold"]  then
+                              self.connection13:setVisible(false)
                         end
                 else
                          self.connection13:setVisible(false)
               end
               self._rewardgold=self._rewardgold+1
-             
 
 end
 function bigwheelLayer:goldact(  )
