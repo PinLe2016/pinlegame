@@ -198,26 +198,13 @@ function PhysicsScene:ctor(params)
   
     cc.Director:getInstance():getEventDispatcher():addEventListenerWithSceneGraphPriority(conListener,self) 
 
-    self:add_ui()
+    self:add_ui(true)
     
 end
 
-
-
-function PhysicsScene:add_ui()
-     -- self:getPhysicsWorld():setDebugDrawMask(
-     --    true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
-    -- cc.Director:getInstance():getCamera():setCenterXYZ(100,0,100);
-
-    self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
-    self:addChild(self.phy_bg)
-    self:fun_time(  )--  倒计时
-
-        --弹球广告图
-        local activitybyid=LocalData:Instance():get_getactivitybyid()
-        local _imagename=self.phy_bg:getChildByTag(87)
-        _imagename:loadTexture(self.phyimage)
-        --弹球最高得分
+function PhysicsScene:_refresh( )
+   local activitybyid=LocalData:Instance():get_getactivitybyid()
+   --弹球最高得分
         self.bestscore_text=self.phy_bg:getChildByTag(1803)
         self.bestscore_text:setString(tostring(activitybyid["mypoints"]))
         --弹球累计得分
@@ -230,24 +217,26 @@ function PhysicsScene:add_ui()
         else
           self._betgolds:setString("剩余弹珠次数:"   ..   activitybyid["remaintimes"]  )
         end
-  
-       -- _betgolds:setString(tostring(activitybyid["betgolds"] .. "金币/次"))
+end
 
+function PhysicsScene:add_ui(_istrue)
+     -- self:getPhysicsWorld():setDebugDrawMask(
+     --    true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
+    -- cc.Director:getInstance():getCamera():setCenterXYZ(100,0,100);
 
+    self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
+    self:addChild(self.phy_bg)
+    if _istrue then
+      self:fun_time(  )--  倒计时
+    end
+    
 
-
+        --弹球广告图
+        local activitybyid=LocalData:Instance():get_getactivitybyid()
+        local _imagename=self.phy_bg:getChildByTag(87)
+        _imagename:loadTexture(self.phyimage)
+      self:_refresh()
     local sp_bg=self.phy_bg:getChildByTag(1791)
-
-    -- self.layer = display.newLayer()
-    -- self.layer:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
-    --     return self:onTouch(event.name, event.x, event.y)
-    -- end)
-    -- self.layer:setTouchEnabled(true)
-    -- self.layer:setTouchSwallowEnabled(true)
-    -- self.phy_bg:getChildByTag(1788):addChild(self.layer)
-
-
-
     local physics=Util:read_json("res/physics.json")
 
     local coinBody = cc.PhysicsBody:create()
@@ -520,7 +509,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
               self.start_bt:setTouchEnabled(true)
               self.PhysicsPop:removeFromParent()
               self.phy_bg:removeFromParent()
-                 self:add_ui()--再来一次
+                 self:add_ui(false)--再来一次
 
            end
             if tag==166 then
@@ -591,6 +580,12 @@ function PhysicsScene:onEnter()
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
                          self:fun_data()
+                         Server:Instance():getactivitybyid(self.id,0)--  从新初始化
+                      end)
+    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
+                       function()
+                         self:_refresh()
+                        
                       end)
 
 end
@@ -617,6 +612,7 @@ function PhysicsScene:fun_data( )
 end
 function PhysicsScene:onExit()
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
+         NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
 end
 
 
@@ -722,7 +718,6 @@ function PhysicsScene:Phypop_up()
 
             local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
             self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
-            print("是什么图片",self._imagetu)
             local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
             local advert =self.PhysicsPop:getChildByTag(165)  --  广告
             advert:loadTexture(path..self._imagetu)
