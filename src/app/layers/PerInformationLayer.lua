@@ -343,7 +343,6 @@ function PerInformationLayer:touch_back( sender, eventType )
             
         end
     elseif  tag==1410 then
-        --self:fun_shuji()
          self:init()
 
     elseif  tag==190 then
@@ -378,34 +377,7 @@ function PerInformationLayer:touch_back( sender, eventType )
          print("确定选择地址")
     end
 end
-function PerInformationLayer:fun_shuji(  )
-     local userdt = LocalData:Instance():get_userdata()--
-      local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
-     userdt["birthday"]=userdatainit["birthday"]
-     userdt["cityid"]=userdatainit["cityid"]
-     userdt["cityname"]=userdatainit["cityname"]
-     userdt["gender"]=userdatainit["gender"]
-     print("正是新别 ",userdatainit["gender"])
-      if userdatainit["gender"]  ==  nil  then
-         userdt["gender"]=1
-     end
-     userdt["nickname"]=userdatainit["nickname"]
-     -- userdt["golds"]=userdatainit["golds"]
-     -- userdt["points"]=userdatainit["points"]
-     userdt["registertime"]=userdatainit["registertime"]
-     userdt["provincename"]=userdatainit["provincename"]  
-     userdt["districtame"]=userdatainit["districtame"] 
-     if userdt["provincename"] == nil  then
-            local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
-            if phone_location then
-                print("手机归属")
-                userdt["provincename"]=phone_location["provincename"]
-                userdt["cityname"]=phone_location["cityname"]
-                userdt["districtame"]=""
-            end
-      end 
-     LocalData:Instance():set_userdata(userdt)  --必须打开
-end
+
 -- cath 1 保存邮寄信息上传服务器
 --      2 选择邮寄城市的确认
 function PerInformationLayer:save_mail(cath)
@@ -899,10 +871,16 @@ function PerInformationLayer:savedata( )
             userdatainit["birthday"]=birthday
             userdatainit["cityid"]=cityid
             userdatainit["cityname"]=cityname
-            userdatainit["gender"]=gender
+            if tostring(gender)==tostring("true") then
+               userdatainit["gender"]=1
+            else
+                userdatainit["gender"]=0
+            end
+            
             userdatainit["nickname"]=nickname
             userdatainit["provincename"]=provincename
             userdatainit["districtame"] =self._area:getString()
+            dump(userdatainit)
             LocalData:Instance():set_getuserinfo(userdatainit)  --必须打开
             Server:Instance():setuserinfo(params) 
 end
