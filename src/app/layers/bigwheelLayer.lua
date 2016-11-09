@@ -197,8 +197,9 @@ function bigwheelLayer:init(  )
                if eventType == ccui.CheckBoxEventType.selected then
                      
                elseif eventType == ccui.CheckBoxEventType.unselected then
-                       self.CheckBox:setSelected(true)
+                       
                        if tonumber(self.volume_num:getString()) <=0 then
+                            self.CheckBox:setSelected(true)
                             Server:Instance():prompt("您的幸运卡数量不够,通过邀请好友和签到可以快速获得呦~") 
                        end
                end
