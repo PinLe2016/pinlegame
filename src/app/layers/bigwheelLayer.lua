@@ -258,7 +258,6 @@ function bigwheelLayer:init(  )
 end
 function bigwheelLayer:fun_began(  )
 
-Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
         self.caideng:setVisible(true)
         self.CheckBox:setTouchEnabled(false)
 	  local function CallFucnCallback3(sender)
@@ -332,7 +331,6 @@ function bigwheelLayer:touch_callback( sender, eventType )
                if  tonumber(tasklist[i]["targettype"])   ==  4   then
                     LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
                end
-               
          end
 
 
@@ -475,6 +473,7 @@ function bigwheelLayer:onEnter()
 end
 
 function bigwheelLayer:onExit()
+  Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
      
 end
