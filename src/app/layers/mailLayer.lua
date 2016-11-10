@@ -184,6 +184,7 @@ function mailLayer:touch_back(sender, eventType)
 end
 function mailLayer:fun_emailcontentlayer( )
 	local affichedetail=LocalData:Instance():get_getaffichedetail()
+  dump(affichedetail)
     self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
      self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
         self:addChild(self.fragment_sprite1)
@@ -247,7 +248,7 @@ function mailLayer:fun_emailcontentlayer( )
                       return
                 end
                 local affichedetail=LocalData:Instance():get_getaffichedetail()
-                if tonumber(affichedetail["rewardgolds"])  <= 0  then
+                if tonumber(affichedetail["rewardgolds"])  <= 0 and tonumber(affichedetail["rewardcards"])  <= 0 then
                   Server:Instance():prompt("没有可领取的金币")
                   return
                 end
