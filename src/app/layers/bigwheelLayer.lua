@@ -257,7 +257,7 @@ function bigwheelLayer:init(  )
 
 end
 function bigwheelLayer:fun_began(  )
-
+        
         self.caideng:setVisible(true)
         self.CheckBox:setTouchEnabled(false)
 	  local function CallFucnCallback3(sender)
@@ -311,7 +311,7 @@ function bigwheelLayer:touch_callback( sender, eventType )
       end
 	if tag==44 then --开始
     print("IF_VOERkaisi ",self.IF_VOER)
-      if self.IF_VOER then
+      if tostring(self.IF_VOER)  ==  "true"  then
         self:try_again()
         return 
       end
@@ -325,6 +325,7 @@ function bigwheelLayer:touch_callback( sender, eventType )
             self.volume_num:setString(tostring(self.volume_num:getString()-1))
          end
 	     Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume)  --  转盘随机数
+
         local _table=LocalData:Instance():get_gettasklist()
         local tasklist=_table["tasklist"]
          for i=1,#tasklist  do 
@@ -365,7 +366,9 @@ function bigwheelLayer:try_again()
                                                       local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
                                                       cc.Director:getInstance():replaceScene(scene)
                                                       LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+                                                      return
                                                 end
+                                                self.IF_VOER=true
                                               end)  
                                               -- self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
 
@@ -379,6 +382,7 @@ function bigwheelLayer:try_again()
                                           LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                                           -- self.end_bt:setVisible(true)
                                   end
+
                             end)
 end
 
@@ -466,6 +470,7 @@ function bigwheelLayer:onEnter()
                                	end
                                end
                                self.x_rand=self.cotion_gold[math.random(1,#self.cotion_gold)]
+                               Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
                                self:fun_began()
                               self._prizetext:setString(tostring(_gold["golds"]))
                       end)
@@ -473,7 +478,7 @@ function bigwheelLayer:onEnter()
 end
 
 function bigwheelLayer:onExit()
-  Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
+  
      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
      
 end

@@ -155,7 +155,6 @@ function MainInterfaceScene:fun_init( )
 
       self.activitycode_text = self.kuang:getChildByTag(58)
 
-       
 
 end
 --用户数据
