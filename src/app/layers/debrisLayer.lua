@@ -298,6 +298,7 @@ function debrisLayer:add_reward( )
         self:addChild(self.Rewardvouchers,10000)
         local jique=self.Rewardvouchers:getChildByTag(421)
         local jinyan=self.Rewardvouchers:getChildByTag(102)
+        
 
         
 
@@ -335,7 +336,7 @@ function debrisLayer:add_reward( )
                -- jique:setVisible(true)
                -- jinyan:setVisible(false)
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
-               --Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
+               
 
          end
 end

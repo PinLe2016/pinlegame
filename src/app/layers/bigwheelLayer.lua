@@ -258,7 +258,7 @@ function bigwheelLayer:init(  )
 end
 function bigwheelLayer:fun_began(  )
 
-
+Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
         self.caideng:setVisible(true)
         self.CheckBox:setTouchEnabled(false)
 	  local function CallFucnCallback3(sender)
