@@ -35,7 +35,7 @@ function bigwheelLayer:ctor(params)
       self.IF_VOER=false
         print("IF_VOER1 ",self.IF_VOER)
 	self:setNodeEventEnabled(true)--layer添加监听     
-	self.floating_layer = FloatingLayerEx.new()
+	self.floating_layer = require("app.layers.FloatingLayer").new()
 	self.floating_layer:addTo(self,100000)
 	print("--fe-----")
 	self.m_turnBg=nil

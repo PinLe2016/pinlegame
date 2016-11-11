@@ -11,7 +11,7 @@ function MainScene:ctor()
 	     ----  全局变量  服务器选择
    HttpOrSocket = "HTTP"
 
-   self.floating_layer = FloatingLayerEx.new()
+   self.floating_layer = require("app.layers.FloatingLayer").new()
    self.floating_layer:setTouchSwallowEnabled(false)
    self.floating_layer:addTo(self,100000)
 

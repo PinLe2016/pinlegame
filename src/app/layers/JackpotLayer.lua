@@ -16,7 +16,7 @@ end)
 function JackpotLayer:ctor(params) 
 
         self.addetailurl=params.addetailurl
-        self.floating_layer = FloatingLayerEx.new()
+        self.floating_layer = require("app.layers.FloatingLayer").new()
         self.floating_layer:addTo(self,100000)
 
         -- dump(params)

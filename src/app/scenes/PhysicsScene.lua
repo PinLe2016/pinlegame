@@ -94,7 +94,7 @@ function PhysicsScene:ctor(params)
     -- display.addSpriteFrames(GAME_TEXTURE_DATA_FILENAME, GAME_TEXTURE_IMAGE_FILENAME)
     
        self:setNodeEventEnabled(true)--layer添加监听
-       self.floating_layer = FloatingLayerEx.new()
+       self.floating_layer = require("app.layers.FloatingLayer").new()
        self.floating_layer:addTo(self,100000)
 
     

@@ -13,7 +13,7 @@ end)
 
 function MallScene:ctor()
 
-     self.floating_layer = FloatingLayerEx.new()
+     self.floating_layer = require("app.layers.FloatingLayer").new()
      self.floating_layer:addTo(self,100000)
 
      self:listener_home() --注册安卓返回键

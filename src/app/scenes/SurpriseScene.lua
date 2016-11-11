@@ -10,7 +10,7 @@ local GameScene = require("app.scenes.GameScene")
 
 function SurpriseScene:ctor()
   
-      self.floating_layer = FloatingLayerEx.new()
+      self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       --self:addChild(SurpriseOverLayer.new())
       self.sur_pageno=1
@@ -18,7 +18,7 @@ function SurpriseScene:ctor()
       self.time=0
       self.secondOne = 0
       self.list_table={}
-      -- self.floating_layer = FloatingLayerEx.new()
+      -- self.floating_layer = require("app.layers.FloatingLayer").new()
       -- self.floating_layer:addTo(self,100000)
       self:Surpriseinit()
       self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
@@ -40,7 +40,7 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
   -- self.time=0
   -- self.secondOne = 0
   -- self.list_table={}
-  -- self.floating_layer = FloatingLayerEx.new()
+  -- self.floating_layer = require("app.layers.FloatingLayer").new()
   -- self.floating_layer:addTo(self,100000)
   -- self:Surpriseinit()
 

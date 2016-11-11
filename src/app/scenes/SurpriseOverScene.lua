@@ -20,7 +20,7 @@ function SurpriseOverScene:ctor(params)--params
         print("发动机可分解的时空房间",self.cycle)
         self.id=params.id
         self.tp=params.tp
-        self.floating_layer = FloatingLayerEx.new()
+        self.floating_layer = require("app.layers.FloatingLayer").new()
         self.floating_layer:addTo(self,1000)
         self.actid=LocalData:Instance():get_actid()
 
