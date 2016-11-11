@@ -14,7 +14,7 @@ end
 
 
 function Server:getgoldspoollist_callback()
-       dump(self.data)
+       -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return

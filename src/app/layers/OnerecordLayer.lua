@@ -74,10 +74,10 @@ function OnerecordLayer:Onerecord_init(  )
                             end
                               local _activitybyid=LocalData:Instance():get_getactivitybyid()
                local userdt = LocalData:Instance():get_userdata()
-             if tonumber(_activitybyid["remaintimes"]) <=  0   then
-                Server:Instance():prompt("您参与次数已经用完")
-                return
-             end
+             -- if tonumber(_activitybyid["remaintimes"]) <=  0   then
+             --    Server:Instance():prompt("您参与次数已经用完")
+             --    return
+             -- end
              print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
              if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])   <  0    then
                 Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
