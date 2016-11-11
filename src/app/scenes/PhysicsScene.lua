@@ -487,15 +487,15 @@ function PhysicsScene:touch_btCallback( sender, eventType )
               self.PhysicsPop:removeFromParent()
               -- cc.Director:getInstance():popScene()
               -- Server:Instance():getactivitybyid(self.id,self.cycle)
-            if tonumber(self.cycle) ~=  -1 then
+            if tonumber(self.cycle)   ~=  -1 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
+                        local userdt = LocalData:Instance():get_userdata()
                          local activitypoints = LocalData:Instance():get_getactivitypoints()
-                          local userdt = LocalData:Instance():get_userdata()
-                         if activitypoints["golds"]  then
+                         if activitypoints["golds"]   then
                              userdt["golds"]=activitypoints["golds"]
                          end
                         LocalData:Instance():set_userdata(userdt)
-                        --Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
                         --Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
@@ -534,7 +534,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                              userdt["golds"]=activitypoints["golds"]
                          end
                         LocalData:Instance():set_userdata(userdt)
-                        --Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
                         --Server:Instance():getactivitybyid(self.id,self.cycle)
                 return

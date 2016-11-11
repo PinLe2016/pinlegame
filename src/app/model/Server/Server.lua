@@ -109,7 +109,9 @@ function Server:request_http(command , params)
         return
     end
 
+   if command~="getactivitylist" then
     self:show_http_buffer(true)-- 传输动画
+end
     local parsms_md5={methodtype="json",createtime=os.time(),functionname=command,functionparams=params}
     local post_md5=json.encode(parsms_md5)
     local post_=MD5_KEY..post_md5..MD5_KEY
