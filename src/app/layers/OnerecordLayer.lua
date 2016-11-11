@@ -78,13 +78,13 @@ function OnerecordLayer:Onerecord_init(  )
 
                               local PhysicsScene = require("app.scenes.PhysicsScene")
                     -- Server:Instance():getactivityadlist(self.id)
-                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid=0,phyimage=self.image})
+                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid="",phyimage=self.image})
                   
 
 
 
-                             Server:Instance():getactivitybyid(self.id,_tag)
-                             Server:Instance():getuserinfo() 
+                             --Server:Instance():getactivitybyid(self.id,_tag)
+                             --Server:Instance():getuserinfo() 
                              cc.Director:getInstance():pushScene(scene)
                         end)
 
