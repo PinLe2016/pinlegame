@@ -9,7 +9,7 @@ end)
 
 local GRAVITY         = -2000
 local COIN_MASS       = 6000 --质量
-local COIN_RADIUS     = 11--半径
+local COIN_RADIUS     = 9--半径
 local COIN_RADIUS_tow     = 6--半径
 local COIN_FRICTION   = 0.8--弹性系数
 local COIN_FRICTION_tow   =0.8--弹性系数
@@ -89,6 +89,11 @@ function PhysicsScene:ctor(params)
         self.actid=LocalData:Instance():get_actid()
         LocalData:Instance():set_getactivitypoints(nil)
     -- create touch layer
+    -- self.layer = display.newLayer()
+    -- self.layer:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
+    --     return self:onTouch(event.name, event.x, event.y)
+    -- end)
+    -- self:addChild(self.layer)
 
 
     -- display.addSpriteFrames(GAME_TEXTURE_DATA_FILENAME, GAME_TEXTURE_IMAGE_FILENAME)
@@ -164,7 +169,7 @@ function PhysicsScene:ctor(params)
             if tag1==255 or tag2==255 then --处理力度不够没有弹上去的情况
 
                 -- self.rod_coinBody:setGravityEnable(false)
-                dump(self.rod_spr:getPositionX())
+                -- dump(self.rod_spr:getPositionX())
                 self.coinSprite:setPosition(self.rod_spr:getPositionX(),ROD_B_POPINT+225-BOLL_OFF_SET)
                 self.start_bt:setTouchEnabled(true)
                 -- Util:player_music("PHYSICS",false )
@@ -185,7 +190,7 @@ function PhysicsScene:ctor(params)
                node:loadTexture("png/Physicshongqiu-xiao-liang.png") 
                node:runAction(seq)
            else
-                Util:player_music("PHYSICS",false)
+                Util:player_music("res/PHYSICS",false)
                body:setGravityEnable(true)
                self.score_spr=node
            end
