@@ -259,11 +259,11 @@ function activitycodeLayer:act_list()
                            self. act_image=tostring(Util:sub_str(sup_data[sender:getTag()]["ownerurl"], "/",":"))
                             local  l_time=sup_data[sender:getTag()]["nowtime"]-sup_data[sender:getTag()]["begintime"]
                             if tonumber(l_time) <=  0 then
-                              self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="act",ser_status=0}))
+                              self:addChild(require("app.layers.DetailsLayer").new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="act",ser_status=0}))
                               return
                             end
 
-                          self:addChild(DetailsLayer.new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="act",ser_status=1}))
+                          self:addChild(require("app.layers.DetailsLayer").new({id=self.act_id,image=self. act_image,type=sup_data[sender:getTag()]["type"],_ky="act",ser_status=1}))
                  
                     end
           end  
