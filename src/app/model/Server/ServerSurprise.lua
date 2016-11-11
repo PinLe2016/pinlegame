@@ -46,14 +46,15 @@ end
 
 
 function Server:getactivitybyid_callback()
-    dump(self.data)
+    --dump(self.data)
     if self.data.err_code==0  then
             LocalData:Instance():set_getactivitybyid(self.data)--保存数据
             if self.cycle  == 0 then
                 NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE)
             end
+            NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE)
     elseif self.data.err_code==1 then
-        self:show_float_message("金币不足")
+        --self:show_float_message("金币不足")
     end
     
     

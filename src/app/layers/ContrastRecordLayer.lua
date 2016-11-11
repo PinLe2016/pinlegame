@@ -125,9 +125,16 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                         return
                 end
                 local _tag=sender:getTag()
-                GameScene = require("app.scenes.GameScene")
-                 local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=self.heroid})  --daojishi
-                 cc.Director:getInstance():pushScene(scene)
+
+                  local PhysicsScene = require("app.scenes.PhysicsScene")
+                    -- Server:Instance():getactivityadlist(self.id)
+                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid=0,phyimage=self.image})
+                                cc.Director:getInstance():pushScene(scene)
+
+
+                -- GameScene = require("app.scenes.GameScene")
+                --  local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=self.heroid})  --daojishi
+                --  cc.Director:getInstance():pushScene(scene)
                  Server:Instance():getactivitybyid(self.id,_tag)
                  Server:Instance():getuserinfo() 
             end)

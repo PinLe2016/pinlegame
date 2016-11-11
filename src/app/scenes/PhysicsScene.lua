@@ -88,6 +88,7 @@ function PhysicsScene:ctor(params)
         self.phyimage=params.phyimage
         self.actid=LocalData:Instance():get_actid()
         LocalData:Instance():set_getactivitypoints(nil)
+        
     -- create touch layer
     -- self.layer = display.newLayer()
     -- self.layer:addNodeEventListener(cc.NODE_TOUCH_EVENT, function(event)
@@ -216,7 +217,8 @@ function PhysicsScene:_refresh( )
         self.allscore_text=self.phy_bg:getChildByTag(1802)
         self.allscore_text:setString(tostring(activitybyid["mypoints"]))
         --  押注金币
-        self._betgolds=self.phy_bg:getChildByTag(1799)   
+        self._betgolds=self.phy_bg:getChildByTag(1799)  
+
         if tonumber(activitybyid["remaintimes"]) < 0 then
           self._betgolds:setString("/")
         else
@@ -228,7 +230,7 @@ function PhysicsScene:add_ui(_istrue)
      -- self:getPhysicsWorld():setDebugDrawMask(
      --    true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
     -- cc.Director:getInstance():getCamera():setCenterXYZ(100,0,100);
-
+   Server:Instance():getactivitybyid(self.id,self.cycle)
     self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
     self:addChild(self.phy_bg)
     if _istrue then
@@ -485,7 +487,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
               self.PhysicsPop:removeFromParent()
               -- cc.Director:getInstance():popScene()
               -- Server:Instance():getactivitybyid(self.id,self.cycle)
-            if tonumber(self.cycle)   ~=  -1 then
+            if tonumber(self.cycle) ~=  -1 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                          local activitypoints = LocalData:Instance():get_getactivitypoints()
                           local userdt = LocalData:Instance():get_userdata()
@@ -493,12 +495,12 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                              userdt["golds"]=activitypoints["golds"]
                          end
                         LocalData:Instance():set_userdata(userdt)
-                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        --Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
-                        Server:Instance():getactivitybyid(self.id,self.cycle)
+                        --Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
             end
-            Server:Instance():getactivitybyid(self.id,0)
+            Server:Instance():getactivitybyid(self.id,self.cycle)
             cc.Director:getInstance():popScene()
            end
            if tag==774 then
@@ -532,12 +534,12 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                              userdt["golds"]=activitypoints["golds"]
                          end
                         LocalData:Instance():set_userdata(userdt)
-                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        --Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
-                        Server:Instance():getactivitybyid(self.id,self.cycle)
+                        --Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
             end
-            Server:Instance():getactivitybyid(self.id,0)
+            Server:Instance():getactivitybyid(self.id,self.cycle)
             cc.Director:getInstance():popScene()
            end
 
@@ -585,7 +587,7 @@ function PhysicsScene:onEnter()
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
                          self:fun_data()
-                         Server:Instance():getactivitybyid(self.id,0)--  从新初始化
+                         Server:Instance():getactivitybyid(self.id,self.cycle)--  从新初始化
                       end)
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
@@ -680,7 +682,7 @@ end
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
                self.phy_bg:removeFromParent()
                self.PhysicsPop:removeFromParent()
-                if tonumber(self.cycle)   ~=  -1 then
+                if tonumber(self.cycle) ~=  -1 then
                             local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                              local activitypoints = LocalData:Instance():get_getactivitypoints()
                               local userdt = LocalData:Instance():get_userdata()
@@ -688,12 +690,13 @@ end
                                  userdt["golds"]=activitypoints["golds"]
                              end
                             LocalData:Instance():set_userdata(userdt)
-                            Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                            -- Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                            
+                            -- Server:Instance():getactivitybyid(self.id,self.cycle)
                             cc.Director:getInstance():popScene()
-                            Server:Instance():getactivitybyid(self.id,self.cycle)
                     return
                 end
-                Server:Instance():getactivitybyid(self.id,0)
+                Server:Instance():getactivitybyid(self.id,self.cycle)
                 cc.Director:getInstance():popScene()
 
            end
