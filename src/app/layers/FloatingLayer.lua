@@ -25,7 +25,7 @@ function FloatingLayer:show_http(is_show)
     local action = cc.CSLoader:createTimeline("loadingLayer.csb")
     action:setTimeSpeed(0.5)
     loadingLayer:runAction(action)
-    action:gotoFrameAndPlay(0,true)
+    action:gotoFrameAndPlay(0,120,true)
 end
 function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
    -- if  self.dialog then
