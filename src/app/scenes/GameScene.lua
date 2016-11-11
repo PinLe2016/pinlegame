@@ -20,7 +20,7 @@ function GameScene:ctor(params)
     self.heroid=params.heroid
     self.cycle=params.cycle
     self.phyimage=params.phyimage
-    self.floating_layer = FloatingLayerEx.new()
+    self.floating_layer = require("app.layers.FloatingLayer").new()
 
     self.floating_layer:addTo(self,-1)
     self._time=5

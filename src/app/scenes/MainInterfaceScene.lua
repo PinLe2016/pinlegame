@@ -27,7 +27,8 @@ function MainInterfaceScene:extend12()
 end
  
 function MainInterfaceScene:ctor()
-	self.floating_layer = FloatingLayerEx.new()
+
+	    self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.count=0
 
