@@ -20,6 +20,7 @@ function OnerecordLayer:ctor(params)
          self.title=params.title
          self.id=params.id
          self._type=params._type
+         self.phyimage=params._img
          Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self:setNodeEventEnabled(true)--layer添加监听
         -- Server:Instance():getactivitybyid(self.id,1)
@@ -89,7 +90,7 @@ function OnerecordLayer:Onerecord_init(  )
 
                               local PhysicsScene = require("app.scenes.PhysicsScene")
                     -- Server:Instance():getactivityadlist(self.id)
-                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid="",phyimage=self.image})
+                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid="",phyimage=self.phyimage})
                   
 
 

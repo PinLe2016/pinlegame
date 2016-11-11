@@ -16,6 +16,7 @@ function ContrastRecordLayer:ctor(params)
        self.heroid=params.heroid --hero ID 
        self.allscore=params.allscore --总积分
        self._type=params._type
+      self.phyimage=params.phyimage
        print("dsfdsfdsfdsg  ",self.id,"   ",self.heroid)
        Server:Instance():getactivitypointsdetail(self.id,self.heroid)  --对比排行榜HTTP
        self:setNodeEventEnabled(true)--layer添加监听
@@ -138,12 +139,12 @@ function ContrastRecordLayer:ContrastRecord_init(  )
          end
 
 
-         
+
                 local _tag=sender:getTag()
 
                   local PhysicsScene = require("app.scenes.PhysicsScene")
                     -- Server:Instance():getactivityadlist(self.id)
-                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid=0,phyimage=self.image})
+                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid=0,phyimage=self.phyimage})
                                 cc.Director:getInstance():pushScene(scene)
 
 

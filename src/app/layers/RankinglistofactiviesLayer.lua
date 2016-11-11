@@ -10,6 +10,7 @@ function RankinglistofactiviesLayer:ctor(params)
       self.count=params.count
       self.image=params.image
       self.title=params.title
+      self.phyimage=params._img
       self._type=params._type
       self:setNodeEventEnabled(true)--layer添加监听
       local userdt = LocalData:Instance():get_userdata()
@@ -169,7 +170,7 @@ function RankinglistofactiviesLayer:onImageViewClicked( sender, eventType )
           self:addChild(ContrastRecordLayer.new({title=self.title,head=sup_data[tag]["hearurl"],
                                     name=sup_data[tag]["nickname"],rank=sup_data[tag]["rank"],
                                     level=sup_data[tag]["title"],heroid=sup_data[tag]["playerid"],id=self.id,_type=self._type,
-                                    allscore=sup_data[tag]["totalPoints"]}))
+                                    allscore=sup_data[tag]["totalPoints"],phyimage=self.phyimage}))
 end
 function RankinglistofactiviesLayer:onEnter()
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.RANK_LAYER_IMAGE, self,
