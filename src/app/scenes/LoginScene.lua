@@ -6,7 +6,7 @@ local LoginScene = class("LoginScene", function()
     return display.newScene("LoginScene")
 end)
 
-local FloatingLayerEx = require("app.layers.FloatingLayer")
+-- local require("app.layers.FloatingLayer") = require("app.layers.FloatingLayer")
 
 
 function LoginScene:ctor()
@@ -49,6 +49,7 @@ end
             if self._time==200 then
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
                --判断是否是第一次登陆
+               -- cc.UserDefault:getInstance():setStringForKey("new_start","0")
                local new_start=cc.UserDefault:getInstance():getStringForKey("new_start","0")
                if new_start=="0" then
                   self:_coverlayer()
