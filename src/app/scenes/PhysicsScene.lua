@@ -483,11 +483,8 @@ function PhysicsScene:touch_btCallback( sender, eventType )
 
            if tag==167 then
                self.phy_bg:removeFromParent()
-               --self:add_ui()
               self.PhysicsPop:removeFromParent()
-              -- cc.Director:getInstance():popScene()
-              -- Server:Instance():getactivitybyid(self.id,self.cycle)
-            if tonumber(self.cycle)   ~=  -1 then
+            if tonumber(self.cycle)   ~=  0 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                         local userdt = LocalData:Instance():get_userdata()
                          local activitypoints = LocalData:Instance():get_getactivitypoints()
@@ -495,13 +492,16 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                              userdt["golds"]=activitypoints["golds"]
                          end
                         LocalData:Instance():set_userdata(userdt)
-                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        
                         cc.Director:getInstance():popScene()
-                        --Server:Instance():getactivitybyid(self.id,self.cycle)
+
+                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
             end
-            Server:Instance():getactivitybyid(self.id,self.cycle)
+            
             cc.Director:getInstance():popScene()
+            Server:Instance():getactivitybyid(self.id,self.cycle)
            end
            if tag==774 then
               local activitypoints = LocalData:Instance():get_getactivitypoints()
@@ -526,7 +526,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
              --Util:scene_control("MainInterfaceScene")
              -- cc.Director:getInstance():popScene()
              -- Server:Instance():getactivitybyid(self.id,self.cycle)   --  跟新详情数据
-            if tonumber(self.cycle)   ~=  -1 then
+            if tonumber(self.cycle)   ~=  0 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                         local userdt = LocalData:Instance():get_userdata()
                          local activitypoints = LocalData:Instance():get_getactivitypoints()
@@ -539,8 +539,9 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                         --Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
             end
-            Server:Instance():getactivitybyid(self.id,self.cycle)
+            
             cc.Director:getInstance():popScene()
+            Server:Instance():getactivitybyid(self.id,self.cycle)
            end
 
            if tag==1795 then  --开启按钮
