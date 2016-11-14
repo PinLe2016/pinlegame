@@ -496,7 +496,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                         cc.Director:getInstance():popScene()
 
                         Server:Instance():getactivitypointsdetail(self.id,self.heroid)
-                        Server:Instance():getactivitybyid(self.id,self.cycle)
+                        --Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
             end
             
@@ -587,6 +587,7 @@ function PhysicsScene:onEnter()
     self:scheduleUpdate()
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
+                        self._back:setVisible(true)
                          self:fun_data()
                          Server:Instance():getactivitybyid(self.id,self.cycle)--  从新初始化
                       end)
@@ -708,9 +709,9 @@ function PhysicsScene:Phypop_up()
             self.PhysicsPop = cc.CSLoader:createNode("PhysicsPop.csb");
             self:addChild(self.PhysicsPop)
 
-            local back=self.PhysicsPop:getChildByTag(167)  --  关闭按钮
-            back:setVisible(true)
-            back:addTouchEventListener(function(sender, eventType  )
+            self._back=self.PhysicsPop:getChildByTag(167)  --  关闭按钮
+            self._back:setVisible(false)
+            self._back:addTouchEventListener(function(sender, eventType  )
             self:touch_btCallback(sender, eventType)
             end)
 
@@ -769,6 +770,7 @@ function PhysicsScene:Phypop_up()
              if  LocalData:Instance():get_tasktable()    then   --  判断惊喜吧是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                        LocalData:Instance():set_tasktable(nil)--制空
+
             end
 
 
@@ -797,7 +799,7 @@ function PhysicsScene:play_action(spritt)
                 animation:addSpriteFrameWithFile(name)
             end
 
-            animation:setDelayPerUnit(0.3)
+            animation:setDelayPerUnit(0.2)
             animation:setRestoreOriginalFrame(true)
 
             --创建动作
