@@ -167,7 +167,7 @@ function RankinglistofactiviesLayer:onImageViewClicked( sender, eventType )
           if tostring(sup_data[tag]["playerid"])==tostring(_key)   then
                 return
           end
-          self:addChild(ContrastRecordLayer.new({title=self.title,head=sup_data[tag]["hearurl"],
+          self:addChild(require("app.layers.ContrastRecordLayer").new({title=self.title,head=sup_data[tag]["hearurl"],
                                     name=sup_data[tag]["nickname"],rank=sup_data[tag]["rank"],
                                     level=sup_data[tag]["title"],heroid=sup_data[tag]["playerid"],id=self.id,_type=self._type,
                                     allscore=sup_data[tag]["totalPoints"],phyimage=self.phyimage}))

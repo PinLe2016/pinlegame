@@ -496,7 +496,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                         cc.Director:getInstance():popScene()
 
                         Server:Instance():getactivitypointsdetail(self.id,self.heroid)
-                        --Server:Instance():getactivitybyid(self.id,self.cycle)
+
                 return
             end
             
