@@ -740,7 +740,7 @@ function PhysicsScene:Phypop_up()
             local score3=math.random(8)
             score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", score3))
             local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
-            local score4=math.random(8)
+            local score4=math.random(6)
             score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", score4))
             --给后端发送请求  保存数据
             local  _score=  self._score1 ..   score4  ..   score2  ..   score3 
