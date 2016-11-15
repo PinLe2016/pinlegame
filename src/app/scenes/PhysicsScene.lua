@@ -87,7 +87,7 @@ function PhysicsScene:ctor(params)
         self.id=params.id
         self.phyimage=params.phyimage
         self.actid=LocalData:Instance():get_actid()
-        LocalData:Instance():set_getactivitypoints(nil)
+        --LocalData:Instance():set_getactivitypoints(nil)
         
     -- create touch layer
     -- self.layer = display.newLayer()
@@ -194,6 +194,7 @@ function PhysicsScene:ctor(params)
                 Util:player_music("res/PHYSICS",false)
                body:setGravityEnable(true)
                self.score_spr=node
+               self:fun_server()
            end
             
             
@@ -203,19 +204,26 @@ function PhysicsScene:ctor(params)
     end,cc.Handler.EVENT_PHYSICS_CONTACT_BEGIN)  
   
     cc.Director:getInstance():getEventDispatcher():addEventListenerWithSceneGraphPriority(conListener,self) 
-
     self:add_ui(true)
     
 end
-
+function PhysicsScene:fun_server( )
+      self._score1=self.score_spr:getTag()/10
+      self.score2=math.random(8)
+      self.score3=math.random(8)
+      self.score4=math.random(8)
+      local  _score=  self._score1 ..   self.score4  ..   self.score2  ..   self.score3 
+      Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
+end
 function PhysicsScene:_refresh( )
    local activitybyid=LocalData:Instance():get_getactivitybyid()
    --弹球最高得分
-        self.bestscore_text=self.phy_bg:getChildByTag(1803)
+         self.bestscore_text=self.phy_bg:getChildByTag(1803)
         self.bestscore_text:setString(tostring(activitybyid["mypoints"]))
         --弹球累计得分
         self.allscore_text=self.phy_bg:getChildByTag(1802)
         self.allscore_text:setString(tostring(activitybyid["mypoints"]))
+        
         --  押注金币
         self._betgolds=self.phy_bg:getChildByTag(1799)  
 
@@ -230,11 +238,14 @@ function PhysicsScene:add_ui(_istrue)
      -- self:getPhysicsWorld():setDebugDrawMask(
      --    true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
     -- cc.Director:getInstance():getCamera():setCenterXYZ(100,0,100);
-   Server:Instance():getactivitybyid(self.id,self.cycle)
+   --Server:Instance():getactivitybyid(self.id,self.cycle)
     self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
     self:addChild(self.phy_bg)
     if _istrue then
       self:fun_time(  )--  倒计时
+      self:_refresh()
+    else
+      self:fun_data() 
     end
     
 
@@ -242,7 +253,8 @@ function PhysicsScene:add_ui(_istrue)
         local activitybyid=LocalData:Instance():get_getactivitybyid()
         local _imagename=self.phy_bg:getChildByTag(87)
         _imagename:loadTexture(self.phyimage)
-      self:_refresh()
+       
+       
     local sp_bg=self.phy_bg:getChildByTag(1791)
     local physics=Util:read_json("res/physics.json")
 
@@ -587,14 +599,14 @@ function PhysicsScene:onEnter()
     self:scheduleUpdate()
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
-                        self._back:setVisible(true)
-                         self:fun_data()
+                        
+                         
                          Server:Instance():getactivitybyid(self.id,self.cycle)--  从新初始化
                       end)
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
-                         self:_refresh()
-                        
+                         --self:_refresh()
+                        self:fun_data()
                       end)
 
 end
@@ -614,7 +626,7 @@ function PhysicsScene:fun_data( )
         else
           self._betgolds:setString("剩余弹珠次数:"   ..   activitypoints["remaintimes"]  )
         end
-        self.again_bt:setTouchEnabled(true)
+        
 
         
 
@@ -662,7 +674,7 @@ function PhysicsScene:onEnterFrame(dt)
         if  self.score_spr and self.score_spr:getPositionY()<200.0  then
 
             dump(self.score_spr:getTag())
-            self._score1=self.score_spr:getTag()/10
+            -- self._score1=self.score_spr:getTag()/10
             self.score_spr:removeFromParent()
             self.score_spr=nil
             -- self.phy_bg:removeFromParent()
@@ -735,16 +747,13 @@ function PhysicsScene:Phypop_up()
             local score_text1 =self.PhysicsPop:getChildByTag(171)  --  分数1
             score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",self._score1 ))
             local score_text2 =self.PhysicsPop:getChildByTag(168)  --  分数2
-            local score2=math.random(8)
-            score_text2:loadTexture(string.format("png/Physicstaiqiu-%d.png",score2 ))
+            score_text2:loadTexture(string.format("png/Physicstaiqiu-%d.png",self.score2 ))
             local score_text3 =self.PhysicsPop:getChildByTag(169)  --  分数3
-            local score3=math.random(8)
-            score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", score3))
+            score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
             local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
-            local score4=math.random(8)
-            score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", score4))
+            score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
             --给后端发送请求  保存数据
-            local  _score=  self._score1 ..   score4  ..   score2  ..   score3 
+  
             --需求
             -- self._dajishi=self.PhysicsPop:getChildByTag(192)
             -- self._dajishi:setString("5")  --于是乎自己就决定了
@@ -770,16 +779,15 @@ function PhysicsScene:Phypop_up()
              if  LocalData:Instance():get_tasktable()    then   --  判断惊喜吧是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                        LocalData:Instance():set_tasktable(nil)--制空
+                       self.again_bt:setTouchEnabled(true)
 
             end
-
-
-           
 
             -- score_text1:cleanup()
             -- score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",score2+1))
             local function logSprRotation(sender)
-                 Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
+                 self:fun_data()
+                 self._back:setVisible(true)
             end
 
             local action = cc.Sequence:create(cc.DelayTime:create(3.6),cc.CallFunc:create(logSprRotation))
