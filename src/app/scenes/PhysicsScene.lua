@@ -500,9 +500,9 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                         local userdt = LocalData:Instance():get_userdata()
                          local activitypoints = LocalData:Instance():get_getactivitypoints()
-                         if activitypoints["golds"]   then
+
                              userdt["golds"]=activitypoints["golds"]
-                         end
+                     
                         LocalData:Instance():set_userdata(userdt)
                         
                         cc.Director:getInstance():popScene()
@@ -511,13 +511,17 @@ function PhysicsScene:touch_btCallback( sender, eventType )
 
                 return
             end
-            
+            local userdt = LocalData:Instance():get_userdata()
+             local activitypoints = LocalData:Instance():get_getactivitypoints()
+                 userdt["golds"]=activitypoints["golds"]
+            LocalData:Instance():set_userdata(userdt)
             cc.Director:getInstance():popScene()
             Server:Instance():getactivitybyid(self.id,self.cycle)
            end
            if tag==774 then
               local activitypoints = LocalData:Instance():get_getactivitypoints()
-              if tonumber(activitypoints["golds"]) <=0 then
+              dump(activitypoints)
+              if tonumber(activitypoints["golds"])  -   tonumber(activitypoints["betgolds"])   <=0 then
                   Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
                   return
               end
