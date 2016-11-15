@@ -211,7 +211,7 @@ function PhysicsScene:fun_server( )
       self._score1=self.score_spr:getTag()/10
       self.score2=math.random(8)
       self.score3=math.random(8)
-      self.score4=math.random(8)
+      self.score4=math.random(6)
       local  _score=  self._score1 ..   self.score4  ..   self.score2  ..   self.score3 
       Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
 end
@@ -752,6 +752,7 @@ function PhysicsScene:Phypop_up()
             score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
             local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
             score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
+
             --给后端发送请求  保存数据
   
             --需求
