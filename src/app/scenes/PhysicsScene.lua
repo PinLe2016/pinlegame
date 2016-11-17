@@ -385,6 +385,7 @@ function PhysicsScene:add_obstacle()
         end
        
         modeSprite:loadTexture(string.format("png/Physicstaiqiu-%d.png", self._dt))--arr_ball[self._randTable[i+1]]))  --_randt))--
+        modeSprite:setScale(30/86,30/88)
         modeSprite:setPosition(modeSprite_ban_3:getPositionX()+30*i,modeSprite_ban_3:getPositionY())
         modeSprite:setTag(self._dt*10)--(arr_ball[self._randTable[i+1]]*10)  --(_randt*10)--
 
@@ -742,6 +743,9 @@ function PhysicsScene:Phypop_up()
             self:touch_btCallback(sender, eventType)
             end)
 
+
+
+
             local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
             self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
             local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
@@ -756,6 +760,27 @@ function PhysicsScene:Phypop_up()
             score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
             local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
             score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
+
+
+            --  动画
+            local _guang =self.PhysicsPop:getChildByTag(309)  --  背景光
+            local _qianscore =self.PhysicsPop:getChildByTag(310)  --  千位数求
+            _qianscore:loadTexture(string.format("png/Physicstaiqiu-%d.png",self._score1 ))
+            local  scale = cc.ScaleTo:create(0.5,0.5)
+            local  back  = cc.ScaleTo:create(1,1)
+            local function stopAction()
+                    _guang:setOpacity(0)
+                    local  seq_1=cc.MoveTo:create(1.0, cc.p( score_text1:getPositionX(),score_text1:getPositionY() ) )
+                    local  seq_2=cc.ScaleTo:create(0.5,0.5)
+                    local spawn = cc.Spawn:create(seq_1, seq_2)
+                    _qianscore:runAction(spawn)
+                          
+            end
+            local callfunc = cc.CallFunc:create(stopAction)
+            local  seq   = cc.Sequence:create(scale,back,callfunc)
+            _guang:runAction(seq)
+
+
 
             --给后端发送请求  保存数据
   
