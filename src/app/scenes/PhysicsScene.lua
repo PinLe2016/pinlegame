@@ -197,9 +197,6 @@ function PhysicsScene:ctor(params)
                self:fun_server()
            end
             
-            
-
-              
             return true  
     end,cc.Handler.EVENT_PHYSICS_CONTACT_BEGIN)  
   
@@ -298,6 +295,7 @@ function PhysicsScene:add_ui(_istrue)
     self:createCoin(self.rod_spr:getPositionX()+0,  ROD_B_POPINT+225-BOLL_OFF_SET)--小球
 
     self:add_obstacle()--障碍小球
+
 
 end
 
@@ -743,28 +741,47 @@ function PhysicsScene:Phypop_up()
             self:touch_btCallback(sender, eventType)
             end)
 
-
-
-
             local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
             self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
             local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
             local advert =self.PhysicsPop:getChildByTag(165)  --  广告
             advert:loadTexture(path..self._imagetu)
 
-            local score_text1 =self.PhysicsPop:getChildByTag(171)  --  分数1
-            score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",self._score1 ))
-            local score_text2 =self.PhysicsPop:getChildByTag(168)  --  分数2
-            score_text2:loadTexture(string.format("png/Physicstaiqiu-%d.png",self.score2 ))
-            local score_text3 =self.PhysicsPop:getChildByTag(169)  --  分数3
-            score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
-            local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
-            score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
+             local score_text1 =self.PhysicsPop:getChildByTag(171)  --  分数1
+            -- score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",self._score1 ))
+             local score_text2 =self.PhysicsPop:getChildByTag(168)  --  分数2
+            -- score_text2:loadTexture(string.format("png/Physicstaiqiu-%d.png",self.score2 ))
+             local score_text3 =self.PhysicsPop:getChildByTag(169)  --  分数3
+            -- score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
+             local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
+            -- score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
 
+            --  千位数动画
+            local   _table={ }
+            local open_xiangzi =self.PhysicsPop:getChildByTag(515)  --  小球开箱
+            local open_xiangziyangqiu =open_xiangzi:getChildByTag(529)  --样求
+            local open_xiangziwai =open_xiangzi:getChildByTag(517)  --  小球开箱外层
+            local open_xiangzi_hua =open_xiangzi:getChildByTag(519)  --  小球开箱
+            open_xiangzi_hua:setVisible(true)
+            open_xiangzi_hua:setOpacity(0)
+            local close_xiangzi =self.PhysicsPop:getChildByTag(518)  --  小球关闭箱子 
+            close_xiangzi:setVisible(true)
+            close_xiangzi:setOpacity(0)
+            local _xiangqiu={}
+            for i=530,532 do
+              local open_xiangziyangqiu1 =open_xiangzi:getChildByTag(i)  --样求
+              _xiangqiu[i-529]=open_xiangziyangqiu1
+            end
+            --初始化小球
+            for i=520,528 do
+               local open_xiangzi_xiaoqiu =open_xiangzi:getChildByTag(i)  --  小球
+               _table[i-519]=open_xiangzi_xiaoqiu
+               open_xiangzi_xiaoqiu:loadTexture(string.format("png/Physicstaiqiu-%d.png",i-519))--arr_ball[self._randTable[i+1]]))  --_randt))--
+            end
 
-            --  动画
             local _guang =self.PhysicsPop:getChildByTag(309)  --  背景光
             local _qianscore =self.PhysicsPop:getChildByTag(310)  --  千位数求
+
             _qianscore:loadTexture(string.format("png/Physicstaiqiu-%d.png",self._score1 ))
             local  scale = cc.ScaleTo:create(0.5,0.5)
             local  back  = cc.ScaleTo:create(1,1)
@@ -773,7 +790,84 @@ function PhysicsScene:Phypop_up()
                     local  seq_1=cc.MoveTo:create(1.0, cc.p( score_text1:getPositionX(),score_text1:getPositionY() ) )
                     local  seq_2=cc.ScaleTo:create(0.5,0.5)
                     local spawn = cc.Spawn:create(seq_1, seq_2)
-                    _qianscore:runAction(spawn)
+                    local function stopAction1()
+                          
+                           --小球下降
+                          open_xiangzi:setVisible(true)
+                          for i=1,#_table do
+                      
+                                local  _yang=cc.MoveTo:create(0.5, cc.p( _table[i]:getPositionX(),open_xiangziyangqiu:getPositionY() ) )
+                                  _table[i]:runAction(_yang)
+                          end
+
+                            local actionTo = cc.RotateTo:create( 0.2, 30)
+                            local actionTo1 = cc.RotateTo:create( 0.2, -30)
+                            local actionTo2 = cc.RotateTo:create(0.2 , 30)
+                            local actionTo3 = cc.RotateTo:create( 0.2, -30)
+                            local actionTo4 = cc.RotateTo:create( 0.2, 30)
+                            local actionTo5 = cc.RotateTo:create( 0.2, -30)
+                            local actionTo6 = cc.RotateTo:create( 0.2, 0)
+                           
+                           local function logSprRotation(sender)
+                                 open_xiangzi:setVisible(false)
+                                 close_xiangzi:setOpacity(255)
+                            end
+
+                             local function logSprRotation1(sender)
+                                  open_xiangzi:setVisible(true)
+                                  close_xiangzi:setOpacity(0)
+                                  local animation = cc.Animation:create()
+                                  local name
+                                  for i=1,3 do
+                                      name = "png/taiqiu-lihua-"..i..".png"
+                                      animation:addSpriteFrameWithFile(name)
+                                  end
+                                  animation:setDelayPerUnit(0.1)
+                                  animation:setRestoreOriginalFrame(true)
+                                  --创建动作
+                                  local animate = cc.Animate:create(animation)
+                                  local spr=display.newSprite()
+                                  spr:setPosition(cc.p(open_xiangzi_hua:getPositionX(),open_xiangzi_hua:getPositionY()))
+                                  open_xiangzi:addChild(spr)
+                                  spr:runAction(animate)
+                            end
+                            local function logSprRotation3(sender)
+                                   _table[1]:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
+                                   local  t_yang1=cc.MoveTo:create(0.3, cc.p( _table[1]:getPositionX()+50*(-2),open_xiangziyangqiu:getPositionY()+150 ) )
+                                   local  _yang1=cc.MoveTo:create(0.6, cc.p( _xiangqiu[1]:getPositionX(),_xiangqiu[1]:getPositionY() ) )
+                                   _table[1]:runAction(cc.Sequence:create(t_yang1,_yang1))
+                                   _table[2]:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score2))
+                                   local  t_yang2=cc.MoveTo:create(0.5, cc.p( _table[2]:getPositionX()+50*(1),open_xiangziyangqiu:getPositionY()+150 ) )
+                                   local  _yang2=cc.MoveTo:create(0.5, cc.p( _xiangqiu[2]:getPositionX(),_xiangqiu[2]:getPositionY() ) )
+                                   _table[2]:runAction(cc.Sequence:create(t_yang2,_yang2))
+                                   _table[3]:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
+                                   local  t_yang3=cc.MoveTo:create(0.7, cc.p( _table[3]:getPositionX()+50*(3),open_xiangziyangqiu:getPositionY()+150 ) )
+                                   local  _yang3=cc.MoveTo:create(0.4, cc.p( _xiangqiu[3]:getPositionX(),_xiangqiu[3]:getPositionY() ) )
+
+                                     local function logSprRotation2(sender)
+                                          open_xiangzi:setOpacity(0)
+                                          score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",self._score1 ))
+                                          score_text2:loadTexture(string.format("png/Physicstaiqiu-%d.png",self.score2 ))
+                                          score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
+                                          score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
+                                    end
+
+                                   _table[3]:runAction(cc.Sequence:create(t_yang3,_yang3,cc.CallFunc:create(logSprRotation2)))
+                                   self.again_bt:setTouchEnabled(true)
+
+                            end
+
+
+                            
+                           
+
+                            local action = cc.Sequence:create(cc.DelayTime:create(0.8),cc.CallFunc:create(logSprRotation),
+                              actionTo,actionTo1,actionTo2,actionTo3,actionTo4,actionTo5,actionTo6,cc.CallFunc:create(logSprRotation1),cc.DelayTime:create(0.2),cc.CallFunc:create(logSprRotation3))
+                            close_xiangzi:runAction(action)
+
+                    end
+                    local callfunc1 = cc.CallFunc:create(stopAction1)
+                    _qianscore:runAction(cc.Sequence:create(spawn,callfunc1))
                           
             end
             local callfunc = cc.CallFunc:create(stopAction)
@@ -782,17 +876,7 @@ function PhysicsScene:Phypop_up()
 
 
 
-            --给后端发送请求  保存数据
-  
-            --需求
-            -- self._dajishi=self.PhysicsPop:getChildByTag(192)
-            -- self._dajishi:setString("5")  --于是乎自己就决定了
-            -- self._time=5
-            -- self:fun_countdown( )
-            
-
-
-
+            -- 播放其他小球动画
             self:play_action(score_text2)
             self:play_action(score_text3)
             self:play_action(score_text4)
@@ -809,12 +893,9 @@ function PhysicsScene:Phypop_up()
              if  LocalData:Instance():get_tasktable()    then   --  判断惊喜吧是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                        LocalData:Instance():set_tasktable(nil)--制空
-                       self.again_bt:setTouchEnabled(true)
-
+                       -- self.again_bt:setTouchEnabled(true)
             end
 
-            -- score_text1:cleanup()
-            -- score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",score2+1))
             local function logSprRotation(sender)
                  self:fun_data()
                  self._back:setVisible(true)
