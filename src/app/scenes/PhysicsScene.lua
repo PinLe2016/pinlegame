@@ -364,6 +364,7 @@ function PhysicsScene:add_obstacle()
     modeSprite_ban_1:removeFromParent()
     modeSprite_ban_2:removeFromParent()
 
+
     --碰分小球
     local modeSprite_ban_3 =self.phy_bg:getChildByTag(1792)
 
