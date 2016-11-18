@@ -177,7 +177,7 @@ end
 function Server:getactivitypoints_callback()
     dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
+        -- self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
     end
     LocalData:Instance():set_getactivitypoints(self.data)--保存数据

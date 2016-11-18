@@ -243,6 +243,8 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                    local  _time=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
                     if self.ser_status==0 then
                              _table1=Util:FormatTime_colon((sup_data[i]["begintime"]-sup_data[i]["nowtime"])-self.time)
+                             Server:Instance():prompt("活动未开始")
+                              return
                    else
                              _table1=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
                   end

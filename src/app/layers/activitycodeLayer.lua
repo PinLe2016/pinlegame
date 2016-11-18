@@ -247,6 +247,12 @@ function activitycodeLayer:act_list()
                            --    Server:Instance():prompt("活动已结束")
                            --    return
                            -- end
+                             local  _time=sup_data[sender:getTag()]["nowtime"]-sup_data[sender:getTag()]["begintime"]
+                                if _time <=  0 then
+                                  Server:Instance():prompt("活动未开始")
+                                 return
+                            end
+
                              if self._typeevt  == 5  then     --获奖名单
                                       local  win_id=  sup_data[sender:getTag()]["id"]
                                       Server:Instance():getactivitywinners(win_id)
