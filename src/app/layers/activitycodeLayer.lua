@@ -293,7 +293,7 @@ function activitycodeLayer:act_list()
             cell:setTag(i)
             local activity_Panel=cell:getChildByTag(750)
             cell:addTouchEventListener(onImageViewClicked)
-            local path=cc.FileUtils:getInstance():getWritablePath()
+            local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
             -- print("99999   ",tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             -- activity_Panel:loadTexture(tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
