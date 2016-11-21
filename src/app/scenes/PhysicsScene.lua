@@ -369,7 +369,7 @@ function PhysicsScene:add_obstacle()
         modeSprite:setTag(-2)
         self.phy_bg:addChild(modeSprite)
 
-         modeSprite:setPosition(modeSprite_ban_1:getPositionX()-8+(modeSprite_ban_2:getPositionX()-modeSprite_ban_1:getPositionX())*i,modeSprite_ban_1:getPositionY())
+         modeSprite:setPosition(modeSprite_ban_1:getPositionX()-3+(modeSprite_ban_2:getPositionX()-modeSprite_ban_1:getPositionX())*i,modeSprite_ban_1:getPositionY())
          local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 0)
          local coinBody = cc.PhysicsBody:createBox(cc.size(8,35),
                 material)
