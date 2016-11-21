@@ -89,8 +89,16 @@ function PhysicsScene:ctor(params)
         self.actid=LocalData:Instance():get_actid()
 
         
-
-
+        --防home键退出处理
+        local save_table={
+          score=1111,
+          cycle=params.cycle,
+          actid=self.actid["act_id"]
+      }
+      local recv = json.encode(save_table)
+      dump(recv)
+      cc.UserDefault:getInstance():setStringForKey("Physics",recv)
+      -- io.writefile(cc.FileUtils:getInstance():getWritablePath() .."Physics.csv", TableToString(recv,true,true))
         --LocalData:Instance():set_getactivitypoints(nil)
         
     -- create touch layer
@@ -198,6 +206,7 @@ function PhysicsScene:ctor(params)
                 Util:player_music("res/PHYSICS",false)
                body:setGravityEnable(true)
                self.score_spr=node
+               cc.UserDefault:getInstance():setStringForKey("Physics",nil)
                self:fun_server()
            end
             
