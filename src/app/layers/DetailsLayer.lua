@@ -60,7 +60,8 @@ function DetailsLayer:init(  )
          		        local PhysicsScene = require("app.scenes.PhysicsScene")
          		        -- Server:Instance():getactivityadlist(self.id)
          		        local scene=PhysicsScene.new({id=self.id,cycle=0,heroid=0,phyimage=self.image})
-                      	        cc.Director:getInstance():pushScene(scene)
+              	        cc.Director:getInstance():pushScene(scene)
+              	        self.began_bt:setTouchEnabled(false)
 
 		--       --Util:scene_control("SurpriseOverScene")
 		      
@@ -72,8 +73,9 @@ function DetailsLayer:init(  )
 	local back_bt=details:getChildByTag(32)
 	back_bt:addTouchEventListener(back_btCallback)
 
-	local began_bt=details:getChildByTag(26)
-	began_bt:addTouchEventListener(began_btCallback)
+	self.began_bt=details:getChildByTag(26)
+	self.began_bt:setTouchEnabled(true)
+	self.began_bt:addTouchEventListener(began_btCallback)
             
              local rules_bt=details:getChildByTag(27)--规则
              rules_bt:addTouchEventListener((function(sender, eventType  )
