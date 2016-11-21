@@ -133,7 +133,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
          --  return
          -- end
          print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
-         if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])   <  0    then
+         if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"]) -30  <  0    then
           Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
           return
          end
