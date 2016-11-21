@@ -251,7 +251,7 @@ function PhysicsScene:add_ui(_istrue)
     self._score1=0
 
     if _istrue then
-      --Server:Instance():getactivitybyid(self.id,self.cycle)  ---新加的2016、11、18  补签次数
+      Server:Instance():getactivitybyid(self.id,self.cycle)  ---新加的2016、11、18  补签次数
       self:fun_time(  )--  倒计时
       self:_refresh()
       print("1114")
@@ -399,7 +399,7 @@ function PhysicsScene:add_obstacle()
         end
        
         modeSprite:loadTexture(string.format("png/Physicstaiqiu-%d.png", self._dt))--arr_ball[self._randTable[i+1]]))  --_randt))--
-        modeSprite:setScale(30/86*0.88,30/88*0.88)
+        modeSprite:setScale(0.27,0.27)
         modeSprite:setPosition(modeSprite_ban_3:getPositionX()+30*i,modeSprite_ban_3:getPositionY())
         modeSprite:setTag(self._dt*10)--(arr_ball[self._randTable[i+1]]*10)  --(_randt*10)--
 
