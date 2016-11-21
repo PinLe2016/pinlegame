@@ -205,10 +205,16 @@ function PhysicsScene:ctor(params)
     
 end
 function PhysicsScene:fun_server( )
+    if self._score1~=0 then
+      return
+    end
       self._score1=self.score_spr:getTag()/10
-      self.score2=math.random(8)
-      self.score3=math.random(8)
-      self.score4=math.random(6)
+      self.score2=math.random(9)
+      self.score3=math.random(9)
+      self.score4=math.random(9)
+      if tonumber(self._score1)==9 then
+        self.score4=math.random(5)
+      end
       local  _score=  self._score1 ..   self.score4  ..   self.score2  ..   self.score3 
       Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
 end
@@ -238,6 +244,9 @@ function PhysicsScene:add_ui(_istrue)
    --Server:Instance():getactivitybyid(self.id,self.cycle)
     self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
     self:addChild(self.phy_bg)
+
+    self._score1=0
+
     if _istrue then
       self:fun_time(  )--  倒计时
       self:_refresh()
