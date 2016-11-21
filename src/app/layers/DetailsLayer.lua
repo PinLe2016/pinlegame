@@ -16,7 +16,7 @@ function DetailsLayer:ctor(params)
        LocalData:Instance():set_actid({act_id=self.id,image=self.image})--保存数据
        Server:Instance():getactivitybyid(self.id,0)
        Server:Instance():getactivityadlist(self.id)
-       --Server:Instance():getgoldspooladlist(self.id)   --  暂时停运  id  有误
+
  
 end
 function DetailsLayer:init(  )
@@ -39,7 +39,9 @@ function DetailsLayer:init(  )
 	end
 
 	local  function began_btCallback(sender, eventType)
+	
 		if eventType == ccui.TouchEventType.ended then
+
 		       local _activitybyid=LocalData:Instance():get_getactivitybyid()
 		       local userdt = LocalData:Instance():get_userdata()
 		     if tonumber(_activitybyid["remaintimes"]) <=  0   then
@@ -60,7 +62,7 @@ function DetailsLayer:init(  )
          		        local scene=PhysicsScene.new({id=self.id,cycle=0,heroid=0,phyimage=self.image})
                       	        cc.Director:getInstance():pushScene(scene)
 
-		      --Util:scene_control("SurpriseOverScene")
+		--       --Util:scene_control("SurpriseOverScene")
 		      
 		end
 	end

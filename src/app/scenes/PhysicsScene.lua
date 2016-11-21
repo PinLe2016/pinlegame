@@ -62,7 +62,7 @@ function PhysicsScene:fun_time(  )
       local action = cc.CSLoader:createTimeline("countdownLayer.csb")
 
       local advert =node:getChildByTag(590)  --  广告
-       local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
+        local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
       self._imagetu=Util:sub_str(list_table[1]["imgurl"], "/",":")
       local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
       advert:loadTexture(path..self._imagetu)
@@ -81,12 +81,16 @@ function PhysicsScene:fun_time(  )
 
 end
 function PhysicsScene:ctor(params)
-        dump(params)
+        --dump(params)
         self.heroid=params.heroid
         self.cycle=params.cycle
         self.id=params.id
         self.phyimage=params.phyimage
         self.actid=LocalData:Instance():get_actid()
+
+        
+
+
         --LocalData:Instance():set_getactivitypoints(nil)
         
     -- create touch layer
@@ -205,10 +209,16 @@ function PhysicsScene:ctor(params)
     
 end
 function PhysicsScene:fun_server( )
+  print("kkkkkk ")
       self._score1=self.score_spr:getTag()/10
       self.score2=math.random(8)
       self.score3=math.random(8)
-      self.score4=math.random(6)
+      if tonumber(self._score1)   ==  9  then
+        self.score4=math.random(5)
+      else
+        self.score4=math.random(8)
+      end
+      
       local  _score=  self._score1 ..   self.score4  ..   self.score2  ..   self.score3 
       Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle,_score)
 end
@@ -232,17 +242,18 @@ function PhysicsScene:_refresh( )
 end
 
 function PhysicsScene:add_ui(_istrue)
-     -- self:getPhysicsWorld():setDebugDrawMask(
-     --    true and cc.PhysicsWorld.DEBUGDRAW_ALL or cc.PhysicsWorld.DEBUGDRAW_NONE)
-    -- cc.Director:getInstance():getCamera():setCenterXYZ(100,0,100);
-   --Server:Instance():getactivitybyid(self.id,self.cycle)
+
     self.phy_bg = cc.CSLoader:createNode("PhysicsLayer.csb");
     self:addChild(self.phy_bg)
+     
     if _istrue then
+      --Server:Instance():getactivitybyid(self.id,self.cycle)  ---新加的2016、11、18  补签次数
       self:fun_time(  )--  倒计时
       self:_refresh()
+      print("1114")
     else
       self:fun_data() 
+      print("1113")
     end
     
 
@@ -384,7 +395,7 @@ function PhysicsScene:add_obstacle()
         end
        
         modeSprite:loadTexture(string.format("png/Physicstaiqiu-%d.png", self._dt))--arr_ball[self._randTable[i+1]]))  --_randt))--
-        modeSprite:setScale(30/86,30/88)
+        modeSprite:setScale(30/86*0.88,30/88*0.88)
         modeSprite:setPosition(modeSprite_ban_3:getPositionX()+30*i,modeSprite_ban_3:getPositionY())
         modeSprite:setTag(self._dt*10)--(arr_ball[self._randTable[i+1]]*10)  --(_randt*10)--
 
@@ -605,12 +616,13 @@ function PhysicsScene:onEnter()
                        function()
                         
                          
-                         Server:Instance():getactivitybyid(self.id,self.cycle)--  从新初始化
+                         --Server:Instance():getactivitybyid(self.id,self.cycle)--  从新初始化
                       end)
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
-                         --self:_refresh()
-                        self:fun_data()
+                        print("1111")
+                         self:_refresh()
+                        --self:fun_data()
                       end)
 
 end
@@ -682,7 +694,6 @@ function PhysicsScene:onEnterFrame(dt)
             self.score_spr:removeFromParent()
             self.score_spr=nil
             -- self.phy_bg:removeFromParent()
-            -- self:add_ui()
 
             self:Phypop_up()
         end
@@ -832,7 +843,9 @@ function PhysicsScene:Phypop_up()
                                   open_xiangzi:addChild(spr)
                                   spr:runAction(animate)
                             end
+
                             local function logSprRotation3(sender)
+                                  Server:Instance():getactivitybyid(self.id,self.cycle)
                                    _table[1]:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
                                    local  t_yang1=cc.MoveTo:create(0.3, cc.p( _table[1]:getPositionX()+50*(-2),open_xiangziyangqiu:getPositionY()+150 ) )
                                    local  _yang1=cc.MoveTo:create(0.6, cc.p( _xiangqiu[1]:getPositionX(),_xiangqiu[1]:getPositionY() ) )
@@ -851,17 +864,14 @@ function PhysicsScene:Phypop_up()
                                           score_text2:loadTexture(string.format("png/Physicstaiqiu-%d.png",self.score2 ))
                                           score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
                                           score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
+                                          self:fun_data()  --刷新积分
+                                          print("1112")
                                     end
 
                                    _table[3]:runAction(cc.Sequence:create(t_yang3,_yang3,cc.CallFunc:create(logSprRotation2)))
                                    self.again_bt:setTouchEnabled(true)
 
                             end
-
-
-                            
-                           
-
                             local action = cc.Sequence:create(cc.DelayTime:create(0.8),cc.CallFunc:create(logSprRotation),
                               actionTo,actionTo1,actionTo2,actionTo3,actionTo4,actionTo5,actionTo6,cc.CallFunc:create(logSprRotation1),cc.DelayTime:create(0.2),cc.CallFunc:create(logSprRotation3))
                             close_xiangzi:runAction(action)
@@ -898,7 +908,7 @@ function PhysicsScene:Phypop_up()
             end
 
             local function logSprRotation(sender)
-                 self:fun_data()
+                 -- self:fun_data()
                  self._back:setVisible(true)
             end
 
