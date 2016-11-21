@@ -32,6 +32,8 @@ function MainInterfaceScene:ctor()
       self.floating_layer:addTo(self,100000)
       self.count=0
 
+      self:Physics_homeback_ref()
+
        local userdt = LocalData:Instance():get_userdata()
       -- local  LocalData:Instance():set_getuserinfo(self.data)
       LocalData:Instance():set_sign(1)
@@ -49,7 +51,26 @@ function MainInterfaceScene:ctor()
       self:fun_init()
       Server:Instance():getaffichelist(1)
 
+      
+
 end
+
+--惊喜吧弹球页面home 键退出处理
+function MainInterfaceScene:Physics_homeback_ref( )
+        local phy_data_string=cc.UserDefault:getInstance():getStringForKey("Physics",nil)
+        dump(phy_data_string)
+        local phy_data_date=json.decode(phy_data_string)
+        
+        if not phy_data_date then
+          return
+        end
+
+        
+        dump(phy_data_date)
+        Server:Instance():getactivitypoints(phy_data_date.actid,phy_data_date.cycle,phy_data_date.score)
+        cc.UserDefault:getInstance():setStringForKey("Physics",nil)
+end
+
 function MainInterfaceScene:fun_init( )
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
