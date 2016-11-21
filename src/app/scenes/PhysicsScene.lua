@@ -90,14 +90,12 @@ function PhysicsScene:ctor(params)
 
         
         --防home键退出处理
-        local save_table={
+        self.save_table={
           score=1111,
           cycle=params.cycle,
           actid=self.actid["act_id"]
       }
-      local recv = json.encode(save_table)
-      dump(recv)
-      cc.UserDefault:getInstance():setStringForKey("Physics",recv)
+      
       -- io.writefile(cc.FileUtils:getInstance():getWritablePath() .."Physics.csv", TableToString(recv,true,true))
         --LocalData:Instance():set_getactivitypoints(nil)
         
@@ -185,6 +183,8 @@ function PhysicsScene:ctor(params)
                 -- dump(self.rod_spr:getPositionX())
                 self.coinSprite:setPosition(self.rod_spr:getPositionX(),ROD_B_POPINT+225-BOLL_OFF_SET)
                 self.start_bt:setTouchEnabled(true)
+
+                cc.UserDefault:getInstance():setStringForKey("Physics",nil)
                 -- Util:player_music("PHYSICS",false )
                 return true
             end
@@ -260,13 +260,8 @@ function PhysicsScene:add_ui(_istrue)
     self._score1=0
 
     if _istrue then
-      Server:Instance():getactivitybyid(self.id,self.cycle)  ---新加的2016、11、18  补签次数
+      -- Server:Instance():getactivitybyid(self.id,self.cycle)  ---新加的2016、11、18  补签次数
       self:fun_time(  )--  倒计时
-      self:_refresh()
-      print("1114")
-    else
-      self:fun_data() 
-      print("1113")
     end
     
 
@@ -319,6 +314,14 @@ function PhysicsScene:add_ui(_istrue)
     self:createCoin(self.rod_spr:getPositionX()+0,  ROD_B_POPINT+225-BOLL_OFF_SET)--小球
 
     self:add_obstacle()--障碍小球
+
+    if _istrue then
+      Server:Instance():getactivitybyid(self.id,self.cycle)  ---新加的2016、11、18  补签次数
+      -- self:fun_time(  )--  倒计时
+      -- self:_refresh()
+    else
+      self:fun_data() 
+    end
 
 
 end
@@ -585,6 +588,11 @@ function PhysicsScene:touch_btCallback( sender, eventType )
            end
 
            if tag==1795 then  --开启按钮
+
+            local recv = json.encode(self.save_table)
+            dump(recv)
+            cc.UserDefault:getInstance():setStringForKey("Physics",recv)
+
                 is_Shots=false
             self.start_bt:setTouchEnabled(false)
                 local curr_point=self.rod_spr:getPositionY()
