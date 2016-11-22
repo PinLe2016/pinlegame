@@ -318,7 +318,7 @@ function PhysicsScene:add_ui(_istrue)
     if _istrue then
       Server:Instance():getactivitybyid(self.id,self.cycle)  ---新加的2016、11、18  补签次数
       -- self:fun_time(  )--  倒计时
-      -- self:_refresh()
+       --self:_refresh()
     else
       self:fun_data() 
     end

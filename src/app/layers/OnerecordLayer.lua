@@ -73,31 +73,25 @@ function OnerecordLayer:Onerecord_init(  )
                                     return
                             end
                               local _activitybyid=LocalData:Instance():get_getactivitybyid()
-               local userdt = LocalData:Instance():get_userdata()
-             -- if tonumber(_activitybyid["remaintimes"]) <=  0   then
-             --    Server:Instance():prompt("您参与次数已经用完")
-             --    return
-             -- end
-             print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
-             if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])  -30   <  0    then
-                Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
-                return
-             end
-                            local _tag=sender:getTag()
-                            -- GameScene = require("app.scenes.GameScene")
-                            --  local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=""})  --daojishi
+                               local userdt = LocalData:Instance():get_userdata()
+                                self._tag=sender:getTag()
+                             print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
+                             if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])  -30   <  0  and  tonumber(One_data[self._tag]["points"])  == 0  then
+                                Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
+                                return
+                             end
+                             if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])     <  0  and  tonumber(One_data[self._tag]["points"])  ~= 0  then
+                                Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
+                                return
+                             end
+                            
+                            
+                            Server:Instance():getactivitybyid(self.id,self.cycle)
+                           
 
-
-                              local PhysicsScene = require("app.scenes.PhysicsScene")
-                    -- Server:Instance():getactivityadlist(self.id)
-                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid="",phyimage=self.phyimage})
-                  
-
-
-
-                             --Server:Instance():getactivitybyid(self.id,_tag)
-                             --Server:Instance():getuserinfo() 
-                             cc.Director:getInstance():pushScene(scene)
+                             --  local PhysicsScene = require("app.scenes.PhysicsScene")
+                             -- local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid="",phyimage=self.phyimage})
+                             -- cc.Director:getInstance():pushScene(scene)
                         end)
 
                         
@@ -115,7 +109,7 @@ function OnerecordLayer:Onerecord_init(  )
                         end
                        end
                         if integral_text:getString()  ~= "0" then
-                            retroactive_bt:setVisible(false)
+                            --retroactive_bt:setVisible(false)
                         end
             	
 	            local time_text=cell:getChildByTag(95)--时间
@@ -146,10 +140,21 @@ function OnerecordLayer:onEnter()
                          print("个人记录")
                         self:init()
                       end)
+         NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
+                       function()
+
+                          local PhysicsScene = require("app.scenes.PhysicsScene")
+                          local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid="",phyimage=self.phyimage})
+                          cc.Director:getInstance():pushScene(scene)
+
+                      
+                      end)
+
 end
 
 function OnerecordLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self)
+              NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
 end
 
 
