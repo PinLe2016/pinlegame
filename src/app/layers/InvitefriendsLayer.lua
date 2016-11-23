@@ -135,10 +135,10 @@ function InvitefriendsLayer:fun_init(  )
 	            self.grade:setString( _friendlist[i]["playergrade"] )
 	            self.imgurl =  _cell:getChildByTag(105)  --头像
 	            self.imgurl:loadTexture(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":")))
-                   self.today_golds =  _cell:getChildByTag(102)  --今日贡献金币
-                  self.today_golds:setString( _friendlist[i]["today_golds"] )
-                  self.total_golds =  _cell:getChildByTag(101)  --贡献总金币
-                  self.total_golds:setString( _friendlist[i]["total_golds"] )
+                   self.today_golds =  _cell:getChildByTag(102)  --贡献金币
+                  self.today_golds:setString( _friendlist[i]["total_golds"] )
+                  self.total_golds =  _cell:getChildByTag(101)  --贡献经验
+                  self.total_golds:setString( _friendlist[i]["total_points"] )
 	     
            end
 
