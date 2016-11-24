@@ -130,7 +130,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                   local userdt = LocalData:Instance():get_userdata()
                   self._tag=sender:getTag()
        
-                 print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]),)
+                 print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
 
                  if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"]) -30  <  0  and  tonumber(mypointslist[self._tag]["points"])  == 0  then
                   Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
@@ -166,8 +166,11 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                         if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
                               
                                 one_integral:setString(mypointslist[j]["points"])--xin
+                                if tonumber(mypointslist[j]["remaintimes"])  <   0 or   tonumber(mypointslist[j]["remaintimes"])  ==   0  then
+                                       retroactive_bt:setVisible(false)
+                                end
                                  -- self.labelAtlas1:setString(tostring(mypointslist[j]["points"]))   --setProperty(mypointslist[j]["points"], "png/cou.png", 26, 35, "0")
-                                  --retroactive_bt:setVisible(false)   --11 xin
+                                  --   --11 xin
                                   break
                         else
                                 one_integral:setString("0")  --xin

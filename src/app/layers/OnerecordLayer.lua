@@ -100,6 +100,9 @@ function OnerecordLayer:Onerecord_init(  )
                            if One_data[j]["cycle"]  ==i then
                              
                              integral_text:setString(One_data[j]["points"])
+                               if tonumber(One_data[j]["remaintimes"])  <  0  or   tonumber(One_data[j]["remaintimes"])  ==   0  then
+                                       retroactive_bt:setVisible(false)
+                                end
 
                              break
                         else
@@ -108,7 +111,7 @@ function OnerecordLayer:Onerecord_init(  )
                               
                         end
                        end
-                        if integral_text:getString()  ~= "0" then
+                        if integral_text:getString()  ~= "0"  then
                             --retroactive_bt:setVisible(false)
                         end
             	
