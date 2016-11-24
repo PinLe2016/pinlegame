@@ -76,22 +76,29 @@ function OnerecordLayer:Onerecord_init(  )
                                local userdt = LocalData:Instance():get_userdata()
                                 self._tag=sender:getTag()
                              print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
-                             if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])  -30   <  0  and  tonumber(One_data[self._tag]["points"])  == 0  then
+                             self.p_point=0
+                              for i=1,#One_data do
+                                if One_data[i]["cycle"] == self._tag   then
+                                   self.p_point= One_data[i]["points"]
+                                end
+                             end
+                            print("dsfds  ",self.p_point)
+                             if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])  -30   <  0  and  tonumber(self.p_point)  == 0  then
                                 Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
                                 return
                              end
-                             if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])     <  0  and  tonumber(One_data[self._tag]["points"])  ~= 0  then
+                             if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])     <  0  and  tonumber(self.p_point)  ~= 0  then
                                 Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
                                 return
                              end
                             
                             
-                            Server:Instance():getactivitybyid(self.id,self.cycle)
+                            --Server:Instance():getactivitybyid(self.id,self.cycle)
                            
 
-                             --  local PhysicsScene = require("app.scenes.PhysicsScene")
-                             -- local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid="",phyimage=self.phyimage})
-                             -- cc.Director:getInstance():pushScene(scene)
+                              local PhysicsScene = require("app.scenes.PhysicsScene")
+                             local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid="",phyimage=self.phyimage})
+                             cc.Director:getInstance():pushScene(scene)
                         end)
 
                         
@@ -143,21 +150,21 @@ function OnerecordLayer:onEnter()
                          print("个人记录")
                         self:init()
                       end)
-         NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
-                       function()
-
-                          local PhysicsScene = require("app.scenes.PhysicsScene")
-                          local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid="",phyimage=self.phyimage})
-                          cc.Director:getInstance():pushScene(scene)
+         -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
+         --               function()
+         --                print("附近的撒娇范德萨发大放送")
+         --                  local PhysicsScene = require("app.scenes.PhysicsScene")
+         --                  local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid="",phyimage=self.phyimage})
+         --                  cc.Director:getInstance():pushScene(scene)
 
                       
-                      end)
+         --              end)
 
 end
 
 function OnerecordLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self)
-              NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
+             -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
 end
 
 

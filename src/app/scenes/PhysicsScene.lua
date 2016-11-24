@@ -569,6 +569,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
              --Util:scene_control("MainInterfaceScene")
              -- cc.Director:getInstance():popScene()
              -- Server:Instance():getactivitybyid(self.id,self.cycle)   --  跟新详情数据
+             print("askdjf积分的刷卡缴费",self.cycle)
             if tonumber(self.cycle)   ~=  0 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                         local userdt = LocalData:Instance():get_userdata()
@@ -577,7 +578,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                              userdt["golds"]=activitypoints["golds"]
                          end
                         LocalData:Instance():set_userdata(userdt)
-                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        --Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
                         --Server:Instance():getactivitybyid(self.id,self.cycle)
                 return

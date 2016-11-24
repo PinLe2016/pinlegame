@@ -131,20 +131,26 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                   self._tag=sender:getTag()
        
                  print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
-
-                 if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"]) -30  <  0  and  tonumber(mypointslist[self._tag]["points"])  == 0  then
+                 self.p_point=0
+                 for i=1,#mypointslist do
+                    if mypointslist[i]["cycle"] == self._tag   then
+                       self.p_point= mypointslist[i]["points"]
+                    end
+                 end
+                 print("dsfs  ",self.p_point)
+                 if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"]) -30  <  0  and  tonumber(self.p_point)  == 0  then
                   Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
                   return
                  end
-                  if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])   <  0    and  tonumber(mypointslist[self._tag]["points"])  ~= 0 then
+                  if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])   <  0    and  tonumber(self.p_point)  ~= 0 then
                   Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
                   return
                  end
-                Server:Instance():getactivitybyid(self.id,self.cycle)
+                --Server:Instance():getactivitybyid(self.id,self.cycle)
                 
-                -- local   = require("app.scenes.PhysicsScene")   
-                -- local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid=0,phyimage=self.phyimage})
-                -- cc.Director:getInstance():pushScene(scene)
+                local   PhysicsScene  = require("app.scenes.PhysicsScene")   
+                local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid=0,phyimage=self.phyimage})
+                cc.Director:getInstance():pushScene(scene)
 
             end)
 
@@ -266,21 +272,21 @@ function ContrastRecordLayer:onEnter()
                         -- print("ffefe排行榜")
                         self:init()
                       end)
-  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
-                       function()
-
-                         local PhysicsScene = require("app.scenes.PhysicsScene")   
-                        local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid=0,phyimage=self.phyimage})
-                       cc.Director:getInstance():pushScene(scene)
+  -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
+  --                      function()
+  --                       print("sdkfjdsfds将对方是否觉得撒客服")
+  --                        local PhysicsScene = require("app.scenes.PhysicsScene")   
+  --                       local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid=0,phyimage=self.phyimage})
+  --                      cc.Director:getInstance():pushScene(scene)
 
                       
-                      end)
+  --                     end)
 
 end
 
 function ContrastRecordLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self)
-        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
+        --NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
 end
 
 return ContrastRecordLayer
