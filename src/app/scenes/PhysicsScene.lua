@@ -236,7 +236,7 @@ function PhysicsScene:_refresh( )
    local activitybyid=LocalData:Instance():get_getactivitybyid()
    --弹球最高得分
          self.bestscore_text=self.phy_bg:getChildByTag(1803)
-        self.bestscore_text:setString(tostring(activitybyid["mypoints"]))
+        self.bestscore_text:setString(tostring(activitybyid["bestpoints"]))
         --弹球累计得分
         self.allscore_text=self.phy_bg:getChildByTag(1802)
         self.allscore_text:setString(tostring(activitybyid["mypoints"]))
@@ -318,7 +318,7 @@ function PhysicsScene:add_ui(_istrue)
     if _istrue then
       Server:Instance():getactivitybyid(self.id,self.cycle)  ---新加的2016、11、18  补签次数
       -- self:fun_time(  )--  倒计时
-      -- self:_refresh()
+       --self:_refresh()
     else
       self:fun_data() 
     end

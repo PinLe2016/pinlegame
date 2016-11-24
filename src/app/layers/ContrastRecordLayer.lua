@@ -127,32 +127,25 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                 end
 
                   local _activitybyid=LocalData:Instance():get_getactivitybyid()
-           local userdt = LocalData:Instance():get_userdata()
-         -- if tonumber(_activitybyid["remaintimes"]) <=  0   then
-         --  Server:Instance():prompt("您参与次数已经用完")
-         --  return
-         -- end
-         print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
-         if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"]) -30  <  0    then
-          Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
-          return
-         end
+                  local userdt = LocalData:Instance():get_userdata()
+                  self._tag=sender:getTag()
+       
+                 print("金币数 "  ,tonumber(userdt["golds"]) ,"   ",  tonumber(_activitybyid["betgolds"]))
 
+                 if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"]) -30  <  0  and  tonumber(mypointslist[self._tag]["points"])  == 0  then
+                  Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
+                  return
+                 end
+                  if tonumber(userdt["golds"])  -    tonumber(_activitybyid["betgolds"])   <  0    and  tonumber(mypointslist[self._tag]["points"])  ~= 0 then
+                  Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
+                  return
+                 end
+                Server:Instance():getactivitybyid(self.id,self.cycle)
+                
+                -- local   = require("app.scenes.PhysicsScene")   
+                -- local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid=0,phyimage=self.phyimage})
+                -- cc.Director:getInstance():pushScene(scene)
 
-
-                local _tag=sender:getTag()
-
-                  local PhysicsScene = require("app.scenes.PhysicsScene")
-                    -- Server:Instance():getactivityadlist(self.id)
-                    local scene=PhysicsScene.new({id=self.id,cycle=_tag,heroid=0,phyimage=self.phyimage})
-                                cc.Director:getInstance():pushScene(scene)
-
-
-                -- GameScene = require("app.scenes.GameScene")
-                --  local scene=GameScene.new({adid=self.id,type="daojishi",image=" ",cycle=_tag,heroid=self.heroid})  --daojishi
-                --  cc.Director:getInstance():pushScene(scene)
-                 -- Server:Instance():getactivitybyid(self.id,_tag)  --xin
-                 -- Server:Instance():getuserinfo() 
             end)
 
 
@@ -173,8 +166,11 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                         if mynum  ~=0 and tonumber(mypointslist[j]["cycle"]) == i then
                               
                                 one_integral:setString(mypointslist[j]["points"])--xin
+                                if tonumber(mypointslist[j]["remaintimes"])  <   0 or   tonumber(mypointslist[j]["remaintimes"])  ==   0  then
+                                       retroactive_bt:setVisible(false)
+                                end
                                  -- self.labelAtlas1:setString(tostring(mypointslist[j]["points"]))   --setProperty(mypointslist[j]["points"], "png/cou.png", 26, 35, "0")
-                                  retroactive_bt:setVisible(false)
+                                  --   --11 xin
                                   break
                         else
                                 one_integral:setString("0")  --xin
@@ -187,7 +183,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
             else
                   local one_integral=cell:getChildByTag(117)--积分
                   one_integral:setString("0")
-
+         
                    -- one_integral:setVisible(false)--xin
                    -- local labelAtlas1 = ccui.TextAtlas:create()
                    -- labelAtlas1:setPosition(cc.p(one_integral:getPositionX(),one_integral:getPositionY()))  
@@ -270,10 +266,21 @@ function ContrastRecordLayer:onEnter()
                         -- print("ffefe排行榜")
                         self:init()
                       end)
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
+                       function()
+
+                         local PhysicsScene = require("app.scenes.PhysicsScene")   
+                        local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid=0,phyimage=self.phyimage})
+                       cc.Director:getInstance():pushScene(scene)
+
+                      
+                      end)
+
 end
 
 function ContrastRecordLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self)
+        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
 end
 
 return ContrastRecordLayer
