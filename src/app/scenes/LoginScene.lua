@@ -10,6 +10,7 @@ end)
 
 
 function LoginScene:ctor()
+
    self.floating_layer = require("app.layers.FloatingLayer").new()
    --self.floating_layer:addTo(self,100)
    self:addChild(self.floating_layer, 100)
@@ -58,7 +59,7 @@ end
                end
               
               local login_info=LocalData:Instance():get_user_data()
-              if login_info~=nil  then
+              if login_info~=nil and login_info["diamondnum"] then
                 Util:scene_control("MainInterfaceScene")
                 return
               end
@@ -110,7 +111,7 @@ function LoginScene:_coverlayer( )
                 end
 
                 local login_info=LocalData:Instance():get_user_data()
-                if login_info~=nil  then
+                if login_info~=nil and login_info["diamondnum"] then
                         Util:scene_control("MainInterfaceScene")
                         return
                 end
