@@ -150,7 +150,10 @@ function RankinglistofactiviesLayer:back( sender, eventType)
             if eventType ~= ccui.TouchEventType.ended then
                 return
             end
-            self:removeFromParent()
+
+             Server:Instance():getactivitybyid(self.id,0)
+             self:removeFromParent()
+
 
 end
 function RankinglistofactiviesLayer:onImageViewClicked( sender, eventType )
