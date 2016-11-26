@@ -194,7 +194,43 @@ end
 function GoldprizeScene:fun_selectbox( _tag )
 
 
-	 self.choose=1
+	        --          self.choose=1
+	        --           local path=cc.FileUtils:getInstance():getWritablePath()
+	            
+		       -- local  list_table=LocalData:Instance():get_getgoldspoollist()
+		       -- local  jac_data=list_table["goldspools"]
+	        --            Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
+		       -- self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
+		       -- self.adownerid  =   jac_data[_tag]["adownerid"]
+		       -- self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
+		       -- self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+
+
+		       
+	self.Selectbox = cc.CSLoader:createNode("Selectbox.csb")
+            self:addChild(self.Selectbox)
+
+
+             local back=self.Selectbox:getChildByTag(145)   --返回
+       	 back:addTouchEventListener(function(sender, eventType  )
+	                 if eventType ~= ccui.TouchEventType.ended then
+	                        return
+                              end
+                              if self.Selectbox then
+                              	self.Selectbox:removeFromParent()
+                              end
+            end)
+
+       	 local pintu=self.Selectbox:getChildByTag(142)   --拼图
+       	 pintu:addTouchEventListener(function(sender, eventType  )
+       	 	     if eventType == ccui.TouchEventType.began then
+	                        sender:setScale(0.8)
+	                  end
+	                 if eventType ~= ccui.TouchEventType.ended then
+	                        return
+	                  end
+	                  sender:setScale(1)
+	                  self.choose=1
 	                  local path=cc.FileUtils:getInstance():getWritablePath()
 	            
 		       local  list_table=LocalData:Instance():get_getgoldspoollist()
@@ -204,53 +240,29 @@ function GoldprizeScene:fun_selectbox( _tag )
 		       self.adownerid  =   jac_data[_tag]["adownerid"]
 		       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
 		       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
-	-- self.Selectbox = cc.CSLoader:createNode("Selectbox.csb")
- --            self:addChild(self.Selectbox)
+            end)
 
 
- --             local back=self.Selectbox:getChildByTag(145)   --返回
- --       	 back:addTouchEventListener(function(sender, eventType  )
-	--                  if eventType ~= ccui.TouchEventType.ended then
-	--                         return
- --                              end
- --                              if self.Selectbox then
- --                              	self.Selectbox:removeFromParent()
- --                              end
- --            end)
+       	 local dadishu=self.Selectbox:getChildByTag(143)   --打地鼠
+       	 dadishu:addTouchEventListener(function(sender, eventType  )
+       	 	      if eventType == ccui.TouchEventType.began then
+	                        sender:setScale(0.8)
+	                  end
 
- --       	 local pintu=self.Selectbox:getChildByTag(142)   --拼图
- --       	 pintu:addTouchEventListener(function(sender, eventType  )
-	--                  if eventType ~= ccui.TouchEventType.ended then
-	--                         return
-	--                   end
-	--                   self.choose=1
-	--                   local path=cc.FileUtils:getInstance():getWritablePath()
-	            
-	-- 	       local  list_table=LocalData:Instance():get_getgoldspoollist()
-	-- 	       local  jac_data=list_table["goldspools"]
-	--                    Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
-	-- 	       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
-	-- 	       self.adownerid  =   jac_data[_tag]["adownerid"]
-	-- 	       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
-	-- 	       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
- --            end)
-
-
- --       	 local dadishu=self.Selectbox:getChildByTag(143)   --打地鼠
- --       	 dadishu:addTouchEventListener(function(sender, eventType  )
-	--                  if eventType ~= ccui.TouchEventType.ended then
-	--                         return
- --                              end
- --                              local path=cc.FileUtils:getInstance():getWritablePath()
- --                              self.choose=2
- --                               local  list_table=LocalData:Instance():get_getgoldspoollist()
-	-- 	       local  jac_data=list_table["goldspools"]
- --                               Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
-	-- 	       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
-	-- 	       self.adownerid  =   jac_data[_tag]["adownerid"]
-	-- 	       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
-	-- 	       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
- --            end)
+	                 if eventType ~= ccui.TouchEventType.ended then
+	                        return
+                              end
+                              sender:setScale(1)
+                              local path=cc.FileUtils:getInstance():getWritablePath()
+                              self.choose=2
+                               local  list_table=LocalData:Instance():get_getgoldspoollist()
+		       local  jac_data=list_table["goldspools"]
+                               Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
+		       self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
+		       self.adownerid  =   jac_data[_tag]["adownerid"]
+		       self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
+		       self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+            end)
 
 end
 --下载图片
@@ -316,7 +328,7 @@ function GoldprizeScene:onEnter()
                          if tonumber(getgoldspoolbyid["coolingtime"]) == -1  or   tonumber(getgoldspoolbyid["getcardamount"]) == 0  then   --因为getcardamount这个后台不准，所以只能多加一个coolingtime来保险的判断是否玩过两次
 
                          	LocalData:Instance():set_user_pintu("1")  --主要是要确定点击后  要自动拼图
-                                    --Server:Instance():prompt("今日获得金币机会已经用完啦,继续只能获得积分")  --  然并卵的提示语
+                                    Server:Instance():prompt("今日获得金币机会已经用完啦,继续只能获得积分")  --  然并卵的提示语
                                     
                          else
                          	  LocalData:Instance():set_user_img(self.image_name)

@@ -51,6 +51,8 @@ function bigwheelLayer:ctor(params)
 	self.gridNumer=12    --   一共的格子数
 	self.gridAngle=360/self.gridNumer   --   每个格子的度数
 	self.adid=params.id
+     self.choose=params.choose
+
 	self.count=0
       self.CheckBox_volume=0
 
@@ -363,7 +365,7 @@ function bigwheelLayer:try_again()
                                               self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分",function (sender, eventType)
                                                 if eventType==1 then
                                                        GameScene = require("app.scenes.GameScene")--惊喜吧
-                                                      local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
+                                                      local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})--拼图
                                                       cc.Director:getInstance():replaceScene(scene)
                                                       LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                                                       return
@@ -377,7 +379,7 @@ function bigwheelLayer:try_again()
                                           end
 
                                           GameScene = require("app.scenes.GameScene")--惊喜吧
-                                          local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
+                                          local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})--拼图
                                           cc.Director:getInstance():replaceScene(scene)
                                           LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                                           -- self.end_bt:setVisible(true)

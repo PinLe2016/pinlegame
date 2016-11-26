@@ -202,6 +202,11 @@ function MainInterfaceScene:userdata(  )
        crown_name:setString(userdt["rankname"])
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
        leve:setString("LV."  ..   userdt["grade"])
+        local diamond=self.MainInterfaceScene:getChildByTag(533)-- 钻石
+        if userdt["diamondnum"] then
+             diamond:setString(tonumber(userdt["diamondnum"]))
+        end
+      
        local _gd= LocalData:Instance():get_getcheckinhistory()
 
        if tonumber(_gd["rewardgolds"])   and   userdt["golds"]  < tonumber(_gd["rewardgolds"])    then

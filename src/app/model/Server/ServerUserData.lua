@@ -241,6 +241,27 @@ function Server:setfeedback_callback()
     LocalData:Instance():set_setfeedback(self.data)--保存玩家数据  AFFICHLIST
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.FEEDBACK)
 end
+--3.2.20   获取玩家金币排行榜  pagesize 每页显示数据  pageno页号  type 0日榜、1周榜、2月榜、3年榜 
+function Server:getgoldsranklist(pagesize,pageno,type)
+      local params = {
+                 pagesize=pagesize,
+                 pageno=pageno,
+                 type=type
+            }
+
+    self:request_http("getgoldsranklist" , params); 
+end
+
+function Server:getgoldsranklist_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_getgoldsranklist(self.data)--保存玩家数据  AFFICHLIST
+end
+
+
 
 
 

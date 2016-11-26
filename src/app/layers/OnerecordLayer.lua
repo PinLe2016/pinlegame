@@ -92,10 +92,6 @@ function OnerecordLayer:Onerecord_init(  )
                                 return
                              end
                             
-                            
-                            --Server:Instance():getactivitybyid(self.id,self.cycle)
-                           
-
                               local PhysicsScene = require("app.scenes.PhysicsScene")
                              local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid="",phyimage=self.phyimage})
                              cc.Director:getInstance():pushScene(scene)

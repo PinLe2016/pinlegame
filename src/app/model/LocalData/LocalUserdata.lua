@@ -105,6 +105,14 @@ function LocalData:get_per()
 	local _key=cc.UserDefault:getInstance():getStringForKey("per")
 	return _key or nil
 end
+--获取玩家金币排行榜
+function LocalData:set_getgoldsranklist(getgoldsranklist)
+	self.getgoldsranklist=getgoldsranklist
+end
+
+function LocalData:get_getgoldsranklist()
+	return self.getgoldsranklist or nil
+end
 
 
 

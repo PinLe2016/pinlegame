@@ -1,440 +1,286 @@
---
--- Author: peter
--- Date: 2016-10-08 11:08:51
---
------------------------------------------------------
---日期：3013-12-31
---作者：Mr.Wu
---QQ：351189069
---E-Mail:351189069@qq.com 
---如有招聘程序，欢迎骚扰作者
-----------------------------------------------------
--- require "AudioEngine"
-
+--   打地鼠
+--  2016-11-15
 local HitVolesLayer = class("HitVolesLayer", function()
     return display.newLayer("HitVolesLayer")
 end)
--- 倒计时
-local  countdown_time =2
---分数标签
-local kTagSprite1 = 1
---分数
-local kTagSprite2 = 2
---地鼠
-local kTagSprite3 = 3
---锤子
-local kTagSprite4 = 4
---金币
-local kTagSprite5 = 5
-local rand_tag=1
-local scene1 = nil 
-local scene2 = nil 
-local scene3 = nil
---local pic = "menuitemsprite.png"
-local flag = 1
-local loadResource = false
 
-local visibleSize = cc.Director:getInstance():getVisibleSize()
-local origin = cc.Director:getInstance():getVisibleOrigin()
-local scheduler = cc.Director:getInstance():getScheduler()
-local s = cc.Director:getInstance():getWinSize()
+ function HitVolesLayer:ctor(params)
+    --  建立3D  
+      -- cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
+      -- self:setRotation3D({x=-25,y=0,z=0})   
 
-local schedulHandle = nil 
+         self.fragment_table={}
+         self.target_table={
+                  {target=nil,_randdate=nil},
+                  {target=nil,_randdate=nil},
+                  {target=nil,_randdate=nil}
+          }
+         
+        self.countdown_time =20    --  设置倒计时
+        self.dishu_time=20
+        self:setNodeEventEnabled(true)--layer添加监听
 
---农场背景层
-local layerFarm = nil
---游戏层，包括人物，地鼠，锤子
-local layerPlay = nil
---显示分数层
-local layerScore= nil
+        self.filename=params.filename
+        self.adid=params.adid
+        self.s = cc.Director:getInstance():getWinSize()
+        self.rand_Date =nil --记录选中容器数据
+        --  设置分数 锤子 老鼠  金币 TAG值
+        self.kTagSprite2  =  2
+        self.kTagSprite3  =  3
+        self.kTagSprite4  =  4
+        self.kTagSprite5  =  5
+        self.LabelAtlasTest = {}  -- 分数
+        self.jia_score=0
 
---打地鼠炸弹类型和时间
---score为-1 的情况是进度条倒计时相关，不计入实际加分项
-local rand_Date =nil --记录选中容器数据
+        self.layerPlay=nil
 
-local curr_tag=0--连击同一个对象标记TAG 初始为0
-local curr_tag1=0
- local color_Mode={
-    {color_type=cc.c3b(0, 0, 0),time=3,score=1},       
-    {color_type=cc.c3b(242, 21, 16),time=2,score=4},
-    {color_type=cc.c3b(242, 16, 147),time=3,score=3},
-    {color_type=cc.c3b(62, 12, 223),time=1,score=1},
-    {color_type=cc.c3b(22, 155, 240),time=1.5,score=0},
-    {color_type=cc.c3b(22, 240, 169),time=3.5,score=10},
+        self.curr_tag=0--连击同一个对象标记TAG 初始为0
+        self.curr_tag1=0
 
-    {color_type=cc.c3b(85, 240, 22),time=3,score=-1},
-    {color_type=cc.c3b(240, 185, 22),time=3,score=-1},
-    {color_type=cc.c3b(242, 250, 8),time=6,score=-1}
-}
--- local color_Mode={}
--- color_Mode[1]={color_type=cc.cc.c3b(0, 0, 0),time=3,score=1}
-    
- local function checkClision(x,y)
-      rand_Date=nil
-       for i=1,#mainScene.target_table do
-            local sVole=mainScene.target_table[i].target
-            if sVole then
-                local sHammer = layerPlay:getChildByTag(kTagSprite4)
-                local rect   = sVole:getBoundingBox()
+        --  拆分块数
+        self.row=3
+        self.col=4
+        --  设置图片大小
+        self.img_width=750
+        self.img_height=1000
+        local dishuk_table={}
 
-                local rect1   = sHammer:getBoundingBox()
-                
-                if cc.rectContainsPoint(rect, rect1) then
-                         -- print("------",curr_tag,sVole:getTag())
-                         curr_tag=sVole:getTag()
-                        -- if  curr_tag~=sVole:getTag()  then
-                        --     curr_tag=sVole:getTag()
-                        -- else
-                        --       curr_tag=0
-                        -- end
-                      
-                         coinAction(x,y)
-                         rand_Date=mainScene.target_table[i]._randdate
-                         return true
+        self.scheduler = cc.Director:getInstance():getScheduler()  --  
+        --数值表
+        self.color_Mode={
+                {color_type="png/dadishu-02-guodong-1.png",time=3,score=1},       
+                {color_type="png/dadishu-02-guodong-2.png",time=2,score=4},
+                {color_type="png/dadishu-02-guodong-3.png",time=3,score=3},
+                {color_type="png/dadishu-02-guodong-4.png",time=1,score=1},
+                {color_type="png/dadishu-02-guodong-5.png",time=1.5,score=0},
+                {color_type="png/dadishu-02-di-xiajiao.png",time=3.5,score=10},
+
+                {color_type="png/dadishu-02-shizhong--di-1.png",time=3,score=-1},
+                {color_type="png/dadishu-02-shizhong-1.png",time=3,score=-1},
+                {color_type="png/dadishu-02-shou.png",time=6,score=-1}
+        }
+
+     self:fun_init()
+     self:refresh_table()  --图片拆分
+     self:createPlayLayer()  --  初始化
+     self:fun_score( )  --  分数
+     self.m_time = 0
+
+
+
+end
+function HitVolesLayer:fun_init(  )
+   self.HitVolesLayer = cc.CSLoader:createNode("HitVolesLayer.csb")
+   self:addChild(self.HitVolesLayer) 
+   self.Sample_figure=self.HitVolesLayer:getChildByTag(1463) --样图
+   self.labelAtlas=self.HitVolesLayer:getChildByTag(1461) --分数
+   self.labelAtlas:setVisible(false)
+
+   self.dishu_loadingbar=self.HitVolesLayer:getChildByTag(1464)-- 时间进度条
+   self.dishu_po_score=self.HitVolesLayer:getChildByTag(1951)-- 分数位置
+
+    local _back=self.HitVolesLayer:getChildByTag(1460)--返回
+      _back:addTouchEventListener(function(sender, eventType  )
+           if eventType ~= ccui.TouchEventType.ended then
+                 return
+          end
+            self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+            Util:scene_control("GoldprizeScene")
+      end)
+
+  
+end
+--  图片拆分
+ function HitVolesLayer:refresh_table()
+
+   self.sf_x=self.Sample_figure:getPositionX()
+   self.sf_y=self.Sample_figure:getPositionY()
+--  新增加
+    self.row=3
+    self.col=4
+    local row ,col =self.row,self.col 
+     local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+    local cache = cc.Director:getInstance():getTextureCache():addImage(path  ..  self.filename)
+   
+    local layer=cc.Layer:create()
+    self.layerPlay=layer
+    layer:setScale(0.7)--(0.703)
+    self.HitVolesLayer:addChild(layer,3) 
+   for i=1,row do
+        for j=1,col do
+            local fragment_sprite =display.newSprite()--cc.Sprite:create()
+            fragment_sprite:setAnchorPoint(0.5, 0.5)
+            --新增加
+            local po={}
+            po.width=self.img_width
+            po.height=  self.img_height   --self.s.height
+            self.content_size=po
+            local rect = cc.rect((i-1)*self.content_size.width/row, (j-1)*self.content_size.height/col, self.content_size.width/row-3, self.content_size.height/col-3)
+            fragment_sprite:setTexture(cache)
+            fragment_sprite:setTextureRect(rect)
+            fragment_sprite:setPosition(70+(i-1)*self.content_size.width/row, 400 +(3-j)*self.content_size.height/col)--设置图片显示的部分
+            layer:addChild(fragment_sprite)
+            fragment_sprite:setTag(#self.fragment_table + 1)
+            self.fragment_table[#self.fragment_table + 1] = fragment_sprite
+
+            local function onTouchEnded(x,y,y1)
+                self:hammerAction(x,y1)
+                if self:checkClision(x,y1) then
+                    --  if  self.rand_Date and   self.rand_Date["score"]==-1 then --倒计时进度条+-时间相关
+
+                    --     return
+                    -- end
+                    self:step()  --  分数增加
                 end
             end
 
-       end
-        --local sVole = mainScene.yangtu  --layerPlay:getChildByTag(kTagSprite3)
-        curr_tag=0
-         return false
- end
 
- -------------------------------------------------------------
---lable分数标签
-local LabelAtlasTest = {}
-LabelAtlasTest.layer = nil
-LabelAtlasTest.__index = LabelAtlasTest
-local m_time = 0
+              fragment_sprite:setTouchEnabled(true)
+              fragment_sprite:setTouchSwallowEnabled(false)
+              fragment_sprite:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
+                        -- 触摸识别
+                                 if event.name == "began" then
+                                          local x=event.x
+                                          local y=event.y
+                                          local hight_=cc.pGetDistance(cc.p(0,y), cc.p(0,0))
+                                          local off_y=math.cos(math.rad(65))*hight_ 
+                                          local width_=cc.pGetDistance(cc.p(x,0), cc.p(0,0))
+                                          local off_x=math.cos(math.rad(65))*width_ 
+                                         return onTouchEnded(x,y,y)
+                                  end
+              end)
+  
 
-function LabelAtlasTest.step()
-    -- dump(rand_Date)
-    if  curr_tag1~=curr_tag then
-        m_time=m_time+rand_Date["score"]
-    else
-         m_time = m_time +1
-    end
-   curr_tag1=curr_tag
-    local string = string.format("Score:")
-
-    local label1_origin = LabelAtlasTest.layer:getChildByTag(kTagSprite1)
-    local label1 = tolua.cast(label1_origin, "CCLabelAtlas")
-    label1_origin:setString("Score:")    --
-
-    local label2_origin = LabelAtlasTest.layer:getChildByTag(kTagSprite2)
-    local label2 = tolua.cast(label2_origin, "CCLabelAtlas")
-    -- dump(rand_Date["score"])
-
-    string = string.format("    %d",m_time )
-
-    label2_origin:setString(string)
-end
-
-function LabelAtlasTest.onNodeEvent(tag)
-    if tag == "exit" then
-        LabelAtlasTest.layer:unscheduleUpdate()
-    end
-end
-
-function LabelAtlasTest.create()
-    m_time = 0
-    local layer = cc.Layer:create()
-    --Helper.initWithLayer(layer)
-    LabelAtlasTest.layer = layer
-
-    local label1 = cc.LabelAtlas:_create("Score:", "png/tuffy_bold_italic-charmap.plist")
-    layer:addChild(label1, 0, kTagSprite1)
-    label1:setPosition( cc.p(origin.x+s.width/100 ,s.height-s.height/10))
-    label1:setColor(cc.c3b(255, 0, 0))
-    label1:setOpacity( 200 )
-
-    local label2 = cc.LabelAtlas:_create("0", "png/tuffy_bold_italic-charmap.plist")
-    layer:addChild(label2, 0, kTagSprite2)
-    label2:setPosition( cc.p(origin.x+s.width/100 * 40 ,s.height-s.height/10))
-    label2:setColor(cc.c3b(255, 0, 0))
-    label2:setOpacity(200 )
-
-    -- layer:scheduleUpdateWithPriorityLua(LabelAtlasTest.step, 0)
-
-    -- Helper.titleLabel:setString("LabelAtlas")
-    -- Helper.subtitleLabel:setString("Updating label should be fast")
-
-    layer:registerScriptHandler(LabelAtlasTest.onNodeEvent)
-    return layer
-end
-
---------------------------------------------------------------
-
---function of load music
-local function loadMusic(music_name)
-    local bkMusicPath = cc.FileUtils:getInstance():fullPathForFilename(music_name)
-    --local volum = AudioEngine.getMusicVolume()
-    --print(volum)
-    --AudioEngine.setMusicVolume(volum/2)
-
-
-
-    --xin  AudioEngine.playMusic(bkMusicPath,true)
-end
-
-local function playMusicHit(music_name)
-    local bkMusicPath = cc.FileUtils:getInstance():fullPathForFilename(music_name)
-      --xin  AudioEngine.playEffect(bkMusicPath)
-end
-
-local function removeMusic(music_name)
-    local bkMusicPath = cc.FileUtils:getInstance():fullPathForFilename(music_name)
-      --xin  AudioEngine.stopMusic(true)
-end
-
-local function createFarmLayer()
-    layerFarm = cc.Layer:create()
-    -- local spriteFarm = cc.Sprite:create("farm.jpg")
-    -- --spriteFarm:setScale(0.5)
-    -- spriteFarm:setVisible(false)
-    -- spriteFarm:setRotation(0)
-    -- spriteFarm:setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2)
-    -- layerFarm:addChild(spriteFarm)
-
-    --load land to farm
-    -- for i=1,2 do
-    --     for j=1,2 do
-    --        -- print(i)
-    --         local spriteLand = CCSprite:create("land.png")
-    --         spriteLand:setPosition(origin.x+visibleSize.width/i+visibleSize.width / 10 * j,origin.y+visibleSize.height/j+visibleSize.height / 10 * j)
-    --         --spriteLand:setPosition(200 + j * 180 - i % 2 * 90, 10 + i * 95 / 2+140)
-    --         layerFarm:addChild(spriteLand)
-    --     end
-    -- end
-
-    return layerFarm
+            end  
+       end  
 end
 
 
-
---function of ceate playlayer
-local function createPlayLayer()
-    layerPlay = cc.Layer:create()
-
-    local menue = cc.Menu:create()
-    menue:setPosition(cc.p(s.width-50,s.height/10))
-    layerPlay:addChild(menue)
-
-        -- Font Item
-    --local  spriteNormal = CCSprite:create(pic, CCRectMake(0,23*2,115,23))
-    -- local  spriteNormal = cc.Sprite:create("back_normal.png")
-    -- local  spriteSelected = cc.Sprite:create("back_select.png")
-    -- local  spriteDisabled = cc.Sprite:create("back_normal.png")
-
-    -- local  item1 = cc.MenuItemSprite:create(spriteNormal, spriteSelected, spriteDisabled)
-    -- item1:registerScriptTapHandler(backMenuCallback)
-
-    -- menue:addChild(item1)
-
-    local function onTouchEnded(x,y,y1)
-        local s = layerPlay:getChildByTag(kTagSprite4)
-        --s:stopAllActions()
-        hammerAction(x,y1)
-        --fuck()
-        --检测锤子和地鼠的碰撞
-        if checkClision(x,y) then
-
-             if  rand_Date and   rand_Date["score"]==-1 then --倒计时进度条+-时间相关
-
-                     --写入倒计时进度条控制情况
-        
-                return
-            end
-
-            --分数累加
-            -- print("已经检测出碰撞  分数增加")
-            
-            LabelAtlasTest.step()
-        end
-        
-        --print("ontouch XXXXXXXXXX")
-    end
-
-    local function onTouch(eventType, x, y)
-        if eventType == "began" then
-        	-- print("---", x, y)
-            return true
-        elseif eventType == "ended" then
-        local hight_=cc.pGetDistance(cc.p(0,y), cc.p(0,0))
-        local off_y=math.cos(math.rad(65))*hight_ 
-        local width_=cc.pGetDistance(cc.p(x,0), cc.p(0,0))
-        local off_x=math.cos(math.rad(65))*width_ 
-         -- print("222---", off_x)
-             return onTouchEnded(x+off_x/2,y,y+off_y)
-        end
-    end
-
-    layerPlay:setTouchEnabled(true)
-    layerPlay:registerScriptTouchHandler(onTouch)
-
+--  初始点击事件
+function HitVolesLayer:createPlayLayer()
+    self.layerPlay =cc.Layer:create()
+    --self.layerPlay:setScale(0.5)
+    self.HitVolesLayer:addChild(self.layerPlay,4) 
+    -- 初始化 地鼠   锤子   金币
     local spriteVole = cc.Sprite:create()
-    --spriteVole:setPosition(origin.x + (visibleSize.width / 3)*2, origin.y + visibleSize.height / 3)
     local spriteHammer = cc.Sprite:create()  
-    spriteHammer:setAnchorPoint(cc.p(0.5,1.0))
+    spriteHammer:setAnchorPoint(cc.p(0.5,0.5))
 
     local spriteCoins = cc.Sprite:create()
+    local  _score= cc.Sprite:create()
+    self.layerPlay:addChild(spriteVole, 0, self.kTagSprite3)
+    self.layerPlay:addChild(spriteHammer, 0, self.kTagSprite4)
+    self.layerPlay:addChild(spriteCoins, 0, self.kTagSprite5)
+    self.layerPlay:addChild(_score, 0, self.kTagSprite2)
 
-    --  以上两个已删除   
-    --layerPlay:addChild(spriteVole)
-    layerPlay:addChild(spriteVole, 0, kTagSprite3)
-    layerPlay:addChild(spriteHammer, 0, kTagSprite4)
-    layerPlay:addChild(spriteCoins, 0, kTagSprite5)
+    self.schedulHandle =  self.scheduler:scheduleScriptFunc(function(dt)
+            self:callback(1)
+    end, 1.0, false)   --(callback, 1.0, false)
 
+    return self.layerPlay
 
-    schedulHandle = scheduler:scheduleScriptFunc(callback, 1.0, false)
-
-    return layerPlay
 end
-
-local function createScoreLayer()
-    return LabelAtlasTest.create()
-end
-
---地鼠钻地动画定时器回调函数
-function callback(dt)
-         countdown_time=countdown_time-1
-         print("倒计时  ",countdown_time)
-         if countdown_time <= 0 then
-             
-              --Server:Instance():setgamerecord(mainScene.adid)    --  打完地鼠上传的数据
-              
-           NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
-             scheduler:unscheduleScriptEntry(schedulHandle)
-             return
+--检测进度条
+function HitVolesLayer:fun_loadingbar(  )
+       --  检测进度条
+         if self.dishu_time<=self.countdown_time then
+            self.dishu_loadingbar:setPercent(100)
+        elseif self.countdown_time<0 then
+            self.dishu_loadingbar:setPercent(0)
+        else
+          self.dishu_loadingbar:setPercent(self.countdown_time/self.dishu_time  *  100 )
          end
+
+end
+--地鼠钻地动画定时器回调函数
+function HitVolesLayer:callback(dt)
+
+         self.countdown_time=self.countdown_time-1
+         self:fun_loadingbar()
+         -- if self.countdown_time <= 0 then
+             
+         --      Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
+         --     --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
+         --     self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+         --     return
+         -- end
         
-        for i=1,#mainScene.target_table do
-            if mainScene.target_table[i]["target"]==nil then
+        for i=1,#self.target_table do
+            if self.target_table[i]["target"]==nil then
                               
-                                local donghua=mainScene.fragment_table[math.random(#mainScene.fragment_table)]
-           
-                                local   _rand=color_Mode[math.random(9)]--
-                                -- local v={target=donghua,_randdate=_rand}
-                                
-                                -- dump(_rand)
-                                -- donghua:setTag(mainScene.target_table[i]["tag"])
+                                local donghua=self.fragment_table[math.random(#self.fragment_table)]
+                                local   _rand=self.color_Mode[math.random(9)]--
+                                self.target_table[i]["target"]=donghua
+                                 self.target_table[i]["_randdate"]=_rand
 
-                                mainScene.target_table[i]["target"]=donghua
-                                 mainScene.target_table[i]["_randdate"]=_rand
+                                local fragment_sprite = display.newSprite("png/dadishu-02-touming-yuan.png")
+                                fragment_sprite:setPosition(cc.p(donghua:getContentSize().width*3/4,donghua:getContentSize().height*3/4))
+                                fragment_sprite:setTag(#self.target_table)
+                                fragment_sprite:setAnchorPoint(1,1)
 
-                                local fragment_sprite = display.newSprite("png/dadishu-1.png")
+                                local Water_polo = display.newSprite(_rand["color_type"])
+                                Water_polo:setPosition(cc.p(fragment_sprite:getContentSize().width/2,fragment_sprite:getContentSize().height/2))
+                                Water_polo:setAnchorPoint(0.5,0.5)
+                                fragment_sprite:addChild(Water_polo)
 
-                                fragment_sprite:setColor(_rand["color_type"])
-                                fragment_sprite:setScaleX(247/204)
-                                fragment_sprite:setScaleY(247/190)
+                                local giction=cc.NodeGrid:create()
+                                giction:addChild(fragment_sprite)
+                                donghua:addChild(giction,100,2) 
+                                -- giction:runAction(liquid);  
 
-                                    fragment_sprite:setTag(#mainScene.target_table)
-                                fragment_sprite:setAnchorPoint(0.0, 0.06)
-                                donghua:addChild(fragment_sprite,1,1)
-
-                                local function CallFucnCallback3(sender)
+                                  local function CallFucnCallback3(sender)
                                        
-                                        for i=1,#mainScene.target_table do
-                                            -- print("----",sender:getTag(),mainScene.target_table[i].target:getTag())
-                                            if mainScene.target_table[i].target and sender:getTag()==mainScene.target_table[i].target:getTag() then
-                                                -- dump(sender:getTag())
-                                                  mainScene.target_table[i]["target"]=nil
-                                                  mainScene.target_table[i]["_randdate"]=nil
-                                                  if curr_tag==sender:getTag() then
-                                                      curr_tag=0
+                                        for i=1,#self.target_table do
+                                            if self.target_table[i].target and sender:getTag()==self.target_table[i].target:getTag() then
+                                                  self.target_table[i]["target"]=nil
+                                                  self.target_table[i]["_randdate"]=nil
+                                                  if self.curr_tag==sender:getTag() then
+                                                      self.curr_tag=0
                                                   end
-                                                   sender:getChildByTag(1):removeFromParent()
+                                                   sender:getChildByTag(2):removeFromParent()
                                             end
                                         end
                                 end
-
-                                 local rate=cc.RotateTo:create(0.5, {x=-5,y=0,z=0})--,
-                                  local rate1=cc.RotateTo:create(0.5, {x=0,y=0,z=0})
-                                local time=_rand["time"]-1.0
-
+                                local time=_rand["time"]
                                 if time<0 then  time=2   end
-                                   
-                              
-                                local seq = cc.Sequence:create(rate,cc.DelayTime:create(time),rate1,cc.CallFunc:create(CallFucnCallback3))
-                                -- for i=1,#mainScene.target_table do
-                                --      mainScene.target_table[i].target:
-                                --  end
+                                local seq = cc.Sequence:create(cc.DelayTime:create(time),cc.CallFunc:create(CallFucnCallback3))
                                 donghua:stopAllActions()
                                 donghua:runAction(seq)
                     return
-            end
+               end
         end
 end
---
---金币动画
-function coinAction(x,y)
-        --创建动画序列
-    local animation = cc.Animation:create()
-    local number,name
-    for i=0,2 do
-      number = i 
-      name = "png/dajinbi_"..number..".png"
-      animation:addSpriteFrameWithFile(name)
-    end
 
-    animation:setDelayPerUnit(0.5/3.0)
-    animation:setRestoreOriginalFrame(true)
+-- 水波动画
+function HitVolesLayer:Act_Waterpolo(_fragment)  --_fragment   图
+              local waves = cc.Waves:create(1, cc.size(10, 10), 10, 5, true, true);
+              local  liquid = cc.Liquid:create(1, cc.size(10, 10), 2, 5.0);  
+              _fragment:getChildByTag(2):stopAllActions()
+                _fragment:getChildByTag(2):runAction(liquid);  
 
-    --创建动作
-    local animate = cc.Animate:create(animation)
-
-    --创建执行序列
-    --local action = cc.Sequence:create(animate,animate:reverse())
-
-    --附加行为方式
-    --local perform = CCRepeatForever:create(action)
-
-    local node = layerPlay:getChildByTag(kTagSprite5)
-
-    node:setVisible(true)
-    local function logSprRotation(sender)
-	node:setVisible(false)
-   end
-
-
-     local action = cc.Sequence:create(animate,animate:reverse(),cc.CallFunc:create(logSprRotation))
-
-
-
-    node:setPosition(x,y)
-
-    --run
-    node:runAction(action)
-    playMusicHit("hit.mp3")
 end
 
---锤子动画函数
-function hammerAction(x,y)
+
+--手指动画
+function HitVolesLayer:hammerAction(x,y)
     --创建动画序列
     local animation = cc.Animation:create()
     local number,name
-    for i=0,2 do
+    for i=0,1 do
       number = i 
-      name = "png/chuizi_"..number..".png"
+      name = "png/dadishu-02-shou-0"..number..".png"
       animation:addSpriteFrameWithFile(name)
     end
 
     animation:setDelayPerUnit(0.3/3.0)
     animation:setRestoreOriginalFrame(true)
 
-    --创建动作
     local animate = cc.Animate:create(animation)
-
-    --创建执行序列
-   
-
-    --附加行为方式
-    --local perform = CCRepeatForever:create(action)
-
-    local node = layerPlay:getChildByTag(kTagSprite4)
+    local node = self.layerPlay:getChildByTag(self.kTagSprite4)
+    -- node:setAnchorPoint(0.75,1.0)
     node:setVisible(true)
     local function logSprRotation(sender)
-	node:setVisible(false)
+    node:setVisible(false)
     end
     local action = cc.Sequence:create(animate,animate:reverse(),cc.CallFunc:create(logSprRotation))
 
@@ -443,161 +289,191 @@ function hammerAction(x,y)
 
     node:runAction(action)
    
-
 end
+--检测碰撞
+function HitVolesLayer:checkClision(x,y)
+      self.rand_Date=nil
+       for i=1,#self.target_table do
+            local sVole=self.target_table[i].target
+            if sVole then
+                local sHammer = self.layerPlay:getChildByTag(self.kTagSprite4)
+                local rect   = sVole:getBoundingBox()
 
-
-
-local function createGameScene()
-    -- 防止内存泄露
-    collectgarbage("setpause",100)
-    collectgarbage("setstepmul",5000)
-
-    --加载背景音乐
-    loadMusic("background.mp3")
-
-    local mainScene = cc.Scene:create()
-
-    --添加背景层到场景
-    mainScene:addChild(createFarmLayer())
-
-
-    self:refresh_table()
-
-
-    --添加精灵动画层到场景
-    mainScene:addChild(createPlayLayer())
-    --添加分数层到场景
-    mainScene:addChild(createScoreLayer())
-
-    return mainScene
-
-end
-
-
--- filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
---                       ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount
------------------------------------------------------------------------------------------
- function HitVolesLayer:ctor(params)
-   
-cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
-      self:setRotation3D({x=-25,y=0,z=0})	
- 
-     mainScene=self
-     mainScene:addChild(createFarmLayer())
-     mainScene.fragment_table={}
-     mainScene.target_table={
-      {target=nil,_randdate=nil},
-      {target=nil,_randdate=nil},
-      {target=nil,_randdate=nil}
- }
-
-    mainScene.filename=params.filename
-    mainScene.adid=params.adid
-
-     self:refresh_table()
-
-    -- --添加精灵动画层到场景
-    mainScene:addChild(createPlayLayer())
-    -- -- --添加分数层到场景
-    mainScene:addChild(createScoreLayer())
-
-   
-end
-
-
-function translateScene()
-    --local scene = nextAction()
-    local scene = nil 
-    if flag == 1 then
-        scene = createScene2()
-        --flag = 2
-        loadResource = true
-        scene = cc.TransitionFadeTR:create(1.2, scene)
-    elseif flag == 2 then
-        scene = createScene1()
-        --flag = 1
-        if loadResource then
-            scheduler:unscheduleScriptEntry(schedulHandle)
-            removeMusic("background.mp3") 
-        end
-
-        scene = cc.TransitionShrinkGrow:create(1.2, scene)
-    elseif flag == 3 then
-        scene = createScene3()
-        --flag = 1
-        scene = cc.TransitionProgressRadialCCW:create(1.2, scene)
-    end
-    
-    cc.Director:getInstance():replaceScene(scene)
-end
-
-function menuStartCallback(sender)
-    --print("XXXXXXXXXXXXXXXXXXXX")
-    flag = 1
-    translateScene()
-end
-function menuQuitCallback(  )
-    cc.Director:getInstance():endToLua() 
-end
-
-function menuAboutCallback(  )
-    flag = 3
-    translateScene() 
-end
-
-function backMenuCallback()
-    flag = 2
-    translateScene()
-end
-
-
- function HitVolesLayer:refresh_table()
---  新增加
- 	self.row=3
- 	self.col=4
- 	self.point=cc.p(57,100)
- 	
-
-    local pos_x, pos_y =self.point.x,self.point.y
-    local row ,col =self.row,self.col 
-     local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-
-      local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-      print("图片",mainScene.filename)
-    local cache = cc.Director:getInstance():getTextureCache():addImage(path  ..  mainScene.filename)
-   
-    local layer=cc.Layer:create()
-    layer:setScale(0.85)--(0.703)
-    layer:addTo(self)
-   for i=1,row do
-        for j=1,col do
-            local fragment_sprite = cc.Sprite:create()
-            fragment_sprite:setAnchorPoint(0.5, 1)
-            --新增加
-            local po={}
-            po.width=750
-            po.height=1000
-            self.content_size=po
-
-
-            local rect = cc.rect((i-1)*self.content_size.width/row, (j-1)*self.content_size.height/col, self.content_size.width/row-3, self.content_size.height/col-3)
-            fragment_sprite:setTexture(cache)
-            fragment_sprite:setTextureRect(rect)
-
-            fragment_sprite:setPosition(70+(i-1)*self.content_size.width/row, 550 +(3-j)*self.content_size.height/col)--设置图片显示的部分
-            layer:addChild(fragment_sprite)
-            fragment_sprite:setTag(#mainScene.fragment_table + 1)
-
-            mainScene.fragment_table[#mainScene.fragment_table + 1] = fragment_sprite
-
+                local rect1   = sHammer:getBoundingBox()
+                
+                if cc.rectContainsPoint(rect, rect1) then
+                         self.curr_tag=sVole:getTag()
+                         self:coinAction(x,y)
+                         self:Act_Waterpolo(sVole)
+                         self.rand_Date=self.target_table[i]._randdate
+                         return true
+                end
             end
 
-                 
-       end  
+       end
+        self.curr_tag=0
+         return false
+ end
+
+ --分数动画
+function HitVolesLayer:coinAction(x1,y1)
+    if self.jia_score==0 then
+       return
+    end
+     local x=self.dishu_po_score:getPositionX()
+     local  y=self.dishu_po_score:getPositionY()
+
+    local  _score =   ccui.TextAtlas:create()--
+    _score:setAnchorPoint(1,0.5)
+    self.layerPlay:addChild(_score)
+    local  move1=cc.MoveTo:create(0.5, cc.p( x,y+30 ) )
+    _score:setPosition(cc.p(x,y))  
+    if self.jia_score==0 then  --  因为打Plist  时候错位
+       _score:setProperty(tostring(9),"png/dadishu_fenshu.png", 57, 77, "0")
+    else
+       _score:setProperty(tostring(self.jia_score-1),"png/dadishu_fenshu.png", 57, 77, "0")
+    end
+     
+   
+     local function logSprRotation(sender)
+                     sender:removeFromParent()                    
+     end
+     local action = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation))
+      _score:runAction(action)
+
+    local dishu_jia=cc.Sprite:create("png/dadishu-02-jiahao.png")
+    self.layerPlay:addChild(dishu_jia)
+    dishu_jia:setPosition(cc.p(x-_score:getContentSize().width-20,y))  
+    local  move2=cc.MoveTo:create(0.5, cc.p( x-_score:getContentSize().width-20,y+30 ) )
+     local function logSprRotation1(sender)
+                     sender:removeFromParent()                    
+     end
+     local action1= cc.Sequence:create(move2,cc.CallFunc:create(logSprRotation1))
+      dishu_jia:runAction(action1)
+   
 end
- 
+
+--  初始化分数
+function HitVolesLayer:fun_score( )
+    self.dishu_score = ccui.TextAtlas:create()
+    self.dishu_score:setPosition(cc.p(self.labelAtlas:getPositionX(),self.labelAtlas:getPositionY()))  
+    self.dishu_score:setProperty( "0","png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
+    self.HitVolesLayer :addChild(self.dishu_score) 
+end
+--  分数
+function HitVolesLayer:step()
+    if  self.curr_tag1~=self.curr_tag then 
+        self.m_time=self.m_time+self.rand_Date["score"]
+        self.jia_score=self.rand_Date["score"]
+    else
+         self.m_time = self.m_time +1
+         self.jia_score=1
+    end
+   self.curr_tag1=self.curr_tag
+    self.dishu_score:setProperty(tostring(self.m_time),"png/dadishufenshu.png", 24, 26, "0")  --
+end
+--增加幸运卡
+function HitVolesLayer:add_reward( )
+        self.Rewardvouchers = cc.CSLoader:createNode("Rewardvouchers.csb")
+        self:addChild(self.Rewardvouchers,10000)
+        local jique=self.Rewardvouchers:getChildByTag(421)
+        local jinyan=self.Rewardvouchers:getChildByTag(102)
+         self.began_bt=self.Rewardvouchers:getChildByTag(421):getChildByTag(425)  --立即参与
+         self.began_bt:addTouchEventListener(function(sender, eventType  )
+                   self:touch_callback( sender, eventType )             
+          end)
+
+        self.again_bt=self.Rewardvouchers:getChildByTag(421):getChildByTag(426)  --再来一局
+         self.again_bt:addTouchEventListener(function(sender, eventType  )
+                   self:touch_callback( sender, eventType )             
+          end)
+
+
+         self.jbegan_bt=self.Rewardvouchers:getChildByTag(102):getChildByTag(106)  --返回奖池
+         self.jbegan_bt:addTouchEventListener(function(sender, eventType  )
+                   self:touch_callback( sender, eventType )             
+          end)
+
+        self.jagain_bt=self.Rewardvouchers:getChildByTag(102):getChildByTag(107)  --经验再来一局
+         self.jagain_bt:addTouchEventListener(function(sender, eventType  )
+                   self:touch_callback( sender, eventType )             
+          end)
+
+         local _table=LocalData:Instance():get_setgamerecord()--保存数据
+         if   not _table["goldspool"] then
+             return
+         end
+          local goldspool=_table["goldspool"]
+         if tonumber(goldspool["coolingtime"]) ==  -1 then
+               jique:setVisible(false)
+               jinyan:setVisible(true)
+         else
+               -- jique:setVisible(true)
+               -- jinyan:setVisible(false)
+               NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
+               
+
+         end
+end
+function HitVolesLayer:touch_callback( sender, eventType )
+          local tag=sender:getTag()
+
+      if eventType ~= ccui.TouchEventType.ended then
+         return
+      end
+      if tag==425 then --立即参与
+
+          if self.Rewardvouchers then
+              self.Rewardvouchers:removeFromParent()
+          end
+              cc.Director:getInstance():popScene()
+              Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
+              Server:Instance():sceneinformation()            
+      elseif tag==426 then   --再来一局
+         local _table=LocalData:Instance():get_actid()--保存数
+         local scene=GameScene.new({adid=_table["act_id"],type="audition",image=_table["image"]})
+         cc.Director:getInstance():popScene()
+         cc.Director:getInstance():pushScene(scene)
+       elseif tag==106 then   --返回奖池
+           if self.Rewardvouchers then
+              self.Rewardvouchers:removeFromParent()
+          end
+         
+           Util:scene_control("GoldprizeScene")     --  返回奖池首图列表
+          
+       elseif tag==107 then   --再来一局
+     
+         GameScene = require("app.scenes.GameScene")--惊喜吧
+          local scene=GameScene.new({adid=self.pintuid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
+          cc.Director:getInstance():replaceScene(scene)
+          LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+             
+     end
+
+end
 
 
 
-return  HitVolesLayer
+function HitVolesLayer:onEnter()
+
+              NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
+                       function()
+                        print("接到请求")
+                              
+                               self:add_reward( )
+                      end)
+
+
+end
+
+function HitVolesLayer:onExit()
+
+                NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
+end
+
+
+
+
+
+
+return   HitVolesLayer
