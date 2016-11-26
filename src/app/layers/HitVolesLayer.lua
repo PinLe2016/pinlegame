@@ -53,11 +53,11 @@ end)
                 {color_type="png/dadishu-02-guodong-3.png",time=3,score=3},
                 {color_type="png/dadishu-02-guodong-4.png",time=1,score=1},
                 {color_type="png/dadishu-02-guodong-5.png",time=1.5,score=0},
-                {color_type="png/dadishu-02-di-xiajiao.png",time=3.5,score=10},
+                {color_type="png/dadishu-02-guodong-6.png",time=3.5,score=10},
 
-                {color_type="png/dadishu-02-shizhong--di-1.png",time=3,score=-1},
-                {color_type="png/dadishu-02-shizhong-1.png",time=3,score=-1},
-                {color_type="png/dadishu-02-shou.png",time=6,score=-1}
+                {color_type="png/dadishu-02-guodong-7.png",time=3,score=-1},
+                {color_type="png/dadishu-02-guodong-8.png",time=3,score=-1},
+                {color_type="png/dadishu-02-guodong-9.png",time=6,score=-1}
         }
 
      self:fun_init()
@@ -197,13 +197,13 @@ function HitVolesLayer:callback(dt)
 
          self.countdown_time=self.countdown_time-1
          self:fun_loadingbar()
-         if self.countdown_time <= 0 then
+         -- if self.countdown_time <= 0 then
              
-              Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
-             --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
-             self.scheduler:unscheduleScriptEntry(self.schedulHandle)
-             return
-         end
+         --      Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
+         --     --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
+         --     self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+         --     return
+         -- end
         
         for i=1,#self.target_table do
             if self.target_table[i]["target"]==nil then
@@ -302,7 +302,14 @@ function HitVolesLayer:checkClision(x,y)
                 local rect1   = sHammer:getBoundingBox()
                 
                 if cc.rectContainsPoint(rect, rect1) then
+                 
                          self.curr_tag=sVole:getTag()
+                           -- if  self.rand_Date and   self.rand_Date["score"]==-1 then 
+                               
+                           --     self:act_time()
+                           -- else
+                             self:coinAction(x,y)
+                          --end
                          self:coinAction(x,y)
                          self:Act_Waterpolo(sVole)
                          self.rand_Date=self.target_table[i]._randdate
@@ -314,7 +321,20 @@ function HitVolesLayer:checkClision(x,y)
         self.curr_tag=0
          return false
  end
+ --  事件动画
+function HitVolesLayer:act_time(  )
+    local dishu_jia=cc.Sprite:create("png/dadishu-02-shizhong-1.png")
+    self.layerPlay:addChild(dishu_jia)
+    dishu_jia:setPosition(cc.p(display.x/2 ,display.y/2))  
+    local  move2=cc.MoveTo:create(0.5, cc.p( display.x/2 ,display.y/2+30 ) )
+     local function logSprRotation1(sender)
+                     sender:removeFromParent()                    
+     end
+     local action1= cc.Sequence:create(move2,cc.CallFunc:create(logSprRotation1))
+      dishu_jia:runAction(action1)
 
+
+end
  --分数动画
 function HitVolesLayer:coinAction(x1,y1)
     if self.jia_score==0 then
