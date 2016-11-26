@@ -197,13 +197,13 @@ function HitVolesLayer:callback(dt)
 
          self.countdown_time=self.countdown_time-1
          self:fun_loadingbar()
-         -- if self.countdown_time <= 0 then
+         if self.countdown_time <= 0 then
              
-         --      Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
-         --     --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
-         --     self.scheduler:unscheduleScriptEntry(self.schedulHandle)
-         --     return
-         -- end
+              Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
+             --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
+             self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+             return
+         end
         
         for i=1,#self.target_table do
             if self.target_table[i]["target"]==nil then
