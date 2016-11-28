@@ -4,11 +4,8 @@ local HitVolesLayer = class("HitVolesLayer", function()
     return display.newLayer("HitVolesLayer")
 end)
 
- function HitVolesLayer:ctor(params)
-    --  建立3D  
-      -- cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
-      -- self:setRotation3D({x=-25,y=0,z=0})   
-          dump(params)
+ function HitVolesLayer:ctor(params)  
+
          self.fragment_table={}
          self.target_table={
                   {target=nil,_randdate=nil},
@@ -22,7 +19,6 @@ end)
 
         self.filename=params.filename
         self.adid=params.adid
-        self.dishu_adid=params.dishu_adid
         self.s = cc.Director:getInstance():getWinSize()
         self.rand_Date =nil --记录选中容器数据
         --  设置分数 锤子 老鼠  金币 TAG值
@@ -42,6 +38,8 @@ end)
         self.row=3
         self.col=4
         --  设置图片大小
+        self.img_width=750
+        self.img_height=1000
         local dishuk_table={}
 
         self.scheduler = cc.Director:getInstance():getScheduler()  --  
@@ -94,7 +92,6 @@ end
 
    self.sf_x=self.Sample_figure:getPositionX()
    self.sf_y=self.Sample_figure:getPositionY()
-   self.content_size=self.Sample_figure:getContentSize()
 --  新增加
     self.row=3
     self.col=4
@@ -104,56 +101,47 @@ end
    
     local layer=cc.Layer:create()
     self.layerPlay=layer
+
+    local function onTouchEnded(x,y)
+              
+                self:hammerAction(x,y)
+                if self:checkClision(x,y) then
+                    self:step()  --  分数增加
+                end
+     end
+     local  function onTouch(event,x,y)
+      -- dump(event)
+      if event=="began" then
+        print("-----",x,y)
+        onTouchEnded(x,y)
+      end
+       
+     end
+
+    layer:setTouchEnabled(true)
+    layer:registerScriptTouchHandler(onTouch)
+    dump(self.Sample_figure:getContentSize())
     -- layer:setScale(0.7)--(0.703)
-     self.content_size=self.Sample_figure:getContentSize()
-     dump(self.content_size)
+    -- layer:setAnchorPoint(0,1)
     self.HitVolesLayer:addChild(layer,3) 
    for i=1,row do
         for j=1,col do
             local fragment_sprite =display.newSprite()--cc.Sprite:create()
-
+            fragment_sprite:setAnchorPoint(0.0, 0.0)
             fragment_sprite:setTexture(cache)
-            fragment_sprite:setScaleX(0.703)
-            fragment_sprite:setScaleY(0.703)
-
-            fragment_sprite:setAnchorPoint(0.5, 0.5)
+            fragment_sprite:setScale(0.7)
             --新增加
-            -- local po={}
-            -- po.width=self.img_width
-            -- po.height=  self.img_height   --self.s.height
-           
+            local po={}
+            po.width=750--self.Sample_figure:getContentSize().width
+            po.height=1000--  self.Sample_figure:getContentSize().height   --self.s.height
+            self.content_size=cc.size(750,1000)--self.Sample_figure:getContentSize()
             local rect = cc.rect((i-1)*self.content_size.width/row, (j-1)*self.content_size.height/col, self.content_size.width/row-3, self.content_size.height/col-3)
             
             fragment_sprite:setTextureRect(rect)
-            fragment_sprite:setPosition(70+(i-1)*self.content_size.width*0.7/row, 400 +(3-j)*self.content_size.height*0.7/col)--设置图片显示的部分
+            fragment_sprite:setPosition(57+(i-1)*self.content_size.width*0.7/row, 187+self.content_size.height*0.7/col+(3-j)*self.content_size.height*0.7/col)--设置图片显示的部分
             layer:addChild(fragment_sprite)
             fragment_sprite:setTag(#self.fragment_table + 1)
             self.fragment_table[#self.fragment_table + 1] = fragment_sprite
-
-            local function onTouchEnded(x,y)
-                self:hammerAction(x,y)
-                if self:checkClision(x,y) then
-                  print("碰撞")
-                     if  self.rand_Date and   self.rand_Date["score"]==-1 then --倒计时进度条+-时间相关
-
-                        return
-                    end
-                    self:step()  --  分数增加
-                end
-            end
-
-
-            fragment_sprite:setTouchEnabled(true)
-            fragment_sprite:setTouchSwallowEnabled(false)
-            fragment_sprite:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
-                        -- 触摸识别
-                                 if event.name == "began" then
-
-                                         return onTouchEnded(event.x,event.y)
-
-                                  end
-              end)
-  
 
             end  
        end  
@@ -167,7 +155,8 @@ function HitVolesLayer:createPlayLayer()
     self.HitVolesLayer:addChild(self.layerPlay,4) 
     -- 初始化 地鼠   锤子   金币
     local spriteVole = cc.Sprite:create()
-    local spriteHammer = cc.Sprite:create()  
+    local spriteHammer = cc.Sprite:create("png/dadishu-02-shou-01.png")  
+    -- spriteHammer:setScale(0.3)
     spriteHammer:setAnchorPoint(cc.p(0.5,0.5))
 
     local spriteCoins = cc.Sprite:create()
@@ -202,6 +191,7 @@ function HitVolesLayer:callback(dt)
          self.countdown_time=self.countdown_time-1
          self:fun_loadingbar()
          -- if self.countdown_time <= 0 then
+             
          --      Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
          --     --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
          --     self.scheduler:unscheduleScriptEntry(self.schedulHandle)
@@ -218,7 +208,7 @@ function HitVolesLayer:callback(dt)
 
                                 local fragment_sprite = display.newSprite("png/dadishu-02-touming-yuan.png")
                                 fragment_sprite:setPosition(cc.p(donghua:getContentSize().width*3/4,donghua:getContentSize().height*3/4))
-
+                                -- fragment_sprite:setTag(#self.target_table)
                                 fragment_sprite:setAnchorPoint(1,1)
 
                                 local Water_polo = display.newSprite(_rand["color_type"])
@@ -235,6 +225,7 @@ function HitVolesLayer:callback(dt)
                                        
                                         for i=1,#self.target_table do
                                             if self.target_table[i].target and sender:getTag()==self.target_table[i].target:getTag() then
+
                                                   if self.curr_tag==sender:getTag() then
                                                       self.curr_tag=0
                                                   end
@@ -302,20 +293,20 @@ function HitVolesLayer:checkClision(x,y)
 
                 local sHammer = self.layerPlay:getChildByTag(self.kTagSprite4)
                 local rect   = sVole:getBoundingBox()
-
+                local rect2=cc.rect(rect.x,rect.y,rect.width*0.6,rect.height*0.6)
                 local rect1   = sHammer:getBoundingBox()
-                
-                if cc.rectContainsPoint(rect, rect1) then
-                   self.rand_Date=self.target_table[i]._randdate
+                dump(rect1)
+                if cc.rectContainsPoint(rect2, rect1) then
                          self.curr_tag=sVole:getTag()
-                           if  self.rand_Date and   tonumber(self.rand_Date["score"])  ==   -1 then 
-                              
-                           else
+                           -- if  self.rand_Date and   self.rand_Date["score"]==-1 then 
+                               
+                           --     self:act_time()
+                           -- else
                              self:coinAction(x,y)
-                          end
+                          --end
                          self:coinAction(x,y)
                          self:Act_Waterpolo(sVole)
-                        
+                         self.rand_Date=self.target_table[i]._randdate
                          return true
                 end
             end
@@ -324,12 +315,12 @@ function HitVolesLayer:checkClision(x,y)
         self.curr_tag=0
          return false
  end
- --  时间动画
+ --  事件动画
 function HitVolesLayer:act_time(  )
     local dishu_jia=cc.Sprite:create("png/dadishu-02-shizhong-1.png")
     self.layerPlay:addChild(dishu_jia)
-    dishu_jia:setPosition(cc.p(display.cx ,display.cy))  
-    local  move2=cc.MoveTo:create(1, cc.p( display.cx ,display.cy+100 ) )
+    dishu_jia:setPosition(cc.p(display.x/2 ,display.y/2))  
+    local  move2=cc.MoveTo:create(0.5, cc.p( display.x/2 ,display.y/2+30 ) )
      local function logSprRotation1(sender)
                      sender:removeFromParent()                    
      end
@@ -340,7 +331,9 @@ function HitVolesLayer:act_time(  )
 end
  --分数动画
 function HitVolesLayer:coinAction(x1,y1)
-
+    if self.jia_score==0 then
+       return
+    end
      local x=self.dishu_po_score:getPositionX()
      local  y=self.dishu_po_score:getPositionY()
 
@@ -383,30 +376,14 @@ function HitVolesLayer:fun_score( )
 end
 --  分数
 function HitVolesLayer:step()
-  --  显示分数增加   和   每次加的分数
     if  self.curr_tag1~=self.curr_tag then 
         self.m_time=self.m_time+self.rand_Date["score"]
         self.jia_score=self.rand_Date["score"]
-    elseif tonumber(self.rand_Date["score"])  <=  0   and self.curr_tag1==self.curr_tag   then
-         self.m_time = self.m_time -1
-         self.jia_score= -1
     else
-       self.m_time = self.m_time +1
-       self.jia_score=1
+         self.m_time = self.m_time +1
+         self.jia_score=1
     end
---  炸弹时间减少
-      if  self.rand_Date and   tonumber(self.rand_Date["score"])  ==   -1   and   self.curr_tag1~=self.curr_tag then 
-                     self.countdown_time=self.countdown_time+self.rand_Date["time"]  --  时间减少 
-                     self:act_time()
-      elseif self.rand_Date and   tonumber(self.rand_Date["score"])  ==   -1   and   self.curr_tag1==self.curr_tag then
-                    self.countdown_time=self.countdown_time+1  --  时间减少
-                    self:act_time()
-      end
-      if self.countdown_time>20 then  --   倒计时最大是20秒 
-                    self.countdown_time=20
-     end
    self.curr_tag1=self.curr_tag
-   --print("分数",self.m_time)
     self.dishu_score:setProperty(tostring(self.m_time),"png/dadishufenshu.png", 24, 26, "0")  --
 end
 --增加幸运卡
@@ -481,10 +458,9 @@ function HitVolesLayer:touch_callback( sender, eventType )
        elseif tag==107 then   --再来一局
      
          GameScene = require("app.scenes.GameScene")--惊喜吧
-         print("再来一局",self.adid)
-          local scene=GameScene.new({adid=self.dishu_adid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=2})--拼图
+          local scene=GameScene.new({adid=self.pintuid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
           cc.Director:getInstance():replaceScene(scene)
-         
+          LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
              
      end
 
