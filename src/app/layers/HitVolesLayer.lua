@@ -42,8 +42,6 @@ end)
         self.row=3
         self.col=4
         --  设置图片大小
-        self.img_width=750 *  0.7
-        self.img_height=1000  *  0.7
         local dishuk_table={}
 
         self.scheduler = cc.Director:getInstance():getScheduler()  --  
@@ -106,30 +104,35 @@ end
    
     local layer=cc.Layer:create()
     self.layerPlay=layer
-    --layer:setScale(0.7)--(0.703)
+    -- layer:setScale(0.7)--(0.703)
+     self.content_size=self.Sample_figure:getContentSize()
+     dump(self.content_size)
     self.HitVolesLayer:addChild(layer,3) 
    for i=1,row do
         for j=1,col do
             local fragment_sprite =display.newSprite()--cc.Sprite:create()
-            fragment_sprite:setScale(0.7)
+
+            fragment_sprite:setTexture(cache)
+            fragment_sprite:setScaleX(0.703)
+            fragment_sprite:setScaleY(0.703)
+
             fragment_sprite:setAnchorPoint(0.5, 0.5)
             --新增加
-            local po={}
-            po.width=self.img_width
-            po.height=  self.img_height   --self.s.height
-            self.content_size=po
-            -- dump(self.content_size)
+            -- local po={}
+            -- po.width=self.img_width
+            -- po.height=  self.img_height   --self.s.height
+           
             local rect = cc.rect((i-1)*self.content_size.width/row, (j-1)*self.content_size.height/col, self.content_size.width/row-3, self.content_size.height/col-3)
-            fragment_sprite:setTexture(cache)
+            
             fragment_sprite:setTextureRect(rect)
-            fragment_sprite:setPosition(70+(i-1)*self.content_size.width/row, 400 +(3-j)*self.content_size.height/col)--设置图片显示的部分
+            fragment_sprite:setPosition(70+(i-1)*self.content_size.width*0.7/row, 400 +(3-j)*self.content_size.height*0.7/col)--设置图片显示的部分
             layer:addChild(fragment_sprite)
             fragment_sprite:setTag(#self.fragment_table + 1)
             self.fragment_table[#self.fragment_table + 1] = fragment_sprite
 
-            local function onTouchEnded(x,y,y1)
-                self:hammerAction(x,y1)
-                if self:checkClision(x,y1) then
+            local function onTouchEnded(x,y)
+                self:hammerAction(x,y)
+                if self:checkClision(x,y) then
                   print("碰撞")
                      if  self.rand_Date and   self.rand_Date["score"]==-1 then --倒计时进度条+-时间相关
 
@@ -140,19 +143,14 @@ end
             end
 
 
-              fragment_sprite:setTouchEnabled(true)
-              fragment_sprite:setTouchSwallowEnabled(false)
-              fragment_sprite:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
+            fragment_sprite:setTouchEnabled(true)
+            fragment_sprite:setTouchSwallowEnabled(false)
+            fragment_sprite:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event)
                         -- 触摸识别
                                  if event.name == "began" then
-                                          local x=event.x
-                                          local y=event.y
-                                          print("坐标",x,"  ",y)
-                                          local hight_=cc.pGetDistance(cc.p(0,y), cc.p(0,0))
-                                          local off_y=math.cos(math.rad(65))*hight_ 
-                                          local width_=cc.pGetDistance(cc.p(x,0), cc.p(0,0))
-                                          local off_x=math.cos(math.rad(65))*width_ 
-                                         return onTouchEnded(x,y,y)
+
+                                         return onTouchEnded(event.x,event.y)
+
                                   end
               end)
   
@@ -220,7 +218,7 @@ function HitVolesLayer:callback(dt)
 
                                 local fragment_sprite = display.newSprite("png/dadishu-02-touming-yuan.png")
                                 fragment_sprite:setPosition(cc.p(donghua:getContentSize().width*3/4,donghua:getContentSize().height*3/4))
-                                --fragment_sprite:setTag(#self.target_table)
+
                                 fragment_sprite:setAnchorPoint(1,1)
 
                                 local Water_polo = display.newSprite(_rand["color_type"])
@@ -237,12 +235,11 @@ function HitVolesLayer:callback(dt)
                                        
                                         for i=1,#self.target_table do
                                             if self.target_table[i].target and sender:getTag()==self.target_table[i].target:getTag() then
-                                                
                                                   if self.curr_tag==sender:getTag() then
                                                       self.curr_tag=0
                                                   end
                                                    sender:getChildByTag(2):removeFromParent()
-                                                     self.target_table[i]["target"]=nil
+                                                   self.target_table[i]["target"]=nil
                                                   self.target_table[i]["_randdate"]=nil
                                             end
                                         end
@@ -302,6 +299,7 @@ function HitVolesLayer:checkClision(x,y)
        for i=1,#self.target_table do
             local sVole=self.target_table[i].target
             if sVole then
+
                 local sHammer = self.layerPlay:getChildByTag(self.kTagSprite4)
                 local rect   = sVole:getBoundingBox()
 
@@ -309,7 +307,6 @@ function HitVolesLayer:checkClision(x,y)
                 
                 if cc.rectContainsPoint(rect, rect1) then
                    self.rand_Date=self.target_table[i]._randdate
-                 
                          self.curr_tag=sVole:getTag()
                            if  self.rand_Date and   tonumber(self.rand_Date["score"])  ==   -1 then 
                               
