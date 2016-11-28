@@ -194,7 +194,6 @@ function HitVolesLayer:callback(dt)
          self.countdown_time=self.countdown_time-1
          self:fun_loadingbar()
          -- if self.countdown_time <= 0 then
-             
          --      Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
          --     --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
          --     self.scheduler:unscheduleScriptEntry(self.schedulHandle)
@@ -300,16 +299,17 @@ function HitVolesLayer:checkClision(x,y)
                 local rect1   = sHammer:getBoundingBox()
                 
                 if cc.rectContainsPoint(rect, rect1) then
+                   self.rand_Date=self.target_table[i]._randdate
                          self.curr_tag=sVole:getTag()
-                           -- if  self.rand_Date and   self.rand_Date["score"]==-1 then 
-                               
-                           --     self:act_time()
-                           -- else
+                           if  self.rand_Date and   self.rand_Date["score"]==-1 then 
+                               self.countdown_time=self.countdown_time+self.rand_Date["time"]  --  时间增加
+                               self:act_time()
+                           else
                              self:coinAction(x,y)
-                          --end
+                          end
                          self:coinAction(x,y)
                          self:Act_Waterpolo(sVole)
-                         self.rand_Date=self.target_table[i]._randdate
+                        
                          return true
                 end
             end
@@ -318,12 +318,12 @@ function HitVolesLayer:checkClision(x,y)
         self.curr_tag=0
          return false
  end
- --  事件动画
+ --  时间动画
 function HitVolesLayer:act_time(  )
     local dishu_jia=cc.Sprite:create("png/dadishu-02-shizhong-1.png")
     self.layerPlay:addChild(dishu_jia)
-    dishu_jia:setPosition(cc.p(display.x/2 ,display.y/2))  
-    local  move2=cc.MoveTo:create(0.5, cc.p( display.x/2 ,display.y/2+30 ) )
+    dishu_jia:setPosition(cc.p(display.cx ,display.cy))  
+    local  move2=cc.MoveTo:create(1, cc.p( display.cx ,display.cy+100 ) )
      local function logSprRotation1(sender)
                      sender:removeFromParent()                    
      end
