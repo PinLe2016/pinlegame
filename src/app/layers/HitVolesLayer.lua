@@ -30,6 +30,7 @@ end)
         self.kTagSprite5  =  5
         self.LabelAtlasTest = {}  -- 分数
         self.jia_score=0
+        self.dishu_adid=params.dishu_adid
 
         self.layerPlay=nil
 
@@ -506,9 +507,9 @@ function HitVolesLayer:touch_callback( sender, eventType )
        elseif tag==107 then   --再来一局
      
          GameScene = require("app.scenes.GameScene")--惊喜吧
-          local scene=GameScene.new({adid=self.pintuid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=1})--拼图
+          local scene=GameScene.new({adid=self.dishu_adid,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=2})--拼图
           cc.Director:getInstance():replaceScene(scene)
-          LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+         -- LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
              
      end
 
