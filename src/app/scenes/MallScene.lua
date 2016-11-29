@@ -11,7 +11,7 @@ local MallScene = class("MallScene", function()
       return display.newScene("MallScene")
 end)
 
-function MallScene:ctor()
+function MallScene:ctor(params)
 
      self.floating_layer = require("app.layers.FloatingLayer").new()
      self.floating_layer:addTo(self,100000)
@@ -33,12 +33,20 @@ function MallScene:ctor()
         local login_info=LocalData:Instance():get_user_data()
 	      local _key=login_info["loginname"]
 	      local _loginkey=login_info["loginkey"]
+
+
+        local url
+         if tostring(params.type)=="emil" then
+            url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
+         elseif tostring(params.type)=="play_mode" then
+            url="http://playios.pinlegame.com/GameCenter/index.html"
+        end
         
 	      local webview = cc.WebView:create()
 	      self.Storebrowser:addChild(webview)
 	      webview:setVisible(true)
 	      webview:setScalesPageToFit(true)
-	      webview:loadURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+	      webview:loadURL(url)
 	      webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
 	      webview:reload()
 	      webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
@@ -79,7 +87,7 @@ function MallScene:listener_home()
     self:addChild(layer)
     local function onKeyReleased(keyCode, event)
           if keyCode == cc.KeyCode.KEY_BACK then
-              cc.Director:getInstance():popScene()
+              Util:scene_control("MainInterfaceScene")
           end
     end
 

@@ -242,9 +242,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	elseif tag==97 then
 		Util:scene_control("GoldprizeScene")
      --Util:scene_control("PhysicsScene")
-      elseif tag==444 then  
+      elseif tag==444 then  --游戏中心
             
-            self:fun_showtip(self.gamecenter_bt,sender:getPositionX(),sender:getPositionY() )
+            -- self:fun_showtip(self.gamecenter_bt,sender:getPositionX(),sender:getPositionY() )
+             Util:scene_controlid("MallScene",{type="play_mode"})
+            
             --self.gamecenter_bt:setTouchEnabled(false)
 
       elseif tag==125 then 
@@ -299,7 +301,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
 
              --self:fun_storebrowser()
-             Util:scene_control("MallScene")
+             Util:scene_controlid("MallScene",{type="emil"})
 
            
              -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
@@ -449,7 +451,7 @@ function MainInterfaceScene:fun_checkin( tm )
         self:addChild(self.fragment_sprite)
         self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
          self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
-         self:addChild(self.checkinlayer)
+         self:addChild(self.checkinlayer,1,17)
          self.checkinlayer:setVisible(true)
          self:move_layer(self.checkinlayer)
       end
@@ -664,15 +666,18 @@ function MainInterfaceScene:listener_home()
                 return
               end
             end
-            
-            --   device.showAlert("拼乐游戏", "您确定要退出游戏？", {"是", "否"}, function (event)  
-  
-            --     if event.buttonIndex == 1 then    
-            --         cc.Director:getInstance():endToLua()  
-            --     else    
-            --         device.cancelAlert()  --取消对话框   
-            --     end    
-            -- end)    
+            if self.checkinlayer then
+                self.fragment_sprite:setVisible(false)
+                self.checkinlayer:removeFromParent()
+                self.checkinlayer=nil
+              return
+            end
+            if self.set_Xbg:isVisible() then
+              self.set_Xbg:setVisible(false) 
+              self.set_bg1:setVisible(false) 
+              return
+            end
+
             self.floating_layer:showFloat("您确定要退出游戏？",function (sender, eventType)
                 if eventType==1 then
                       cc.Director:getInstance():endToLua()
