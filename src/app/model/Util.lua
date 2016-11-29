@@ -322,6 +322,17 @@ function Util:player_music(musicname,cycle ) --音乐名字，是否重播，是
       print("抱歉无法播放音乐")
    end   
 end
+   --音乐
+function Util:player_music_hit(musicname,cycle ) --音乐名字，是否重播，是否设置禁止播放
+
+    if LocalData:Instance():get_music() then
+      audio.playMusic(musicname,cycle)
+    else
+      print("抱歉无法播放音乐")
+   end   
+
+end
+
 function Util:stop_music( musicname ) -- 停止播放音乐
     
      if not LocalData:Instance():get_music() then

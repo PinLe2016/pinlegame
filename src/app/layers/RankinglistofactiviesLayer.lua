@@ -52,6 +52,11 @@ function RankinglistofactiviesLayer:init(  )
 
       local _integral=self.RankinglistofactiviesLayer:getChildByTag(533) -- 排名
       _integral:setString(_activitybyid["myrank"])
+      
+      if tonumber(_activitybyid["remaintimes"]) > 0 then
+        _integral:setString("/")
+      end
+
       --_integral:setString("/")
        local _head=self.RankinglistofactiviesLayer:getChildByTag(529) --头像
        _head:loadTexture(LocalData:Instance():get_user_head())--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))

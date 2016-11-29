@@ -5,7 +5,7 @@
 local DetailsLayer = class("DetailsLayer", function()
             return display.newLayer("DetailsLayer")
 end)
-GameScene = require("app.scenes.GameScene")
+
 function DetailsLayer:ctor(params)
        self:setNodeEventEnabled(true)--layer添加监听
        self._ky=params._ky
@@ -97,6 +97,8 @@ function DetailsLayer:init(  )
 	integral_text1:setString(activitybyid["betgolds"]    ..   "金币/次")  
 
 	local integral_text2=details:getChildByTag(1188)  --   剩余次数
+
+
 	if tonumber(activitybyid["remaintimes"]) < 0 then
 		integral_text2:setString("/")
 	else
@@ -106,7 +108,11 @@ function DetailsLayer:init(  )
 
 
 	local rank_text=details:getChildByTag(41)
-	rank_text:setString(activitybyid["myrank"])
+		rank_text:setString(activitybyid["myrank"])
+
+	if tonumber(activitybyid["remaintimes"]) >0 then
+		rank_text:setString("/")
+	end
 
 	local name_text=details:getChildByTag(38)
 	name_text:setString(user["nickname"])
