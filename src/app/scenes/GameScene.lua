@@ -50,6 +50,14 @@ function GameScene:ctor(params)
       local csb = cc.CSLoader:createNode("XSHGameScene.csb")
       self._csb=csb
       self:addChild(csb)
+      if self.choose==2 then
+         self._HitVolesLayer = cc.CSLoader:createNode("HitVolesLayer.csb")
+        self:addChild(self._HitVolesLayer)
+        self._csb:setVisible(false)
+
+      end
+     
+
       end
      
     self:listener_home() --注册安卓返回键
@@ -111,6 +119,9 @@ function GameScene:funinit(  )
                                   self._csb:addChild(deblayer)
                         elseif self.choose==2  then
                                    self._csb:setVisible(false)
+                                   if self._HitVolesLayer then
+                                     self._HitVolesLayer:removeFromParent()
+                                   end
                                     self.Laohuji = cc.CSLoader:createNode("HitVolesLayer.csb")
                                     self:addChild(self.Laohuji)
                                   --     local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
