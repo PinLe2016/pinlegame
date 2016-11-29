@@ -235,7 +235,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		-- self.kuang:setVisible(true)
 	elseif tag==37 then  --37
     local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
-		self:addChild(PerInformationLayer.new())
+		self:addChild(PerInformationLayer.new(),1,14)
 	elseif tag==399 then --弹出确定
 		Server:Instance():validateactivitycode(self.activitycode_text:getString())
 		self.activitycode_text:setString(" ")
@@ -271,11 +271,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==580 then  --邮箱
             print("邮箱")
             local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
-            self:addChild(mailLayer.new())
+            self:addChild(mailLayer.new(),1,15)
       elseif tag==581 then  --任务
             print("任务")
             local taskLayer = require("app.layers.taskLayer")  --关于任务界面
-            self:addChild(taskLayer.new())
+            self:addChild(taskLayer.new(),1,16)
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
             
@@ -284,10 +284,10 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友  291
         local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
-            self:addChild(FriendrequestLayer.new())
+            self:addChild(FriendrequestLayer.new(),1,11)
       elseif tag==54 then  --测试分享
           local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面
-            self:addChild(aboutdetailsLayer.new())
+            self:addChild(aboutdetailsLayer.new(),1,12)
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
@@ -320,7 +320,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
       elseif tag==52 then  --邀请好友
         local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
-            self:addChild(InvitefriendsLayer.new())
+            self:addChild(InvitefriendsLayer.new(),1,13)
       elseif tag==2122 then  --商城返回
               print("返回")
               if  self.Storebrowser then
@@ -658,6 +658,13 @@ function MainInterfaceScene:listener_home()
               self:removeChildByTag(255)
               return
             end
+            for i=11,16 do
+              if self:getChildByTag(i) then
+                self:removeChildByTag(i)
+                return
+              end
+            end
+            
             --   device.showAlert("拼乐游戏", "您确定要退出游戏？", {"是", "否"}, function (event)  
   
             --     if event.buttonIndex == 1 then    

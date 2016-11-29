@@ -130,7 +130,7 @@ end
      local  function onTouch(event,x,y)
       -- dump(event)
       if event=="began" then
-        print("-----",x,y)
+        -- print("-----",x,y)
         onTouchEnded(x,y)
       end
        
@@ -304,7 +304,7 @@ function HitVolesLayer:Act_Waterpolo(_fragment)  --_fragment   图
 
               Util:player_music_hit("sound/effect/hit_2.mp3",false)
               local waves = cc.Waves:create(1, cc.size(10, 10), 10, 5, true, true);
-              local  liquid = cc.Liquid:create(1, cc.size(10, 10), 2, 5.0);  
+              local  liquid = cc.Liquid:create(0.5, cc.size(10, 10), 2, 5.0);  
               _fragment:getChildByTag(2):stopAllActions()
                 _fragment:getChildByTag(2):runAction(liquid);  
 
@@ -336,7 +336,7 @@ function HitVolesLayer:hammerAction(x,y)
 
     node:setPosition(x,y)
 
-
+    node:stopAllActions()
     node:runAction(action)
    
 end
