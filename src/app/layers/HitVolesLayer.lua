@@ -22,6 +22,7 @@ end)
         self.s = cc.Director:getInstance():getWinSize()
         self.rand_Date =nil --记录选中容器数据
         --  设置分数 锤子 老鼠  金币 TAG值
+        self.kTagSprite1  =  1
         self.kTagSprite2  =  2
         self.kTagSprite3  =  3
         self.kTagSprite4  =  4
@@ -160,15 +161,19 @@ function HitVolesLayer:createPlayLayer()
     spriteHammer:setAnchorPoint(cc.p(0.5,0.5))
 
     local spriteCoins = cc.Sprite:create()
+     local mask = cc.CSLoader:createNode("masklayer.csb")--cc.Sprite:create("png/GRzhezhaoceng.png")
+     mask:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+     mask:setVisible(false)
     local  _score= cc.Sprite:create()
+     local countdown = cc.Sprite:create()
     self.layerPlay:addChild(spriteVole, 0, self.kTagSprite3)
     self.layerPlay:addChild(spriteHammer, 0, self.kTagSprite4)
     self.layerPlay:addChild(spriteCoins, 0, self.kTagSprite5)
     self.layerPlay:addChild(_score, 0, self.kTagSprite2)
-
-    self.schedulHandle =  self.scheduler:scheduleScriptFunc(function(dt)
-            self:callback(1)
-    end, 1.0, false)   --(callback, 1.0, false)
+    self.layerPlay:addChild(mask, 0, 20)
+    self.layerPlay:addChild(countdown, 0, self.kTagSprite1)
+    self:fun_countdown_time()
+   
 
     return self.layerPlay
 
@@ -376,13 +381,13 @@ function HitVolesLayer:fun_score( )
 end
 --  分数
 function HitVolesLayer:step()
-    if  self.curr_tag1~=self.curr_tag then 
+  --  if  self.curr_tag1~=self.curr_tag then 
         self.m_time=self.m_time+self.rand_Date["score"]
         self.jia_score=self.rand_Date["score"]
-    else
-         self.m_time = self.m_time +1
-         self.jia_score=1
-    end
+    -- else
+    --      self.m_time = self.m_time +1
+    --      self.jia_score=1
+    -- end
    self.curr_tag1=self.curr_tag
     self.dishu_score:setProperty(tostring(self.m_time),"png/dadishufenshu.png", 24, 26, "0")  --
 end
@@ -465,7 +470,40 @@ function HitVolesLayer:touch_callback( sender, eventType )
      end
 
 end
+--  倒计时动画
+function HitVolesLayer:fun_countdown_time(  )
+    local node1 = self.layerPlay:getChildByTag(20)
+    node1:setVisible(true)
+    --node1:setPosition(display.cx, display.cy)
+    local animation = cc.Animation:create()
+    local number,name
+    for i=1,5 do
+      number = i 
+      name = "png/dadishu-daojishi-"..number..".png"
+      animation:addSpriteFrameWithFile(name)
+    end
 
+    animation:setDelayPerUnit(1)
+    animation:setRestoreOriginalFrame(true)
+
+    local animate = cc.Animate:create(animation)
+    local node = self.layerPlay:getChildByTag(self.kTagSprite1)
+    node:setVisible(true)
+    local function logSprRotation(sender)
+                node:setVisible(false)
+                node1:setVisible(false)
+                 self.schedulHandle =  self.scheduler:scheduleScriptFunc(function(dt)
+                        self:callback(1)
+                end, 1.0, false)   --(callback, 1.0, false)
+
+    end
+    local action = cc.Sequence:create(animate,cc.CallFunc:create(logSprRotation))
+
+    node:setPosition(cc.p(display.cx,display.cy))
+    node:runAction(action)
+
+
+end
 
 
 function HitVolesLayer:onEnter()
