@@ -86,6 +86,21 @@ function HitVolesLayer:fun_init(  )
             self.scheduler:unscheduleScriptEntry(self.schedulHandle)
             Util:scene_control("GoldprizeScene")
       end)
+      local rules_bt=self.HitVolesLayer:getChildByTag(345)--返回
+      rules_bt:addTouchEventListener(function(sender, eventType  )
+           if eventType ~= ccui.TouchEventType.ended then
+                 return
+          end
+            self:fun_rules()
+           
+            self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+
+      end)
+
+
+      self.congratulations=self.HitVolesLayer:getChildByTag(189)-- 恭喜获得
+       self.congratulations:setLocalZOrder(100)
+      self.congratulations_text =self.congratulations:getChildByTag(193)
 
   
 end
@@ -149,7 +164,24 @@ end
             end  
        end  
 end
+function HitVolesLayer:fun_rules(  )
+    self.Hitrules = cc.CSLoader:createNode("Hitrules.csb")
+    self:addChild(self.Hitrules)
+      local _back=self.Hitrules:getChildByTag(291)--返回
+      _back:addTouchEventListener(function(sender, eventType  )
+           if eventType ~= ccui.TouchEventType.ended then
+                 return
+          end
+          if  self.Hitrules then
+             self.schedulHandle =  self.scheduler:scheduleScriptFunc(function(dt)
+                        self:callback(1)
+                end, 1.0, false)   --(callback, 1.0, false)
 
+               self.Hitrules:removeFromParent()
+          end
+           
+      end)
+end
 
 --  初始点击事件
 function HitVolesLayer:createPlayLayer()
@@ -192,18 +224,27 @@ function HitVolesLayer:fun_loadingbar(  )
          end
 
 end
+function HitVolesLayer:server_data(  )
+     Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
+     --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
+     self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+end
 --地鼠钻地动画定时器回调函数
 function HitVolesLayer:callback(dt)
 
          self.countdown_time=self.countdown_time-1
          self:fun_loadingbar()
-         -- if self.countdown_time <= 0 then
-             
-         --      Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
-         --     --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
-         --     self.scheduler:unscheduleScriptEntry(self.schedulHandle)
-         --     return
-         -- end
+         if self.countdown_time <= 0 then
+                local function stopAction()
+                            self.congratulations:setVisible(false)
+                            self:server_data()
+                end
+              local callfunc = cc.CallFunc:create(stopAction)
+             self.congratulations:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+              self.congratulations:setVisible(true)--self.m_time
+            self.congratulations_text:setString(tostring(self.m_time))
+             return
+         end
         
         for i=1,#self.target_table do
             if self.target_table[i]["target"]==nil then
@@ -479,7 +520,7 @@ function HitVolesLayer:fun_countdown_time(  )
     --node1:setPosition(display.cx, display.cy)
     local animation = cc.Animation:create()
     local number,name
-    for i=1,5 do
+    for i=1,5   do
       number = i 
       name = "png/dadishu-daojishi-"..number..".png"
       animation:addSpriteFrameWithFile(name)
