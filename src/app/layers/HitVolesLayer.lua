@@ -228,7 +228,7 @@ end
 function HitVolesLayer:server_data(  )
      Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
      --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
-     self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+     
 end
 --地鼠钻地动画定时器回调函数
 function HitVolesLayer:callback(dt)
@@ -240,10 +240,12 @@ function HitVolesLayer:callback(dt)
                             self.congratulations:setVisible(false)
                             self:server_data()
                 end
+                Util:player_music_hit("sound/effect/hit_3.mp3",false)
               local callfunc = cc.CallFunc:create(stopAction)
              self.congratulations:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
               self.congratulations:setVisible(true)--self.m_time
             self.congratulations_text:setString(tostring(self.m_time))
+            self.scheduler:unscheduleScriptEntry(self.schedulHandle)
              return
          end
         
@@ -299,6 +301,8 @@ end
 
 -- 水波动画
 function HitVolesLayer:Act_Waterpolo(_fragment)  --_fragment   图
+
+              Util:player_music_hit("sound/effect/hit_2.mp3",false)
               local waves = cc.Waves:create(1, cc.size(10, 10), 10, 5, true, true);
               local  liquid = cc.Liquid:create(1, cc.size(10, 10), 2, 5.0);  
               _fragment:getChildByTag(2):stopAllActions()
@@ -361,6 +365,7 @@ function HitVolesLayer:checkClision(x,y)
             end
 
        end
+       Util:player_music_hit("sound/effect/hit_1.mp3",false)
         self.curr_tag=0
          return false
  end

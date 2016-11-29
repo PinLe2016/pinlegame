@@ -658,14 +658,20 @@ function MainInterfaceScene:listener_home()
               self:removeChildByTag(255)
               return
             end
-              device.showAlert("拼乐游戏", "您确定要退出游戏？", {"是", "否"}, function (event)  
+            --   device.showAlert("拼乐游戏", "您确定要退出游戏？", {"是", "否"}, function (event)  
   
-                if event.buttonIndex == 1 then    
-                    cc.Director:getInstance():endToLua()  
-                else    
-                    device.cancelAlert()  --取消对话框   
-                end    
-            end)             
+            --     if event.buttonIndex == 1 then    
+            --         cc.Director:getInstance():endToLua()  
+            --     else    
+            --         device.cancelAlert()  --取消对话框   
+            --     end    
+            -- end)    
+            self.floating_layer:showFloat("您确定要退出游戏？",function (sender, eventType)
+                if eventType==1 then
+                      cc.Director:getInstance():endToLua()
+                end
+            end)  
+
 
           end
     end
