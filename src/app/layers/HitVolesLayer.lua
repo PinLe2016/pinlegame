@@ -48,17 +48,17 @@ end)
         self.scheduler = cc.Director:getInstance():getScheduler()  --  
         --数值表
         self.color_Mode={
-                {color_type="png/dadishu-02-guodong-1.png",time=3,score=1},       
-                {color_type="png/dadishu-02-guodong-2.png",time=2,score=4},
-                {color_type="png/dadishu-02-guodong-3.png",time=3,score=3},
-                {color_type="png/dadishu-02-guodong-4.png",time=1,score=1},
-                {color_type="png/dadishu-02-guodong-5.png",time=1.5,score=0},
-                {color_type="png/dadishu-02-guodong-6.png",time=3.5,score=10},
+                {color_type="png/dadishu-02-guodong-5.png",time=3,score=1},     --  +1积分  
+                {color_type="png/dadishu-02-guodong-7.png",time=2,score=4},      --  +4积分  
+                {color_type="png/dadishu-02-guodong-1.png",time=3,score=3},       --  +3积分  
+                {color_type="png/dadishu-02-guodong-8.png",time=1,score=1},         --  +1积分  
+                {color_type="png/dadishu-02-guodong-6.png",time=1.5,score=0},         --   不加分
+                {color_type="png/dadishu-02-guodong-4.png",time=3.5,score=10},          --  +10积分    
 
-                {color_type="png/dadishu-02-guodong-7.png",time=3,score=-1},
-                {color_type="png/dadishu-02-guodong-8.png",time=3,score=-1},
-                {color_type="png/dadishu-02-guodong-9.png",time=6,score=-1}
-        }
+                {color_type="png/dadishu-02-guodong-3.png",time=3,score=-1},        --  -3  时间  
+                {color_type="png/dadishu-02-guodong-2.png",time=3,score=-1},            --  -6时间 
+                {color_type="png/dadishu-02-guodong-9.png",time=6,score=-1}               --  +3  时间  
+        }   
 
      self:fun_init()
      self:refresh_table()  --图片拆分
@@ -196,17 +196,17 @@ function HitVolesLayer:createPlayLayer()
     spriteHammer:setAnchorPoint(cc.p(0.5,0.5))
 
     local spriteCoins = cc.Sprite:create()
-     local mask = cc.CSLoader:createNode("masklayer.csb")--cc.Sprite:create("png/GRzhezhaoceng.png")
-     mask:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-     mask:setVisible(false)
+     -- local mask = cc.CSLoader:createNode("masklayer.csb")--cc.Sprite:create("png/GRzhezhaoceng.png")
+     -- mask:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+     -- mask:setVisible(false)
     local  _score= cc.Sprite:create()
-     local countdown = cc.Sprite:create()
+    -- local countdown = cc.Sprite:create()
     self.layerPlay:addChild(spriteVole, 0, self.kTagSprite3)
     self.layerPlay:addChild(spriteHammer, 0, self.kTagSprite4)
     self.layerPlay:addChild(spriteCoins, 0, self.kTagSprite5)
     self.layerPlay:addChild(_score, 0, self.kTagSprite2)
-    self.layerPlay:addChild(mask, 0, 20)
-    self.layerPlay:addChild(countdown, 0, self.kTagSprite1)
+    --self.layerPlay:addChild(mask, 0, 20)
+   -- self.layerPlay:addChild(countdown, 0, self.kTagSprite1)
     self:fun_countdown_time()
    
 
@@ -528,36 +528,24 @@ function HitVolesLayer:touch_callback( sender, eventType )
 end
 --  倒计时动画
 function HitVolesLayer:fun_countdown_time(  )
-    local node1 = self.layerPlay:getChildByTag(20)
-    node1:setVisible(true)
-    --node1:setPosition(display.cx, display.cy)
-    local animation = cc.Animation:create()
-    local number,name
-    for i=1,5   do
-      number = i 
-      name = "png/dadishu-daojishi-"..number..".png"
-      animation:addSpriteFrameWithFile(name)
-    end
+      local node = cc.CSLoader:createNode("hitcountdown.csb")
+      local action = cc.CSLoader:createTimeline("hitcountdown.csb")
+      action:setTimeSpeed(0.25)
+      node:runAction(action)
+      action:gotoFrameAndPlay(0,80,false)
 
-    animation:setDelayPerUnit(1)
-    animation:setRestoreOriginalFrame(true)
-
-    local animate = cc.Animate:create(animation)
-    local node = self.layerPlay:getChildByTag(self.kTagSprite1)
-    node:setVisible(true)
-    local function logSprRotation(sender)
-                node:setVisible(false)
-                node1:setVisible(false)
-                 self.schedulHandle =  self.scheduler:scheduleScriptFunc(function(dt)
+      local function stopAction()
+             if  node then
+                     node:removeFromParent()
+                     self.schedulHandle =  self.scheduler:scheduleScriptFunc(function(dt)
                         self:callback(1)
-                end, 1.0, false)   --(callback, 1.0, false)
+                    end, 1.0, false)   --(callback, 1.0, false)
+              end
+      end
 
-    end
-    local action = cc.Sequence:create(animate,cc.CallFunc:create(logSprRotation))
-
-    node:setPosition(cc.p(display.cx,display.cy))
-    node:runAction(action)
-
+       local callfunc = cc.CallFunc:create(stopAction)
+      node:runAction(cc.Sequence:create(cc.DelayTime:create(6),callfunc  ))
+      self:addChild(node)
 
 end
 
@@ -570,7 +558,6 @@ function HitVolesLayer:onEnter()
                               
                                self:add_reward( )
                       end)
-
 
 end
 

@@ -250,8 +250,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             --self.gamecenter_bt:setTouchEnabled(false)
 
       elseif tag==125 then 
-              self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
+              --self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
               --self.list_bt:setTouchEnabled(false)
+               local RichlistLayer = require("app.layers.RichlistLayer")--惊喜吧 
+         self:addChild(RichlistLayer.new())
+
 
 	elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")

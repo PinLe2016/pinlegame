@@ -4,7 +4,6 @@ DEBUG = 2
 
 -- display FPS stats on screen
 DEBUG_FPS = false
-
 -- dump memory info every 10 seconds
 DEBUG_MEM = false
 
@@ -103,6 +102,7 @@ G_NOTIFICATION_EVENT = {
 	GETTASKLIST=							"GETTASKLIST"  , --   获取任务列表 
 	TASKTARGETRECORD=					 "TASKTARGETRECORD"  , --   领取任务列表 settasktargetrecord
 	PERFECT=					 "PERFECT"  , --   领取任务列表 perfect
+	RICHLIST=					 "RICHLIST"  , --   财富榜 RichlistLayer
 
 }
 
