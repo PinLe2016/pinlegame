@@ -7,6 +7,7 @@ end)
  function HitVolesLayer:ctor(params)  
 
          self.fragment_table={}
+         self.fragment_table_tow={}
          self.target_table={
                   {target=nil,_randdate=nil},
                   {target=nil,_randdate=nil},
@@ -142,6 +143,7 @@ end
             layer:addChild(fragment_sprite)
             fragment_sprite:setTag(#self.fragment_table + 1)
             self.fragment_table[#self.fragment_table + 1] = fragment_sprite
+            self.fragment_table_tow[#self.fragment_table_tow + 1] = fragment_sprite
 
             end  
        end  
@@ -200,8 +202,10 @@ function HitVolesLayer:callback(dt)
         
         for i=1,#self.target_table do
             if self.target_table[i]["target"]==nil then
-                              
-                                local donghua=self.fragment_table[math.random(#self.fragment_table)]
+                                local rand=math.random(#self.fragment_table_tow)
+                                local donghua=self.fragment_table_tow[rand]
+                                table.remove(self.fragment_table_tow,rand)
+
                                 local   _rand=self.color_Mode[math.random(9)]--
                                 self.target_table[i]["target"]=donghua
                                  self.target_table[i]["_randdate"]=_rand
@@ -229,6 +233,7 @@ function HitVolesLayer:callback(dt)
                                                   if self.curr_tag==sender:getTag() then
                                                       self.curr_tag=0
                                                   end
+                                                  table.insert(self.fragment_table_tow,self.target_table[i]["target"])
                                                    sender:getChildByTag(2):removeFromParent()
                                                    self.target_table[i]["target"]=nil
                                                   self.target_table[i]["_randdate"]=nil
@@ -290,13 +295,10 @@ function HitVolesLayer:checkClision(x,y)
        for i=1,#self.target_table do
             local sVole=self.target_table[i].target
             if sVole then
-
-                local sHammer = self.layerPlay:getChildByTag(self.kTagSprite4)
                 local rect   = sVole:getBoundingBox()
-                local rect2=cc.rect(rect.x,rect.y,rect.width*0.6,rect.height*0.6)
-                local rect1   = sHammer:getBoundingBox()
-                dump(rect1)
-                if cc.rectContainsPoint(rect2, rect1) then
+                if cc.rectContainsPoint(rect, cc.p(x, y)) then
+                        -- print("---------",rect.x,rect.y)
+                        -- print("----22-----",rect1.x,rect1.y)
                          self.curr_tag=sVole:getTag()
                            -- if  self.rand_Date and   self.rand_Date["score"]==-1 then 
                                
