@@ -14,8 +14,8 @@ end)
                   {target=nil,_randdate=nil}
           }
          
-        self.countdown_time =20    --  设置倒计时
-        self.dishu_time=20
+        self.countdown_time =60    --  设置倒计时
+        self.dishu_time=60
         self:setNodeEventEnabled(true)--layer添加监听
 
         self.filename=params.filename
@@ -426,8 +426,15 @@ end
 --  分数
 function HitVolesLayer:step()
   --  if  self.curr_tag1~=self.curr_tag then 
-        self.m_time=self.m_time+self.rand_Date["score"]
-        self.jia_score=self.rand_Date["score"]
+        if tonumber(self.rand_Date["score"])  ==  -1 then
+            self.m_time=self.m_time+0
+             self.jia_score=0
+        else
+            self.m_time=self.m_time+self.rand_Date["score"]
+             self.jia_score=self.rand_Date["score"]
+        end
+        
+       
     -- else
     --      self.m_time = self.m_time +1
     --      self.jia_score=1
