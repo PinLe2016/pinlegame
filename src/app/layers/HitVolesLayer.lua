@@ -420,7 +420,7 @@ function HitVolesLayer:coinAction(x,y)
     local  _score =   ccui.TextAtlas:create()--
     _score:setAnchorPoint(1,0.5)
     self.layerPlay:addChild(_score)
-    local  move1=cc.MoveTo:create(0.5, cc.p( x,y+30 ) )
+    local  move1=cc.MoveTo:create(0.5, cc.p( x,y+180 ) )
     _score:setPosition(cc.p(x,y))
 
     _score:setProperty(tostring(self.jia_score),"png/dadishu_fenshu.png", 57, 77, "0")
@@ -435,7 +435,7 @@ function HitVolesLayer:coinAction(x,y)
     local dishu_jia=cc.Sprite:create("png/dadishu-02-jiahao.png")
     self.layerPlay:addChild(dishu_jia)
     dishu_jia:setPosition(cc.p(x-_score:getContentSize().width-20,y))  
-    local  move2=cc.MoveTo:create(0.5, cc.p( x-_score:getContentSize().width-20,y+40 ) )
+    local  move2=cc.MoveTo:create(0.5, cc.p( x-_score:getContentSize().width-20,y+180 ) )
      local function logSprRotation1(sender)
                      sender:removeFromParent()                    
      end

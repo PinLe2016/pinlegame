@@ -103,6 +103,11 @@ function RichlistLayer:init(  )
 	self.rich_num=self.RichlistLayer:getChildByTag(482):getChildByTag(586)  --  财富数字
 	self.rich_num:setString(tostring(self.goldsranklist["golds"]))
 	self.rank_num=self.RichlistLayer:getChildByTag(482):getChildByTag(587)  --  排名
+      if tonumber(self.goldsranklist["rank"])  >= 100 then
+           self.rank_num:setString("暂未上榜")
+      else
+        self.rank_num:setString(tostring(self.goldsranklist["rank"]))
+      end
 	self.rank_num:setString(tostring(self.goldsranklist["rank"]))
 	self.head=self.RichlistLayer:getChildByTag(482):getChildByTag(1026)-- 头像
             self.head:loadTexture(LocalData:Instance():get_user_head())
