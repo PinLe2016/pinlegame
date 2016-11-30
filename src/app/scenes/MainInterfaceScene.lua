@@ -675,7 +675,7 @@ function MainInterfaceScene:listener_home()
                 self.checkinlayer=nil
               return
             end
-            if self.set_Xbg:isVisible() then
+            if self.set_Xbg and self.set_Xbg:isVisible() then
               self.set_Xbg:setVisible(false) 
               self.set_bg1:setVisible(false) 
               return
