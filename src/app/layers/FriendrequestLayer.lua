@@ -264,6 +264,7 @@ function FriendrequestLayer:touch_callback( sender, eventType )
     end
 
 	if tag==123 then --返回
+            Server:Instance():getuserinfo()  --钻石刷新
 		if self.share then
                    if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
@@ -271,12 +272,14 @@ function FriendrequestLayer:touch_callback( sender, eventType )
                  end
             end
           -- if tonumber(LocalData:Instance():get_sign()) ~=  2 then
-          --   Util:scene_control("MainInterfaceScene")
+          --   
           -- end
           
           Server:Instance():gettasklist()
           Server:Instance():getuserinfo() -- 初始化数据
-		self:removeFromParent()
+	   self:removeFromParent()
+        Util:scene_control("MainInterfaceScene")
+
 	elseif tag==135 then
 		print("hahahdfsfdsfdsf 1")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励

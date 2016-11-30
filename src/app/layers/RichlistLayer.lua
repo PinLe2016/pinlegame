@@ -65,6 +65,7 @@ function RichlistLayer:list_btCallback( sender, eventType )
                        return
               end
               local tag=sender:getTag()
+               self.tablecout=0
               if tag==748 then 
               	self.number_pages=1  --  页数
 	            self._type=0   --  类型
@@ -108,16 +109,7 @@ function RichlistLayer:init(  )
 	end
 	self.name:setString(nick_sub)
 
-	-- self.sup_data_num= #self.ranklist[#self.ranklist]["rankindex"]
- --           if self.tablecout<self.sup_data_num then
- --                   print("小于",self.tablecout ,"  ",self.sup_data_num)
- --           elseif self.tablecout>self.sup_data_num then
- --                 print("大于")
- --                 self.rank_list:removeAllItems() 
- --            else
- --                 return
- --           end
-
+	self.sup_data_num= #self.ranklist[#self.ranklist]["rankindex"]
 	 for i=1,#self.ranklist do
 	          	self.rank_list:pushBackDefaultItem()
 	          	local  cell = self.rank_list:getItem(self.ranklist[#self.ranklist]["rankindex"]-#self.ranklist-1+i)--(i-1)
@@ -138,6 +130,12 @@ function RichlistLayer:init(  )
 	            _head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 
           end
+           if tonumber(self.tablecout)~=0 then
+             self.rank_list:jumpToPercentVertical(110)
+           else
+             self.rank_list:jumpToPercentVertical(0)
+          end
+
           self.tablecout=self.sup_data_num
 
 

@@ -66,8 +66,6 @@ end)
      self:fun_score( )  --  分数
      self.m_time = 0
 
-
-
 end
 function HitVolesLayer:fun_init(  )
    self.HitVolesLayer = cc.CSLoader:createNode("HitVolesLayer.csb")
@@ -78,25 +76,59 @@ function HitVolesLayer:fun_init(  )
 
    self.dishu_loadingbar=self.HitVolesLayer:getChildByTag(1464)-- 时间进度条
    self.dishu_po_score=self.HitVolesLayer:getChildByTag(1951)-- 分数位置
+   self.stop_bg=self.HitVolesLayer:getChildByTag(542)-- 暂停
+   self.stop_bg:setLocalZOrder(100)
 
     local _back=self.HitVolesLayer:getChildByTag(1460)--返回
       _back:addTouchEventListener(function(sender, eventType  )
            if eventType ~= ccui.TouchEventType.ended then
                  return
           end
-            self.scheduler:unscheduleScriptEntry(self.schedulHandle)
-            Util:scene_control("GoldprizeScene")
+            self.stop_bg:setVisible(true)
+             self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+
       end)
-      local rules_bt=self.HitVolesLayer:getChildByTag(345)--返回
+      local rules_bt=self.HitVolesLayer:getChildByTag(345)--规则
       rules_bt:addTouchEventListener(function(sender, eventType  )
            if eventType ~= ccui.TouchEventType.ended then
                  return
           end
-            self:fun_rules()
-           
+            self:fun_rules()    
             self.scheduler:unscheduleScriptEntry(self.schedulHandle)
-
       end)
+      local continue_bt=self.stop_bg:getChildByTag(550)--继续
+      continue_bt:addTouchEventListener(function(sender, eventType  )
+           if eventType ~= ccui.TouchEventType.ended then
+                 return
+          end
+            self.stop_bg:setVisible(false)
+             self.schedulHandle =  self.scheduler:scheduleScriptFunc(function(dt)
+                        self:callback(1)
+                end, 1.0, false) 
+      end)
+      local exit_bt=self.stop_bg:getChildByTag(549)--退出游戏
+      exit_bt:addTouchEventListener(function(sender, eventType  )
+           if eventType ~= ccui.TouchEventType.ended then
+                 return
+          end
+            Util:scene_control("GoldprizeScene")
+      end)
+      local sound_bt1=self.stop_bg:getChildByTag(551)--音效
+       sound_bt1:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            audio.resumeMusic()
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                            audio.pauseMusic()
+                     end
+            end)
+       local music_bt=self.stop_bg:getChildByTag(552)--音乐
+        music_bt:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            audio.resumeMusic()
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             audio.pauseMusic()
+                     end
+            end)
 
 
       self.congratulations=self.HitVolesLayer:getChildByTag(189)-- 恭喜获得
@@ -124,7 +156,10 @@ end
               
                 self:hammerAction(x,y)
                 if self:checkClision(x,y) then
-                    self:step()  --  分数增加
+                  
+                          self:step()  --  分数增加
+               
+                    
                 end
      end
      local  function onTouch(event,x,y)
@@ -307,7 +342,6 @@ function HitVolesLayer:Act_Waterpolo(_fragment)  --_fragment   图
               local  liquid = cc.Liquid:create(0.5, cc.size(10, 10), 2, 5.0);  
               _fragment:getChildByTag(2):stopAllActions()
                 _fragment:getChildByTag(2):runAction(liquid);  
-
 end
 
 
@@ -348,18 +382,16 @@ function HitVolesLayer:checkClision(x,y)
             if sVole then
                 local rect   = sVole:getBoundingBox()
                 if cc.rectContainsPoint(rect, cc.p(x, y)) then
-                        -- print("---------",rect.x,rect.y)
-                        -- print("----22-----",rect1.x,rect1.y)
-                         self.curr_tag=sVole:getTag()
-                           -- if  self.rand_Date and   self.rand_Date["score"]==-1 then 
-                               
-                           --     self:act_time()
-                           -- else
-                             self:coinAction(x,y)
-                          --end
-                         self:coinAction(x,y)
-                         self:Act_Waterpolo(sVole)
+                        self:Act_Waterpolo(sVole)
                          self.rand_Date=self.target_table[i]._randdate
+                         self.curr_tag=sVole:getTag()
+                           if     self.rand_Date["score"]==-1 then 
+                                self:fun_acttime()--  时间
+                           else
+                            self:coinAction(x,y)
+                          end
+                         
+                         
                          return true
                 end
             end
@@ -369,25 +401,11 @@ function HitVolesLayer:checkClision(x,y)
         self.curr_tag=0
          return false
  end
- --  事件动画
-function HitVolesLayer:act_time(  )
-    local dishu_jia=cc.Sprite:create("png/dadishu-02-shizhong-1.png")
-    self.layerPlay:addChild(dishu_jia)
-    dishu_jia:setPosition(cc.p(display.x/2 ,display.y/2))  
-    local  move2=cc.MoveTo:create(0.5, cc.p( display.x/2 ,display.y/2+30 ) )
-     local function logSprRotation1(sender)
-                     sender:removeFromParent()                    
-     end
-     local action1= cc.Sequence:create(move2,cc.CallFunc:create(logSprRotation1))
-      dishu_jia:runAction(action1)
-
-
-end
  --分数动画
 function HitVolesLayer:coinAction(x1,y1)
-    if self.jia_score==0 then
-       return
-    end
+    -- if self.jia_score==0 then
+    --    return
+    -- end
      local x=self.dishu_po_score:getPositionX()
      local  y=self.dishu_po_score:getPositionY()
 
@@ -395,12 +413,9 @@ function HitVolesLayer:coinAction(x1,y1)
     _score:setAnchorPoint(1,0.5)
     self.layerPlay:addChild(_score)
     local  move1=cc.MoveTo:create(0.5, cc.p( x,y+30 ) )
-    _score:setPosition(cc.p(x,y))  
-    if self.jia_score==0 then  --  因为打Plist  时候错位
-       _score:setProperty(tostring(9),"png/dadishu_fenshu.png", 57, 77, "0")
-    else
-       _score:setProperty(tostring(self.jia_score-1),"png/dadishu_fenshu.png", 57, 77, "0")
-    end
+    _score:setPosition(cc.p(x,y))
+
+    _score:setProperty(tostring(self.jia_score),"png/dadishu_fenshu.png", 57, 77, "0")
      
    
      local function logSprRotation(sender)
@@ -420,7 +435,22 @@ function HitVolesLayer:coinAction(x1,y1)
       dishu_jia:runAction(action1)
    
 end
+--  加时间动画
+function HitVolesLayer:fun_acttime(  )
 
+    local dishu_jia=cc.Sprite:create("png/dadishu-02-shizhong-1.png")
+    self.layerPlay:addChild(dishu_jia)
+    local  bgSize = cc.Director:getInstance():getWinSize()
+    dishu_jia:setPosition(cc.p(bgSize.width / 2,bgSize.height / 2 ))  
+    local  move2=cc.MoveTo:create(0.5, cc.p( bgSize.width / 2,bgSize.height / 2+160 ) )
+     local function logSprRotation1(sender)
+                     sender:removeFromParent()                    
+     end
+     local action1= cc.Sequence:create(move2,cc.CallFunc:create(logSprRotation1))
+      dishu_jia:runAction(action1)
+
+
+end
 --  初始化分数
 function HitVolesLayer:fun_score( )
     self.dishu_score = ccui.TextAtlas:create()
@@ -526,6 +556,7 @@ function HitVolesLayer:touch_callback( sender, eventType )
      end
 
 end
+
 --  倒计时动画
 function HitVolesLayer:fun_countdown_time(  )
       local node = cc.CSLoader:createNode("hitcountdown.csb")
