@@ -23,16 +23,19 @@ function MallScene:ctor(params)
       local back=self.Storebrowser:getChildByTag(2122)
       local store_size=self.Storebrowser:getChildByTag(2123)
       back:addTouchEventListener(function(sender, eventType  )
-      	if eventType ~= ccui.TouchEventType.ended then
-		return
-	end
-           Util:scene_control("MainInterfaceScene")
+        if eventType ~= ccui.TouchEventType.ended then
+          return
+        end
+          Util:scene_control("MainInterfaceScene")
+          self.Storebrowser:getChildByTag(255):loadURL("about:blank")
+          self.Storebrowser:getChildByTag(255):reload()
+           
       end)
 
 
         local login_info=LocalData:Instance():get_user_data()
-	      local _key=login_info["loginname"]
-	      local _loginkey=login_info["loginkey"]
+        local _key=login_info["loginname"]
+        local _loginkey=login_info["loginkey"]
 
 
         local url
@@ -42,14 +45,14 @@ function MallScene:ctor(params)
             url="http://playios.pinlegame.com/GameCenter/index.html"
         end
         
-	      local webview = cc.WebView:create()
-	      self.Storebrowser:addChild(webview)
-	      webview:setVisible(true)
-	      webview:setScalesPageToFit(true)
-	      webview:loadURL(url)
-	      webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
-	      webview:reload()
-	      webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
+        local webview = cc.WebView:create()
+        self.Storebrowser:addChild(webview,1,255)
+        webview:setVisible(true)
+        webview:setScalesPageToFit(true)
+        webview:loadURL(url)
+        webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+        webview:reload()
+        webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
 
 end
 
@@ -88,6 +91,8 @@ function MallScene:listener_home()
     local function onKeyReleased(keyCode, event)
           if keyCode == cc.KeyCode.KEY_BACK then
               Util:scene_control("MainInterfaceScene")
+              self.Storebrowser:getChildByTag(255):loadURL("about:blank")
+              self.Storebrowser:getChildByTag(255):reload()
           end
     end
 
