@@ -386,7 +386,7 @@ function HitVolesLayer:checkClision(x,y)
                          self.rand_Date=self.target_table[i]._randdate
                          self.curr_tag=sVole:getTag()
                            if     self.rand_Date["score"]==-1 then 
-                                self:fun_acttime()--  时间
+                                self:fun_acttime(x,y)--  时间
                            else
                             self:coinAction(x,y)
                           end
@@ -402,12 +402,12 @@ function HitVolesLayer:checkClision(x,y)
          return false
  end
  --分数动画
-function HitVolesLayer:coinAction(x1,y1)
+function HitVolesLayer:coinAction(x,y)
     -- if self.jia_score==0 then
     --    return
     -- end
-     local x=self.dishu_po_score:getPositionX()
-     local  y=self.dishu_po_score:getPositionY()
+     -- local x=self.dishu_po_score:getPositionX()
+     -- local  y=self.dishu_po_score:getPositionY()
 
     local  _score =   ccui.TextAtlas:create()--
     _score:setAnchorPoint(1,0.5)
@@ -427,7 +427,7 @@ function HitVolesLayer:coinAction(x1,y1)
     local dishu_jia=cc.Sprite:create("png/dadishu-02-jiahao.png")
     self.layerPlay:addChild(dishu_jia)
     dishu_jia:setPosition(cc.p(x-_score:getContentSize().width-20,y))  
-    local  move2=cc.MoveTo:create(0.5, cc.p( x-_score:getContentSize().width-20,y+30 ) )
+    local  move2=cc.MoveTo:create(0.5, cc.p( x-_score:getContentSize().width-20,y+40 ) )
      local function logSprRotation1(sender)
                      sender:removeFromParent()                    
      end
@@ -436,13 +436,13 @@ function HitVolesLayer:coinAction(x1,y1)
    
 end
 --  加时间动画
-function HitVolesLayer:fun_acttime(  )
+function HitVolesLayer:fun_acttime(  x,y)
 
     local dishu_jia=cc.Sprite:create("png/dadishu-02-shizhong-1.png")
     self.layerPlay:addChild(dishu_jia)
     local  bgSize = cc.Director:getInstance():getWinSize()
-    dishu_jia:setPosition(cc.p(bgSize.width / 2,bgSize.height / 2 ))  
-    local  move2=cc.MoveTo:create(0.5, cc.p( bgSize.width / 2,bgSize.height / 2+160 ) )
+    dishu_jia:setPosition(cc.p(x,y ))  
+    local  move2=cc.MoveTo:create(0.5, cc.p( x,y+40 ) )
      local function logSprRotation1(sender)
                      sender:removeFromParent()                    
      end
