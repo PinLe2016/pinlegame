@@ -55,6 +55,8 @@ function RichlistLayer:ctor()
     	   years_bt:addTouchEventListener((function(sender, eventType  )
                      self:list_btCallback(sender, eventType)
                 end))
+         years_bt:setBright(false)
+        self.curr_bright=years_bt--记录当前高亮
 
             self.rank_list:setItemModel(self.rank_list:getItem(0))
             self.rank_list:removeAllItems()
@@ -65,6 +67,11 @@ function RichlistLayer:list_btCallback( sender, eventType )
                        return
               end
               local tag=sender:getTag()
+               if self.curr_bright:getTag()==tag then
+                  return
+              end
+              self.curr_bright:setBright(true)
+              sender:setBright(false)
                self.tablecout=0
               if tag==748 then 
               	self.number_pages=1  --  页数
@@ -88,6 +95,7 @@ function RichlistLayer:list_btCallback( sender, eventType )
               	self.rank_list:removeAllItems()
 
               end
+              self.curr_bright=sender
  end
 function RichlistLayer:init(  )
 	self.goldsranklist=LocalData:Instance():get_getgoldsranklist()
@@ -109,7 +117,7 @@ function RichlistLayer:init(  )
 	end
 	self.name:setString(nick_sub)
 
-	self.sup_data_num= #self.ranklist[#self.ranklist]["rankindex"]
+	self.sup_data_num= #self.ranklist
 	 for i=1,#self.ranklist do
 	          	self.rank_list:pushBackDefaultItem()
 	          	local  cell = self.rank_list:getItem(self.ranklist[#self.ranklist]["rankindex"]-#self.ranklist-1+i)--(i-1)

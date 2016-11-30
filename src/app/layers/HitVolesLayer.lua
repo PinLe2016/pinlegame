@@ -386,8 +386,9 @@ function HitVolesLayer:checkClision(x,y)
                          self.rand_Date=self.target_table[i]._randdate
                          self.curr_tag=sVole:getTag()
                            if     self.rand_Date["score"]==-1 then 
-                                self:fun_acttime(x,y)--  时间
+                                --self:fun_acttime(x,y)--  时间
                            else
+                            self.jia_score=self.rand_Date["score"]
                             self:coinAction(x,y)
                           end
                          
