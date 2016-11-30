@@ -108,7 +108,6 @@ function RichlistLayer:init(  )
       else
         self.rank_num:setString(tostring(self.goldsranklist["rank"]))
       end
-	self.rank_num:setString(tostring(self.goldsranklist["rank"]))
 	self.head=self.RichlistLayer:getChildByTag(482):getChildByTag(1026)-- 头像
             self.head:loadTexture(LocalData:Instance():get_user_head())
             self.name=self.RichlistLayer:getChildByTag(482):getChildByTag(485)-- 名字
