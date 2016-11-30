@@ -252,8 +252,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==125 then 
               --self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
               --self.list_bt:setTouchEnabled(false)
-               local RichlistLayer = require("app.layers.RichlistLayer")--惊喜吧 
-         self:addChild(RichlistLayer.new())
+               local RichlistLayer = require("app.layers.RichlistLayer")--排行榜 
+         self:addChild(RichlistLayer.new(),1,17)
 
 
 	elseif tag==124 then   --  290
@@ -663,7 +663,7 @@ function MainInterfaceScene:listener_home()
               self:removeChildByTag(255)
               return
             end
-            for i=11,16 do
+            for i=11,17 do
               if self:getChildByTag(i) then
                 self:removeChildByTag(i)
                 return
