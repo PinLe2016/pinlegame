@@ -56,8 +56,8 @@ end)
                 {color_type="png/dadishu-02-guodong-4.png",time=3.5,score=10},          --  +10积分    
 
                 {color_type="png/dadishu-02-guodong-3.png",time=3,score=-1},        --  -3  时间  
-                {color_type="png/dadishu-02-guodong-2.png",time=3,score=-1},            --  -6时间 
-                {color_type="png/dadishu-02-guodong-9.png",time=6,score=-1}               --  +3  时间  
+                {color_type="png/dadishu-02-guodong-2.png",time=3,score=-2},            --   +3时间 
+                {color_type="png/dadishu-02-guodong-9.png",time=6,score=-3}               --  -6时间   
         }   
 
      self:fun_init()
@@ -385,8 +385,15 @@ function HitVolesLayer:checkClision(x,y)
                         self:Act_Waterpolo(sVole)
                          self.rand_Date=self.target_table[i]._randdate
                          self.curr_tag=sVole:getTag()
-                           if     self.rand_Date["score"]==-1 then 
-                                --self:fun_acttime(x,y)--  时间
+                           if     self.rand_Date["score"]==-1   then 
+                               self.countdown_time=self.countdown_time-3
+                          elseif self.rand_Date["score"]==-2  then
+                              self.countdown_time=self.countdown_time+3
+                               if self.countdown_time>self.dishu_time then
+                                 self.countdown_time=self.dishu_time
+                               end                            
+                          elseif self.rand_Date["score"]==-3  then
+                                self.countdown_time=self.countdown_time-6
                            else
                             self.jia_score=self.rand_Date["score"]
                             self:coinAction(x,y)
@@ -462,7 +469,7 @@ end
 --  分数
 function HitVolesLayer:step()
   --  if  self.curr_tag1~=self.curr_tag then 
-        if tonumber(self.rand_Date["score"])  ==  -1 then
+        if tonumber(self.rand_Date["score"])  <=  -1 then
             self.m_time=self.m_time+0
              self.jia_score=0
         else
