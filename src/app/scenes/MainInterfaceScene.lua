@@ -51,9 +51,8 @@ function MainInterfaceScene:ctor()
       self:fun_init()
       Server:Instance():getaffichelist(1)
 
-      
-
 end
+
 
 --惊喜吧弹球页面home 键退出处理
 function MainInterfaceScene:Physics_homeback_ref( )
@@ -184,6 +183,7 @@ function MainInterfaceScene:userdata(  )
         local userdt = LocalData:Instance():get_userdata()
         local _getuserinfo=LocalData:Instance():get_getuserinfo()
        userdt["grade"]=_getuserinfo["grade"]
+       userdt["diamondnum"]=_getuserinfo["diamondnum"]
        LocalData:Instance():set_userdata(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
@@ -215,7 +215,7 @@ function MainInterfaceScene:userdata(  )
        LocalData:Instance():set_user_data(userdt)
        local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
        gold_text:setString(userdt["golds"])
-       local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 钻石
+       local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 
        diamond_text:setString("0")--loadingBar:setPercent(0)
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
        local jindu=userdt["grade"]/8 *100

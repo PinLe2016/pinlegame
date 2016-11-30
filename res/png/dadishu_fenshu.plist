@@ -7,17 +7,6 @@
 			<key>dadishu-02-jiahao-0.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{0,693},{49,73}}</string>
-				<key>offset</key>
-				<string>{0,0}</string>
-				<key>rotated</key>
-				<false />
-				<key>sourceSize</key>
-				<string>{49,73}</string>
-			</dict>
-			<key>dadishu-02-jiahao-1.png</key>
-			<dict>
-				<key>frame</key>
 				<string>{{0,0},{57,77}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
@@ -26,7 +15,7 @@
 				<key>sourceSize</key>
 				<string>{57,77}</string>
 			</dict>
-			<key>dadishu-02-jiahao-2.png</key>
+			<key>dadishu-02-jiahao-1.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,77},{57,77}}</string>
@@ -37,7 +26,7 @@
 				<key>sourceSize</key>
 				<string>{57,77}</string>
 			</dict>
-			<key>dadishu-02-jiahao-3.png</key>
+			<key>dadishu-02-jiahao-2.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,154},{57,77}}</string>
@@ -48,7 +37,7 @@
 				<key>sourceSize</key>
 				<string>{57,77}</string>
 			</dict>
-			<key>dadishu-02-jiahao-4.png</key>
+			<key>dadishu-02-jiahao-3.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,231},{57,77}}</string>
@@ -59,7 +48,7 @@
 				<key>sourceSize</key>
 				<string>{57,77}</string>
 			</dict>
-			<key>dadishu-02-jiahao-5.png</key>
+			<key>dadishu-02-jiahao-4.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,308},{57,77}}</string>
@@ -70,7 +59,7 @@
 				<key>sourceSize</key>
 				<string>{57,77}</string>
 			</dict>
-			<key>dadishu-02-jiahao-6.png</key>
+			<key>dadishu-02-jiahao-5.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,385},{57,77}}</string>
@@ -81,7 +70,7 @@
 				<key>sourceSize</key>
 				<string>{57,77}</string>
 			</dict>
-			<key>dadishu-02-jiahao-7.png</key>
+			<key>dadishu-02-jiahao-6.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,462},{57,77}}</string>
@@ -92,7 +81,7 @@
 				<key>sourceSize</key>
 				<string>{57,77}</string>
 			</dict>
-			<key>dadishu-02-jiahao-8.png</key>
+			<key>dadishu-02-jiahao-7.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,539},{57,77}}</string>
@@ -103,10 +92,21 @@
 				<key>sourceSize</key>
 				<string>{57,77}</string>
 			</dict>
-			<key>dadishu-02-jiahao-9.png</key>
+			<key>dadishu-02-jiahao-8.png</key>
 			<dict>
 				<key>frame</key>
 				<string>{{0,616},{57,77}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{57,77}</string>
+			</dict>
+			<key>dadishu-02-jiahao-9.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,693},{57,77}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>

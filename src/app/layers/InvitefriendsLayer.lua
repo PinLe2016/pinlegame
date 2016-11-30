@@ -202,7 +202,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	end
 	local tag=sender:getTag()
 	if tag==82 then --返回
-            print("sdfdsf   ",LocalData:Instance():get_tasktable())
+             Server:Instance():getuserinfo()  --钻石刷新
             if self.share then
                    if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
@@ -213,8 +213,8 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 
             Server:Instance():getuserinfo() -- 初始化数据
             Server:Instance():gettasklist()
-            --Util:scene_control("MainInterfaceScene")
 		self:removeFromParent()
+           Util:scene_control("MainInterfaceScene")
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)
 		-- self.m_friend:setVisible(true)
