@@ -290,7 +290,7 @@ function HitVolesLayer:callback(dt)
                                 local donghua=self.fragment_table_tow[rand]
                                 table.remove(self.fragment_table_tow,rand)
 
-                                local   _rand=self.color_Mode[math.random(9)]--
+                                local   _rand=self.color_Mode[math.random(6)]--
                                 self.target_table[i]["target"]=donghua
                                  self.target_table[i]["_randdate"]=_rand
 
