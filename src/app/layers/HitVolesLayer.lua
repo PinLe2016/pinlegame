@@ -152,7 +152,7 @@ end
     local layer=cc.Layer:create()
     self.layerPlay=layer
 
-    local function onTouchEnded(x,y)
+        local function onTouchEnded(x,y)
               
                 self:hammerAction(x,y)
                 if self:checkClision(x,y) then
@@ -162,18 +162,44 @@ end
                     
                 end
      end
-     local  function onTouch(event,x,y)
-      -- dump(event)
-      if event=="began" then
-        -- print("-----",x,y)
-        onTouchEnded(x,y)
-      end
-       
-     end
 
-    layer:setTouchEnabled(true)
-    layer:registerScriptTouchHandler(onTouch)
-    dump(self.Sample_figure:getContentSize())
+
+     self.HitVolesLayer:setTouchEnabled(true)  
+    self.HitVolesLayer:setTouchSwallowEnabled(false)  
+    self.HitVolesLayer:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)  
+    self.HitVolesLayer:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event) 
+
+             if event.name == "began" then  
+               onTouchEnded(event.x,event.y)  
+            end  
+      
+             return true  
+    end)  
+
+
+    -- local function onTouchEnded(x,y)
+              
+    --             self:hammerAction(x,y)
+    --             if self:checkClision(x,y) then
+                  
+    --                       self:step()  --  分数增加
+               
+                    
+    --             end
+    --  end
+    --  local  function onTouch(event,x,y)
+    --   -- dump(event)
+    --   if event=="began" then
+    --     -- print("-----",x,y)
+    --     onTouchEnded(x,y)
+    --   end
+       
+    --  end
+
+    -- layer:setTouchEnabled(true)
+    -- layer:registerScriptTouchHandler(onTouch)
+    -- dump(self.Sample_figure:getContentSize())
+
     -- layer:setScale(0.7)--(0.703)
     -- layer:setAnchorPoint(0,1)
     self.HitVolesLayer:addChild(layer,3) 
