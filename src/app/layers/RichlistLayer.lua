@@ -6,7 +6,7 @@ local RichlistLayer = class("RichlistLayer", function()
             return display.newLayer("RichlistLayer")
 end)
 
-
+local http_number=20
 --标题 活动类型 
 function RichlistLayer:ctor()
 	self:setNodeEventEnabled(true)--layer添加监听
@@ -16,7 +16,7 @@ function RichlistLayer:ctor()
 	
 	self.number_pages=1  --  页数
 	self._type=3   --  类型
-	Server:Instance():getgoldsranklist(5,self.number_pages,self._type)  ---pagesize 每页显示数据  pageno页号  type 0日榜、1周榜、2月榜、3年榜 
+	Server:Instance():getgoldsranklist(http_number,self.number_pages,self._type)  ---pagesize 每页显示数据  pageno页号  type 0日榜、1周榜、2月榜、3年榜 
 
 
             local back_bt=self.RichlistLayer:getChildByTag(1027)--返回
@@ -28,13 +28,13 @@ function RichlistLayer:ctor()
                         end)
 
             self.rank_list=self.RichlistLayer:getChildByTag(858)
-            self.rank_list:addScrollViewEventListener((function(sender, eventType  )
-                      if eventType  ==6 then
-                        self.number_pages=self.number_pages+1
-                        Server:Instance():getgoldsranklist(5,self.number_pages,self._type)   --下拉刷新功能
-                                 return
-                      end
-    	 end))
+            -- self.rank_list:addScrollViewEventListener((function(sender, eventType  )
+            --           if eventType  ==6 then
+                        -- self.number_pages=self.number_pages+1
+                        -- Server:Instance():getgoldsranklist(5,self.number_pages,self._type)   --下拉刷新功能
+      --                            return
+      --                 end
+    	 -- end))
 
                local day_bt=self.RichlistLayer:getChildByTag(747):getChildByTag(748)-- 日
     	   day_bt:addTouchEventListener((function(sender, eventType  )
@@ -76,22 +76,22 @@ function RichlistLayer:list_btCallback( sender, eventType )
               if tag==748 then 
               	self.number_pages=1  --  页数
 	            self._type=0   --  类型
-              	Server:Instance():getgoldsranklist(5,self.number_pages,self._type)
+              	Server:Instance():getgoldsranklist(http_number,self.number_pages,self._type)
               	self.rank_list:removeAllItems()
               elseif tag==749 then
               	self.number_pages=1  --  页数
 	            self._type=1   --  类型
-              	Server:Instance():getgoldsranklist(5,self.number_pages,self._type)
+              	Server:Instance():getgoldsranklist(http_number,self.number_pages,self._type)
               	self.rank_list:removeAllItems()
               elseif tag==750 then
               	self.number_pages=1  --  页数
 	            self._type=2   --  类型
-              	Server:Instance():getgoldsranklist(5,self.number_pages,self._type)
+              	Server:Instance():getgoldsranklist(http_number,self.number_pages,self._type)
               	self.rank_list:removeAllItems()
               elseif tag==751 then
               	self.number_pages=1  --  页数
 	            self._type=3   --  类型
-              	Server:Instance():getgoldsranklist(5,self.number_pages,self._type)
+              	Server:Instance():getgoldsranklist(http_number,self.number_pages,self._type)
               	self.rank_list:removeAllItems()
 
               end
@@ -103,11 +103,9 @@ function RichlistLayer:init(  )
 	self.rich_num=self.RichlistLayer:getChildByTag(482):getChildByTag(586)  --  财富数字
 	self.rich_num:setString(tostring(self.goldsranklist["golds"]))
 	self.rank_num=self.RichlistLayer:getChildByTag(482):getChildByTag(587)  --  排名
-      if tonumber(self.goldsranklist["rank"])  >= 100 then
-           self.rank_num:setString("暂未上榜")
-      else
-        self.rank_num:setString(tostring(self.goldsranklist["rank"]))
-      end
+
+	self.rank_num:setString(tostring(self.goldsranklist["rank"]))
+
 	self.head=self.RichlistLayer:getChildByTag(482):getChildByTag(1026)-- 头像
             self.head:loadTexture(LocalData:Instance():get_user_head())
             self.name=self.RichlistLayer:getChildByTag(482):getChildByTag(485)-- 名字
