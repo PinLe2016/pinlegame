@@ -153,7 +153,7 @@ function RichlistLayer:init(  )
 
 end
 function RichlistLayer:onEnter()
-	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.RICHLIST, self,
+	NotificationCenter:Instance():AddObserver("RICHLIST", self,
                        function()
                         self:init()
                       end)
@@ -162,7 +162,7 @@ function RichlistLayer:onEnter()
 end
 
 function RichlistLayer:onExit()
-     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.RICHLIST, self)
+     	  NotificationCenter:Instance():RemoveObserver("RICHLIST", self)
             
 end
 

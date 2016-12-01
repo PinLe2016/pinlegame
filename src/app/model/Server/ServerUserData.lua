@@ -259,7 +259,7 @@ function Server:getgoldsranklist_callback()
         return
     end
     LocalData:Instance():set_getgoldsranklist(self.data)--保存玩家数据  AFFICHLIST
-    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.RICHLIST)
+    NotificationCenter:Instance():PostNotification("RICHLIST")
 end
 
 
