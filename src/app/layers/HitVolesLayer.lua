@@ -269,6 +269,27 @@ function HitVolesLayer:createPlayLayer()
     --self.layerPlay:addChild(mask, 0, 20)
    -- self.layerPlay:addChild(countdown, 0, self.kTagSprite1)
     self:fun_countdown_time()
+
+
+    self._score2 =   ccui.TextAtlas:create(tostring(self.jia_score),"png/dadishu_fenshu.png", 57, 77, "0")--
+    self._score2 :setAnchorPoint(1,0.5)
+    self._score2 :setVisible(false)
+    -- _score2:setPosition(320, 480)
+    self.layerPlay:addChild(self._score2 ,1,1086)
+    -- local  move1=cc.MoveTo:create(0.5, cc.p( x,y+180 ) )
+    -- _score:setPosition(cc.p(x,y))
+
+    local dishu_jia=cc.Sprite:create("png/dadishu-02-jiahao.png")
+    dishu_jia:setPosition(-15, 35)
+    self._score2 :addChild(dishu_jia)
+    -- dishu_jia:setPosition(cc.p(x-_score:getContentSize().width-20,y))  
+    -- local  move2=cc.MoveTo:create(0.5, cc.p( x-_score:getContentSize().width-20,y+180 ) )
+    --  local function logSprRotation1(sender)
+    --                  sender:removeFromParent()                    
+    --  end
+    --  local action1= cc.Sequence:create(move2,cc.CallFunc:create(logSprRotation1))
+    --  dishu_jia:stopAllActions()
+    --   dishu_jia:runAction(action1)
    
 
     return self.layerPlay
@@ -301,8 +322,9 @@ function HitVolesLayer:callback(dt)
                             self.congratulations:setVisible(false)
                             self:server_data()
                 end
-                Util:player_music_hit("sound/effect/hit_3.mp3",false)
+                audio.playMusic("sound/effect/hit_3.mp3",false)
               local callfunc = cc.CallFunc:create(stopAction)
+              self.congratulations:stopAllActions()
              self.congratulations:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
               self.congratulations:setVisible(true)--self.m_time
             self.congratulations_text:setString(tostring(self.m_time))
@@ -363,7 +385,7 @@ end
 -- 水波动画
 function HitVolesLayer:Act_Waterpolo(_fragment)  --_fragment   图
 
-              Util:player_music_hit("sound/effect/hit_2.mp3",false)
+              audio.playMusic("sound/effect/hit_2.mp3",false)
               local waves = cc.Waves:create(1, cc.size(10, 10), 10, 5, true, true);
               local  liquid = cc.Liquid:create(0.5, cc.size(10, 10), 2, 5.0);  
               _fragment:getChildByTag(2):stopAllActions()
@@ -431,7 +453,7 @@ function HitVolesLayer:checkClision(x,y)
             end
 
        end
-       Util:player_music_hit("sound/effect/hit_1.mp3",false)
+       -- audio.playMusic("sound/effect/hit_1.mp3",false)
         self.curr_tag=0
          return false
  end
@@ -443,30 +465,22 @@ function HitVolesLayer:coinAction(x,y)
      -- local x=self.dishu_po_score:getPositionX()
      -- local  y=self.dishu_po_score:getPositionY()
 
-    local  _score =   ccui.TextAtlas:create()--
-    _score:setAnchorPoint(1,0.5)
-    self.layerPlay:addChild(_score)
-    local  move1=cc.MoveTo:create(0.5, cc.p( x,y+180 ) )
-    _score:setPosition(cc.p(x,y))
+    
+    self._score2 :setVisible(true)
+     self._score2:setPosition(x, y)
 
-    _score:setProperty(tostring(self.jia_score),"png/dadishu_fenshu.png", 57, 77, "0")
-     
+    self._score2:setProperty(tostring(self.jia_score),"png/dadishu_fenshu.png", 57, 77, "0")
+    
    
      local function logSprRotation(sender)
-                     sender:removeFromParent()                    
+                     self._score2 :setVisible(false)                   
      end
+     local  move1=cc.MoveTo:create(0.5, cc.p( x,y+180 ) )
      local action = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation))
-      _score:runAction(action)
+     self._score2:stopAllActions()
+     self._score2:runAction(action)
 
-    local dishu_jia=cc.Sprite:create("png/dadishu-02-jiahao.png")
-    self.layerPlay:addChild(dishu_jia)
-    dishu_jia:setPosition(cc.p(x-_score:getContentSize().width-20,y))  
-    local  move2=cc.MoveTo:create(0.5, cc.p( x-_score:getContentSize().width-20,y+180 ) )
-     local function logSprRotation1(sender)
-                     sender:removeFromParent()                    
-     end
-     local action1= cc.Sequence:create(move2,cc.CallFunc:create(logSprRotation1))
-      dishu_jia:runAction(action1)
+    
    
 end
 --  加时间动画
