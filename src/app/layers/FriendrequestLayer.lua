@@ -7,6 +7,10 @@ local FriendrequestLayer = class("FriendrequestLayer", function()
 end)
 function FriendrequestLayer:ctor()--params
 
+     self.floating_layer = require("app.layers.FloatingLayer").new()
+      self.floating_layer:addTo(self,100000)
+
+
        self:setNodeEventEnabled(true)--layer添加监听
        Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
        --Server:Instance():getfriendlist()--查询好友列表   
@@ -136,7 +140,14 @@ function FriendrequestLayer:init(  )
           end
       end
  
-
+       for i=1,#self.managerlist do    --   tag
+          for j=1,#_table do
+            if self.managerlist[i]["tag"]==0 then  --
+                lo_img[j]:setTouchEnabled(true)
+        end
+          end
+         
+       end
 
 
 
@@ -234,6 +245,29 @@ function FriendrequestLayer:pop_up(  )
    end
 end
 
+
+function FriendrequestLayer:pushFloating(text)
+    if is_resource then
+        self.floating_layer:showFloat(text)  
+        
+    else
+        if self.barrier_bg then 
+            self.barrier_bg:setVisible(false)
+        end
+        self.floating_layer:showFloat(text)
+    end
+end 
+
+function FriendrequestLayer:push_buffer(is_buffer)
+
+       self.floating_layer:show_http(is_buffer) 
+       
+end 
+function FriendrequestLayer:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end
+
+
 function FriendrequestLayer:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
 		return
@@ -276,50 +310,57 @@ function FriendrequestLayer:touch_callback( sender, eventType )
           -- end
           
           Server:Instance():gettasklist()
-          Server:Instance():getuserinfo() -- 初始化数据
 	   self:removeFromParent()
         Util:scene_control("MainInterfaceScene")
 
 	elseif tag==135 then
 		print("hahahdfsfdsfdsf 1")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            Server:Instance():get_friend_reward_setting_list()
-            Server:Instance():prompt("恭喜您领取成功")
+            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励 
+            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
+                                      Server:Instance():get_friend_reward_setting_list()                
+            end)
 	elseif tag==138 then
 		print("hahahdfsfdsfdsf 2")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            Server:Instance():get_friend_reward_setting_list()
-            Server:Instance():prompt("恭喜您领取成功")
+            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
+                                      Server:Instance():get_friend_reward_setting_list()                
+            end)
 	elseif tag==141 then
 		print("hahahdfsfdsfdsf 3")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            Server:Instance():get_friend_reward_setting_list()
-            Server:Instance():prompt("恭喜您领取成功")
+            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
+                                      Server:Instance():get_friend_reward_setting_list()                
+            end)
 	elseif tag==144 then
 		print("hahahdfsfdsfdsf 4")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            Server:Instance():get_friend_reward_setting_list()
-            Server:Instance():prompt("恭喜您领取成功")
+            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
+                                      Server:Instance():get_friend_reward_setting_list()                
+            end)
 	elseif tag==1599 then
 		print("hahahdfsfdsfdsf 5")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            Server:Instance():get_friend_reward_setting_list()
-            Server:Instance():prompt("恭喜您领取成功")
+            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
+                                      Server:Instance():get_friend_reward_setting_list()                
+            end)
 	elseif tag==1600 then
 		print("hahahdfsfdsfdsf 6")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            Server:Instance():get_friend_reward_setting_list()
-            Server:Instance():prompt("恭喜您领取成功")
+            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
+                                      Server:Instance():get_friend_reward_setting_list()                
+            end)
 	elseif tag==1601 then
 		print("hahahdfsfdsfdsf 7")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            Server:Instance():get_friend_reward_setting_list()
-            Server:Instance():prompt("恭喜您领取成功")
+            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
+                                      Server:Instance():get_friend_reward_setting_list()                
+            end)
 	elseif tag==1602 then
 		print("hahahdfsfdsfdsf 8")
             Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            Server:Instance():get_friend_reward_setting_list()
-            Server:Instance():prompt("恭喜您领取成功")
+            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
+                                      Server:Instance():get_friend_reward_setting_list()                
+            end)
 	elseif tag==161 then  --好友邀请
 		-- self.Friendsstep:setVisible(true)
 		-- self.m_friend:setVisible(true)
