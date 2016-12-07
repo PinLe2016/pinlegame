@@ -111,14 +111,19 @@ function Server:request_http(command , params)
 
    if command~="getactivitylist" then
     self:show_http_buffer(true)-- 传输动画
-end
-    local parsms_md5={methodtype="json",createtime=os.time(),functionname=command,functionparams=params}
+   end
+   local time=os.time()
+    local parsms_md5={methodtype="json",createtime=time,functionname=command,functionparams=params}
     local post_md5=json.encode(parsms_md5)
     local post_=MD5_KEY..post_md5..MD5_KEY
+    if command=="reg" then
+        local md5_key_new=MD5_KEY..string.sub(tostring(time),1,string.len(tostring(time))-2)
+        post_=md5_key_new..post_md5..md5_key_new
+    end
     local _key="PINLEGAME"
     local login_info=LocalData:Instance():get_user_data()
     local md5=crypto.md5(post_)
- 
+    dump(md5)
     if login_info and command~="login" and command~="sendmessage" and command~="changepassword" and command~="reg" and command~="getversion" then
 
         _key=login_info["loginname"]
@@ -132,7 +137,7 @@ end
     --         print("版本链接")
     -- end
     -- dump(self.login_url)
-    local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5
+    local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5.."&createtime="..time
     print("---url---",login_url,post_md5)
     local request = network.createHTTPRequest(function(event) self:on_request_finished_http(event,command) end, login_url , "POST")
     self.params=params
