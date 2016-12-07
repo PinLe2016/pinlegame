@@ -31,7 +31,6 @@ function bigwheelLayer:networkbox_buffer(prompt_text)
 end
 
 function bigwheelLayer:ctor(params)
-  
       self.IF_VOER=false
         print("IF_VOER1 ",self.IF_VOER)
 	self:setNodeEventEnabled(true)--layer添加监听     
@@ -46,6 +45,7 @@ function bigwheelLayer:ctor(params)
 	self.m_pCircle_1=nil
 	self.m_pCircle_2=nil
 	self.fragment_table={ }
+      self.Points=params.Points
 	self.x_rand=nil
 	self._rand=nil
 	self.gridNumer=12    --   一共的格子数
@@ -326,7 +326,7 @@ function bigwheelLayer:touch_callback( sender, eventType )
             self.CheckBox_volume=1
             self.volume_num:setString(tostring(self.volume_num:getString()-1))
          end
-	     Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume)  --  转盘随机数
+	     Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume,self.Points)  --  转盘随机数
 
         local _table=LocalData:Instance():get_gettasklist()
         local tasklist=_table["tasklist"]

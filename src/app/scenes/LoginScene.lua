@@ -129,7 +129,7 @@ end
            self.layertype=1
            self._random=Util:rand(  ) --随机验证码
            print("邀请码".. self.phone_text:getText(),  self._random)
-           Server:Instance():sendmessage(1,self.phone_text:getText(),self._random)
+           Server:Instance():sendmessage(1,self.phone_text:getText())
         end
     end
      self. _random=000  --初始化
@@ -175,14 +175,14 @@ end
 
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-        if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
-              Server:Instance():promptbox_box_buffer("验证码错误")
-             return    
-        end
+        -- if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
+        --       Server:Instance():promptbox_box_buffer("验证码错误")
+        --      return    
+        -- end
         if self._scode then
               cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
         end
-              Server:Instance():reg(self.phone_text:getText(),self.Zpassword_text:getText())
+              Server:Instance():reg(self.phone_text:getText(),self.Zpassword_text:getText(),self.Zcode_text:getText())
         end
     end
      local function callback_btCallback(sender, eventType) 
@@ -422,7 +422,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                    sender:setTouchEnabled(false)
                    sender:setColor(cc.c3b(100, 100, 100))
                    self.layertype=2
-                  Server:Instance():sendmessage(2,self._mobilephone,self.p_random)
+                  Server:Instance():sendmessage(2,self._mobilephone)
                   print("邀请码"..self.p_random)
              end
 end
@@ -434,10 +434,10 @@ function LoginScene:_resetpasswordLayer(  )
                 return
             end
 
-            if tostring(self._yanzhengma:getText())  ~= tostring(self.p_random) then
-              Server:Instance():promptbox_box_buffer("验证码错误")
-              return    
-           end
+           --  if tostring(self._yanzhengma:getText())  ~= tostring(self.p_random) then
+           --    Server:Instance():promptbox_box_buffer("验证码错误")
+           --    return    
+           -- end
             
             if  tostring(self._mobilephone) == " "   then
                return
@@ -763,7 +763,7 @@ function LoginScene:getVersionInfo()
     end
 
 
-    if tonumber(up_date["Isused"])~=1 then--Isused 0.开启热更，1 关闭热更
+    if tonumber(up_date["Isused"])~=0 then--Isused 0.开启热更，1 关闭热更
       
       self.masterURL=up_date["masterURL"]
       self.url=up_date["url"]

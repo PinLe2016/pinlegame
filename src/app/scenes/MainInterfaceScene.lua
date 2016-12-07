@@ -50,7 +50,7 @@ function MainInterfaceScene:ctor()
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)
-
+     
 end
 
 
@@ -450,7 +450,7 @@ end
 function MainInterfaceScene:fun_checkin( tm )
 
       if not self.checkinlayer then   --GRzhezhaoceng
-         self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+         self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --背景层
         self:addChild(self.fragment_sprite)
         self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
          self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
@@ -479,8 +479,6 @@ function MainInterfaceScene:fun_checkin( tm )
           -- Util:scene_control("MainInterfaceScene")  --禁止
         end
         
-
-
 	local back_bt=self.checkinlayer:getChildByTag(84)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType  )
 	       if eventType ~= ccui.TouchEventType.ended then

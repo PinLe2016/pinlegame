@@ -99,11 +99,12 @@ end
  --3.6.5获取用户金币奖池随机金币奖励（命令：getgoldspoolrandomgolds）
  --goldspoolid  是 金币奖池ID  string
  --usedoublecard  否 是否使用增倍卡 Integer 1是使用，不填或者其他数字代表不使用
-function Server:getgoldspoolrandomgolds(goldspoolid,usedoublecard)
+function Server:getgoldspoolrandomgolds(goldspoolid,usedoublecard,Points)
 
        local _params ={}
        _params={
             usedoublecard=usedoublecard,
+            Points=Points,
             goldspoolid=goldspoolid,
    }
    dump(_params)

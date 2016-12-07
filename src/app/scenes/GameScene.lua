@@ -416,12 +416,12 @@ function GameScene:onEnter()
                               -- local jackpotlayer= require("app.layers.JackpotLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl})
                               --  cc.Director:getInstance():pushScene(jackpotlayer)   --  奖池详情  我们就是硬生生的把一个layer 变成 scene  
 
-                                local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.choose})
+                                local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.choose,Points=0})
                                cc.Director:getInstance():replaceScene(bigwheelLayer) 
 
                                
                         elseif self.choose==2 then
-                                local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.choose})
+                                local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.choose,Points=LocalData:Instance():getPoints()})
                                cc.Director:getInstance():replaceScene(bigwheelLayer) 
                         end
                        

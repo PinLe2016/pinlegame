@@ -113,7 +113,16 @@ end
 function LocalData:get_getgoldsranklist()
 	return self.getgoldsranklist or nil
 end
+--地鼠积分
+--完善信息
+function LocalData:setPoints(Points)
+	cc.UserDefault:getInstance():setStringForKey("Points" ,Points)
+end
 
+function LocalData:getPoints()
+	local _key=cc.UserDefault:getInstance():getStringForKey("Points")
+	return _key or nil
+end
 
 
 

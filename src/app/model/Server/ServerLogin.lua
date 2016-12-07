@@ -59,7 +59,7 @@ end
 
 
 --注册
-function Server:reg(username,password)
+function Server:reg(username,password,code)
 
     local channel_code = PINLE_CHANNEL_ID
     local platform=device.platform
@@ -70,6 +70,7 @@ function Server:reg(username,password)
      nick_sub=nick_sub.."****"..string.sub(username,8,11)
     params={
             loginname=username,
+            code=code,
             deviceid = device_id,
             nickname=nick_sub,
             password=crypto.md5(password),
@@ -155,10 +156,11 @@ end
 
 --忘记密码
 
-function Server:changepassword(username,new_password)
+function Server:changepassword(username,new_password,code)
     local params = {}
      params={
             loginname=username,
+            code=code,
             password=crypto.md5(new_password)
         }
         dump(params)
@@ -213,7 +215,7 @@ end
 function Server:getversion()
     local params = {}
      params={
-            devicetype=device.platform,
+            devicetype="ios",
             versioncode=tostring(PINLE_VERSION),
         }
     self:request_http("getversion" , params); 
