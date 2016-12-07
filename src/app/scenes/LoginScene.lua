@@ -408,7 +408,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                 local _pass=self.Wpassword_text:getText()
                  print("提交",_pass,"  ",self._mobilephone)
                 
-                 Server:Instance():changepassword(self._mobilephone,_pass)
+                 Server:Instance():changepassword(self._mobilephone,_pass,self.y_yanzhengma)
               elseif tag==291 then
                   self.p_random=Util:rand(  ) --随机验证码\
                      local phone=self.passwordLayer:getChildByTag(293)
@@ -438,7 +438,7 @@ function LoginScene:_resetpasswordLayer(  )
            --    Server:Instance():promptbox_box_buffer("验证码错误")
            --    return    
            -- end
-            
+            self.y_yanzhengma=self._yanzhengma:getText()
             if  tostring(self._mobilephone) == " "   then
                return
             end
@@ -470,14 +470,9 @@ function LoginScene:_resetpasswordLayer(  )
               self.Wpassword_text :setMaxLength(19)
               self.Wpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
               
-
-
-
-
-
              if self.passwordLayer then
                    self.passwordLayer:removeFromParent()
-            end
+            end 
 end
 
  function LoginScene:countdowncode()
