@@ -168,11 +168,10 @@ function GameScene:csb_btCallback(sender, eventType)
 
 end
 function GameScene:move_layer(_layer)
-     
-    local curr_y=_layer:getPositionY()
+      local curr_y=_layer:getPositionY()
     _layer:setPositionY(curr_y+_layer:getContentSize().height)
-    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
-      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+    local move =cc.MoveTo:create(0.3,cc.p(_layer:getPositionX(),curr_y))  
+     local sque=transition.sequence({cc.EaseBackOut:create(move)})
       _layer:runAction(sque)
 end
 function GameScene:funsuspended( )

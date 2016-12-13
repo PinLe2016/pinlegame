@@ -489,11 +489,10 @@ function SurpriseScene:fun_EditBox( width ,height,_object,_content,length)
   
 end
 function SurpriseScene:move_layer(_layer)
-     
-    local curr_y=_layer:getPositionY()
+      local curr_y=_layer:getPositionY()
     _layer:setPositionY(curr_y+_layer:getContentSize().height)
-    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
-      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+    local move =cc.MoveTo:create(0.3,cc.p(_layer:getPositionX(),curr_y))  
+     local sque=transition.sequence({cc.EaseBackOut:create(move)})
       _layer:runAction(sque)
 end
 --初始化获奖名单
