@@ -72,8 +72,8 @@ function bigwheelLayer:ctor(params)
             self:addChild(self.bigwheelLayer)
             self.roleAction = cc.CSLoader:createTimeline("bigwheelLayer.csb")
             self.bigwheelLayer:runAction(self.roleAction)
-            -- self.roleAction:setTimeSpeed(0.01)
-            -- self.roleAction:gotoFrameAndPlay(0,120, true)
+            -- self.roleAction:setTimeSpeed(2)
+            -- self.roleAction:gotoFrameAndPlay(0,60, true)
            
           	--风叶
           	self._blades=self.bigwheelLayer:getChildByTag(41):getChildByTag(48)
@@ -90,7 +90,7 @@ function bigwheelLayer:ctor(params)
                                    self:run_callback()
                                 end
                                 
-              end,0.5, false)
+              end,0.3, false)
 
             self._prize=self.bigwheelLayer:getChildByTag(1303)
             self._prize:setVisible(false)
@@ -132,15 +132,14 @@ function bigwheelLayer:run_blades(  )
         end     
         local callfunc = cc.CallFunc:create(stopAction)
         self.pAction =cc.RotateBy:create(0.1,30)
-        self.pAction1 = cc.DelayTime:create(0.3)
+        self.pAction1 = cc.DelayTime:create(0.1)
         self._blades:runAction(cc.Sequence:create(self.pAction,self.pAction1,callfunc)) 
 end
 function bigwheelLayer:run_callback(dt)
 		self.count=self.count+1
 		
 		if self.count%2==0 then
-			self._lamp:setVisible(false)
-                
+			self._lamp:setVisible(false)            
 		else
 			self._lamp:setVisible(true)
 		end
@@ -293,8 +292,8 @@ function bigwheelLayer:fun_began(  )
 		        end
 	    end
 	    self._rand= (self.x_rand  *  self.gridAngle   ) ;
-	    local  angleZ = self._rand + 720;  
-          local  pAction1 = cc.EaseExponentialOut:create(cc.RotateBy:create(8,720+angleZ))
+	    local  angleZ = self._rand + 1440--720;  
+          local  pAction1 = cc.EaseExponentialOut:create(cc.RotateBy:create(8,1080+angleZ))
 	    m_turnBg:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
         -- local  pAction2 = cc.RotateBy:create(3,self._rand)  --测试
         -- self._Instead:runAction(pAction2)
@@ -351,7 +350,6 @@ end
 
 --再来一局提示
 function bigwheelLayer:try_again()
-  print("IF_VOER666 ",self.IF_VOER)
     self.floating_layer:showFloat("再来一局？",function (sender, eventType)
                                   if eventType==1 then
 
@@ -362,10 +360,10 @@ function bigwheelLayer:try_again()
                                           if  tonumber(_tablegods["getcardamount"])== 0 then
                                             
                                               LocalData:Instance():set_user_pintu("1")
-                                              self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分",function (sender, eventType)
+                                              self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)
                                                 if eventType==1 then
                                                        GameScene = require("app.scenes.GameScene")--惊喜吧
-                                                      local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})--拼图
+                                                      local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})--拼图
                                                       cc.Director:getInstance():replaceScene(scene)
                                                       LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                                                       return
@@ -377,9 +375,13 @@ function bigwheelLayer:try_again()
                                               return
 
                                           end
+                                          local  _Issecond=0
+                                          if tonumber(_tablegods["getcardamount"]) == 1 then
+                                            _Issecond=1
+                                          end
 
                                           GameScene = require("app.scenes.GameScene")--惊喜吧
-                                          local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})--拼图
+                                          local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})--拼图
                                           cc.Director:getInstance():replaceScene(scene)
                                           LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                                           -- self.end_bt:setVisible(true)

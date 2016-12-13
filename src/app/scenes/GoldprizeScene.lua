@@ -331,11 +331,14 @@ function GoldprizeScene:onEnter()
                                     Server:Instance():prompt("今日获得金币机会已经用完啦,继续只能获得积分")  --  然并卵的提示语
                                     
                          else
+                         	local  _Issecond=0
+                         	if tonumber(getgoldspoolbyid["getcardamount"]) == 1 then
+                         		_Issecond=1
+                         	end
                          	  LocalData:Instance():set_user_img(self.image_name)
                          	 -- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	           --   cc.Director:getInstance():pushScene(scene)
-               	           print("888888888sdddddd")
-               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})
+               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                          end
 		
@@ -343,12 +346,10 @@ function GoldprizeScene:onEnter()
   --点击弹出框点击确定自动进入拼图界面  够任性吧
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE, self,
                        function()
-                       	print("888888888sdddddd555")
-
 			 LocalData:Instance():set_user_img(self.image_name)
                         	-- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	         --     cc.Director:getInstance():pushScene(scene)
-               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})
+               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})
 		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
 
                       end)
