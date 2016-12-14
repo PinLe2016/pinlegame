@@ -419,10 +419,11 @@ function PerInformationLayer:save_mail(cath)
     
 end
 function PerInformationLayer:move_layer(_layer)
-     local curr_y=_layer:getPositionY()
+     
+    local curr_y=_layer:getPositionY()
     _layer:setPositionY(curr_y+_layer:getContentSize().height)
-    local move =cc.MoveTo:create(0.3,cc.p(_layer:getPositionX(),curr_y))  
-     local sque=transition.sequence({cc.EaseBackOut:create(move)})
+    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
+      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
       _layer:runAction(sque)
 end
 
@@ -521,7 +522,7 @@ function PerInformationLayer:perinformation_init(  )
         local res = " "--res/png/DLkuang.png
         local width = 265
         local height = 45
-        --用户名
+        --登陆
         self._Pname = ccui.EditBox:create(cc.size(width,height),res)
         self._Pname:setPlaceholderFontColor(cc.c3b(234,82,30))
         self._Pname:setFontColor(cc.c3b(234,82,30))
@@ -535,16 +536,14 @@ function PerInformationLayer:perinformation_init(  )
         nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
         -- dump(userdt)
         if userdt["nickname"]~="" then
-            if nick_sub ~= userdt["nickname"]  then
-                self._Pname:setTouchEnabled(false)  --只能修改一次
+            if nick_sub~=userdt["nickname"] then
+                self._Pname:setTouchEnabled(false)--只能修改一次
             end
-            nick_sub=userdt["nickname"]         
+            nick_sub=userdt["nickname"]
         end
-
         -- self._Pname:setPlaceHolder(nick_sub)
         self._Pname:setText(nick_sub)
         self._Pname:setAnchorPoint(0,0.5)  
-
         self._Pname:setMaxLength(6)
 
         --self._Pname:setString(userdt["nickname"])
