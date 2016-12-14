@@ -82,7 +82,7 @@ function bigwheelLayer:ctor(params)
          {gold_b=500,gold_e=500},
          {gold_b=10,gold_e=15}
      }     
-
+     print("拼图  ", LocalData:Instance():getTheycount())
       if self.choose==1 then  --  拼图
          self:function_puzzle()
       else
@@ -130,6 +130,11 @@ end
 function bigwheelLayer:function_puzzle(  )
               self.puzzleEndLayer = cc.CSLoader:createNode("puzzleEndLayer.csb")
               self:addChild(self.puzzleEndLayer)
+              local time=self.puzzleEndLayer:getChildByTag(513)  --  时间
+              time:setString(tostring(LocalData:Instance():getpuzzletime()) ..   "   秒")
+              local count=self.puzzleEndLayer:getChildByTag(512)  --  步数
+              count:setString(tostring(LocalData:Instance():getTheycount()))
+
               local _advertiImg=self.puzzleEndLayer:getChildByTag(356)  --  上面广告图
               _advertiImg:loadTexture( self.image_name) 
               _advertiImg:addTouchEventListener(function(sender, eventType  )

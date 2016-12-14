@@ -123,7 +123,24 @@ function LocalData:getPoints()
 	local _key=cc.UserDefault:getInstance():getStringForKey("Points")
 	return _key or nil
 end
+--  拼图步数
+function LocalData:setTheycount(count)
+	cc.UserDefault:getInstance():setStringForKey("count",count)
+end
 
+function LocalData:getTheycount()
+	local _key=cc.UserDefault:getInstance():getStringForKey("count")
+	return _key or nil
+end
+--拼图时间
+function LocalData:setpuzzletime(time)
+	cc.UserDefault:getInstance():setStringForKey("time" ,time)
+end
+
+function LocalData:getpuzzletime()
+	local _key=cc.UserDefault:getInstance():getStringForKey("time")
+	return _key or nil
+end
 
 
 

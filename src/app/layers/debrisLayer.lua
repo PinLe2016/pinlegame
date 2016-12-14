@@ -49,6 +49,12 @@ function debrisLayer:ctor(params)
         self.fragment_row={}
          self:sort_sure()--正确排序加载
          self:refresh_table()
+         self.count_time=0  --时间
+         self.theycount =0  --步数
+         self.schedulHandle=nil
+         self.schedulHandle =  cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )                              
+                                     self.count_time=self.count_time+1    
+              end,1, false)
 end
 
 
@@ -100,7 +106,6 @@ function debrisLayer:refresh_table()
                                         end
 
                                         if "began" == event.name then
-                                            print("22222222")
                                                 clipnode:setTouchSwallowEnabled(false)--吞噬触摸，防止响应下层的图块。
                                                 clipnode:setLocalZOrder(4)
                                                 return true
@@ -190,7 +195,7 @@ function debrisLayer:touchEnd(event,clipnode,pos)
         if cc.rectContainsPoint(boundingBox, cc.p(event.x, event.y)) and tonumber(clipnode:getTag())~= tonumber(clipnode_1:getTag()) then
             -- dump(self.fragment_poins[tonumber(clipnode_1:getTag())])
             -- dump(self.fragment_poins[tonumber(clipnode:getTag())])
-
+             self.theycount=self.theycount+1
              clipnode:setPosition(self.fragment_poins[tonumber(clipnode_1:getTag())])
              clipnode_1:setPosition(self.fragment_poins[tonumber(clipnode:getTag())])
            
@@ -239,6 +244,8 @@ function debrisLayer:saw_issuccess()
     end
     print("成功")  --self.adid
                   self:fun_endanimation()
+                   cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.schedulHandle)
+                     LocalData:Instance():setTheycount(self.theycount)
                  local _originalimage = cc.CSLoader:createNode("originalimage.csb")
                   _originalimage:setPosition(cc.p(self.point.x,self.point.y))
                  local original=_originalimage:getChildByTag(118)
@@ -247,11 +254,12 @@ function debrisLayer:saw_issuccess()
                  self:addChild(_originalimage,900)
 
                    local function stopAction()
+                             LocalData:Instance():setpuzzletime(self.count_time)
                              if self.type=="surprise" then
                                         Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                                          return
                             end
-                            print("jdfjskdjf  ",self.adid)
+                            print("jdfjskdjf  ",self.theycount)
                           Server:Instance():setgamerecord(self.adid)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
@@ -337,7 +345,6 @@ function debrisLayer:add_reward( )
                -- jinyan:setVisible(false)
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
                
-
          end
 end
 
