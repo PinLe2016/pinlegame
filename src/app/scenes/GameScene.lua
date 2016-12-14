@@ -18,6 +18,7 @@ local PhysicsScene = require("app.scenes.PhysicsScene")
 
 function GameScene:ctor(params)
     self.heroid=params.heroid
+    self.Issecond=params.Issecond
     self.cycle=params.cycle
     self.phyimage=params.phyimage
     self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -98,11 +99,18 @@ function GameScene:funinit(  )
                   local point={}
                   point.x=kuang:getPositionX()
                   point.y=kuang:getPositionY()
+                  local  _row=3
+                  local  _col=4
+                  print("第几次",self.Issecond)
+                  if self.Issecond==1 then  --第2次
+                    _row=3
+                    _col=6
+                  end
                    if self.type=="surprise" then
                       local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
 
                       local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(list_table[1]["imgurl"], "/",":"))
-                     ,row=3,col=4,_size=_size,point=point,adid=self.adid,tp=1,type=self.type})
+                     ,row=_row,col=_col,_size=_size,point=point,adid=self.adid,tp=1,type=self.type})
                       self._csb:addChild(deblayer)
                   elseif self.type=="audition" then
 
@@ -115,7 +123,7 @@ function GameScene:funinit(  )
                         if self.choose==1 then  --  1  拼图   2   打地鼠
                               -- print("你猜",self.adid)
                                   local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
-                                 ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,pintuid=self.adid})   --self.adid
+                                 ,row=_row,col=_col,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,pintuid=self.adid})   --self.adid
                                   self._csb:addChild(deblayer)
                         elseif self.choose==2  then
                                    self._csb:setVisible(false)
@@ -168,11 +176,10 @@ function GameScene:csb_btCallback(sender, eventType)
 
 end
 function GameScene:move_layer(_layer)
-     
-    local curr_y=_layer:getPositionY()
+      local curr_y=_layer:getPositionY()
     _layer:setPositionY(curr_y+_layer:getContentSize().height)
-    local move =cc.MoveTo:create(1.5,cc.p(_layer:getPositionX(),curr_y))  
-      local sque=transition.sequence({cc.EaseElasticOut:create(move)})
+    local move =cc.MoveTo:create(0.3,cc.p(_layer:getPositionX(),curr_y))  
+     local sque=transition.sequence({cc.EaseBackOut:create(move)})
       _layer:runAction(sque)
 end
 function GameScene:funsuspended( )
