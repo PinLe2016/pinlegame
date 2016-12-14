@@ -37,9 +37,9 @@ function mailLayer:ctor()
                                     if eventType ~= ccui.TouchEventType.ended then
                     return
                 end
-          self:removeFromParent()
+                  self:removeFromParent()
                   LocalData:Instance():set_getaffiche(nil)
-                  Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
+                  -- Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
                         end)
 
           
@@ -251,6 +251,7 @@ function mailLayer:fun_emailcontentlayer( )
                   Server:Instance():prompt("没有可领取的金币")
                   return
                 end
+              Server:Instance():getuserinfo()
              Server:Instance():getaffichereward(affichedetail["id"])
               local userdt = LocalData:Instance():get_userdata()
              userdt["golds"]=userdt["golds"] + tonumber(affichedetail["rewardgolds"])

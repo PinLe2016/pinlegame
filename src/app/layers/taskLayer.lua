@@ -12,7 +12,7 @@ function taskLayer:ctor()
        self.sur_pageno=1
        LocalData:Instance():set_gettasklist(nil)
        Server:Instance():gettasklist()
-       
+       self:init(  )
 end
 function taskLayer:move_layer(_layer)
     local curr_y=_layer:getPositionY()
@@ -58,7 +58,7 @@ function taskLayer:init(  )
 
          
 
-            self:data_init()  --测试
+            -- self:data_init()  --测试
 end
 function taskLayer:data_init(  )
       local _table=LocalData:Instance():get_gettasklist()
@@ -257,7 +257,7 @@ function taskLayer:onEnter()
    
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self,
                        function()
-                                  self:init()
+                                  self:data_init()
                       end)
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.TASKTARGETRECORD, self,
                        function()

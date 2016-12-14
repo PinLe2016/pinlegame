@@ -183,6 +183,7 @@ function Server:set_friend_reward_setting_callback()
         self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
         return
     end
+    Server:Instance():getuserinfo()
     LocalData:Instance():set_friend_reward_setting(self.data)--保存数据
     -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
    
