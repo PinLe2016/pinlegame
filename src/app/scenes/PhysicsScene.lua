@@ -380,8 +380,7 @@ function PhysicsScene:add_obstacle()
         local modeSprite=modeSprite_ban_1:clone()
         modeSprite:setTag(-2)
         self.phy_bg:addChild(modeSprite)
-
-         modeSprite:setPosition(modeSprite_ban_1:getPositionX()-3+(modeSprite_ban_2:getPositionX()-modeSprite_ban_1:getPositionX())*i,modeSprite_ban_1:getPositionY())
+         modeSprite:setPosition(modeSprite_ban_1:getPositionX()-8+(modeSprite_ban_2:getPositionX()-modeSprite_ban_1:getPositionX())*i,modeSprite_ban_1:getPositionY())
          local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 0)
          local coinBody = cc.PhysicsBody:createBox(cc.size(8,35),
                 material)
@@ -412,7 +411,7 @@ function PhysicsScene:add_obstacle()
        
         modeSprite:loadTexture(string.format("png/Physicstaiqiu-%d.png", self._dt))--arr_ball[self._randTable[i+1]]))  --_randt))--
         modeSprite:setScale(0.27,0.27)
-        modeSprite:setPosition(modeSprite_ban_3:getPositionX()+30*i,modeSprite_ban_3:getPositionY())
+        modeSprite:setPosition(modeSprite_ban_3:getPositionX()-5+30*i,modeSprite_ban_3:getPositionY())
         modeSprite:setTag(self._dt*10)--(arr_ball[self._randTable[i+1]]*10)  --(_randt*10)--
 
          local material=cc.PhysicsMaterial(WALL_THICKNESS, 0, 0)

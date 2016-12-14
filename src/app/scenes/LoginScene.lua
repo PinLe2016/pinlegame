@@ -518,13 +518,13 @@ function LoginScene:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self,
                        function()
                        print("注册的验证码")
-                       self._code=30
+                       self._code=50
                        if  self.layertype==1 then
                            self.code_bt=self.Getverificationcode_bt
                         elseif self.layertype==2 then
                            self.code_bt=self.yanzhengma
                        end
-                       self.code_bt:setTitleText("30S")
+                       self.code_bt:setTitleText("50S")
                        self:fun_countdowncode()
                       end)
 

@@ -106,7 +106,7 @@ function bigwheelLayer:ctor(params)
 
              self.cotion_gold={}
              self._table={
-             {gold_b=5,gold_e=10},
+             {gold_b=1,gold_e=10},
              {gold_b=50,gold_e=200},
              {gold_b=1000,gold_e=1000},
              {gold_b=20,gold_e=50},
@@ -326,6 +326,9 @@ function bigwheelLayer:touch_callback( sender, eventType )
             self.CheckBox_volume=1
             self.volume_num:setString(tostring(self.volume_num:getString()-1))
          end
+         if tonumber(self.Points)==0 then
+           self.Points=1
+         end
 	     Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume,self.Points)  --  转盘随机数
 
         local _table=LocalData:Instance():get_gettasklist()
@@ -361,8 +364,8 @@ function bigwheelLayer:try_again()
                                           dump(_tablegods["getcardamount"])
                                           if  tonumber(_tablegods["getcardamount"])== 0 then
                                             
-                                              LocalData:Instance():set_user_pintu("1")
-                                              self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分",function (sender, eventType)
+                                                             LocalData:Instance():set_user_pintu("1")
+                                              self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续玩只能获得积分",function (sender, eventType)
                                                 if eventType==1 then
                                                        GameScene = require("app.scenes.GameScene")--惊喜吧
                                                       local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose})--拼图
