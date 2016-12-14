@@ -19,6 +19,7 @@ function Server:setuserinfo_callback()
     --self:show_float_message("信息修改成功!")
     LocalData:Instance():set_userinfo(self.data)--保存数据
      NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE)
+     Server:Instance():getuserinfo()
    
 end
 --用户数据初始化
@@ -155,7 +156,7 @@ function Server:getaffichelist (_pageno)
 end
 
 function Server:getaffichelist_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取邮件信息:" .. self.data.err_msg)
         return

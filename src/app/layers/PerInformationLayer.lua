@@ -6,7 +6,7 @@ end)
 function PerInformationLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
-       Server:Instance():getuserinfo() -- 初始化数据
+       -- Server:Instance():getuserinfo() -- 初始化数据
        self.head_index=100 -- 初始化
      --self:init()
        self.secondOne = 0
@@ -18,6 +18,8 @@ function PerInformationLayer:ctor()--params
        
        --手机归属请求
        Server:Instance():getusercitybyphone()--手机归属
+
+       self:add_init()
 end
 --新增的个人信息界面
 function PerInformationLayer:add_init(  )
@@ -332,7 +334,8 @@ function PerInformationLayer:touch_back( sender, eventType )
                  LocalData:Instance():set_per("0")
                  return
             end
-            Util:scene_control("MainInterfaceScene")
+            self:removeFromParent()
+            --Util:scene_control("MainInterfaceScene")
             
         end
     elseif  tag==1410 then
@@ -541,6 +544,7 @@ function PerInformationLayer:perinformation_init(  )
         -- self._Pname:setPlaceHolder(nick_sub)
         self._Pname:setText(nick_sub)
         self._Pname:setAnchorPoint(0,0.5)  
+
         self._Pname:setMaxLength(6)
 
         --self._Pname:setString(userdt["nickname"])
@@ -879,6 +883,7 @@ function PerInformationLayer:savedata( )
             dump(userdatainit)
             LocalData:Instance():set_getuserinfo(userdatainit)  --必须打开
             Server:Instance():setuserinfo(params) 
+
 end
 function PerInformationLayer:fun_birthday(  )
         self.birthday = cc.CSLoader:createNode("Birthday.csb")
@@ -1362,7 +1367,7 @@ function PerInformationLayer:onEnter()
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self,
                        function()
                             --self:init()
-                            self:add_init()
+                            
                       end)
       NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REG, self,
                        function()

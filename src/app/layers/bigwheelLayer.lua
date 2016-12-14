@@ -230,6 +230,7 @@ function bigwheelLayer:function_bigwheel( )
             self._prizebt:addTouchEventListener(function(sender, eventType  )
                   self:touch_callback(sender, eventType)
             end)
+
          self:run_blades()
          self:init(  )
 
@@ -404,6 +405,9 @@ function bigwheelLayer:touch_callback( sender, eventType )
             self.CheckBox_volume=1
             self.volume_num:setString(tostring(self.volume_num:getString()-1))
          end
+         if tonumber(self.Points)==0 then
+           self.Points=1
+         end
 	     Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume,self.Points)  --  转盘随机数
 
         local _table=LocalData:Instance():get_gettasklist()
@@ -437,7 +441,7 @@ function bigwheelLayer:try_again()
                                           -- dump(_tablegods)
                                           dump(_tablegods["getcardamount"])
                                           if  tonumber(_tablegods["getcardamount"])== 0 then
-                                            
+
                                               LocalData:Instance():set_user_pintu("1")
                                               self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)
                                                 if eventType==1 then

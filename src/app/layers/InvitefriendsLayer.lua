@@ -23,7 +23,7 @@ function InvitefriendsLayer:ctor()--params
              end
              
        end
-
+       self:init()
 end
 function InvitefriendsLayer:move_layer(_layer)
      local curr_y=_layer:getPositionY()
@@ -63,7 +63,7 @@ function InvitefriendsLayer:init(  )
        self._ListView=self.Invitefriends:getChildByTag(91)--邀请好友排行list
        self._ListView:setItemModel(self._ListView:getItem(0))
        self._ListView:removeAllItems()
-       self:fun_init()-- 数据初始化
+       
 
 
 
@@ -210,10 +210,10 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             end
 
 
-            Server:Instance():getuserinfo() -- 初始化数据
+            -- Server:Instance():getuserinfo() -- 初始化数据
             Server:Instance():gettasklist()
-		self:removeFromParent()
-           Util:scene_control("MainInterfaceScene")
+		        self:removeFromParent()
+           -- Util:scene_control("MainInterfaceScene")
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)
 		-- self.m_friend:setVisible(true)
@@ -254,7 +254,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
   --                       local friendlist_table=LocalData:Instance():getfriendlist()
 		-- print("一键获取")
 		Server:Instance():get_reward_of_friends_levelup()
-	
+	  Server:Instance():getuserinfo()
 	
 	end
 end
@@ -262,7 +262,8 @@ function InvitefriendsLayer:onEnter()
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
                        function()
                        	            print("初始化")
-                      		self:init()
+                      		--self:init()
+                          self:fun_init()-- 数据初始化
                       end)
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self,
                        function()
