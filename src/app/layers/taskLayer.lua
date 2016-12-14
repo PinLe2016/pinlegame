@@ -12,7 +12,7 @@ function taskLayer:ctor()
        self.sur_pageno=1
        LocalData:Instance():set_gettasklist(nil)
        Server:Instance():gettasklist()
-       
+
 end
 function taskLayer:move_layer(_layer)
     local curr_y=_layer:getPositionY()

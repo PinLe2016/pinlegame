@@ -51,7 +51,7 @@ function bigwheelLayer:ctor(params)
 	self.gridNumer=12    --   一共的格子数
 	self.gridAngle=360/self.gridNumer   --   每个格子的度数
 	self.adid=params.id
-     self.choose=params.choose
+      self.choose=params.choose  --  1p拼图   2   打地鼠
 
 	self.count=0
       self.CheckBox_volume=0
@@ -66,19 +66,152 @@ function bigwheelLayer:ctor(params)
     self.goldspoolcount=params.goldspoolcount
     -- Server:Instance():getrecentgoldslist(10)
     LocalData:Instance():set_user_oid(self.id)
+    self._rewardgold=0
+     self.cotion_gold={}
+     self._table={
+         {gold_b=5,gold_e=10},
+         {gold_b=50,gold_e=200},
+         {gold_b=1000,gold_e=1000},
+         {gold_b=20,gold_e=50},
+         {gold_b=15,gold_e=20},
+         {gold_b=10,gold_e=15},
+         {gold_b=50,gold_e=200},
+         {gold_b=10,gold_e=15},
+         {gold_b=5,gold_e=10},
+         {gold_b=20,gold_e=50},
+         {gold_b=500,gold_e=500},
+         {gold_b=10,gold_e=15}
+     }     
+
+      if self.choose==1 then  --  拼图
+         self:function_puzzle()
+      else
+        self:function_HitVolesEnd()
+      end
+       
+end
+--打地鼠结束界面self.Points
+function bigwheelLayer:function_HitVolesEnd(  )
+               self.HitVolesEndLayer = cc.CSLoader:createNode("HitVolesEndLayer.csb")
+               self:addChild(self.HitVolesEndLayer)
+               local _advertiImg=self.HitVolesEndLayer:getChildByTag(201)  --  上面广告图
+                _advertiImg:loadTexture( self.image_name) 
+               _advertiImg:addTouchEventListener(function(sender, eventType  )
+                     if eventType ~= ccui.TouchEventType.ended then
+                           sender:setScale(1)
+                           return
+                      end
+                          sender:setScale(1.4)
+                     self:fun_storebrowser()
+               end)
+               local back=self.HitVolesEndLayer:getChildByTag(776)  --  返回
+               back:addTouchEventListener(function(sender, eventType  )
+                    self:fun_callback(sender, eventType)
+               end)
+               local show=self.HitVolesEndLayer:getChildByTag(258)  --  炫耀
+               show:addTouchEventListener(function(sender, eventType  )
+                    self:fun_callback(sender, eventType)
+               end)
+               local secondcount=self.HitVolesEndLayer:getChildByTag(256)  --  再来一局
+               secondcount:addTouchEventListener(function(sender, eventType  )
+                    self:fun_callback(sender, eventType)
+               end)
+               local labelAtlas=self.HitVolesEndLayer:getChildByTag(255) --分数
+               labelAtlas:setVisible(false)
+              local  dishu_score = ccui.TextAtlas:create()
+              dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
+              dishu_score:setProperty( tostring(self.Points),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
+              self.HitVolesEndLayer:addChild(dishu_score) 
 
 
-	self.bigwheelLayer = cc.CSLoader:createNode("bigwheelLayer.csb")
+
+end
+-- 拼图结束界面
+function bigwheelLayer:function_puzzle(  )
+              self.puzzleEndLayer = cc.CSLoader:createNode("puzzleEndLayer.csb")
+              self:addChild(self.puzzleEndLayer)
+              local _advertiImg=self.puzzleEndLayer:getChildByTag(356)  --  上面广告图
+              _advertiImg:loadTexture( self.image_name) 
+              _advertiImg:addTouchEventListener(function(sender, eventType  )
+                      if eventType ~= ccui.TouchEventType.ended then
+                           sender:setScale(1)
+                           return
+                      end
+                          sender:setScale(1.3)
+                          self:fun_storebrowser()
+             end)
+            local back=self.puzzleEndLayer:getChildByTag(305)  --  返回
+             back:addTouchEventListener(function(sender, eventType  )
+                  self:fun_callback(sender, eventType)
+             end)
+             local show=self.puzzleEndLayer:getChildByTag(756)  --  炫耀
+             show:addTouchEventListener(function(sender, eventType  )
+                  self:fun_callback(sender, eventType)
+             end)
+             local secondcount=self.puzzleEndLayer:getChildByTag(755)  --  再来一局
+             secondcount:addTouchEventListener(function(sender, eventType  )
+                  self:fun_callback(sender, eventType)
+             end)
+
+end
+--  结束界面返回按钮
+function bigwheelLayer:fun_callback( sender, eventType )
+            if eventType ~= ccui.TouchEventType.ended then
+                 sender:setScale(0.8)
+                 return
+            end
+                sender:setScale(1)
+            local tag=sender:getTag()
+            if tag==201 then
+               self:fun_storebrowser()
+            elseif tag==356 then 
+               self:fun_storebrowser()
+            elseif tag==776 then 
+               Util:scene_control("GoldprizeScene")
+            elseif tag==258 then 
+               print("炫耀")
+            elseif tag==256 then 
+               GameScene = require("app.scenes.GameScene")--惊喜吧
+                local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})--拼图
+                cc.Director:getInstance():replaceScene(scene)
+                LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+            elseif tag==305 then 
+               Util:scene_control("GoldprizeScene")
+            elseif tag==756 then 
+               print("炫耀")
+            elseif tag==755 then 
+                local  _Issecond=0
+                local getgoldspoolbyid  = LocalData:Instance():get_getgoldspoolbyid()--获得玩了几次数据
+                if tonumber(getgoldspoolbyid["getcardamount"]) == 1 then
+                  _Issecond=1
+                end
+                GameScene = require("app.scenes.GameScene")--惊喜吧
+                local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})--拼图
+                cc.Director:getInstance():replaceScene(scene)
+                LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+            end
+end
+--  大转盘界面
+function bigwheelLayer:function_bigwheel( )
+            self.bigwheelLayer = cc.CSLoader:createNode("bigwheelLayer.csb")
             self:addChild(self.bigwheelLayer)
             self.roleAction = cc.CSLoader:createTimeline("bigwheelLayer.csb")
             self.bigwheelLayer:runAction(self.roleAction)
             -- self.roleAction:setTimeSpeed(2)
-            -- self.roleAction:gotoFrameAndPlay(0,60, true)
-           
-          	--风叶
-          	self._blades=self.bigwheelLayer:getChildByTag(41):getChildByTag(48)
-          	--选中
-          	self._selected=self.bigwheelLayer:getChildByTag(46)
+            -- self.roleAction:gotoFrameAndPlay(0,60, true)  
+            local  hit=self.bigwheelLayer:getChildByTag(41)  --  打地鼠
+            local  deb=self.bigwheelLayer:getChildByTag(177)  --  拼图
+            local  arrow=self.bigwheelLayer:getChildByTag(42)  --  拼图
+            if self.choose==1 then  --  拼图
+               deb:setVisible(true)
+               arrow:loadTexture("png/zhuanpandi-xuanzhong.png")
+            else
+              deb:setVisible(false)
+            end
+            --风叶
+            self._blades=self.bigwheelLayer:getChildByTag(41):getChildByTag(48)
+            --选中
+            self._selected=self.bigwheelLayer:getChildByTag(46)
             self._selected:setVisible(false)
 
             self._Instead=self.bigwheelLayer:getChildByTag(99)
@@ -87,11 +220,9 @@ function bigwheelLayer:ctor(params)
             self._lamp=self.bigwheelLayer:getChildByTag(41):getChildByTag(43)  
             self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 if   self._Xscnum then
-                                   self:run_callback()
-                                end
-                                
+                                     self:run_callback()
+                                end 
               end,0.3, false)
-
             self._prize=self.bigwheelLayer:getChildByTag(1303)
             self._prize:setVisible(false)
             self._prizetext=self._prize:getChildByTag(1307)
@@ -99,31 +230,9 @@ function bigwheelLayer:ctor(params)
             self._prizebt:addTouchEventListener(function(sender, eventType  )
                   self:touch_callback(sender, eventType)
             end)
-
-
-
-             self._rewardgold=0
-
-             self.cotion_gold={}
-             self._table={
-             {gold_b=5,gold_e=10},
-             {gold_b=50,gold_e=200},
-             {gold_b=1000,gold_e=1000},
-             {gold_b=20,gold_e=50},
-             {gold_b=15,gold_e=20},
-             {gold_b=10,gold_e=15},
-             {gold_b=50,gold_e=200},
-             {gold_b=10,gold_e=15},
-             {gold_b=5,gold_e=10},
-             {gold_b=20,gold_e=50},
-             {gold_b=500,gold_e=500},
-             {gold_b=10,gold_e=15}
-         }
          self:run_blades()
+         self:init(  )
 
-	self:init(  )
-
-       
 end
 --风叶旋转动画 
 function bigwheelLayer:run_blades(  )
@@ -147,36 +256,6 @@ function bigwheelLayer:run_callback(dt)
 end
 function bigwheelLayer:init(  )
         
-
-        	 local function menuCallback()
-
-		     self.x_rand=math.random(1,self.gridNumer)
-		     print("随机是几  ", self.x_rand)
-		     table.insert(self.fragment_table,{_shuzi = self.x_rand})
-		    -- kk.push_back(x_rand);
-		    local   _int = #self.fragment_table  --kk.size();
-		    --print("需要几  ",self.x_rand,"   ",#self.fragment_table);
-		    --防止多次点击
-		    self.m_turnArr:setEnabled(false);
-		    if (_int>1)   then 
-			        local  xin = self.fragment_table[_int-1]._shuzi--kk.at(_int-2);
-			        --print("ziyun  ","   ",self.x_rand  ,  "   ",xin);
-			        if (self.x_rand > xin)   then 
-			            self.x_rand = self.x_rand - xin;
-			        else
-			            self.x_rand = self.gridNumer+  (self.x_rand - xin);
-			        end
-		    end
-		    --print("需要几111   ",self.x_rand);
-		    self._rand= (self.x_rand  *  self.gridAngle   ) ;-- +rand() % 60;
-		    local  angleZ = self._rand + 720;  --// +
-		    local  pAction = cc.EaseExponentialOut:create(cc.RotateBy:create(4,angleZ));
-		    m_turnBg:runAction(cc.Sequence:create(pAction))--,cc.CallFunc::create(CC_CALLBACK_0(LotteryTurnTest::onTurnEnd,this)),NULL));
-			 
-             end
-
-
-
 	    local  bgSize = cc.Director:getInstance():getWinSize()
 	    
 	    m_pBg = cc.Sprite:create();
@@ -186,7 +265,7 @@ function bigwheelLayer:init(  )
 	
 	    --添加转盘
 	    m_turnBg = self.bigwheelLayer:getChildByTag(41) --cc.Sprite:create("LotteryTurn/turn_bg.png");
-          self.caideng = m_turnBg:getChildByTag(33)
+          self.caideng = self.bigwheelLayer:getChildByTag(33)
           self.caideng:setVisible(false)
 
            local  list_table=LocalData:Instance():get_getgoldspoolbyid()
@@ -293,7 +372,7 @@ function bigwheelLayer:fun_began(  )
 	    end
 	    self._rand= (self.x_rand  *  self.gridAngle   ) ;
 	    local  angleZ = self._rand + 1440--720;  
-          local  pAction1 = cc.EaseExponentialOut:create(cc.RotateBy:create(8,1080+angleZ))
+          local  pAction1 = cc.EaseExponentialInOut:create(cc.RotateBy:create(8,1080+angleZ))
 	    m_turnBg:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
         -- local  pAction2 = cc.RotateBy:create(3,self._rand)  --测试
         -- self._Instead:runAction(pAction2)

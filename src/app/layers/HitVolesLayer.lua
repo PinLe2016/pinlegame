@@ -14,8 +14,8 @@ end)
                   {target=nil,_randdate=nil}
           }
          
-        self.countdown_time =40    --  设置倒计时
-        self.dishu_time=40
+        self.countdown_time =2    --  设置倒计时
+        self.dishu_time=2
         self:setNodeEventEnabled(true)--layer添加监听
 
         self.filename=params.filename
@@ -319,16 +319,17 @@ function HitVolesLayer:callback(dt)
          self.countdown_time=self.countdown_time-1
          self:fun_loadingbar()
          if self.countdown_time <= 0 then
-                local function stopAction()
-                            self.congratulations:setVisible(false)
-                            self:server_data()
-                end
-                audio.playMusic("sound/effect/hit_3.mp3",false)
-              local callfunc = cc.CallFunc:create(stopAction)
-              self.congratulations:stopAllActions()
-             self.congratulations:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
-              self.congratulations:setVisible(true)--self.m_time
-            self.congratulations_text:setString(tostring(self.m_time))
+            --     local function stopAction()
+            --                 self.congratulations:setVisible(false)
+            --                 self:server_data()
+            --     end
+            --     audio.playMusic("sound/effect/hit_3.mp3",false)
+            --   local callfunc = cc.CallFunc:create(stopAction)
+            --   self.congratulations:stopAllActions()
+            --  self.congratulations:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+            --   self.congratulations:setVisible(true)--self.m_time
+            -- self.congratulations_text:setString(tostring(self.m_time))
+            self:server_data()
             self.scheduler:unscheduleScriptEntry(self.schedulHandle)
              return
          end
