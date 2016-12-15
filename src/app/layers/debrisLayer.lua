@@ -51,8 +51,8 @@ function debrisLayer:ctor(params)
          self:refresh_table()
          self.count_time=0  --时间
          self.theycount =0  --步数
-         self.schedulHandle=nil
-         self.schedulHandle =  cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )                              
+         schedulHandledeb=nil
+         schedulHandledeb =  cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )                              
                                      self.count_time=self.count_time+1    
               end,1, false)
 end
@@ -244,7 +244,7 @@ function debrisLayer:saw_issuccess()
     end
     print("成功")  --self.adid
                   self:fun_endanimation()
-                   cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self.schedulHandle)
+                   cc.Director:getInstance():getScheduler():unscheduleScriptEntry(schedulHandledeb)
                      LocalData:Instance():setTheycount(self.theycount)
                  local _originalimage = cc.CSLoader:createNode("originalimage.csb")
                   _originalimage:setPosition(cc.p(self.point.x,self.point.y))

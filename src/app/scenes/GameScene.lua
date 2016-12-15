@@ -207,15 +207,16 @@ function GameScene:funsuspended( )
                       panel:setVisible(false)
                end)
            local continue_bt=panel:getChildByTag(51)  -- 退出
-           continue_bt:addTouchEventListener(function(sender, eventType  )
-                      --Util:scene_control("MainInterfaceScene")
-                      -- if self.type=="audition" then
-                      --     Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
-                      --    Server:Instance():sceneinformation()
-                      -- end
-                    
-                      -- cc.Director:getInstance():popScene()
-                      Util:scene_control("GoldprizeScene")
+           continue_bt:addTouchEventListener(function(sender,eventType)
+                      if schedulHandledeb then
+                         cc.Director:getInstance():getScheduler():unscheduleScriptEntry(schedulHandledeb)
+                      end
+
+                        local function stopAction()
+                                Util:scene_control("GoldprizeScene")
+                       end
+                      local callfunc = cc.CallFunc:create(stopAction)
+                     self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
                end)
            local sound_box=panel:getChildByTag(52)  -- 音效
            sound_box:addEventListener(function(sender, eventType  )

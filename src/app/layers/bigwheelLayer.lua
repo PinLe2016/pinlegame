@@ -69,7 +69,7 @@ function bigwheelLayer:ctor(params)
     self._rewardgold=0
      self.cotion_gold={}
      self._table={
-         {gold_b=5,gold_e=10},
+         {gold_b=1,gold_e=10},
          {gold_b=50,gold_e=200},
          {gold_b=1000,gold_e=1000},
          {gold_b=20,gold_e=50},
@@ -82,13 +82,28 @@ function bigwheelLayer:ctor(params)
          {gold_b=500,gold_e=500},
          {gold_b=10,gold_e=15}
      }     
-     print("拼图  ", LocalData:Instance():getTheycount())
       if self.choose==1 then  --  拼图
          self:function_puzzle()
       else
         self:function_HitVolesEnd()
       end
-       
+      --   转盘随机数出现
+      if tonumber(self.Points) >= 700  then
+         self:fun_bigrandom()
+      elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
+         self:fun_bigrandom()
+      elseif tonumber(math.random(1,5))   ==3   then
+        self:fun_bigrandom()
+      end
+      
+end
+--   转盘随机数出现
+function bigwheelLayer:fun_bigrandom( )
+        local function stopAction()
+                self:function_bigwheel()
+       end
+      local callfunc = cc.CallFunc:create(stopAction)
+     self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
 end
 --打地鼠结束界面self.Points
 function bigwheelLayer:function_HitVolesEnd(  )
@@ -206,21 +221,29 @@ function bigwheelLayer:function_bigwheel( )
             -- self.roleAction:gotoFrameAndPlay(0,60, true)  
             local  hit=self.bigwheelLayer:getChildByTag(41)  --  打地鼠
             local  deb=self.bigwheelLayer:getChildByTag(177)  --  拼图
-            local  arrow=self.bigwheelLayer:getChildByTag(42)  --  拼图
+            local  arrow=self.bigwheelLayer:getChildByTag(551)  --  拼图
             if self.choose==1 then  --  拼图
                deb:setVisible(true)
-               arrow:loadTexture("png/zhuanpandi-xuanzhong.png")
+               arrow:setVisible(true)
+               m_turnBg = self.bigwheelLayer:getChildByTag(177) --zhuanpan
+               local  dipan =self.bigwheelLayer:getChildByTag(550)
+               dipan:setVisible(true)
+                       --风叶
+            self._blades=self.bigwheelLayer:getChildByTag(177):getChildByTag(181)
+            -- 灯
+            self._lamp=self.bigwheelLayer:getChildByTag(177):getChildByTag(182)  
+            self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                if   self._Xscnum then
+                                     self:run_callback()
+                                end 
+              end,0.3, false)
+
             else
               deb:setVisible(false)
-            end
-            --风叶
+              m_turnBg = self.bigwheelLayer:getChildByTag(41) 
+                      --风叶
             self._blades=self.bigwheelLayer:getChildByTag(41):getChildByTag(48)
-            --选中
-            self._selected=self.bigwheelLayer:getChildByTag(46)
-            self._selected:setVisible(false)
 
-            self._Instead=self.bigwheelLayer:getChildByTag(99)
-            self._Instead:setVisible(false)
             -- 灯
             self._lamp=self.bigwheelLayer:getChildByTag(41):getChildByTag(43)  
             self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
@@ -228,6 +251,14 @@ function bigwheelLayer:function_bigwheel( )
                                      self:run_callback()
                                 end 
               end,0.3, false)
+
+            end
+            self._Instead=self.bigwheelLayer:getChildByTag(99)
+            self._Instead:setVisible(false)
+                 --选中
+            self._selected=self.bigwheelLayer:getChildByTag(46)
+            self._selected:setVisible(false)
+
             self._prize=self.bigwheelLayer:getChildByTag(1303)
             self._prize:setVisible(false)
             self._prizetext=self._prize:getChildByTag(1307)
@@ -270,7 +301,7 @@ function bigwheelLayer:init(  )
 	    
 	
 	    --添加转盘
-	    m_turnBg = self.bigwheelLayer:getChildByTag(41) --cc.Sprite:create("LotteryTurn/turn_bg.png");
+	    
           self.caideng = self.bigwheelLayer:getChildByTag(33)
           self.caideng:setVisible(false)
 
@@ -301,14 +332,14 @@ function bigwheelLayer:init(  )
 	          self:touch_callback(sender, eventType)
 	      end)
        _back:setVisible(false)
-	     local _advertiImg=self.bigwheelLayer:getChildByTag(128)  --  上面广告图
-	      _advertiImg:loadTexture( self.image_name) 
-         _advertiImg:addTouchEventListener(function(sender, eventType  )
-                    if eventType ~= ccui.TouchEventType.ended then
-                          return
-                    end
-                    self:fun_storebrowser()
-                  end)
+	     -- local _advertiImg=self.bigwheelLayer:getChildByTag(128)  --  上面广告图
+	     --  _advertiImg:loadTexture( self.image_name) 
+      --    _advertiImg:addTouchEventListener(function(sender, eventType  )
+      --               if eventType ~= ccui.TouchEventType.ended then
+      --                     return
+      --               end
+      --               self:fun_storebrowser()
+      --             end)
 
        -- local  list_table=LocalData:Instance():get_getgoldspoolbyid()
         local _title=self.bigwheelLayer:getChildByTag(133)  --  上面广告图
@@ -316,30 +347,24 @@ function bigwheelLayer:init(  )
 
 	     local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                  local  jaclayer_data=list_table["adlist"]
-	     local connection12=self.bigwheelLayer:getChildByTag(39):getChildByTag(129)   --连接
-	       self.connection13=connection12
-	      connection12:addTouchEventListener(function(sender, eventType  )
-	                  if eventType ~= ccui.TouchEventType.ended then
-	                        return
-	                  end
-	                  self:fun_storebrowser()
-                  end)
-	     local connection_gold=self.bigwheelLayer:getChildByTag(39):getChildByTag(129):getChildByTag(131)--  显示金币数
-	     if jaclayer_data[1]["adurlgold"] then
-	          connection_gold:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
-	     else
-	        connection12:setVisible(false)
-	        connection_gold:setString("+0")
-	      end
-           if tostring(self.addetailurl)   ==   tostring(1) then
-              connection12:setVisible(false)
-           end
-
-	    --添加中奖之后的简单界面
-	    local  awardLayer = cc.LayerColor:create(cc.c4b(0,0,0,100), 0,0)
-	    awardLayer:setTag(100);
-	    m_pBg:addChild(awardLayer,10);
-	    awardLayer:setVisible(false);
+	     -- local connection12=self.bigwheelLayer:getChildByTag(39):getChildByTag(129)   --连接
+	     --   self.connection13=connection12
+	     --  connection12:addTouchEventListener(function(sender, eventType  )
+	     --              if eventType ~= ccui.TouchEventType.ended then
+	     --                    return
+	     --              end
+	     --              self:fun_storebrowser()
+      --             end)
+	     -- local connection_gold=self.bigwheelLayer:getChildByTag(39):getChildByTag(129):getChildByTag(131)--  显示金币数
+	     -- if jaclayer_data[1]["adurlgold"] then
+	     --      connection_gold:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
+	     -- else
+	     --    connection12:setVisible(false)
+	     --    connection_gold:setString("+0")
+	     --  end
+      --      if tostring(self.addetailurl)   ==   tostring(1) then
+      --         connection12:setVisible(false)
+      --      end
 
 end
 function bigwheelLayer:fun_began(  )
@@ -377,7 +402,7 @@ function bigwheelLayer:fun_began(  )
 		        end
 	    end
 	    self._rand= (self.x_rand  *  self.gridAngle   ) ;
-	    local  angleZ = self._rand + 1440--720;  
+	    local  angleZ = self._rand + 1080--720;  
           local  pAction1 = cc.EaseExponentialInOut:create(cc.RotateBy:create(8,1080+angleZ))
 	    m_turnBg:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
         -- local  pAction2 = cc.RotateBy:create(3,self._rand)  --测试
