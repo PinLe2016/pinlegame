@@ -419,6 +419,7 @@ function Server:settasktargetrecord_callback()
         self:show_float_message("领取任务奖励失败:" .. self.data.err_msg)
         return
     end
+    Server:Instance():getuserinfo() 
       -- LocalData:Instance():set_settasktarget(self.data)--保存数据
        NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TASKTARGETRECORD)
 end

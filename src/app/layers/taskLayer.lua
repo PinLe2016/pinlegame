@@ -205,8 +205,7 @@ function taskLayer:touch_btCallback( sender, eventType )
 
                   self.fragment_sprite:setVisible(false)
            		self:removeFromParent()
-              Util:scene_control("MainInterfaceScene")
-              Server:Instance():getuserinfo() 
+              -- Util:scene_control("MainInterfaceScene")
               LocalData:Instance():set_sign(1)
            	 end
            end  
@@ -223,7 +222,7 @@ function taskLayer:touch_Callback( sender, eventType )
        print("范德萨发生地方  ",tasklist[tag]["targetid"])
        local targettype=tasklist[tag]["targettype"]  --0为签到，1为邀请好友，2为分享，3为惊喜吧，4为奖池,5为获得金币数，6为获得积分数
        if tonumber(tasklist[tag]["status"]) == 2 then
-               Server:Instance():getuserinfo() 
+               
                Server:Instance():settasktargetrecord(tasklist[tag]["targetid"])  --领取奖励
                return
        end
@@ -249,7 +248,7 @@ function taskLayer:touch_Callback( sender, eventType )
 
        end
        
-  
+      Server:Instance():getuserinfo() 
 
 end 
 

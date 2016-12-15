@@ -43,11 +43,15 @@ function LoginScene:progressbarScene(  )
         loadingBar:setPercent(0)
 end
  function LoginScene:countdown()
-           self._time=self._time+100
+           self._time=self._time+2
         
 
             loadingBar:setPercent(self._time)
-            if self._time==200 then
+            if self._time>96 then
+              loadingBar:setPercent(100)
+            end
+            if self._time==100 then
+              -- loadingBar:setPercent(100)
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
                --判断是否是第一次登陆
                -- cc.UserDefault:getInstance():setStringForKey("new_start","0")
@@ -71,7 +75,7 @@ end
 function LoginScene:fun_countdown( )
       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:countdown()
-              end,1.0, false)
+              end,0.02, false)
 end
 function LoginScene:_coverlayer( )
 

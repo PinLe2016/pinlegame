@@ -43,8 +43,19 @@ function Server:show_float_message(msg)
 end
 
 function Server:show_http_buffer(is_buffer)
- 
-    display.getRunningScene():push_buffer(is_buffer)
+    local function logSprRotation(sender)
+        display.getRunningScene():push_buffer(true)
+    end
+    local action = cc.Sequence:create(cc.DelayTime:create(2),cc.CallFunc:create(logSprRotation))
+    display.getRunningScene():stopAllActions()
+    if is_buffer then
+        display.getRunningScene():runAction(action)
+    else
+        display.getRunningScene():push_buffer(false)
+    end
+     
+
+    
 end
 
 function Server:network_box_buffer(prompt_text)
@@ -123,7 +134,7 @@ function Server:request_http(command , params)
     local _key="PINLEGAME"
     local login_info=LocalData:Instance():get_user_data()
     local md5=crypto.md5(post_)
-    dump(md5)
+    -- dump(md5)
     if login_info and command~="login" and command~="sendmessage" and command~="changepassword" and command~="reg" and command~="getversion" then
 
         _key=login_info["loginname"]
@@ -186,7 +197,7 @@ function Server:on_request_finished_http(event , command)
     if (self.jsondata.timestamp) then
        	   self.timediff = os.time() - self.jsondata.timestamp
     end
-
+    io.writefile(cc.FileUtils:getInstance():getWritablePath() .."recv.lua", response..command,"w+")
     if tonumber(self.data["err_code"])==16 then
          Util:scene_control("LoginScene")
          return
