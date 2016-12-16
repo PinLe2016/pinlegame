@@ -90,9 +90,9 @@ function bigwheelLayer:ctor(params)
       --   转盘随机数出现
       if tonumber(self.Points) >= 700  then
          self:fun_bigrandom()
-      elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
-         self:fun_bigrandom()
-      elseif tonumber(math.random(1,5))   ==3   then
+      -- elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
+      --    self:fun_bigrandom()
+      elseif tonumber(math.random(1,1))   ==1   then
         self:fun_bigrandom()
       end
       
@@ -232,11 +232,11 @@ function bigwheelLayer:function_bigwheel( )
             self._blades=self.bigwheelLayer:getChildByTag(177):getChildByTag(181)
             -- 灯
             self._lamp=self.bigwheelLayer:getChildByTag(177):getChildByTag(182)  
-            self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
-                                if   self._Xscnum then
-                                     self:run_callback()
-                                end 
-              end,0.3, false)
+            -- self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+            --                     if   self._Xscnum then
+            --                          self:run_callback()
+            --                     end 
+            --   end,0.3, false)
 
             else
               deb:setVisible(false)
@@ -246,11 +246,15 @@ function bigwheelLayer:function_bigwheel( )
 
             -- 灯
             self._lamp=self.bigwheelLayer:getChildByTag(41):getChildByTag(43)  
-            self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
-                                if   self._Xscnum then
-                                     self:run_callback()
-                                end 
-              end,0.3, false)
+            -- self._Xscnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+            --                     if   self._Xscnum then
+            --                          self:run_callback()
+            --                     end 
+            --   end,0.3, false)
+            local fadein=cc.FadeIn:create(0.8)
+            local fadeout=cc.FadeOut:create(0.8)
+            
+            self._lamp:runAction(cc.RepeatForever:create(cc.Sequence:create(fadeout,fadein)))
 
             end
             self._Instead=self.bigwheelLayer:getChildByTag(99)
@@ -267,6 +271,19 @@ function bigwheelLayer:function_bigwheel( )
                   self:touch_callback(sender, eventType)
             end)
 
+             -- local particle = cc.ParticleSystemQuad:create("big_3.plist")
+             -- particle:setPosition(100, 100)
+             --  m_turnBg:addChild(particle)
+
+               local particle1 = cc.ParticleSystemQuad:create("big_1.plist")
+               particle1:setPosition(50, 150)
+              m_turnBg:addChild(particle1)
+               local particle2 = cc.ParticleSystemQuad:create("big_2.plist")
+               particle2:setPosition(50, 50)
+              m_turnBg:addChild(particle2)
+
+            -- m_turnBg
+
          self:run_blades()
          self:init(  )
 
@@ -278,7 +295,7 @@ function bigwheelLayer:run_blades(  )
         end     
         local callfunc = cc.CallFunc:create(stopAction)
         self.pAction =cc.RotateBy:create(0.1,30)
-        self.pAction1 = cc.DelayTime:create(0.1)
+        self.pAction1 = cc.DelayTime:create(0.07)
         self._blades:runAction(cc.Sequence:create(self.pAction,self.pAction1,callfunc)) 
 end
 function bigwheelLayer:run_callback(dt)
