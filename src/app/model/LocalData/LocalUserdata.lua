@@ -130,7 +130,7 @@ end
 
 function LocalData:getTheycount()
 	local _key=cc.UserDefault:getInstance():getStringForKey("count")
-	return _key or nil
+	return _key or -1
 end
 --拼图时间
 function LocalData:setpuzzletime(time)
@@ -139,7 +139,7 @@ end
 
 function LocalData:getpuzzletime()
 	local _key=cc.UserDefault:getInstance():getStringForKey("time")
-	return _key or nil
+	return _key or -1
 end
 
 

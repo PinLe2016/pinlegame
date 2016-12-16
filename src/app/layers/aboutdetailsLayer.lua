@@ -83,13 +83,13 @@ function aboutdetailsLayer:init(  )
           --    self.cooperation_ListView:setItemModel(self.cooperation_ListView:getItem(0))
    	      -- self.cooperation_ListView:removeAllItems()
 
-           --  local describe_text=self.aboutdetails:getChildByTag(1293)  --返回
+            local describe_t=self.aboutdetails:getChildByTag(171)  --类型
 
-          --    if  device.platform  ==  "android" then
-          --            describe_text:setString("拼乐 for android  版本号v"..tostring(PINLE_VERSION))
-          --   elseif device.platform  ==  "mac"  or    device.platform  ==  "ios" then
-          --            describe_text:setString("拼乐 for iphone  版本号v"..tostring(PINLE_VERSION))
-          --    end
+             if  device.platform  ==  "android" then
+                     describe_t:loadTexture("png/guanyu-zi-3.png")
+            elseif device.platform  ==  "mac"  or    device.platform  ==  "ios" then
+                     describe_t:loadTexture("png/guanyu-zi-1.png")
+             end
              
 
              local back_bt=self.aboutdetails:getChildByTag(1290)  --返回

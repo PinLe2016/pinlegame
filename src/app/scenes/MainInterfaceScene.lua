@@ -50,8 +50,6 @@ function MainInterfaceScene:ctor()
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)
-
-
 end
 
 
@@ -294,28 +292,19 @@ function MainInterfaceScene:touch_callback( sender, eventType )
         -- local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
         --     self:addChild(FriendrequestLayer.new(),1,11)
 
-             local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面
+             local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
             self:addChild(aboutdetailsLayer.new(),1,12)
 
-            
+
       elseif tag==54 then  --测试分享
           local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面
             self:addChild(aboutdetailsLayer.new(),1,12)
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
-            
-             -- local login_info=LocalData:Instance():get_user_data()
-             -- dump(login_info)
-             --  local _key=login_info["loginname"]
-             --  local _loginkey=login_info["loginkey"]
-             -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
-
-             --self:fun_storebrowser()
-             Util:scene_controlid("MallScene",{type="emil"})
-
-           
-             -- device.openURL(Server:Instance():mall(tostring(_key),tostring(_loginkey)))
+             --Util:scene_controlid("MallScene",{type="emil"})
+              local CustomerLayer = require("app.layers.CustomerLayer")  --关于拼乐界面  
+             self:addChild(CustomerLayer.new(),1,12)
 
 
       elseif tag==49 then  --加
