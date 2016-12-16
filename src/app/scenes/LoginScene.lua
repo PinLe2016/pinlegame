@@ -25,10 +25,10 @@ function LoginScene:ctor()
      end
 
    self.layertype=0  --判断界面
-     
+    self.sex=0
 
 
-self.code_bt=nil
+-- self.code_bt=nil
 
 end
 --新增加的进度条
@@ -36,6 +36,9 @@ function LoginScene:progressbarScene(  )
         self.ProgressbarScene = cc.CSLoader:createNode("ProgressbarScene.csb")
         self:addChild(self.ProgressbarScene)
         loadingBar=self.ProgressbarScene:getChildByTag(328)
+        self.particle = cc.ParticleSystemQuad:create("loading.plist")
+       loadingBar:addChild(self.particle)
+
         self.roleAction = cc.CSLoader:createTimeline("ProgressbarScene.csb")
         self.ProgressbarScene:runAction(self.roleAction)
          self.roleAction:gotoFrameAndPlay(0,41, true)
@@ -44,9 +47,8 @@ function LoginScene:progressbarScene(  )
 end
  function LoginScene:countdown()
            self._time=self._time+2
-        
-
             loadingBar:setPercent(self._time)
+            self.particle:setPositionX(loadingBar:getContentSize().width/100 *self._time)
             if self._time>96 then
               loadingBar:setPercent(100)
             end
@@ -128,6 +130,7 @@ end
  function LoginScene:registered_init()
    local function Getverificationcode_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
+
           sender:setColor(cc.c3b(100, 100, 100))
           sender:setTouchEnabled(false)
            self.layertype=1
@@ -531,18 +534,40 @@ function LoginScene:onEnter()
                        self.code_bt:setTitleText("50S")
                        self:fun_countdowncode()
                       end)
-
-    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REG, self,--注册成功返回
+    NotificationCenter:Instance():AddObserver("zhucechegngong", self,
                        function()
-                         
                          if  self.registered then
-                               self:landing_init()
+                              self:landing_init()
+                              print("开始99")
                              if self._scode then
                                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
                              end
 
                                self.registered:removeFromParent()
                                self.registered=nil
+                         end
+                      end)
+
+
+    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REG, self,--注册成功返回
+                       function()
+                         
+
+                         if  self.registered then
+                              -- self:landing_init()
+                               if self.Getverificationcode_bt then
+                                  self.Getverificationcode_bt:setTouchEnabled(true)
+                                  self.Getverificationcode_bt:setColor(cc.c3b(255, 255, 255))
+                              end
+                              --    cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止定时器
+                                   self.Getverificationcode_bt:setTitleText("获取验证密码")
+                                  print("开始")
+                             if self._scode then
+                                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                             end
+
+                               --self.registered:removeFromParent()
+                               --self.registered=nil
                          end
                         
                       end)

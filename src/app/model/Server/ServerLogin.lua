@@ -94,7 +94,7 @@ function Server:reg_callback()
     end
 
     LocalData:Instance():set_user_data(self.data)--保存玩家数据
-    LocalData:Instance():set_user_reg("1")
+    LocalData:Instance():set_user_reg("2")
     self:promptbox_box_buffer("注册成功")
    -- end
      -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GET_SERVERLIST_BY_REFRESH)

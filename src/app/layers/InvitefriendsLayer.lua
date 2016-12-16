@@ -241,8 +241,11 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 		print("获取输入码",_num)
 	elseif tag==116 then  --一键获取
              if self.gold_text:getString() ==  "0" then
-                 Server:Instance():prompt("没有金币领取")
+                 --Server:Instance():prompt("没有金币领取")
+                 sender:setTouchEnabled(false)
                  return
+              else
+                sender:setTouchEnabled(true)
              end
 		--  local receive_table =  LocalData:Instance():get_reward_friend()
   --    dump(receive_table)
