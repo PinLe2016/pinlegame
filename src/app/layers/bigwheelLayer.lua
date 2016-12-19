@@ -90,9 +90,9 @@ function bigwheelLayer:ctor(params)
       --   转盘随机数出现
       if tonumber(self.Points) >= 700  then
          self:fun_bigrandom()
-      -- elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
-      --    self:fun_bigrandom()
-      elseif tonumber(math.random(1,1))   ==1   then
+      elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
+         self:fun_bigrandom()
+      elseif tonumber(math.random(1,5))   ==1   then
         self:fun_bigrandom()
       end
       
@@ -275,12 +275,12 @@ function bigwheelLayer:function_bigwheel( )
              -- particle:setPosition(100, 100)
              --  m_turnBg:addChild(particle)
 
-               local particle1 = cc.ParticleSystemQuad:create("big_1.plist")
-               particle1:setPosition(50, 150)
-              m_turnBg:addChild(particle1)
-               local particle2 = cc.ParticleSystemQuad:create("big_2.plist")
-               particle2:setPosition(50, 50)
-              m_turnBg:addChild(particle2)
+              --  local particle1 = cc.ParticleSystemQuad:create("big_1.plist")
+              --  particle1:setPosition(50, 150)
+              -- m_turnBg:addChild(particle1)
+              --  local particle2 = cc.ParticleSystemQuad:create("big_2.plist")
+              --  particle2:setPosition(50, 50)
+              -- m_turnBg:addChild(particle2)
 
             -- m_turnBg
 

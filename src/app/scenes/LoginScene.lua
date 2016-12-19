@@ -414,8 +414,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                 local password = self.resetpasswordLayer:getChildByTag(302)
                 local _pass=self.Wpassword_text:getText()
                  print("提交",_pass,"  ",self._mobilephone)
-                
-                 Server:Instance():changepassword(self._mobilephone,_pass,self.y_yanzhengma)
+                 Server:Instance():changepassword(self._mobilephone,_pass,self.y_yanzhengma,1)  --(1  忘记密码)
               elseif tag==291 then
                   self.p_random=Util:rand(  ) --随机验证码\
                      local phone=self.passwordLayer:getChildByTag(293)

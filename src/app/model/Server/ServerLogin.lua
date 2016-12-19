@@ -155,13 +155,15 @@ end
 
 
 --忘记密码
-
-function Server:changepassword(username,new_password,code)
+--  用户名   旧密码   新密码  验证码 类型  (1  验证  2   修改密码 )
+function Server:changepassword(loginname,password,code,type,oldpassword)
     local params = {}
      params={
-            loginname=username,
+            loginname=loginname,
+            oldpassword=crypto.md5(oldpassword),
             code=code,
-            password=crypto.md5(new_password)
+            type=type,
+            password=crypto.md5(password)
         }
         dump(params)
     self:request_http("changepassword" , params); 

@@ -90,6 +90,32 @@ function aboutdetailsLayer:init(  )
             elseif device.platform  ==  "mac"  or    device.platform  ==  "ios" then
                      describe_t:loadTexture("png/guanyu-zi-1.png")
              end
+
+             --  建议
+              local _bt1=self.advice_bg:getChildByTag(203)  --提交建议按钮
+             _bt1:addTouchEventListener((function(sender, eventType  )
+                     self:fun_back(sender, eventType)
+               end))
+             _bt1:setBright(false)
+             self.curr_bright=_bt1--记录当前高亮
+
+              local _bt2=self.advice_bg:getChildByTag(186)  --建议回复按钮
+             _bt2:addTouchEventListener((function(sender, eventType  )
+                     self:fun_back(sender, eventType)
+               end))
+             --合作
+              local _bt3=self.business_bg:getChildByTag(377)  --商务合作按钮
+             _bt3:addTouchEventListener((function(sender, eventType  )
+                     self:fun_callback(sender, eventType)
+               end))
+             _bt3:setBright(false)
+             self.curr_bright1=_bt3--记录当前高亮
+
+              local _bt4=self.business_bg:getChildByTag(268)  --回复按钮
+             _bt4:addTouchEventListener((function(sender, eventType  )
+                     self:fun_callback(sender, eventType)
+               end))
+
              
 
              local back_bt=self.aboutdetails:getChildByTag(1290)  --返回
@@ -98,17 +124,81 @@ function aboutdetailsLayer:init(  )
                end))
              local advice_bt=self.aboutdetails:getChildByTag(1294)  --提交建议
              advice_bt:addTouchEventListener((function(sender, eventType  )
+                     _bt1:setBright(false)
+                     _bt2:setBright(true)
+                     self.curr_bright=_bt1--记录当前高亮
                      self:touch_btCallback(sender, eventType)
                end))
              local business_bt=self.aboutdetails:getChildByTag(1295)  --商务合作
              business_bt:addTouchEventListener((function(sender, eventType  )
+                     _bt3:setBright(false)
+                     _bt4:setBright(true)
+                    self.curr_bright1=_bt3--记录当前高亮
                      self:touch_btCallback(sender, eventType)
                end))
              local qrcode_bt=self.aboutdetails:getChildByTag(1296)  --扫描二维码
              qrcode_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
+             
 
+end
+--  零时加的  
+function aboutdetailsLayer:fun_showtip(bt_obj,_x,_y )
+          if self.showtip_image~=nil then
+            return
+          end
+          self.showtip_image= display.newSprite("png/jingqingqidai-zi.png")
+          self.showtip_image:setScale(0)
+          self.showtip_image:setAnchorPoint(0, 0)
+          self:addChild(self.showtip_image)
+          self.showtip_image:setPosition(_x, _y)
+
+          local function removeThis()
+                if self.showtip_image then
+                   self.showtip_image:removeFromParent()
+                   self.showtip_image=nil
+                end
+          end
+          local actionTo = cc.ScaleTo:create(0.5, 1)
+          self.showtip_image:runAction( cc.Sequence:create(actionTo,cc.DelayTime:create(0.3 ),cc.CallFunc:create(removeThis)))
+end
+
+function aboutdetailsLayer:fun_callback( sender, eventType )
+          if eventType ~= ccui.TouchEventType.ended then
+                return
+            end 
+           local tag=sender:getTag()
+             if self.curr_bright1:getTag()==tag then
+                  return
+              end
+              self.curr_bright1:setBright(true)
+              sender:setBright(false)
+
+           if tag==377 then
+             --todo
+            elseif tag==268 then
+               self:fun_showtip(sender,sender:getPositionX(),sender:getPositionY() )
+           end
+           self.curr_bright1=sender
+end
+function aboutdetailsLayer:fun_back( sender, eventType )
+          if eventType ~= ccui.TouchEventType.ended then
+                return
+            end 
+           local tag=sender:getTag()
+             if self.curr_bright:getTag()==tag then
+                  return
+              end
+              self.curr_bright:setBright(true)
+              sender:setBright(false)
+
+           if tag==203 then
+              print("111")
+           elseif tag==186 then
+             self:fun_showtip(sender,sender:getPositionX(),sender:getPositionY() )
+           end
+           self.curr_bright=sender
 end
 function aboutdetailsLayer:touch_btCallback( sender, eventType )
             if eventType ~= ccui.TouchEventType.ended then
