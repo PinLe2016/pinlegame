@@ -127,18 +127,20 @@ function MainInterfaceScene:fun_init( )
           head:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
-      local checkin_bt= self.MainInterfaceScene:getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
+       self.jia_bg= self.MainInterfaceScene:getChildByTag(2449)
+      self.jia_bg:setScale(0)
+      local checkin_bt= self.jia_bg:getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
           checkin_bt:addTouchEventListener(function(sender, eventType  )
-          self:touch_callback(sender, eventType)
+          self:fun_callbackbt(sender, eventType)
       end)
        local mail_bt= self.MainInterfaceScene:getChildByTag(580)  --邮件按钮
        mail_bt:addTouchEventListener(function(sender, eventType  )
-          self:touch_callback(sender, eventType)
+          self:fun_callbackbt(sender, eventType)
       end)
 
        local task_bt= self.MainInterfaceScene:getChildByTag(581)  --任务按钮
        task_bt:addTouchEventListener(function(sender, eventType  )
-          self:touch_callback(sender, eventType)
+          self:fun_callbackbt(sender, eventType)
       end)
 
       local setup_bt=self.MainInterfaceScene:getChildByTag(48)  --设置
@@ -156,9 +158,9 @@ function MainInterfaceScene:fun_init( )
 
            self:touch_callback(sender, eventType)
       end)
-      local friends_bt=self.MainInterfaceScene:getChildByTag(52)  --邀请好友排行
+      local friends_bt=self.jia_bg:getChildByTag(52)  --邀请好友排行
       friends_bt:addTouchEventListener(function(sender, eventType  )
-           self:touch_callback(sender, eventType)
+           self:fun_callbackbt(sender, eventType)
       end)
       local friend_bt=self.MainInterfaceScene:getChildByTag(288)--self.signanimations:getChildByTag(291)--  邀请好友
       friend_bt:addTouchEventListener(function(sender, eventType  )
@@ -169,7 +171,54 @@ function MainInterfaceScene:fun_init( )
            print("规则额")
            self:touch_callback(sender, eventType)
       end)
-     
+       self.jiatiao_bt=self.MainInterfaceScene:getChildByTag(2450)--
+       self.jiatiao_bt:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                             local actionTo = cc.ScaleTo:create(0.3, 1)
+                             self.jia_bg:runAction(actionTo)
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             local actionTo = cc.ScaleTo:create(0.3, 0)
+                             self.jia_bg:runAction(actionTo)
+                     end
+            end)
+        self.shezhi_bg=self.MainInterfaceScene:getChildByTag(2442)--测试分享
+        self.shezhi_bg:setScale(0)
+        self.shexzhi_box=self.MainInterfaceScene:getChildByTag(2451)--
+       self.shexzhi_box:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                             local actionTo = cc.ScaleTo:create(0.3, 1)
+                             self.shezhi_bg:runAction(actionTo)
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             local actionTo = cc.ScaleTo:create(0.3, 0)
+                             self.shezhi_bg:runAction(actionTo)
+                     end
+            end)
+      local kefu_bt=self.shezhi_bg:getChildByTag(2443)--客服
+       kefu_bt:addTouchEventListener(function(sender, eventType  )
+           
+           self:fun_callbackbt(sender, eventType)
+      end)
+      local women_bt=self.shezhi_bg:getChildByTag(2444)--  我们
+       women_bt:addTouchEventListener(function(sender, eventType  )
+          
+           self:fun_callbackbt(sender, eventType)
+      end)
+      local shengyin_bt=self.shezhi_bg:getChildByTag(2447)--  声音
+       shengyin_bt:addTouchEventListener(function(sender, eventType  )
+           
+           self:fun_callbackbt(sender, eventType)
+      end)
+      local chengzhang_bt=self.jia_bg:getChildByTag(2445)--成长
+       chengzhang_bt:addTouchEventListener(function(sender, eventType  )
+           
+           self:fun_callbackbt(sender, eventType)
+      end)
+      local beibao_bt=self.jia_bg:getChildByTag(2446)-- 背包
+       beibao_bt:addTouchEventListener(function(sender, eventType  )
+           
+           self:fun_callbackbt(sender, eventType)
+      end)
+    
 
 
       self.barrier_bg=self.MainInterfaceScene:getChildByTag(396)
@@ -178,6 +227,53 @@ function MainInterfaceScene:fun_init( )
       self.activitycode_text = self.kuang:getChildByTag(58)
 
 
+end
+function MainInterfaceScene:fun_callbackbt(sender, eventType )
+        if eventType ~= ccui.TouchEventType.ended then
+          sender:setScale(0.8)
+          return
+        end
+        sender:setScale(1)
+        local tag=sender:getTag()
+         if tag==2443 then 
+               local CustomerLayer = require("app.layers.CustomerLayer")  --客服
+               self:addChild(CustomerLayer.new(),1,12)
+         elseif tag==2444 then     
+             local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
+            self:addChild(aboutdetailsLayer.new(),1,12)
+         elseif tag==2447 then
+               self:fun_showtip(self.shezhi_bg,sender,sender:getPositionX(),sender:getPositionY(),0,0 )
+         elseif tag==2445 then
+              self:fun_showtip(self.jia_bg,sender,sender:getPositionX(),sender:getPositionY(),1,0 )
+         elseif tag==2446 then
+              self:fun_showtip(self.jia_bg,sender,sender:getPositionX(),sender:getPositionY(),1,0 )
+         elseif tag==52 then   --邀请好友
+            local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
+            self:addChild(InvitefriendsLayer.new(),1,13)
+         elseif tag==124 then
+             local _table=LocalData:Instance():get_gettasklist()
+             local tasklist=_table["tasklist"]
+             for i=1,#tasklist  do 
+                   if  tonumber(tasklist[i]["targettype"])   ==  0   then
+                        LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+                   end
+                   
+             end
+                   Server:Instance():getcheckinhistory()  --签到http
+         elseif tag==580 then   --邮箱
+            local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
+            self:addChild(mailLayer.new(),1,15)
+         elseif tag==581 then  --任务
+            local taskLayer = require("app.layers.taskLayer")  --关于任务界面
+            self:addChild(taskLayer.new(),1,16)
+          end
+          if tag==2443  or tag==2444  or  tag==124  or  tag==52   or  tag==580  or  tag==581  then
+             self.shezhi_bg:setScale(0)
+             self.jia_bg:setScale(0)
+            self.jiatiao_bt:setSelected(false)
+             self.shexzhi_box:setSelected(false)
+          end
+         
 end
 --用户数据
 function MainInterfaceScene:userdata(  )
@@ -203,7 +299,7 @@ function MainInterfaceScene:userdata(  )
        crown_name:setString(userdt["rankname"])
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
        leve:setString("LV."  ..   userdt["grade"])
-        local diamond=self.MainInterfaceScene:getChildByTag(533)-- 钻石
+        local diamond=self.MainInterfaceScene:getChildByTag(2438)-- 钻石
         if userdt["diamondnum"] then
              diamond:setString(tonumber(userdt["diamondnum"]))
         end
@@ -257,31 +353,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
          self:addChild(RichlistLayer.new(),1,17)
 
 
-	elseif tag==124 then   --  290
-      -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
-      -- self:addChild(self.checkinlayer)
-      -- self.checkinlayer:setVisible(true)
-      --任务记录
-       local _table=LocalData:Instance():get_gettasklist()
-       local tasklist=_table["tasklist"]
-       for i=1,#tasklist  do 
-             if  tonumber(tasklist[i]["targettype"])   ==  0   then
-                  LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
-             end
-             
-       end
-
-	           Server:Instance():getcheckinhistory()  --签到http
+	
       elseif tag==48 then  --设置
             self:funsetup(  )
-      elseif tag==580 then  --邮箱
-            print("邮箱")
-            local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
-            self:addChild(mailLayer.new(),1,15)
-      elseif tag==581 then  --任务
-            print("任务")
-            local taskLayer = require("app.layers.taskLayer")  --关于任务界面
-            self:addChild(taskLayer.new(),1,16)
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
             
@@ -289,24 +363,15 @@ function MainInterfaceScene:touch_callback( sender, eventType )
           
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友  291
-        -- local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
-        --     self:addChild(FriendrequestLayer.new(),1,11)
-
-             local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
-            self:addChild(aboutdetailsLayer.new(),1,12)
-
-
+        local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
+            self:addChild(FriendrequestLayer.new(),1,11)
       elseif tag==54 then  --测试分享
           local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面
             self:addChild(aboutdetailsLayer.new(),1,12)
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
-             --Util:scene_controlid("MallScene",{type="emil"})
-              local CustomerLayer = require("app.layers.CustomerLayer")  --关于拼乐界面  
-             self:addChild(CustomerLayer.new(),1,12)
-
-
+             Util:scene_controlid("MallScene",{type="emil"})
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
                   print("0000000")
@@ -320,9 +385,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==53 then  --设置
             self:funsetup(  )
 
-      elseif tag==52 then  --邀请好友
-        local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
-            self:addChild(InvitefriendsLayer.new(),1,13)
+     
       elseif tag==2122 then  --商城返回
               print("返回")
               if  self.Storebrowser then
@@ -692,14 +755,15 @@ function MainInterfaceScene:listener_home()
     eventDispatch:addEventListenerWithSceneGraphPriority(listener,layer)
 end
 --  零时加的  
-function MainInterfaceScene:fun_showtip(bt_obj,_x,_y )
+function MainInterfaceScene:fun_showtip(_bg,bt_obj,_x,_y ,dx,dy)
           if self.showtip_image~=nil then
             return
           end
           self.showtip_image= display.newSprite("png/jingqingqidai-zi.png")
+          --self.showtip_image:setFlipX(true)
           self.showtip_image:setScale(0)
-          self.showtip_image:setAnchorPoint(0, 0)
-          self:addChild(self.showtip_image)
+          self.showtip_image:setAnchorPoint(dx, dy)
+          _bg:addChild(self.showtip_image)
           self.showtip_image:setPosition(_x, _y)
 
           local function removeThis()
