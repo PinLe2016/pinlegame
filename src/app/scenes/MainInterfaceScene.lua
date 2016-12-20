@@ -190,7 +190,7 @@ function MainInterfaceScene:fun_init( )
         self.shexzhi_box=self.MainInterfaceScene:getChildByTag(2451)--
        self.shexzhi_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
-                            local actionTo = cc.ScaleTo:create(0.32, 0.8)
+                            local actionTo = cc.ScaleTo:create(0.28, 0.8)
                             -- local scale2=cc.ScaleTo:create(0.12, 0.9, 1.1, 1.0)
                             local scale1=cc.ScaleTo:create(0.2, 1.0, 1.0, 1.0)
                             local seq=cc.Sequence:create({actionTo,cc.EaseElasticOut:create(scale1)})
