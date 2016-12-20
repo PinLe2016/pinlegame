@@ -134,9 +134,10 @@ function MainInterfaceScene:fun_init( )
           self:fun_callbackbt(sender, eventType)
       end)
        local mail_bt= self.MainInterfaceScene:getChildByTag(580)  --邮件按钮
-       mail_bt:addTouchEventListener(function(sender, eventType  )
+         mail_bt:addTouchEventListener(function(sender, eventType  )
           self:fun_callbackbt(sender, eventType)
       end)
+       self:button_action_up(mail_bt)--邮件添加动画
 
        local task_bt= self.MainInterfaceScene:getChildByTag(581)  --任务按钮
        task_bt:addTouchEventListener(function(sender, eventType  )
@@ -147,6 +148,9 @@ function MainInterfaceScene:fun_init( )
       setup_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
+
+      
+
       local jia_bt=self.MainInterfaceScene:getChildByTag(49)
       jia_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
@@ -186,11 +190,17 @@ function MainInterfaceScene:fun_init( )
         self.shexzhi_box=self.MainInterfaceScene:getChildByTag(2451)--
        self.shexzhi_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
-                             local actionTo = cc.ScaleTo:create(0.3, 1)
-                             self.shezhi_bg:runAction(actionTo)
+                            local actionTo = cc.ScaleTo:create(0.32, 0.8)
+                            -- local scale2=cc.ScaleTo:create(0.12, 0.9, 1.1, 1.0)
+                            local scale1=cc.ScaleTo:create(0.2, 1.0, 1.0, 1.0)
+                            local seq=cc.Sequence:create({actionTo,cc.EaseElasticOut:create(scale1)})
+
+                             self.shezhi_bg:runAction(seq)
+                             self:button_action_set(self.shexzhi_box)
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              local actionTo = cc.ScaleTo:create(0.3, 0)
                              self.shezhi_bg:runAction(actionTo)
+                             self:button_action_set(self.shexzhi_box)
                      end
             end)
       local kefu_bt=self.shezhi_bg:getChildByTag(2443)--客服
@@ -227,7 +237,47 @@ function MainInterfaceScene:fun_init( )
       self.activitycode_text = self.kuang:getChildByTag(58)
 
 
+      self:button_action_dowm(self.shexzhi_box)--设置添加动画
+      self:button_action_dowm(friend_bt)--邀请添加动画
+      self:button_action_dowm(self.jiatiao_bt)--加号添加动画
+
+      
+      self:button_action_up(task_bt)--任务添加动画
 end
+
+function MainInterfaceScene:button_action_dowm(button)
+      button:removeFromParent()
+      local giction=cc.NodeGrid:create()
+      self.MainInterfaceScene:addChild(giction)
+      button:addTo(giction)
+
+      local  liquid = cc.Liquid:create(2.5, cc.size(10,10), 1, 3.0);  
+      giction:runAction(cc.RepeatForever:create(liquid)); 
+end
+
+
+function MainInterfaceScene:button_action_up(button)
+
+      local scale=cc.ScaleTo:create(0.5, 1.0, 0.9, 1.0)
+      local scale1=cc.ScaleTo:create(0.3, 1.0, 1.1, 1.0)
+
+      local seq=cc.Sequence:create({scale,cc.EaseBackOut:create(scale1),cc.DelayTime:create(0.7)})
+      button:runAction(cc.RepeatForever:create(seq))
+end
+
+function MainInterfaceScene:button_action_set(button)
+
+      local scale=cc.ScaleTo:create(0.2, 0.3, 2.0, 1.0)
+      local scale2=cc.ScaleTo:create(0.12, 0.9, 1.1, 1.0)
+      local scale1=cc.ScaleTo:create(0.2, 1.0, 1.0, 1.0)
+
+      local seq=cc.Sequence:create({scale,cc.EaseElasticOut:create(scale2),cc.EaseElasticOut:create(scale1)})
+      button:runAction(seq)
+end
+
+
+
+
 function MainInterfaceScene:fun_callbackbt(sender, eventType )
         if eventType ~= ccui.TouchEventType.ended then
           sender:setScale(0.8)
