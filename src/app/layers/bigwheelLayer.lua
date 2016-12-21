@@ -109,12 +109,12 @@ function bigwheelLayer:fun_bigrandom( )
 end
 --打地鼠结束界面self.Points
 function bigwheelLayer:function_HitVolesEnd(  )
+             self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+              self:addChild(self.fragment_sprite1,0)
                self.HitVolesEndLayer = cc.CSLoader:createNode("HitVolesEndLayer.csb")
-               self:addChild(self.HitVolesEndLayer)
-                self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-              self.HitVolesEndLayer:addChild(self.fragment_sprite1)
-               self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png")
-                self.fragment_sprite1:getChildByTag(135):setTouchEnabled(false) 
+               self.fragment_sprite1:addChild(self.HitVolesEndLayer)
+               local  hit_bg=self.HitVolesEndLayer:getChildByTag(196)
+               hit_bg:loadTexture("png/GRzhezhaoceng.png")
          
 
 
