@@ -92,7 +92,9 @@ function bigwheelLayer:ctor(params)
          self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
          self:fun_bigrandom()
-      elseif tonumber(math.random(1,1))   ==1   then
+
+      elseif tonumber(math.random(1,5))   ==3   then
+
         self:fun_bigrandom()
       end
       
@@ -141,6 +143,58 @@ function bigwheelLayer:function_HitVolesEnd(  )
 
 
 end
+
+
+function MainInterfaceScene:star_action()
+       local layer=cc.LayerColor:create(cc.c4b(0,0,0,165))  
+               self.HitVolesEndLayer:addChild(layer)
+
+              local point_buf={
+                cc.p(146.50,1000),
+                cc.p(320,1070),
+                cc.p(469.50,1000)
+              }
+
+              local star_buf={}
+
+              for i=1,3 do
+                local spr=display.newSprite("dadishu-wanfajieshao-xinxin.png")
+                spr:setPosition(point_buf[i].x,point_buf[i].y-400)
+                spr:setScale(10)
+                spr:setVisible(false)
+                self.HitVolesEndLayer:addChild(spr)
+                star_buf[i]=spr
+              end
+
+              local dex,time=1,0.4
+
+              local function logSprRotation(sender)
+
+              local particle = cc.ParticleSystemQuad:create("endingStar.plist")
+              -- particle:setDuration(-1)
+              particle:setPosition(point_buf[dex])
+              self:addChild(particle)
+              dex=dex+1
+              if dex>#star_buf then return end
+                local scal =cc.ScaleTo:create(time,1)
+                local move=cc.MoveTo:create(time, point_buf[dex])
+                local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation))
+                star_buf[dex]:setVisible(true)
+                star_buf[dex]:runAction(action) 
+                
+              end
+                
+              
+              local scal =cc.ScaleTo:create(time,1)
+              local move=cc.MoveTo:create(time, point_buf[dex])
+              local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation))
+              -- self.HitVolesEndLayer:addChild(star_buf[dex])
+              star_buf[dex]:setVisible(true)
+              star_buf[dex]:runAction(action)           
+                 
+end
+
+
 -- 拼图结束界面
 function bigwheelLayer:function_puzzle(  )
               self.puzzleEndLayer = cc.CSLoader:createNode("puzzleEndLayer.csb")
