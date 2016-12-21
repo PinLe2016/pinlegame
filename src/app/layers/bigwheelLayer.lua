@@ -93,7 +93,7 @@ function bigwheelLayer:ctor(params)
       elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
          self:fun_bigrandom()
 
-      elseif tonumber(math.random(1,5))   ==3   then
+      elseif tonumber(math.random(1,5))   ==0   then
 
         self:fun_bigrandom()
       end
