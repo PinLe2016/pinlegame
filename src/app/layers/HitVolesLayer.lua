@@ -46,18 +46,21 @@ end)
         local dishuk_table={}
 
         self.scheduler = cc.Director:getInstance():getScheduler()  --  
+
+        local dex=0
+        
         --数值表
         self.color_Mode={
-                {color_type="png/dadishu-02-guodong-5.png",time=3,score=1},     --  +1积分  
-                {color_type="png/dadishu-02-guodong-7.png",time=2,score=4},      --  +4积分  
-                {color_type="png/dadishu-02-guodong-1.png",time=3,score=3},       --  +3积分  
-                {color_type="png/dadishu-02-guodong-8.png",time=1,score=1},         --  +1积分  
-                {color_type="png/dadishu-02-guodong-6.png",time=1.5,score=0},         --   不加分
-                {color_type="png/dadishu-02-guodong-4.png",time=3.5,score=10},          --  +10积分    
+                {color_type="png/dadishu-02-guodong-5.png",time=3-dex,score=1},     --  +1积分  
+                {color_type="png/dadishu-02-guodong-7.png",time=2-dex,score=4},      --  +4积分  
+                {color_type="png/dadishu-02-guodong-1.png",time=3-dex,score=3},       --  +3积分  
+                {color_type="png/dadishu-02-guodong-8.png",time=1-dex,score=1},         --  +1积分  
+                {color_type="png/dadishu-02-guodong-6.png",time=1.5-dex,score=0},         --   不加分
+                {color_type="png/dadishu-02-guodong-4.png",time=0.5-dex,score=10},          --  +10积分    
 
-                {color_type="png/dadishu-02-guodong-3.png",time=3,score=-1},        --  -3  时间  
-                {color_type="png/dadishu-02-guodong-2.png",time=3,score=-2},            --   +3时间 
-                {color_type="png/dadishu-02-guodong-9.png",time=6,score=-3}               --  -6时间   
+                {color_type="png/dadishu-02-guodong-3.png",time=3-dex,score=-1},        --  -3  时间  
+                {color_type="png/dadishu-02-guodong-2.png",time=3-dex,score=-2},            --   +3时间 
+                {color_type="png/dadishu-02-guodong-9.png",time=6-dex,score=-3}               --  -6时间   
         }   
 
      self:fun_init()
