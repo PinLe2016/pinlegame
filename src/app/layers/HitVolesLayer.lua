@@ -31,6 +31,7 @@ end)
         self.LabelAtlasTest = {}  -- 分数
         self.jia_score=0
         self.dishu_adid=params.dishu_adid
+        self.Issecond=params.Issecond
 
         self.layerPlay=nil
 
@@ -47,20 +48,24 @@ end)
 
         self.scheduler = cc.Director:getInstance():getScheduler()  --  
 
-        local dex=0
+        local dex=1
+        print("打地鼠是第几次",self.Issecond)
+        if self.Issecond==1 then
+         dex=2
+        end
         
         --数值表
         self.color_Mode={
-                {color_type="png/dadishu-02-guodong-5.png",time=3-dex,score=1},     --  +1积分  
-                {color_type="png/dadishu-02-guodong-7.png",time=2-dex,score=4},      --  +4积分  
-                {color_type="png/dadishu-02-guodong-1.png",time=3-dex,score=3},       --  +3积分  
-                {color_type="png/dadishu-02-guodong-8.png",time=1-dex,score=1},         --  +1积分  
-                {color_type="png/dadishu-02-guodong-6.png",time=1.5-dex,score=0},         --   不加分
-                {color_type="png/dadishu-02-guodong-4.png",time=0.5-dex,score=10},          --  +10积分    
+                {color_type="png/dadishu-02-guodong-5.png",time=3/dex,score=1},     --  +1积分  
+                {color_type="png/dadishu-02-guodong-7.png",time=2/dex,score=4},      --  +4积分  
+                {color_type="png/dadishu-02-guodong-1.png",time=3/dex,score=3},       --  +3积分  
+                {color_type="png/dadishu-02-guodong-8.png",time=1/dex,score=1},         --  +1积分  
+                {color_type="png/dadishu-02-guodong-6.png",time=1.5/dex,score=0},         --   不加分
+                {color_type="png/dadishu-02-guodong-4.png",time=0.5/dex,score=10},          --  +10积分    
 
-                {color_type="png/dadishu-02-guodong-3.png",time=3-dex,score=-1},        --  -3  时间  
-                {color_type="png/dadishu-02-guodong-2.png",time=3-dex,score=-2},            --   +3时间 
-                {color_type="png/dadishu-02-guodong-9.png",time=6-dex,score=-3}               --  -6时间   
+                {color_type="png/dadishu-02-guodong-3.png",time=3/dex,score=-1},        --  -3  时间  
+                {color_type="png/dadishu-02-guodong-2.png",time=3/dex,score=-2},            --   +3时间 
+                {color_type="png/dadishu-02-guodong-9.png",time=6/dex,score=-3}               --  -6时间   
         }   
 
      self:fun_init()
