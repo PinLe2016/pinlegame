@@ -402,7 +402,7 @@ function GameScene:onEnter()
                                       local  jaclayer_data=list_table["adlist"]
                                       local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
                                      self:addChild(HitVolesLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
-                                  ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,dishu_adid=self.adid}) )  --self.adid
+                                  ,row=3,col=4,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,dishu_adid=self.adid,Issecond=self.Issecond}) )  --self.adid
                               else
                                 self:funinit()
                               end

@@ -92,7 +92,9 @@ function bigwheelLayer:ctor(params)
          self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
          self:fun_bigrandom()
+
       elseif tonumber(math.random(1,5))   ==3   then
+
         self:fun_bigrandom()
       end
       
@@ -442,13 +444,24 @@ function bigwheelLayer:fun_began(  )
         self.CheckBox:setTouchEnabled(false)
 	  local function CallFucnCallback3(sender)
                       self.caideng:setVisible(false)
-                       self.m_turnArr:setEnabled(true);
+                       --self.m_turnArr:setEnabled(true);
                        self._blades:setVisible(false)
                        self._selected:setVisible(true)
-                       self.bigwheelLayer:getChildByTag(130):setVisible(true)
+                       --self.bigwheelLayer:getChildByTag(130):setVisible(true)
                        self._Instead:setVisible(false)
                        self.CheckBox:setTouchEnabled(true)
                        self._prize:setVisible(true)
+                      
+
+                         local function stopAction()
+                                if self.bigwheelLayer then
+                                 self.bigwheelLayer:removeFromParent()
+                               end
+                       end
+                      local callfunc = cc.CallFunc:create(stopAction)
+                     self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+
+     
 
                end
              
