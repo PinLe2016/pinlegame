@@ -1195,15 +1195,15 @@ function PerInformationLayer:fun_city_info( )
             self.province=pinle_location:getProvince()
             self.city=pinle_location:getCity()
             self.conty=pinle_location:getCounty()
-            -- print("111111--------")
+            print("111111--------")
         else
             --手机归属--缺少接口
             local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
             -- 
             dump(phone_location)
-            self.province=" "
-            self.city=" "
-            if phone_location then
+            self.province=".."
+            self.city="."
+            if phone_location["provincename"] then
                 print("手机归属")
                 self.province=phone_location["provincename"]
                 self.city=phone_location["cityname"]
@@ -1212,6 +1212,8 @@ function PerInformationLayer:fun_city_info( )
             
             self.conty="1"
         end
+        -- self.province=".."
+        -- dump(self.province)
 
         -- if self.province ~="1" then
         local city_gps=self.adress:getChildByTag(52):getChildByTag(58)
