@@ -138,8 +138,8 @@ function LocalData:setpuzzletime(time)
 end
 
 function LocalData:getpuzzletime()
-	local _key=cc.UserDefault:getInstance():getStringForKey("time")
-	return _key or -1
+	local _key=cc.UserDefault:getInstance():getStringForKey("time","-1")
+	return _key
 end
 
 
