@@ -111,6 +111,14 @@ end
 function bigwheelLayer:function_HitVolesEnd(  )
                self.HitVolesEndLayer = cc.CSLoader:createNode("HitVolesEndLayer.csb")
                self:addChild(self.HitVolesEndLayer)
+                self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+              self.HitVolesEndLayer:addChild(self.fragment_sprite1)
+               self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png")
+                self.fragment_sprite1:getChildByTag(135):setTouchEnabled(false) 
+         
+
+
+
                local _advertiImg=self.HitVolesEndLayer:getChildByTag(201)  --  上面广告图
                 _advertiImg:loadTexture( self.image_name) 
                _advertiImg:addTouchEventListener(function(sender, eventType  )
@@ -139,15 +147,14 @@ function bigwheelLayer:function_HitVolesEnd(  )
               dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
               dishu_score:setProperty( tostring(self.Points),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.HitVolesEndLayer:addChild(dishu_score) 
-
-
+              self:star_action()
 
 end
 
 
-function MainInterfaceScene:star_action()
-       local layer=cc.LayerColor:create(cc.c4b(0,0,0,165))  
-               self.HitVolesEndLayer:addChild(layer)
+function bigwheelLayer:star_action()
+       -- local layer=cc.LayerColor:create(cc.c4b(0,0,0,165))  
+       --         self.HitVolesEndLayer:addChild(layer)
 
               local point_buf={
                 cc.p(146.50,1000),
