@@ -90,7 +90,7 @@ function bigwheelLayer:ctor(params)
       --   转盘随机数出现
       if tonumber(self.Points) >= 700  then
          --self:fun_bigrandom()
-      elseif tonumber(LocalData:Instance():getpuzzletime())  <   7  then    --  时间小于7秒
+      elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
 
       elseif tonumber(math.random(1,5))   ==3   then   --20%  概率
@@ -340,7 +340,7 @@ function bigwheelLayer:function_bigwheel( )
             self._prizebt:addTouchEventListener(function(sender, eventType  )
                   self:touch_callback(sender, eventType)
             end)
-
+            
              -- local particle = cc.ParticleSystemQuad:create("big_3.plist")
              -- particle:setPosition(100, 100)
              --  m_turnBg:addChild(particle)
@@ -466,7 +466,8 @@ function bigwheelLayer:fun_began(  )
                        --self.bigwheelLayer:getChildByTag(130):setVisible(true)
                        self._Instead:setVisible(false)
                        self.CheckBox:setTouchEnabled(true)
-                       self._prize:setVisible(true)
+                       self._prize:setVisible(false)
+                       self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
                       
 
                          local function stopAction()
@@ -672,7 +673,24 @@ end
                   self.time=1+self.time
            
   end
-
+  -- 具体获得金币数
+function bigwheelLayer:big_end(_istrue,x,y,_obj )
+      local _gold=LocalData:Instance():get_getgoldspoolrandomgolds()
+      self.fragment_sprite_bg = display.newSprite("png/zhuanpan-gongxihuode-jingbi-guang.png")
+      self.fragment_sprite_bg:setPosition(cc.p(x,y))
+      self.fragment_sprite_bg:setVisible(_istrue)
+      _obj:addChild(self.fragment_sprite_bg)
+      local fragment_sprite1 = display.newSprite("png/zhuanpan-gongxihuode-zi.png")
+      self.fragment_sprite_bg:addChild(fragment_sprite1)
+       fragment_sprite1:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height   ))
+      local fragment_sprite2 = display.newSprite("png/zhuanpan-gongxihuode-jingbi.png")
+      self.fragment_sprite_bg:addChild(fragment_sprite2)
+      fragment_sprite2:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2 ))
+       local alert = ccui.Text:create("RichText", "png/chuti.ttf", 30)
+      alert:setString(tostring(_gold["golds"]))  --  获得金币
+      alert:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2*0.4))
+      self.fragment_sprite_bg:addChild(alert)
+end
 
 function bigwheelLayer:onEnter()
    self.x_rand=7

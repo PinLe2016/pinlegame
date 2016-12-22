@@ -169,6 +169,28 @@ function MainInterfaceScene:fun_init( )
            print("规则额")
            self:touch_callback(sender, eventType)
       end)
+      self.sliding_bg=self.MainInterfaceScene:getChildByTag(6222)
+      self.sliding_bg:setScale(0)
+      local kefu_bt=self.sliding_bg:getChildByTag(6223)--客服
+      kefu_bt:addTouchEventListener(function(sender, eventType  )
+           self:fun_backbt(sender, eventType)
+      end)
+      local women_bt=self.sliding_bg:getChildByTag(6224)--我们
+      women_bt:addTouchEventListener(function(sender, eventType  )
+           self:fun_backbt(sender, eventType)
+      end)
+      local newshezhi_bt=self.sliding_bg:getChildByTag(6225)--新的设置声音
+      newshezhi_bt:addTouchEventListener(function(sender, eventType  )
+           self:fun_backbt(sender, eventType)
+      end)
+      self.setup_box=self.MainInterfaceScene:getChildByTag(6227)  --新的设置按钮
+      self.setup_box:addEventListener(function(sender, eventType  )
+                     if eventType == ccui.CheckBoxEventType.selected then
+                            self.sliding_bg:setScale(1)
+                     elseif eventType == ccui.CheckBoxEventType.unselected then
+                             self.sliding_bg:setScale(0)
+                     end
+      end)
      
 
 
@@ -178,6 +200,27 @@ function MainInterfaceScene:fun_init( )
       self.activitycode_text = self.kuang:getChildByTag(58)
 
 
+end
+function MainInterfaceScene:fun_backbt( sender, eventType )
+  if eventType ~= ccui.TouchEventType.ended then
+     sender:setScale(0.8)
+    return
+  end
+  sender:setScale(1)
+  local tag=sender:getTag()
+  if tag==6223 then
+      local CustomerLayer = require("app.layers.CustomerLayer")  --关于拼乐界面  
+      self:addChild(CustomerLayer.new(),1,12)
+  elseif tag==6224 then
+     print("我们")
+     local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
+      self:addChild(aboutdetailsLayer.new(),1,12)
+  elseif tag==6225 then
+     print("声音")
+     self:funsetup(  )
+  end
+  self.sliding_bg:setScale(0)
+  self.setup_box:setSelected(false)
 end
 --用户数据
 function MainInterfaceScene:userdata(  )
@@ -203,7 +246,7 @@ function MainInterfaceScene:userdata(  )
        crown_name:setString(userdt["rankname"])
        local leve=self.MainInterfaceScene:getChildByTag(39)-- 等级
        leve:setString("LV."  ..   userdt["grade"])
-        local diamond=self.MainInterfaceScene:getChildByTag(533)-- 钻石
+        local diamond=self.MainInterfaceScene:getChildByTag(6179)-- 钻石
         if userdt["diamondnum"] then
              diamond:setString(tonumber(userdt["diamondnum"]))
         end
@@ -302,9 +345,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
-             --Util:scene_controlid("MallScene",{type="emil"})
-              local CustomerLayer = require("app.layers.CustomerLayer")  --关于拼乐界面  
-             self:addChild(CustomerLayer.new(),1,12)
+             Util:scene_controlid("MallScene",{type="emil"})
+             
 
 
       elseif tag==49 then  --加
