@@ -89,13 +89,19 @@ function bigwheelLayer:ctor(params)
       end
       --   转盘随机数出现
       if tonumber(self.Points) >= 700  then
-         self:fun_bigrandom()
-      elseif tonumber(LocalData:Instance():getpuzzletime())  >= 7  then
-         self:fun_bigrandom()
+         --self:fun_bigrandom()
+      elseif tonumber(LocalData:Instance():getpuzzletime())  <   7  then    --  时间小于7秒
+           self:fun_bigrandom()
 
-      elseif tonumber(math.random(1,5))   ==0   then
-
+      elseif tonumber(math.random(1,5))   ==3   then   --20%  概率
+           local _table=LocalData:Instance():get_setgamerecord()--保存数据
+           local goldspool=_table["goldspool"]
+            if tonumber(goldspool["coolingtime"]) ==  -1 then   --  
+              return
+            end
+        
         self:fun_bigrandom()
+        
       end
       
 end
@@ -144,6 +150,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
                local labelAtlas=self.HitVolesEndLayer:getChildByTag(255) --分数
                labelAtlas:setVisible(false)
               local  dishu_score = ccui.TextAtlas:create()
+              dishu_score:setAnchorPoint(0,0.5)
               dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
               dishu_score:setProperty( tostring(self.Points),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.HitVolesEndLayer:addChild(dishu_score) 
@@ -251,6 +258,7 @@ function bigwheelLayer:fun_callback( sender, eventType )
                Util:scene_control("GoldprizeScene")
             elseif tag==258 then 
                print("炫耀")
+               self.share=Util:share()
             elseif tag==256 then 
                GameScene = require("app.scenes.GameScene")--惊喜吧
                 local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})--拼图
@@ -260,6 +268,7 @@ function bigwheelLayer:fun_callback( sender, eventType )
                Util:scene_control("GoldprizeScene")
             elseif tag==756 then 
                print("炫耀")
+               self.share=Util:share()
             elseif tag==755 then 
                 local  _Issecond=0
                 local getgoldspoolbyid  = LocalData:Instance():get_getgoldspoolbyid()--获得玩了几次数据

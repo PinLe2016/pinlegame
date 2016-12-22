@@ -25,7 +25,8 @@ function GameScene:ctor(params)
 
     self.floating_layer:addTo(self,-1)
     self._time=5
-
+    LocalData:Instance():setpuzzletime("100")
+    
     self.type=params.type
 
     self.image= params.image

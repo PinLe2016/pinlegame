@@ -17,6 +17,7 @@ function MallScene:ctor(params)
      self.floating_layer:addTo(self,100000)
 
      self:listener_home() --注册安卓返回键
+     audio.pauseMusic()
 
      self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
       self:addChild(self.Storebrowser)
@@ -26,6 +27,7 @@ function MallScene:ctor(params)
         if eventType ~= ccui.TouchEventType.ended then
           return
         end
+           audio.resumeMusic()
           Util:scene_control("MainInterfaceScene")
           self.Storebrowser:getChildByTag(255):loadURL("about:blank")
           self.Storebrowser:getChildByTag(255):reload()
@@ -90,6 +92,7 @@ function MallScene:listener_home()
     self:addChild(layer)
     local function onKeyReleased(keyCode, event)
           if keyCode == cc.KeyCode.KEY_BACK then
+            audio.resumeMusic()
               Util:scene_control("MainInterfaceScene")
               self.Storebrowser:getChildByTag(255):loadURL("about:blank")
               self.Storebrowser:getChildByTag(255):reload()

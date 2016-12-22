@@ -273,13 +273,13 @@ local function go_btCallback(sender, eventType)
                 return
             end
             self._gobt:setTouchEnabled(false)
-           Server:Instance():login(self.Dphone_text:getText(),self.Dpassword_text :getText())
            local function stopAction()
                           self._gobt:setTouchEnabled(true)
 
              end
               local callfunc = cc.CallFunc:create(stopAction)
-             self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+             sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+             Server:Instance():login(self.Dphone_text:getText(),self.Dpassword_text :getText())
 
 
         end   
