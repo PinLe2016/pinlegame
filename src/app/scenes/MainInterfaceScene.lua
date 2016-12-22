@@ -42,7 +42,7 @@ function MainInterfaceScene:ctor()
           _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
         end
         LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
-
+       Server:Instance():getconfig()  --  获取后台音效
 
       self:listener_home() --注册安卓返回键
       Server:Instance():gettasklist()   --  初始化任务
@@ -186,9 +186,14 @@ function MainInterfaceScene:fun_init( )
       self.setup_box=self.MainInterfaceScene:getChildByTag(6227)  --新的设置按钮
       self.setup_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
-                            self.sliding_bg:setScale(1)
+                            --self.sliding_bg:setScale(1)
+                            local actionTo = cc.ScaleTo:create(0.2, 1)
+                           self.sliding_bg:runAction(actionTo)
+
                      elseif eventType == ccui.CheckBoxEventType.unselected then
-                             self.sliding_bg:setScale(0)
+                             --self.sliding_bg:setScale(0)
+                             local actionTo = cc.ScaleTo:create(0.2, 0)
+                             self.sliding_bg:runAction(actionTo)
                      end
       end)
      
@@ -218,6 +223,8 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
   elseif tag==6225 then
      print("声音")
      self:funsetup(  )
+     
+     
   end
   self.sliding_bg:setScale(0)
   self.setup_box:setSelected(false)
@@ -433,31 +440,58 @@ function MainInterfaceScene:funsetup(  )
       end)
 
         local music_bt=self.set_bg1:getChildByTag(93)  -- 音乐
+        local sound_bt=self.set_bg1:getChildByTag(92)  -- 音效
+
+        local getconfig=LocalData:Instance():get_getconfig()
+        local _list = getconfig["list"]
+        local _list1=_list[1]["sataus"]
+        local _list2=_list[2]["sataus"]
+        if tonumber(_list1) == 0 then  --o 开  1  关闭
+           music_bt:setSelected(true)
+           audio.resumeMusic()
+        else
+           music_bt:setSelected(false)
+           audio.pauseMusic()
+        end
+         if tonumber(_list1) == 0 then  --o 开  1  关闭
+           sound_bt:setSelected(true)
+           audio.resumeMusic()
+        else
+           sound_bt:setSelected(false)
+           audio.pauseMusic()
+        end
+       
+
+
         music_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
                             LocalData:Instance():set_music(true)
-                            --audio.resumeMusic()
+                            audio.resumeMusic()
                             Util:player_music("ACTIVITY",true )
+                             Server:Instance():setconfig(_list[1]["itemsId"],0)  --  获取后台音效
                             
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              print("关闭")
                              LocalData:Instance():set_music(false)
-                             --audio.pauseMusic()
+                             audio.pauseMusic()
                              Util:stop_music("ACTIVITY")
+                             Server:Instance():setconfig(_list[1]["itemsId"],1)  --  获取后台音效
                      end
         end)
-        local sound_bt=self.set_bg1:getChildByTag(92)  -- 音效
+       
         sound_bt:addEventListener(function(sender, eventType  )
                  if eventType == ccui.CheckBoxEventType.selected then
                         print("开启")
-                         LocalData:Instance():set_music(true)
-                        audio.resumeAllSounds()--恢复所有音效
-                       --Util:player_music("ACTIVITY",true )
+                         --LocalData:Instance():set_music(true)
+                        --audio.resumeAllSounds()--恢复所有音效
+                        Server:Instance():setconfig(_list[1]["itemsId"],0)  --  获取后台音效
+                       Util:player_music("ACTIVITY",true )
                  elseif eventType == ccui.CheckBoxEventType.unselected then
-                        LocalData:Instance():set_music(false)
-                        audio.pauseAllSounds()  --关闭所有音效
-                         --Util:stop_music("ACTIVITY")
+                        --LocalData:Instance():set_music(false)
+                        --audio.pauseAllSounds()  --关闭所有音效
+                        Server:Instance():setconfig(_list[1]["itemsId"],1)  --  获取后台音效
+                         Util:stop_music("ACTIVITY")
                  end
          end)
 

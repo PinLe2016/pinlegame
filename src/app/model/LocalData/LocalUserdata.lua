@@ -141,6 +141,22 @@ function LocalData:getpuzzletime()
 	local _key=cc.UserDefault:getInstance():getStringForKey("time","100")
 	return _key
 end
+--  获取音效
+function LocalData:set_getconfig(getconfig)
+	self.getconfig=getconfig
+end
+
+function LocalData:get_getconfig()
+	return self.getconfig or nil
+end
+-- 设置音效
+function LocalData:set_setconfig(setconfig)
+	self.setconfig=setconfig
+end
+
+function LocalData:get_setconfig()
+	return self.setconfig or nil
+end
 
 
 

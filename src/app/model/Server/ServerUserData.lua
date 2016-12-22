@@ -262,6 +262,43 @@ function Server:getgoldsranklist_callback()
     LocalData:Instance():set_getgoldsranklist(self.data)--保存玩家数据  AFFICHLIST
     NotificationCenter:Instance():PostNotification("RICHLIST")
 end
+--  获取音效  0开启  1关闭   （默认开启
+function Server:getconfig()
+      local params = {
+                 
+            }
+
+    self:request_http("getconfig" , params); 
+end
+
+function Server:getconfig_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_getconfig(self.data)--
+end
+--设置音效  0开启  1关闭
+function Server:setconfig(itemsId ,status)
+      local list={
+                  {status=status,itemsId=itemsId}
+               }
+      local params = {
+            list=list
+                
+            }
+
+    self:request_http("setconfig" , params); 
+end
+function Server:setconfig_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_setconfig(self.data)--
+end
 
 
 
