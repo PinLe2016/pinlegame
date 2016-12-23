@@ -1,4 +1,10 @@
 Server = {}
+
+
+--传输加密Key
+MD5_KEY="PINLEGAME@4007007"
+
+
 function Server:new(o)  
     o = o or {}  
     setmetatable(o,self)  
@@ -116,37 +122,31 @@ end
 function Server:request_http(command , params)
 
     --判断网络
-    if not self:NetworkStatus() then
-        return
-    end
+        if not self:NetworkStatus() then
+            return
+        end
 
-   if command~="getactivitylist" then
-    self:show_http_buffer(true)-- 传输动画
-   end
-   local time=os.time()
-    local parsms_md5={methodtype="json",createtime=time,functionname=command,functionparams=params}
-    local post_md5=json.encode(parsms_md5)
-    local post_=MD5_KEY..post_md5..MD5_KEY
-    if command=="reg" then
-        local md5_key_new=MD5_KEY..string.sub(tostring(time),1,string.len(tostring(time))-2)
-        post_=md5_key_new..post_md5..md5_key_new
-    end
-    local _key="PINLEGAME"
-    local login_info=LocalData:Instance():get_user_data()
-    local md5=crypto.md5(post_)
-    -- dump(md5)
-    if login_info and command~="login" and command~="sendmessage" and command~="changepassword" and command~="reg" and command~="getversion" then
+        if command~="getactivitylist" then
+        self:show_http_buffer(true)-- 传输动画
+        end
 
-        _key=login_info["loginname"]
-        md5=_key..login_info["loginkey"]
-        md5=crypto.md5(tostring(md5))
+        local time=os.time()
+        local parsms_md5={methodtype="json",createtime=time,functionname=command,functionparams=params}
+        local post_md5=json.encode(parsms_md5)
 
-    end
-    -- if self.login_url=="" then
-    --     -- self.login_url="http://123.57.136.223:3000/Default.aspx?"
-    --     self.login_url="http://playios.pinlegame.com/Default.aspx?"
-    --         print("版本链接")
-    -- end
+        local login_info=LocalData:Instance():get_user_data()
+
+        local _key=login_info["loginname"]
+        md5=crypto.md5(_key..login_info["loginkey"]..MD5_KEY)
+
+        if command=="reg" or command=="login" or command=="changepassword" or command=="getversion" or command=="sendmessage"then
+            md5=crypto.md5(MD5_KEY..MD5_KEY..post_md5)
+            -- local ee=json.encode({functionparams={deviceid="85bd6605a23c0173c7f248753da63337"}})
+            -- md5=crypto.md5(MD5_KEY..MD5_KEY..ee)
+            dump(md5)
+            _key=crypto.md5(MD5_KEY..os.time())
+        end
+  
     -- dump(self.login_url)
     local login_url=self.login_url.."type=json".."&key=".._key.. "&md5="..md5.."&createtime="..time
     print("---url---",login_url,post_md5)
@@ -184,7 +184,8 @@ function Server:on_request_finished_http(event , command)
     local response = request:getResponseData()
    
     self.jsondata = json.decode(response)
-    -- dump(self.jsondata)
+    dump(self.jsondata)
+    dump(command)
     if self.jsondata == nil then
         self:show_float_message("服务器返回信息格式错误，无法解析",response)
         return
