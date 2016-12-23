@@ -96,7 +96,7 @@ function bigwheelLayer:ctor(params)
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
 
-      elseif _rd   ==3  or  _rd   ==2  or  _rd   ==4 or  _rd~=0 then   --60%  概率
+      elseif _rd   ==3  or  _rd   ==2  or  _rd   ==4  then   --60%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1 then   --  
@@ -212,7 +212,7 @@ function bigwheelLayer:star_action()
                 spr:setPosition(point_buf[i].x,point_buf[i].y-400)
                 spr:setScale(10)
                 spr:setVisible(false)
-                self.HitVolesEndLayer:addChild(spr)
+                self:addChild(spr)
                 star_buf[i]=spr
                 if i==1 then
                   spr:setRotation(45)
@@ -283,6 +283,7 @@ function bigwheelLayer:function_puzzle(  )
              secondcount:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
              end)
+             self:star_action()
 
 end
 --  结束界面返回按钮

@@ -96,13 +96,13 @@ function DetailsLayer:init(  )
 	local integral_text1=details:getChildByTag(1187)--  金币数
 	integral_text1:setString("/" ..  activitybyid["betgolds"] )  
 
-	local integral_text2=details:getChildByTag(1188)  --   剩余次数
+	local integral_text2=details:getChildByTag(1188)  --   剩余次数 attemptcount
 
 
 	if tonumber(activitybyid["remaintimes"]) < 0 then
 		integral_text2:setString("/")
 	else
-		integral_text2:setString(activitybyid["remaintimes"]    ..   "/?")
+		integral_text2:setString(activitybyid["remaintimes"]    ..   "/" ..  activitybyid["attemptcount"])
 	end
 	
 
