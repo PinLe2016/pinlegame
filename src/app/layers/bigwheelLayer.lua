@@ -259,7 +259,7 @@ function bigwheelLayer:fun_callback( sender, eventType )
                Util:scene_control("GoldprizeScene")
             elseif tag==258 then 
                print("炫耀")
-               self.share=Util:share()
+               self.share=Util:share(1)
             elseif tag==256 then 
                GameScene = require("app.scenes.GameScene")--惊喜吧
                 local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})--拼图
@@ -269,7 +269,7 @@ function bigwheelLayer:fun_callback( sender, eventType )
                Util:scene_control("GoldprizeScene")
             elseif tag==756 then 
                print("炫耀")
-               self.share=Util:share()
+               self.share=Util:share(1)
             elseif tag==755 then 
                 local  _Issecond=0
                 local getgoldspoolbyid  = LocalData:Instance():get_getgoldspoolbyid()--获得玩了几次数据

@@ -267,15 +267,18 @@ function Util:captureScreen()
 end
 
 --分享功能
-function Util:share()
-  -- Util:captureScreen()
-
+function Util:share(type)
+ 
   -- local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
   local file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
 
   if device.platform=="ios" then
       file="res/screenshoot.jpg"
   end
+
+   if type then
+      file=Util:captureScreen()
+    end
 
    local login_info=LocalData:Instance():get_user_data()
    

@@ -61,7 +61,7 @@ end)
                 {color_type="png/dadishu-02-guodong-1.png",time=3/dex,score=3},       --  +3积分  
                 {color_type="png/dadishu-02-guodong-8.png",time=1/dex,score=1},         --  +1积分  
                 {color_type="png/dadishu-02-guodong-6.png",time=1.5/dex,score=0},         --   不加分
-                {color_type="png/dadishu-02-guodong-4.png",time=0.5/dex,score=10},          --  +10积分    
+                {color_type="png/dadishu-02-guodong-4.png",time=1.2/dex,score=10},          --  +10积分    
 
                 {color_type="png/dadishu-02-guodong-3.png",time=3/dex,score=-1},        --  -3  时间  
                 {color_type="png/dadishu-02-guodong-2.png",time=3/dex,score=-2},            --   +3时间 
