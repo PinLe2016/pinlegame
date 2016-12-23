@@ -134,17 +134,20 @@ function Server:request_http(command , params)
         local parsms_md5={methodtype="json",createtime=time,functionname=command,functionparams=params}
         local post_md5=json.encode(parsms_md5)
 
-        local login_info=LocalData:Instance():get_user_data()
-
-        local _key=login_info["loginname"]
-        md5=crypto.md5(_key..login_info["loginkey"]..MD5_KEY)
-
+        
+        local _key
+        local md5
         if command=="reg" or command=="login" or command=="changepassword" or command=="getversion" or command=="sendmessage"then
             md5=crypto.md5(MD5_KEY..MD5_KEY..post_md5)
             -- local ee=json.encode({functionparams={deviceid="85bd6605a23c0173c7f248753da63337"}})
             -- md5=crypto.md5(MD5_KEY..MD5_KEY..ee)
             dump(md5)
             _key=crypto.md5(MD5_KEY..os.time())
+        else
+            local login_info=LocalData:Instance():get_user_data()
+
+            _key=login_info["loginname"]
+            md5=crypto.md5(_key..login_info["loginkey"]..MD5_KEY)
         end
   
     -- dump(self.login_url)
@@ -184,8 +187,8 @@ function Server:on_request_finished_http(event , command)
     local response = request:getResponseData()
    
     self.jsondata = json.decode(response)
-    dump(self.jsondata)
-    dump(command)
+    -- dump(self.jsondata)
+    -- dump(command)
     if self.jsondata == nil then
         self:show_float_message("服务器返回信息格式错误，无法解析",response)
         return
