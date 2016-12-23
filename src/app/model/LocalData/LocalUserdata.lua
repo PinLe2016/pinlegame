@@ -120,8 +120,8 @@ function LocalData:setPoints(Points)
 end
 
 function LocalData:getPoints()
-	local _key=cc.UserDefault:getInstance():getStringForKey("Points")
-	return _key or nil
+	local _key=cc.UserDefault:getInstance():getStringForKey("Points",0)
+	return _key 
 end
 --  拼图步数
 function LocalData:setTheycount(count)

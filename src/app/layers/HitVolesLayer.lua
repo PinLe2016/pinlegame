@@ -316,7 +316,7 @@ function HitVolesLayer:fun_loadingbar(  )
 
 end
 function HitVolesLayer:server_data(  )
-     Server:Instance():setgamerecord(self.adid)    --  打完地鼠上传的数据
+     Server:Instance():setgamerecord(self.adid,self.m_time)    --  打完地鼠上传的数据
      LocalData:Instance():setPoints(self.m_time)
      --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
      
