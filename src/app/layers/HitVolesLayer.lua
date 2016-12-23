@@ -14,8 +14,8 @@ end)
                   {target=nil,_randdate=nil}
           }
          
-        self.countdown_time =1    --  设置倒计时
-        self.dishu_time=1
+        self.countdown_time =34    --  设置倒计时
+        self.dishu_time=34
         self:setNodeEventEnabled(true)--layer添加监听
 
         self.filename=params.filename
@@ -538,6 +538,7 @@ end
 --增加幸运卡
 function HitVolesLayer:add_reward( )
         self.Rewardvouchers = cc.CSLoader:createNode("Rewardvouchers.csb")
+         self.Rewardvouchers :setVisible(false)
         self:addChild(self.Rewardvouchers,10000)
         local jique=self.Rewardvouchers:getChildByTag(421)
         local jinyan=self.Rewardvouchers:getChildByTag(102)

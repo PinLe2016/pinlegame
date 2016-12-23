@@ -302,6 +302,8 @@ end
 --增加幸运卡
 function debrisLayer:add_reward( )
         self.Rewardvouchers = cc.CSLoader:createNode("Rewardvouchers.csb")
+        self.Rewardvouchers:setPosition(cc.p(-150000,10))
+        self.Rewardvouchers:setVisible(false)
         self:addChild(self.Rewardvouchers,10000)
         local jique=self.Rewardvouchers:getChildByTag(421)
         local jinyan=self.Rewardvouchers:getChildByTag(102)

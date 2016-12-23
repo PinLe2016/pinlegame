@@ -134,12 +134,22 @@ function PerInformationLayer:add_init(  )
 
                 local Modify_bt=self.showinformation:getChildByTag(1410)  --修改
                 Modify_bt:addTouchEventListener(function(sender, eventType  )
-                      self:touch_back(sender, eventType)
+                      if eventType ~= ccui.TouchEventType.ended then
+                            sender:setScale(0.8)
+                            return
+                        end
+                     sender:setScale(1)
+                     self:init()
                  end)
 
                  local mail_bt=self.showinformation:getChildByTag(190)  --填写邮件信息
                 mail_bt:addTouchEventListener(function(sender, eventType  )
-                      self:touch_back(sender, eventType)
+                       if eventType ~= ccui.TouchEventType.ended then
+                            sender:setScale(0.8)
+                            return
+                        end
+                     sender:setScale(1)
+                     Server:Instance():getconsignee({functionparams=""})
                  end)
 
 

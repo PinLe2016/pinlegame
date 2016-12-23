@@ -88,11 +88,13 @@ function bigwheelLayer:ctor(params)
         self:function_HitVolesEnd()
       end
       --   转盘随机数出现
-      if tonumber(self.Points) >= 700  then
+      local  _rd=tonumber(math.random(1,5))
+      if tonumber(self.Points) > 250  then
          self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
-      elseif tonumber(math.random(1,5))   ==3   then   --20%  概率
+
+      elseif _rd   ==3  or  _rd   ==2  or  _rd   ==4 then   --60%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1 then   --  
