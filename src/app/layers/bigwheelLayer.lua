@@ -162,39 +162,69 @@ end
 function bigwheelLayer:star_action()
        -- local layer=cc.LayerColor:create(cc.c4b(0,0,0,165))  
        --         self.HitVolesEndLayer:addChild(layer)
-
+      -- 0-150一星
+      -- 150-250二星
+      -- 250以上三星
+      -- 打地鼠时间
+      -- 12秒以上一星
+      -- 7秒－12秒二星
+      -- 7秒以内三星
+       local  xingnumber=0
+       if self.choose==1 then
+            if tonumber(LocalData:Instance():getpuzzletime()) >= 12  then
+              xingnumber=1
+            elseif tonumber(LocalData:Instance():getpuzzletime()) >= 0  and  tonumber(LocalData:Instance():getpuzzletime())<7 then
+              xingnumber=3
+            elseif tonumber(LocalData:Instance():getpuzzletime()) >= 7  and  tonumber(LocalData:Instance():getpuzzletime())<12 then
+              xingnumber=2
+             end       
+      else
+         if tonumber(self.Points) > 250  then
+          xingnumber=3
+        elseif tonumber(self.Points) >= 0  and  tonumber(self.Points)<=150 then
+          xingnumber=1
+        elseif tonumber(self.Points) > 150  and  tonumber(self.Points)<=250 then
+          xingnumber=2
+         end
+      end
               local point_buf={
-                cc.p(146.50,1000),
-                cc.p(320,1070),
-                cc.p(469.50,1000)
+                cc.p(186.50,1000),
+                cc.p(320,1050),
+                cc.p(459.50,1000)
               }
 
               local star_buf={}
-
-              for i=1,3 do
+            
+              for i=1,xingnumber do
                 local spr=display.newSprite("dadishu-wanfajieshao-xinxin.png")
                 spr:setPosition(point_buf[i].x,point_buf[i].y-400)
                 spr:setScale(10)
                 spr:setVisible(false)
                 self.HitVolesEndLayer:addChild(spr)
                 star_buf[i]=spr
+                if i==1 then
+                  spr:setRotation(45)
+                elseif i==3 then
+                  spr:setRotation(-45)
+                end
+                
               end
 
               local dex,time=1,0.4
 
               local function logSprRotation(sender)
 
-              local particle = cc.ParticleSystemQuad:create("endingStar.plist")
-              -- particle:setDuration(-1)
-              particle:setPosition(point_buf[dex])
-              self:addChild(particle)
-              dex=dex+1
-              if dex>#star_buf then return end
-                local scal =cc.ScaleTo:create(time,1)
-                local move=cc.MoveTo:create(time, point_buf[dex])
-                local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation))
-                star_buf[dex]:setVisible(true)
-                star_buf[dex]:runAction(action) 
+                    local particle = cc.ParticleSystemQuad:create("endingStar.plist")
+                    -- particle:setDuration(-1)
+                    particle:setPosition(point_buf[dex])
+                    self:addChild(particle)
+                    dex=dex+1
+                    if dex>#star_buf then return end
+                      local scal =cc.ScaleTo:create(time,1)
+                      local move=cc.MoveTo:create(time, point_buf[dex])
+                      local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation))
+                      star_buf[dex]:setVisible(true)
+                      star_buf[dex]:runAction(action) 
                 
               end
                 
