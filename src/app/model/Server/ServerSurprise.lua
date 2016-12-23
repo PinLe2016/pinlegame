@@ -301,7 +301,7 @@ end
 --type 0,表示奖池类型和惊喜吧类型，1 专题活动类型
 --adid    广告编号    String  Guid
 --imageid   是   比赛使用的图片编号   String  Guidsetgamerecordsetgamerecord
-function Server:setgamerecord(adid)
+function Server:setgamerecord(adid,points)
     -- MD5_KEY="PINLEGAMERECORD"
     local settingid="FE9ABC0E-CEE5-4F11-9BC3-16E0EE4A342C"
     -- if tonumber(type)==1 then
@@ -315,7 +315,8 @@ function Server:setgamerecord(adid)
             starttime=os.time(),
             finishtime=os.time(),
             steps="steps1",
-            time="54"
+            time="54",
+            points=points
 
         }
     self:request_http("setgamerecord" , params ); 
@@ -324,7 +325,7 @@ end
 
 function Server:setgamerecord_callback()
     -- MD5_KEY="PINLEGAME"
-    --dump(self.data)
+    dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("拼图上传数据失败:" .. self.data.err_msg)
         return

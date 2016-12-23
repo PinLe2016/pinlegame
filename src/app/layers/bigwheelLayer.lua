@@ -92,7 +92,7 @@ function bigwheelLayer:ctor(params)
          self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
-      elseif tonumber(math.random(1,1))   ==1   then   --20%  概率
+      elseif tonumber(math.random(1,5))   ==3   then   --20%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1 then   --  
@@ -147,6 +147,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
                secondcount:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
                end)
+
                local labelAtlas=self.HitVolesEndLayer:getChildByTag(255) --分数
                labelAtlas:setVisible(false)
               local  dishu_score = ccui.TextAtlas:create()
@@ -154,6 +155,10 @@ function bigwheelLayer:function_HitVolesEnd(  )
               dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
               dishu_score:setProperty( tostring(self.Points),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.HitVolesEndLayer:addChild(dishu_score) 
+              local _gamerecord=LocalData:Instance():get_setgamerecord()--保存数据
+              local goldspool=_gamerecord["goldspool"]
+              local ranking=self.HitVolesEndLayer:getChildByTag(272)  --  %数
+              ranking:setString(goldspool["myscore"])
               self:star_action()
 
 end

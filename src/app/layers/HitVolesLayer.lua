@@ -14,8 +14,8 @@ end)
                   {target=nil,_randdate=nil}
           }
          
-        self.countdown_time =1    --  设置倒计时
-        self.dishu_time=1
+        self.countdown_time =44    --  设置倒计时
+        self.dishu_time=44
         self:setNodeEventEnabled(true)--layer添加监听
 
         self.filename=params.filename
@@ -617,8 +617,8 @@ end
 
 --  倒计时动画
 function HitVolesLayer:fun_countdown_time(  )
-      local node = cc.CSLoader:createNode("hitcountdown.csb")
-      local action = cc.CSLoader:createTimeline("hitcountdown.csb")
+      local node = cc.CSLoader:createNode("battlestart.csb")
+      local action = cc.CSLoader:createTimeline("battlestart.csb")
       action:setTimeSpeed(0.25)
       node:runAction(action)
       action:gotoFrameAndPlay(0,80,false)
