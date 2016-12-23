@@ -243,7 +243,7 @@ function debrisLayer:saw_issuccess()
         end
     end
     print("成功")  --self.adid
-                  self:fun_endanimation()
+                 -- self:fun_endanimation()
                    cc.Director:getInstance():getScheduler():unscheduleScriptEntry(schedulHandledeb)
                      LocalData:Instance():setTheycount(self.theycount)
                  local _originalimage = cc.CSLoader:createNode("originalimage.csb")
@@ -259,7 +259,6 @@ function debrisLayer:saw_issuccess()
                                         Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                                          return
                             end
-                            print("jdfjskdjf  ",self.theycount)
                           Server:Instance():setgamerecord(self.adid)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
