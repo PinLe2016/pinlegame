@@ -89,11 +89,10 @@ function bigwheelLayer:ctor(params)
       end
       --   转盘随机数出现
       if tonumber(self.Points) >= 700  then
-         --self:fun_bigrandom()
+         self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
-
-      elseif tonumber(math.random(1,5))   ==3   then   --20%  概率
+      elseif tonumber(math.random(1,5))   ==2   then   --20%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1 then   --  
@@ -135,6 +134,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
                           sender:setScale(1.4)
                      self:fun_storebrowser()
                end)
+                self:function_httpgold( self.HitVolesEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
                local back=self.HitVolesEndLayer:getChildByTag(776)  --  返回
                back:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
@@ -228,6 +228,7 @@ function bigwheelLayer:function_puzzle(  )
                           sender:setScale(1.3)
                           self:fun_storebrowser()
              end)
+              self:function_httpgold( self.puzzleEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
             local back=self.puzzleEndLayer:getChildByTag(305)  --  返回
              back:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
@@ -604,7 +605,8 @@ end
 
 --  网页链接
 function bigwheelLayer:fun_storebrowser(  )
-      if tostring(self.addetailurl)   ==   tostring(1)   then
+  print("网页链接",self.addetailurl)
+      if tostring(self.addetailurl)   ==   tostring(1)   or  tostring(self.addetailurl) == ""  then
          return
       end
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
@@ -690,6 +692,48 @@ function bigwheelLayer:big_end(_istrue,x,y,_obj )
       alert:setString(tostring(_gold["golds"]))  --  获得金币
       alert:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2*0.4))
       self.fragment_sprite_bg:addChild(alert)
+end
+--网页链接获得金币
+function bigwheelLayer:function_httpgold( _obj,x,y )
+      local textButton = ccui.Button:create()
+      self.connection13=textButton
+      textButton:setTouchEnabled(true)--
+      textButton:loadTextures("png/shunliwancheng_13.png", "png/shunliwancheng_13.png", "")
+      textButton:setPosition(cc.p(x,y))
+      textButton:addTouchEventListener(function(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(0.8)
+                    elseif eventType == ccui.TouchEventType.ended then
+                      sender:setScale(1)
+                      self:fun_storebrowser()
+                    end
+            end)
+      _obj:addChild(textButton)
+      local jinbi_image = display.newSprite("png/Gjinbi.png")
+      jinbi_image:setScale(0.6)
+     jinbi_image:setPosition(cc.p(textButton:getContentSize().width/4, textButton:getContentSize().height /2*1.1  ))
+     textButton:addChild(jinbi_image)
+       local alert = ccui.Text:create("RichText", "png/chuti.ttf", 30)
+       alert:setAnchorPoint(0,0.5)
+      alert:setString("+20")  --  获得金币
+      alert:setPosition(cc.p(textButton:getContentSize().width*0.45, textButton:getContentSize().height/2*1.1))
+      textButton:addChild(alert)
+
+        local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+        local  jaclayer_data=list_table["adlist"] 
+         if jaclayer_data[1]["adurlgold"] then
+            alert:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
+       else
+          textButton:setVisible(false)
+          alert:setString("+0")
+        end
+           if tostring(self.addetailurl)   ==   tostring(1) then
+              textButton:setVisible(false)
+           end
+
+
+
+
 end
 
 function bigwheelLayer:onEnter()

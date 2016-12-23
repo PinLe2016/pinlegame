@@ -137,6 +137,8 @@ function DetailsLayer:init(  )
 	list_bt:addTouchEventListener(function(sender, eventType  )
 		self:list_btCallback(sender, eventType)
 	end)
+	local guize_text=details:getChildByTag(867):getChildByTag(868)--活动规则
+	guize_text:setString(activitybyid["awardsummary"])
 
 
 end

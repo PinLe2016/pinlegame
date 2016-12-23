@@ -20,10 +20,6 @@ function MainInterfaceScene:extend12()
          --self:addChild(bigwheelLayer.new())
          display.replaceScene(bigwheelLayer:new())
           -- cc.Director:getInstance():pushScene(bigwheelLayer.new({})) 
-
-   
-
-
 end
  
 function MainInterfaceScene:ctor()
@@ -51,7 +47,6 @@ function MainInterfaceScene:ctor()
       self:fun_init()
       Server:Instance():getaffichelist(1)
 end
-
 
 --惊喜吧弹球页面home 键退出处理
 function MainInterfaceScene:Physics_homeback_ref( )
