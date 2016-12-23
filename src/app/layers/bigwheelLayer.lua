@@ -492,44 +492,70 @@ function bigwheelLayer:init(  )
       --      end
 
 end
-function bigwheelLayer:fun_began(  )
-        
+
+
+function bigwheelLayer:fun_began_start(  )
+
         self.caideng:setVisible(true)
         self.CheckBox:setTouchEnabled(false)
-	  local function CallFucnCallback3(sender)
-                      self.caideng:setVisible(false)
-                       --self.m_turnArr:setEnabled(true);
-                       self._blades:setVisible(false)
-                       self._selected:setVisible(true)
-                       --self.bigwheelLayer:getChildByTag(130):setVisible(true)
-                       self._Instead:setVisible(false)
-                       self.CheckBox:setTouchEnabled(true)
-                       self._prize:setVisible(false)
-                       self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
-                      
+        self._blades:setVisible(true)
+        self._selected:setVisible(false)
+        self._Instead:setVisible(false)  --测试
+        self.m_turnArr:setEnabled(false);
 
-                         local function stopAction()
-                                if self.bigwheelLayer then
-                                 self.bigwheelLayer:removeFromParent()
-                               end
+
+        local function CallFucnCallback3(sender)
+                if self.x_rand~=0 then
+                  m_turnBg:stopAllActions()
+                  self:fun_began()
+                end
+
+        end
+
+        local  pAction1 =cc.RotateBy:create(0.3,360)
+        m_turnBg:runAction(cc.RepeatForever:create(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3))))
+
+end
+function bigwheelLayer:fun_began(  )
+        
+      
+        local function CallFucnCallback3(sender)
+              self.caideng:setVisible(false)
+               --self.m_turnArr:setEnabled(true);
+               self._blades:setVisible(false)
+               self._selected:setVisible(true)
+               --self.bigwheelLayer:getChildByTag(130):setVisible(true)
+               self._Instead:setVisible(false)
+               self.CheckBox:setTouchEnabled(true)
+               self._prize:setVisible(false)
+               self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
+              
+
+                 local function stopAction()
+                        if self.bigwheelLayer then
+                         self.bigwheelLayer:removeFromParent()
                        end
-                      local callfunc = cc.CallFunc:create(stopAction)
-                     self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
-
-     
-
                end
-             
-               self._blades:setVisible(true)
-               self._selected:setVisible(false)
-               self._Instead:setVisible(false)  --测试
-                --m_turnBg:setVisible(false)  --测试
-	 -- self.x_rand=math.random(1,self.gridNumer)  --测试
-	    
+              local callfunc = cc.CallFunc:create(stopAction)
+             self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+
+
+
+        end
+        self.caideng:setVisible(true)
+        self.CheckBox:setTouchEnabled(false)
+        self._blades:setVisible(true)
+        self._selected:setVisible(false)
+        self._Instead:setVisible(false)  --测试
+        --m_turnBg:setVisible(false)  --测试
+        -- self.x_rand=math.random(1,self.gridNumer)  --测试
+        --防止多次点击
+        self.m_turnArr:setEnabled(false);
+
+
 	     table.insert(self.fragment_table,{_shuzi = self.x_rand})
 	    local   _int = #self.fragment_table  
-	    --防止多次点击
-	    self.m_turnArr:setEnabled(false);
+	    
 	    if (_int>1)   then 
 		        local  xin = self.fragment_table[_int-1]._shuzi
 		        if (self.x_rand > xin)   then 
@@ -540,7 +566,7 @@ function bigwheelLayer:fun_began(  )
 	    end
 	    self._rand= (self.x_rand  *  self.gridAngle   ) ;
 	    local  angleZ = self._rand + 1080--720;  
-          local  pAction1 = cc.EaseExponentialInOut:create(cc.RotateBy:create(8,1080+angleZ))
+          local  pAction1 = cc.EaseExponentialOut:create(cc.RotateBy:create(8,1080+angleZ))
 	    m_turnBg:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
         -- local  pAction2 = cc.RotateBy:create(3,self._rand)  --测试
         -- self._Instead:runAction(pAction2)
@@ -575,6 +601,7 @@ function bigwheelLayer:touch_callback( sender, eventType )
          if tonumber(self.Points)==0 then
            self.Points=1
          end
+      self:fun_began_start(  )
 	     Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume,self.Points)  --  转盘随机数
 
         local _table=LocalData:Instance():get_gettasklist()
@@ -774,7 +801,7 @@ function bigwheelLayer:function_httpgold( _obj,x,y )
 end
 
 function bigwheelLayer:onEnter()
-   self.x_rand=7
+   self.x_rand=0
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self,
                        function()
                        	local _gold=LocalData:Instance():get_getgoldspoolrandomgolds()
@@ -785,7 +812,7 @@ function bigwheelLayer:onEnter()
                                end
                                self.x_rand=self.cotion_gold[math.random(1,#self.cotion_gold)]
                                Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
-                               self:fun_began()
+                               -- self:fun_began()
                               self._prizetext:setString(tostring(_gold["golds"]))
                       end)
   
