@@ -111,8 +111,10 @@ function FloatingLayer:network_box(prompt_text )
       _text:setString(prompt_text)
        back:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(0.5)
                         return
                  end
+                 sender:setScale(1)
                 if self.networkbox then
                       self.networkbox:removeFromParent()
                       cc.Director:getInstance():endToLua()   --退出游戏  

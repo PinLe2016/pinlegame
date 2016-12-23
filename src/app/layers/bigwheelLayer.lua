@@ -92,7 +92,7 @@ function bigwheelLayer:ctor(params)
          self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
-      elseif tonumber(math.random(1,5))   ==2   then   --20%  概率
+      elseif tonumber(math.random(1,1))   ==1   then   --20%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1 then   --  

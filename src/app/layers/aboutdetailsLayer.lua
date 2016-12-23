@@ -319,8 +319,8 @@ end
 function aboutdetailsLayer:businesscooperation( )
 
     local res = ""
-    local width = 333
-    local height = 40
+    local width = 200
+    local height = 27
     --公司名称
     -- self.companyname_text = ccui.EditBox:create(cc.size(width,height),res)
     -- self.businessback_bg:addChild(self.companyname_text)
@@ -349,7 +349,7 @@ function aboutdetailsLayer:businesscooperation( )
 
     --  内容
     -- local _res = ""  
-    -- self.contenttext = ccui.EditBox:create(cc.size(489,227),_res)
+    -- self.contenttext = ccui.EditBox:create(cc.size(475,270),_res)
     -- self.contenttext:setFont("Arial",22)
     -- self.contenttext:setFontColor(cc.c3b(35,149,200))
     -- self.contenttext:setPlaceholderFont("Arial",22)
@@ -365,8 +365,8 @@ end
 function aboutdetailsLayer:inputbox(  )
 	
     local res = ""
-    local width = 333
-    local height = 40
+    local width = 200
+    local height = 27
     -- --手机号
     -- self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
     -- self.advicedata_bg:addChild(self.phone_text)
@@ -386,7 +386,7 @@ function aboutdetailsLayer:inputbox(  )
 
     --  内容
     -- local _res = ""  
-    -- self.content_text = ccui.EditBox:create(cc.size(489,227),_res)
+    -- self.content_text = ccui.EditBox:create(cc.size(470,165),_res)
     -- self.content_text:setFontName("Arial")
     -- self.content_text:setFontColor(cc.c3b(35,149,200))
     -- self.content_text:setFontSize(22)
