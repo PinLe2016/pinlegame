@@ -291,7 +291,7 @@ function GoldprizeScene:touch_callback( sender, eventType )
         	
             cc.Director:getInstance():popToRootScene()
             Server:Instance():gettasklist()
-    --           local taskLayer = require("app.layers.taskLayer")  --关于任务界面
+    --      local taskLayer = require("app.layers.taskLayer")  --关于任务界面
 				-- self:addChild(taskLayer.new())
                         end
 	elseif tag==58 then --说明
