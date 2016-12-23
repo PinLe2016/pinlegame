@@ -259,7 +259,7 @@ function debrisLayer:saw_issuccess()
                                         Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                                          return
                             end
-                          Server:Instance():setgamerecord(self.adid)  
+                          Server:Instance():setgamerecord(self.adid,0)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
@@ -302,6 +302,8 @@ end
 --增加幸运卡
 function debrisLayer:add_reward( )
         self.Rewardvouchers = cc.CSLoader:createNode("Rewardvouchers.csb")
+        self.Rewardvouchers:setPosition(cc.p(-150000,10))
+        self.Rewardvouchers:setVisible(false)
         self:addChild(self.Rewardvouchers,10000)
         local jique=self.Rewardvouchers:getChildByTag(421)
         local jinyan=self.Rewardvouchers:getChildByTag(102)

@@ -301,7 +301,7 @@ end
 --type 0,表示奖池类型和惊喜吧类型，1 专题活动类型
 --adid    广告编号    String  Guid
 --imageid   是   比赛使用的图片编号   String  Guidsetgamerecordsetgamerecord
-function Server:setgamerecord(adid,points)
+function Server:setgamerecord(adid,type,points)  
     -- MD5_KEY="PINLEGAMERECORD"
     local settingid="FE9ABC0E-CEE5-4F11-9BC3-16E0EE4A342C"
     -- if tonumber(type)==1 then
@@ -316,7 +316,8 @@ function Server:setgamerecord(adid,points)
             finishtime=os.time(),
             steps="steps1",
             time="54",
-            points=points
+            points=points,
+            type=type
 
         }
     self:request_http("setgamerecord" , params ); 
