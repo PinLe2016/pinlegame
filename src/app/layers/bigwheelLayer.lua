@@ -89,11 +89,10 @@ function bigwheelLayer:ctor(params)
       end
       --   转盘随机数出现
       if tonumber(self.Points) >= 700  then
-         --self:fun_bigrandom()
+         self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
-
-      elseif tonumber(math.random(1,5))   ==3   then   --20%  概率
+      elseif tonumber(math.random(1,1))   ==1   then   --20%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1 then   --  
@@ -135,6 +134,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
                           sender:setScale(1.4)
                      self:fun_storebrowser()
                end)
+                self:function_httpgold( self.HitVolesEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
                local back=self.HitVolesEndLayer:getChildByTag(776)  --  返回
                back:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
@@ -162,39 +162,69 @@ end
 function bigwheelLayer:star_action()
        -- local layer=cc.LayerColor:create(cc.c4b(0,0,0,165))  
        --         self.HitVolesEndLayer:addChild(layer)
-
+      -- 0-150一星
+      -- 150-250二星
+      -- 250以上三星
+      -- 打地鼠时间
+      -- 12秒以上一星
+      -- 7秒－12秒二星
+      -- 7秒以内三星
+       local  xingnumber=0
+       if self.choose==1 then
+            if tonumber(LocalData:Instance():getpuzzletime()) >= 12  then
+              xingnumber=1
+            elseif tonumber(LocalData:Instance():getpuzzletime()) >= 0  and  tonumber(LocalData:Instance():getpuzzletime())<7 then
+              xingnumber=3
+            elseif tonumber(LocalData:Instance():getpuzzletime()) >= 7  and  tonumber(LocalData:Instance():getpuzzletime())<12 then
+              xingnumber=2
+             end       
+      else
+         if tonumber(self.Points) > 250  then
+          xingnumber=3
+        elseif tonumber(self.Points) >= 0  and  tonumber(self.Points)<=150 then
+          xingnumber=1
+        elseif tonumber(self.Points) > 150  and  tonumber(self.Points)<=250 then
+          xingnumber=2
+         end
+      end
               local point_buf={
-                cc.p(146.50,1000),
-                cc.p(320,1070),
-                cc.p(469.50,1000)
+                cc.p(186.50,1000),
+                cc.p(320,1050),
+                cc.p(459.50,1000)
               }
 
               local star_buf={}
-
-              for i=1,3 do
+            
+              for i=1,xingnumber do
                 local spr=display.newSprite("dadishu-wanfajieshao-xinxin.png")
                 spr:setPosition(point_buf[i].x,point_buf[i].y-400)
                 spr:setScale(10)
                 spr:setVisible(false)
                 self.HitVolesEndLayer:addChild(spr)
                 star_buf[i]=spr
+                if i==1 then
+                  spr:setRotation(45)
+                elseif i==3 then
+                  spr:setRotation(-45)
+                end
+                
               end
 
               local dex,time=1,0.4
 
               local function logSprRotation(sender)
 
-              local particle = cc.ParticleSystemQuad:create("endingStar.plist")
-              -- particle:setDuration(-1)
-              particle:setPosition(point_buf[dex])
-              self:addChild(particle)
-              dex=dex+1
-              if dex>#star_buf then return end
-                local scal =cc.ScaleTo:create(time,1)
-                local move=cc.MoveTo:create(time, point_buf[dex])
-                local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation))
-                star_buf[dex]:setVisible(true)
-                star_buf[dex]:runAction(action) 
+                    local particle = cc.ParticleSystemQuad:create("endingStar.plist")
+                    -- particle:setDuration(-1)
+                    particle:setPosition(point_buf[dex])
+                    self:addChild(particle)
+                    dex=dex+1
+                    if dex>#star_buf then return end
+                      local scal =cc.ScaleTo:create(time,1)
+                      local move=cc.MoveTo:create(time, point_buf[dex])
+                      local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation))
+                      star_buf[dex]:setVisible(true)
+                      star_buf[dex]:runAction(action) 
                 
               end
                 
@@ -228,6 +258,7 @@ function bigwheelLayer:function_puzzle(  )
                           sender:setScale(1.3)
                           self:fun_storebrowser()
              end)
+              self:function_httpgold( self.puzzleEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
             local back=self.puzzleEndLayer:getChildByTag(305)  --  返回
              back:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
@@ -604,7 +635,8 @@ end
 
 --  网页链接
 function bigwheelLayer:fun_storebrowser(  )
-      if tostring(self.addetailurl)   ==   tostring(1)   then
+  print("网页链接",self.addetailurl)
+      if tostring(self.addetailurl)   ==   tostring(1)   or  tostring(self.addetailurl) == ""  then
          return
       end
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
@@ -690,6 +722,48 @@ function bigwheelLayer:big_end(_istrue,x,y,_obj )
       alert:setString(tostring(_gold["golds"]))  --  获得金币
       alert:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2*0.4))
       self.fragment_sprite_bg:addChild(alert)
+end
+--网页链接获得金币
+function bigwheelLayer:function_httpgold( _obj,x,y )
+      local textButton = ccui.Button:create()
+      self.connection13=textButton
+      textButton:setTouchEnabled(true)--
+      textButton:loadTextures("png/shunliwancheng_13.png", "png/shunliwancheng_13.png", "")
+      textButton:setPosition(cc.p(x,y))
+      textButton:addTouchEventListener(function(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(0.8)
+                    elseif eventType == ccui.TouchEventType.ended then
+                      sender:setScale(1)
+                      self:fun_storebrowser()
+                    end
+            end)
+      _obj:addChild(textButton)
+      local jinbi_image = display.newSprite("png/Gjinbi.png")
+      jinbi_image:setScale(0.6)
+     jinbi_image:setPosition(cc.p(textButton:getContentSize().width/4, textButton:getContentSize().height /2*1.1  ))
+     textButton:addChild(jinbi_image)
+       local alert = ccui.Text:create("RichText", "png/chuti.ttf", 30)
+       alert:setAnchorPoint(0,0.5)
+      alert:setString("+20")  --  获得金币
+      alert:setPosition(cc.p(textButton:getContentSize().width*0.45, textButton:getContentSize().height/2*1.1))
+      textButton:addChild(alert)
+
+        local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+        local  jaclayer_data=list_table["adlist"] 
+         if jaclayer_data[1]["adurlgold"] then
+            alert:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
+       else
+          textButton:setVisible(false)
+          alert:setString("+0")
+        end
+           if tostring(self.addetailurl)   ==   tostring(1) then
+              textButton:setVisible(false)
+           end
+
+
+
+
 end
 
 function bigwheelLayer:onEnter()
