@@ -222,7 +222,7 @@ function taskLayer:touch_Callback( sender, eventType )
        print("范德萨发生地方  ",tasklist[tag]["targetid"])
        local targettype=tasklist[tag]["targettype"]  --0为签到，1为邀请好友，2为分享，3为惊喜吧，4为奖池,5为获得金币数，6为获得积分数
        if tonumber(tasklist[tag]["status"]) == 2 then
-               
+               sender:loadTextures("png/taskcomplete1.png","","")
                Server:Instance():settasktargetrecord(tasklist[tag]["targetid"])  --领取奖励
                return
        end
