@@ -788,7 +788,14 @@ function PhysicsScene:Phypop_up()
             -- score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
              local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
             -- score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
+              local function logSprRotation(sender)
+                 -- self:fun_data()
+                 self._back:setVisible(true)
+            end
 
+            local action = cc.Sequence:create(cc.DelayTime:create(4.5),cc.CallFunc:create(logSprRotation))
+            self._back:runAction(action)
+     
             --  千位数动画
             local   _table={ }
             local open_xiangzi =self.PhysicsPop:getChildByTag(515)  --  小球开箱
@@ -928,14 +935,7 @@ function PhysicsScene:Phypop_up()
                        -- self.again_bt:setTouchEnabled(true)
             end
 
-            local function logSprRotation(sender)
-                 -- self:fun_data()
-                 self._back:setVisible(true)
-            end
-
-            local action = cc.Sequence:create(cc.DelayTime:create(3.6),cc.CallFunc:create(logSprRotation))
-            self:runAction(action)
-     
+          
            
 end
 
