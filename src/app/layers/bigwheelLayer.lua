@@ -44,6 +44,8 @@ function bigwheelLayer:ctor(params)
 	self.m_pElliRtt_2=nil
 	self.m_pCircle_1=nil
 	self.m_pCircle_2=nil
+  self.star_over_time=1--记录星星结束时间
+
 	self.fragment_table={ }
       self.Points=params.Points
 	self.x_rand=nil
@@ -112,7 +114,7 @@ function bigwheelLayer:fun_bigrandom( )
                 self:function_bigwheel()
        end
       local callfunc = cc.CallFunc:create(stopAction)
-     self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+     self:runAction(cc.Sequence:create(cc.DelayTime:create(self.star_over_time*0.4),callfunc  ))
 end
 --打地鼠结束界面self.Points
 function bigwheelLayer:function_HitVolesEnd(  )
@@ -194,6 +196,9 @@ function bigwheelLayer:star_action()
           xingnumber=2
          end
       end
+
+      self.star_over_time=xingnumber
+
               local point_buf={
                 cc.p(186.50,1000),
                 cc.p(320,1050),
@@ -506,19 +511,19 @@ function bigwheelLayer:fun_began_start(  )
 
         local function CallFucnCallback3(sender)
                 if self.x_rand~=0 then
-                  m_turnBg:stopAllActions()
+                  
                   self:fun_began()
                 end
 
         end
 
-        local  pAction1 =cc.RotateBy:create(0.3,360)
+        local  pAction1 =cc.RotateTo:create(0.3,360)
         m_turnBg:runAction(cc.RepeatForever:create(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3))))
 
 end
 function bigwheelLayer:fun_began(  )
         
-      
+        m_turnBg:stopAllActions()
         local function CallFucnCallback3(sender)
               self.caideng:setVisible(false)
                --self.m_turnArr:setEnabled(true);
@@ -551,7 +556,6 @@ function bigwheelLayer:fun_began(  )
         -- self.x_rand=math.random(1,self.gridNumer)  --测试
         --防止多次点击
         self.m_turnArr:setEnabled(false);
-
 
 	     table.insert(self.fragment_table,{_shuzi = self.x_rand})
 	    local   _int = #self.fragment_table  
