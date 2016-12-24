@@ -33,6 +33,7 @@ function debrisLayer:ctor(params)
            if params.pintuid then
           self.pintuid=params.pintuid 
         end  
+        math.randomseed(tostring(os.time()):reverse():sub(1, 7))--随机种子
        
         
 
@@ -252,17 +253,18 @@ function debrisLayer:saw_issuccess()
                  local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
                  original:loadTexture(path .. tostring(self.filename))-- 任性的记住更换原图
                  self:addChild(_originalimage,900)
+                 
 
                    local function stopAction()
-                             LocalData:Instance():setpuzzletime(self.count_time)
+                           LocalData:Instance():setpuzzletime(self.count_time)
                              if self.type=="surprise" then
                                         Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                                          return
                             end
-                          Server:Instance():setgamerecord(self.adid,0)  
+                          Server:Instance():setgamerecord(self.adid)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
-                 self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.3),callfunc  ))
                  
 end
 function debrisLayer:fun_endanimation()

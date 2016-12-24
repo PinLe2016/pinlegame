@@ -13,6 +13,7 @@ function FriendrequestLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
        Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
+              
        --Server:Instance():getfriendlist()--查询好友列表   
        --Server:Instance():set_friend_reward_setting()
       

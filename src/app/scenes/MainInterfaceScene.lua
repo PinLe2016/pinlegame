@@ -46,7 +46,50 @@ function MainInterfaceScene:ctor()
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)
+       --self:hammerAction()
+        -- local spr=display.newSprite("dadishu-wanfajieshao-xinxin.png")
+        -- spr:setPosition(cc.p(display.cx,display.cy))
+        -- self:addChild(spr)
+         local particle2 = cc.ParticleSystemQuad:create("zhuanpan_huang.plist")
+         particle2:setPosition(cc.p(display.cx,display.cy))
+         particle2:setScale(0.5)
+         self:addChild(particle2)
+
+       --   particle2:changeDisplayWithIndex(0, true)
+       -- particle2:setIgnoreMovementBoneData(true)
+
      
+end
+function MainInterfaceScene:hammerAction()
+    --创建动画序列
+     local node = cc.Sprite:create("liu/01.png")  
+    local animation = cc.Animation:create()
+    local number,name
+    for i=1,6 do
+      number = i 
+      name = "liu/0"..number..".png"
+      animation:addSpriteFrameWithFile(name)
+    end
+
+    animation:setDelayPerUnit(0.3/3.0)
+    animation:setRestoreOriginalFrame(true)
+
+    local animate = cc.Animate:create(animation)
+    animation:setRestoreOriginalFrame(true)
+   -- local node = self.layerPlay:getChildByTag(self.kTagSprite4)
+    -- node:setAnchorPoint(0.75,1.0)
+    node:setVisible(true)
+    local function logSprRotation(sender)
+    node:setVisible(false)
+    end
+    local action = cc.Sequence:create(animate,animate:reverse())
+
+    node:setPosition(cc.p(display.cx,display.cy))
+    self:addChild(node)
+
+    --node:stopAllActions()
+    node:runAction(cc.RepeatForever:create(animate))
+   
 end
 
 --惊喜吧弹球页面home 键退出处理
