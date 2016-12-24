@@ -46,6 +46,7 @@ function MainInterfaceScene:ctor()
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)
+     
 end
 
 --惊喜吧弹球页面home 键退出处理

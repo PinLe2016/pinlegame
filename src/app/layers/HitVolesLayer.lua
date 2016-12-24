@@ -337,8 +337,11 @@ function HitVolesLayer:callback(dt)
             --  self.congratulations:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
             --   self.congratulations:setVisible(true)--self.m_time
             -- self.congratulations_text:setString(tostring(self.m_time))
-            self:server_data()
-            self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+             local particle = cc.ParticleSystemQuad:create("goldCoin.plist")
+             particle:setPosition(cc.p(display.cx,display.cy))
+             self:addChild(particle)
+             self:server_data()
+             self.scheduler:unscheduleScriptEntry(self.schedulHandle)
              return
          end
         
