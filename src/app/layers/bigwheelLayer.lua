@@ -96,7 +96,7 @@ function bigwheelLayer:ctor(params)
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
 
-      elseif _rd   ==3  or  _rd   ==2  or  _rd   ==4  then   --60%  概率
+      elseif _rd   ==3  or  _rd   ==2  or  _rd  ~=  -2    then   --60%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1 then   --  
@@ -397,7 +397,7 @@ function bigwheelLayer:function_bigwheel( )
               -- m_turnBg:addChild(particle2)
 
             -- m_turnBg
-
+             
          self:run_blades()
          self:init(  )
 
@@ -535,15 +535,16 @@ function bigwheelLayer:fun_began(  )
                self.CheckBox:setTouchEnabled(true)
                self._prize:setVisible(false)
                self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
-              
+               self:fun_bigback(self.bigwheelLayer,m_turnBg:getPositionX()+m_turnBg:getContentSize().width/7*3*1.02,m_turnBg:getPositionY()+m_turnBg:getContentSize().height/7*3*1.02)
+               
 
-                 local function stopAction()
-                        if self.bigwheelLayer then
-                         self.bigwheelLayer:removeFromParent()
-                       end
-               end
-              local callfunc = cc.CallFunc:create(stopAction)
-             self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+             --     local function stopAction()
+             --            if self.bigwheelLayer then
+             --             self.bigwheelLayer:removeFromParent()
+             --           end
+             --   end
+             --  local callfunc = cc.CallFunc:create(stopAction)
+             -- self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
 
 
 
@@ -757,10 +758,33 @@ function bigwheelLayer:big_end(_istrue,x,y,_obj )
       local fragment_sprite2 = display.newSprite("png/zhuanpan-gongxihuode-jingbi.png")
       self.fragment_sprite_bg:addChild(fragment_sprite2)
       fragment_sprite2:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2 ))
+      
+      self.fragment_sprite_bg1 = display.newSprite("png/zhuanpan-gongxihuode-jingbi-1.png")
+      self.fragment_sprite_bg1:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2*0.4))
+      self.fragment_sprite_bg:addChild(self.fragment_sprite_bg1)
+
        local alert = ccui.Text:create("RichText", "png/chuti.ttf", 30)
       alert:setString(tostring(_gold["golds"]))  --  获得金币
       alert:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2*0.4))
       self.fragment_sprite_bg:addChild(alert)
+
+end
+function bigwheelLayer:fun_bigback( _obj,x,y )
+        local textButton = ccui.Button:create()
+      self.connection13=textButton
+      textButton:setTouchEnabled(true)--
+      textButton:loadTextures("png/dadishu-choujiang-1-1-guanbi-liang.png", "png/dadishu-choujiang-1-1-guanbi.png", "")
+      textButton:setPosition(cc.p(x,y))
+      textButton:addTouchEventListener(function(sender, eventType)
+                    
+                    if eventType == ccui.TouchEventType.ended then
+                          Util:scene_control("GoldprizeScene")
+                          if self._Xscnum then
+                                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
+                          end
+                    end
+            end)
+      _obj:addChild(textButton)
 end
 --网页链接获得金币
 function bigwheelLayer:function_httpgold( _obj,x,y )
