@@ -207,6 +207,7 @@ function taskLayer:touch_btCallback( sender, eventType )
                   self.fragment_sprite:setVisible(false)
            		self:removeFromParent()
               -- Util:scene_control("MainInterfaceScene")
+              Util:all_layer_backMusic()
               LocalData:Instance():set_sign(1)
            	 end
            end  

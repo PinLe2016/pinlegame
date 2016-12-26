@@ -373,7 +373,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self:addChild(taskLayer.new(),1,16)
       elseif tag==91 then  --设置返回
             --self.set_bg:setVisible(false)
-            
+              Util:all_layer_backMusic()
               self.set_Xbg:setVisible(false)
           
             self.set_bg1:setVisible(false)
@@ -415,6 +415,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
               print("返回")
               if  self.Storebrowser then
                  self.Storebrowser:removeFromParent()
+                 Util:all_layer_backMusic()
               end
       elseif tag==266 then  --注销
 
@@ -600,7 +601,7 @@ function MainInterfaceScene:fun_checkin( tm )
          self.checkinlayer:removeFromParent()
              self.checkinlayer=nil
              Server:Instance():gettasklist()   --目的是刷新任务数据
-
+             Util:all_layer_backMusic()
 	       
 	end)
 	local check_bt=self.checkinlayer:getChildByTag(87)

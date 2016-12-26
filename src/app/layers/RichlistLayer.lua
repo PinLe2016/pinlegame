@@ -25,6 +25,7 @@ function RichlistLayer:ctor()
 		                return
 		            end
 		           self:removeFromParent()
+               Util:all_layer_backMusic()
                         end)
 
             self.rank_list=self.RichlistLayer:getChildByTag(858)

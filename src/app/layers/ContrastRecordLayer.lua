@@ -90,6 +90,7 @@ function ContrastRecordLayer:touch_callback( sender, eventType)
             local tag=sender:getTag()
             if tag==121 then --返回
                self:removeFromParent()
+               Util:all_layer_backMusic()
             end
                
         

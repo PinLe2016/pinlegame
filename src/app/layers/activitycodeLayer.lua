@@ -134,7 +134,8 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
               	if self.ActivitycodeLayer then
                             self:unscheduleUpdate()
                             self.fragment_sprite:removeFromParent()
-              	     self.ActivitycodeLayer:removeFromParent()
+              	            self.ActivitycodeLayer:removeFromParent()
+                            Util:all_layer_backMusic()
               	end
               elseif  tag==764 then
               	Server:Instance():validateactivitycode(self. _sing:getString())
@@ -169,6 +170,7 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
                   self:unscheduleUpdate()
 
               	     self:removeFromParent()
+                     Util:all_layer_backMusic()
               	end
               end
             
@@ -479,6 +481,7 @@ function activitycodeLayer:fun_theirwin( _text)
                          return
               end
               if self.theirwin then
+                Util:all_layer_backMusic()
                  self.theirwin:removeFromParent()
               end
                    

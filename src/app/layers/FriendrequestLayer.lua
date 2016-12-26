@@ -310,7 +310,7 @@ function FriendrequestLayer:touch_callback( sender, eventType )
           -- if tonumber(LocalData:Instance():get_sign()) ~=  2 then
           --   
           -- end
-          
+          Util:all_layer_backMusic()
           Server:Instance():gettasklist()
 	        self:removeFromParent()
         -- Util:scene_control("MainInterfaceScene")

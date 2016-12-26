@@ -373,6 +373,7 @@ function debrisLayer:touch_callback( sender, eventType )
        elseif tag==106 then   --返回奖池
            if self.Rewardvouchers then
               self.Rewardvouchers:removeFromParent()
+              Util:all_layer_backMusic()
           end
            -- cc.Director:getInstance():popScene()
            -- Server:Instance():sceneinformation()

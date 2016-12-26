@@ -18,6 +18,8 @@ function FloatingLayer:show_http(is_show)
          self:removeChildByTag(250, true)
          return
      end
+
+     audio.playMusic("sound/effect/tanchu.mp3",false)
      self:setTouchSwallowEnabled(true)--防止吞吃
     local loadingLayer = cc.CSLoader:createNode("loadingLayer.csb")
     self:addChild(loadingLayer,1,250)
@@ -31,6 +33,9 @@ function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
    -- if  self.dialog then
    --        return
    --  end
+
+    audio.playMusic("sound/effect/tanchu.mp3",false)
+
     self.dialog = cc.CSLoader:createNode("Dialog.csb");
     self:addChild(self.dialog,20,20)
     dialogtext = self.dialog:getChildByTag(44)

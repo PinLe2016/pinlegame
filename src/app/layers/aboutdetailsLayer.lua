@@ -216,6 +216,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            local tag=sender:getTag()
            if tag==1290 then  --返回
            	   if self.aboutdetails then
+                Util:all_layer_backMusic()
            	   	self:removeFromParent()
            	   end
            elseif  tag==1294 then--提交建议
@@ -254,10 +255,10 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                   end
 
                    if not string.find(_tel,"^[+-]?%d+$")  then
-                      Server:Instance():prompt("手机号输入非法，请重新输入")
+                      Server:Instance():prompt("手机号格式不正确")
                       return
                   end
-                  
+
                   LocalData:Instance():set_back("1") 
                   Server:Instance():setfeedback({type="0",company="北京拼乐",name=_name,tel=_tel,content=_content})
 
@@ -277,7 +278,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                        self.phonetext:setVisible(false)
                        self.contenttext:setVisible(false)
                        self.cooperation_ListView:setVisible(false)
-
+                       
            	elseif tag==364 then  --商务合作提交  
            		print("商务提交")
                   local _name=self.nametext:getText()--getString()  --
@@ -292,7 +293,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                   end
 
                   if not string.find(_tel,"^[+-]?%d+$")  then
-                      Server:Instance():prompt("手机号输入非法，请重新输入")
+                      Server:Instance():prompt("手机号格式不正确")
                       return
                   end
 
@@ -306,6 +307,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            		print("条件")
            		self:cooperationlist()
             elseif tag==68 then
+              Util:all_layer_backMusic()
               self:removeFromParent()
             elseif tag==97 then
               self.qr_code:setVisible(false)

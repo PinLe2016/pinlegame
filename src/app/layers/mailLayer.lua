@@ -37,6 +37,7 @@ function mailLayer:ctor()
                                     if eventType ~= ccui.TouchEventType.ended then
                     return
                 end
+                Util:all_layer_backMusic()
                   self:removeFromParent()
                   LocalData:Instance():set_getaffiche(nil)
                    Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
@@ -202,9 +203,10 @@ function mailLayer:fun_emailcontentlayer( )
                               Server:Instance():getaffichelist(self.sur_pageno)
                               LocalData:Instance():set_getaffiche(nil)
 
-                              self.mail_list:removeAllItems() 
-                              self.fragment_sprite1:removeFromParent()
-		            	self.emailcontentlayer:removeFromParent()
+                            self.mail_list:removeAllItems() 
+                            self.fragment_sprite1:removeFromParent()
+                            self.emailcontentlayer:removeFromParent()
+                            Util:all_layer_backMusic()
 		            end
 			
                         end)

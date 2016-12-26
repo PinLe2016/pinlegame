@@ -80,6 +80,7 @@ function ChangepasswordLayer:touch_callback(sender, eventType)
           local tag=sender:getTag()
           if tag==208 then
           	self:removeFromParent()
+            Util:all_layer_backMusic()
           elseif tag==206 then
             self:pass()
           end

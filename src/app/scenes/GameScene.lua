@@ -130,6 +130,7 @@ function GameScene:funinit(  )
                                    self._csb:setVisible(false)
                                    if self._HitVolesLayer then
                                      self._HitVolesLayer:removeFromParent()
+                                     Util:all_layer_backMusic()
                                    end
                                     self.Laohuji = cc.CSLoader:createNode("HitVolesLayer.csb")
                                     self:addChild(self.Laohuji)
@@ -478,7 +479,8 @@ function GameScene:listener_home()
     self:addChild(layer)
     local function onKeyReleased(keyCode, event)
           if keyCode == cc.KeyCode.KEY_BACK then
-              cc.Director:getInstance():popScene()
+              -- cc.Director:getInstance():popScene()
+              Util:scene_control("MainInterfaceScene")
           end
     end
 

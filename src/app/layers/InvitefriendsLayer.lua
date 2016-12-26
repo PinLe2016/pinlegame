@@ -213,6 +213,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             -- Server:Instance():getuserinfo() -- 初始化数据
             Server:Instance():gettasklist()
 		        self:removeFromParent()
+            Util:all_layer_backMusic()
            -- Util:scene_control("MainInterfaceScene")
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)

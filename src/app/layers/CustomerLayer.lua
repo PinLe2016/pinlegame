@@ -69,6 +69,7 @@ function CustomerLayer:touch_callback(sender, eventType)
           local tag=sender:getTag()
           if tag==1063 then
           	self:removeFromParent()
+            Util:all_layer_backMusic()
           end
          
           
