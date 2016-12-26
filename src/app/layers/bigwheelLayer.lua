@@ -89,34 +89,34 @@ function bigwheelLayer:ctor(params)
          {gold_b=500,gold_e=500},
          {gold_b=10,gold_e=15}
      }     
-     self._Rtrue =  0  
       if self.choose==1 then  --  拼图
          self:function_puzzle()
       else
         self:function_HitVolesEnd()
       end
-        --转盘随机数出现
-     
+      --   转盘随机数出现
+      local  _rd=tonumber(math.random(1,5))
       if tonumber(self.Points) > 250  then
          self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
+      elseif _rd   ==3  or  _rd   ==2  or  _rd   ==4  then   --60%  概率
 
-      elseif _rd   ==3  or  _rd   ==2  or  _rd   ==4    then   --60%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            dump(_table)
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1  or   tonumber(goldspool["getcardamount"])== 0 then    
               return
             end
-           self:fun_bigrandom()
-         
+
+        
+        self:fun_bigrandom()
+
       end
       
 end
 --   转盘随机数出现
 function bigwheelLayer:fun_bigrandom( )
-        self._Rtrue=1
         local function stopAction()
                 self:function_bigwheel()
        end
@@ -173,7 +173,6 @@ function bigwheelLayer:function_HitVolesEnd(  )
               local ranking=self.HitVolesEndLayer:getChildByTag(272)  --  %数
               ranking:setString(goldspool["myscore"])
               self:star_action()
-              --self:PintuEndAct(self.HitVolesEndLayer)
 
 end
 
@@ -236,8 +235,7 @@ function bigwheelLayer:star_action()
 
               local function logSprRotation(sender)
 
-                    local particle = cc.ParticleSystemQuad:create("starAni6.plist")
-                     audio.playMusic("sound/effect/jieshu.mp3",false)
+                    local particle = cc.ParticleSystemQuad:create("endingStar.plist")
                     -- particle:setDuration(-1)
                     particle:setPosition(point_buf[dex])
                     self:addChild(particle)
@@ -248,26 +246,13 @@ function bigwheelLayer:star_action()
                       local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation))
                       star_buf[dex]:setVisible(true)
                       star_buf[dex]:runAction(action) 
+                
               end
                 
-              local function logSprRotation1(sender)
-                       if self._Rtrue==1 then
-                         return
-                       end
-                       local particle2 = cc.ParticleSystemQuad:create("endingCoin2.plist")
-                       particle2:setPosition(cc.p(display.cx,display.cy))
-                       self:addChild(particle2)
-                       audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)
-
-            end
-
-            if conditions then
-              --todo
-            end
               
               local scal =cc.ScaleTo:create(time,1)
               local move=cc.MoveTo:create(time, point_buf[dex])
-              local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation),cc.DelayTime:create(0.50),cc.CallFunc:create(logSprRotation1))
+              local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation))
               -- self.HitVolesEndLayer:addChild(star_buf[dex])
               star_buf[dex]:setVisible(true)
               star_buf[dex]:runAction(action)           
@@ -309,61 +294,6 @@ function bigwheelLayer:function_puzzle(  )
                   self:fun_callback(sender, eventType)
              end)
              self:star_action()
-             --self:PintuEndAct(self.puzzleEndLayer)
-
-end
-function bigwheelLayer:PintuEndAct(_obj)
-           local node1 = cc.Sprite:create("png/youxizhong-1-tu.png")
-           local _h=display.cy+180
-           node1:setPosition(cc.p(-100,_h))
-           _obj:addChild(node1)
-           local speed=250
-           local juli=node1:getContentSize().width
-          --   local function stopAction()
-          --     self:run_blades()
-          -- end     
-          --local callfunc = cc.CallFunc:create(stopAction)
-          local pAction =cc.RotateBy:create(display.cx/speed,360*5)
-          local ptAction = cc.MoveTo:create(display.cx/speed, cc.p(display.cx-juli/2-5, _h))
-          node1:runAction(cc.Spawn:create(pAction,ptAction)) 
-
-            local node2 = cc.Sprite:create("png/youxizhong-1-pin.png")
-           node2:setPosition(cc.p(-100,_h))
-           _obj:addChild(node2)
-
-        --     local function stopAction()
-        --       self:run_blades()
-        -- end     
-        --local callfunc = cc.CallFunc:create(stopAction)
-        local pAction2 =cc.RotateBy:create(display.cx/speed,360*5)
-        local ptAction2 = cc.MoveTo:create(display.cx/speed, cc.p(display.cx-juli*3/2-15, _h))
-        node2:runAction(cc.Spawn:create(pAction2,ptAction2)) 
-
-            local node3 = cc.Sprite:create("png/youxizhong-1-cheng.png")
-           node3:setPosition(cc.p(display.cx *2  +100,_h))
-           _obj:addChild(node3)
-
-        --     local function stopAction()
-        --       self:run_blades()
-        -- end     
-        -- local callfunc = cc.CallFunc:create(stopAction)
-        local pAction3 =cc.RotateBy:create(display.cx/speed,360*5)
-        local ptAction3 =cc.MoveTo:create(display.cx/speed, cc.p(display.cx+5+juli/2, _h))
-        node3:runAction(cc.Spawn:create(pAction3,ptAction3)) 
-
-
-            local node4 = cc.Sprite:create("png/youxizhong-1-gong.png")
-           node4:setPosition(cc.p(display.cx *2  +100,_h))
-           _obj:addChild(node4)
-
-        --     local function stopAction()
-        --       self:run_blades()
-        -- end     
-        -- local callfunc = cc.CallFunc:create(stopAction)
-        local pAction4 =cc.RotateBy:create(display.cx/speed,360*5)
-        local ptAction4 =cc.MoveTo:create(display.cx/speed, cc.p(display.cx+juli*3/2+15, _h))
-        node4:runAction(cc.Spawn:create(pAction4,ptAction4)) 
-
 
 end
 --  结束界面返回按钮
@@ -478,7 +408,7 @@ function bigwheelLayer:function_bigwheel( )
               -- m_turnBg:addChild(particle2)
 
             -- m_turnBg
-             
+
          self:run_blades()
          self:init(  )
 
@@ -616,16 +546,16 @@ function bigwheelLayer:fun_began(  )
                self.CheckBox:setTouchEnabled(true)
                self._prize:setVisible(false)
                self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
+
                self:fun_bigback(self.bigwheelLayer,m_turnBg:getPositionX()+m_turnBg:getContentSize().width/7*3*1.02,m_turnBg:getPositionY()+m_turnBg:getContentSize().height/7*3*1.02)
                
-
-             --     local function stopAction()
-             --            if self.bigwheelLayer then
-             --             self.bigwheelLayer:removeFromParent()
-             --           end
-             --   end
-             --  local callfunc = cc.CallFunc:create(stopAction)
-             -- self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                 local function stopAction()
+                        if self.bigwheelLayer then
+                         self.bigwheelLayer:removeFromParent()
+                       end
+               end
+              local callfunc = cc.CallFunc:create(stopAction)
+             self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
 
 
 
@@ -839,41 +769,10 @@ function bigwheelLayer:big_end(_istrue,x,y,_obj )
       local fragment_sprite2 = display.newSprite("png/zhuanpan-gongxihuode-jingbi.png")
       self.fragment_sprite_bg:addChild(fragment_sprite2)
       fragment_sprite2:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2 ))
-      
-
-      self.fragment_sprite_bg1 = display.newSprite("png/zhuanpan-gongxihuode-jingbi-1.png")
-      self.fragment_sprite_bg1:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2*0.4))
-      self.fragment_sprite_bg:addChild(self.fragment_sprite_bg1)
-
        local alert = ccui.Text:create("RichText", "png/chuti.ttf", 30)
       alert:setString(tostring(_gold["golds"]))  --  获得金币
       alert:setPosition(cc.p(self.fragment_sprite_bg:getContentSize().width/2, self.fragment_sprite_bg:getContentSize().height/2*0.4))
       self.fragment_sprite_bg:addChild(alert)
-
-end
-function bigwheelLayer:fun_bigback( _obj,x,y )
-        local textButton = ccui.Button:create()
-      self.connection13=textButton
-      textButton:setTouchEnabled(true)--
-      textButton:loadTextures("png/dadishu-choujiang-1-1-guanbi-liang.png", "png/dadishu-choujiang-1-1-guanbi.png", "")
-      textButton:setPosition(cc.p(x,y))
-      textButton:addTouchEventListener(function(sender, eventType)
-                    
-                    if eventType == ccui.TouchEventType.ended then
-                          _obj:removeFromParent()
-                          if self._Xscnum then
-                                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
-                          end
-
-                          if self._Rtrue==1 then
-                                  local particle2 = cc.ParticleSystemQuad:create("endingCoin2.plist")
-                                 particle2:setPosition(cc.p(display.cx,display.cy))
-                                 self:addChild(particle2)
-                                 audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)
-                          end
-                    end
-            end)
-      _obj:addChild(textButton)
 end
 --网页链接获得金币
 function bigwheelLayer:function_httpgold( _obj,x,y )
