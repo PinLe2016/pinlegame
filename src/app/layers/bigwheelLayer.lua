@@ -58,6 +58,10 @@ function bigwheelLayer:ctor(params)
 	self.count=0
       self.CheckBox_volume=0
       print("广告图",params.image_name)
+       local  _rd=tonumber(math.random(1,5))
+      local _table=LocalData:Instance():get_setgamerecord()--保存数据
+      dump(_table)
+          print("哈哈","  ",_rd)
 	 if params.image_name then
                 self.image_name=params.image_name
       end
@@ -92,7 +96,7 @@ function bigwheelLayer:ctor(params)
         self:function_HitVolesEnd()
       end
         --转盘随机数出现
-      local  _rd=tonumber(math.random(1,5))
+     
       if tonumber(self.Points) > 250  then
          self:fun_bigrandom()
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
@@ -100,6 +104,7 @@ function bigwheelLayer:ctor(params)
 
       elseif _rd   ==3  or  _rd   ==2  or  _rd   ==4    then   --60%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
+           dump(_table)
            local goldspool=_table["goldspool"]
             if tonumber(goldspool["coolingtime"]) ==  -1  or   tonumber(goldspool["getcardamount"])== 0 then    
               return
