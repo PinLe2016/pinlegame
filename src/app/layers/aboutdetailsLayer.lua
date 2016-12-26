@@ -107,6 +107,7 @@ function aboutdetailsLayer:init(  )
              self.curr_bright=_bt1--记录当前高亮
 
               local _bt2=self.advice_bg:getChildByTag(186)  --建议回复按钮
+              _bt2:setTouchEnabled(false)
              _bt2:addTouchEventListener((function(sender, eventType  )
                      self:fun_back(sender, eventType)
                end))
@@ -119,6 +120,7 @@ function aboutdetailsLayer:init(  )
              self.curr_bright1=_bt3--记录当前高亮
 
               local _bt4=self.business_bg:getChildByTag(268)  --回复按钮
+              _bt4:setTouchEnabled(false)
              _bt4:addTouchEventListener((function(sender, eventType  )
                      self:fun_callback(sender, eventType)
                end))
@@ -256,6 +258,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
 
            	elseif tag==307 then  --商务合作返回
            		-- self.business_bg:setVisible(false)
+                  audio.playMusic("sound/effect/guanbi.mp3",false)
            		 self.companyname_text:setVisible(false)
            	            self.nametext:setVisible(false)
            	            self.phonetext:setVisible(false)
