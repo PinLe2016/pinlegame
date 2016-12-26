@@ -253,6 +253,11 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                             return
                   end
 
+                   if not string.find(_tel,"^[+-]?%d+$")  then
+                      Server:Instance():prompt("手机号输入非法，请重新输入")
+                      return
+                  end
+                  
                   LocalData:Instance():set_back("1") 
                   Server:Instance():setfeedback({type="0",company="北京拼乐",name=_name,tel=_tel,content=_content})
 
@@ -285,6 +290,13 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                             Server:Instance():prompt("请您完善信息")
                             return
                   end
+
+                  if not string.find(_tel,"^[+-]?%d+$")  then
+                      Server:Instance():prompt("手机号输入非法，请重新输入")
+                      return
+                  end
+
+
 
                   LocalData:Instance():set_back("1")
                   --type    0为建议反馈，1为商务合作    
