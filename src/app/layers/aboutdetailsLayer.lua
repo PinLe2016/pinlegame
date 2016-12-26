@@ -275,9 +275,9 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
 
            	elseif tag==364 then  --商务合作提交  
            		print("商务提交")
-                  local _name=self.name_text:getText()--getString()  --
-                  local _tel= self.phone_text:getText()  --self.phonetext
-                  local _content=self.content_text:getText()  --self.contenttext
+                  local _name=self.nametext:getText()--getString()  --
+                  local _tel= self.phonetext:getText()  --self.phonetext
+                  local _content=self.contenttext:getText()  --self.contenttext
                   local _company=self.companyname_text:getText()  --self.companyname_text
                    if (_name=="请输入联系人姓名"  or  _name== "") or (_tel=="请输入联系方式"  or  _tel== "")  or (_content=="请输入您的宝贵建议(200字以内)"  or  _content== "") or (_company=="请输入公司名称"  or  _company== "")  then
                             LocalData:Instance():set_back("0")
