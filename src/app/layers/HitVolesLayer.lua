@@ -337,8 +337,8 @@ function HitVolesLayer:callback(dt)
             --  self.congratulations:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
             --   self.congratulations:setVisible(true)--self.m_time
             -- self.congratulations_text:setString(tostring(self.m_time))
-             self:server_data()
-             self.scheduler:unscheduleScriptEntry(self.schedulHandle)
+            self:server_data()
+            self.scheduler:unscheduleScriptEntry(self.schedulHandle)
              return
          end
         

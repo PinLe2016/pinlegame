@@ -13,7 +13,6 @@ function FriendrequestLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
        Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
-              
        --Server:Instance():getfriendlist()--查询好友列表   
        --Server:Instance():set_friend_reward_setting()
       
@@ -115,7 +114,7 @@ function FriendrequestLayer:init(  )
        for i=1,#self.managerlist do    --   tag
           for j=1,#_table do
             if self.managerlist[i]["friendscount"]==_table[j] then  --
-                lo_img[i]:loadTextures("png/yaoqinghaoyou-01-anniu-hui.png", "png/yaoqinghaoyou-01-anniu-hui.png", "")--(cc.c3b(100,100,100))
+                lo_img[i]:setColor(cc.c3b(100,100,100))
                 lo_img[j]:setTouchEnabled(false)
         end
           end
