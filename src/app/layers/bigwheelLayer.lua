@@ -541,13 +541,9 @@ function bigwheelLayer:fun_began(  )
                self.CheckBox:setTouchEnabled(true)
                self._prize:setVisible(false)
                self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
-<<<<<<< HEAD
-              
-=======
+
                self:fun_bigback(self.bigwheelLayer,m_turnBg:getPositionX()+m_turnBg:getContentSize().width/7*3*1.02,m_turnBg:getPositionY()+m_turnBg:getContentSize().height/7*3*1.02)
                
->>>>>>> 390f18440873dfc08e1b067aaf56f061c4b2802e
-
                  local function stopAction()
                         if self.bigwheelLayer then
                          self.bigwheelLayer:removeFromParent()
