@@ -39,7 +39,7 @@ function mailLayer:ctor()
                 end
                   self:removeFromParent()
                   LocalData:Instance():set_getaffiche(nil)
-                  -- Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
+                   Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
                         end)
 
           

@@ -416,7 +416,11 @@ function GameScene:onEnter()
                        function()
                         local  _img= LocalData:Instance():get_user_img()
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                        dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
+                        -- if jaclayer_data[1]["imgurl"] then
+                        --   _img=Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")--jaclayer_data[1]["imgurl"]
+                        -- end
                         local  _addetailurl = tostring(1)
                         if jaclayer_data[1]["addetailurl"] then
                            _addetailurl=jaclayer_data[1]["addetailurl"]

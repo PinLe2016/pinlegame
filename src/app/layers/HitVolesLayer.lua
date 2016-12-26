@@ -14,8 +14,8 @@ end)
                   {target=nil,_randdate=nil}
           }
          
-        self.countdown_time =34    --  设置倒计时
-        self.dishu_time=34
+        self.countdown_time =1    --  设置倒计时
+        self.dishu_time=1
         self:setNodeEventEnabled(true)--layer添加监听
 
         self.filename=params.filename

@@ -586,6 +586,7 @@ function MainInterfaceScene:fun_checkin( tm )
             self.Signin_act = cc.CSLoader:createTimeline("Signinact.csb")
             self.Signinact:runAction(self.Signin_act)
             self.Signin_act:gotoFrameAndPlay(0,80, false)
+            audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)
 
           -- Util:scene_control("MainInterfaceScene")  --禁止
         end

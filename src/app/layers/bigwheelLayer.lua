@@ -57,10 +57,11 @@ function bigwheelLayer:ctor(params)
 
 	self.count=0
       self.CheckBox_volume=0
-
+      print("广告图",params.image_name)
 	 if params.image_name then
                 self.image_name=params.image_name
-             end
+      end
+      LocalData:Instance():set_user_img(self.image_name)
       self.addetailurl=params.addetailurl
 
     self.id=params.id
@@ -97,14 +98,13 @@ function bigwheelLayer:ctor(params)
       elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
            self:fun_bigrandom()
 
-      elseif _rd   ==3  or  _rd   ==2  or  _rd == 4    then   --60%  概率
+      elseif _rd   ==3  or  _rd   ==2  or  _rd    ~=   -1   then   --60%  概率
            local _table=LocalData:Instance():get_setgamerecord()--保存数据
            local goldspool=_table["goldspool"]
-            if tonumber(goldspool["coolingtime"]) ==  -1 then   --  
+            if tonumber(goldspool["coolingtime"]) ==  -1  or   tonumber(goldspool["getcardamount"])== 0 then    
               return
             end
-        
-        self:fun_bigrandom()
+           self:fun_bigrandom()
          
       end
       
@@ -131,7 +131,9 @@ function bigwheelLayer:function_HitVolesEnd(  )
 
 
                local _advertiImg=self.HitVolesEndLayer:getChildByTag(201)  --  上面广告图
-                _advertiImg:loadTexture( self.image_name) 
+               local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+               print("广告图1",path  ..  self.image_name)
+                _advertiImg:loadTexture(  self.image_name) 
                _advertiImg:addTouchEventListener(function(sender, eventType  )
                      if eventType ~= ccui.TouchEventType.ended then
                            sender:setScale(1)
@@ -278,7 +280,8 @@ function bigwheelLayer:function_puzzle(  )
               count:setString(tostring(LocalData:Instance():getTheycount()))
 
               local _advertiImg=self.puzzleEndLayer:getChildByTag(356)  --  上面广告图
-              _advertiImg:loadTexture( self.image_name) 
+              local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+              _advertiImg:loadTexture(  self.image_name) 
               _advertiImg:addTouchEventListener(function(sender, eventType  )
                       if eventType ~= ccui.TouchEventType.ended then
                            sender:setScale(1)
@@ -376,10 +379,11 @@ function bigwheelLayer:fun_callback( sender, eventType )
                print("炫耀")
                self.share=Util:share(1)
             elseif tag==256 then 
-               GameScene = require("app.scenes.GameScene")--惊喜吧
-                local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})--拼图
-                cc.Director:getInstance():replaceScene(scene)
-                LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+               -- GameScene = require("app.scenes.GameScene")--惊喜吧
+               --  local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})--拼图
+               --  cc.Director:getInstance():replaceScene(scene)
+               --  LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+                self:try_again()
             elseif tag==305 then 
                Util:scene_control("GoldprizeScene")
             elseif tag==756 then 
@@ -606,7 +610,7 @@ function bigwheelLayer:fun_began(  )
                self._Instead:setVisible(false)
                self.CheckBox:setTouchEnabled(true)
                self._prize:setVisible(false)
-               --self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
+               self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
                self:fun_bigback(self.bigwheelLayer,m_turnBg:getPositionX()+m_turnBg:getContentSize().width/7*3*1.02,m_turnBg:getPositionY()+m_turnBg:getContentSize().height/7*3*1.02)
                
 
@@ -705,8 +709,8 @@ end
 
 --再来一局提示
 function bigwheelLayer:try_again()
-    self.floating_layer:showFloat("再来一局？",function (sender, eventType)
-                                  if eventType==1 then
+    -- self.floating_layer:showFloat("再来一局？",function (sender, eventType)
+    --                               if eventType==1 then
 
                                           self.IF_VOER=false
                                           local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
@@ -725,7 +729,7 @@ function bigwheelLayer:try_again()
                                                 end
                                                 self.IF_VOER=true
                                               end)  
-                                              -- self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
+                                              self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
 
                                               return
 
@@ -739,10 +743,10 @@ function bigwheelLayer:try_again()
                                           local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})--拼图
                                           cc.Director:getInstance():replaceScene(scene)
                                           LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
-                                          -- self.end_bt:setVisible(true)
-                                  end
+                                          self.end_bt:setVisible(true)
+                                  --end
 
-                            end)
+                            -- end)
 end
 
 --  网页链接
