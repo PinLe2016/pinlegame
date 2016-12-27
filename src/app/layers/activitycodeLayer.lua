@@ -333,6 +333,12 @@ function activitycodeLayer:act_list()
             end))
 
             local dayText=cell:getChildByTag(756)
+              local  _time12=sup_data[i]["finishtime"]-sup_data[i]["nowtime"]
+            if _time12>0 then
+                 local time_label=cell:getChildByTag(753)
+                  time_label:setVisible(true)
+                  
+            end
             local  _time=sup_data[i]["nowtime"]-sup_data[i]["begintime"]
             if _time <=  0 then
               local time_text=cell:getChildByTag(780)
@@ -342,6 +348,8 @@ function activitycodeLayer:act_list()
               time_label2:setVisible(false)
               time_text:setString("距离活动开始还有:")
             end
+          
+            print("sdf ",_time12,"  ",self._typeevt)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
 
             if self._typeevt  == 5  then  --影藏标记
