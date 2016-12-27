@@ -89,11 +89,11 @@ function LocalData:get_user_pintu()
 end
 
 function LocalData:set_user_img(_pintu)
-	cc.UserDefault:getInstance():setStringForKey("pintu" ,_pintu)
+	cc.UserDefault:getInstance():setStringForKey("pintu12" ,_pintu)
 end
 
 function LocalData:get_user_img()
-	local user_pintu=cc.UserDefault:getInstance():getStringForKey("pintu"," ")
+	local user_pintu=cc.UserDefault:getInstance():getStringForKey("pintu12"," ")
 	return user_pintu or nil
 end
 
