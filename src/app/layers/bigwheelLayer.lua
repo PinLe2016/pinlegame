@@ -97,7 +97,7 @@ function bigwheelLayer:ctor(params)
       else
         self:function_HitVolesEnd()
       end
-      self:fun_bigrandom()
+      --self:fun_bigrandom()
         --转盘随机数出现
        if goldspool["coolingtime"]  ~= -1   or  goldspool["getcardamount"]  ~=   0  then  -- 判断奖池次数是否用完 
                 if tonumber(self.Points) > 250  then   
