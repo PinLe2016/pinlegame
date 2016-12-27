@@ -35,6 +35,7 @@ function debrisLayer:ctor(params)
         end  
        
         
+        math.randomseed(tostring(os.time()):reverse():sub(1, 7))--随机种子
 
         self.content_size = self._size
          self.tp=params.tp

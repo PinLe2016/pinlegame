@@ -162,6 +162,15 @@ function bigwheelLayer:function_HitVolesEnd(  )
               dishu_score:setProperty( tostring(goldspool["poolgolds"]),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.HitVolesEndLayer:addChild(dishu_score) 
 
+               if goldspool["coolingtime"]  ~= -1   or  goldspool["getcardamount"]  ~=   0  then  -- 判断奖池次数是否用完 
+                      if tonumber(self.Points) > 250  then   
+                           dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
+                        elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
+                             dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
+                        end
+              end
+              
+
               local _jinbitupian=self.HitVolesEndLayer:getChildByTag(196):getChildByTag(254)  
               local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
               local dishuji=_shuju["goldspool"]
@@ -384,6 +393,15 @@ function bigwheelLayer:function_puzzle(  )
               dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
               dishu_score:setProperty( tostring(goldspool["poolgolds"]),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.puzzleEndLayer:addChild(dishu_score) 
+
+               if goldspool["coolingtime"]  ~= -1   or  goldspool["getcardamount"]  ~=   0  then  -- 判断奖池次数是否用完 
+                      if tonumber(self.Points) > 250  then   
+                           dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
+                        elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
+                             dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
+                        end
+              end
+
 
 
               local _jinbitupian=self.puzzleEndLayer:getChildByTag(293):getChildByTag(1331)  
@@ -869,7 +887,6 @@ function bigwheelLayer:try_again()
                                                     self.IF_VOER=true
                                                   end)  
                                                
-
                                                   return
 
                                               end
