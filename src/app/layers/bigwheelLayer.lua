@@ -156,10 +156,20 @@ function bigwheelLayer:function_HitVolesEnd(  )
                local labelAtlas=self.HitVolesEndLayer:getChildByTag(255) --分数
                labelAtlas:setVisible(false)
               local  dishu_score = ccui.TextAtlas:create()
+              self.dadishujinbi=dishu_score
               dishu_score:setAnchorPoint(0,0.5)
               dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
               dishu_score:setProperty( tostring(goldspool["poolgolds"]),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.HitVolesEndLayer:addChild(dishu_score) 
+
+              local _jinbitupian=self.HitVolesEndLayer:getChildByTag(196):getChildByTag(254)  
+              local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
+              local dishuji=_shuju["goldspool"]
+              local _playerinfo=_shuju["playerinfo"]
+               if dishuji["coolingtime"]  == -1   or  dishuji["getcardamount"]  ==   0  then  -- 判断奖池次数是否用完 
+                  _jinbitupian:loadTexture("png/dadishu-huodejifen-zi.png")
+                  dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
+              end
               local _gamerecord=LocalData:Instance():get_setgamerecord()--保存数据
               local goldspool=_gamerecord["goldspool"]
               local ranking=self.HitVolesEndLayer:getChildByTag(272)  --  %数
@@ -220,19 +230,19 @@ function bigwheelLayer:star_action()
       -- 7秒以内三星
        local  xingnumber=0
        if self.choose==1 then
-            if tonumber(LocalData:Instance():getpuzzletime()) >= 12  then
+            if tonumber(LocalData:Instance():getpuzzletime()) >31  then
               xingnumber=1
-            elseif tonumber(LocalData:Instance():getpuzzletime()) >= 0  and  tonumber(LocalData:Instance():getpuzzletime())<7 then
+            elseif tonumber(LocalData:Instance():getpuzzletime()) >= 0  and  tonumber(LocalData:Instance():getpuzzletime())<10 then
               xingnumber=3
-            elseif tonumber(LocalData:Instance():getpuzzletime()) >= 7  and  tonumber(LocalData:Instance():getpuzzletime())<12 then
+            elseif tonumber(LocalData:Instance():getpuzzletime()) >= 11  and  tonumber(LocalData:Instance():getpuzzletime())<=30 then
               xingnumber=2
              end       
       else
-         if tonumber(self.Points) > 250  then
+         if tonumber(self.Points) >= 250  then
           xingnumber=3
-        elseif tonumber(self.Points) >= 0  and  tonumber(self.Points)<=150 then
+        elseif tonumber(self.Points) >= 0  and  tonumber(self.Points)<100 then
           xingnumber=1
-        elseif tonumber(self.Points) > 150  and  tonumber(self.Points)<=250 then
+        elseif tonumber(self.Points) >= 100  and  tonumber(self.Points)<=249 then
           xingnumber=2
          end
       end
@@ -284,7 +294,8 @@ function bigwheelLayer:star_action()
                        if self._Rtrue==1 then
                          return
                        end
-                       local _plist=nifl
+                       local _plist=nil
+                     
                        if ( tonumber(self.Points)<= 9      and  tonumber(self.Points)  ~=  0)     or    (tonumber(LocalData:Instance():getpuzzletime())>=41  and    tonumber(LocalData:Instance():getpuzzletime())  ~=100)      then
                            return
                         elseif tonumber(self.Points)<= 100     or    tonumber(LocalData:Instance():getpuzzletime())>=31 then
@@ -296,9 +307,17 @@ function bigwheelLayer:star_action()
                          elseif tonumber(self.Points)>  250     or    tonumber(LocalData:Instance():getpuzzletime())<10 then
                            _plist="endingCoin320.plist"
                        end
-                       -- if tonumber(self.Points)  ~=  0)   and tonumber(LocalData:Instance():getpuzzletime())  ~=100)  then
-                       --   return
-                       -- end
+                       if tonumber(self.Points)  ==  0   and  tonumber(LocalData:Instance():getpuzzletime())  ==100 then
+                         return
+                       end
+
+                        local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
+                        local dishuji=_shuju["goldspool"]
+                         if dishuji["coolingtime"]  == -1   or  dishuji["getcardamount"]  ==   0  then  -- 判断奖池次数是否用完 
+                                  return
+                        end
+
+
                        local particle2 = cc.ParticleSystemQuad:create(tostring(_plist))
                        particle2:setPosition(cc.p(display.cx,display.cy))
                        self:addChild(particle2)
@@ -360,10 +379,24 @@ function bigwheelLayer:function_puzzle(  )
              local _table=LocalData:Instance():get_setgamerecord()--保存数据
              local goldspool=_table["goldspool"]
               local  dishu_score = ccui.TextAtlas:create()
+              self.pintujinbi=dishu_score
               dishu_score:setAnchorPoint(0,0.5)
               dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
               dishu_score:setProperty( tostring(goldspool["poolgolds"]),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.puzzleEndLayer:addChild(dishu_score) 
+
+
+              local _jinbitupian=self.puzzleEndLayer:getChildByTag(293):getChildByTag(1331)  
+              local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
+              local dishuji=_shuju["goldspool"]
+              local _playerinfo=_shuju["playerinfo"]
+               if dishuji["coolingtime"]  == -1   or  dishuji["getcardamount"]  ==   0  then  -- 判断奖池次数是否用完 
+                  _jinbitupian:loadTexture("png/dadishu-huodejifen-zi.png")
+                  dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
+              end
+
+
+
               local win_text=self.puzzleEndLayer:getChildByTag(514)  -- 战胜%
               win_text:setString(tostring(goldspool["myscore"]))
 
@@ -715,7 +748,7 @@ function bigwheelLayer:fun_began(  )
                self._Instead:setVisible(false)
                self.CheckBox:setTouchEnabled(true)
                self._prize:setVisible(false)
-               self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
+               --self:big_end(true,self.m_turnArr:getPositionX(),self.volume_num:getPositionY()-150,self.bigwheelLayer )
                self:fun_bigback(self.bigwheelLayer,m_turnBg:getPositionX()+m_turnBg:getContentSize().width/7*3*1.02,m_turnBg:getPositionY()+m_turnBg:getContentSize().height/7*3*1.02)
                
 
@@ -835,7 +868,7 @@ function bigwheelLayer:try_again()
                                                     end
                                                     self.IF_VOER=true
                                                   end)  
-                                                  self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续拼图只能获得积分") 
+                                               
 
                                                   return
 
@@ -962,15 +995,21 @@ function bigwheelLayer:fun_bigback( _obj,x,y )
       textButton:loadTextures("png/dadishu-choujiang-1-1-guanbi-liang.png", "png/dadishu-choujiang-1-1-guanbi.png", "")
       textButton:setPosition(cc.p(x,y))
       textButton:addTouchEventListener(function(sender, eventType)
-                    
+       local _gold=LocalData:Instance():get_getgoldspoolrandomgolds()           
                     if eventType == ccui.TouchEventType.ended then
                           _obj:removeFromParent()
+                          if self.pintujinbi then
+                               self.pintujinbi:setProperty( tostring(_gold["golds"]),"png/dadishufenshu.png", 24, 26, "0")
+                          end
+                          if  self.dadishujinbi then
+                                self.dadishujinbi:setProperty( tostring(_gold["golds"]),"png/dadishufenshu.png", 24, 26, "0") 
+                          end
                           if self._Xscnum then
                                   cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._Xscnum)
                           end
 
                           if self._Rtrue==1 then
-                                  local particle2 = cc.ParticleSystemQuad:create("endingCoin320.plist.plist")
+                                  local particle2 = cc.ParticleSystemQuad:create("endingCoin320.plist")
                                  particle2:setPosition(cc.p(display.cx,display.cy))
                                  self:addChild(particle2)
                                  audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)

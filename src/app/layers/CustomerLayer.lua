@@ -50,14 +50,16 @@ function CustomerLayer:callback( sender, eventType )
           sender:getChildByTag(972):setVisible(false)
           if tag==1 then
           	  print("攻略")
+              local ForhelpLayer = require("app.layers.ForhelpLayer") --兑换帮助
+              self:addChild(ForhelpLayer.new(),1,12)
           elseif tag==2 then
           	  print("修改密码")
           	   local ChangepasswordLayer = require("app.layers.ChangepasswordLayer") --修改密码
                self:addChild(ChangepasswordLayer.new(),1,12)
           elseif tag==3 then
           	  print("兑换帮助")
-          	  local ForhelpLayer = require("app.layers.ForhelpLayer") --兑换帮助
-               self:addChild(ForhelpLayer.new(),1,12)
+          	  -- local ForhelpLayer = require("app.layers.ForhelpLayer") --兑换帮助
+             --   self:addChild(ForhelpLayer.new(),1,12)
           end
          
 end

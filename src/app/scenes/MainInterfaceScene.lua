@@ -58,9 +58,7 @@ function MainInterfaceScene:ctor()
        --   particle2:changeDisplayWithIndex(0, true)
        -- particle2:setIgnoreMovementBoneData(true)
 
-  --       local particle = cc.ParticleSystemQuad:create("goldCoin(3).plist")
-  --       particle:setPosition(display.cx,display.cy)
-  -- self:addChild(particle)
+       
 
 
       
@@ -267,7 +265,7 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
       self:addChild(aboutdetailsLayer.new(),1,12)
   elseif tag==6225 then
      print("声音")
-     self:funsetup(  )
+     self:funsetup( true )
      
      
   end
@@ -368,7 +366,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
 	           Server:Instance():getcheckinhistory()  --签到http
       elseif tag==48 then  --设置
-            self:funsetup(  )
+            self:funsetup( true )
       elseif tag==580 then  --邮箱
             print("邮箱")
             local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
@@ -412,7 +410,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
                   self.actbg:setVisible(false)
             end
       elseif tag==53 then  --设置
-            self:funsetup(  )
+            self:funsetup( true )
 
       elseif tag==52 then  --邀请好友
         local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
@@ -460,13 +458,14 @@ function MainInterfaceScene:fun_storebrowser(  )
 end
 
 
-function MainInterfaceScene:funsetup(  )
+function MainInterfaceScene:funsetup( Isture )
         -- self.set_bg=self.MainInterfaceScene:getChildByTag(88)
         -- self.set_bg:setVisible(true)
         
         self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
         self.set_Xbg=self.MainInterfaceScene:getChildByTag(563)
-        self.set_Xbg:setVisible(true)
+        self.set_Xbg:setVisible(Isture)
+        self.set_bg1:setVisible(Isture)
         -- self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
         -- self:addChild(self.fragment_sprite1)
         -- self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png")
@@ -475,7 +474,7 @@ function MainInterfaceScene:funsetup(  )
 
 
           self:move_layer(self.set_bg1)
-        self.set_bg1:setVisible(true)
+        self.set_bg1:setVisible(Isture)
         local set_back=self.set_bg1:getChildByTag(91)
         set_back:addTouchEventListener(function(sender, eventType  )
               self:touch_callback(sender, eventType)
@@ -588,12 +587,19 @@ function MainInterfaceScene:fun_checkin( tm )
             LocalData:Instance():set_userdata(userdt) --  保存数据
 
           --       签到增加的金币
-            self.Signinact = cc.CSLoader:createNode("Signinact.csb")
-            self.checkinlayer:addChild(self.Signinact)
-            self.Signin_act = cc.CSLoader:createTimeline("Signinact.csb")
-            self.Signinact:runAction(self.Signin_act)
-            self.Signin_act:gotoFrameAndPlay(0,80, false)
+            -- self.Signinact = cc.CSLoader:createNode("Signinact.csb")
+            -- self.checkinlayer:addChild(self.Signinact)
+            -- self.Signin_act = cc.CSLoader:createTimeline("Signinact.csb")
+            -- self.Signinact:runAction(self.Signin_act)
+            -- self.Signin_act:gotoFrameAndPlay(0,80, false)
             audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)
+
+
+        local particle = cc.ParticleSystemQuad:create("goldCoin(3).plist")
+        particle:setPosition(display.cx,display.cy*3/2)
+        particle:setDuration(1)
+        self:addChild(particle,300)
+
 
           -- Util:scene_control("MainInterfaceScene")  --禁止
         end
@@ -758,6 +764,10 @@ function MainInterfaceScene:onEnter()
                                      end
                               end
                       end)
+NotificationCenter:Instance():AddObserver("XINYUE", self,
+                       function()
+                       self:funsetup(false)  
+                      end)
 
 end
 
@@ -768,6 +778,7 @@ function MainInterfaceScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
+  NotificationCenter:Instance():RemoveObserver("XINYUE", self)
 end
 
 --android 返回键 响应

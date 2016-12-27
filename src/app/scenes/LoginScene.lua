@@ -129,9 +129,14 @@ end
 
 
  function LoginScene:registered_init()
-   local function Getverificationcode_btCallback(sender, eventType)
-        if eventType == ccui.TouchEventType.ended then
 
+   local _ybt=self.registered:getChildByTag(220) --注册验证码按钮
+   local function Getverificationcode_btCallback(sender, eventType)
+          sender:setScale(0.8)
+          _ybt:setVisible(false)
+        if eventType == ccui.TouchEventType.ended then
+          sender:setScale(1)
+          _ybt:setVisible(true)
           sender:setColor(cc.c3b(100, 100, 100))
           sender:setTouchEnabled(false)
            self.layertype=1
@@ -193,6 +198,7 @@ end
               Server:Instance():reg(self.phone_text:getText(),self.Zpassword_text:getText(),self.Zcode_text:getText())
         end
     end
+
      local function callback_btCallback(sender, eventType) 
         if eventType == ccui.TouchEventType.ended then
            print("取消")
@@ -356,7 +362,29 @@ function LoginScene:_passwordLayer( )
                end))
            self.yanzhengma = self.passwordLayer:getChildByTag(291)
           self.yanzhengma:addTouchEventListener((function(sender, eventType  )
-                     self:touch_Callback(sender, eventType)
+                     --self:touch_Callback(sender, eventType)
+
+                      if eventType ~= ccui.TouchEventType.ended then
+                             sender:setScale(0.8)
+                       return
+                     end
+                     sender:setScale(1)
+
+                    self.p_random=Util:rand(  ) --随机验证码\
+                    local phone=self.passwordLayer:getChildByTag(293)
+                    self._mobilephone=self.Wphone_text:getText()
+                    print(" 长度 ",string.len(self._mobilephone))
+
+                    if string.len(self._mobilephone)~=11 then
+                     Server:Instance():promptbox_box_buffer("填写手机号码错误")
+                     return
+                    end
+                    sender:setTouchEnabled(false)
+                    sender:setColor(cc.c3b(100, 100, 100))
+                    self.layertype=2
+                    Server:Instance():sendmessage(2,self._mobilephone)
+                    print("邀请码"..self.p_random)
+
                end))
 
 
@@ -491,7 +519,7 @@ end
                 self.code_bt:setColor(cc.c3b(255, 255, 255))
               end
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止定时器
-                 self.code_bt:setTitleText("获取验证密码")
+                 self.code_bt:setTitleText("获取验证码")
              
            end
 end
@@ -560,7 +588,7 @@ function LoginScene:onEnter()
                                   self.Getverificationcode_bt:setColor(cc.c3b(255, 255, 255))
                               end
                               --    cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止定时器
-                                   self.Getverificationcode_bt:setTitleText("获取验证密码")
+                                   self.Getverificationcode_bt:setTitleText("获取验证码")
                                   print("开始")
                              if self._scode then
                                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器

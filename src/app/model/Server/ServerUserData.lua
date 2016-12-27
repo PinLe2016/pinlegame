@@ -278,6 +278,7 @@ function Server:getconfig_callback()
         return
     end
     LocalData:Instance():set_getconfig(self.data)--
+    NotificationCenter:Instance():PostNotification("XINYUE")
 end
 --设置音效  0开启  1关闭
 function Server:setconfig(itemsId ,status)
