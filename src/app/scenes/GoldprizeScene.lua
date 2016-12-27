@@ -334,7 +334,9 @@ function GoldprizeScene:onEnter()
                                     
                          else
                          	local  _Issecond=0
-                         	if tonumber(getgoldspoolbyid["getcardamount"]) ~= 2 then
+
+                         	if tonumber(getgoldspoolbyid["getcardamount"]) ~=2 then
+
                          		_Issecond=1
                          	end
                          	  LocalData:Instance():set_user_img(self.image_name)
