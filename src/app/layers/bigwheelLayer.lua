@@ -476,6 +476,7 @@ function bigwheelLayer:fun_callback( sender, eventType )
                self:fun_storebrowser()
             elseif tag==776 then 
                Util:scene_control("GoldprizeScene")
+               Util:all_layer_backMusic()
             elseif tag==258 then 
                print("炫耀")
                self.share=Util:share(1)
@@ -486,6 +487,7 @@ function bigwheelLayer:fun_callback( sender, eventType )
                --  LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                 self:try_again()
             elseif tag==305 then 
+              Util:all_layer_backMusic()
                Util:scene_control("GoldprizeScene")
             elseif tag==756 then 
                print("炫耀")

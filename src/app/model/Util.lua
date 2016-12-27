@@ -345,6 +345,12 @@ function Util:stop_music( musicname ) -- 停止播放音乐
    end   
 end
 
+function Util:all_layer_backMusic() -- 所有界面返回音效
+    audio.playSound("sound/effect/guanbi.mp3",false)
+end
+
+
+
 
 return Util
 

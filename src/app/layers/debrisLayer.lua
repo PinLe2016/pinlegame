@@ -262,7 +262,7 @@ function debrisLayer:saw_issuccess()
                           Server:Instance():setgamerecord(self.adid,0,0,self.count_time)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
-                 self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.1),callfunc  ))
                  
 end
 function debrisLayer:fun_endanimation()
@@ -373,6 +373,7 @@ function debrisLayer:touch_callback( sender, eventType )
        elseif tag==106 then   --返回奖池
            if self.Rewardvouchers then
               self.Rewardvouchers:removeFromParent()
+              Util:all_layer_backMusic()
           end
            -- cc.Director:getInstance():popScene()
            -- Server:Instance():sceneinformation()

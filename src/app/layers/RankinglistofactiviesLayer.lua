@@ -158,7 +158,7 @@ function RankinglistofactiviesLayer:back( sender, eventType)
 
              Server:Instance():getactivitybyid(self.id,0)
              self:removeFromParent()
-
+             Util:all_layer_backMusic()
 
 end
 function RankinglistofactiviesLayer:onImageViewClicked( sender, eventType )

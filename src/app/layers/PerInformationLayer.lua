@@ -345,6 +345,7 @@ function PerInformationLayer:touch_back( sender, eventType )
                  return
             end
             self:removeFromParent()
+            Util:all_layer_backMusic()
             --Util:scene_control("MainInterfaceScene")
             
         end

@@ -218,6 +218,7 @@ function GoldprizeScene:fun_selectbox( _tag )
                               end
                               if self.Selectbox then
                               	self.Selectbox:removeFromParent()
+                              	Util:all_layer_backMusic()
                               end
             end)
 
@@ -293,7 +294,8 @@ function GoldprizeScene:touch_callback( sender, eventType )
             Server:Instance():gettasklist()
     --      local taskLayer = require("app.layers.taskLayer")  --关于任务界面
 				-- self:addChild(taskLayer.new())
-                        end
+         end
+         Util:all_layer_backMusic()
 	elseif tag==58 then --说明
 		 self:fun_prizepoolules()
 	elseif tag==1044 then

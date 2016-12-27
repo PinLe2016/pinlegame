@@ -65,6 +65,8 @@ function ForhelpLayer:touch_callback(sender, eventType)
              end
           local tag=sender:getTag()
           if tag==672 then
+            Util:all_layer_backMusic()
+            
           	self:removeFromParent()
           elseif tag==788 then
             self.panel_bg:setVisible(false)

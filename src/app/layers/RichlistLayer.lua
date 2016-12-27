@@ -15,7 +15,7 @@ function RichlistLayer:ctor()
 	self:addChild(self.RichlistLayer)
 	
 	self.number_pages=1  --  页数
-	self._type=3   --  类型
+	self._type=0   --  类型
 	Server:Instance():getgoldsranklist(http_number,self.number_pages,self._type)  ---pagesize 每页显示数据  pageno页号  type 0日榜、1周榜、2月榜、3年榜 
 
 
@@ -25,6 +25,7 @@ function RichlistLayer:ctor()
 		                return
 		            end
 		           self:removeFromParent()
+               Util:all_layer_backMusic()
                         end)
 
             self.rank_list=self.RichlistLayer:getChildByTag(858)
@@ -55,8 +56,8 @@ function RichlistLayer:ctor()
     	   years_bt:addTouchEventListener((function(sender, eventType  )
                      self:list_btCallback(sender, eventType)
                 end))
-         years_bt:setBright(false)
-        self.curr_bright=years_bt--记录当前高亮
+         day_bt:setBright(false)
+        self.curr_bright=day_bt--记录当前高亮
 
             self.rank_list:setItemModel(self.rank_list:getItem(0))
             self.rank_list:removeAllItems()

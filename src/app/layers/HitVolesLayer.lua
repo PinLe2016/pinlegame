@@ -395,7 +395,7 @@ end
 -- 水波动画
 function HitVolesLayer:Act_Waterpolo(_fragment)  --_fragment   图
 
-              audio.playMusic("sound/effect/hit_2.mp3",false)
+              audio.playSound("sound/effect/hit_2.mp3",false)
               local waves = cc.Waves:create(1, cc.size(10, 10), 10, 5, true, true);
               local  liquid = cc.Liquid:create(0.5, cc.size(10, 10), 2, 5.0);  
               _fragment:getChildByTag(2):stopAllActions()

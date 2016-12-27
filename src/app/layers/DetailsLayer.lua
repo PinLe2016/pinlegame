@@ -31,9 +31,10 @@ function DetailsLayer:init(  )
 		     if self._ky=="sup" then
 		     	 Util:scene_control("SurpriseScene")
 		     else
+		     	-- Util:all_layer_backMusic()
 		     	 self:removeFromParent()
 		     end
-		    
+		    Util:all_layer_backMusic()
 		    
 		end
 	end

@@ -145,10 +145,12 @@ end
 
                         if tonumber(LocalData:Instance():get_sign()) ~=  2 then
                             Util:scene_control("MainInterfaceScene")
+
                         else
                             cc.Director:getInstance():popScene()
                             Server:Instance():gettasklist()
                         end
+                        Util:all_layer_backMusic()
                         
               end
              self.curr_bright=sender
@@ -456,6 +458,7 @@ function SurpriseScene:fun_theirwin( _text)
               end
               if self.theirwin then
                  self.theirwin:removeFromParent()
+                 Util:all_layer_backMusic()
               end
                    
       end))
@@ -512,6 +515,7 @@ function SurpriseScene:_winners( )
             if self.Winners then
               self.fragment_sprite:removeFromParent()
                self.Winners:removeFromParent()
+               Util:all_layer_backMusic()
             end
                          
      end))

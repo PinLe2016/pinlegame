@@ -136,7 +136,8 @@ function OnerecordLayer:back( sender, eventType)
                 return
             end
             Server:Instance():getactivitybyid(self.id,0)
-             self:removeFromParent()
+            self:removeFromParent()
+            Util:all_layer_backMusic()
 
 end
 function OnerecordLayer:onEnter()
