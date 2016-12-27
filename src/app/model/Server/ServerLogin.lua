@@ -89,7 +89,8 @@ function Server:reg_callback()
      dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer( self.data.err_msg)
-
+        print("上课交电费卡拉斯加")
+         NotificationCenter:Instance():PostNotification("zhuceshibai")
         return
     end
 
@@ -203,6 +204,7 @@ function Server:sendmessage_callback()
     dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
+        NotificationCenter:Instance():PostNotification("wangjimima")
         return
     end
      LocalData:Instance():set_sendmessage(self.data)--
