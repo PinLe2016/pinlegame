@@ -57,15 +57,17 @@ function bigwheelLayer:ctor(params)
 
   self.count=0
       self.CheckBox_volume=0
-      print("广告图",params.image_name)
        local  _rd=tonumber(math.random(1,5))
+     LocalData:Instance():set_user_img(params.image_name)
       local _table=LocalData:Instance():get_setgamerecord()--保存数据
       dump(_table)
-          print("哈哈","  ",_rd)
+      print("经济法打开手机卡")
+      local goldspool=_table["goldspool"]
+
    if params.image_name then
                 self.image_name=params.image_name
       end
-      LocalData:Instance():set_user_img(self.image_name)
+      print("才是",LocalData:Instance():get_user_img())
       self.addetailurl=params.addetailurl
 
     self.id=params.id
@@ -76,7 +78,7 @@ function bigwheelLayer:ctor(params)
     self._rewardgold=0
      self.cotion_gold={}
      self._table={
-         {gold_b=1,gold_e=10},
+         {gold_b=0,gold_e=10},
          {gold_b=50,gold_e=200},
          {gold_b=1000,gold_e=1000},
          {gold_b=20,gold_e=50},
@@ -89,30 +91,21 @@ function bigwheelLayer:ctor(params)
          {gold_b=500,gold_e=500},
          {gold_b=10,gold_e=15}
      }     
-     self._Rtrue =  0  
+      self._Rtrue =  0  
       if self.choose==1 then  --  拼图
          self:function_puzzle()
       else
         self:function_HitVolesEnd()
       end
+      self:fun_bigrandom()
         --转盘随机数出现
-     
-      if tonumber(self.Points) > 250  then
-         self:fun_bigrandom()
-      elseif tonumber(LocalData:Instance():getpuzzletime())  < 7  then    --  时间小于7秒
-           self:fun_bigrandom()
-
-      elseif _rd   ==3  or  _rd   ==2  or  _rd   ==4    then   --60%  概率
-           local _table=LocalData:Instance():get_setgamerecord()--保存数据
-           dump(_table)
-           local goldspool=_table["goldspool"]
-            if tonumber(goldspool["coolingtime"]) ==  -1  or   tonumber(goldspool["getcardamount"])== 0 then    
-              return
-            end
-           self:fun_bigrandom()
-         
-      end
-      
+       if goldspool["coolingtime"]  ~= -1   or  goldspool["getcardamount"]  ~=   0  then  -- 判断奖池次数是否用完 
+                if tonumber(self.Points) > 250  then   
+                     self:fun_bigrandom()
+                  elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
+                       self:fun_bigrandom()
+                  end
+       end
 end
 --   转盘随机数出现
 function bigwheelLayer:fun_bigrandom( )
@@ -125,15 +118,13 @@ function bigwheelLayer:fun_bigrandom( )
 end
 --打地鼠结束界面self.Points
 function bigwheelLayer:function_HitVolesEnd(  )
-             self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-              self:addChild(self.fragment_sprite1,0)
                self.HitVolesEndLayer = cc.CSLoader:createNode("HitVolesEndLayer.csb")
-               self.fragment_sprite1:addChild(self.HitVolesEndLayer)
-               local  hit_bg=self.HitVolesEndLayer:getChildByTag(196)
-               hit_bg:loadTexture("png/GRzhezhaoceng.png")
-         
+               self:addChild(self.HitVolesEndLayer)
 
-
+                self.roleAction = cc.CSLoader:createTimeline("HitVolesEndLayer.csb")
+               self.HitVolesEndLayer:runAction(self.roleAction)
+               self.roleAction:setTimeSpeed(0.3)
+              
 
                local _advertiImg=self.HitVolesEndLayer:getChildByTag(201)  --  上面广告图
                local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
@@ -144,10 +135,10 @@ function bigwheelLayer:function_HitVolesEnd(  )
                            sender:setScale(1)
                            return
                       end
-                          sender:setScale(1.4)
+                          sender:setScale(1.2)
                      self:fun_storebrowser()
                end)
-                self:function_httpgold( self.HitVolesEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
+                --self:function_httpgold( self.HitVolesEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
                local back=self.HitVolesEndLayer:getChildByTag(776)  --  返回
                back:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
@@ -160,19 +151,58 @@ function bigwheelLayer:function_HitVolesEnd(  )
                secondcount:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
                end)
-
+                local _table=LocalData:Instance():get_setgamerecord()--保存数据
+                local goldspool=_table["goldspool"]
                local labelAtlas=self.HitVolesEndLayer:getChildByTag(255) --分数
                labelAtlas:setVisible(false)
               local  dishu_score = ccui.TextAtlas:create()
               dishu_score:setAnchorPoint(0,0.5)
               dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
-              dishu_score:setProperty( tostring(self.Points),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
+              dishu_score:setProperty( tostring(goldspool["poolgolds"]),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.HitVolesEndLayer:addChild(dishu_score) 
               local _gamerecord=LocalData:Instance():get_setgamerecord()--保存数据
               local goldspool=_gamerecord["goldspool"]
               local ranking=self.HitVolesEndLayer:getChildByTag(272)  --  %数
               ranking:setString(goldspool["myscore"])
-              self:star_action()
+               local _score=self.HitVolesEndLayer:getChildByTag(78)  --   分数
+              _score:setString(tostring(self.Points))
+              --  打地鼠动画
+              local dh1=self.HitVolesEndLayer:getChildByTag(80)  --  
+              local dh2=self.HitVolesEndLayer:getChildByTag(81)  --  
+              local dh3=self.HitVolesEndLayer:getChildByTag(82)  --
+              local dh4=self.HitVolesEndLayer:getChildByTag(83)  --  
+             self:fun_shunliwancheng(dh1,dh2,dh3,dh4)
+              --   广告奖励金币
+             
+            self._goldbg=self.HitVolesEndLayer:getChildByTag(69)  --   金币背景
+            self._goldbg:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                         sender:setScale(0.8)
+                         return
+                    end
+                   sender:setScale(1)
+                   self:fun_storebrowser()
+             end)  
+            self.connection13=self._goldbg
+            self._goldnum=self._goldbg:getChildByTag(71)  --  具体金币
+            local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+            local  jaclayer_data=list_table["adlist"] 
+            if jaclayer_data[1]["adurlgold"] then
+              self._goldnum:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
+            else
+            self._goldbg:setVisible(false)  --
+            self._goldnum:setString("+0")
+            end
+
+            if tostring(self.addetailurl)   ==   tostring(1) then
+              self._goldbg:setVisible(false)
+              
+            else
+                self.roleAction:gotoFrameAndPlay(0,35, true)
+            end
+
+            self:star_action()
+
               --self:PintuEndAct(self.HitVolesEndLayer)
 
 end
@@ -210,9 +240,9 @@ function bigwheelLayer:star_action()
       self.star_over_time=xingnumber
 
               local point_buf={
-                cc.p(186.50,1000),
-                cc.p(320,1050),
-                cc.p(459.50,1000)
+                cc.p(186.50,1040),
+                cc.p(320,1080),
+                cc.p(459.50,1040)
               }
 
               local star_buf={}
@@ -254,15 +284,26 @@ function bigwheelLayer:star_action()
                        if self._Rtrue==1 then
                          return
                        end
-                       local particle2 = cc.ParticleSystemQuad:create("endingCoin2.plist")
+                       local _plist=nifl
+                       if ( tonumber(self.Points)<= 9      and  tonumber(self.Points)  ~=  0)     or    (tonumber(LocalData:Instance():getpuzzletime())>=41  and    tonumber(LocalData:Instance():getpuzzletime())  ~=100)      then
+                           return
+                        elseif tonumber(self.Points)<= 100     or    tonumber(LocalData:Instance():getpuzzletime())>=31 then
+                          _plist="endingCoin50.plist"
+                        elseif tonumber(self.Points)<= 200     or    tonumber(LocalData:Instance():getpuzzletime())>=21 then
+                          _plist="endingCoin120.plist"
+                        elseif tonumber(self.Points)<= 250    or    tonumber(LocalData:Instance():getpuzzletime())>=10 then
+                          _plist="endingCoin210.plist"
+                         elseif tonumber(self.Points)>  250     or    tonumber(LocalData:Instance():getpuzzletime())<10 then
+                           _plist="endingCoin320.plist"
+                       end
+                       -- if tonumber(self.Points)  ~=  0)   and tonumber(LocalData:Instance():getpuzzletime())  ~=100)  then
+                       --   return
+                       -- end
+                       local particle2 = cc.ParticleSystemQuad:create(tostring(_plist))
                        particle2:setPosition(cc.p(display.cx,display.cy))
                        self:addChild(particle2)
                        audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)
 
-            end
-
-            if conditions then
-              --todo
             end
               
               local scal =cc.ScaleTo:create(time,1)
@@ -279,8 +320,14 @@ end
 function bigwheelLayer:function_puzzle(  )
               self.puzzleEndLayer = cc.CSLoader:createNode("puzzleEndLayer.csb")
               self:addChild(self.puzzleEndLayer)
+
+             self.roleAction = cc.CSLoader:createTimeline("puzzleEndLayer.csb")
+             self.puzzleEndLayer:runAction(self.roleAction)
+             self.roleAction:setTimeSpeed(0.3)
+             
+
               local time=self.puzzleEndLayer:getChildByTag(513)  --  时间
-              time:setString(tostring(LocalData:Instance():getpuzzletime()) ..   "   秒")
+              time:setString(tostring(LocalData:Instance():getpuzzletime()) )
               local count=self.puzzleEndLayer:getChildByTag(512)  --  步数
               count:setString(tostring(LocalData:Instance():getTheycount()))
 
@@ -295,7 +342,7 @@ function bigwheelLayer:function_puzzle(  )
                           sender:setScale(1.3)
                           self:fun_storebrowser()
              end)
-              self:function_httpgold( self.puzzleEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
+              --self:function_httpgold( self.puzzleEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
             local back=self.puzzleEndLayer:getChildByTag(305)  --  返回
              back:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
@@ -308,6 +355,55 @@ function bigwheelLayer:function_puzzle(  )
              secondcount:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
              end)
+             local labelAtlas =self.puzzleEndLayer:getChildByTag(1332)  --    获得金币数
+             labelAtlas:setVisible(false)
+             local _table=LocalData:Instance():get_setgamerecord()--保存数据
+             local goldspool=_table["goldspool"]
+              local  dishu_score = ccui.TextAtlas:create()
+              dishu_score:setAnchorPoint(0,0.5)
+              dishu_score:setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
+              dishu_score:setProperty( tostring(goldspool["poolgolds"]),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
+              self.puzzleEndLayer:addChild(dishu_score) 
+              local win_text=self.puzzleEndLayer:getChildByTag(514)  -- 战胜%
+              win_text:setString(tostring(goldspool["myscore"]))
+
+               --  打地鼠动画
+              local dh1=self.puzzleEndLayer:getChildByTag(1327)  --  
+              local dh2=self.puzzleEndLayer:getChildByTag(1328)  --  
+              local dh3=self.puzzleEndLayer:getChildByTag(1329)  --
+              local dh4=self.puzzleEndLayer:getChildByTag(1330)  --  
+             self:fun_shunliwancheng(dh1,dh2,dh3,dh4)
+
+
+            self._goldbg=self.puzzleEndLayer:getChildByTag(1324)  --   金币背景
+            self._goldbg:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                         sender:setScale(0.8)
+                         return
+                    end
+                   sender:setScale(1)
+                   self:fun_storebrowser()
+             end) 
+            self.connection13=self._goldbg
+            self._goldnum=self._goldbg:getChildByTag(1326)  --  具体金币
+            local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+            local  jaclayer_data=list_table["adlist"] 
+            if jaclayer_data[1]["adurlgold"] then
+              self._goldnum:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
+            else
+              self._goldbg:setVisible(false)  --
+              self._goldnum:setString("+0")
+            end
+
+            if tostring(self.addetailurl)   ==   tostring(1) then
+              self._goldbg:setVisible(false)
+              
+            else
+                self.roleAction:gotoFrameAndPlay(0,35, true)
+            end
+
+
+
              self:star_action()
              --self:PintuEndAct(self.puzzleEndLayer)
 
@@ -395,15 +491,17 @@ function bigwheelLayer:fun_callback( sender, eventType )
                print("炫耀")
                self.share=Util:share(1)
             elseif tag==755 then 
-                local  _Issecond=0
-                local getgoldspoolbyid  = LocalData:Instance():get_getgoldspoolbyid()--获得玩了几次数据
-                if tonumber(getgoldspoolbyid["getcardamount"]) == 1 then
-                  _Issecond=1
-                end
-                GameScene = require("app.scenes.GameScene")--惊喜吧
-                local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})--拼图
-                cc.Director:getInstance():replaceScene(scene)
-                LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+                -- local  _Issecond=0
+                -- local getgoldspoolbyid  = LocalData:Instance():get_getgoldspoolbyid()--获得玩了几次数据
+                -- if tonumber(getgoldspoolbyid["getcardamount"]) == 1 then
+                --   _Issecond=1
+                -- end
+                -- GameScene = require("app.scenes.GameScene")--惊喜吧
+                -- local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})--拼图
+                -- cc.Director:getInstance():replaceScene(scene)
+                -- LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+
+                self:try_again()
             end
 end
 --  大转盘界面
@@ -718,11 +816,11 @@ function bigwheelLayer:try_again()
     --                               if eventType==1 then
 
                                           self.IF_VOER=false
-                                          local _tablegods=LocalData:Instance():get_getgoldspoolrandomgolds()
-                                          dump(_tablegods)
+                                          local _tablegods=LocalData:Instance():get_setgamerecord()
+                                          local _goldspool=_tablegods["goldspool"]
                                           if _tablegods then
                                         
-                                              if  tonumber(_tablegods["getcardamount"])== 0 then
+                                              if  tonumber(_goldspool["getcardamount"])== 0 then
 
                                                   LocalData:Instance():set_user_pintu("1")
                                                   self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)
@@ -744,7 +842,7 @@ function bigwheelLayer:try_again()
                                           end
                                           local  _Issecond=0
                                           if _tablegods then
-                                            if tonumber(_tablegods["getcardamount"]) == 1 then
+                                            if tonumber(_goldspool["getcardamount"]) == 1 then
                                               _Issecond=1
                                             end
                                           end
@@ -870,7 +968,7 @@ function bigwheelLayer:fun_bigback( _obj,x,y )
                           end
 
                           if self._Rtrue==1 then
-                                  local particle2 = cc.ParticleSystemQuad:create("endingCoin2.plist")
+                                  local particle2 = cc.ParticleSystemQuad:create("endingCoin320.plist.plist")
                                  particle2:setPosition(cc.p(display.cx,display.cy))
                                  self:addChild(particle2)
                                  audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)
@@ -916,9 +1014,29 @@ function bigwheelLayer:function_httpgold( _obj,x,y )
            if tostring(self.addetailurl)   ==   tostring(1) then
               textButton:setVisible(false)
            end
-
-
-
+end
+--   拼图成功动画
+function bigwheelLayer:fun_shunliwancheng(_obj1,_obj2,_obj3,_obj4 )
+        local _time= 0.5
+        local _scale=1.5
+        local actionTo1 = cc.ScaleTo:create(_time,_scale)
+        local actionTo2 = cc.ScaleTo:create(_time,1)
+        local function logSprRotation(sender)
+                        local actionTo1 = cc.ScaleTo:create(_time, _scale)
+                        local actionTo2 = cc.ScaleTo:create(_time, 1)
+                        local function logSprRotation(sender)
+                                         local actionTo1 = cc.ScaleTo:create(_time, _scale)
+                                         local actionTo2 = cc.ScaleTo:create(_time,1)
+                                          local function logSprRotation(sender)
+                                                   local actionTo1 = cc.ScaleTo:create(_time, _scale)
+                                                   local actionTo2 = cc.ScaleTo:create(_time,1)
+                                                 _obj4:runAction(cc.Sequence:create(actionTo1,actionTo2)) 
+                                              end
+                                        _obj3:runAction(cc.Sequence:create(actionTo1,actionTo2,cc.CallFunc:create(logSprRotation))) 
+                            end
+                      _obj2:runAction(cc.Sequence:create(actionTo1,actionTo2,cc.CallFunc:create(logSprRotation))) 
+        end
+      _obj1:runAction(cc.Sequence:create(actionTo1 ,actionTo2 ,cc.CallFunc:create(logSprRotation))) 
 
 end
 

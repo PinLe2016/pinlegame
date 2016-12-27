@@ -58,6 +58,12 @@ function MainInterfaceScene:ctor()
        --   particle2:changeDisplayWithIndex(0, true)
        -- particle2:setIgnoreMovementBoneData(true)
 
+  --       local particle = cc.ParticleSystemQuad:create("goldCoin(3).plist")
+  --       particle:setPosition(display.cx,display.cy)
+  -- self:addChild(particle)
+
+
+      
      
 end
 function MainInterfaceScene:hammerAction()

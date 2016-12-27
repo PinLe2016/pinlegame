@@ -415,6 +415,7 @@ function GameScene:onEnter()
       NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS, self,
                        function()
                         local  _img= LocalData:Instance():get_user_img()
+                        print("发到手机快放假",_img)
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                         dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
@@ -432,7 +433,6 @@ function GameScene:onEnter()
                                 local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.choose,Points=0})
                                cc.Director:getInstance():replaceScene(bigwheelLayer) 
 
-                               
                         elseif self.choose==2 then
                                 local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.choose,Points=LocalData:Instance():getPoints()})
                                cc.Director:getInstance():replaceScene(bigwheelLayer) 

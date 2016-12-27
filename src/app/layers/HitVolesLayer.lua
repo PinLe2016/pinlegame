@@ -14,8 +14,8 @@ end)
                   {target=nil,_randdate=nil}
           }
          
-        self.countdown_time =34    --  设置倒计时
-        self.dishu_time=34
+        self.countdown_time =1    --  设置倒计时
+        self.dishu_time=1
         self:setNodeEventEnabled(true)--layer添加监听
 
         self.filename=params.filename
@@ -316,7 +316,7 @@ function HitVolesLayer:fun_loadingbar(  )
 
 end
 function HitVolesLayer:server_data(  )
-     Server:Instance():setgamerecord(self.adid,1,self.m_time)    --  打完地鼠上传的数据
+     Server:Instance():setgamerecord(self.adid,1,self.m_time,100)    --  打完地鼠上传的数据
      LocalData:Instance():setPoints(self.m_time)
      --NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)
      

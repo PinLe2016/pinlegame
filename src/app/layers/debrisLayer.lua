@@ -259,7 +259,7 @@ function debrisLayer:saw_issuccess()
                                         Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
                                          return
                             end
-                          Server:Instance():setgamerecord(self.adid,0)  
+                          Server:Instance():setgamerecord(self.adid,0,0,self.count_time)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
