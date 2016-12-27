@@ -166,8 +166,9 @@ function bigwheelLayer:function_HitVolesEnd(  )
               local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
               local dishuji=_shuju["goldspool"]
               local _playerinfo=_shuju["playerinfo"]
+
                if goldspool["playcardamount"]  <=0   and  goldspool["getcardamount"] <=  0  then  -- 判断奖池次数是否用完 
-                  _jinbitupian:loadTexture("png/dadishu-huodejifen-zi.png")
+                  _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
                   dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
               end
               local _gamerecord=LocalData:Instance():get_setgamerecord()--保存数据
@@ -391,8 +392,9 @@ function bigwheelLayer:function_puzzle(  )
               local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
               local dishuji=_shuju["goldspool"]
               local _playerinfo=_shuju["playerinfo"]
+
                 if goldspool["playcardamount"]  <=0   and  goldspool["getcardamount"] <=  0  then  -- 判断奖池次数是否用完 
-                  _jinbitupian:loadTexture("png/dadishu-huodejifen-zi.png")
+                  _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
                   dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
               end
 

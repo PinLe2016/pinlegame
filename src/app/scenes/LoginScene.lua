@@ -132,6 +132,7 @@ end
 
    local _ybt=self.registered:getChildByTag(220) --注册验证码按钮
    local function Getverificationcode_btCallback(sender, eventType)
+         self.code_bt=self.Getverificationcode_bt
           sender:setScale(0.8)
           _ybt:setVisible(false)
         if eventType == ccui.TouchEventType.ended then
@@ -188,28 +189,30 @@ end
 
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-        -- if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
-        --       Server:Instance():promptbox_box_buffer("验证码错误")
-        --      return    
-        -- end
-        if self._scode then
-              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
-        end
-              Server:Instance():reg(self.phone_text:getText(),self.Zpassword_text:getText(),self.Zcode_text:getText())
-        end
+                -- if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
+                --       Server:Instance():promptbox_box_buffer("验证码错误")
+                --      return    
+                -- end
+               
+                if self._scode then
+                      cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                end
+                Server:Instance():reg(self.phone_text:getText(),self.Zpassword_text:getText(),self.Zcode_text:getText())
+                
+          end
     end
 
      local function callback_btCallback(sender, eventType) 
         if eventType == ccui.TouchEventType.ended then
-           print("取消")
-           self:landing_init()
-           if self._scode then
-              cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
-           end
-           if  self.registered then
-                 self.registered:removeFromParent()
-                 self.registered=nil
-           end
+                   print("取消")
+                   self:landing_init()
+                   if self._scode then
+                      cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                   end
+                   if  self.registered then
+                         self.registered:removeFromParent()
+                         self.registered=nil
+                  end
           
         end
     end
@@ -445,6 +448,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                  print("提交",_pass,"  ",self._mobilephone)
                  Server:Instance():changepassword(self._mobilephone,_pass,self.y_yanzhengma,1)  --(1  忘记密码)
               elseif tag==291 then
+                self.code_bt=self.yanzhengma
                   self.p_random=Util:rand(  ) --随机验证码\
                      local phone=self.passwordLayer:getChildByTag(293)
                     self._mobilephone=self.Wphone_text:getText()
@@ -466,6 +470,11 @@ function LoginScene:_resetpasswordLayer(  )
             self._mobilephone=self.Wphone_text:getText()
             if tostring(self._yanzhengma:getText())=="" then
                 Server:Instance():promptbox_box_buffer("验证码不能为空,请重新输入")
+                 self.yanzhengma:setVisible(true)
+                  self.yanzhengma:setTouchEnabled(true)
+                  self.yanzhengma:setColor(cc.c3b(255, 255, 255))
+                  self.yanzhengma:setTitleText("获取验证码")
+
                 return
             end
 
@@ -562,17 +571,63 @@ function LoginScene:onEnter()
                        self.code_bt:setTitleText("50S")
                        self:fun_countdowncode()
                       end)
+   NotificationCenter:Instance():AddObserver("wangjimima", self,
+                       function()
+                 
+
+                        if self._scode then
+                              print("振奋")
+                             
+                                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                             end
+                             if self.yanzhengma then
+                                   self.yanzhengma:setVisible(true)
+                                    self.yanzhengma:setTouchEnabled(true)
+                                    self.yanzhengma:setColor(cc.c3b(255, 255, 255))
+                                    self.yanzhengma:setTitleText("获取验证码")
+                             end
+                              
+
+
+
+                      end)
+
     NotificationCenter:Instance():AddObserver("zhucechegngong", self,
                        function()
                          if  self.registered then
-                              self:landing_init()
+                              --self:landing_init()
                               print("开始99")
                              if self._scode then
+                              print("振奋")
+                             
                                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
                              end
+                              self.Getverificationcode_bt:setVisible(true)
+                              self.Getverificationcode_bt:setTouchEnabled(true)
+                              self.Getverificationcode_bt:setColor(cc.c3b(255, 255, 255))
+                              self.Getverificationcode_bt:setTitleText("获取验证码")
 
-                               self.registered:removeFromParent()
-                               self.registered=nil
+                               -- self.registered:removeFromParent()
+                               -- self.registered=nil
+                         end
+                      end)
+     NotificationCenter:Instance():AddObserver("zhuceshibai", self,
+                       function()
+                         if  self.registered then
+                              --self:landing_init()
+                              print("zhuceshibai开始99")
+                             if self._scode then
+                              print("振奋")
+                             
+                                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                             end
+                              self.Getverificationcode_bt:setVisible(true)
+                              self.Getverificationcode_bt:setTouchEnabled(true)
+                              self.Getverificationcode_bt:setColor(cc.c3b(255, 255, 255))
+                              self.Getverificationcode_bt:setTitleText("获取验证码")
+
+                               -- self.registered:removeFromParent()
+                               -- self.registered=nil
                          end
                       end)
 
@@ -629,6 +684,9 @@ function LoginScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
   
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERSION_LINK, self)
+  NotificationCenter:Instance():RemoveObserver("wangjimima", self)
+  NotificationCenter:Instance():RemoveObserver("zhucechegngong", self)
+  NotificationCenter:Instance():RemoveObserver("zhuceshibai", self)
 
 
 end

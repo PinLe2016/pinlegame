@@ -58,10 +58,30 @@ function CustomerLayer:callback( sender, eventType )
                self:addChild(ChangepasswordLayer.new(),1,12)
           elseif tag==3 then
           	  print("兑换帮助")
+              self:fun_showtip(sender,sender:getPositionX()+  sender:getContentSize().width/2   ,sender:getPositionY() + sender:getContentSize().height/2 )
           	  -- local ForhelpLayer = require("app.layers.ForhelpLayer") --兑换帮助
              --   self:addChild(ForhelpLayer.new(),1,12)
           end
          
+end
+function CustomerLayer:fun_showtip(bt_obj,_x,_y )
+          if self.showtip_image~=nil then
+            return
+          end
+          self.showtip_image= display.newSprite("png/jingqingqidai-zi.png")
+          self.showtip_image:setScale(0)
+          self.showtip_image:setAnchorPoint(0, 0)
+          bt_obj:addChild(self.showtip_image)
+          self.showtip_image:setPosition(_x, _y)
+
+          local function removeThis()
+                if self.showtip_image then
+                   self.showtip_image:removeFromParent()
+                   self.showtip_image=nil
+                end
+          end
+          local actionTo = cc.ScaleTo:create(0.5, 1)
+          self.showtip_image:runAction( cc.Sequence:create(actionTo,cc.DelayTime:create(0.3 ),cc.CallFunc:create(removeThis)))
 end
 
 function CustomerLayer:touch_callback(sender, eventType)
