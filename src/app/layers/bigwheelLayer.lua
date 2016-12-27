@@ -100,11 +100,11 @@ function bigwheelLayer:ctor(params)
       --self:fun_bigrandom()
         --转盘随机数出现
         if goldspool["playcardamount"]  >0   and  goldspool["getcardamount"] >  0  then  -- 判断奖池次数是否用完 
-                if tonumber(self.Points) > 250  then   
-                     self:fun_bigrandom()
-                  elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
+                -- if tonumber(self.Points) > 250  then   
+                --      self:fun_bigrandom()
+                --   elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
                        self:fun_bigrandom()
-                  end
+                  -- end
        end
 end
 --   转盘随机数出现
@@ -875,23 +875,29 @@ function bigwheelLayer:try_again()
                                           self.IF_VOER=false
                                           local _tablegods=LocalData:Instance():get_setgamerecord()
                                           local _goldspool=_tablegods["goldspool"]
+
                                           if _tablegods then
                                         
-                                               if _goldspool["playcardamount"]  <=0   and  _goldspool["getcardamount"] <=  0  then
+                                               if _goldspool["playcardamount"]  >0   and  _goldspool["getcardamount"] > 0  then
 
-                                                  LocalData:Instance():set_user_pintu("1")
-                                                  self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)
-                                                    if eventType==1 then
-                                                           GameScene = require("app.scenes.GameScene")--惊喜吧
-                                                          local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})--拼图
-                                                          cc.Director:getInstance():replaceScene(scene)
-                                                          LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
-                                                          return
-                                                    end
-                                                    self.IF_VOER=true
-                                                  end)  
-                                               
-                                                  return
+                                                local _goldspool=LocalData:Instance():get_getgoldspoolbyid()
+                                                
+                                                if _goldspool["playcardamount"]  >0   and  _goldspool["getcardamount"] > 0  then
+                                                    return
+                                                end
+
+                                                        LocalData:Instance():set_user_pintu("1")
+                                                        self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)
+                                                          if eventType==1 then
+                                                                 GameScene = require("app.scenes.GameScene")--惊喜吧
+                                                                local scene=GameScene.new({adid= self.id,type="audition",image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=1})--拼图
+                                                                cc.Director:getInstance():replaceScene(scene)
+                                                                LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+                                                                return
+                                                          end
+                                                          self.IF_VOER=true
+                                                        end)  
+                                                        return
 
                                               end
 
