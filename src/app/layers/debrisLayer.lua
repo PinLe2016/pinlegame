@@ -262,7 +262,7 @@ function debrisLayer:saw_issuccess()
                           Server:Instance():setgamerecord(self.adid,0)  
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
-                 self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.1),callfunc  ))
                  
 end
 function debrisLayer:fun_endanimation()
