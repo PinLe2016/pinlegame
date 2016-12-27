@@ -99,7 +99,7 @@ function bigwheelLayer:ctor(params)
       end
       --self:fun_bigrandom()
         --转盘随机数出现
-       if goldspool["coolingtime"]  ~= -1   or  goldspool["getcardamount"]  ~=   0  then  -- 判断奖池次数是否用完 
+        if goldspool["playcardamount"]  >0   and  goldspool["getcardamount"] >  0  then  -- 判断奖池次数是否用完 
                 if tonumber(self.Points) > 250  then   
                      self:fun_bigrandom()
                   elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
@@ -175,7 +175,8 @@ function bigwheelLayer:function_HitVolesEnd(  )
               local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
               local dishuji=_shuju["goldspool"]
               local _playerinfo=_shuju["playerinfo"]
-               if dishuji["coolingtime"]  == -1   or  dishuji["getcardamount"]  ==   0  then  -- 判断奖池次数是否用完 
+
+               if goldspool["playcardamount"]  <=0   and  goldspool["getcardamount"] <=  0  then  -- 判断奖池次数是否用完 
                   _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
                   dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
               end
@@ -321,8 +322,9 @@ function bigwheelLayer:star_action()
                        end
 
                         local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
+                        dump(_shuju)
                         local dishuji=_shuju["goldspool"]
-                         if dishuji["coolingtime"]  == -1   or  dishuji["getcardamount"]  ==   0  then  -- 判断奖池次数是否用完 
+                         if dishuji["playcardamount"]  <=0   and  dishuji["getcardamount"] <=  0  then  -- 判断奖池次数是否用完 
                                   return
                         end
 
@@ -408,7 +410,8 @@ function bigwheelLayer:function_puzzle(  )
               local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
               local dishuji=_shuju["goldspool"]
               local _playerinfo=_shuju["playerinfo"]
-               if dishuji["coolingtime"]  == -1   or  dishuji["getcardamount"]  ==   0  then  -- 判断奖池次数是否用完 
+
+                if goldspool["playcardamount"]  <=0   and  goldspool["getcardamount"] <=  0  then  -- 判断奖池次数是否用完 
                   _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
                   dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
               end
@@ -873,7 +876,7 @@ function bigwheelLayer:try_again()
                                           local _goldspool=_tablegods["goldspool"]
                                           if _tablegods then
                                         
-                                              if  tonumber(_goldspool["getcardamount"])== 0 then
+                                               if _goldspool["playcardamount"]  <=0   and  _goldspool["getcardamount"] <=  0  then
 
                                                   LocalData:Instance():set_user_pintu("1")
                                                   self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)
@@ -894,7 +897,7 @@ function bigwheelLayer:try_again()
                                           end
                                           local  _Issecond=0
                                           if _tablegods then
-                                            if tonumber(_goldspool["getcardamount"]) == 1 then
+                                            if tonumber(_goldspool["getcardamount"]) ~= 1 then
                                               _Issecond=1
                                             end
                                           end
