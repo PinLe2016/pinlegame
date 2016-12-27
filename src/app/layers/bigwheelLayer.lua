@@ -99,7 +99,7 @@ function bigwheelLayer:ctor(params)
       end
       --self:fun_bigrandom()
         --转盘随机数出现
-        if goldspool["playcardamount"]  >0   and  goldspool["getcardamount"] >  0  then  -- 判断奖池次数是否用完 
+        if tonumber(goldspool["iscard"]) ==1  then  -- 判断奖池次数是否用完 
                 -- if tonumber(self.Points) > 250  then   
                 --      self:fun_bigrandom()
                 --   elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
@@ -162,12 +162,12 @@ function bigwheelLayer:function_HitVolesEnd(  )
               dishu_score:setProperty( tostring(goldspool["poolgolds"]),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.HitVolesEndLayer:addChild(dishu_score) 
 
-               if goldspool["coolingtime"]  ~= -1   or  goldspool["getcardamount"]  ~=   0  then  -- 判断奖池次数是否用完 
-                      if tonumber(self.Points) > 250  then   
-                           dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
-                        elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
+               if tonumber(goldspool["iscard"]) ==1  then  -- 判断奖池次数是否用完 
+                      -- if tonumber(self.Points) > 250  then   
+                      --      dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
+                      --   elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
                              dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
-                        end
+                        -- end
               end
               
 
@@ -176,7 +176,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
               local dishuji=_shuju["goldspool"]
               local _playerinfo=_shuju["playerinfo"]
 
-               if goldspool["playcardamount"]  <=0   and  goldspool["getcardamount"] <=  0  then  -- 判断奖池次数是否用完 
+               if tonumber(goldspool["getcardamount"]) ==-1  then  -- 判断奖池次数是否用完 
                   _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
                   dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
               end
@@ -324,7 +324,7 @@ function bigwheelLayer:star_action()
                         local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
                         dump(_shuju)
                         local dishuji=_shuju["goldspool"]
-                         if dishuji["playcardamount"]  <=0   and  dishuji["getcardamount"] <=  0  then  -- 判断奖池次数是否用完 
+                         if  tonumber(dishuji["getcardamount"]) ==-1    then  -- 判断奖池次数是否用完 
                                   return
                         end
 
@@ -396,12 +396,12 @@ function bigwheelLayer:function_puzzle(  )
               dishu_score:setProperty( tostring(goldspool["poolgolds"]),"png/dadishufenshu.png", 24, 26, "0")  --tostring(self.friendlist_num["friendcount"]),
               self.puzzleEndLayer:addChild(dishu_score) 
 
-               if goldspool["coolingtime"]  ~= -1   or  goldspool["getcardamount"]  ~=   0  then  -- 判断奖池次数是否用完 
-                      if tonumber(self.Points) > 250  then   
-                           dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
-                        elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
+               if  tonumber(goldspool["iscard"])  ==   1  then  -- 判断奖池次数是否用完 
+                      -- if tonumber(self.Points) > 250  then   
+                      --      dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
+                      --   elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
                              dishu_score:setProperty( tostring("/"),"png/dadishufenshu.png", 24, 26, "0")
-                        end
+                        -- end
               end
 
 
@@ -411,7 +411,7 @@ function bigwheelLayer:function_puzzle(  )
               local dishuji=_shuju["goldspool"]
               local _playerinfo=_shuju["playerinfo"]
 
-                if goldspool["playcardamount"]  <=0   and  goldspool["getcardamount"] <=  0  then  -- 判断奖池次数是否用完 
+                if tonumber(goldspool["getcardamount"]) ==-1  then  -- 判断奖池次数是否用完 
                   _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
                   dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
               end
@@ -878,13 +878,7 @@ function bigwheelLayer:try_again()
 
                                           if _tablegods then
                                         
-                                               if _goldspool["playcardamount"]  >0   and  _goldspool["getcardamount"] > 0  then
-
-                                                local _goldspool=LocalData:Instance():get_getgoldspoolbyid()
-                                                
-                                                if _goldspool["playcardamount"]  >0   and  _goldspool["getcardamount"] > 0  then
-                                                    return
-                                                end
+                                               if  tonumber(_goldspool["getcardamount"]) <= 0  then
 
                                                         LocalData:Instance():set_user_pintu("1")
                                                         self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)
@@ -897,7 +891,7 @@ function bigwheelLayer:try_again()
                                                           end
                                                           self.IF_VOER=true
                                                         end)  
-                                                        return
+                                                        return     
 
                                               end
 
