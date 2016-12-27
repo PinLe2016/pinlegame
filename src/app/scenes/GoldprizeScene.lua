@@ -334,9 +334,9 @@ function GoldprizeScene:onEnter()
                                     
                          else
                          	local  _Issecond=0
-                         	-- if tonumber(getgoldspoolbyid["getcardamount"]) == 1 then
-                         	-- 	_Issecond=1
-                         	-- end
+                         	if tonumber(getgoldspoolbyid["getcardamount"]) ~= 2 then
+                         		_Issecond=1
+                         	end
                          	  LocalData:Instance():set_user_img(self.image_name)
                          	 -- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
                	           --   cc.Director:getInstance():pushScene(scene)
