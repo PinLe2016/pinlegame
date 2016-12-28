@@ -596,7 +596,7 @@ function MainInterfaceScene:fun_checkin( tm )
 
 
         local particle = cc.ParticleSystemQuad:create("goldCoin(3).plist")
-        particle:setPosition(display.cx,display.cy*3/2)
+        particle:setPosition(display.cx,display.cy*4/5)
         particle:setDuration(1)
         self:addChild(particle,300)
 
