@@ -254,15 +254,18 @@ end
 --截屏功能
 function Util:captureScreen()
     local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
-
+    local is_succ=false
     if device.platform=="ios" then
       print("我累的去去")
-      file=cc.FileUtils:getInstance():getWritablePath().."res/screenshoot.jpg"
+      file="res/screenshoot.jpg"
+      
     end
       display.captureScreen( function (bSuc, filePath)
                     --bSuc 截屏是否成功
                       --filePath 文件保存所在的绝对路径
+                    
                 end, file)
+
       return file
 end
 
