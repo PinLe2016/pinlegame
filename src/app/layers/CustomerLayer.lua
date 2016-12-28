@@ -35,6 +35,9 @@ function CustomerLayer:init(  )
             end)
             local name_image=cell:getChildByTag(975)--名称
              name_image:loadTexture("png/kefuzhongxing-gonglue-"  ..   i    ..    ".png")
+             if i==3 then
+               cell:setTouchEnabled(false)
+             end
 
          end
 
