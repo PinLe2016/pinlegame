@@ -35,7 +35,8 @@ function debrisLayer:ctor(params)
         end  
        
         
-        math.randomseed(tostring(os.time()):reverse():sub(1, 7))--随机种子
+        --math.randomseed(tostring(os.time()):reverse():sub(1, 7))--随机种子
+        math.randomseed(os.time()) 
 
         self.content_size = self._size
          self.tp=params.tp
@@ -130,7 +131,7 @@ function debrisLayer:RandomIndex(indexNum, tabNum)
     local rt = {}
 
     for i = 1,indexNum do
-
+        math.randomseed(os.time()) 
         local ri = math.random(1,tabNum + 1 - i)
 
         local v = ri
