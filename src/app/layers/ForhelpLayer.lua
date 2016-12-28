@@ -107,6 +107,7 @@ function ForhelpLayer:init(  )
             cell:setTag(i) 
             local  _title = cell:getChildByTag(670)
             _title:setString(self._tableTitle[i])
+
             cell:addTouchEventListener(function(sender, eventType  )
                                     self:callback(sender, eventType)
             end)
@@ -114,7 +115,7 @@ function ForhelpLayer:init(  )
 end
 
 function ForhelpLayer:callback( sender, eventType )
-          local tag=sender:getTag()
+         local tag=sender:getTag()
           if eventType == ccui.TouchEventType.began then
                  
                  sender:getChildByTag(785):setVisible(true)
@@ -124,10 +125,18 @@ function ForhelpLayer:callback( sender, eventType )
 
           if eventType == ccui.TouchEventType.ended then
               self.panel_bg:setVisible(true)
-              local  neitong_text=self.panel_bg:getChildByTag(792):getChildByTag(793)
+              local  neitong_text1=self.panel_bg:getChildByTag(792)
+              neitong_text1:scrollToTop (0.01,false)
+              local neitong_text=neitong_text1:getChildByTag(793)
+              self.panel_bg:setTouchEnabled(false)
+              neitong_text1:setTouchEnabled(true)
+              if tag<=4 then
+                neitong_text1:setTouchEnabled(false)
+                self.panel_bg:setTouchEnabled(true)
+              end
+
               neitong_text:setString(self._neirong[tag])
           end
-         
 end
 
 
