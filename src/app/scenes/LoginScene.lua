@@ -9,7 +9,7 @@ end)
 -- local require("app.layers.FloatingLayer") = require("app.layers.FloatingLayer")
 
 
-function LoginScene:ctor()
+function  LoginScene:ctor()
 
    self.floating_layer = require("app.layers.FloatingLayer").new()
    --self.floating_layer:addTo(self,100)
