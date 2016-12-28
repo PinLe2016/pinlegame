@@ -176,7 +176,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
               local dishuji=_shuju["goldspool"]
               local _playerinfo=_shuju["playerinfo"]
 
-               if tonumber(goldspool["getcardamount"]) ==-1  then  -- 判断奖池次数是否用完 
+               if tonumber(goldspool["playtimes"]) ==-1  then  -- 判断奖池次数是否用完 
                   _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
                   dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
               end
@@ -324,7 +324,7 @@ function bigwheelLayer:star_action()
                         local _shuju=LocalData:Instance():get_setgamerecord()--保存数据
                         dump(_shuju)
                         local dishuji=_shuju["goldspool"]
-                         if  tonumber(dishuji["getcardamount"]) ==-1    then  -- 判断奖池次数是否用完 
+                         if  tonumber(dishuji["playtimes"]) ==-1    then  -- 判断奖池次数是否用完 
                                   return
                         end
 
@@ -411,7 +411,7 @@ function bigwheelLayer:function_puzzle(  )
               local dishuji=_shuju["goldspool"]
               local _playerinfo=_shuju["playerinfo"]
 
-                if tonumber(goldspool["getcardamount"]) ==-1  then  -- 判断奖池次数是否用完 
+                if tonumber(goldspool["playtimes"]) ==-1  then  -- 判断奖池次数是否用完 
                   _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
                   dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
               end
@@ -878,7 +878,7 @@ function bigwheelLayer:try_again()
 
                                           if _tablegods then
                                         
-                                               if  tonumber(_goldspool["getcardamount"]) <= 0  then
+                                               if  tonumber(_goldspool["playtimes"]) <= 0  then
 
                                                         LocalData:Instance():set_user_pintu("1")
                                                         self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)
@@ -898,7 +898,7 @@ function bigwheelLayer:try_again()
                                           end
                                           local  _Issecond=0
                                           if _tablegods then
-                                            if tonumber(_goldspool["getcardamount"]) ~= 1 then
+                                            if tonumber(_goldspool["playtimes"]) <= 1 then
                                               _Issecond=1
                                             end
                                           end
