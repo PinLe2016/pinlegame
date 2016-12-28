@@ -833,13 +833,13 @@ function PerInformationLayer:savedata( )
                return
            end
 
-    local  userdata=LocalData:Instance():get_user_data()
-    local  loginname= userdata["loginname"]
-    local  nickname=self._Pname:getText()  
-    userdata["nickname"]=nickname
-    LocalData:Instance():set_user_data(userdata)
+     local  userdata=LocalData:Instance():get_user_data()
+    -- local  loginname= userdata["loginname"]
+    -- local  nickname=self._Pname:getText()  
+    -- userdata["nickname"]=nickname
+    -- LocalData:Instance():set_user_data(userdata)
     -- self._Pname1=self._Pname:getText()
-    self._Pname1:setString(tostring(self._Pname:getText()))
+    --self._Pname1:setString(tostring(self._Pname:getText()))
     local  provincename=self._provincename:getString() 
     local  cityid=userdata["cityid"]
     local  districtid=1
@@ -865,7 +865,7 @@ function PerInformationLayer:savedata( )
             end
     local params={
             loginname=loginname,
-            nickname=nickname,
+            nickname=self._Pname:getText(),  
             provinceid=provinceid,
             provincename=provincename,
             cityid=cityid,
@@ -887,7 +887,7 @@ function PerInformationLayer:savedata( )
                 userdatainit["gender"]=0
             end
             
-            userdatainit["nickname"]=nickname
+            userdatainit["nickname"]=userdata["nickname"]
             userdatainit["provincename"]=provincename
             userdatainit["districtame"] =self._area:getString()
             dump(userdatainit)
@@ -1403,13 +1403,35 @@ function PerInformationLayer:onEnter()
                        function()
                             print("个人信息修改")
                               if self.Perinformation then
-                                   self._Pname=nil
+                                   --self._Pname=nil
+
+                            local  userdata=LocalData:Instance():get_user_data()
+                            local  loginname= userdata["loginname"]
+                            local  nickname=self._Pname:getText()  
+                            userdata["nickname"]=nickname
+                            self._Pname1:setString(tostring(self._Pname:getText()))
+                            LocalData:Instance():set_user_data(userdata)
+                            self._Pname=nil
+
                               self.Perinformation:removeFromParent()
-                             
-                       
+                           end
 
-                 end
+                      end)
+     NotificationCenter:Instance():AddObserver("xiugainicheng", self,
+                       function()
 
+                         local  userdata=LocalData:Instance():get_user_data()
+                            local  loginname= userdata["loginname"]
+                            print("大家快放假啊SD卡",tostring(userdata["nickname"]))
+                            self._Pname:setText(tostring(userdata["nickname"]))  
+                            self._Pname:setVisible(true)
+                            print("大家快放假啊SD卡111",self._Pname:getText())
+                            self._Pname1:setString(tostring(userdata["nickname"]))
+                             self._Pname1:setVisible(true)
+                           
+
+
+                            
                       end)
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.EMAILADDRESS, self,
                        function()
@@ -1420,6 +1442,7 @@ end
 function PerInformationLayer:onExit()
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
           NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REG, self)
+          NotificationCenter:Instance():RemoveObserver("xiugainicheng", self)
 
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.EMAILADDRESS, self)
