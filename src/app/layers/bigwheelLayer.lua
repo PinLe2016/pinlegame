@@ -286,7 +286,8 @@ function bigwheelLayer:star_action()
 
               local function logSprRotation(sender)
 
-                    local particle = cc.ParticleSystemQuad:create("starAni6.plist")
+                    local particle = cc.ParticleSystemQuad:create("starFinish.plist")
+                    particle:setScale(2/3)
                      audio.playMusic("sound/effect/jieshu.mp3",false)
                     -- particle:setDuration(-1)
                     particle:setPosition(point_buf[dex])
@@ -330,7 +331,7 @@ function bigwheelLayer:star_action()
 
 
                        local particle2 = cc.ParticleSystemQuad:create(tostring(_plist))
-                       particle2:setPosition(cc.p(display.cx,display.cy))
+                       particle2:setPosition(cc.p(display.cx,display.cy*4/5))
                        self:addChild(particle2)
                        audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)
 
