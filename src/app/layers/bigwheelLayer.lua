@@ -178,7 +178,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
 
                if tonumber(goldspool["playtimes"]) ==-1  then  -- 判断奖池次数是否用完 
                   _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
-                  dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
+                  dishu_score:setProperty( tostring(dishuji["playpoints"]),"png/dadishufenshu.png", 24, 26, "0")
               end
               local _gamerecord=LocalData:Instance():get_setgamerecord()--保存数据
               local goldspool=_gamerecord["goldspool"]
@@ -413,7 +413,7 @@ function bigwheelLayer:function_puzzle(  )
 
                 if tonumber(goldspool["playtimes"]) ==-1  then  -- 判断奖池次数是否用完 
                   _jinbitupian:loadTexture("png/dadishu-jingyan-zi.png")
-                  dishu_score:setProperty( tostring(_playerinfo["points"]),"png/dadishufenshu.png", 24, 26, "0")
+                  dishu_score:setProperty( tostring(dishuji["playpoints"]),"png/dadishufenshu.png", 24, 26, "0")
               end
 
 
