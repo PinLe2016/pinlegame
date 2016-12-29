@@ -224,13 +224,11 @@ function GoldprizeScene:fun_selectbox( _tag )
 
        	 local pintu=self.Selectbox:getChildByTag(142)   --拼图
        	 pintu:addTouchEventListener(function(sender, eventType  )
-       	 	     if eventType == ccui.TouchEventType.began then
-	                        sender:setScale(0.8)
-	                  end
+       	 	    
 	                 if eventType ~= ccui.TouchEventType.ended then
 	                        return
 	                  end
-	                  sender:setScale(1)
+	                  
 	                  self.choose=1
 	                  local path=cc.FileUtils:getInstance():getWritablePath()
 	            
@@ -246,14 +244,12 @@ function GoldprizeScene:fun_selectbox( _tag )
 
        	 local dadishu=self.Selectbox:getChildByTag(143)   --打地鼠
        	 dadishu:addTouchEventListener(function(sender, eventType  )
-       	 	      if eventType == ccui.TouchEventType.began then
-	                        sender:setScale(0.8)
-	                  end
+       	 	     
 
 	                 if eventType ~= ccui.TouchEventType.ended then
 	                        return
                               end
-                              sender:setScale(1)
+                              
                               local path=cc.FileUtils:getInstance():getWritablePath()
                               self.choose=2
                                local  list_table=LocalData:Instance():get_getgoldspoollist()
