@@ -126,8 +126,11 @@ function Server:request_http(command , params)
             return
         end
 
-        if command~="getactivitylist" then
+        if command~="getactivitylist" and command~="getgoldspoolbyid" then
         self:show_http_buffer(true)-- 传输动画
+        end
+        if command=="getgoldspoolbyid" then
+            display.getRunningScene():push_buffer(true)
         end
 
         local time=os.time()
