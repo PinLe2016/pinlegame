@@ -853,12 +853,7 @@ function bigwheelLayer:touch_callback( sender, eventType )
                     LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
                end
          end
-
-
-        if LocalData:Instance():get_tasktable() then
-             Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
-       end
-        LocalData:Instance():set_tasktable(nil)--制空        
+       
     elseif tag==130 then
         Util:scene_control("GoldprizeScene")
         if self._Xscnum then
@@ -1019,6 +1014,12 @@ function bigwheelLayer:fun_bigback( _obj,x,y )
        local _gold=LocalData:Instance():get_getgoldspoolrandomgolds()           
                     if eventType == ccui.TouchEventType.ended then
                           _obj:removeFromParent()
+
+                           if LocalData:Instance():get_tasktable() then
+                                 Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                                  LocalData:Instance():set_tasktable(nil)--制空 
+                           end
+
                           if self.pintujinbi then
                                self.pintujinbi:setProperty( tostring(_gold["golds"]),"png/dadishufenshu.png", 24, 26, "0")
                           end
@@ -1113,7 +1114,7 @@ function bigwheelLayer:onEnter()
                                 end
                                end
                                self.x_rand=self.cotion_gold[math.random(1,#self.cotion_gold)]
-                               Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
+                               -- Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
                                -- self:fun_began()
                               self._prizetext:setString(tostring(_gold["golds"]))
                       end)
