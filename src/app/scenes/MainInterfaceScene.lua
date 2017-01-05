@@ -157,6 +157,18 @@ function MainInterfaceScene:fun_init( )
       mall_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
+
+      local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+      -- dump(_table)
+      if _table and tonumber(_table["gameIsused"])==0 then
+          self.gamecenter_bt:setTouchEnabled(false)
+      end
+
+      if _table and tonumber(_table["shopIsused"])==0 then
+        mall_bt:setTouchEnabled(false)
+      end
+
+
       local jackpot_bt=self.MainInterfaceScene:getChildByTag(97)
           jackpot_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
@@ -337,7 +349,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 		Util:scene_control("GoldprizeScene")
      --Util:scene_control("PhysicsScene")
       elseif tag==444 then  --游戏中心
-            
+
             -- self:fun_showtip(self.gamecenter_bt,sender:getPositionX(),sender:getPositionY() )
              Util:scene_controlid("MallScene",{type="play_mode"})
             
