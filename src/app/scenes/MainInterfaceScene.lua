@@ -164,9 +164,9 @@ function MainInterfaceScene:fun_init( )
           self.gamecenter_bt:setTouchEnabled(false)
       end
 
-      if _table and tonumber(_table["shopIsused"])==0 then
-        mall_bt:setTouchEnabled(false)
-      end
+      -- if _table and tonumber(_table["shopIsused"])==0 then
+      --   mall_bt:setTouchEnabled(false)
+      -- end
 
 
       local jackpot_bt=self.MainInterfaceScene:getChildByTag(97)
@@ -407,6 +407,17 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self.Ruledescription = cc.CSLoader:createNode("Ruledescription.csb")
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
+
+            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            if _table and tonumber(_table["shopIsused"])==0 then
+                  local login_info=LocalData:Instance():get_user_data()
+                  local _key=login_info["loginname"]
+                  local _loginkey=login_info["loginkey"]
+                  url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
+                  device.openURL(url)
+                  return
+            end
+
              Util:scene_controlid("MallScene",{type="emil"})
              
 
