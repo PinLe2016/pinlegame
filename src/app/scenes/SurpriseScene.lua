@@ -87,7 +87,7 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
                       end
      end))
     activity_ListView:setItemModel(activity_ListView:getItem(0))
-    activity_ListView:removeAllItems()
+    -- activity_ListView:removeAllItems()
     return  self
 end
   function SurpriseScene:list_btCallback( sender, eventType )
@@ -211,6 +211,11 @@ end
 function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")     
           
           self.list_table=LocalData:Instance():get_getactivitylist()
+
+          if self.list_table then
+                      activity_ListView:removeAllItems() 
+          end
+
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
            --activity_ListView:removeAllItems() 

@@ -299,7 +299,7 @@ function Server:setconfig_callback()
         self:show_float_message( self.data.err_msg)
         return
     end
-    LocalData:Instance():set_setconfig(self.data)--
+    LocalData:Instance():set_getconfig(self.data)--
 end
 
 
