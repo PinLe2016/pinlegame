@@ -158,12 +158,7 @@ function MainInterfaceScene:fun_init( )
           self:touch_callback(sender, eventType)
       end)
 
-      local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-      -- dump(_table)
-      if _table and tonumber(_table["gameIsused"])==0 then
-          self.gamecenter_bt:setTouchEnabled(false)
-      end
-
+     
       -- if _table and tonumber(_table["shopIsused"])==0 then
       --   mall_bt:setTouchEnabled(false)
       -- end
@@ -350,11 +345,12 @@ function MainInterfaceScene:touch_callback( sender, eventType )
      --Util:scene_control("PhysicsScene")
       elseif tag==444 then  --游戏中心
 
-            -- self:fun_showtip(self.gamecenter_bt,sender:getPositionX(),sender:getPositionY() )
-             Util:scene_controlid("MallScene",{type="play_mode"})
-            
-            --self.gamecenter_bt:setTouchEnabled(false)
-
+            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
+                    self:fun_gamecenter()
+                    return
+            end
+            Util:scene_controlid("MallScene",{type="play_mode"})
       elseif tag==125 then 
               --self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
               --self.list_bt:setTouchEnabled(false)
@@ -455,6 +451,21 @@ function MainInterfaceScene:touch_callback( sender, eventType )
            
 	end
 end
+
+function MainInterfaceScene:fun_gamecenter(  )
+        local gamecenter = cc.CSLoader:createNode("gamecenter.csb")
+        self:addChild(gamecenter)
+        local back_bt=gamecenter:getChildByTag(326)
+        back_bt:addTouchEventListener(function(sender, eventType  )
+              if eventType ~= ccui.TouchEventType.ended then
+                     return
+              end
+              gamecenter:removeFromParent()
+        end)
+
+end
+
+
 function MainInterfaceScene:fun_storebrowser(  )
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
       self:addChild(self.Storebrowser)
