@@ -42,16 +42,22 @@ function GoldprizeScene:init(  )
                       end
 	end))
 	self.jackpot_ListView:setItemModel(self.jackpot_ListView:getItem(0))
-	self.jackpot_ListView:removeAllItems()
+	-- self.jackpot_ListView:removeAllItems()
 	-- self:data_init()
 
 end
 
 
 function GoldprizeScene:data_init(  )
-		self.jackpot_ListView:removeAllItems()
+		-- self.jackpot_ListView:removeAllItems()
 		self.image={}
 		local  list_table=LocalData:Instance():get_getgoldspoollist()
+
+		if list_table then
+			self.jackpot_ListView:removeAllItems()
+		end
+
+		
 		local  jac_data=list_table["goldspools"]
 		local jioushu=math.floor(tonumber(#jac_data)) % 2  == 1 and 1 or 2   --判段奇数 偶数
 		local _jioushu=0
