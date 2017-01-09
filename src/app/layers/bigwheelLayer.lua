@@ -100,11 +100,7 @@ function bigwheelLayer:ctor(params)
       --self:fun_bigrandom()
         --转盘随机数出现
         if tonumber(goldspool["iscard"]) ==1  then  -- 判断奖池次数是否用完 
-                -- if tonumber(self.Points) > 250  then   
-                --      self:fun_bigrandom()
-                --   elseif tonumber(LocalData:Instance():getpuzzletime())  < 10  then    --  时间小于10秒
                        self:fun_bigrandom()
-                  -- end
        end
 end
 --   转盘随机数出现
@@ -738,30 +734,33 @@ end
 
 
 function bigwheelLayer:fun_began_start(  )
-
+        -- m_turnBg:setRotation(0)
         self.caideng:setVisible(true)
         self.CheckBox:setTouchEnabled(false)
         self._blades:setVisible(true)
         self._selected:setVisible(false)
         self._Instead:setVisible(false)  --测试
         self.m_turnArr:setEnabled(false);
+        print("fun_began_start")
 
-
-        local function CallFucnCallback3(sender)
+       local function CallFucnCallback3(sender)
                 if self.x_rand~=0 then
                   
                   self:fun_began()
+                else
+                  self:fun_began_start()
                 end
 
         end
 
-        local  pAction1 =cc.RotateTo:create(0.3,360)
-        m_turnBg:runAction(cc.RepeatForever:create(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3))))
+        local  pAction1 =cc.RotateBy:create(0.3,360)
+        m_turnBg:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
+                -- m_turnBg:runAction(pAction1)
 
 end
 function bigwheelLayer:fun_began(  )
         
-        m_turnBg:stopAllActions()
+        dump(m_turnBg:getRotation())
         local function CallFucnCallback3(sender)
               self.caideng:setVisible(false)
                --self.m_turnArr:setEnabled(true);
@@ -854,12 +853,7 @@ function bigwheelLayer:touch_callback( sender, eventType )
                     LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
                end
          end
-
-
-        if LocalData:Instance():get_tasktable() then
-             Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
-       end
-        LocalData:Instance():set_tasktable(nil)--制空        
+       
     elseif tag==130 then
         Util:scene_control("GoldprizeScene")
         if self._Xscnum then
@@ -1020,6 +1014,12 @@ function bigwheelLayer:fun_bigback( _obj,x,y )
        local _gold=LocalData:Instance():get_getgoldspoolrandomgolds()           
                     if eventType == ccui.TouchEventType.ended then
                           _obj:removeFromParent()
+
+                           if LocalData:Instance():get_tasktable() then
+                                 Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                                  LocalData:Instance():set_tasktable(nil)--制空 
+                           end
+
                           if self.pintujinbi then
                                self.pintujinbi:setProperty( tostring(_gold["golds"]),"png/dadishufenshu.png", 24, 26, "0")
                           end
@@ -1114,7 +1114,7 @@ function bigwheelLayer:onEnter()
                                 end
                                end
                                self.x_rand=self.cotion_gold[math.random(1,#self.cotion_gold)]
-                               Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
+                               -- Server:Instance():getgoldspoolbyid(LocalData:Instance():get_user_oid())
                                -- self:fun_began()
                               self._prizetext:setString(tostring(_gold["golds"]))
                       end)

@@ -20,7 +20,7 @@ function Server:version_login_url()
     if IS_RELEASE then
         url="http://www.pinlegame.com/geturl.aspx?os=%s&ver=%s"
     end
-    dump(url)
+    -- dump(url)
     local  version_data=string.format(url,platform,tostring(PINLE_VERSION))
 
     self:request_version("version_login_url",version_data)
@@ -28,7 +28,7 @@ function Server:version_login_url()
 end
 
 function Server:version_login_url_callback()
-   dump(self.data)
+   -- dump(self.data)
    self.login_url=self.data
 
    self:version_shop_url()--请求商城链接
@@ -40,6 +40,9 @@ end
 function Server:version_shop_url()
 
      local url="http://www.pinlegame.com/geturl.aspx?os=Shop&ver=" ..tostring(PINLE_VERSION)
+     if device.platform=="ios" or device.platform=="mac" then
+         url="http://www.pinlegame.com/geturl.aspx?os=iosshop&ver=" ..tostring(PINLE_VERSION)
+     end
         if not IS_RELEASE then
             url="http://test.pinlegame.com/geturl.aspx?os=Shop&ver="..tostring(PINLE_VERSION)
         end
@@ -219,7 +222,7 @@ end
 function Server:getversion()
     local params = {}
      params={
-            devicetype="ios",
+            devicetype=device.platform,
             versioncode=tostring(PINLE_VERSION),
         }
     self:request_http("getversion" , params); 
@@ -246,7 +249,7 @@ function Server:mall(username,password)
             password=crypto.md5(username ..  password),
         }
        
-
+        dump(self.shop_url)
         --local hp=self.login_url ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         local hp=self.shop_url.."id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         return  hp

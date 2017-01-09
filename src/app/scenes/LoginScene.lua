@@ -574,17 +574,16 @@ function LoginScene:onEnter()
    NotificationCenter:Instance():AddObserver("wangjimima", self,
                        function()
                  
-
+                        print("振奋")
                         if self._scode then
-                              print("振奋")
-                             
                                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
-                             end
-                             if self.yanzhengma then
-                                   self.yanzhengma:setVisible(true)
-                                    self.yanzhengma:setTouchEnabled(true)
-                                    self.yanzhengma:setColor(cc.c3b(255, 255, 255))
-                                    self.yanzhengma:setTitleText("获取验证码")
+                         end
+                         dump(self.yanzhengma)
+                             if self.code_bt then
+                                   self.code_bt:setVisible(true)
+                                    self.code_bt:setTouchEnabled(true)
+                                    self.code_bt:setColor(cc.c3b(255, 255, 255))
+                                    self.code_bt:setTitleText("获取验证码")
                              end
                               
 
@@ -594,9 +593,10 @@ function LoginScene:onEnter()
 
     NotificationCenter:Instance():AddObserver("zhucechegngong", self,
                        function()
+                        print("开始99")
                          if  self.registered then
                               --self:landing_init()
-                              print("开始99")
+                              
                              if self._scode then
                               print("振奋")
                              
@@ -613,9 +613,10 @@ function LoginScene:onEnter()
                       end)
      NotificationCenter:Instance():AddObserver("zhuceshibai", self,
                        function()
+                         print("zhuceshibai开始99")
                          if  self.registered then
                               --self:landing_init()
-                              print("zhuceshibai开始99")
+                             
                              if self._scode then
                               print("振奋")
                              
