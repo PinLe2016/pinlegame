@@ -143,7 +143,7 @@ function MainInterfaceScene:fun_init( )
            self.gamecenter_text:setVisible(false)
         else
            self.gamecenter_bt:setTouchEnabled(true)
-          self.gamecenter_text:setVisible(false)
+          self.gamecenter_text:setVisible(true)
         end
 
       self.list_bt=self.MainInterfaceScene:getChildByTag(125)   --  排行榜

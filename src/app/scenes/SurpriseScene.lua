@@ -212,8 +212,8 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           
           self.list_table=LocalData:Instance():get_getactivitylist()
 
-          if self.list_table then
-                      activity_ListView:removeAllItems() 
+          if self.list_table and  self.tablecout==0 then
+                    activity_ListView:removeAllItems() 
           end
 
           local  sup_data=self.list_table["game"]
