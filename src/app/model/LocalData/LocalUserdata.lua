@@ -144,19 +144,36 @@ end
 --  获取音效
 function LocalData:set_getconfig(getconfig)
 	self.getconfig=getconfig
+	local _list = getconfig["list"]
+	local _list1=_list[1]["sataus"]
+	local _list2=_list[2]["sataus"]
+
+	local bool_music=false
+	local bool_sound=false
+	if tonumber(_list1)==0 then
+		bool_music=true
+	end
+
+	if tonumber(_list2)==0 then
+		bool_sound=true
+	end
+
+	
+	LocalData:Instance():set_music(bool_sound)
+	LocalData:Instance():set_music_hit(bool_music)
 end
 
 function LocalData:get_getconfig()
 	return self.getconfig or nil
 end
 -- 设置音效
-function LocalData:set_setconfig(setconfig)
-	self.setconfig=setconfig
-end
+-- function LocalData:set_setconfig(setconfig)
+-- 	self.setconfig=setconfig
+-- end
 
-function LocalData:get_setconfig()
-	return self.setconfig or nil
-end
+-- function LocalData:get_setconfig()
+-- 	return self.setconfig or nil
+-- end
 
 
 

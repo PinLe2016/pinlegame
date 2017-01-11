@@ -589,7 +589,7 @@ end
 function SurpriseScene:onEnter()
    Server:Instance():getuserinfo() 
       --audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
-      Util:player_music("PERSONALCHAGE",true )
+      Util:player_music_hit("PERSONALCHAGE",true )
       LocalData:Instance():set_getactivitylist(nil)
       self.tablecout=0
      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)

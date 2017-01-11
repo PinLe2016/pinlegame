@@ -15,7 +15,7 @@ end)
           }
          
         self.countdown_time =27    --  设置倒计时
-        self.dishu_time=27
+        self.dishu_time=self.countdown_time
         self:setNodeEventEnabled(true)--layer添加监听
 
         self.filename=params.filename

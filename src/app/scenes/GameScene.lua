@@ -123,7 +123,7 @@ function GameScene:funinit(  )
                         local  jaclayer_data=list_table["adlist"]
                         if self.choose==1 then  --  1  拼图   2   打地鼠
                               -- print("你猜",self.adid)
-                                  local deblayer= debrisLayer.new({filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
+                                  local deblayer= debrisLayer.new({deleget=self,filename=tostring(Util:sub_str(jaclayer_data[1]["imgurl"], "/",":"))
                                  ,row=_row,col=_col,_size=_size,point=point,adid=jaclayer_data[1]["adid"],tp=1,type=self.type,adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,pintuid=self.adid})   --self.adid
                                   self._csb:addChild(deblayer)
                         elseif self.choose==2  then
@@ -375,7 +375,7 @@ function GameScene:imgurl_download(  )
 end
 function GameScene:onEnter()
      --audio.playMusic(G_SOUND["MENUMUSIC"],true)
-     Util:player_music("MENUMUSIC",true )
+     Util:player_music_hit("MENUMUSIC",true )
      if self.type=="surprise" then
         Server:Instance():getactivityadlist(self.adid)--发送请求
     elseif self.type=="audition" then
@@ -420,9 +420,7 @@ function GameScene:onEnter()
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                         dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
-                        -- if jaclayer_data[1]["imgurl"] then
-                        --   _img=Util:sub_str(jaclayer_data[1]["imgurl"], "/",":")--jaclayer_data[1]["imgurl"]
-                        -- end
+                      
                         local  _addetailurl = tostring(1)
                         if jaclayer_data[1]["addetailurl"] then
                            _addetailurl=jaclayer_data[1]["addetailurl"]

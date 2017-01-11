@@ -220,9 +220,15 @@ end
 --versioncode 是   版本号 String  
 
 function Server:getversion()
+
+    local devicetype=device.platform
+    if devicetype=="mac" then
+        devicetype="ios"
+    end
+    
     local params = {}
      params={
-            devicetype=device.platform,
+            devicetype=devicetype,
             versioncode=tostring(PINLE_VERSION),
         }
     self:request_http("getversion" , params); 

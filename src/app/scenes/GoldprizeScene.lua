@@ -315,7 +315,7 @@ function GoldprizeScene:fun_prizepoolules()
 end
 function GoldprizeScene:onEnter()
 	--audio.playMusic(G_SOUND["GAMEBG"],true)
-	Util:player_music("GAMEBG",true )
+	Util:player_music_hit("GAMEBG",true )
   Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid =""})  --发送消息
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self,

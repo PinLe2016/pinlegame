@@ -535,12 +535,12 @@ function MainInterfaceScene:funsetup( Isture )
            music_bt:setSelected(false)
            audio.pauseMusic()
         end
-         if tonumber(_list1) == 0 then  --o 开  1  关闭
+         if tonumber(_list2) == 0 then  --o 开  1  关闭
            sound_bt:setSelected(true)
-           audio.resumeMusic()
+           audio.resumeAllSounds()
         else
            sound_bt:setSelected(false)
-           audio.pauseMusic()
+           audio.pauseAllSounds()
         end
        
 
@@ -548,14 +548,14 @@ function MainInterfaceScene:funsetup( Isture )
         music_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
-                            LocalData:Instance():set_music(true)
+                            LocalData:Instance():set_music_hit(true)
                             audio.resumeMusic()
-                            Util:player_music("ACTIVITY",true )
+                            Util:player_music_hit("ACTIVITY",true )
                              Server:Instance():setconfig(_list[1]["itemsId"],0)  --  获取后台音效
                             
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              print("关闭")
-                             LocalData:Instance():set_music(false)
+                             LocalData:Instance():set_music_hit(false)
                              audio.pauseMusic()
                              Util:stop_music("ACTIVITY")
                              Server:Instance():setconfig(_list[1]["itemsId"],1)  --  获取后台音效
@@ -565,15 +565,15 @@ function MainInterfaceScene:funsetup( Isture )
         sound_bt:addEventListener(function(sender, eventType  )
                  if eventType == ccui.CheckBoxEventType.selected then
                         print("开启")
-                         --LocalData:Instance():set_music(true)
+                         LocalData:Instance():set_music(true)
                         --audio.resumeAllSounds()--恢复所有音效
-                        Server:Instance():setconfig(_list[1]["itemsId"],0)  --  获取后台音效
-                       Util:player_music("ACTIVITY",true )
+                        Server:Instance():setconfig(_list[2]["itemsId"],0)  --  获取后台音效
+                       -- Util:player_music_hit("ACTIVITY",true )
                  elseif eventType == ccui.CheckBoxEventType.unselected then
-                        --LocalData:Instance():set_music(false)
+                        LocalData:Instance():set_music(false)
                         --audio.pauseAllSounds()  --关闭所有音效
-                        Server:Instance():setconfig(_list[1]["itemsId"],1)  --  获取后台音效
-                         Util:stop_music("ACTIVITY")
+                        Server:Instance():setconfig(_list[2]["itemsId"],1)  --  获取后台音效
+                         -- Util:stop_music("ACTIVITY")
                  end
          end)
 
@@ -629,7 +629,10 @@ function MainInterfaceScene:fun_checkin( tm )
             -- self.Signin_act = cc.CSLoader:createTimeline("Signinact.csb")
             -- self.Signinact:runAction(self.Signin_act)
             -- self.Signin_act:gotoFrameAndPlay(0,80, false)
-            audio.playMusic("sound/effect/jinbidiaoluo.mp3",false)
+             if LocalData:Instance():get_music() then
+                audio.playSound("sound/effect/jinbidiaoluo.mp3",false)
+             end
+            
 
 
         local particle = cc.ParticleSystemQuad:create("goldCoin(3).plist")
@@ -749,8 +752,7 @@ function MainInterfaceScene:init_checkin(  )
             end
 end
 function MainInterfaceScene:onEnter()
-  --audio.playMusic(G_SOUND["ACTIVITY"],true)
-  Util:player_music("ACTIVITY",true )
+  Util:player_music_hit("ACTIVITY",true )
   Server:Instance():getuserinfo()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()

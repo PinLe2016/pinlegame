@@ -54,6 +54,20 @@ function LocalData:get_music()
 	-- dump(_music)
 	return _music 
 end
+
+
+function LocalData:set_music_hit(_music)
+
+	cc.UserDefault:getInstance():setBoolForKey("music_hit" ,_music)
+end
+
+function LocalData:get_music_hit()
+	-- cc.UserDefault:getInstance():removeFile("music")
+	local _music=cc.UserDefault:getInstance():getBoolForKey("music_hit",true)
+	-- dump(_music)
+	return _music 
+end
+
 --注册验证码
 function LocalData:set_sendmessage(server_code)
 	self.server_code=server_code
