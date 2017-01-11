@@ -34,6 +34,13 @@ function activitycodeLayer:init(  )
              hongdong_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
                end))
+            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
+              hongdong_bt:setVisible(false)
+            else
+               hongdong_bt:setVisible(true)
+            end
+          
               local back_bt=self.inputcodeLayer:getChildByTag(744)--输入活动吗
              back_bt:addTouchEventListener((function(sender, eventType  )
                      self:touch_btCallback(sender, eventType)
@@ -52,7 +59,7 @@ function activitycodeLayer:init(  )
                       end
             end))
 
-            self.activity_ListView:removeAllItems()
+            --self.activity_ListView:removeAllItems()
 
 
 
@@ -226,7 +233,7 @@ function activitycodeLayer:act_list()
 	
           self.list_table=LocalData:Instance():get_getactivitylist()
           -- dump(self.list_table)
-          if  self.activity_ListView then
+          if  self.list_table then
             self.activity_ListView:removeAllItems() 
           end
           --self.activity_ListView:removeAllItems() 
