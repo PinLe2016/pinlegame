@@ -98,14 +98,14 @@ function LoginScene:_coverlayer( )
        local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         local advertiImg1=advertiPa:getChildByTag(640)
         advertiImg1:setVisible(false)
-         for i=2, 4 do  --
+         for i=2, 3 do  --
               local  call=advertiPa:clone() 
               local a_dvertiImg=call:getChildByTag(1533)--cover1.jpg
               a_dvertiImg:loadTexture("res/png/cover"  ..  tostring(i)   ..   ".jpg")--imgurl
               local advertiImg=call:getChildByTag(640)
-              if i< 4 then
+              if i< 3 then
                 advertiImg:setVisible(false)
-              elseif i==4 then
+              elseif i==3 then
                 advertiImg:setVisible(true)
               self. _advertiImg=advertiImg
               end
@@ -541,9 +541,8 @@ end
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
    Server:Instance():version_login_url()  
-  if LocalData:Instance():get_music() then 
-    Util:player_music("GAMEBG",true )
-  end 
+    Util:player_music_hit("GAMEBG",true )
+   
   
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.VERSION_LINK, self,
                        function()

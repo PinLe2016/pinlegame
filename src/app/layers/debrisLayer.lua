@@ -25,6 +25,9 @@ function debrisLayer:ctor(params)
         self.adid=params.adid
         self.col=params.col
         self.count=params.row * params.col
+
+        self.deleget=params.deleget
+
         local path=cc.FileUtils:getInstance():getWritablePath()
         if params.adownerid then
           self.adownerid=params.adownerid
@@ -35,8 +38,8 @@ function debrisLayer:ctor(params)
         end  
        
         
-        --math.randomseed(tostring(os.time()):reverse():sub(1, 7))--随机种子
-        math.randomseed(os.time()) 
+        math.randomseed(tostring(os.time()):reverse():sub(1, 7))--随机种子
+        -- math.randomseed(os.time()) 
 
         self.content_size = self._size
          self.tp=params.tp
@@ -131,7 +134,7 @@ function debrisLayer:RandomIndex(indexNum, tabNum)
     local rt = {}
 
     for i = 1,indexNum do
-        math.randomseed(os.time()) 
+        -- math.randomseed(os.time()) 
         local ri = math.random(1,tabNum + 1 - i)
 
         local v = ri
@@ -256,15 +259,38 @@ function debrisLayer:saw_issuccess()
                  self:addChild(_originalimage,900)
 
                    local function stopAction()
-                             LocalData:Instance():setpuzzletime(self.count_time)
-                             if self.type=="surprise" then
-                                        Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
-                                         return
-                            end
-                          Server:Instance():setgamerecord(self.adid,0,0,self.count_time)  
+                             
+                            --  if self.type=="surprise" then
+                            --             Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
+                            --              return
+                            -- end
+                          -- Server:Instance():setgamerecord(self.adid,0,0,self.count_time)  
+                           LocalData:Instance():setpuzzletime(self.count_time)
+                           
+                           -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
+
+                           local  _img= LocalData:Instance():get_user_img()
+                        print("发到手机快放假",_img)
+                        local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                        -- dump(list_table)
+                        local  jaclayer_data=list_table["adlist"]
+                      
+                        local  _addetailurl = tostring(1)
+                        if jaclayer_data[1]["addetailurl"] then
+                           _addetailurl=jaclayer_data[1]["addetailurl"]
+                        end
+                        local  _img= LocalData:Instance():get_user_img()
+
+                        local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.deleget.adid,adownerid=self.deleget.adownerid,goldspoolcount= self.deleget.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.deleget.choose,Points=0})
+                       cc.Director:getInstance():replaceScene(bigwheelLayer) 
+
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
-                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.1),callfunc  ))
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
+
+                  Server:Instance():setgamerecord(self.adid,0,0,self.count_time)
+
+                 -- self:add_reward( )
                  
 end
 function debrisLayer:fun_endanimation()
@@ -403,7 +429,7 @@ function debrisLayer:onEnter()
               NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self,
                        function()
                               
-                               self:add_reward( )
+                               -- self:add_reward( )
                       end)
 
 

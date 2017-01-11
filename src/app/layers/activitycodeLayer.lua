@@ -166,7 +166,7 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
                    -- audio.stopMusic(G_SOUND["GAMEBG"])
                    -- audio.playMusic(G_SOUND["ACTIVITY"],true)
                    Util:stop_music("GAMEBG")
-                   Util:player_music("ACTIVITY",true )
+                   Util:player_music_hit("ACTIVITY",true )
                   self:unscheduleUpdate()
 
               	     self:removeFromParent()
@@ -554,7 +554,7 @@ end
   end
 function activitycodeLayer:onEnter()
       --audio.playMusic(G_SOUND["GAMEBG"],true)
-      Util:player_music("GAMEBG",true )
+      Util:player_music_hit("GAMEBG",true )
 	self.tablecout=0
       LocalData:Instance():set_getactivitylist(nil)
       self._typeevt=4
