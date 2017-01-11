@@ -55,13 +55,6 @@ function MainInterfaceScene:ctor()
          -- particle2:setScale(0.5)
          -- self:addChild(particle2)
 
-       --   particle2:changeDisplayWithIndex(0, true)
-       -- particle2:setIgnoreMovementBoneData(true)
-
-       
-
-
-      
      
 end
 function MainInterfaceScene:hammerAction()
@@ -139,10 +132,20 @@ function MainInterfaceScene:fun_init( )
           Surprise_bt:addTouchEventListener(function(sender, eventType  )
          self:touch_callback(sender, eventType)
       end)
+       self.gamecenter_text=self.MainInterfaceScene:getChildByTag(122)   --游戏中心
       self.gamecenter_bt=self.MainInterfaceScene:getChildByTag(444)   --游戏中心
           self.gamecenter_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
+       local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+        if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
+          self.gamecenter_bt:setTouchEnabled(false)
+           self.gamecenter_text:setVisible(false)
+        else
+           self.gamecenter_bt:setTouchEnabled(true)
+          self.gamecenter_text:setVisible(false)
+        end
+
       self.list_bt=self.MainInterfaceScene:getChildByTag(125)   --  排行榜
           self.list_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
