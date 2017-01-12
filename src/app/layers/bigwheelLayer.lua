@@ -87,7 +87,11 @@ function bigwheelLayer:ctor(params)
          {gold_b=20,gold_e=50},
          {gold_b=500,gold_e=500},
          {gold_b=10,gold_e=15}
-     }     
+     }   
+     self.end_back=nil
+     self.end_xuanyao=nil
+     self.end_zailaiyiju=nil
+         
       self._Rtrue =  0  
       if self.choose==1 then  --  拼图
          self:function_puzzle()
@@ -105,6 +109,7 @@ function bigwheelLayer:ctor(params)
       --self:fun_bigrandom()
         --转盘随机数出现
        -- self:star_action()
+       
 end
 --   转盘随机数出现
 function bigwheelLayer:fun_bigrandom( )
@@ -139,14 +144,21 @@ function bigwheelLayer:function_HitVolesEnd(  )
                -- end)
                 --self:function_httpgold( self.HitVolesEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
                local back=self.HitVolesEndLayer:getChildByTag(776)  --  返回
+               self.end_back=back
+               print("是交罚款多少积分开始")
+               back:setVisible(false)
                back:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
                end)
                local show=self.HitVolesEndLayer:getChildByTag(258)  --  炫耀
+               self.end_xuanyao=show
+               show:setVisible(false)
                show:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
                end)
                local secondcount=self.HitVolesEndLayer:getChildByTag(256)  --  再来一局
+               self.end_zailaiyiju=secondcount
+               secondcount:setVisible(false)
                secondcount:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
                end)
@@ -380,14 +392,20 @@ function bigwheelLayer:function_puzzle(  )
              -- end)
               --self:function_httpgold( self.puzzleEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
             local back=self.puzzleEndLayer:getChildByTag(305)  --  返回
+            back:setVisible(false)
+            self.end_back=back
              back:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
              end)
              local show=self.puzzleEndLayer:getChildByTag(756)  --  炫耀
+             show:setVisible(false)
+             self.end_xuanyao=show
              show:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
              end)
              local secondcount=self.puzzleEndLayer:getChildByTag(755)  --  再来一局
+             secondcount:setVisible(false)
+             self.end_zailaiyiju=secondcount
              secondcount:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
              end)
@@ -1103,7 +1121,7 @@ function bigwheelLayer:big_end(_istrue,x,y,_obj )
 end
 function bigwheelLayer:fun_bigback( _obj,x,y )
         local textButton = ccui.Button:create()
-      self.connection13=textButton
+      --self.connection13=textButton
       textButton:setTouchEnabled(true)--
       textButton:loadTextures("png/dadishu-choujiang-1-1-guanbi-liang.png", "png/dadishu-choujiang-1-1-guanbi.png", "")
       textButton:setPosition(cc.p(x,y))
@@ -1193,6 +1211,10 @@ function bigwheelLayer:fun_shunliwancheng(_obj1,_obj2,_obj3,_obj4 )
                                                    local actionTo1 = cc.ScaleTo:create(_time, _scale)
                                                    local actionTo2 = cc.ScaleTo:create(_time,1)
                                                  _obj4:runAction(cc.Sequence:create(actionTo1,actionTo2)) 
+                                                 self.end_back:setVisible(true)
+                                                 self.end_xuanyao:setVisible(true)
+                                                 self.end_zailaiyiju:setVisible(true)
+
                                               end
                                         _obj3:runAction(cc.Sequence:create(actionTo1,actionTo2,cc.CallFunc:create(logSprRotation))) 
                             end
