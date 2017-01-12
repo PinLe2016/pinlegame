@@ -264,7 +264,8 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
 
            	elseif tag==307 then  --商务合作返回
            		-- self.business_bg:setVisible(false)
-                  audio.playMusic("sound/effect/guanbi.mp3",false)
+                   Util:all_layer_backMusic()
+                  -- audio.playMusic("sound/effect/guanbi.mp3",false)
            		 self.companyname_text:setVisible(false)
            	            self.nametext:setVisible(false)
            	            self.phonetext:setVisible(false)
