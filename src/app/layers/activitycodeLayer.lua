@@ -59,7 +59,7 @@ function activitycodeLayer:init(  )
                       end
             end))
 
-            --self.activity_ListView:removeAllItems()
+            self.activity_ListView:removeAllItems()
 
 
 
@@ -233,10 +233,10 @@ function activitycodeLayer:act_list()
 	
           self.list_table=LocalData:Instance():get_getactivitylist()
           -- dump(self.list_table)
-          if  self.list_table then
-            self.activity_ListView:removeAllItems() 
-          end
-          --self.activity_ListView:removeAllItems() 
+          -- if  self.list_table then
+          --   self.activity_ListView:removeAllItems() 
+          -- end
+          self.activity_ListView:removeAllItems() 
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
            if self.tablecout<self.sup_data_num then
