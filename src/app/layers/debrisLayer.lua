@@ -274,7 +274,7 @@ function debrisLayer:saw_issuccess()
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                         -- dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
-                      
+                        Server:Instance():setgamerecord(self.adid,0,0,self.count_time)
                         local  _addetailurl = tostring(1)
                         if jaclayer_data[1]["addetailurl"] then
                            _addetailurl=jaclayer_data[1]["addetailurl"]
@@ -288,7 +288,7 @@ function debrisLayer:saw_issuccess()
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
 
-                  Server:Instance():setgamerecord(self.adid,0,0,self.count_time)
+                  
 
                  -- self:add_reward( )
                  
