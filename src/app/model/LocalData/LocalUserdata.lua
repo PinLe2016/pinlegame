@@ -176,6 +176,36 @@ end
 -- end
 
 
+----成长树相关接口
+
+--3.9.1 获取成长树列表接口
+function LocalData:set_gettreelist(gettreelist)
+	self.gettreelist=gettreelist
+end
+
+function LocalData:get_gettreelist()
+	return self.gettreelist or nil
+end
+
+--3.9.2 好友列表接口（命令：gettreefriendlist）
+function LocalData:set_gettreefriendlist(gettreefriendlist)
+	self.gettreefriendlist=gettreefriendlist
+end
+
+function LocalData:get_gettreefriendlist()
+	return self.gettreefriendlist or nil
+end
+
+--3.9.3 背包接口（命令：gettreegameitemlist）
+function LocalData:set_gettreegameitemlist(gettreegameitemlist)
+	self.gettreegameitemlist=gettreegameitemlist
+end
+
+function LocalData:get_gettreegameitemlist()
+	return self.gettreegameitemlist or nil
+end
+
+
 
 
 

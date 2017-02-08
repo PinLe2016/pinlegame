@@ -305,10 +305,150 @@ end
 
 
 
+----成长树相关接口
 
 
 
+--3.9.1 获取成长树列表接口（命令：gettreelist）
+function Server:gettreelist()
+      local params = {
+            
+            }
 
+    self:request_http("gettreelist" , params); 
+end
+function Server:gettreelist_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_gettreelist(self.data)--
+end
+
+--3.9.2 好友列表接口（命令：gettreefriendlist）
+function Server:gettreefriendlist()
+      local params = {
+            
+            }
+
+    self:request_http("gettreefriendlist" , params); 
+end
+function Server:gettreefriendlist_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_gettreefriendlist(self.data)--
+end
+
+--3.9.3 背包接口（命令：gettreegameitemlist）
+
+function Server:gettreegameitemlist()
+      local params = {
+            
+            }
+
+    self:request_http("gettreegameitemlist" , params); 
+end
+function Server:gettreegameitemlist_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_gettreegameitemlist(self.data)--
+end
+
+--3.9.4 成长树种子种植接口（命令：setseedplant）
+--treeid  是 成长树标识ID Guid  
+--gameitemid  是 种子道具ID  GUID  
+
+function Server:setseedplant(treeid,gameitemid)
+      local params = {
+              treeid=treeid,
+              gameitemid=gameitemid
+            }
+
+    self:request_http("setseedplant" , params); 
+end
+function Server:setseedplant_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_getconfig(self.data)--
+end
+
+
+--3.9.5 成长树种子浇水接口（命令：setseedwater）
+--treeid  是 成长树标识ID Guid  
+--seedid  是 种子标识ID  GUID  
+
+function Server:setseedwater(treeid,seedid)
+      local params = {
+              treeid=treeid,
+              seedid=seedid
+            }
+
+    self:request_http("setseedwater" , params); 
+end
+function Server:setseedwater_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_getconfig(self.data)--
+end
+
+--3.9.6 成长树种子施肥接口（命令：setseedmanure）
+
+--treeid  是 成长树标识ID Guid  
+--seedid  是 种子标识ID  GUID  
+--gameitemid  是 化肥道具编号  GUID  种子/化肥编号ID
+
+function Server:setseedmanure(treeid,seedid,gameitemid)
+      local params = {
+              treeid=treeid,
+              seedid=seedid,
+              gameitemid=gameitemid
+            }
+
+    self:request_http("setseedmanure" , params); 
+end
+function Server:setseedmanure_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_getconfig(self.data)--
+end
+
+--3.9.7 成长树种子收获/偷取接口（命令：setseedreward）
+--treeid  是 成长树标识ID Guid  
+--seedid  是 种子标识ID  GUID  
+
+
+function Server:setseedreward(treeid,seedid)
+      local params = {
+              treeid=treeid,
+              seedid=seedid
+            }
+
+    self:request_http("setseedreward" , params); 
+end
+function Server:setseedreward_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_getconfig(self.data)--
+end
 
 
 
