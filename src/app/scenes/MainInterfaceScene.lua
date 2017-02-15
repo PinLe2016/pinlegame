@@ -46,6 +46,8 @@ function MainInterfaceScene:ctor()
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)
+     
+
        --self:hammerAction()
         -- local spr=display.newSprite("dadishu-wanfajieshao-xinxin.png")
         -- spr:setPosition(cc.p(display.cx,display.cy))

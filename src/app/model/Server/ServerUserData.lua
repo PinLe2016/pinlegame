@@ -324,6 +324,7 @@ function Server:gettreelist_callback()
         return
     end
     LocalData:Instance():set_gettreelist(self.data)--
+    NotificationCenter:Instance():PostNotification("MESSAGE_GETTREELIST")
 end
 
 --3.9.2 好友列表接口（命令：gettreefriendlist）
@@ -347,13 +348,14 @@ function Server:gettreefriendlist_callback()
         return
     end
     LocalData:Instance():set_gettreefriendlist(self.data)--
+    NotificationCenter:Instance():PostNotification("MESSAGE_GETTREEFRIENDLIST")
 end
 
 --3.9.3 背包接口（命令：gettreegameitemlist）
 
-function Server:gettreegameitemlist()
+function Server:gettreegameitemlist(type)  --1化肥 2种子 3化肥和种子
       local params = {
-            
+              type=type
             }
 
     self:request_http("gettreegameitemlist" , params); 
