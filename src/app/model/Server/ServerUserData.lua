@@ -327,9 +327,15 @@ function Server:gettreelist_callback()
 end
 
 --3.9.2 好友列表接口（命令：gettreefriendlist）
-function Server:gettreefriendlist()
+--pagesize  是 每页显示数据  int 
+--pageno  是 页号  Int 第一页为1
+--type  是 好友类型  Int 1我的好友，2我的员工
+
+function Server:gettreefriendlist(pagesize,pageno,type)
       local params = {
-            
+                pagesize=pagesize,
+                pageno=pageno,
+                type=type
             }
 
     self:request_http("gettreefriendlist" , params); 
