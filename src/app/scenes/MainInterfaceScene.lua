@@ -261,6 +261,7 @@ function MainInterfaceScene:fun_init( )
 end
 function MainInterfaceScene:fun_backbt( sender, eventType )
   if eventType ~= ccui.TouchEventType.ended then
+
      -- sender:setScale(0.8)
     return
   end
@@ -348,12 +349,18 @@ function MainInterfaceScene:touch_callback( sender, eventType )
      --Util:scene_control("PhysicsScene")
       elseif tag==444 then  --游戏中心
 
-            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
-                    self:fun_gamecenter()
-                    return
-            end
-            Util:scene_controlid("MallScene",{type="play_mode"})
+            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            -- if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
+            --         self:fun_gamecenter()
+            --         return
+            -- end
+            -- Util:scene_controlid("MallScene",{type="play_mode"})
+
+             local GrowingtreeLayer = require("app.layers.GrowingtreeLayer")--排行榜 
+         self:addChild(GrowingtreeLayer.new(),1,17)
+
+
+
       elseif tag==125 then 
               --self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
               --self.list_bt:setTouchEnabled(false)
@@ -529,6 +536,8 @@ function MainInterfaceScene:funsetup( Isture )
         local _list1=_list[1]["sataus"]
         local _list2=_list[2]["sataus"]
         if tonumber(_list1) == 0 then  --o 开  1  关闭
+           LocalData:Instance():set_music_hit(true)
+            Util:player_music_hit("ACTIVITY",true )
            music_bt:setSelected(true)
            LocalData:Instance():set_music_hit(true)
            
