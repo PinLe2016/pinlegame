@@ -261,8 +261,11 @@ function MainInterfaceScene:fun_init( )
 end
 function MainInterfaceScene:fun_backbt( sender, eventType )
   if eventType ~= ccui.TouchEventType.ended then
+
+     -- sender:setScale(0.8)
     return
   end
+  -- sender:setScale(1)
   local tag=sender:getTag()
   if tag==6223 then
       local CustomerLayer = require("app.layers.CustomerLayer")  --关于拼乐界面  
@@ -536,15 +539,21 @@ function MainInterfaceScene:funsetup( Isture )
            LocalData:Instance():set_music_hit(true)
             Util:player_music_hit("ACTIVITY",true )
            music_bt:setSelected(true)
+           LocalData:Instance():set_music_hit(true)
+           
+           Util:player_music_hit("ACTIVITY",true )
            audio.resumeMusic()
         else
            music_bt:setSelected(false)
+           LocalData:Instance():set_music_hit(false)
            audio.pauseMusic()
         end
          if tonumber(_list2) == 0 then  --o 开  1  关闭
            sound_bt:setSelected(true)
+           LocalData:Instance():set_music(true)
            audio.resumeAllSounds()
         else
+            LocalData:Instance():set_music(false)
            sound_bt:setSelected(false)
            audio.pauseAllSounds()
         end
@@ -758,6 +767,7 @@ function MainInterfaceScene:init_checkin(  )
             end
 end
 function MainInterfaceScene:onEnter()
+
   Util:player_music_hit("ACTIVITY",true )
   Server:Instance():getuserinfo()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,

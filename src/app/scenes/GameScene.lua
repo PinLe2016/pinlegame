@@ -220,14 +220,23 @@ function GameScene:funsuspended( )
                       local callfunc = cc.CallFunc:create(stopAction)
                      self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
                end)
+
+
+            local getconfig=LocalData:Instance():get_getconfig()
+            local _list = getconfig["list"]
+            local _list1=_list[1]["sataus"]
+            local _list2=_list[2]["sataus"]
+
            local sound_box=panel:getChildByTag(52)  -- 音效
            sound_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
-                             audio.resumeMusic()
+                               LocalData:Instance():set_music(true)
+                               Server:Instance():setconfig(_list[2]["itemsId"],0)  --  获取后台音效
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              print("关闭")
-                              audio.pauseMusic()
+                            LocalData:Instance():set_music(false)
+                            Server:Instance():setconfig(_list[2]["itemsId"],1)  --  获取后台音效
                      end
                end)
            local music_box=panel:getChildByTag(53)  -- 音乐
@@ -235,11 +244,34 @@ function GameScene:funsuspended( )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
                             audio.resumeMusic()
+                             Util:player_music_hit("MENUMUSIC",true )
+                             LocalData:Instance():set_music_hit(true)
+                             Server:Instance():setconfig(_list[1]["itemsId"],0)
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                              print("关闭")
+                              LocalData:Instance():set_music_hit(false)
+                             Server:Instance():setconfig(_list[1]["itemsId"],1)
                              audio.pauseMusic()
                      end
                end)
+
+
+          if tonumber(_list1) == 0 then  --o 开  1  关闭
+              music_box:setSelected(true)
+              audio.resumeMusic()
+          else
+              music_box:setSelected(false)
+              audio.pauseMusic()
+          end
+          if tonumber(_list2) == 0 then  --o 开  1  关闭
+              sound_box:setSelected(true)
+              audio.resumeAllSounds()
+          else
+              sound_box:setSelected(false)
+              audio.pauseAllSounds()
+          end
+
+
            local notifications_box=panel:getChildByTag(54)  -- 通知
            notifications_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then

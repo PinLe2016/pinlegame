@@ -121,22 +121,54 @@ function HitVolesLayer:fun_init(  )
           end
             Util:scene_control("GoldprizeScene")
       end)
+
+       local getconfig=LocalData:Instance():get_getconfig()
+        local _list = getconfig["list"]
+        local _list1=_list[1]["sataus"]
+        local _list2=_list[2]["sataus"]
+
       local sound_bt1=self.stop_bg:getChildByTag(551)--音效
        sound_bt1:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
-                            audio.resumeMusic()
+                            LocalData:Instance():set_music(true)
+                            Server:Instance():setconfig(_list[2]["itemsId"],0)  --  获取后台音效
                      elseif eventType == ccui.CheckBoxEventType.unselected then
-                            audio.pauseMusic()
-                     end
+                            LocalData:Instance():set_music(false)
+                            Server:Instance():setconfig(_list[2]["itemsId"],1)  --  获取后台音效
+
+                        end
             end)
        local music_bt=self.stop_bg:getChildByTag(552)--音乐
         music_bt:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
+                            LocalData:Instance():set_music_hit(true)
+                             Server:Instance():setconfig(_list[1]["itemsId"],0)  -- 
+                             Util:player_music_hit("MENUMUSIC",true )
                             audio.resumeMusic()
+
                      elseif eventType == ccui.CheckBoxEventType.unselected then
+                            LocalData:Instance():set_music_hit(false)
+                            Server:Instance():setconfig(_list[1]["itemsId"],1)
                              audio.pauseMusic()
                      end
             end)
+
+
+          if tonumber(_list1) == 0 then  --o 开  1  关闭
+              music_bt:setSelected(true)
+              audio.resumeMusic()
+          else
+              music_bt:setSelected(false)
+              audio.pauseMusic()
+          end
+          if tonumber(_list2) == 0 then  --o 开  1  关闭
+              sound_bt1:setSelected(true)
+              audio.resumeAllSounds()
+          else
+              sound_bt1:setSelected(false)
+              audio.pauseAllSounds()
+          end
+
 
 
       self.congratulations=self.HitVolesLayer:getChildByTag(189)-- 恭喜获得
