@@ -7,13 +7,58 @@ local GrowingtreeLayer = class("GrowingtreeLayer", function()
 end)
 function GrowingtreeLayer:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
+       self.pt_table={}
+       self.is_friend=false
        Server:Instance():gettreelist()--   成长树初始化接口
        Server:Instance():gettreefriendlist(7,1,1)--   成长树好友初始化接口  每页显示数据  页号  好友类型  Int 1我的好友，2我的员工
+       -- 
+       self:function_touchlistener()
        self:init()
+end
+function GrowingtreeLayer:function_touchlistener( )
+	local layer=cc.Layer:create()
+	self:addChild(layer,500)
+	 local function onTouchEnded(x,y) 
+	                  print("坐标",x," ",y)
+	 end
+	    layer:setTouchEnabled(true)  
+	    layer:setTouchSwallowEnabled(false)  
+	    layer:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)  
+	    layer:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event) 
+	             if event.name == "began" then  
+	             	print("坐标")
+	               onTouchEnded(event.x,event.y)  
+	             end  
+	             return true  
+	    end)  
+end
+function GrowingtreeLayer:function_touchmove( obj)
+	local _obj=self.Growingtree:getChildByTag(266)
+	local  move1=cc.MoveTo:create(0.5, cc.p( obj:getPositionX(),obj:getPositionY() ) )
+    	_obj:runAction(move1)
+    	--  加帧
 end
 function GrowingtreeLayer:init(  )
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
+
+	
+
+
+    	self._pt=cc.p(self.Growingtree:getChildByTag(266):getPositionX(),self.Growingtree:getChildByTag(266):getPositionY())
+  
+    	for i=1,10 do
+    		self.pt_table[i]=self.Growingtree:getChildByTag(103+i)
+    		self.Growingtree:getChildByTag(103+i):addTouchEventListener(function(sender, eventType  )
+		            if eventType ~= ccui.TouchEventType.ended then
+		                return
+		            end 
+		           self:function_touchmove( sender)
+	  end)
+    		
+    	end
+
+    	
     	self.GrowingtreeNode = self.Growingtree:getChildByTag(56)  --Node   界面
     	
     	 local back_bt=self.Growingtree:getChildByTag(84)  --返回
@@ -21,6 +66,11 @@ function GrowingtreeLayer:init(  )
 	            if eventType ~= ccui.TouchEventType.ended then
 	                return
 	            end 
+	            if self.is_friend  then
+	            	self.is_friend=false
+	            	Server:Instance():gettreelist()
+	            	return
+	            end
 	           self:removeFromParent()
 	  end)
 
@@ -99,6 +149,18 @@ function GrowingtreeLayer:init(  )
 end
 
 function GrowingtreeLayer:fun_data()
+
+	if self.is_friend  then
+	        	self.GrowingtreeNode:setVisible(false)
+	        	self.Growingtree:getChildByTag(19):setVisible(false)
+      		self.Growingtree:getChildByTag(20):setVisible(false)
+	else
+		self.GrowingtreeNode:setVisible(true)
+		self.Growingtree:getChildByTag(19):setVisible(true)
+      		self.Growingtree:getChildByTag(20):setVisible(true)
+	end
+
+
 	 local gettreelist = LocalData:Instance():get_gettreelist()
 	 local experience_text=self.Growingtree:getChildByTag(87)  --经验值
 	 experience_text:setString(gettreelist["treeExp"])
@@ -123,10 +185,6 @@ function GrowingtreeLayer:fun_data()
 
 	 local name_text=self.Growingtree:getChildByTag(90)  --自己名字
 	 name_text:setString(gettreelist["nickname"])
-
-
-	
-
 end
 --  我的员工是否显示
 function GrowingtreeLayer:function_friendIsvisible(Isvisible)
@@ -144,22 +202,54 @@ function GrowingtreeLayer:function_friend( )
             local _list=gettreefriendlist["list"]
 	self.PageView_head=self.GrowingtreeNode:getChildByTag(566):getChildByTag(47)
 	local Panel=self.PageView_head:getChildByTag(48)
+
+	local head_image=Panel:getChildByTag(50)
+	head_image:loadTexture("png/" ..  "chengzhangshu-di-1-haoyou-1.png")--初始化头像
+	local head_bt=Panel:getChildByTag(49)  --  头像按钮
+	head_image:setScale(0.53)
+	head_bt:addTouchEventListener(function(sender, eventType  )
+		
+	            if eventType ~= ccui.TouchEventType.ended then
+	                return
+	            end 
+	           
+	          
+	  end)
+	local head_text=Panel:getChildByTag(51)  --  头像按钮
+	head_text:setString("拼乐")
+	self.PageView_head:addPage(Panel)   --添加头像框
+	
+	local friend_lv=Panel:getChildByTag(77)  --  等级
+	friend_lv:setString("LV " .. tostring(0) )
+
+
+	 for i=2,#self.PageView_head:getPages() do 
+		self.PageView_head:removePageAtIndex(1)   --  删除view  里面的样图
+	end
 	 if #_list   ==  0  then
 	 	print("好友个数",#_list)
-                    Panel:setVisible(false)
+                    --Panel:setVisible(false)
+                       for i=1,7 do
+			local  call=Panel:clone() 
+			self.PageView_head:addPage(call)
+		end
+
                     return
             end
-            Panel:setVisible(true)
+           
 	for i=1,#_list  do
 		local  call=Panel:clone() 
 		local head_image=call:getChildByTag(50)
 		head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(_list[i]["imageUrl"], "/",":"))))--初始化头像
 		local head_bt=call:getChildByTag(49)  --  头像按钮
+		head_image:setScale(0.53)
+		head_bt:getChildByName("Image_34"):setTag(i)
 		head_bt:addTouchEventListener(function(sender, eventType  )
-			dump(eventType)
 		            if eventType ~= ccui.TouchEventType.ended then
 		                return
 		            end 
+		           self.is_friend=true
+		           Server:Instance():gettreelist(_list[sender:getChildByName("Image_34"):getTag()]["playerid"])
 		            -- if eventType == ccui.TouchEventType.began then
 		            -- 	print("开始")
 		            -- 	sender:setTouchEnabled(true)
@@ -183,19 +273,43 @@ function GrowingtreeLayer:function_friend( )
 		local friend_lv=call:getChildByTag(77)  --  等级
 		friend_lv:setString("LV " .. tostring(_list[i]["playergrade"]) )
 
-            end  
- --            for i=1,7- #_list  do
-	-- 	local  call=Panel:clone() 
-	-- 	self.PageView_head:addPage(call)
-	-- end
+            end
+            --  默认机器好友
+            if #_list < 7  then
+	            for i=1,7- #_list do
+			local  call=Panel:clone() 
+			self.PageView_head:addPage(call)
+		end
+            end
             self.PageView_head:removePage(Panel)  --删除样图
 end
 --  背包列表
 function GrowingtreeLayer:function_backpack( )
+	print("背包哈哈")
             local gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
             local _list=gettreegameitemlist["list"]
 	self.PageView_head=self.GrowingtreeNode:getChildByTag(566):getChildByTag(47)
 	local Panel=self.PageView_head:getChildByTag(48)
+	for i=2,#self.PageView_head:getPages() do 
+		self.PageView_head:removePageAtIndex(1)   --  删除view  里面的样图
+	end
+
+	local head_image=Panel:getChildByTag(50)
+	head_image:loadTexture("png/" ..  "chengzhangshu-di-1-haoyou-1.png")--初始化头像
+	local head_bt=Panel:getChildByTag(49)  --  头像按钮
+	head_image:setScale(0.53)
+	head_bt:addTouchEventListener(function(sender, eventType  )
+	            if eventType ~= ccui.TouchEventType.ended then
+	                return
+	            end 
+	  end)
+	local head_text=Panel:getChildByTag(51)  --  头像按钮
+	head_text:setString("拼乐")
+	self.PageView_head:addPage(Panel)   --添加头像框
+	
+	local friend_lv=Panel:getChildByTag(77)  --  等级
+	friend_lv:setString("LV " .. tostring(0) )
+
 	 if #_list   ==  0  then
 	 	print("背包个数",#_list)
                     Panel:setVisible(false)
@@ -206,6 +320,7 @@ function GrowingtreeLayer:function_backpack( )
 		local  call=Panel:clone() 
 		local head_image=call:getChildByTag(50)
 		--head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(_list[i]["imageUrl"], "/",":"))))--初始化头像
+		head_image:loadTexture("png/" ..  "chengzhangshu-huafei-chuji.png")
 		local head_bt=call:getChildByTag(49)  --  头像按钮
 		head_bt:addTouchEventListener(function(sender, eventType  )
 		            if eventType ~= ccui.TouchEventType.ended then
@@ -218,6 +333,13 @@ function GrowingtreeLayer:function_backpack( )
 		local friend_lv=call:getChildByTag(77)  --  等级
 		friend_lv:setString(tostring(_list[i]["count"]) )
 
+            end
+            --  默认机器好友
+            if #_list < 7  then
+	            for i=1,7- #_list do
+			local  call=Panel:clone() 
+			self.PageView_head:addPage(call)
+		end
             end
             self.PageView_head:removePage(Panel)  --删除样图
 end
@@ -282,19 +404,28 @@ function GrowingtreeLayer:touch_callback( sender, eventType )
           if tag==19 then   
           	 print("好友")
           	 Server:Instance():gettreefriendlist(7,1,1)
+          	 self.Growingtree:getChildByTag(266):setVisible(false)
           	 self:function_friendIsvisible(true)
           elseif tag==20 then
           	  print("背包")
           	  self:function_friendIsvisible(false)
-          	  Server:Instance():gettreegameitemlist(2 )  --1化肥 2种子 3化肥和种子
+          	  self.Growingtree:getChildByTag(266):setVisible(false)
+          	  Server:Instance():gettreegameitemlist(3 )  --1化肥 2种子 3化肥和种子
           elseif tag==21 then
           	  print("浇水")
+          	  dump(self._pt)
+          	  self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
+          	  self.Growingtree:getChildByTag(266):setVisible(true)
           	  self:function_friendIsvisible(false)
           elseif tag==22 then
           	 print("施肥")
+          	 self.Growingtree:getChildByTag(266):loadTexture("png/chengzhangshu-huafei-chuji.png")
+          	  self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
           	 self:function_friendIsvisible(false)
           elseif tag==23 then
           	  print("收获")
+          	   self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
+          	  self.Growingtree:getChildByTag(266):loadTexture("png/dadishu-02-bantou-di-zuoshang.png")
           	  self:function_friendIsvisible(false)
          end
          self.curr_bright=sender
