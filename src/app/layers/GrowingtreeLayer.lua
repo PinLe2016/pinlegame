@@ -124,6 +124,7 @@ function GrowingtreeLayer:fun_data()
 	 local name_text=self.Growingtree:getChildByTag(90)  --自己名字
 	 name_text:setString(gettreelist["nickname"])
 
+
 	
 
 end
@@ -155,18 +156,67 @@ function GrowingtreeLayer:function_friend( )
 		head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(_list[i]["imageUrl"], "/",":"))))--初始化头像
 		local head_bt=call:getChildByTag(49)  --  头像按钮
 		head_bt:addTouchEventListener(function(sender, eventType  )
+			dump(eventType)
 		            if eventType ~= ccui.TouchEventType.ended then
 		                return
 		            end 
+		            -- if eventType == ccui.TouchEventType.began then
+		            -- 	print("开始")
+		            -- 	sender:setTouchEnabled(true)
+		            -- elseif eventType == ccui.TouchEventType.moved then
+		            --   	print("移动")
+		            --   	-- eventType=cui.TouchEventType.ended
+		            --   	-- --sender:setTouchEnabled(false)
+		            -- elseif eventType == ccui.TouchEventType.ended then
+		            -- 	print("结束")
+		            -- 	sender:setTouchEnabled(true)
+		            -- end 
 		  end)
 		local head_text=call:getChildByTag(51)  --  头像按钮
 		head_text:setString(_list[i]["nickname"])
 		self.PageView_head:addPage(call)   --添加头像框
 		if tonumber(_list[i]["flag"])  ==  0  then   -- 0好友  1自己
-			print("好友")
+			print("好友YES")
 		else
 			print("自己")		
 		end
+		local friend_lv=call:getChildByTag(77)  --  等级
+		friend_lv:setString("LV " .. tostring(_list[i]["playergrade"]) )
+
+            end  
+ --            for i=1,7- #_list  do
+	-- 	local  call=Panel:clone() 
+	-- 	self.PageView_head:addPage(call)
+	-- end
+            self.PageView_head:removePage(Panel)  --删除样图
+end
+--  背包列表
+function GrowingtreeLayer:function_backpack( )
+            local gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
+            local _list=gettreegameitemlist["list"]
+	self.PageView_head=self.GrowingtreeNode:getChildByTag(566):getChildByTag(47)
+	local Panel=self.PageView_head:getChildByTag(48)
+	 if #_list   ==  0  then
+	 	print("背包个数",#_list)
+                    Panel:setVisible(false)
+                    return
+            end
+            Panel:setVisible(true)
+	for i=1,#_list  do
+		local  call=Panel:clone() 
+		local head_image=call:getChildByTag(50)
+		--head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(_list[i]["imageUrl"], "/",":"))))--初始化头像
+		local head_bt=call:getChildByTag(49)  --  头像按钮
+		head_bt:addTouchEventListener(function(sender, eventType  )
+		            if eventType ~= ccui.TouchEventType.ended then
+		                return
+		            end 
+		  end)
+		local head_text=call:getChildByTag(51)  --  头像按钮
+		head_text:setString(_list[i]["name"])
+		self.PageView_head:addPage(call)   --添加头像框
+		local friend_lv=call:getChildByTag(77)  --  等级
+		friend_lv:setString(tostring(_list[i]["count"]) )
 
             end
             self.PageView_head:removePage(Panel)  --删除样图
@@ -231,11 +281,12 @@ function GrowingtreeLayer:touch_callback( sender, eventType )
           sender:getChildByTag(sender:getTag()+5):setBright(false)
           if tag==19 then   
           	 print("好友")
+          	 Server:Instance():gettreefriendlist(7,1,1)
           	 self:function_friendIsvisible(true)
           elseif tag==20 then
           	  print("背包")
           	  self:function_friendIsvisible(false)
-          	  Server:Instance():gettreegameitemlist(1)  --1化肥 2种子 3化肥和种子
+          	  Server:Instance():gettreegameitemlist(2 )  --1化肥 2种子 3化肥和种子
           elseif tag==21 then
           	  print("浇水")
           	  self:function_friendIsvisible(false)
@@ -261,6 +312,12 @@ function GrowingtreeLayer:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_GETTREEFRIENDLIST", self,
                        function()
                        	self:function_friend()  --  好友数据
+
+                      end)
+    --  成长树背包消息
+  NotificationCenter:Instance():AddObserver("MESSAGE_GSTTREEGAMEITEMLIST", self,
+                       function()
+                       	self:function_backpack()  --  背包数据
 
                       end)
 

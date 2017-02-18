@@ -319,6 +319,7 @@ function Server:gettreelist()
 end
 function Server:gettreelist_callback()
      dump(self.data)
+     dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
@@ -367,6 +368,7 @@ function Server:gettreegameitemlist_callback()
         return
     end
     LocalData:Instance():set_gettreegameitemlist(self.data)--
+    NotificationCenter:Instance():PostNotification("MESSAGE_GSTTREEGAMEITEMLIST")
 end
 
 --3.9.4 成长树种子种植接口（命令：setseedplant）
