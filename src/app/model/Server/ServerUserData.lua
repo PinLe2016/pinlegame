@@ -39,7 +39,7 @@ function Server:getuserinfo_callback()
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
     end
-     dump(self.data)
+     -- dump(self.data)
     LocalData:Instance():set_getuserinfo(self.data)--保存数据
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE)
    
@@ -100,7 +100,7 @@ function Server:getusercitybyphone()
 end
 
 function Server:getusercitybyphone_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取玩家手机归属地:" .. self.data.err_msg)
         return
@@ -273,7 +273,7 @@ function Server:getconfig()
 end
 
 function Server:getconfig_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
@@ -310,9 +310,11 @@ end
 
 
 --3.9.1 获取成长树列表接口（命令：gettreelist）
-function Server:gettreelist()
+--friendplayerid  否 好友playerId  Guid  查看好友的成长树，为空时自己的成长树
+
+function Server:gettreelist(friendplayerid)
       local params = {
-            
+              friendplayerid=friendplayerid
             }
 
     self:request_http("gettreelist" , params); 
