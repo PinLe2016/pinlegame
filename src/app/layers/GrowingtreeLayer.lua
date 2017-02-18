@@ -47,6 +47,7 @@ function GrowingtreeLayer:function_touchmove( obj,x,y)
 			 Server:Instance():setseedwater(self.z_treeid,self.z_seedid)  --  
 		elseif self._type==22 then  --  施肥
 			print("没化肥")
+			Server:Instance():promptbox_box_buffer("没化肥")   --prompt
 			 --Server:Instance():setseedmanure(self.z_treeid,self.z_gameitemid)  --  	
 		elseif self._type==23 then  --收获
 			 Server:Instance():setseedreward(self.z_treeid,self.z_seedid)  --  
@@ -188,7 +189,7 @@ function GrowingtreeLayer:fun_data()
 	 experience_text:setString(gettreelist["treeExp"])
 	 dump(gettreelist ["list"][1]["seedlist"])
 	 if gettreelist["list"][1]["seedlist"][1]["seedid"] then
-	 	self.Growingtree:getChildByTag(104):loadTexture("png/baiqiu.png")
+	 	self.Growingtree:getChildByTag(104):loadTexture("png/bigwheelzhuanpandi-zi.png")
 	 	self.z_seedid=gettreelist["list"][1]["seedlist"][1]["seedid"]
 
 	 end
@@ -362,7 +363,7 @@ function GrowingtreeLayer:function_backpack( )
 
 		            local _gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
 		            local gettreelist = LocalData:Instance():get_gettreelist()
-		        
+
 		            self.z_gameitemid=_gettreegameitemlist["list"][sender:getChildByName("Image_44"):getTag()]["gameitemid"]
 		            self.z_treeid=gettreelist["list"][1]["treeid"]  --  目前一棵树  零时写死
 		                print("交罚款绝对是",self.z_gameitemid)
