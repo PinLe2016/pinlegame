@@ -320,7 +320,8 @@ function Server:gettreelist(friendplayerid)
     self:request_http("gettreelist" , params); 
 end
 function Server:gettreelist_callback()
-     dump(self.data)
+     -- dump(self.data)
+     -- dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
@@ -379,7 +380,8 @@ end
 function Server:setseedplant(treeid,gameitemid)
       local params = {
               treeid=treeid,
-              gameitemid=gameitemid
+              gameitemid=gameitemid,
+                seatcount=1
             }
 
     self:request_http("setseedplant" , params); 
@@ -448,6 +450,7 @@ function Server:setseedreward(treeid,seedid)
       local params = {
               treeid=treeid,
               seedid=seedid
+
             }
 
     self:request_http("setseedreward" , params); 

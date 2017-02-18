@@ -24,7 +24,7 @@ end
  
 function MainInterfaceScene:ctor()
 
-	    self.floating_layer = require("app.layers.FloatingLayer").new()
+	self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.count=0
 
@@ -358,9 +358,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- end
             -- Util:scene_controlid("MallScene",{type="play_mode"})
 
-             local GrowingtreeLayer = require("app.layers.GrowingtreeLayer")--排行榜 
-         self:addChild(GrowingtreeLayer.new(),1,17)
-
+          display.replaceScene(require("app.layers.GrowingtreeLayer"):new())
 
 
       elseif tag==125 then 
