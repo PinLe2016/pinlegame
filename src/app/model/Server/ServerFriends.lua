@@ -215,9 +215,8 @@ function Server:getsearchfriendlist_callback()
         self:show_float_message("" .. self.data.err_msg)
         return
     end
-
     LocalData:Instance():set_getsearchfriendlist(self.data)--保存数据
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+   NotificationCenter:Instance():PostNotification("FRIEND_GETSEARCHFRIENDLIST")
    
 end
 
@@ -244,8 +243,8 @@ function Server:setfriendoperation_callback()
         self:show_float_message("" .. self.data.err_msg)
         return
     end
-
-    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+        NotificationCenter:Instance():PostNotification("FRIEND_SETFRIENDOPERATION")
+   
    
 end
 

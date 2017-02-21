@@ -151,7 +151,16 @@ function InvitefriendsLayer:fun_init(  )
                   self.today_golds:setString( _friendlist[i]["total_golds"] )
                   self.total_golds =  _cell:getChildByTag(101)  --贡献经验
                   self.total_golds:setString( _friendlist[i]["total_points"] )
-	     
+
+                   local move_friend =_cell:getChildByTag(3517)  --删除好友
+                  move_friend:setTag(i)
+                  move_friend:addEventListener(function(sender, eventType  )
+                           if eventType == ccui.CheckBoxEventType.selected then
+                                  print("选中")
+                           elseif eventType == ccui.CheckBoxEventType.unselected then
+                                   print("删除")
+                           end
+                  end)
            end
 
 	
@@ -249,9 +258,10 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
       elseif tag==3627 then  --添加好友
             print("添加好友")
             self:function_addFriend()
+            Server:Instance():getsearchfriendlist(5,1) 
       elseif tag==3628 then  --删除好友
             print("删除好友")
-            
+            --Server:Instance():setfriendoperation(list[sender:getTag()]["playerid"],1)
 	elseif tag==230 then  --下次再说
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
@@ -283,6 +293,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 
 end
 function InvitefriendsLayer:function_addFriend(  )
+            self.search_friend_pageno=1
             self.addFriendSp = cc.CSLoader:createNode("addFriendSp.csb")  --邀请好友排行榜
             self:addChild(self.addFriendSp)
             self.add_ListView=self.addFriendSp:getChildByTag(4013)
@@ -304,6 +315,7 @@ function InvitefriendsLayer:function_addFriend(  )
                     if eventType ~= ccui.TouchEventType.ended then
                           return
                     end
+                     Server:Instance():getsearchfriendlist(5,1,search_name_friend:getString()) 
                     print("收索添加好友",search_name_friend:getString())
                     
             end)
@@ -312,35 +324,50 @@ function InvitefriendsLayer:function_addFriend(  )
                     if eventType ~= ccui.TouchEventType.ended then
                           return
                     end
+                    self.search_friend_pageno=self.search_friend_pageno+1
+                    Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
                    print("刷新好友")
                     
             end)
-            self:function_addFriend_data()
+            
            
 end
 --  刷新添加好友数据
 function InvitefriendsLayer:function_addFriend_data( )
-               for i=1,3 do
+            local getsearchfriendlist= LocalData:Instance():get_getsearchfriendlist()--保存数据
+            local list=getsearchfriendlist["list"]
+            if #list ==  0  then
+               return
+            end
+               for i=1,#list do
                    self.add_ListView:pushBackDefaultItem()
                   local  _cell =  self.add_ListView:getItem(i-1)
                   _cell:setTag(i)
                   local nickname = _cell:getChildByTag(4047)  --名字
-                  nickname:setString("刘")
+                  nickname:setString(list[i]["nickname"])
                   local grade =  _cell:getChildByTag(4048)  --等级
-                  grade:setString( "LV.100" )
+                  grade:setString( "LV."  ..  list[i]["grade"] )
                   local imgurl =  _cell:getChildByTag(4044)  --头像
-                  --imgurl:loadTexture(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":")))
+                  print("头像",string.lower(tostring(Util:sub_str(list[i]["imageUrl"], "/",":"))))
+                  imgurl:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(list[i]["imageUrl"], "/",":"))))
                   local gender =  _cell:getChildByTag(4046)  -- 性别
                   --  男 IcnMale.png  女  IcnFemale.png
-                  gender:loadTexture("png/IcnFemale.png")
+                  if tostring(list[i]["gender"] )  ==  "true" then   --  true是男
+                      gender:loadTexture("png/IcnMale.png")
+                  else
+                      gender:loadTexture("png/IcnFemale.png")
+                  end
+                  
                   local is_online =  _cell:getChildByTag(4049)  --是否在线
                   is_online:setString( "不在线")
                   local again_friend =_cell:getChildByTag(4041)  --添加好友
+                  again_friend:setTag(i)
                   again_friend:addTouchEventListener(function(sender, eventType)
                           if eventType ~= ccui.TouchEventType.ended then
                                 return
                           end
                          print("点击添加好友")
+                         Server:Instance():setfriendoperation(list[sender:getTag()]["playerid"],0)
                           
                   end)
 
@@ -358,11 +385,23 @@ function InvitefriendsLayer:onEnter()
                       		print("个人信息修改")
                           self:friends_levelup(  )
                       end)
+       NotificationCenter:Instance():AddObserver("FRIEND_GETSEARCHFRIENDLIST", self,
+                       function()
+                         self:function_addFriend_data()
+                        
+                      end)
+       NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
+                       function()
+                          print("成功")
+                        
+                      end)
 end
 
 function InvitefriendsLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self)
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self)
+        NotificationCenter:Instance():RemoveObserver("FRIEND_GETSEARCHFRIENDLIST", self)
+        NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
 end
 
 return InvitefriendsLayer
