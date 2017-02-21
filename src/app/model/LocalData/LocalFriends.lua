@@ -59,7 +59,14 @@ function LocalData:get_reward_of_friends_levelup()
 end
 
 
+--
+function LocalData:set_getsearchfriendlist(getsearchfriendlist)
+	self.getsearchfriendlist=getsearchfriendlist
+end
 
+function LocalData:get_getsearchfriendlist()
+	return self.getsearchfriendlist or nil
+end
 
 
 

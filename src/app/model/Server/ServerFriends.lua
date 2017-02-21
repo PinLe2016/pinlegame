@@ -189,9 +189,65 @@ function Server:set_friend_reward_setting_callback()
    
 end
 
+---  3.10 好友系统
+
+--3.10.1 查找好友接口（命令：getsearchfriendlist）
+--pagesize    是   每页显示数据  int 
+--pageno  是   页号  Int 第一页为1
+--nickname    否   昵称  String  搜索需要输入的昵称
 
 
+function Server:getsearchfriendlist(pagesize,pageno,nickname)
+       local params = {}
+    params={
+            pagesize=pagesize,
+            pageno=pageno,
+            nickname=nickname
+        }
+   
+    self:request_http("getsearchfriendlist" , params ) 
+end
 
+
+function Server:getsearchfriendlist_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("" .. self.data.err_msg)
+        return
+    end
+
+    LocalData:Instance():set_getsearchfriendlist(self.data)--保存数据
+    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+   
+end
+
+
+--3.10.2 好友添加/删除接口（命令：setfriendoperation）
+
+--playerid    是   玩家编号    Guid    
+--type    是   类型  Int 0添加  1删除
+
+function Server:setfriendoperation(playerid,type)
+       local params = {}
+    params={
+            playerid=playerid,
+            type=type
+        }
+   
+    self:request_http("setfriendoperation" , params ) 
+end
+
+
+function Server:setfriendoperation_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("" .. self.data.err_msg)
+        return
+    end
+
+    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JACKPOTLIST_POST)
+   
+end
 
 
 
