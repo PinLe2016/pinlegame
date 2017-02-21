@@ -321,7 +321,7 @@ function Server:gettreelist(friendplayerid)
 end
 function Server:gettreelist_callback()
      -- dump(self.data)
-     -- dump(self.data["list"][1]["seedlist"])
+      --dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
@@ -377,11 +377,11 @@ end
 --treeid  是 成长树标识ID Guid  
 --gameitemid  是 种子道具ID  GUID  
 
-function Server:setseedplant(treeid,gameitemid)
+function Server:setseedplant(treeid,gameitemid,seatcount)
       local params = {
               treeid=treeid,
               gameitemid=gameitemid,
-                seatcount=1
+                seatcount=seatcount
             }
 
     self:request_http("setseedplant" , params); 
@@ -393,6 +393,7 @@ function Server:setseedplant_callback()
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
+    NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT")
 end
 
 
@@ -415,6 +416,7 @@ function Server:setseedwater_callback()
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
+    NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDWATER")
 end
 
 --3.9.6 成长树种子施肥接口（命令：setseedmanure）
@@ -462,6 +464,7 @@ function Server:setseedreward_callback()
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
+    NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD")
 end
 
 
