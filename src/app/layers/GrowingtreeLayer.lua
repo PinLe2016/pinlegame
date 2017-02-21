@@ -693,7 +693,7 @@ function GrowingtreeLayer:onEnter()
                        function()
                        	print("浇水返回的消息")
 			if self.zt_obj~=nil then  --  主要是判断是否点中果实 
-					_obj:setRotation(45)
+					self.Growingtree:getChildByTag(266):setRotation(45)
 					self:function_water_act(-20,50)  --  浇水动画
 			end
                       end)
