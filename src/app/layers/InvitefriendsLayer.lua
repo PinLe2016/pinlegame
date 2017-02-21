@@ -35,13 +35,13 @@ end
 
 function InvitefriendsLayer:init(  )
       
-        self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-        self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-        self:addChild(self.fragment_sprite)
+        -- self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        -- self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+        -- self:addChild(self.fragment_sprite)
 
        self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
        self:addChild(self.Invitefriends)
-       self:move_layer(self.Invitefriends)
+       --self:move_layer(self.Invitefriends)
         self:pop_up()--  弹出框
        local back_bt=self.Invitefriends:getChildByTag(82)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
@@ -59,6 +59,14 @@ function InvitefriendsLayer:init(  )
 	self.obtain_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
+      self.addFriend_bt=self.Invitefriends:getChildByTag(3627)  --添加好友
+      self.addFriend_bt:addTouchEventListener(function(sender, eventType)
+                  self:touch_callback(sender, eventType)
+      end)
+      self.moveFriend_bt=self.Invitefriends:getChildByTag(3628)--删除好友
+      self.moveFriend_bt:addTouchEventListener(function(sender, eventType)
+                  self:touch_callback(sender, eventType)
+      end)
 
        self._ListView=self.Invitefriends:getChildByTag(91)--邀请好友排行list
        self._ListView:setItemModel(self._ListView:getItem(0))
@@ -100,9 +108,10 @@ function InvitefriendsLayer:friends_levelup(  )
 
 end
 function InvitefriendsLayer:fun_init(  )
-            --以下都是测试
-            print("55555555")
+            --以下都是测试  
              local friendlist_table =  LocalData:Instance():get_reward_friend_list()
+             --self.obtain_bt:setColor(cc.c3b(100,100,100)) 
+             self.obtain_bt:setBright(false) 
              if  not friendlist_table then
              	return
              end
@@ -117,7 +126,11 @@ function InvitefriendsLayer:fun_init(  )
             end
              self.gold_text:setString(friendlist_table["one_golds"])
             if tostring(friendlist_table["one_golds"])  ==  "0" then
-              self.obtain_bt:setColor(cc.c3b(100,100,100))  
+              --self.obtain_bt:setColor(cc.c3b(100,100,100))  
+              self.obtain_bt:setBright(false) 
+            else
+              --self.obtain_bt:setColor(cc.c3b(255,255,255))
+              self.obtain_bt:setBright(true)   
             end
            
             if #friendlist_table["friendlist"]==0 then
@@ -233,6 +246,12 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	elseif tag==243 then  --分享
 		print("分享")
 		Util:share()
+      elseif tag==3627 then  --添加好友
+            print("添加好友")
+            self:function_addFriend()
+      elseif tag==3628 then  --删除好友
+            print("删除好友")
+            
 	elseif tag==230 then  --下次再说
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
@@ -261,6 +280,71 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	  Server:Instance():getuserinfo()
 	
 	end
+
+end
+function InvitefriendsLayer:function_addFriend(  )
+            self.addFriendSp = cc.CSLoader:createNode("addFriendSp.csb")  --邀请好友排行榜
+            self:addChild(self.addFriendSp)
+            self.add_ListView=self.addFriendSp:getChildByTag(4013)
+            self.add_ListView:setItemModel(self.add_ListView:getItem(0))
+            self.add_ListView:removeAllItems()
+            local back =self.addFriendSp:getChildByTag(3882)  --返回
+            back:addTouchEventListener(function(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                          return
+                    end
+                    if self.addFriendSp then
+                      self.addFriendSp:removeFromParent()
+                    end
+                    
+            end)
+            local search_name_friend =self.addFriendSp:getChildByTag(4476)  --收索好友的昵称
+            local search_friend =self.addFriendSp:getChildByTag(4379)  --收索好友
+            search_friend:addTouchEventListener(function(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                          return
+                    end
+                    print("收索添加好友",search_name_friend:getString())
+                    
+            end)
+            local again_search =self.addFriendSp:getChildByTag(4380)  --换一批
+            again_search:addTouchEventListener(function(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                          return
+                    end
+                   print("刷新好友")
+                    
+            end)
+            self:function_addFriend_data()
+           
+end
+--  刷新添加好友数据
+function InvitefriendsLayer:function_addFriend_data( )
+               for i=1,3 do
+                   self.add_ListView:pushBackDefaultItem()
+                  local  _cell =  self.add_ListView:getItem(i-1)
+                  _cell:setTag(i)
+                  local nickname = _cell:getChildByTag(4047)  --名字
+                  nickname:setString("刘")
+                  local grade =  _cell:getChildByTag(4048)  --等级
+                  grade:setString( "LV.100" )
+                  local imgurl =  _cell:getChildByTag(4044)  --头像
+                  --imgurl:loadTexture(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":")))
+                  local gender =  _cell:getChildByTag(4046)  -- 性别
+                  --  男 IcnMale.png  女  IcnFemale.png
+                  gender:loadTexture("png/IcnFemale.png")
+                  local is_online =  _cell:getChildByTag(4049)  --是否在线
+                  is_online:setString( "不在线")
+                  local again_friend =_cell:getChildByTag(4041)  --添加好友
+                  again_friend:addTouchEventListener(function(sender, eventType)
+                          if eventType ~= ccui.TouchEventType.ended then
+                                return
+                          end
+                         print("点击添加好友")
+                          
+                  end)
+
+           end
 end
 function InvitefriendsLayer:onEnter()
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
