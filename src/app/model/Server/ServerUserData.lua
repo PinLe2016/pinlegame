@@ -392,6 +392,7 @@ function Server:setseedplant_callback()
         self:show_float_message( self.data.err_msg)
         return
     end
+    self:show_float_message("种植成功")
     -- LocalData:Instance():set_getconfig(self.data)--
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT")
 end
