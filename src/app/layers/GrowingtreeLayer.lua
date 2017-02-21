@@ -219,12 +219,13 @@ function GrowingtreeLayer:init(  )
 end
 --  种子信息界面数据
 function GrowingtreeLayer:fun_FruitinformationNode( _x , _y)
+	print("刀豆", _x ,"  ", _y)
 	local gettreelist = LocalData:Instance():get_gettreelist()
  	for i=1,#gettreelist["list"][1]["seedlist"] do
 	 	if gettreelist["list"][1]["seedlist"][1]["seedid"]  and  gettreelist["list"][1]["seedlist"][i]["seatcount"] ==  self.get_seatcount  then
 		 	local fruitinformation_bg=self.FruitinformationNode:getChildByTag(2424)
 		 	self._fruitinformation_bg=fruitinformation_bg
-		 	self._fruitinformation_bg:setPosition(cc.p(_x+100,_y))
+		 	fruitinformation_bg:setPosition(cc.p(_x+100,_y))
 			local seed=fruitinformation_bg:getChildByTag(2425)
 			for j=1,5 do
 				if tostring(gettreelist["list"][1]["seedlist"][i]["seedname"]) == self.zh_state[j] then
@@ -291,6 +292,7 @@ function GrowingtreeLayer:fun_data()
 	 
 	 if #gettreelist["list"][1]["seedlist"] ~=  0  then
 	 	local zt = self.pt_table[gettreelist["list"][1]["seedlist"][1]["seatcount"]]
+	 	self.get_seatcount=gettreelist["list"][1]["seedlist"][1]["seatcount"]
 	 	self:fun_FruitinformationNode(zt:getPositionX(),zt:getPositionY()) --  果实状态信息界面
 	 end
 	 
