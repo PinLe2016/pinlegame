@@ -72,6 +72,10 @@ function Server:promptbox_box_buffer(prompt_text)
  
     display.getRunningScene():promptbox_buffer(prompt_text)
 end
+function Server:Grawpopup_box_buffer(prompt_text)
+ 
+    display.getRunningScene():Grawpopup_buffer(prompt_text)
+end
 
 
 

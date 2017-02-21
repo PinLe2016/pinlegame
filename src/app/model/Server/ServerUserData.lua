@@ -323,7 +323,8 @@ function Server:gettreelist_callback()
      -- dump(self.data)
       --dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
-        self:show_float_message( self.data.err_msg)
+        --self:show_float_message( self.data.err_msg)
+        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
     LocalData:Instance():set_gettreelist(self.data)--
@@ -347,7 +348,7 @@ end
 function Server:gettreefriendlist_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message( self.data.err_msg)
+        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
     LocalData:Instance():set_gettreefriendlist(self.data)--
@@ -366,7 +367,7 @@ end
 function Server:gettreegameitemlist_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message( self.data.err_msg)
+        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
     LocalData:Instance():set_gettreegameitemlist(self.data)--
@@ -389,10 +390,11 @@ end
 function Server:setseedplant_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message( self.data.err_msg)
+       Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
     self:show_float_message("种植成功")
+
     -- LocalData:Instance():set_getconfig(self.data)--
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT")
 end
@@ -413,7 +415,8 @@ end
 function Server:setseedwater_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message( self.data.err_msg)
+        --self:show_float_message( self.data.err_msg)
+        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
@@ -438,7 +441,7 @@ end
 function Server:setseedmanure_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message( self.data.err_msg)
+        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
@@ -461,7 +464,7 @@ end
 function Server:setseedreward_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message( self.data.err_msg)
+        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--

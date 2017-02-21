@@ -127,6 +127,22 @@ function FloatingLayer:network_box(prompt_text )
        end)
 
 end
+function FloatingLayer:fun_Grawpopup( popup_text )
+                    self.Grawpopup = cc.CSLoader:createNode("Grawpopup.csb");
+                    self:addChild(self.Grawpopup)
+                    local back=self.Grawpopup:getChildByTag(3141)
+                    local _text=self.Grawpopup:getChildByTag(3140)
+                    _text:setString(popup_text)
+                     back:addTouchEventListener(function(sender, eventType  )
+                               if eventType ~= ccui.TouchEventType.ended then
+                                      return
+                               end
+                              if self.Grawpopup then
+                                     self.Grawpopup:removeFromParent()
+                              end
+                    end)
+
+end
 function FloatingLayer:prompt_box(prompt_text )
       self.networkbox = cc.CSLoader:createNode("networkbox.csb")
       self:addChild(self.networkbox)

@@ -48,19 +48,23 @@ function GrowingtreeLayer:function_touchmove( obj,x,y)
 	if obj~=nil then
 		if self._type==20 then
 			local gettreelist = LocalData:Instance():get_gettreelist()
-		 	for i=1,#gettreelist["list"][1]["seedlist"] do
-			 	if gettreelist["list"][1]["seedlist"][1]["seedid"] and gettreelist["list"][1]["seedlist"][i]["seatcount"] == self.get_seatcount  then
-			 		Server:Instance():promptbox_box_buffer("已种植了")
-			 		return
-			 	end
+			if #gettreelist["list"][1]["seedlist"] ~=  0 then
+				for i=1,#gettreelist["list"][1]["seedlist"] do
+				 	if gettreelist["list"][1]["seedlist"][1]["seedid"] and gettreelist["list"][1]["seedlist"][i]["seatcount"] == self.get_seatcount  then
+				 		Server:Instance():promptbox_box_buffer("已种植了")
+				 		return
+				 	end
+				end
+				
 			end
 			 Server:Instance():setseedplant(self.z_treeid,self.z_gameitemid,self.get_seatcount)  --  种种子
+		 	
 		elseif self._type==21 then  --  浇水
 			 x=x+100
 			 y=y-50
 		elseif self._type==22 then  --  施肥
 			print("没化肥")
-			Server:Instance():promptbox_box_buffer("没化肥")   --prompt
+			Server:Instance():Grawpopup_box_buffer("没化肥")   --prompt
 			 --Server:Instance():setseedmanure(self.z_treeid,self.z_gameitemid)  --  	
 		elseif self._type==23 then  --收获
 			print("收获")
@@ -93,6 +97,7 @@ end
 function GrowingtreeLayer:init(  )
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
+
     	self._pt=cc.p(self.Growingtree:getChildByTag(266):getPositionX(),self.Growingtree:getChildByTag(266):getPositionY())
   
     	for i=1,8 do
@@ -219,13 +224,15 @@ function GrowingtreeLayer:init(  )
 end
 --  种子信息界面数据
 function GrowingtreeLayer:fun_FruitinformationNode( _x , _y)
-	print("刀豆", _x ,"  ", _y)
+	
 	local gettreelist = LocalData:Instance():get_gettreelist()
  	for i=1,#gettreelist["list"][1]["seedlist"] do
 	 	if gettreelist["list"][1]["seedlist"][1]["seedid"]  and  gettreelist["list"][1]["seedlist"][i]["seatcount"] ==  self.get_seatcount  then
 		 	local fruitinformation_bg=self.FruitinformationNode:getChildByTag(2424)
 		 	self._fruitinformation_bg=fruitinformation_bg
 		 	fruitinformation_bg:setPosition(cc.p(_x+100,_y))
+		 	self._fruitinformation_bg:setVisible(true)
+		 	print("刀豆", _x ,"  ", _y)
 			local seed=fruitinformation_bg:getChildByTag(2425)
 			for j=1,5 do
 				if tostring(gettreelist["list"][1]["seedlist"][i]["seedname"]) == self.zh_state[j] then
@@ -585,7 +592,7 @@ function GrowingtreeLayer:touch_callback( sender, eventType )
           elseif tag==22 then
           	 print("施肥")
           	 self._type=22
-          	 --self.Growingtree:getChildByTag(266):loadTexture("png/chengzhangshu-huafei-chuji.png")
+          	 self.Growingtree:getChildByTag(266):loadTexture("png/chengzhangshu-huafei-chuji.png")
           	  self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
           	  --self.Growingtree:getChildByTag(266):setVisible(true)
           	 self:function_friendIsvisible(false)
@@ -679,6 +686,7 @@ function GrowingtreeLayer:onEnter()
                        	
 		self.pt_table[self.get_seatcount]:loadTexture("png/" ..  self.zh_stateimage1[self.zhi_ct])  --  坑位变种子
 		self.Growingtree:getChildByTag(266):setVisible(false)  --  样图种子消失 
+		Server:Instance():gettreelist()
                       end)
   --  浇水消息
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDWATER", self,
@@ -718,6 +726,9 @@ function GrowingtreeLayer:networkbox_buffer(prompt_text)
 end 
 function GrowingtreeLayer:promptbox_buffer(prompt_text)
        self.floating_layer:prompt_box(prompt_text) 
+end
+function GrowingtreeLayer:Grawpopup_buffer(prompt_text)
+       self.floating_layer:fun_Grawpopup(prompt_text) 
 end
 
 function GrowingtreeLayer:onExit()
