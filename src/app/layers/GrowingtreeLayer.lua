@@ -37,14 +37,14 @@ function GrowingtreeLayer:update(dt)
 	if self.secondOne <1 then return end
 	self.secondOne=0
 	self.count_time=1+self.count_time
-	print("倒计时",self.count_time)
+	-- print("倒计时",self.count_time)
 end
 
 function GrowingtreeLayer:function_touchlistener( )
 	local layer=cc.Layer:create()
 	self:addChild(layer,500)
 	 local function onTouchEnded(x,y) 
-	                  print("坐标",x," ",y)
+	                  -- print("坐标",x," ",y)
 	                  self:function_touchmove(nil,x,y)
 	 end
 	    self.Growingtree:setTouchEnabled(true)  
@@ -52,7 +52,7 @@ function GrowingtreeLayer:function_touchlistener( )
 	    self.Growingtree:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)  
 	    self.Growingtree:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event) 
 	             if event.name == "began" then  
-	             	print("坐标")
+	             	-- print("坐标")
 	               onTouchEnded(event.x,event.y)  
 	             end  
 	             return true  
