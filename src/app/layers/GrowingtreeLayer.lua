@@ -167,7 +167,7 @@ function GrowingtreeLayer:init(  )
 				 	if gettreelist["list"][1]["seedlist"][1]["seedid"] and gettreelist["list"][1]["seedlist"][i]["seatcount"] == self.get_seatcount  then
 				 		self.z_seedid=gettreelist["list"][1]["seedlist"][i]["seedid"]
 				 		Server:Instance():setseedmanure(self.z_treeid,self.z_seedid,self._gameitemid)  --  
-				 		
+				 		LocalData:Instance():set_gettreegameitemlist(nil)--
 				 	end
 				end
 			end
@@ -683,6 +683,7 @@ function GrowingtreeLayer:touch_Nodecallback( sender, eventType )
           	  print("刷新好友按钮")
           elseif tag==46 then
           	  print("邀请好友按钮")
+          	  Util:share()--  分享
           end
  end 
  function GrowingtreeLayer:fun_callback( sender, eventType )
@@ -731,6 +732,7 @@ function GrowingtreeLayer:touch_callback( sender, eventType )
           	  self:function_friendIsvisible(false)
           	  self.Growingtree:getChildByTag(266):setVisible(false)
           	  Server:Instance():gettreegameitemlist(2 )  --1化肥 2种子 3化肥和种子
+          	  LocalData:Instance():set_gettreegameitemlist(nil)--
           	  self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
           elseif tag==21 then
           	  print("浇水")
@@ -749,6 +751,7 @@ function GrowingtreeLayer:touch_callback( sender, eventType )
           	 self:function_friendIsvisible(false)
           	 self.Growingtree:getChildByTag(266):setRotation(90)
           	 Server:Instance():gettreegameitemlist(1)   --  1 是化肥 2   是种子  3  是化肥和种子
+          	 LocalData:Instance():set_gettreegameitemlist(nil)
           elseif tag==23 then
           	  print("收获")
           	  self._type=23

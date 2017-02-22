@@ -370,7 +370,7 @@ function Server:gettreegameitemlist_callback()
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
-    LocalData:Instance():set_gettreegameitemlist(nil)--
+    
     LocalData:Instance():set_gettreegameitemlist(self.data)--
     NotificationCenter:Instance():PostNotification("MESSAGE_GSTTREEGAMEITEMLIST")
 end
@@ -447,8 +447,8 @@ function Server:setseedmanure_callback()
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
-    LocalData:Instance():set_gettreegameitemlist(nil)--
-    LocalData:Instance():set_gettreegameitemlist(self.data)--
+    
+    --LocalData:Instance():set_gettreegameitemlist(self.data)--
     NotificationCenter:Instance():PostNotification("MESSAGE_GSTTREEGAMEITEMLIST")
 end
 
