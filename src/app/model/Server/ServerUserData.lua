@@ -391,6 +391,7 @@ function Server:setseedplant_callback()
      dump(self.data)
     if self.data.err_code~=0  then
        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
+       NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT_FALSE")
         return
     end
     self:show_float_message("种植成功")

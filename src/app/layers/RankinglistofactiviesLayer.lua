@@ -98,6 +98,15 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             --act_head:loadTexture( path .. tostring(Util:sub_str(sup_data[i]["hearurl"], "/",":")))
             act_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 
+            local again_friend =cell:getChildByTag(477)  --添加好友
+            again_friend:addTouchEventListener(function(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                          return
+                    end
+                    print("添加好友")
+                    
+            end)
+
 
 
             if tostring(sup_data[i]["playerid"])==tostring(_key)   then   

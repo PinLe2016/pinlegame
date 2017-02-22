@@ -51,7 +51,7 @@ function GrowingtreeLayer:function_touchmove( obj,x,y)
 			if #gettreelist["list"][1]["seedlist"] ~=  0 then
 				for i=1,#gettreelist["list"][1]["seedlist"] do
 				 	if gettreelist["list"][1]["seedlist"][1]["seedid"] and gettreelist["list"][1]["seedlist"][i]["seatcount"] == self.get_seatcount  then
-				 		Server:Instance():promptbox_box_buffer("已种植了")
+				 		Server:Instance():Grawpopup_box_buffer("已种植了")
 				 		return
 				 	end
 				end
@@ -707,6 +707,13 @@ function GrowingtreeLayer:onEnter()
 				
 			end
                       end)
+  --  种植错误
+  NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDPLANT_FALSE", self,
+                       function()
+                       	print("已经种植的坑不能种植")
+			--self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
+                      end)
+
 
 
 end
@@ -738,6 +745,7 @@ function GrowingtreeLayer:onExit()
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDPLANT", self)
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDWATER", self)
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDREWARD", self)
+      NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDPLANT_FALSE", self)
      	
 end
 

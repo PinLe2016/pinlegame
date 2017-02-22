@@ -128,8 +128,29 @@ function RichlistLayer:init(  )
                         name_text:setString(tostring(self.ranklist[i]["nickname"]))
                         local gold_text=cell:getChildByTag(867)--金币
                         gold_text:setString(tostring(self.ranklist[i]["golds"]))
+                        gold_text:setPosition(gold_text:getPositionX()-40, gold_text:getPositionY())
                         local rank_image=cell:getChildByTag(865)--排名  image
                         local rank_text=cell:getChildByTag(868)--排名
+
+
+                         local function touchEvent(sender,eventType)
+                         
+                              if eventType == ccui.TouchEventType.ended then
+                                          print("开始")
+                              end
+                        end
+                        local button = ccui.Button:create()
+                        button:setTouchEnabled(true)
+                        button:loadTextures("png/tianjiahaoyou-tianjia-dikuang.png", "png/tianjiahaoyou-tianjia-dikuang-liang.png", "")
+                        button:setPosition(cc.p(gold_text:getPositionX()+80, gold_text:getPositionY()))
+                        button:addTouchEventListener(touchEvent)
+                        cell:addChild(button)
+                        local  child = cc.Sprite:create("png/tianjiahaoyou-tianjia-dikuang-jiahao.png")
+                        child:setPosition(child:getContentSize().width/2+5,button:getContentSize().height/2 )
+                        button:addChild(child)
+
+
+
                         if 4>tonumber(self.ranklist[i]["rankindex"]) then
                         	rank_image:loadTexture(string.format("png/PH_%d.png", self.ranklist[i]["rankindex"]))
                         else
