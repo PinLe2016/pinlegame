@@ -13,6 +13,7 @@ function InvitefriendsLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
        self.friend_list_type=1
+       self.table_insert={}
        Server:Instance():get_reward_friend_list() --好友列表
 
               local _table=LocalData:Instance():get_gettasklist()
@@ -156,9 +157,21 @@ function InvitefriendsLayer:fun_init(  )
                   move_friend:setTag(i)
                   move_friend:addEventListener(function(sender, eventType  )
                            if eventType == ccui.CheckBoxEventType.selected then
-                                  print("选中")
+                                  
+                                  table.insert(self.table_insert,_friendlist[i]["playerid"] )
+                                  print("添加",self.table_insert[1])
+                                  dump(self.table_insert)
+
                            elseif eventType == ccui.CheckBoxEventType.unselected then
                                    print("删除")
+                                   if #self.table_insert >0  then
+                                      for i=1,#self.table_insert do
+                                        if self.table_insert[i] == _friendlist[i]["playerid"] then
+                                            table.remove(self.table_insert,i)
+                                        end
+                                      end
+                                   end
+                                   dump(self.table_insert)
                            end
                   end)
            end
@@ -260,13 +273,8 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             self:function_addFriend()
             Server:Instance():getsearchfriendlist(5,1) 
       elseif tag==3628 then  --删除好友
-
             print("删除好友")
-           local _table={}
-           local table_list={}
-           _table["playerid"]=list[sender:getTag()]["playerid"]
-           table_list[1]=_table
-           Server:Instance():setfriendoperation(table_list,1)
+           Server:Instance():setfriendoperation(self.table_insert,1)
            self.friend_list_type=1
 
 	elseif tag==230 then  --下次再说
