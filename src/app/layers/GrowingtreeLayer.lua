@@ -279,7 +279,7 @@ function GrowingtreeLayer:fun_data()
 	  self.z_treeid=gettreelist["list"][1]["treeid"]
 	 local experience_text=self.Growingtree:getChildByTag(87)  --经验值
 	 experience_text:setString(gettreelist["treeExp"])
-	 dump(gettreelist["list"][1]["seedlist"])
+	 -- dump(gettreelist["list"][1]["seedlist"])
 	 if #gettreelist["list"][1]["seedlist"] ~=  0 then
 	 	for i=1,#gettreelist["list"][1]["seedlist"] do
 		 	if gettreelist["list"][1]["seedlist"][1]["seedid"]  then
@@ -323,7 +323,61 @@ function GrowingtreeLayer:fun_data()
 
 	 local name_text=self.Growingtree:getChildByTag(90)  --自己名字
 	 name_text:setString(gettreelist["nickname"])
+
+
+	 self:function_seed_state(1)
 end
+
+--  种子状态逻辑
+function GrowingtreeLayer:function_seed_state(dex)
+	--seedstatus --0为干旱，1为正常，2为成熟，3为已收获  4死亡
+
+	local back_seed_state={}
+	local gettreelist = LocalData:Instance():get_gettreelist()
+	local seedlist=gettreelist["list"][1]["seedlist"]
+
+	back_seed_state["seedstatus"] =-1  --种子初始状态
+	back_seed_state["seed_percentage"]=-1 --种子距离下一状态百分比
+	back_seed_state["seed_next_time"]=-1 --种子距离下一状态时间
+	back_seed_state["tile_des"]="无"
+	if not seedlist[dex]then
+		return
+	end
+
+
+	local nowtime=seedlist[dex]["nowtime"]+(os.time()-seedlist[dex]["nowtime"])
+	dump(nowtime)
+	dump(os.time()-seedlist[dex]["nowtime"])
+
+	if nowtime-seedlist[dex]["drytime"]<=0 then
+		back_seed_state["seedstatus"] =1  
+		back_seed_state["seed_percentage"]=(seedlist[dex]["drytime"]-nowtime)/(seedlist[dex]["drytime"]-seedlist[dex]["planttime"]) 
+		back_seed_state["seed_next_time"]=seedlist[dex]["drytime"]-nowtime 
+		back_seed_state["tile_des"]="正常"
+	end
+	if nowtime-seedlist[dex]["drytime"]>=0 then
+		seedstatus=0
+		seed_percentage=(nowtime-seedlist[dex]["drytime"])/(seedlist[dex]["deadtime"]-seedlist[dex]["drytime"])
+		seed_next_time=seedlist[dex]["deadtime"]-nowtime
+		back_seed_state["tile_des"]="干旱"
+	end
+
+	if nowtime-seedlist[dex]["deadtime"]>=0 then
+		seedstatus=4
+		back_seed_state["tile_des"]="死亡"
+	end
+
+	if nowtime-seedlist[dex]["gaintime"]>=0 then
+		seedstatus=2
+		back_seed_state["tile_des"]="成熟"
+	end
+	--注 ：以收获3种子列表为Null 
+	dump(seedlist[dex])
+	dump(back_seed_state)
+	return back_seed_state
+
+end
+
 --  我的员工是否显示
 function GrowingtreeLayer:function_friendIsvisible(Isvisible)
 	local bg=self.GrowingtreeNode:getChildByTag(32):getChildByTag(37)
