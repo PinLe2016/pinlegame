@@ -39,8 +39,6 @@ function GrowingtreeLayer:update(dt)
 	if self.secondOne <1 then return end
 	self.secondOne=0
 	self.count_time=1+self.count_time
-	--print("倒计时",self.count_time)
-	
 	if self._back_seed_state["seed_next_time"]  ~=  nil   and  self.time_againtime ~= nil then
 		local _table  = Util:FormatTime_colon(self._back_seed_state["seed_next_time"] -self.count_time  )
 	            self.time_againtime:setString(tostring( _table[2] .. _table[3] .. _table[4] ))
@@ -50,15 +48,13 @@ function GrowingtreeLayer:update(dt)
 	            	self:function_seed_state(self.time_count_dex)
 	            end
 	end
-            
-
 end
 
 function GrowingtreeLayer:function_touchlistener( )
 	local layer=cc.Layer:create()
 	self:addChild(layer,500)
 	 local function onTouchEnded(x,y) 
-	                  print("坐标",x," ",y)
+	                  -- print("坐标",x," ",y)
 	                  self:function_touchmove(nil,x,y)
 	 end
 	    self.Growingtree:setTouchEnabled(true)  
@@ -66,7 +62,7 @@ function GrowingtreeLayer:function_touchlistener( )
 	    self.Growingtree:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)  
 	    self.Growingtree:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event) 
 	             if event.name == "began" then  
-	             	print("坐标")
+	             	-- print("坐标")
 	               onTouchEnded(event.x,event.y)  
 	             end  
 	             return true  
