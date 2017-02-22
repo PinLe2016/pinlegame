@@ -370,6 +370,7 @@ function Server:gettreegameitemlist_callback()
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
+    LocalData:Instance():set_gettreegameitemlist(nil)--
     LocalData:Instance():set_gettreegameitemlist(self.data)--
     NotificationCenter:Instance():PostNotification("MESSAGE_GSTTREEGAMEITEMLIST")
 end
@@ -391,9 +392,10 @@ function Server:setseedplant_callback()
      dump(self.data)
     if self.data.err_code~=0  then
        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
+       NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT_FALSE")
         return
     end
-    self:show_float_message("种植成功")
+    Server:Instance():Grawpopup_box_buffer("种植成功")
 
     -- LocalData:Instance():set_getconfig(self.data)--
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT")
@@ -444,7 +446,9 @@ function Server:setseedmanure_callback()
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
-    -- LocalData:Instance():set_getconfig(self.data)--
+    LocalData:Instance():set_gettreegameitemlist(nil)--
+    LocalData:Instance():set_gettreegameitemlist(self.data)--
+    NotificationCenter:Instance():PostNotification("MESSAGE_GSTTREEGAMEITEMLIST")
 end
 
 --3.9.7 成长树种子收获/偷取接口（命令：setseedreward）
