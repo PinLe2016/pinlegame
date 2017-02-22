@@ -139,6 +139,7 @@ function FloatingLayer:fun_Grawpopup( popup_text )
                                end
                               if self.Grawpopup then
                                      self.Grawpopup:removeFromParent()
+                                     
                               end
                     end)
 
