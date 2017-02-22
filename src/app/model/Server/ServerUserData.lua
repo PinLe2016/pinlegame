@@ -422,6 +422,7 @@ function Server:setseedwater_callback()
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
+    
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDWATER")
 end
 

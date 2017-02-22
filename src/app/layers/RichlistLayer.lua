@@ -137,9 +137,15 @@ function RichlistLayer:init(  )
                          
                               if eventType == ccui.TouchEventType.ended then
                                           print("开始")
+                                         local _table={}
+                                         local table_list={}
+                                         _table["playerid"]=self.ranklist[sender:getTag()]["playerid"]
+                                         table_list[1]=_table
+                                         Server:Instance():setfriendoperation(table_list,0)
                               end
                         end
                         local button = ccui.Button:create()
+                        button:setTag(i)
                         button:setTouchEnabled(true)
                         button:loadTextures("png/tianjiahaoyou-tianjia-dikuang.png", "png/tianjiahaoyou-tianjia-dikuang-liang.png", "")
                         button:setPosition(cc.p(gold_text:getPositionX()+80, gold_text:getPositionY()))
@@ -148,6 +154,9 @@ function RichlistLayer:init(  )
                         local  child = cc.Sprite:create("png/tianjiahaoyou-tianjia-dikuang-jiahao.png")
                         child:setPosition(child:getContentSize().width/2+5,button:getContentSize().height/2 )
                         button:addChild(child)
+                        if self.ranklist[i]["tag"]   ==  1  then   --  1是好友  0  不是好友
+                           button:setVisible(false)
+                        end
 
 
 
@@ -179,12 +188,17 @@ function RichlistLayer:onEnter()
                        function()
                         self:init()
                       end)
+    NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
+                         function()
+                          Server:Instance():promptbox_box_buffer("成功添加好友") 
+                        end)
 
 
 end
 
 function RichlistLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver("RICHLIST", self)
+        NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
             
 end
 

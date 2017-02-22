@@ -99,13 +99,21 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
             act_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 
             local again_friend =cell:getChildByTag(477)  --添加好友
+            again_friend:setTag(i)
             again_friend:addTouchEventListener(function(sender, eventType)
                     if eventType ~= ccui.TouchEventType.ended then
                           return
                     end
-                    print("添加好友")
+                    local _table={}
+                     local table_list={}
+                     _table["playerid"]=sup_data[sender:getTag()]["playerid"]
+                     table_list[1]=_table
+                     Server:Instance():setfriendoperation(table_list,0)
                     
             end)
+            if sup_data[i]["tag"]   ==  1  then   --  1是好友  0  不是好友
+                           again_friend:setVisible(false)
+            end
 
 
 
@@ -194,10 +202,15 @@ function RankinglistofactiviesLayer:onEnter()
                        function()
                         self:init()
                       end)
+      NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
+                       function()
+                        Server:Instance():promptbox_box_buffer("成功添加好友") 
+                      end)
 end
 
 function RankinglistofactiviesLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.RANK_LAYER_IMAGE, self)
+       NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
 end
 
 return RankinglistofactiviesLayer

@@ -46,7 +46,7 @@ end
 
 
 function Server:getactivitybyid_callback()
-    dump(self.data)
+   -- dump(self.data)
     if self.data.err_code==0  then
             LocalData:Instance():set_getactivitybyid(self.data)--保存数据
             -- if self.cycle  == 0 then
@@ -70,13 +70,13 @@ function Server:getranklistbyactivityid(activitieid,count)
             activityid=activitieid,
             count=count
         }
-        dump(params)
+        --dump(params)
     self:request_http("getranklistbyactivityid" , params ); 
 end
 
 
 function Server:getranklistbyactivityid_callback()
-    --dump(self.data)
+    dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动的排行榜失败:" .. self.data.err_msg)
         return

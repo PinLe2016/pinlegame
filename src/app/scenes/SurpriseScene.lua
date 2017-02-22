@@ -585,7 +585,9 @@ end
 function SurpriseScene:networkbox_buffer(prompt_text)
        self.floating_layer:network_box(prompt_text) 
 end
-
+function SurpriseScene:promptbox_buffer(prompt_text)
+       self.floating_layer:prompt_box(prompt_text) 
+end
 function SurpriseScene:onEnter()
    Server:Instance():getuserinfo() 
       --audio.playMusic(G_SOUND["PERSONALCHAGE"],true)

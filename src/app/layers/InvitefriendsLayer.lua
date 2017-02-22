@@ -12,7 +12,7 @@ end)
 function InvitefriendsLayer:ctor()--params
 
        self:setNodeEventEnabled(true)--layer添加监听
-
+       self.friend_list_type=1
        Server:Instance():get_reward_friend_list() --好友列表
 
               local _table=LocalData:Instance():get_gettasklist()
@@ -260,8 +260,15 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             self:function_addFriend()
             Server:Instance():getsearchfriendlist(5,1) 
       elseif tag==3628 then  --删除好友
+
             print("删除好友")
-            --Server:Instance():setfriendoperation(list[sender:getTag()]["playerid"],1)
+           local _table={}
+           local table_list={}
+           _table["playerid"]=list[sender:getTag()]["playerid"]
+           table_list[1]=_table
+           Server:Instance():setfriendoperation(table_list,1)
+           self.friend_list_type=1
+
 	elseif tag==230 then  --下次再说
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
@@ -367,8 +374,12 @@ function InvitefriendsLayer:function_addFriend_data( )
                                 return
                           end
                          print("点击添加好友")
-                         Server:Instance():setfriendoperation(list[sender:getTag()]["playerid"],0)
-                          
+                         local _table={}
+                         local table_list={}
+                         _table["playerid"]=list[sender:getTag()]["playerid"]
+                         table_list[1]=_table
+                         Server:Instance():setfriendoperation(table_list,0)
+                          self.friend_list_type=0
                   end)
 
            end
@@ -392,8 +403,13 @@ function InvitefriendsLayer:onEnter()
                       end)
        NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
                        function()
-                          print("成功")
-                        
+                          if self.friend_list_type==1 then
+                           Server:Instance():promptbox_box_buffer("成功删除好友") 
+                          elseif self.friend_list_type==0 then
+                            Server:Instance():promptbox_box_buffer("成功添加好友") 
+                          end
+                          
+                          Server:Instance():get_reward_friend_list() --好友列表
                       end)
 end
 

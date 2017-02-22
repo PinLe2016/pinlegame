@@ -226,10 +226,11 @@ end
 --playerid    是   玩家编号    Guid    
 --type    是   类型  Int 0添加  1删除
 
-function Server:setfriendoperation(playerid,type)
+function Server:setfriendoperation(list,type)
        local params = {}
+       
     params={
-            playerid=playerid,
+            list=list,
             type=type
         }
    
