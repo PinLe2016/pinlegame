@@ -434,6 +434,9 @@ function GrowingtreeLayer:fun_data()
 		self.Growingtree:getChildByTag(19):setVisible(true)
       		self.Growingtree:getChildByTag(20):setVisible(true)
 	end
+	if self._type==22 then
+          	   self.GrowingtreeNode:setVisible(true)
+	end
 	 local gettreelist = LocalData:Instance():get_gettreelist()
 	  self.z_treeid=gettreelist["list"][1]["treeid"]
 	 local experience_text=self.Growingtree:getChildByTag(87)  --经验值
@@ -541,7 +544,7 @@ function GrowingtreeLayer:function_friend( )
 
                     return
             end
-           
+           Panel:setVisible(true)
 	for i=1,#_list  do
 		local  call=Panel:clone() 
 		local head_image=call:getChildByTag(50)
@@ -774,6 +777,7 @@ function GrowingtreeLayer:touch_callback( sender, eventType )
           elseif tag==22 then
           	 print("施肥")
           	 self._type=22
+          	 self.GrowingtreeNode:setVisible(true)
           	 self.Growingtree:getChildByTag(266):loadTexture("png/chengzhangshu-huafei-chuji.png")
           	  self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
           	  self.Growingtree:getChildByTag(266):setVisible(false)
