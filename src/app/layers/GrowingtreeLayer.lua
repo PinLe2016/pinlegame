@@ -229,11 +229,14 @@ function GrowingtreeLayer:init(  )
 	            	self.is_friend=false
 	            	Server:Instance():gettreelist()
 	            	Server:Instance():gettreefriendlist(7,1,1)
-	            	self.f_friend_bt:setBright(false)
-	            	self.f_friend_bt:getChildByTag(self.f_friend_bt:getTag()+5):setBright(false)
-	            	self.curr_bright:setBright(true)
-	            	self.curr_bright:getChildByTag(self.curr_bright:getTag()+5):setBright(true)
-	            	self.curr_bright=self.f_friend_bt
+	            	if  self.f_friend_bt ~= self.curr_bright  then
+	            		self.f_friend_bt:setBright(false)
+		            	self.f_friend_bt:getChildByTag(self.f_friend_bt:getTag()+5):setBright(false)
+		            	self.curr_bright:setBright(true)
+		            	self.curr_bright:getChildByTag(self.curr_bright:getTag()+5):setBright(true)
+		            	self.curr_bright=self.f_friend_bt
+	            	end
+	            	
 	            	self._type=19
 	            	self:scheduleUpdate()
 			self.count_time=0
