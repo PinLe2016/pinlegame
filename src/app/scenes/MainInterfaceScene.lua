@@ -230,6 +230,10 @@ function MainInterfaceScene:fun_init( )
       kefu_bt:addTouchEventListener(function(sender, eventType  )
            self:fun_backbt(sender, eventType)
       end)
+      local tree_bt=self.sliding_bg:getChildByTag(1201)--成长树
+      tree_bt:addTouchEventListener(function(sender, eventType  )
+           self:fun_backbt(sender, eventType)
+      end)
       local women_bt=self.sliding_bg:getChildByTag(6224)--我们
       women_bt:addTouchEventListener(function(sender, eventType  )
            self:fun_backbt(sender, eventType)
@@ -279,8 +283,9 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
   elseif tag==6225 then
      print("声音")
      self:funsetup( true )
-     
-     
+    elseif tag==1201 then
+     print("成长树")
+     display.replaceScene(require("app.layers.GrowingtreeLayer"):new())
   end
   self.sliding_bg:setScale(0)
   self.setup_box:setSelected(false)
@@ -351,14 +356,14 @@ function MainInterfaceScene:touch_callback( sender, eventType )
      --Util:scene_control("PhysicsScene")
       elseif tag==444 then  --游戏中心
 
-            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            -- if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
-            --         self:fun_gamecenter()
-            --         return
-            -- end
-            -- Util:scene_controlid("MallScene",{type="play_mode"})
+            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
+                    self:fun_gamecenter()
+                    return
+            end
+            Util:scene_controlid("MallScene",{type="play_mode"})
 
-          display.replaceScene(require("app.layers.GrowingtreeLayer"):new())
+          
 
 
       elseif tag==125 then 

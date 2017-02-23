@@ -12,6 +12,9 @@ function GrowingtreeLayer:ctor()
        self:setTouchSwallowEnabled(false)
        self:setNodeEventEnabled(true)
        self.zhi_ct=0
+       self._fruitinformation_bg=nil
+       self.z_gameitemid=nil
+       self._gameitemid=nil
        self.time_count_dex=1
        self.time_againtime=nil
        self._gameitemid=nil
@@ -37,16 +40,40 @@ function GrowingtreeLayer:ctor()
         -- self:fun_UIListView()
         
 end
+--back_seed_state["dex"]  self.pt_table[i]  seedname
 function GrowingtreeLayer:update(dt)
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
 	self.secondOne=0
 	self.count_time=1+self.count_time
-	if self._back_seed_state["seed_next_time"]  ~=  nil   and  self.time_againtime ~= nil then
+	if self._back_seed_state["seed_next_time"]  ~= nil   and  self.time_againtime ~= nil and  self._back_seed_state["seed_next_time"] >0  then
 		local _table  = Util:FormatTime_colon(self._back_seed_state["seed_next_time"] -self.count_time  )
 	            self.time_againtime:setString(tostring( _table[2] .. _table[3] .. _table[4] ))
 	            local par=(self._back_seed_state["seed_percentage"]  *  100)/(self._back_seed_state["seed_next_time"]-self.count_time)
 	            self.gaintime_loadingBar:setPercent(self._back_seed_state["seed_percentage"]  *  100  +  par)
+
+            	if tostring(self._back_seed_state["tile_des"]) ==  "正常"   then  --  成长状态
+            		local gettreelist = LocalData:Instance():get_gettreelist()
+            		for i=1,8 do
+            			if tostring(gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seedname"])   == self.zh_state[i]   then
+            				self.pt_table[gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seatcount"]]:loadTexture("png/" ..  self.zh_stateimage1[i])
+            			end
+            		end  
+	 	elseif tostring(self._back_seed_state["tile_des"]) ==  "成熟"  then 
+	 		local gettreelist = LocalData:Instance():get_gettreelist()
+            		for i=1,8 do
+            			if tostring(gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seedname"])   == self.zh_state[i]   then
+            				self.pt_table[gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seatcount"]]:loadTexture("png/" ..  self.zh_stateimage2[i])
+            			end
+            		end  
+	 	elseif tostring(self._back_seed_state["tile_des"]) ==  "死亡" and  self._fruitinformation_bg ~= nil  then 
+	 		 self._fruitinformation_bg:setVisible(false)
+	 		local gettreelist = LocalData:Instance():get_gettreelist()
+            		self.pt_table[gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seatcount"]]:loadTexture("png/" ..  "chengzhangshu-zhong-di.png")	
+	 	end
+	            
+
+
 	            if tonumber(self._back_seed_state["seed_next_time"]) <  0 then
 	            	self:function_seed_state(self.time_count_dex)
 	            end
@@ -85,7 +112,10 @@ function GrowingtreeLayer:function_touchmove( obj,x,y)
 				end
 				
 			end
-			 Server:Instance():setseedplant(self.z_treeid,self.z_gameitemid,self.get_seatcount)  --  种种子
+			if self.z_gameitemid ~= nil then
+				Server:Instance():setseedplant(self.z_treeid,self.z_gameitemid,self.get_seatcount)  --  种种子
+			end
+			 
 		 	
 		elseif self._type==21 then  --  浇水
 			 x=x+100
@@ -125,7 +155,6 @@ end
 function GrowingtreeLayer:init(  )
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
-
     	self._pt=cc.p(self.Growingtree:getChildByTag(266):getPositionX(),self.Growingtree:getChildByTag(266):getPositionY())
   
     	for i=1,8 do
@@ -134,6 +163,14 @@ function GrowingtreeLayer:init(  )
 		            if eventType ~= ccui.TouchEventType.ended then
 		                return
 		            end 
+		            sender:setTouchEnabled(false)
+		            local function stopAction()
+		    		
+		    		sender:setTouchEnabled(true)
+		    	end
+		    	local callfunc = cc.CallFunc:create(stopAction)
+		            self.Growingtree:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+
 		            self.get_seatcount=sender:getTag()-103  --  点击的是哪个坑位的果实信息
 		           self:function_touchmove( sender,sender:getPositionX(),sender:getPositionY())
 		           --  果实信息
@@ -169,8 +206,10 @@ function GrowingtreeLayer:init(  )
 			 	for i=1,#gettreelist["list"][1]["seedlist"] do
 				 	if gettreelist["list"][1]["seedlist"][1]["seedid"] and gettreelist["list"][1]["seedlist"][i]["seatcount"] == self.get_seatcount  then
 				 		self.z_seedid=gettreelist["list"][1]["seedlist"][i]["seedid"]
-				 		Server:Instance():setseedmanure(self.z_treeid,self.z_seedid,self._gameitemid)  --  
-				 		LocalData:Instance():set_gettreegameitemlist(nil)--
+				 		if self.z_seedid ~= nil and self._gameitemid ~= nil then
+				 			Server:Instance():setseedmanure(self.z_treeid,self.z_seedid,self._gameitemid)  --  
+				 		            LocalData:Instance():set_gettreegameitemlist(nil)--
+				 		end
 				 	end
 				end
 			end
@@ -186,8 +225,22 @@ function GrowingtreeLayer:init(  )
 	                return
 	            end 
 	            if self.is_friend  then
+	                	 for i=1,8 do
+		    		self.pt_table[i]=self.Growingtree:getChildByTag(103+i)
+		    		self.pt_table[i]:loadTexture("png/"  ..  "chengzhangshu-zhong-di.png" )
+    			end
 	            	self.is_friend=false
 	            	Server:Instance():gettreelist()
+	            	Server:Instance():gettreefriendlist(7,1,1)
+	            	if  self.f_friend_bt ~= self.curr_bright  then
+	            		self.f_friend_bt:setBright(false)
+		            	self.f_friend_bt:getChildByTag(self.f_friend_bt:getTag()+5):setBright(false)
+		            	self.curr_bright:setBright(true)
+		            	self.curr_bright:getChildByTag(self.curr_bright:getTag()+5):setBright(true)
+		            	self.curr_bright=self.f_friend_bt
+	            	end
+	            	
+	            	self._type=19
 	            	self:scheduleUpdate()
 			self.count_time=0
 			self.secondOne=0
@@ -198,6 +251,7 @@ function GrowingtreeLayer:init(  )
 	  end)
 
 	 local friend_bt=self.Growingtree:getChildByTag(19)  --好友按钮
+	 self.f_friend_bt=friend_bt
 	 friend_bt:getChildByTag(24):setBright(false)
 	 friend_bt:setBright(false)
              self.curr_bright=friend_bt--记录当前高亮
@@ -283,13 +337,14 @@ function GrowingtreeLayer:function_seed_state(dex)
 	back_seed_state["seed_next_time"]=-1 --种子距离下一状态时间
 	back_seed_state["seed_image"]=nil  --图片
 	back_seed_state["seedname"]=nil  --图片
+	back_seed_state["dex"]=dex --  索引
 	back_seed_state["tile_des"]="无"
 	if not seedlist[dex]then
 		return
 	end
-	local nowtime=seedlist[dex]["nowtime"]+(os.time()-seedlist[dex]["nowtime"])
-	dump(nowtime)
-	dump(os.time()-seedlist[dex]["nowtime"])
+	local nowtime=seedlist[dex]["nowtime"] +(os.time()-seedlist[dex]["nowtime"])
+	-- dump(nowtime)
+	-- dump(os.time()-seedlist[dex]["nowtime"])
 	back_seed_state["seedname"]=seedlist[dex]["seedname"]
 	for i=1,8 do
 		if tostring(seedlist[dex]["seedname"])  ==  self.zh_state[i]  then
@@ -297,7 +352,8 @@ function GrowingtreeLayer:function_seed_state(dex)
 			back_seed_state["seed_image"] = self.zh_stateimage1[i]
 		end
 	end
-	
+-- drytime 种子干旱时间  deadtime 种子死亡时间  gaintime 种子成熟时间 planttime 种子种植时间 nowtime 当前时间
+
 	if nowtime-seedlist[dex]["drytime"]<=0 then
 		back_seed_state["seedstatus"] =1  
 		back_seed_state["seed_percentage"]=(nowtime-seedlist[dex]["planttime"])/(seedlist[dex]["drytime"]-seedlist[dex]["planttime"]) 
@@ -322,8 +378,8 @@ function GrowingtreeLayer:function_seed_state(dex)
 		back_seed_state["tile_des"]="成熟"
 	end
 	--注 ：以收获3种子列表为Null 
-	dump(seedlist[dex])
-	dump(back_seed_state)
+	-- dump(seedlist[dex])
+	-- dump(back_seed_state)
 	return back_seed_state
 
 end
@@ -419,6 +475,9 @@ function GrowingtreeLayer:fun_data()
 		self.Growingtree:getChildByTag(19):setVisible(true)
       		self.Growingtree:getChildByTag(20):setVisible(true)
 	end
+	if self._type==22 then
+          	   self.GrowingtreeNode:setVisible(true)
+	end
 	 local gettreelist = LocalData:Instance():get_gettreelist()
 	  self.z_treeid=gettreelist["list"][1]["treeid"]
 	 local experience_text=self.Growingtree:getChildByTag(87)  --经验值
@@ -429,10 +488,12 @@ function GrowingtreeLayer:fun_data()
 		 	if gettreelist["list"][1]["seedlist"][1]["seedid"]  then
 				 for j=1,8 do
 				 	if gettreelist["list"][1]["seedlist"][i]["seedname"] ==  self.zh_state[j] then
-				 		if gettreelist["list"][1]["seedlist"][i]["seedstatus"] ~=  3  then
+				 		if gettreelist["list"][1]["seedlist"][i]["seedstatus"] ==0  or  gettreelist["list"][1]["seedlist"][i]["seedstatus"] == 1  then  --  成长状态
 					 		self.pt_table[gettreelist["list"][1]["seedlist"][i]["seatcount"]]:loadTexture("png/" ..  self.zh_stateimage1[j])  
-					 	else
+					 	elseif(gettreelist["list"][1]["seedlist"][i]["seedstatus"] ==2)  then 
 					 		self.pt_table[gettreelist["list"][1]["seedlist"][i]["seatcount"]]:loadTexture("png/" ..  self.zh_stateimage2[j])  --成熟状态图片
+					 	else
+					 		self.pt_table[gettreelist["list"][1]["seedlist"][i]["seatcount"]]:loadTexture("png/" ..  "chengzhangshu-zhong-di.png")  --成熟后、或者死亡
 					 	end
 				 	end
 				 	self.z_seedid=gettreelist["list"][1]["seedlist"][1]["seedid"]
@@ -447,6 +508,8 @@ function GrowingtreeLayer:fun_data()
 	 	self:fun_FruitinformationNode(zt:getPositionX(),zt:getPositionY(),1) --  果实状态信息界面
 	 	self:scheduleUpdate()
 	 	self.time_count_dex=1
+	 else
+	 	self.FruitinformationNode:getChildByTag(2424):setVisible(false)
 	 end
 	 
 	 local gold_text=self.Growingtree:getChildByTag(88)  --金币值
@@ -456,6 +519,7 @@ function GrowingtreeLayer:fun_data()
 	 diamond_text:setString(gettreelist["diamondnum"])
 
 	 local head_bt=self.Growingtree:getChildByTag(85)  --自己头像框按钮
+	 head_bt:setTouchEnabled(false)
 	 head_bt:addTouchEventListener(function(sender, eventType  )
 	            if eventType ~= ccui.TouchEventType.ended then
 	                return
@@ -521,7 +585,7 @@ function GrowingtreeLayer:function_friend( )
 
                     return
             end
-           
+           Panel:setVisible(true)
 	for i=1,#_list  do
 		local  call=Panel:clone() 
 		local head_image=call:getChildByTag(50)
@@ -538,6 +602,11 @@ function GrowingtreeLayer:function_friend( )
 			self.secondOne=0
 
 		           self.is_friend=true
+		           for i=1,8 do
+		    		self.pt_table[i]=self.Growingtree:getChildByTag(103+i)
+		    		self.pt_table[i]:loadTexture("png/"  ..  "chengzhangshu-zhong-di.png" )
+    			end
+
 		           Server:Instance():gettreelist(_list[sender:getChildByName("Image_34"):getTag()]["playerid"])
 		            -- if eventType == ccui.TouchEventType.began then
 		            -- 	print("开始")
@@ -554,10 +623,12 @@ function GrowingtreeLayer:function_friend( )
 		local head_text=call:getChildByTag(51)  --  头像按钮
 		head_text:setString(_list[i]["nickname"])
 		self.PageView_head:addPage(call)   --添加头像框
-		if tonumber(_list[i]["flag"])  ==  0  then   -- 0好友  1自己
-			print("好友YES")
+		if tonumber(_list[i]["flag"])  ==  0  then   -- 0自己  1好友
+			print("自己")
+			head_bt:setTouchEnabled(false)
 		else
-			print("自己")		
+			print("好友YES")
+			head_bt:setTouchEnabled(true)		
 		end
 		local friend_lv=call:getChildByTag(77)  --  等级
 		friend_lv:setString("LV " .. tostring(_list[i]["playergrade"]) )
@@ -575,8 +646,9 @@ end
 --  背包列表
 function GrowingtreeLayer:function_backpack( )
             local gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
+            dump(gettreegameitemlist)
             local _list=gettreegameitemlist["list"]
-            dump(_list)
+            
 	self.PageView_head=self.GrowingtreeNode:getChildByTag(566):getChildByTag(47)
 	local Panel=self.PageView_head:getChildByTag(48)
 	for i=2,#self.PageView_head:getPages() do 
@@ -604,14 +676,15 @@ function GrowingtreeLayer:function_backpack( )
 
 	 if #_list   ==  0  then
 	 	print("背包个数",#_list)
-                    --Panel:setVisible(false)
-                       for i=1,7 do
-			local  call=Panel:clone() 
-			self.PageView_head:addPage(call)
-		end
+                    Panel:setVisible(false)
+  --                      for i=1,7 do
+		-- 	local  call=Panel:clone() 
+		-- 	self.PageView_head:addPage(call)
+		-- end
 
                     return
             end
+            Panel:setTouchEnabled(true)
             Panel:setVisible(true)
 	for i=1,#_list  do
 		local  call=Panel:clone() 
@@ -656,12 +729,12 @@ function GrowingtreeLayer:function_backpack( )
 
             end
             --  默认机器好友
-            if #_list < 7  then
-	            for i=1,7- #_list do
-			local  call=Panel:clone() 
-			self.PageView_head:addPage(call)
-		end
-            end
+  --           if #_list < 7  then
+	 --            for i=1,7- #_list do
+		-- 	local  call=Panel:clone() 
+		-- 	self.PageView_head:addPage(call)
+		-- end
+  --           end
             self.PageView_head:removePage(Panel)  --删除样图
 end
 function GrowingtreeLayer:touch_Nodecallback( sender, eventType )
@@ -677,11 +750,11 @@ function GrowingtreeLayer:touch_Nodecallback( sender, eventType )
           	  print("右移一格")
           	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()-1)
           elseif tag==43 then
-          	  print("左移一列")
-          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()+7)
+          	  print("左移一列",self.PageView_head:getCurPageIndex())
+          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()+3)
           elseif tag==44 then
-          	  print("右移一列")
-          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()-7)
+          	  print("右移一列",self.PageView_head:getCurPageIndex())
+          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()-3)
           elseif tag==45 then
           	  print("刷新好友按钮")
           elseif tag==46 then
@@ -748,9 +821,10 @@ function GrowingtreeLayer:touch_callback( sender, eventType )
           elseif tag==22 then
           	 print("施肥")
           	 self._type=22
+          	 self.GrowingtreeNode:setVisible(true)
           	 self.Growingtree:getChildByTag(266):loadTexture("png/chengzhangshu-huafei-chuji.png")
           	  self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
-          	  --self.Growingtree:getChildByTag(266):setVisible(true)
+          	  self.Growingtree:getChildByTag(266):setVisible(false)
           	 self:function_friendIsvisible(false)
           	 self.Growingtree:getChildByTag(266):setRotation(90)
           	 Server:Instance():gettreegameitemlist(1)   --  1 是化肥 2   是种子  3  是化肥和种子
@@ -835,7 +909,7 @@ function GrowingtreeLayer:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_GSTTREEGAMEITEMLIST", self,
                        function()
                        	self:function_backpack()  --  背包数据
-                       	Server:Instance():gettreelist()--   成长树初始化接口
+                       	--Server:Instance():gettreelist()--   成长树初始化接口
 
                       end)
   --  种种子消息
@@ -872,6 +946,12 @@ function GrowingtreeLayer:onEnter()
                        	print("已经种植的坑不能种植")
 			self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
                       end)
+  ---施肥
+  NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE", self,
+                       function()
+                       	Server:Instance():Grawpopup_box_buffer("成功施肥")
+			Server:Instance():gettreelist()
+                      end)
 end
 function GrowingtreeLayer:pushFloating(text)
    if is_resource then
@@ -903,6 +983,7 @@ function GrowingtreeLayer:onExit()
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDWATER", self)
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDREWARD", self)
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDPLANT_FALSE", self)
+      NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDMANURE", self)
      	
 end
 

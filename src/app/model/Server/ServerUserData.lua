@@ -320,7 +320,7 @@ function Server:gettreelist(friendplayerid)
     self:request_http("gettreelist" , params); 
 end
 function Server:gettreelist_callback()
-     -- dump(self.data)
+      --dump(self.data)
       --dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
         --self:show_float_message( self.data.err_msg)
@@ -346,7 +346,7 @@ function Server:gettreefriendlist(pagesize,pageno,type)
     self:request_http("gettreefriendlist" , params); 
 end
 function Server:gettreefriendlist_callback()
-     dump(self.data)
+     --dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
@@ -449,7 +449,7 @@ function Server:setseedmanure_callback()
     end
     
     --LocalData:Instance():set_gettreegameitemlist(self.data)--
-    NotificationCenter:Instance():PostNotification("MESSAGE_GSTTREEGAMEITEMLIST")
+    NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDMANURE")
 end
 
 --3.9.7 成长树种子收获/偷取接口（命令：setseedreward）
