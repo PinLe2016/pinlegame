@@ -454,7 +454,7 @@ function GameScene:onEnter()
                         local  jaclayer_data=list_table["adlist"]
                       
                         local  _addetailurl = tostring(1)
-                        if jaclayer_data[1]["addetailurl"] then
+                        if #jaclayer_data[1]["addetailurl"]  ~=  0 then
                            _addetailurl=jaclayer_data[1]["addetailurl"]
                         end
                         if  self.choose==1 then

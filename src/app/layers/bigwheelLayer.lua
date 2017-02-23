@@ -356,8 +356,12 @@ function bigwheelLayer:star_action()
               local move=cc.MoveTo:create(time, point_buf[dex])
               local action = cc.Sequence:create(cc.Spawn:create(scal,move),cc.CallFunc:create(logSprRotation),cc.DelayTime:create(0.50),cc.CallFunc:create(logSprRotation1))
               -- self.HitVolesEndLayer:addChild(star_buf[dex])
-              star_buf[dex]:setVisible(true)
-              star_buf[dex]:runAction(action)           
+              dump(dex)
+              if dex ~=  nil then
+                star_buf[dex]:setVisible(true)
+                star_buf[dex]:runAction(action) 
+              end
+                        
                  
 end
 
@@ -556,18 +560,22 @@ function bigwheelLayer:Pintu_data_up()
             self._goldnum=self._goldbg:getChildByTag(1326)  --  具体金币
             local  list_table=LocalData:Instance():get_getgoldspoollistbale()
             local  jaclayer_data=list_table["adlist"] 
+            print("链接1")
             if jaclayer_data[1]["adurlgold"] then
               self._goldnum:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
             else
               self._goldbg:setVisible(false)  --
               self._goldnum:setString("+0")
+              print("链接2")
             end
 
             if tostring(self.addetailurl)   ==   tostring(1) then
               self._goldbg:setVisible(false)
+              print("链接3")
               
             else
                 self._goldbg:setVisible(true)
+                print("链接4")
                 self.roleAction:gotoFrameAndPlay(0,35, true)
             end
 

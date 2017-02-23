@@ -222,26 +222,43 @@ function debrisLayer:saw_issuccess()
         local pos_suss=self.fragment_success[i]
         if (math.floor(pos.x)~=math.floor(pos_suss.x) or math.floor(pos.y)~=math.floor(pos_suss.y) ) then 
 
-                 --  local _originalimage = cc.CSLoader:createNode("originalimage.csb")
-                 --  _originalimage:setPosition(cc.p(self.point.x,self.point.y))
-                 -- local original=_originalimage:getChildByTag(118)
-                 -- local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-                 -- original:loadTexture(path .. tostring(self.filename))-- 任性的记住更换原图
-                 -- self:addChild(_originalimage,900)
+                        --         cc.Director:getInstance():getScheduler():unscheduleScriptEntry(schedulHandledeb)
+                        --              LocalData:Instance():setTheycount(self.theycount)
+                        --          local _originalimage = cc.CSLoader:createNode("originalimage.csb")
+                        --           _originalimage:setPosition(cc.p(self.point.x,self.point.y))
+                        --          local original=_originalimage:getChildByTag(118)
+                        --          local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+                        --          original:loadTexture(path .. tostring(self.filename))-- 任性的记住更换原图
+                        --          self:addChild(_originalimage,900)
 
-                 --   local function stopAction()
-                 --             if self.type=="surprise" then
-                 --                        Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
-                 --                         return
-                 --            end
-                 --            print("jdfjskdjf  ",self.adid)
-                 --          Server:Instance():setgamerecord(self.adid)  
-                 --            -- local jackpotlayer= jackpotlayer.new({id=self.adid,  adownerid=self.adownerid,goldspoolcount= self.goldspoolcount })
-                 --            -- self:addChild(jackpotlayer)   --  奖池详情
+                        --            local function stopAction()
+                                           
+                        --                     --  if self.type=="surprise" then
+                        --                     --             Util:scene_controlid("SurpriseOverScene",{id=self.adid,tp=" "})
+                        --                     --              return
+                        --                     -- end
+                        --                   -- Server:Instance():setgamerecord(self.adid,0,0,self.count_time)  
+                        --                    LocalData:Instance():setpuzzletime(self.count_time)
+                                         
+                        --                    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
 
-                 --   end
-                 --  local callfunc = cc.CallFunc:create(stopAction)
-                 -- self:runAction(cc.Sequence:create(cc.DelayTime:create(2),callfunc  ))
+                        --                    local  _img= LocalData:Instance():get_user_img()
+                        --                 local  list_table=LocalData:Instance():get_getgoldspoollistbale()
+                        --                 -- dump(list_table)
+                        --                 local  jaclayer_data=list_table["adlist"]
+                        --                 Server:Instance():setgamerecord(self.adid,0,0,self.count_time)
+                        --                 local  _addetailurl = tostring(1)
+                        --                 if #jaclayer_data[1]["addetailurl"]  ~=  0  then
+                        --                    _addetailurl=jaclayer_data[1]["addetailurl"]
+                        --                 end
+                        --                 local  _img= LocalData:Instance():get_user_img()
+
+                        --                 local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.deleget.adid,adownerid=self.deleget.adownerid,goldspoolcount= self.deleget.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.deleget.choose,Points=0})
+                        --                cc.Director:getInstance():replaceScene(bigwheelLayer) 
+
+                        --            end
+                        --           local callfunc = cc.CallFunc:create(stopAction)
+                        --          self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
                  
 
             return
@@ -270,13 +287,14 @@ function debrisLayer:saw_issuccess()
                            -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS)  --发送消息  进入奖项详情 
 
                            local  _img= LocalData:Instance():get_user_img()
-                        print("发到手机快放假",_img)
+                        
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                         -- dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
                         Server:Instance():setgamerecord(self.adid,0,0,self.count_time)
                         local  _addetailurl = tostring(1)
-                        if jaclayer_data[1]["addetailurl"] then
+                        print("发到手机快放假", #jaclayer_data[1]["addetailurl"])
+                        if #jaclayer_data[1]["addetailurl"]  ~=  0 then
                            _addetailurl=jaclayer_data[1]["addetailurl"]
                         end
                         local  _img= LocalData:Instance():get_user_img()
