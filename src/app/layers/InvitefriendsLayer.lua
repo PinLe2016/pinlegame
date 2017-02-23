@@ -14,6 +14,7 @@ function InvitefriendsLayer:ctor()--params
        self:setNodeEventEnabled(true)--layer添加监听
        self.friend_list_type=1
        self.table_insert={}
+       self._table_int={}
        Server:Instance():get_reward_friend_list() --好友列表
 
               local _table=LocalData:Instance():get_gettasklist()
@@ -152,13 +153,17 @@ function InvitefriendsLayer:fun_init(  )
                   self.today_golds:setString( _friendlist[i]["total_golds"] )
                   self.total_golds =  _cell:getChildByTag(101)  --贡献经验
                   self.total_golds:setString( _friendlist[i]["total_points"] )
+                  local yao_text_friend =_cell:getChildByTag(4411)  --邀字 
+                  -- if tonumber(_friendlist[i]["tag"]) ==  0  then    --  o邀请  1  是好友
+                  --     yao_text_friend:
+                  -- end
 
                    local move_friend =_cell:getChildByName("CheckBox_1")  --删除好友
                   move_friend:setTag(i)
                   move_friend:addEventListener(function(sender, eventType  )
                            if eventType == ccui.CheckBoxEventType.selected then
-                                  
-                                  table.insert(self.table_insert,_friendlist[i]["playerid"] )
+                                   self._table_int["playerid"]=_friendlist[i]["playerId"]
+                                  table.insert(self.table_insert, self._table_int)
                                   print("添加",self.table_insert[1])
                                   dump(self.table_insert)
 
@@ -166,8 +171,9 @@ function InvitefriendsLayer:fun_init(  )
                                    print("删除")
                                    if #self.table_insert >0  then
                                       for i=1,#self.table_insert do
-                                        if self.table_insert[i] == _friendlist[i]["playerid"] then
+                                        if self.table_insert[i]["playerid"]== _friendlist[i]["playerId"] then
                                             table.remove(self.table_insert,i)
+                                            table.remove(self._table_int,i)
                                         end
                                       end
                                    end
