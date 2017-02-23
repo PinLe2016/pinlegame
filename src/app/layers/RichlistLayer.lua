@@ -191,6 +191,8 @@ function RichlistLayer:onEnter()
     NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
                          function()
                           Server:Instance():promptbox_box_buffer("成功添加好友") 
+                          Server:Instance():getgoldsranklist(http_number,self.number_pages,self._type)
+                         self.rank_list:removeAllItems()
                         end)
 
 

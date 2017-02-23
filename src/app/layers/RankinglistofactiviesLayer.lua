@@ -205,6 +205,7 @@ function RankinglistofactiviesLayer:onEnter()
       NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
                        function()
                         Server:Instance():promptbox_box_buffer("成功添加好友") 
+                        Server:Instance():getranklistbyactivityid(self.id,self.count)
                       end)
 end
 
