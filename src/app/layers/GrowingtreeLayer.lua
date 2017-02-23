@@ -865,7 +865,7 @@ function GrowingtreeLayer:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_GSTTREEGAMEITEMLIST", self,
                        function()
                        	self:function_backpack()  --  背包数据
-                       	Server:Instance():gettreelist()--   成长树初始化接口
+                       	--Server:Instance():gettreelist()--   成长树初始化接口
 
                       end)
   --  种种子消息
