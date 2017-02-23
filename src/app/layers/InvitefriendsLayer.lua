@@ -154,9 +154,11 @@ function InvitefriendsLayer:fun_init(  )
                   self.total_golds =  _cell:getChildByTag(101)  --贡献经验
                   self.total_golds:setString( _friendlist[i]["total_points"] )
                   local yao_text_friend =_cell:getChildByTag(4411)  --邀字 
-                  -- if tonumber(_friendlist[i]["tag"]) ==  0  then    --  o邀请  1  是好友
-                  --     yao_text_friend:
-                  -- end
+                  if tonumber(_friendlist[i]["tag"]) ==  0  then    --  o邀请  1  是好友
+                      yao_text_friend:setString("员")
+                  else
+                    yao_text_friend:setString("友")
+                  end
 
                    local move_friend =_cell:getChildByName("CheckBox_1")  --删除好友
                   move_friend:setTag(i)
