@@ -621,11 +621,11 @@ function GrowingtreeLayer:function_backpack( )
 
 	 if #_list   ==  0  then
 	 	print("背包个数",#_list)
-                    --Panel:setVisible(false)
-                       for i=1,7 do
-			local  call=Panel:clone() 
-			self.PageView_head:addPage(call)
-		end
+                    Panel:setVisible(false)
+  --                      for i=1,7 do
+		-- 	local  call=Panel:clone() 
+		-- 	self.PageView_head:addPage(call)
+		-- end
 
                     return
             end
@@ -673,12 +673,12 @@ function GrowingtreeLayer:function_backpack( )
 
             end
             --  默认机器好友
-            if #_list < 7  then
-	            for i=1,7- #_list do
-			local  call=Panel:clone() 
-			self.PageView_head:addPage(call)
-		end
-            end
+  --           if #_list < 7  then
+	 --            for i=1,7- #_list do
+		-- 	local  call=Panel:clone() 
+		-- 	self.PageView_head:addPage(call)
+		-- end
+  --           end
             self.PageView_head:removePage(Panel)  --删除样图
 end
 function GrowingtreeLayer:touch_Nodecallback( sender, eventType )
