@@ -127,7 +127,6 @@ end
 function GrowingtreeLayer:init(  )
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
-
     	self._pt=cc.p(self.Growingtree:getChildByTag(266):getPositionX(),self.Growingtree:getChildByTag(266):getPositionY())
   
     	for i=1,8 do
@@ -136,6 +135,14 @@ function GrowingtreeLayer:init(  )
 		            if eventType ~= ccui.TouchEventType.ended then
 		                return
 		            end 
+		            sender:setTouchEnabled(false)
+		            local function stopAction()
+		    		
+		    		sender:setTouchEnabled(true)
+		    	end
+		    	local callfunc = cc.CallFunc:create(stopAction)
+		            self.Growingtree:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+
 		            self.get_seatcount=sender:getTag()-103  --  点击的是哪个坑位的果实信息
 		           self:function_touchmove( sender,sender:getPositionX(),sender:getPositionY())
 		           --  果实信息
@@ -437,10 +444,12 @@ function GrowingtreeLayer:fun_data()
 		 	if gettreelist["list"][1]["seedlist"][1]["seedid"]  then
 				 for j=1,8 do
 				 	if gettreelist["list"][1]["seedlist"][i]["seedname"] ==  self.zh_state[j] then
-				 		if gettreelist["list"][1]["seedlist"][i]["seedstatus"] ~=  3  then
+				 		if gettreelist["list"][1]["seedlist"][i]["seedstatus"] ==0  or  gettreelist["list"][1]["seedlist"][i]["seedstatus"] == 1  then  --  成长状态
 					 		self.pt_table[gettreelist["list"][1]["seedlist"][i]["seatcount"]]:loadTexture("png/" ..  self.zh_stateimage1[j])  
-					 	else
+					 	elseif(gettreelist["list"][1]["seedlist"][i]["seedstatus"] ==2)  then 
 					 		self.pt_table[gettreelist["list"][1]["seedlist"][i]["seatcount"]]:loadTexture("png/" ..  self.zh_stateimage2[j])  --成熟状态图片
+					 	else
+					 		self.pt_table[gettreelist["list"][1]["seedlist"][i]["seatcount"]]:loadTexture("png/" ..  "chengzhangshu-zhong-di.png")  --成熟后、或者死亡
 					 	end
 				 	end
 				 	self.z_seedid=gettreelist["list"][1]["seedlist"][1]["seedid"]
