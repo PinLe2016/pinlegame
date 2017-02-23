@@ -462,6 +462,7 @@ function GrowingtreeLayer:fun_data()
 	 diamond_text:setString(gettreelist["diamondnum"])
 
 	 local head_bt=self.Growingtree:getChildByTag(85)  --自己头像框按钮
+	 head_bt:setTouchEnabled(false)
 	 head_bt:addTouchEventListener(function(sender, eventType  )
 	            if eventType ~= ccui.TouchEventType.ended then
 	                return
@@ -564,10 +565,11 @@ function GrowingtreeLayer:function_friend( )
 		local head_text=call:getChildByTag(51)  --  头像按钮
 		head_text:setString(_list[i]["nickname"])
 		self.PageView_head:addPage(call)   --添加头像框
-		if tonumber(_list[i]["flag"])  ==  0  then   -- 0好友  1自己
-			print("好友YES")
+		if tonumber(_list[i]["flag"])  ==  0  then   -- 0自己  1好友
+			print("自己")
+			head_bt:setTouchEnabled(false)
 		else
-			print("自己")		
+			print("好友YES")		
 		end
 		local friend_lv=call:getChildByTag(77)  --  等级
 		friend_lv:setString("LV " .. tostring(_list[i]["playergrade"]) )
