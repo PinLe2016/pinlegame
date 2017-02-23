@@ -12,6 +12,7 @@ function GrowingtreeLayer:ctor()
        self:setTouchSwallowEnabled(false)
        self:setNodeEventEnabled(true)
        self.zhi_ct=0
+       self._fruitinformation_bg=nil
        self.z_gameitemid=nil
        self._gameitemid=nil
        self.time_count_dex=1
@@ -36,6 +37,7 @@ function GrowingtreeLayer:ctor()
        Server:Instance():gettreefriendlist(7,1,1)--   成长树好友初始化接口  每页显示数据  页号  好友类型  Int 1我的好友，2我的员工
         self:function_touchlistener()
 end
+--back_seed_state["dex"]  self.pt_table[i]  seedname
 function GrowingtreeLayer:update(dt)
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
@@ -46,6 +48,29 @@ function GrowingtreeLayer:update(dt)
 	            self.time_againtime:setString(tostring( _table[2] .. _table[3] .. _table[4] ))
 	            local par=(self._back_seed_state["seed_percentage"]  *  100)/(self._back_seed_state["seed_next_time"]-self.count_time)
 	            self.gaintime_loadingBar:setPercent(self._back_seed_state["seed_percentage"]  *  100  +  par)
+
+            	if tostring(self._back_seed_state["tile_des"]) ==  "正常"   then  --  成长状态
+            		local gettreelist = LocalData:Instance():get_gettreelist()
+            		for i=1,8 do
+            			if tostring(gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seedname"])   == self.zh_state[i]   then
+            				self.pt_table[gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seatcount"]]:loadTexture("png/" ..  self.zh_stateimage1[i])
+            			end
+            		end  
+	 	elseif tostring(self._back_seed_state["tile_des"]) ==  "成熟"  then 
+	 		local gettreelist = LocalData:Instance():get_gettreelist()
+            		for i=1,8 do
+            			if tostring(gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seedname"])   == self.zh_state[i]   then
+            				self.pt_table[gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seatcount"]]:loadTexture("png/" ..  self.zh_stateimage2[i])
+            			end
+            		end  
+	 	elseif tostring(self._back_seed_state["tile_des"]) ==  "死亡" and  self._fruitinformation_bg ~= nil  then 
+	 		 self._fruitinformation_bg:setVisible(false)
+	 		local gettreelist = LocalData:Instance():get_gettreelist()
+            		self.pt_table[gettreelist["list"][1]["seedlist"][self._back_seed_state["dex"]]["seatcount"]]:loadTexture("png/" ..  "chengzhangshu-zhong-di.png")	
+	 	end
+	            
+
+
 	            if tonumber(self._back_seed_state["seed_next_time"]) <  0 then
 	            	self:function_seed_state(self.time_count_dex)
 	            end
@@ -298,11 +323,12 @@ function GrowingtreeLayer:function_seed_state(dex)
 	back_seed_state["seed_next_time"]=-1 --种子距离下一状态时间
 	back_seed_state["seed_image"]=nil  --图片
 	back_seed_state["seedname"]=nil  --图片
+	back_seed_state["dex"]=dex --  索引
 	back_seed_state["tile_des"]="无"
 	if not seedlist[dex]then
 		return
 	end
-	local nowtime=seedlist[dex]["nowtime"]+(os.time()-seedlist[dex]["nowtime"])
+	local nowtime=seedlist[dex]["nowtime"] +(os.time()-seedlist[dex]["nowtime"])
 	-- dump(nowtime)
 	-- dump(os.time()-seedlist[dex]["nowtime"])
 	back_seed_state["seedname"]=seedlist[dex]["seedname"]
@@ -312,7 +338,8 @@ function GrowingtreeLayer:function_seed_state(dex)
 			back_seed_state["seed_image"] = self.zh_stateimage1[i]
 		end
 	end
-	
+-- drytime 种子干旱时间  deadtime 种子死亡时间  gaintime 种子成熟时间 planttime 种子种植时间 nowtime 当前时间
+
 	if nowtime-seedlist[dex]["drytime"]<=0 then
 		back_seed_state["seedstatus"] =1  
 		back_seed_state["seed_percentage"]=(nowtime-seedlist[dex]["planttime"])/(seedlist[dex]["drytime"]-seedlist[dex]["planttime"]) 
