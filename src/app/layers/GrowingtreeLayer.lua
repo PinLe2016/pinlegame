@@ -586,7 +586,8 @@ function GrowingtreeLayer:function_friend( )
 			print("自己")
 			head_bt:setTouchEnabled(false)
 		else
-			print("好友YES")		
+			print("好友YES")
+			head_bt:setTouchEnabled(true)		
 		end
 		local friend_lv=call:getChildByTag(77)  --  等级
 		friend_lv:setString("LV " .. tostring(_list[i]["playergrade"]) )
@@ -641,6 +642,7 @@ function GrowingtreeLayer:function_backpack( )
 
                     return
             end
+            Panel:setTouchEnabled(true)
             Panel:setVisible(true)
 	for i=1,#_list  do
 		local  call=Panel:clone() 
