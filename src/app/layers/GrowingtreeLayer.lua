@@ -190,6 +190,10 @@ function GrowingtreeLayer:init(  )
 	                return
 	            end 
 	            if self.is_friend  then
+	                	 for i=1,8 do
+		    		self.pt_table[i]=self.Growingtree:getChildByTag(103+i)
+		    		self.pt_table[i]:loadTexture("png/"  ..  "chengzhangshu-zhong-di.png" )
+    			end
 	            	self.is_friend=false
 	            	Server:Instance():gettreelist()
 	            	self:scheduleUpdate()
@@ -292,8 +296,8 @@ function GrowingtreeLayer:function_seed_state(dex)
 		return
 	end
 	local nowtime=seedlist[dex]["nowtime"]+(os.time()-seedlist[dex]["nowtime"])
-	dump(nowtime)
-	dump(os.time()-seedlist[dex]["nowtime"])
+	-- dump(nowtime)
+	-- dump(os.time()-seedlist[dex]["nowtime"])
 	back_seed_state["seedname"]=seedlist[dex]["seedname"]
 	for i=1,8 do
 		if tostring(seedlist[dex]["seedname"])  ==  self.zh_state[i]  then
@@ -326,8 +330,8 @@ function GrowingtreeLayer:function_seed_state(dex)
 		back_seed_state["tile_des"]="成熟"
 	end
 	--注 ：以收获3种子列表为Null 
-	dump(seedlist[dex])
-	dump(back_seed_state)
+	-- dump(seedlist[dex])
+	-- dump(back_seed_state)
 	return back_seed_state
 
 end
@@ -549,6 +553,7 @@ function GrowingtreeLayer:function_friend( )
 		    		self.pt_table[i]=self.Growingtree:getChildByTag(103+i)
 		    		self.pt_table[i]:loadTexture("png/"  ..  "chengzhangshu-zhong-di.png" )
     			end
+
 		           Server:Instance():gettreelist(_list[sender:getChildByName("Image_34"):getTag()]["playerid"])
 		            -- if eventType == ccui.TouchEventType.began then
 		            -- 	print("开始")
