@@ -449,7 +449,7 @@ function Server:setseedmanure_callback()
     end
     
     --LocalData:Instance():set_gettreegameitemlist(self.data)--
-    NotificationCenter:Instance():PostNotification("MESSAGE_GSTTREEGAMEITEMLIST")
+    NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDMANURE")
 end
 
 --3.9.7 成长树种子收获/偷取接口（命令：setseedreward）

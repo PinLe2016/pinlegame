@@ -228,6 +228,13 @@ function GrowingtreeLayer:init(  )
     			end
 	            	self.is_friend=false
 	            	Server:Instance():gettreelist()
+	            	Server:Instance():gettreefriendlist(7,1,1)
+	            	self.f_friend_bt:setBright(false)
+	            	self.f_friend_bt:getChildByTag(self.f_friend_bt:getTag()+5):setBright(false)
+	            	self.curr_bright:setBright(true)
+	            	self.curr_bright:getChildByTag(self.curr_bright:getTag()+5):setBright(true)
+	            	self.curr_bright=self.f_friend_bt
+	            	self._type=19
 	            	self:scheduleUpdate()
 			self.count_time=0
 			self.secondOne=0
@@ -238,6 +245,7 @@ function GrowingtreeLayer:init(  )
 	  end)
 
 	 local friend_bt=self.Growingtree:getChildByTag(19)  --好友按钮
+	 self.f_friend_bt=friend_bt
 	 friend_bt:getChildByTag(24):setBright(false)
 	 friend_bt:setBright(false)
              self.curr_bright=friend_bt--记录当前高亮
@@ -632,8 +640,9 @@ end
 --  背包列表
 function GrowingtreeLayer:function_backpack( )
             local gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
+            dump(gettreegameitemlist)
             local _list=gettreegameitemlist["list"]
-            dump(_list)
+            
 	self.PageView_head=self.GrowingtreeNode:getChildByTag(566):getChildByTag(47)
 	local Panel=self.PageView_head:getChildByTag(48)
 	for i=2,#self.PageView_head:getPages() do 
@@ -735,11 +744,11 @@ function GrowingtreeLayer:touch_Nodecallback( sender, eventType )
           	  print("右移一格")
           	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()-1)
           elseif tag==43 then
-          	  print("左移一列")
-          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()+7)
+          	  print("左移一列",self.PageView_head:getCurPageIndex())
+          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()+3)
           elseif tag==44 then
-          	  print("右移一列")
-          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()-7)
+          	  print("右移一列",self.PageView_head:getCurPageIndex())
+          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()-3)
           elseif tag==45 then
           	  print("刷新好友按钮")
           elseif tag==46 then
@@ -931,6 +940,12 @@ function GrowingtreeLayer:onEnter()
                        	print("已经种植的坑不能种植")
 			self.Growingtree:getChildByTag(266):setPosition(cc.p(self._pt.x,self._pt.y))
                       end)
+  ---施肥
+  NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE", self,
+                       function()
+                       	Server:Instance():Grawpopup_box_buffer("成功施肥")
+			Server:Instance():gettreelist()
+                      end)
 end
 function GrowingtreeLayer:pushFloating(text)
    if is_resource then
@@ -962,6 +977,7 @@ function GrowingtreeLayer:onExit()
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDWATER", self)
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDREWARD", self)
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDPLANT_FALSE", self)
+      NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDMANURE", self)
      	
 end
 
