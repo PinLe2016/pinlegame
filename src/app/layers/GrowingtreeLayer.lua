@@ -990,20 +990,58 @@ end
 --list view  控件使用
 
 function GrowingtreeLayer:fun_UIListView()
-        local scroll_node=display.newNode()
-  
-    local scroll_bound=cc.rect( 0, 0, 608,560 + display.height-960)--async = true,
-    self.scroll_listview=cc.ui.UIListView.new({viewRect = scroll_bound,direction = cc.ui.UIListView.DIRECTION_VERTICAL})
-    self.scroll_listview:onScroll(handler(self, self.scrollListener))
-    self.scroll_listview:setDelegate(handler(self, self.sourceDelegate))
-    self.scroll_listview:setPosition(16, 130)
-    -- self.scroll_listview:setTouchEnabled(false)
-    self.scroll_listview:addTo(self,100)
-    -- print("--------------------------", #self.other_player)
-    
-    self.scroll_listview:reload()
+
+    self.scroll_node = display.newNode()
+   local scroll_bound = cc.rect((display.width - 594) / 2,0,100, display.height-183-31)
+   -- end
+   self.scroll_listview = cc.ui.UIListView.new({viewRect = scroll_bound,
+										 direction = cc.ui.UIListView.DIRECTION_VERTICAL,
+										 async = true,
+										 bgColor = cc.c4b(255,0, 0,200),
+										 container = self.scroll_node})
+   self.scroll_listview:setDelegate(handler(self, self.sourceDelegate))
+   self.scroll_listview:onScroll(handler(self, self.scrollListener))
+   self.scroll_listview:setPosition(-7, 40)
+   self.scroll_listview:addTo(self,100)
+   self.scroll_listview:reload()
+
+   self.next_dex=1
+   local button = cc.ui.UIPushButton.new()
+	  :onButtonClicked(function(event)
+			self:sell()
+					  end)
+   button:setButtonLabel("normal", cc.ui.UILabel.new({
+							   UILabelType = 2,
+							   text = "下一个" ,
+							   size = BNT_FONT_SIZE_LIGHT
+   }))
+   button:addTo(self)
+   button:setPosition(550,540)
+
+   local button = cc.ui.UIPushButton.new()
+	  :onButtonClicked(function(event)
+			self:sellto()
+					  end)
+   button:setButtonLabel("normal", cc.ui.UILabel.new({
+							   UILabelType = 2,
+							   text = "上一个" ,
+							   size = BNT_FONT_SIZE_LIGHT
+   }))
+   button:addTo(self)
+   button:setPosition(550,640)
 
 end
+
+function GrowingtreeLayer:sell()
+	self.next_dex=self.next_dex+1
+   	self:layout_sub(1)
+end 
+
+function GrowingtreeLayer:sellto()
+	self.next_dex=self.next_dex+1
+   	self:layout_sub(-1)
+end 
+
 
 function GrowingtreeLayer:scrollListener(event)
    
@@ -1012,11 +1050,12 @@ end
 
 function GrowingtreeLayer:sourceDelegate(listView, tag, idx)
    if cc.ui.UIListView.COUNT_TAG == tag then
-     return 20--self.star_idx
+     return 70--self.star_idx
    elseif cc.ui.UIListView.CELL_TAG == tag then
      local item
      -- local content
      -- local one_spr
+     -- print("-----2-------",idx)
      item = self.scroll_listview:dequeueItem()
      if not item then
       -- print("---------",idx)
@@ -1034,7 +1073,7 @@ function GrowingtreeLayer:sourceDelegate(listView, tag, idx)
          dialog_content = item:getContent()
          if dialog_content then
             -- self:updateMyView(dialog_content,self.rank[2],idx)
-            dialog_content:setString(string.string.format("%d",idx))
+            dialog_content:setString(string.format("%d",idx))
          end 
     end
 
@@ -1050,92 +1089,92 @@ function GrowingtreeLayer:fun_table(next_idx)
                  size = 20,
                  align = TEXT_ALIGN_LEFT,
                  font = "Arial",
-                 color=Util:ConvertStringToC3b("yellow"),
-                 x=190+self.neam_titlePos[self.index][i].x,
-                 y=820+display.height-960-30,
+                 -- color=Util:ConvertStringToC3b("yellow"),
+                 x=20,
+                 y=0
          })
-      title_label:setAnchorPoint(0.5,0.5)
+      -- title_label:setAnchorPoint(0.5,0.5)
       -- title_label:addTo(self , 101) 
       return title_label
 end
 
 
--- function GrowingtreeLayer:layout_sub(next_idx)
+function GrowingtreeLayer:layout_sub(next_idx)
  
---   local width, height = 0, 0
---   local itemW, itemH = 0, 0
---   local margin
+  local width, height = 0, 0
+  local itemW, itemH = 0, 0
+  local margin
 
---   --calcate whole width height
---   if cc.ui.UIScrollView.DIRECTION_VERTICAL == self.right_listview.direction then
---     width = self.right_listview.viewRect_.width
+  --calcate whole width height
+  if cc.ui.UIScrollView.DIRECTION_VERTICAL == self.scroll_listview.direction then
+    width = self.scroll_listview.viewRect_.width
     
---     for i,v in ipairs(self.right_listview.items_) do
---       itemW, itemH = v:getItemSize()
---       itemW = itemW or 0
---       itemH = itemH or 0
+    for i,v in ipairs(self.scroll_listview.items_) do
+      itemW, itemH = v:getItemSize()
+      itemW = itemW or 0
+      itemH = itemH or 0
 
---       height = height + itemH
---     end
+      height = height + itemH
+    end
 
---   else
---     height = self.right_listview.viewRect_.height
---     for i,v in ipairs(self.items_) do
---       itemW, itemH = v:getItemSize()
---       itemW = itemW or 0
---       itemH = itemH or 0
+  else
+    height = self.scroll_listview.viewRect_.height
+    for i,v in ipairs(self.items_) do
+      itemW, itemH = v:getItemSize()
+      itemW = itemW or 0
+      itemH = itemH or 0
 
---       width = width + itemW
---     end
---   end
+      width = width + itemW
+    end
+  end
   
 
---   self.right_listview:setActualRect({x = self.right_listview.viewRect_.x,
---     y = self.right_listview.viewRect_.y,
---     width = width,
---     height = height})
---   self.right_listview.size.width = width
---   self.right_listview.size.height = height
+  self.scroll_listview:setActualRect({x = self.scroll_listview.viewRect_.x,
+    y = self.scroll_listview.viewRect_.y,
+    width = width,
+    height = height})
+  self.scroll_listview.size.width = width
+  self.scroll_listview.size.height = height
 
---   local tempWidth, tempHeight = width, height
---   if cc.ui.UIScrollView.DIRECTION_VERTICAL == self.right_listview.direction then
---     itemW, itemH = 0, 0
+  local tempWidth, tempHeight = width, height
+  if cc.ui.UIScrollView.DIRECTION_VERTICAL == self.scroll_listview.direction then
+    itemW, itemH = 0, 0
 
---     local content
---     for i,v in ipairs(self.right_listview.items_) do
---       itemW, itemH = v:getItemSize()
---       itemW = itemW or 0
---       itemH = itemH or 0
+    local content
+    for i,v in ipairs(self.scroll_listview.items_) do
+      itemW, itemH = v:getItemSize()
+      itemW = itemW or 0
+      itemH = itemH or 0
 
---       tempHeight = tempHeight - itemH
---       content = v:getContent()
---       content:setAnchorPoint(0.5, 0.5)
---       -- content:setPosition(itemW/2, itemH/2)
---       self.right_listview:setPositionByAlignment_(content, itemW, itemH, v:getMargin())
---       v:setPosition(self.right_listview.viewRect_.x,
---         self.right_listview.viewRect_.y + tempHeight)
---     end
---   else
---     itemW, itemH = 0, 0
---     tempWidth = 0
+      tempHeight = tempHeight - itemH
+      content = v:getContent()
+      content:setAnchorPoint(0.5, 0.5)
+      -- content:setPosition(itemW/2, itemH/2)
+      self.scroll_listview:setPositionByAlignment_(content, itemW, itemH, v:getMargin())
+      v:setPosition(self.scroll_listview.viewRect_.x,
+        self.scroll_listview.viewRect_.y + tempHeight)
+    end
+  else
+    itemW, itemH = 0, 0
+    tempWidth = 0
 
---     for i,v in ipairs(self.right_listview.items_) do
---       itemW, itemH = v:getItemSize()
---       itemW = itemW or 0
---       itemH = itemH or 0
+    for i,v in ipairs(self.scroll_listview.items_) do
+      itemW, itemH = v:getItemSize()
+      itemW = itemW or 0
+      itemH = itemH or 0
 
---       content = v:getContent()
---       content:setAnchorPoint(0.5, 0.5)
---       -- content:setPosition(itemW/2, itemH/2)
---       self.right_listview:setPositionByAlignment_(content, itemW, itemH, v:getMargin())
---       v:setPosition(self.right_listview.viewRect_.x + tempWidth, self.right_listview.viewRect_.y)
---       tempWidth = tempWidth + itemW
---     end
---   end
---   -- local onese=0
---   -- if next_idx>1 then onese=1 end
---   self.right_listview.container:setPosition(0, (50*20*next_idx)-50)
--- end
+      content = v:getContent()
+      content:setAnchorPoint(0.5, 0.5)
+      -- content:setPosition(itemW/2, itemH/2)
+      self.scroll_listview:setPositionByAlignment_(content, itemW, itemH, v:getMargin())
+      v:setPosition(self.scroll_listview.viewRect_.x + tempWidth, self.scroll_listview.viewRect_.y)
+      tempWidth = tempWidth + itemW
+    end
+  end
+  -- local onese=0
+  -- if next_idx>1 then onese=1 end
+  self.scroll_listview.container:setPosition(0, (50*next_idx)-50)
+end
 
 
 return GrowingtreeLayer
