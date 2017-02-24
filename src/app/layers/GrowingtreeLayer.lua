@@ -87,8 +87,8 @@ function GrowingtreeLayer:function_touchlistener( )
 	                  -- print("坐标",x," ",y)
 	                  self:function_touchmove(nil,x,y)
 	 end
-	    self.Growingtree:setTouchEnabled(true)  
-	    self.Growingtree:setTouchSwallowEnabled(true)  
+	    self.Growingtree:setTouchEnabled(false)  
+	    self.Growingtree:setTouchSwallowEnabled(false)  
 	    self.Growingtree:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)  
 	    self.Growingtree:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event) 
 	             if event.name == "began" then  
@@ -569,6 +569,7 @@ function GrowingtreeLayer:function_friend( )
 	self.PageView_head:addPage(Panel)   --添加头像框
 	
 	local friend_lv=Panel:getChildByTag(77)  --  等级
+	friend_lv:setColor(cc.c3b(0,0,0))
 	friend_lv:setString("LV " .. tostring(0) )
 
 
@@ -633,6 +634,7 @@ function GrowingtreeLayer:function_friend( )
 			head_bt:setTouchEnabled(true)		
 		end
 		local friend_lv=call:getChildByTag(77)  --  等级
+		friend_lv:setColor(cc.c3b(0,0,0))
 		friend_lv:setString("LV " .. tostring(_list[i]["playergrade"]) )
 
             end
@@ -674,6 +676,7 @@ function GrowingtreeLayer:function_backpack( )
 	self.PageView_head:addPage(Panel)   --添加头像框
 	
 	local friend_lv=Panel:getChildByTag(77)  --  等级
+	friend_lv:setColor(cc.c3b(0,0,0))
 	friend_lv:setString("LV " .. tostring(0) )
 
 	 if #_list   ==  0  then
@@ -729,6 +732,7 @@ function GrowingtreeLayer:function_backpack( )
 		head_text:setString(_list[i]["name"])
 		self.PageView_head:addPage(call)   --添加头像框
 		local friend_lv=call:getChildByTag(77)  --  等级
+		friend_lv:setColor(cc.c3b(0,0,0))
 		friend_lv:setString(tostring(_list[i]["count"]) )
 
             end
