@@ -12,6 +12,7 @@ function GrowingtreeLayer:ctor()
        self:setTouchSwallowEnabled(false)
        self:setNodeEventEnabled(true)
        self.zhi_ct=0
+       self._back_seed_state={}
        self.back_playerid=nil
        self._fruitinformation_bg=nil
        self.z_gameitemid=nil
@@ -490,7 +491,7 @@ function GrowingtreeLayer:fun_FruitinformationNode1( _x , _y)
 	
 end
 function GrowingtreeLayer:fun_data()
-	
+	self._back_seed_state["tile_des"]=nil
 	if self.is_friend  then
 	        	self.GrowingtreeNode:setVisible(false)
 	        	self.Growingtree:getChildByTag(19):setVisible(false)
