@@ -99,6 +99,7 @@ function RichlistLayer:list_btCallback( sender, eventType )
               self.curr_bright=sender
  end
 function RichlistLayer:init(  )
+       self.tablecout=0
 	self.goldsranklist=LocalData:Instance():get_getgoldsranklist()
 	self.ranklist=self.goldsranklist["ranklist"]
 	self.rich_num=self.RichlistLayer:getChildByTag(482):getChildByTag(586)  --  财富数字
