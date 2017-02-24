@@ -12,6 +12,7 @@ function GrowingtreeLayer:ctor()
        self:setTouchSwallowEnabled(false)
        self:setNodeEventEnabled(true)
        self.zhi_ct=0
+       self.back_playerid=nil
        self._fruitinformation_bg=nil
        self.z_gameitemid=nil
        self._gameitemid=nil
@@ -33,7 +34,7 @@ function GrowingtreeLayer:ctor()
        self._type=nil
        self.is_friend=false
        self:init()
-       Server:Instance():gettreelist()--   成长树初始化接口
+       Server:Instance():gettreelist(self.back_playerid)--   成长树初始化接口
        Server:Instance():gettreefriendlist(7,1,1)--   成长树好友初始化接口  每页显示数据  页号  好友类型  Int 1我的好友，2我的员工
         self:function_touchlistener()
         
@@ -44,7 +45,7 @@ function GrowingtreeLayer:update(dt)
 	if self.secondOne <1 then return end
 	self.secondOne=0
 	self.count_time=1+self.count_time
-	if self._back_seed_state["seed_next_time"]  ~= nil   and  self.time_againtime ~= nil and  self._back_seed_state["seed_next_time"]>0  then
+	if self._back_seed_state["seed_next_time"]  ~= nil   and  self.time_againtime ~= nil and  self._back_seed_state["seed_next_time"]>=0  then
 		local _table  = Util:FormatTime_colon(self._back_seed_state["seed_next_time"] -self.count_time  )
 	            self.time_againtime:setString(tostring( _table[2] .. _table[3] .. _table[4] ))
 	            local par=(self._back_seed_state["seed_percentage"]  *  100)/(self._back_seed_state["seed_next_time"]-self.count_time)
@@ -238,7 +239,7 @@ function GrowingtreeLayer:init(  )
 		    		self.pt_table[i]:loadTexture("png/"  ..  "chengzhangshu-zhong-di.png" )
     			end
 	            	self.is_friend=false
-	            	Server:Instance():gettreelist()
+	            	Server:Instance():gettreelist(self.back_playerid)
 	            	Server:Instance():gettreefriendlist(7,1,1)
 	            	if  self.f_friend_bt ~= self.curr_bright  then
 	            		self.f_friend_bt:setBright(false)
@@ -247,6 +248,7 @@ function GrowingtreeLayer:init(  )
 		            	self.curr_bright:getChildByTag(self.curr_bright:getTag()+5):setBright(true)
 		            	self.curr_bright=self.f_friend_bt
 	            	end
+	            	self.back_playerid=nil
 	            	self.Growingtree:getChildByTag(266):setVisible(false)
 	            	self._type=19
 	            	self:scheduleUpdate()
@@ -378,11 +380,13 @@ function GrowingtreeLayer:function_seed_state(dex)
 
 	if nowtime-seedlist[dex]["deadtime"]>=0 then
 		back_seed_state["seedstatus"]=4
+		back_seed_state["seed_next_time"]=0
 		back_seed_state["tile_des"]="死亡"
 	end
 
 	if nowtime-seedlist[dex]["gaintime"]>=0 then
 		back_seed_state["seedstatus"]=2
+		back_seed_state["seed_next_time"]=0
 		back_seed_state["tile_des"]="成熟"
 	end
 	--注 ：以收获3种子列表为Null 
@@ -635,7 +639,7 @@ function GrowingtreeLayer:function_friend( )
 		    		self.pt_table[i]=self.Growingtree:getChildByTag(103+i)
 		    		self.pt_table[i]:loadTexture("png/"  ..  "chengzhangshu-zhong-di.png" )
     			end
-
+    		           self.back_playerid =   _list[sender:getChildByName("Image_34"):getTag()]["playerid"]
 		           Server:Instance():gettreelist(_list[sender:getChildByName("Image_34"):getTag()]["playerid"])
 		            -- if eventType == ccui.TouchEventType.began then
 		            -- 	print("开始")
@@ -1035,7 +1039,7 @@ function GrowingtreeLayer:onEnter()
                        	
 		self.pt_table[self.get_seatcount]:loadTexture("png/" ..  self.zh_stateimage1[self.zhi_ct])  --  坑位变种子
 		self.Growingtree:getChildByTag(266):setVisible(false)  --  样图种子消失 
-		Server:Instance():gettreelist()
+		Server:Instance():gettreelist(self.back_playerid)
                       end)
   --  浇水消息
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDWATER", self,
@@ -1044,7 +1048,7 @@ function GrowingtreeLayer:onEnter()
 			if self.zt_obj~=nil then  --  主要是判断是否点中果实 
 					self.Growingtree:getChildByTag(266):setRotation(45)
 					self:function_water_act(-20,50)  --  浇水动画
-					Server:Instance():gettreelist()--   成长树初始化接口
+					Server:Instance():gettreelist(self.back_playerid)--   成长树初始化接口
 			end
                       end)
   --  收获消息
@@ -1054,7 +1058,7 @@ function GrowingtreeLayer:onEnter()
 			if self.zt_obj~=nil then  --  主要是判断是否点中果实 
 				
 				self:function_harvest_act(self.zt_x,self.zt_y) --  收获动画
-				Server:Instance():gettreelist()--   成长树初始化接口
+				Server:Instance():gettreelist(self.back_playerid)--   成长树初始化接口
 			end
                       end)
   --  种植错误
@@ -1067,7 +1071,7 @@ function GrowingtreeLayer:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE", self,
                        function()
                        	Server:Instance():Grawpopup_box_buffer("成功施肥")
-			Server:Instance():gettreelist()
+			Server:Instance():gettreelist(self.back_playerid)
                       end)
 end
 
