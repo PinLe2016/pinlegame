@@ -138,6 +138,7 @@ function InvitefriendsLayer:fun_init(  )
             if #friendlist_table["friendlist"]==0 then
             	return
             end
+            self.table_insert={}
             local _friendlist=friendlist_table["friendlist"]
             for i=1,#_friendlist do
 	          	 self._ListView:pushBackDefaultItem()
@@ -153,35 +154,49 @@ function InvitefriendsLayer:fun_init(  )
                   self.today_golds:setString( _friendlist[i]["total_golds"] )
                   self.total_golds =  _cell:getChildByTag(101)  --贡献经验
                   self.total_golds:setString( _friendlist[i]["total_points"] )
-                  local yao_text_friend =_cell:getChildByTag(4411)  --邀字 
+                  
+
+                   local move_friend =_cell:getChildByName("CheckBox_1")  --删除好友
+
+                   local yao_text_friend =_cell:getChildByTag(4411)  --邀字 
                   if tonumber(_friendlist[i]["tag"]) ==  0  then    --  o邀请  1  是好友
                       yao_text_friend:setString("员")
+                      move_friend:setVisible(false)
                   else
                     yao_text_friend:setString("友")
                   end
 
-                   local move_friend =_cell:getChildByName("CheckBox_1")  --删除好友
+
                   move_friend:setTag(i)
                   move_friend:addEventListener(function(sender, eventType  )
                            if eventType == ccui.CheckBoxEventType.selected then
-                                   self._table_int["playerid"]=_friendlist[i]["playerId"]
-                                  table.insert(self.table_insert, self._table_int)
+                                   local t_table_int =  {}
+                                   t_table_int["playerid"]=_friendlist[i]["playerId"]
+                                  table.insert(self.table_insert, t_table_int)
                                   print("添加",self.table_insert[1])
-                                  dump(self.table_insert)
+                                  -- if #self.table_insert  ~= 0 then
+                                  --   for i=1,#self.table_insert do
+                                  --   print("添加 ",self.table_insert[i]["playerid"])
+                                  -- end
+                                  -- end
 
                            elseif eventType == ccui.CheckBoxEventType.unselected then
                                    print("删除")
                                    if #self.table_insert >0  then
-                                      for i=1,#self.table_insert do
-                                        if self.table_insert[i]["playerid"]== _friendlist[i]["playerId"] then
-                                            table.remove(self.table_insert,i)
-                                            table.remove(self._table_int,i)
+                                      for j=1,#self.table_insert do
+
+                                        --print("删除 ss ",self.table_insert[j]["playerid"]," ",_friendlist[i]["playerId"])
+                                        if tostring(self.table_insert[j]["playerid"]) == tostring(_friendlist[i]["playerId"]) then
+                                            table.remove(self.table_insert,j)
+                                            --table.remove(self._table_int,i)
+                                            return
                                         end
                                       end
                                    end
-                                   dump(self.table_insert)
+                                   
                            end
                   end)
+
            end
 
 	
@@ -328,9 +343,11 @@ function InvitefriendsLayer:function_addFriend(  )
                     if eventType ~= ccui.TouchEventType.ended then
                           return
                     end
+                    Server:Instance():get_reward_friend_list() --好友列表
                     if self.addFriendSp then
                       self.addFriendSp:removeFromParent()
                     end
+
                     
             end)
             local search_name_friend =self.addFriendSp:getChildByTag(4476)  --收索好友的昵称
@@ -424,13 +441,14 @@ function InvitefriendsLayer:onEnter()
                        function()
                           if self.friend_list_type==1 then
                            Server:Instance():promptbox_box_buffer("成功删除好友") 
+                           Server:Instance():get_reward_friend_list() --好友列表
                           elseif self.friend_list_type==0 then
                             Server:Instance():promptbox_box_buffer("成功添加好友") 
                             -- LocalData:Instance():set_getsearchfriendlist(nil)
                             Server:Instance():getsearchfriendlist(5,1,self._search_name_friend:getString()) 
                           end
                           
-                          Server:Instance():get_reward_friend_list() --好友列表
+                          
                       end)
 end
 

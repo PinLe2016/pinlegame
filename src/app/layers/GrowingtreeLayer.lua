@@ -87,8 +87,8 @@ function GrowingtreeLayer:function_touchlistener( )
 	                  -- print("坐标",x," ",y)
 	                  self:function_touchmove(nil,x,y)
 	 end
-	    self.Growingtree:setTouchEnabled(true)  
-	    self.Growingtree:setTouchSwallowEnabled(true)  
+	    self.Growingtree:setTouchEnabled(false)  
+	    self.Growingtree:setTouchSwallowEnabled(false)  
 	    self.Growingtree:setTouchMode(cc.TOUCH_MODE_ONE_BY_ONE)  
 	    self.Growingtree:addNodeEventListener(cc.NODE_TOUCH_EVENT, function (event) 
 	             if event.name == "began" then  
@@ -239,7 +239,7 @@ function GrowingtreeLayer:init(  )
 		            	self.curr_bright:getChildByTag(self.curr_bright:getTag()+5):setBright(true)
 		            	self.curr_bright=self.f_friend_bt
 	            	end
-	            	
+	            	self.Growingtree:getChildByTag(266):setVisible(false)
 	            	self._type=19
 	            	self:scheduleUpdate()
 			self.count_time=0
@@ -569,6 +569,7 @@ function GrowingtreeLayer:function_friend( )
 	self.PageView_head:addPage(Panel)   --添加头像框
 	
 	local friend_lv=Panel:getChildByTag(77)  --  等级
+	friend_lv:setColor(cc.c3b(0,0,0))
 	friend_lv:setString("LV " .. tostring(0) )
 
 
@@ -586,8 +587,10 @@ function GrowingtreeLayer:function_friend( )
                     return
             end
            Panel:setVisible(true)
+           --Panel:setTouchEnabled(true)
 	for i=1,#_list  do
 		local  call=Panel:clone() 
+		--call:setTouchEnabled(true)
 		local head_image=call:getChildByTag(50)
 		head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(_list[i]["imageUrl"], "/",":"))))--初始化头像
 		local head_bt=call:getChildByTag(49)  --  头像按钮
@@ -631,6 +634,7 @@ function GrowingtreeLayer:function_friend( )
 			head_bt:setTouchEnabled(true)		
 		end
 		local friend_lv=call:getChildByTag(77)  --  等级
+		friend_lv:setColor(cc.c3b(0,0,0))
 		friend_lv:setString("LV " .. tostring(_list[i]["playergrade"]) )
 
             end
@@ -672,6 +676,7 @@ function GrowingtreeLayer:function_backpack( )
 	self.PageView_head:addPage(Panel)   --添加头像框
 	
 	local friend_lv=Panel:getChildByTag(77)  --  等级
+	friend_lv:setColor(cc.c3b(0,0,0))
 	friend_lv:setString("LV " .. tostring(0) )
 
 	 if #_list   ==  0  then
@@ -684,10 +689,11 @@ function GrowingtreeLayer:function_backpack( )
 
                     return
             end
-            Panel:setTouchEnabled(true)
+            --Panel:setTouchEnabled(true)
             Panel:setVisible(true)
 	for i=1,#_list  do
 		local  call=Panel:clone() 
+		--call:setTouchEnabled(true)
 		local head_image=call:getChildByTag(50)
 		--head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(_list[i]["imageUrl"], "/",":"))))--初始化头像
 
@@ -699,6 +705,7 @@ function GrowingtreeLayer:function_backpack( )
 		
 		
 		local head_bt=call:getChildByTag(49)  --  头像按钮
+		head_bt:setTouchEnabled(true)
 		head_bt:getChildByName("Image_44"):setTag(i)
 		head_bt:addTouchEventListener(function(sender, eventType  )
 		            if eventType ~= ccui.TouchEventType.ended then
@@ -725,6 +732,7 @@ function GrowingtreeLayer:function_backpack( )
 		head_text:setString(_list[i]["name"])
 		self.PageView_head:addPage(call)   --添加头像框
 		local friend_lv=call:getChildByTag(77)  --  等级
+		friend_lv:setColor(cc.c3b(0,0,0))
 		friend_lv:setString(tostring(_list[i]["count"]) )
 
             end
