@@ -236,7 +236,7 @@ function GrowingtreeLayer:init(  )
 		            	self.curr_bright:getChildByTag(self.curr_bright:getTag()+5):setBright(true)
 		            	self.curr_bright=self.f_friend_bt
 	            	end
-	            	
+	            	self.Growingtree:getChildByTag(266):setVisible(false)
 	            	self._type=19
 	            	self:scheduleUpdate()
 			self.count_time=0
@@ -583,8 +583,10 @@ function GrowingtreeLayer:function_friend( )
                     return
             end
            Panel:setVisible(true)
+           --Panel:setTouchEnabled(true)
 	for i=1,#_list  do
 		local  call=Panel:clone() 
+		--call:setTouchEnabled(true)
 		local head_image=call:getChildByTag(50)
 		head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(_list[i]["imageUrl"], "/",":"))))--初始化头像
 		local head_bt=call:getChildByTag(49)  --  头像按钮
@@ -681,10 +683,11 @@ function GrowingtreeLayer:function_backpack( )
 
                     return
             end
-            Panel:setTouchEnabled(true)
+            --Panel:setTouchEnabled(true)
             Panel:setVisible(true)
 	for i=1,#_list  do
 		local  call=Panel:clone() 
+		--call:setTouchEnabled(true)
 		local head_image=call:getChildByTag(50)
 		--head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(_list[i]["imageUrl"], "/",":"))))--初始化头像
 
@@ -696,6 +699,7 @@ function GrowingtreeLayer:function_backpack( )
 		
 		
 		local head_bt=call:getChildByTag(49)  --  头像按钮
+		head_bt:setTouchEnabled(true)
 		head_bt:getChildByName("Image_44"):setTag(i)
 		head_bt:addTouchEventListener(function(sender, eventType  )
 		            if eventType ~= ccui.TouchEventType.ended then
