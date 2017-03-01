@@ -44,7 +44,9 @@ function GrowingtreeLayer:ctor()
        Server:Instance():gettreelist()--   成长树初始化接口
        Server:Instance():gettreefriendlist(250,1,1)--   成长树好友初始化接口  每页显示数据  页号  好友类型  Int 1我的好友，2我的员工
         self:function_touchlistener()
+       -- self:fun_UIListView()
 
+      -- self:createPageView()
 end
 --back_seed_state["dex"]  self.pt_table[i]  seedname
 function GrowingtreeLayer:update(dt)
@@ -1180,29 +1182,83 @@ function GrowingtreeLayer:function_button_Refresh(data,button)
 end
 
 
+
+function GrowingtreeLayer:createPageView()
+
+    self.pv = require("app.scenes.UIPageViewVertical").new({
+        viewRect = cc.rect(80,280,102,748) ,  --设置位置和大小
+        -- viewRect = cc.rect(80,280,108,108) ,
+        column = 1 , row = 1,                       --列和行的数量
+        padding = {left = 5 , right = 5 , top = 5 , bottom = 5} , --整体的四周距离
+        columnSpace = 0 , rowSpace = 0                                        --行和列的间距
+    })
+    :onTouch(handler(self,self.touchListener))
+    :addTo(self)
+    
+    for i = 1 , 18 do
+    	       local item = self.pv:newItem()
+    	       
+        -- content = display.newColorLayer(
+        -- cc.c4b(math.random(250),
+        -- math.random(250),
+        -- math.random(250),
+        -- math.random(250)))
+        
+        -- content:setContentSize(240 , 140)
+        -- content:setTouchEnabled(false)
+        local node=self:fun_table(i)--self:function_template(_list[idx])
+   	 	-- local item = self.scroll_listview:newItem(node)
+        item:setContentSize(108, 108)
+         -- print("----",item:getContentSize().height)
+        item:addChild(node)      -- 为每个单独的item添加一个颜色图块
+        self.pv:addItem(item)          --为pageview添加item
+    end
+   
+    self.pv:reload()            --需要重新刷新才能显示
+	-- self.pv:gotoPage(3/7)
+end
+
+function GrowingtreeLayer:touchListener(event)
+    dump(event , "TestUIPageViewScene - event")
+    local listView = event.listView
+    if 3 == event.itemPos then
+    	   -- listView:removeItem(event.item,true)
+    	
+    end
+
+	
+end
 --list view  控件使用
 
 function GrowingtreeLayer:fun_UIListView()
 	--(display.width - 594) / 2
 
-	 local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
-	self._list=gettreefriendlist["list"]
+	--  local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
+	-- self._list=gettreefriendlist["list"]
 
     self.scroll_node = display.newNode()
    local scroll_bound = cc.rect(0,display.cy-236,100, 756)--+display.cy-236
    -- end
    self.scroll_listview = cc.ui.UIListView.new({viewRect = scroll_bound,
 										 direction = cc.ui.UIListView.DIRECTION_VERTICAL,
-										 async = true,
-										 bgColor = cc.c4b(255,0, 0,200),
+										 -- async = true,
+										 -- bgColor = cc.c4b(255,0, 0,200),
 										 container = self.scroll_node})
-   self.scroll_listview:setDelegate(handler(self, self.sourceDelegate))
+   -- self.scroll_listview:setDelegate(handler(self, self.sourceDelegate))
    self.scroll_listview:onScroll(handler(self, self.scrollListener))
    self.scroll_listview:setPosition(15,0)--display.cy-236
-   self.scroll_listview:addTo(self.Growingtree,100)
-   self.scroll_listview:reload()
+   self.scroll_listview:addTo(self,100)
+   self.scroll_listview:setBounceable(true)
+   -- self.scroll_listview:reload()
+   for i=1,20 do
+   	local node=self:fun_table(i)--self:function_template(_list[idx])
+   	 local item = self.scroll_listview:newItem(node)
+        item:setItemSize(50, 50, false)
 
-  
+	self.scroll_listview:addItem(item)
+	-- item:addContent(node,3)
+   end
+  self.scroll_listview:reload()
 end
 
 function GrowingtreeLayer:sell()
@@ -1224,7 +1280,7 @@ end
 function GrowingtreeLayer:sourceDelegate(listView, tag, idx)
 
    if cc.ui.UIListView.COUNT_TAG == tag then
-     return #self._list--self.star_idx
+     return 20--#self._list--self.star_idx
    elseif cc.ui.UIListView.CELL_TAG == tag then
 			local item
 			item = self.scroll_listview:dequeueItem()
@@ -1233,15 +1289,16 @@ function GrowingtreeLayer:sourceDelegate(listView, tag, idx)
  
 			if not item then
 
-				local node=self:function_template(_list[idx])
+				local node=self:fun_table(idx)--self:function_template(_list[idx])
 				item =  self.scroll_listview:newItem()
 				item:addContent(node,3)
 			else
 
 				 dialog_content = item:getContent()
-				 if dialog_content then
-				    self:function_button_Refresh(_list[idx],dialog_content)
-				 end 
+				 -- if dialog_content then
+				 --    self:function_button_Refresh(_list[idx],dialog_content)
+				 -- end 
+				 dialog_content:setString(string.format("%d", idx))
 			end
 
     		item:setItemSize(100,108)
