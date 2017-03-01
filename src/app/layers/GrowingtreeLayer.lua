@@ -5,8 +5,6 @@
 local GrowingtreeLayer = class("GrowingtreeLayer", function()
             return display.newScene("GrowingtreeLayer")
 end)
-
-
 function GrowingtreeLayer:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
        self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -26,10 +24,6 @@ function GrowingtreeLayer:ctor()
        self.pt_table={}
        self.count_time=0
        self.secondOne=0
-
-       self.next_cell=0
-       self.up_cell=0
-
       self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
       	self:update(dt)
       end)
@@ -41,10 +35,10 @@ function GrowingtreeLayer:ctor()
        self._type=nil
        self.is_friend=false
        self:init()
-       Server:Instance():gettreelist()--   成长树初始化接口
-       Server:Instance():gettreefriendlist(250,1,1)--   成长树好友初始化接口  每页显示数据  页号  好友类型  Int 1我的好友，2我的员工
+       Server:Instance():gettreelist(self.back_playerid)--   成长树初始化接口
+       Server:Instance():gettreefriendlist(7,1,1)--   成长树好友初始化接口  每页显示数据  页号  好友类型  Int 1我的好友，2我的员工
         self:function_touchlistener()
-
+        
 end
 --back_seed_state["dex"]  self.pt_table[i]  seedname
 function GrowingtreeLayer:update(dt)
@@ -688,8 +682,44 @@ function GrowingtreeLayer:function_friend( )
             self.PageView_head:removePage(Panel)  --删除样图
 end
 
+function GrowingtreeLayer:function_template(data)
+	local function touchEvent(sender,eventType)
+                         
+	              if eventType == ccui.TouchEventType.ended then
+	                          print("button模板")
+	              end
+            end
+            local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
+            local _name=data["nickname"]
+            local _lv=data["playergrade"]
+	local button = ccui.Button:create()
+	button:setRotation(90)
+            button:setTouchEnabled(true)
+            button:loadTextures("png/chengzhangshu-di-1-haoyou-3.png", "png/chengzhangshu-di-1-haoyou-2.png", "")
+            button:setPosition(cc.p(200,400))
+            button:addTouchEventListener(touchEvent)
+            --self:addChild(button)
+            -- local  _image = cc.Sprite:create("png/chengzhangshu-di-1-haoyou-1.png")
+            local  _image = cc.Sprite:create("png/"  ..  _image)
+            _image:setPosition(button:getContentSize().width/2,button:getContentSize().height/2+10 )
+            button:addChild(_image)
+            local name=ccui.Text:create()
+            name:setColor(cc.c3b(0,0,0))
+            name:setFontSize(22)
+            --name:setString("拼乐")
+            name:setString(tostring(_name))
+            name:setPosition(button:getContentSize().width/2,button:getContentSize().height/7 )
+            button:addChild(name)
+            local Lv_text=ccui.Text:create()
+            Lv_text:setColor(cc.c3b(0,0,0))
+            --Lv_text:setString("等级")
+            Lv_text:setFontSize(22)
+            Lv_text:setString(tostring(_lv))
+            Lv_text:setPosition(button:getContentSize().width/5,button:getContentSize().height-10 )
+            button:addChild(Lv_text)
 
-
+            return button
+end
 --  背包列表
 function GrowingtreeLayer:function_backpack( )
             local gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
@@ -833,42 +863,16 @@ function GrowingtreeLayer:touch_Nodecallback( sender, eventType )
        
           if tag==41 then   
           	 print("左移一格")
-          	 dump(self.scroll_listview.items_[1].idx_)
-          	 
-          	 	if self.up_cell>0 then
-          	 	 	self:layout_sub(-1)
-          	 	 end 
-
-          	 	self.up_cell=self.scroll_listview.items_[1].idx_
-          	 	if self.up_cell==1 then self.up_cell=0 end
-       
+          	 self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()+1)
           elseif tag==42 then
-
-          	 	self:layout_sub(1)
-
-          	  
+          	  print("右移一格")
+          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()-1)
           elseif tag==43 then
-          	   self.up_cell=self.scroll_listview.items_[1].idx_
-          	  if self.up_cell==1 then self.up_cell=0 end
-
-          	   if self.up_cell>=7 then 
-          	 		self:layout_sub(-7)	
-          	 	elseif self.up_cell ~=0 then
-          	 		self:layout_sub(-self.up_cell+1)
-          	  end
-
+          	  print("左移一列",self.PageView_head:getCurPageIndex())
+          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()+3)
           elseif tag==44 then
-          		
-          		self.up_cell=self.scroll_listview.items_[7].idx_
-          		if self.up_cell<=#self._list-7 then
-          			self:layout_sub(7)
-          		elseif self.up_cell ~=#self._list-1 then
-          			--todo
-          			self:layout_sub(#self._list-self.up_cell-1)
-          		end
-          	 	
-          	  	
-          	  -- self:layout_sub(7)
+          	  print("右移一列",self.PageView_head:getCurPageIndex())
+          	  self.PageView_head:scrollToPage(self.PageView_head:getCurPageIndex()-3)
           elseif tag==45 then
           	  print("刷新好友按钮")
           elseif tag==46 then
@@ -1020,13 +1024,13 @@ function GrowingtreeLayer:onEnter()
   --  成长树好友消息
   NotificationCenter:Instance():AddObserver("MESSAGE_GETTREEFRIENDLIST", self,
                        function()
-                       	-- self:function_friend()  --  好友数据
-                       		self:fun_UIListView()
+                       	self:function_friend()  --  好友数据
+
                       end)
     --  成长树背包消息
   NotificationCenter:Instance():AddObserver("MESSAGE_GSTTREEGAMEITEMLIST", self,
                        function()
-                       	-- self:function_backpack()  --  背包数据
+                       	self:function_backpack()  --  背包数据
                        	--Server:Instance():gettreelist()--   成长树初始化接口
 
                       end)
@@ -1106,90 +1110,12 @@ function GrowingtreeLayer:onExit()
      	
 end
 
-
-function GrowingtreeLayer:function_template(data)
-	ScrollViewMenu=require("app.scenes.ScrollViewMenu")
-	local function touchEvent(sender,eventType)
-                         
-	              if eventType == ccui.TouchEventType.ended then
-	                          print("button模板")
-	              end
-            end
-            local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
-            local _name=data["nickname"]
-            local _lv=data["playergrade"]
-
-            GREEN_SMALL_BTN_IMG = {
-				  normal = "png/chengzhangshu-di-1-haoyou-3.png",
-				  pressed = "png/chengzhangshu-di-1-haoyou-2.png",
-				  disabled = "png/chengzhangshu-di-1-haoyou-3.png"
-			}
-
-			local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
-			:onButtonClicked(function(event)
-			   -- self:onDetailClicked()
-						 end)
-						 --ScrollViewMenu() --ccui.Button:create()
-			button:setRotation(90)
-            button:setTouchEnabled(true)
-            -- button:loadTextures("png/chengzhangshu-di-1-haoyou-3.png", "png/chengzhangshu-di-1-haoyou-2.png", "")
-            -- button:setPosition(cc.p(200,280))
-            -- button:addTouchEventListener(touchEvent)
-            --self:addChild(button)
-            -- local  _image = cc.Sprite:create("png/chengzhangshu-di-1-haoyou-1.png")
-            -- button:onButtonClicked(function(event) end)
-
-            local  _image = cc.Sprite:create("png/"  ..  _image)
-            _image:setPosition(button:getContentSize().width/2,button:getContentSize().height/2)
-            _image:setScale(0.65)
-            button:addChild(_image,-1,10)
-
-            local name=ccui.Text:create()
-            name:setColor(cc.c3b(0,0,0))
-            name:setFontSize(18)
-            --name:setString("拼乐")
-            name:setString(tostring(_name))
-            name:setPosition(button:getContentSize().width/2,-40)
-            button:addChild(name,1,20)
-
-            local Lv_text=ccui.Text:create()
-            Lv_text:setColor(cc.c3b(0,0,0))
-            --Lv_text:setString("等级")
-            Lv_text:setFontSize(18)
-            Lv_text:setString(tostring(_lv))
-            Lv_text:setPosition(button:getContentSize().width/5,button:getContentSize().height)
-            button:addChild(Lv_text,1,30)
-
-            return button
-end
-
-function GrowingtreeLayer:function_button_Refresh(data,button)
-	local function touchEvent(sender,eventType)
-                         
-	              if eventType == ccui.TouchEventType.ended then
-	                          print("button模板")
-	              end
-            end
-            local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
-            local _name=data["nickname"]
-            local _lv=data["playergrade"]
-
-            button:getChildByTag(10):setTexture("png/"  ..  _image)
-            button:getChildByTag(20):setString(tostring(_name))
-            button:getChildByTag(30):setString(tostring(_lv))
-end
-
-
 --list view  控件使用
 
 function GrowingtreeLayer:fun_UIListView()
-	--(display.width - 594) / 2
-
-	 local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
-	self._list=gettreefriendlist["list"]
 
     self.scroll_node = display.newNode()
-   local scroll_bound = cc.rect(0,display.cy-236,100, 756)--+display.cy-236
+   local scroll_bound = cc.rect((display.width - 594) / 2,0,100, display.height-183-31)
    -- end
    self.scroll_listview = cc.ui.UIListView.new({viewRect = scroll_bound,
 										 direction = cc.ui.UIListView.DIRECTION_VERTICAL,
@@ -1198,11 +1124,35 @@ function GrowingtreeLayer:fun_UIListView()
 										 container = self.scroll_node})
    self.scroll_listview:setDelegate(handler(self, self.sourceDelegate))
    self.scroll_listview:onScroll(handler(self, self.scrollListener))
-   self.scroll_listview:setPosition(15,0)--display.cy-236
-   self.scroll_listview:addTo(self.Growingtree,100)
+   self.scroll_listview:setPosition(-7, 40)
+   self.scroll_listview:addTo(self,100)
    self.scroll_listview:reload()
 
-  
+   self.next_dex=1
+   local button = cc.ui.UIPushButton.new()
+	  :onButtonClicked(function(event)
+			self:sell()
+					  end)
+   button:setButtonLabel("normal", cc.ui.UILabel.new({
+							   UILabelType = 2,
+							   text = "下一个" ,
+							   size = BNT_FONT_SIZE_LIGHT
+   }))
+   button:addTo(self)
+   button:setPosition(550,540)
+
+   local button = cc.ui.UIPushButton.new()
+	  :onButtonClicked(function(event)
+			self:sellto()
+					  end)
+   button:setButtonLabel("normal", cc.ui.UILabel.new({
+							   UILabelType = 2,
+							   text = "上一个" ,
+							   size = BNT_FONT_SIZE_LIGHT
+   }))
+   button:addTo(self)
+   button:setPosition(550,640)
+
 end
 
 function GrowingtreeLayer:sell()
@@ -1222,30 +1172,36 @@ end
 
 
 function GrowingtreeLayer:sourceDelegate(listView, tag, idx)
-
    if cc.ui.UIListView.COUNT_TAG == tag then
-     return #self._list--self.star_idx
+     return 70--self.star_idx
    elseif cc.ui.UIListView.CELL_TAG == tag then
-			local item
-			item = self.scroll_listview:dequeueItem()
-			
-			local _list=self._list
- 
-			if not item then
+     local item
+     -- local content
+     -- local one_spr
+     -- print("-----2-------",idx)
+     item = self.scroll_listview:dequeueItem()
+     if not item then
+      -- print("---------",idx)
+        -- local node=display.newNode()
+        -- content=self:new_view_data(self.rank[2][idx],idx)
+        -- content:addTo(node)
+        -- --前三投标
+        -- one_spr=self:one_three(idx)
+        -- if one_spr then one_spr:addTo(node) end
+        local node=self:fun_table(idx)
 
-				local node=self:function_template(_list[idx])
-				item =  self.scroll_listview:newItem()
-				item:addContent(node,3)
-			else
+        item = self.scroll_listview:newItem()
+        item:addContent(node,3)
+    else
+         dialog_content = item:getContent()
+         if dialog_content then
+            -- self:updateMyView(dialog_content,self.rank[2],idx)
+            dialog_content:setString(string.format("%d",idx))
+         end 
+    end
 
-				 dialog_content = item:getContent()
-				 if dialog_content then
-				    self:function_button_Refresh(_list[idx],dialog_content)
-				 end 
-			end
-
-    		item:setItemSize(100,108)
-    	return item
+    item:setItemSize(50, 50)
+    return item
   end
 end
 
@@ -1283,6 +1239,16 @@ function GrowingtreeLayer:layout_sub(next_idx)
 
       height = height + itemH
     end
+
+  else
+    height = self.scroll_listview.viewRect_.height
+    for i,v in ipairs(self.items_) do
+      itemW, itemH = v:getItemSize()
+      itemW = itemW or 0
+      itemH = itemH or 0
+
+      width = width + itemW
+    end
   end
   
 
@@ -1311,13 +1277,26 @@ function GrowingtreeLayer:layout_sub(next_idx)
       v:setPosition(self.scroll_listview.viewRect_.x,
         self.scroll_listview.viewRect_.y + tempHeight)
     end
+  else
+    itemW, itemH = 0, 0
+    tempWidth = 0
 
+    for i,v in ipairs(self.scroll_listview.items_) do
+      itemW, itemH = v:getItemSize()
+      itemW = itemW or 0
+      itemH = itemH or 0
+
+      content = v:getContent()
+      content:setAnchorPoint(0.5, 0.5)
+      -- content:setPosition(itemW/2, itemH/2)
+      self.scroll_listview:setPositionByAlignment_(content, itemW, itemH, v:getMargin())
+      v:setPosition(self.scroll_listview.viewRect_.x + tempWidth, self.scroll_listview.viewRect_.y)
+      tempWidth = tempWidth + itemW
+    end
   end
-
-
-  self.scroll_listview.container:setPosition(0, (108*next_idx)-108)
-
-
+  -- local onese=0
+  -- if next_idx>1 then onese=1 end
+  self.scroll_listview.container:setPosition(0, (50*next_idx)-50)
 end
 
 

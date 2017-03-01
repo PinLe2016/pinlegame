@@ -132,6 +132,97 @@ function Util:UTF8ToCharArray(str)
    return charArray;
 end
 
+-- 冒号格式时间显示
+function Util:FormatTime_colon_bar(_time)
+
+   local d = _time
+   local day  = math.floor(d/60/60/24)
+   local h = math.floor((d/60/60)%24)
+   local m = (d/60)%60
+   local s = d%60
+   local hour = math.floor(h)
+   if (hour < 10) then
+    hour = '0' .. hour
+   end
+   local minutes = math.floor(m)
+   if (math.abs(minutes) < 10) then
+    minutes= '0' .. math.abs(minutes)
+   end
+   local second = math.floor(s)
+   if (math.abs(second) < 10) then
+    second = '0' .. math.abs(second)
+   end
+    local _table={day..":",hour..":",minutes..":",second}
+    -- dump(_table)
+   return _table--string.format("%s:%s:%s", hour, minutes, second)
+end
+-- 冒号格式时间显示
+function Util:FormatTime_colon(orginSecond)
+
+   local d = orginSecond
+   local day  = math.floor(d/60/60/24)
+   local h = math.floor((d/60/60)%24)
+   local m = (d/60)%60
+   local s = d%60
+   local hour = math.floor(h)
+   if (hour < 10) then
+    hour = '0' .. hour
+   end
+   local minutes = math.floor(m)
+   if (math.abs(minutes) < 10) then
+    minutes= '0' .. math.abs(minutes)
+   end
+   local second = math.floor(s)
+   if (math.abs(second) < 10) then
+    second = '0' .. math.abs(second)
+   end
+    local _table={day.."天",hour.."小时",minutes.."分",second.."秒"}
+    -- dump(_table)
+   return _table--string.format("%s:%s:%s", hour, minutes, second)
+end
+
+-- 字符串拆成字符（中文）
+function Util:UTF8ToCharArray(str)
+   -- local UTF8ToCharArray = function(str)
+   local charArray = {};
+   local iStart = 0;
+   local strLen = str:len();
+
+   local function bit(b)
+     return 2 ^ (b - 1);
+   end
+
+   local function hasbit(w, b)
+     return w % (b + b) >= b;
+   end
+
+   local checkMultiByte = function(i)
+     if (iStart ~= 0) then
+         charArray[#charArray + 1] = str:sub(iStart, i - 1);
+         iStart = 0;
+     end        
+   end
+    
+   for i = 1, strLen do
+     local b = str:byte(i);
+     local multiStart = hasbit(b, bit(7)) and hasbit(b, bit(8));
+     local multiTrail = not hasbit(b, bit(7)) and hasbit(b, bit(8));
+
+     if (multiStart) then
+         checkMultiByte(i);
+         iStart = i;
+         
+     elseif (not multiTrail) then
+         checkMultiByte(i);
+         charArray[#charArray + 1] = str:sub(i, i);
+     end
+   end
+
+   -- process if last character is multi-byte
+   checkMultiByte(strLen + 1);
+
+   return charArray;
+end
 -- 判断是否有敏感词
 function Util:isExistSensitiveWord(str)
   local sensitive_csv = LocalConfig:Instance():get_table("sensitiveWord")

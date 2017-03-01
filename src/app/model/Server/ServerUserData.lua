@@ -320,7 +320,7 @@ function Server:gettreelist(friendplayerid)
     self:request_http("gettreelist" , params); 
 end
 function Server:gettreelist_callback()
-      --dump(self.data)
+      dump(self.data)
       dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
         --self:show_float_message( self.data.err_msg)
@@ -422,7 +422,7 @@ function Server:setseedwater_callback()
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
-    
+    Server:Instance():Grawpopup_box_buffer("浇水成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDWATER")
 end
 
@@ -445,10 +445,12 @@ function Server:setseedmanure_callback()
      dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
+        NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDMANURE_FALSE")
         return
     end
     
     --LocalData:Instance():set_gettreegameitemlist(self.data)--
+    Server:Instance():Grawpopup_box_buffer("施肥成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDMANURE")
 end
 
@@ -470,12 +472,38 @@ function Server:setseedreward_callback()
      dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
+        NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD_FALSE")
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
+    Server:Instance():Grawpopup_box_buffer("收获成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD")
 end
 
+--3.9.8 成长树种子铲除接口（命令：setseedremove）
+--treeid  是 成长树标识ID Guid  
+--seedid  是 种子标识ID  GUID  
+
+
+function Server:setseedremove(treeid,seedid)
+      local params = {
+              treeid=treeid,
+              seedid=seedid
+
+            }
+
+    self:request_http("setseedremove" , params); 
+end
+function Server:setseedremove_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_getconfig(self.data)--
+     --Server:Instance():Grawpopup_box_buffer("铲除成功")
+     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREMOVE")
+end
 
 
 
