@@ -127,21 +127,38 @@ function FloatingLayer:network_box(prompt_text )
        end)
 
 end
-function FloatingLayer:fun_Grawpopup( popup_text )
+function FloatingLayer:fun_Grawpopup( popup_text ,call)
                     self.Grawpopup = cc.CSLoader:createNode("Grawpopup.csb");
-                    self:addChild(self.Grawpopup)
-                    local back=self.Grawpopup:getChildByTag(3141)
+                    self:addChild(self.Grawpopup,30,30)
+                    local determine=self.Grawpopup:getChildByTag(3141)
                     local _text=self.Grawpopup:getChildByTag(3140)
                     _text:setString(popup_text)
-                     back:addTouchEventListener(function(sender, eventType  )
+                     determine:addTouchEventListener(function(sender, eventType  )
                                if eventType ~= ccui.TouchEventType.ended then
                                       return
                                end
-                              if self.Grawpopup then
-                                     self.Grawpopup:removeFromParent()
-                                     
+                              if self.call then
+                                self.call(self,1)
+                                -- return
                               end
+                              self:removeChildByTag(30)
                     end)
+                  local back=self.Grawpopup:getChildByTag(1229)
+                  back:addTouchEventListener(function(sender, eventType  )
+                           if eventType ~= ccui.TouchEventType.ended then
+                                  return
+                           end
+                           if self.call then
+                              self.call(self,2)
+                              -- return
+                            end
+                          self:removeChildByTag(30)
+                  end)
+
+                  if call then
+                    self.call=call
+                  end
+                  return  self.Grawpopup
 
 end
 function FloatingLayer:prompt_box(prompt_text )

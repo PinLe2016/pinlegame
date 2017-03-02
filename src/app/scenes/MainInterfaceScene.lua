@@ -285,7 +285,7 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
      self:funsetup( true )
     elseif tag==1201 then
      print("成长树")
-     display.replaceScene(require("app.layers.GrowingtreeLayer"):new())
+     display.replaceScene(require("app.scenes.GrowingtreeScene"):new())
   end
   self.sliding_bg:setScale(0)
   self.setup_box:setSelected(false)
