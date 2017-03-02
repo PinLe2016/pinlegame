@@ -272,6 +272,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             Server:Instance():gettasklist()
 		        self:removeFromParent()
             Util:all_layer_backMusic()
+            display.getRunningScene():fun_refresh_friend()--  目的是成长树刷新好友
            -- Util:scene_control("MainInterfaceScene")
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)

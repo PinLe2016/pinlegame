@@ -21,7 +21,9 @@ function MainInterfaceScene:extend12()
          display.replaceScene(bigwheelLayer:new())
           -- cc.Director:getInstance():pushScene(bigwheelLayer.new({})) 
 end
- 
+ function MainInterfaceScene:fun_refresh_friend( )
+             
+end
 function MainInterfaceScene:ctor()
 
 	self.floating_layer = require("app.layers.FloatingLayer").new()
