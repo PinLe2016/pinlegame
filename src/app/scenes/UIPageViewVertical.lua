@@ -82,7 +82,7 @@ function UIPageViewVertical:ctor(params)
 	self.rowSpace_ = params.rowSpace or 0
 	self.padding_ = params.padding or {left = 0, right = 0, top = 0, bottom = 0}
 	self.bCirc = params.bCirc or false
-	self.page_rect_num=5
+	self.page_rect_num=params.page_rect_num
 	self.page_hight=params.contSize.height
 	self.page_width=params.contSize.width
 	self.border_pos=0
@@ -276,6 +276,10 @@ end
 
 function UIPageViewVertical:gotoPage(pageIdx)
 
+	if self.page_rect_num >=#self.pages_ then 
+		return
+	end
+
 	if not self._isOver then
 		return
 	end
@@ -413,7 +417,7 @@ end
 
 function UIPageViewVertical:onTouch_(event)
 	if "began" == event.name
-		and not self:isTouchInViewRect_(event) then
+		and self.page_rect_num >=#self.pages_ then
 		printInfo("UIPageView - touch didn't in viewRect")
 		return false
 	end
