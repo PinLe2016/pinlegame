@@ -320,8 +320,8 @@ function Server:gettreelist(friendplayerid)
     self:request_http("gettreelist" , params); 
 end
 function Server:gettreelist_callback()
-      dump(self.data)
-      dump(self.data["list"][1]["seedlist"])
+      -- dump(self.data)
+      -- dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
         --self:show_float_message( self.data.err_msg)
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
@@ -346,7 +346,7 @@ function Server:gettreefriendlist(pagesize,pageno,type)
     self:request_http("gettreefriendlist" , params); 
 end
 function Server:gettreefriendlist_callback()
-     --dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
@@ -395,7 +395,7 @@ function Server:setseedplant_callback()
        NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT_FALSE")
         return
     end
-    Server:Instance():Grawpopup_box_buffer("种植成功")
+    --Server:Instance():Grawpopup_box_buffer("种植成功")
 
     -- LocalData:Instance():set_getconfig(self.data)--
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT")
@@ -422,7 +422,7 @@ function Server:setseedwater_callback()
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
-    Server:Instance():Grawpopup_box_buffer("浇水成功")
+    --Server:Instance():Grawpopup_box_buffer("浇水成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDWATER")
 end
 
@@ -450,7 +450,7 @@ function Server:setseedmanure_callback()
     end
     
     --LocalData:Instance():set_gettreegameitemlist(self.data)--
-    Server:Instance():Grawpopup_box_buffer("施肥成功")
+    --Server:Instance():Grawpopup_box_buffer("施肥成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDMANURE")
 end
 
@@ -476,7 +476,7 @@ function Server:setseedreward_callback()
         return
     end
     -- LocalData:Instance():set_getconfig(self.data)--
-    Server:Instance():Grawpopup_box_buffer("收获成功")
+    --Server:Instance():Grawpopup_box_buffer("收获成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD")
 end
 

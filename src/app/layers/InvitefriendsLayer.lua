@@ -70,6 +70,15 @@ function InvitefriendsLayer:init(  )
                   self:touch_callback(sender, eventType)
       end)
 
+      self.addFriend_truebt=self.Invitefriends:getChildByTag(1199)  --确认删除
+      self.addFriend_truebt:addTouchEventListener(function(sender, eventType)
+                  self:touch_callback(sender, eventType)
+      end)
+      self.addFriend_falsebt=self.Invitefriends:getChildByTag(1200)  --取消删除
+      self.addFriend_falsebt:addTouchEventListener(function(sender, eventType)
+                  self:touch_callback(sender, eventType)
+      end)
+
        self._ListView=self.Invitefriends:getChildByTag(91)--邀请好友排行list
        self._ListView:setItemModel(self._ListView:getItem(0))
        self._ListView:removeAllItems()
@@ -109,7 +118,7 @@ function InvitefriendsLayer:friends_levelup(  )
            end
 
 end
-function InvitefriendsLayer:fun_init(  )
+function InvitefriendsLayer:fun_init( _isvisber)
             --以下都是测试  
              local friendlist_table =  LocalData:Instance():get_reward_friend_list()
              --self.obtain_bt:setColor(cc.c3b(100,100,100)) 
@@ -164,8 +173,8 @@ function InvitefriendsLayer:fun_init(  )
                       move_friend:setVisible(false)
                   else
                     yao_text_friend:setString("友")
+                    move_friend:setVisible(_isvisber)
                   end
-
 
                   move_friend:setTag(i)
                   move_friend:addEventListener(function(sender, eventType  )
@@ -298,10 +307,25 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             self._search_name_friend=nil
             Server:Instance():getsearchfriendlist(5,1) 
       elseif tag==3628 then  --删除好友
-            print("删除好友")
-           Server:Instance():setfriendoperation(self.table_insert,1)
-           self.friend_list_type=1
+           --  print("删除好友")
+           -- Server:Instance():setfriendoperation(self.table_insert,1)
+           -- self.friend_list_type=1
 
+            self.addFriend_truebt:setVisible(true)
+            self.addFriend_falsebt:setVisible(true)
+            self:fun_init(true)-- 数据初始化
+
+      elseif tag==1199 then  --确认删除
+            if #self.table_insert ==  0  then
+                return
+            end
+            Server:Instance():setfriendoperation(self.table_insert,1)
+           self.friend_list_type=1
+      elseif tag==1200 then  --取消删除
+            
+            self.addFriend_truebt:setVisible(false)
+            self.addFriend_falsebt:setVisible(false)
+            self:fun_init(false)
 	elseif tag==230 then  --下次再说
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
@@ -426,7 +450,12 @@ function InvitefriendsLayer:onEnter()
                        function()
                        	            print("初始化")
                       		--self:init()
-                          self:fun_init()-- 数据初始化
+                          if self.x_isviset==0 then
+                             self.x_isviset=1
+                              self:fun_init(true)
+                              return
+                          end
+                          self:fun_init(false)-- 数据初始化
                       end)
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self,
                        function()
@@ -442,7 +471,9 @@ function InvitefriendsLayer:onEnter()
                        function()
                           if self.friend_list_type==1 then
                            Server:Instance():promptbox_box_buffer("成功删除好友") 
+                           self.x_isviset=0
                            Server:Instance():get_reward_friend_list() --好友列表
+
                           elseif self.friend_list_type==0 then
                             Server:Instance():promptbox_box_buffer("成功添加好友") 
                             -- LocalData:Instance():set_getsearchfriendlist(nil)
