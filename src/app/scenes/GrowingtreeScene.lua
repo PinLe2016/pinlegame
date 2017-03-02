@@ -362,10 +362,10 @@ function GrowingtreeScene:fun_data()
                                                self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),true,z)  --  只是测试
                                                self:scheduleUpdate()
                                             elseif tonumber(tree_seedlist[z]["seedstatus"] )==2 then  --  收获
+
                                               Server:Instance():setseedreward(self.z_treeid,self.z_seedid)
                                               -- local _istouch=true
-                                              --   self.floating_layer:fun_Grawpopup("作物已经收获,真的收获吗",function (sender, eventType)
-                                                               
+                                              --   self.floating_layer:fun_Grawpopup("作物已经收获,真的收获吗",function (sender, eventType)        
                                               --                   if eventType==1  and _istouch  then
                                               --                        print("收获")
                                               --                        _istouch=false
@@ -1018,6 +1018,7 @@ function GrowingtreeScene:createPageView()
         viewRect = cc.rect(27,388,126,610) ,  --设置位置和大小
         -- viewRect = cc.rect(80,280,108,108) ,
         column = 1 , row = 1,  --列和行的数量 
+        page_rect_num=5,
         contSize=cc.size(122,126),                 
         padding = {left = 0 , right = 0 , top = 0 , bottom = 0} , --整体的四周距离
         columnSpace = 0 , rowSpace = 0                                        --行和列的间距
