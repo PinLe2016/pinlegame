@@ -428,10 +428,10 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                  self:addChild(InvitefriendsLayer.new(),1,13)
            elseif tag==41 then
            	   print("左移一格")
-              self.pv:gotoPage(-1)
+              self.pv:gotoPage(1)
            	elseif tag==42 then
            	   print("右移一格")
-               self.pv:gotoPage(1)
+               self.pv:gotoPage(-1)
            	elseif tag==43 then
            	   print("左移一列")
                self.pv:gotoPage(-5)
@@ -811,12 +811,17 @@ function GrowingtreeScene:_ceshi( )
 
 end
 function GrowingtreeScene:function_template(data)
-            self.back_playerid=data["playerid"]
+            self.back_playerid=data["playerid"]     
 
-            
+            local _image_data= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  --  头像
+            local _name_data=data["nickname"]  -- 昵称
+            local _lv_data=data["playergrade"]  --等级
+            local _drycount_data=data["drycount"]  --水壶  0不是需要
+            local _gaincount_data=data["gaincount"]  --收获 0不是需要
+
+  
             ScrollViewMenu=require("app.scenes.ScrollViewMenu")
-            local function touchEvent(sender,eventType)
-                       
+            local function touchEvent(sender,eventType)             
               if eventType == ccui.TouchEventType.ended then
                           print("button模板")
               end
@@ -832,10 +837,8 @@ function GrowingtreeScene:function_template(data)
                 disabled = "png/chengzhangshu-1-touxiang-kuang-1-1.png"
 
             }
-
             local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
             :onButtonClicked(function(event)
-
                           self.is_friend=true
                           --LocalData:Instance():set_gettreelist(nil)
                            Server:Instance():gettreelist(data["playerid"])
@@ -847,79 +850,74 @@ function GrowingtreeScene:function_template(data)
                           self.friend_growingtree_checkbox:setVisible(false)           
             end)
             --ScrollViewMenu() --ccui.Button:create()
-
             button:setRotation(90)
             button:setTouchEnabled(true)
+            dump(button:getContentSize())
+            
+            local  _image = cc.Sprite:create("png/"..  _image_data)
+            _image:setPosition(0,15 )
+            _image:setScale(0.55)
+            button:addChild(_image)
+
+            local  _image_water = cc.Sprite:create("png/chengzhangshu-shuihu-xiao-di.png")
+            _image_water:setPosition(18,-43)  --  -10
+            button:addChild(_image_water)
+            if tonumber(_drycount_data) > 0 then
+              _image_water:setTexture("png/chengzhangshu-shuihu-xiao.png")
+            end
+
+            local  _image_reward = cc.Sprite:create("png/chengzhangshu-shou-1-xiao-di.png")
+            _image_reward:setPosition(-18,-43)
+            button:addChild(_image_reward)
+            if tonumber(_gaincount_data)  >  0 then
+              _image_reward:setTexture("png/chengzhangshu-shou-1-xiao.png")
+            end
+
+             local buttonScale9Sprite = cc.Sprite:create("png/chengzhangshu-1-touxiang-tiao.png")
+            buttonScale9Sprite:setScale(2.7,1.5)
+            buttonScale9Sprite:setPosition(0,-17)
+            button:addChild(buttonScale9Sprite)
+
+            local  Lv_image = cc.Sprite:create("png/chengzhangshu--shuzi-LV.png")
+            Lv_image:setPosition(-7,-16)
+            button:addChild(Lv_image)
+
+            local  Lv_text =   ccui.TextAtlas:create((tostring(_lv_data)),"png/treefontPlist.png", 12, 15, "0")
+            Lv_text:setPosition(7,-16)
+            Lv_text:setAnchorPoint(0,0.5)
+            button:addChild(Lv_text)
 
 
-            -- dump(button:getContentSize())
-            -- local textButton = ccui.Button:create()
-            -- textButton:loadTextures("png/chengzhangshu-1-touxiang-kuang-1-1.png", "png/chengzhangshu-1-touxiang-kuang-2-1.png", "")
-
-            -- local  _image = cc.Sprite:create("png/httpgame.pinlegame.comheadheadicon_9.jpg")
-            -- _image:setPosition(textButton:getContentSize().width/2,textButton:getContentSize().height*0.6 )
-            -- _image:setScale(0.55)
-            -- button:addChild(_image)
-
-            -- local  _image_water = cc.Sprite:create("png/chengzhangshu-shuihu-xiao-di.png")
-            -- _image_water:setPosition(textButton:getContentSize().width * 0.7,textButton:getContentSize().height*0.17)
-            -- button:addChild(_image_water)
-            -- if true then
-            --   _image_water:setTexture("png/chengzhangshu-shuihu-xiao.png")
-            -- end
-
-            -- local  _image_reward = cc.Sprite:create("png/chengzhangshu-shou-1-xiao-di.png")
-            -- _image_reward:setPosition(textButton:getContentSize().width * 0.3,textButton:getContentSize().height*0.17)
-            -- button:addChild(_image_reward)
-            -- if true then
-            --   _image_reward:setTexture("png/chengzhangshu-shou-1-xiao.png")
-            -- end
-
-            --  local buttonScale9Sprite = cc.Sprite:create("png/chengzhangshu-1-touxiang-tiao.png")
-            -- buttonScale9Sprite:setScale(2.7,1.5)
-            -- buttonScale9Sprite:setPosition(textButton:getContentSize().width/2,textButton:getContentSize().height*0.35)
-            -- button:addChild(buttonScale9Sprite)
-
-            -- local  Lv_image = cc.Sprite:create("png/chengzhangshu--shuzi-LV.png")
-            -- Lv_image:setPosition(textButton:getContentSize().width/2.5,textButton:getContentSize().height*0.33)
-            -- button:addChild(Lv_image)
-
-            -- local  Lv_text =   ccui.TextAtlas:create((tostring("20")),"png/treefontPlist.png", 12, 15, "0")
-            -- Lv_text:setPosition(textButton:getContentSize().width*0.5,textButton:getContentSize().height*0.33)
-            -- Lv_text:setAnchorPoint(0,0.5)
-            -- button:addChild(Lv_text)
-
-
-            -- local name_text=ccui.Text:create()
-            -- name_text:setColor(cc.c3b(163,35,0))
-            -- --Lv_text:setString("等级")
-            -- name_text:setFontSize(15)
-            -- name_text:setString(tostring("拼乐"))
-            -- name_text:setFontName("png/chuti.ttf")
-            -- name_text:setPosition(textButton:getContentSize().width/2,textButton:getContentSize().height*0.91)
-            -- button:addChild(name_text)
-
-
-            local  _image = cc.Sprite:create("png/"  ..  _image)
-            _image:setPosition(button:getContentSize().width/2,button:getContentSize().height/2)
-            _image:setScale(0.65)
-            button:addChild(_image,-1,10)
-
-            local name=ccui.Text:create()
-            name:setColor(cc.c3b(0,0,0))
-            name:setFontSize(18)
-            --name:setString("拼乐")
-            name:setString(tostring(_name))
-            name:setPosition(button:getContentSize().width/2,-40)
-            button:addChild(name,1,20)
-
-            local Lv_text=ccui.Text:create()
-            Lv_text:setColor(cc.c3b(0,0,0))
+            local name_text=ccui.Text:create()
+            name_text:setColor(cc.c3b(163,35,0))
             --Lv_text:setString("等级")
-            Lv_text:setFontSize(18)
-            Lv_text:setString(tostring(_lv))
-            Lv_text:setPosition(button:getContentSize().width/5,button:getContentSize().height)
-            button:addChild(Lv_text,1,30)
+            name_text:setFontSize(15)
+            name_text:setString(tostring(_name_data))
+            name_text:setFontName("png/chuti.ttf")
+            name_text:setPosition(0,55)
+            button:addChild(name_text)
+
+
+            -- local  _image = cc.Sprite:create("png/"  ..  _image)
+            -- _image:setPosition(button:getContentSize().width/2,button:getContentSize().height/2)
+            -- _image:setScale(0.65)
+            -- button:addChild(_image,-1,10)
+
+            -- local name=ccui.Text:create()
+            -- name:setColor(cc.c3b(0,0,0))
+            -- name:setFontSize(18)
+            -- --name:setString("拼乐")
+            -- name:setString(tostring(_name))
+            -- name:setPosition(button:getContentSize().width/2,-40)
+            -- button:addChild(name,1,20)
+
+            -- local Lv_text=ccui.Text:create()
+            -- Lv_text:setColor(cc.c3b(0,0,0))
+            -- --Lv_text:setString("等级")
+            -- Lv_text:setFontSize(18)
+            -- Lv_text:setString(tostring(_lv))
+            -- Lv_text:setPosition(button:getContentSize().width/5,button:getContentSize().height)
+            -- button:addChild(Lv_text,1,30)
 
             return button
 end
