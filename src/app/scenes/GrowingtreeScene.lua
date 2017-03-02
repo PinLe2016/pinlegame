@@ -419,12 +419,16 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                  self:addChild(InvitefriendsLayer.new(),1,13)
            elseif tag==41 then
            	   print("左移一格")
+              self.pv:gotoPage(-1)
            	elseif tag==42 then
            	   print("右移一格")
+               self.pv:gotoPage(1)
            	elseif tag==43 then
            	   print("左移一列")
+               self.pv:gotoPage(-5)
            	elseif tag==44 then
            	   print("右移一列")
+               self.pv:gotoPage(5)
            	elseif tag==46 then
            	   print("邀请好友")
                Util:share()
@@ -626,7 +630,8 @@ function GrowingtreeScene:onEnter()
   --好友列表
   NotificationCenter:Instance():AddObserver("MESSAGE_GETTREEFRIENDLIST", self,
                        function()  
-                              self:fun_UIListView()
+                              -- self:fun_UIListView()
+                              self:createPageView()
                       end)
   --背包列表
   NotificationCenter:Instance():AddObserver("MESSAGE_GSTTREEGAMEITEMLIST", self,
@@ -812,6 +817,42 @@ end
 
 
 --list view  控件使用
+
+function GrowingtreeScene:touchListener(event)
+  
+end
+
+
+function GrowingtreeScene:createPageView()
+
+    self.pv = require("app.scenes.UIPageViewVertical").new({
+        viewRect = cc.rect(27,display.cy-92,126,610) ,  --设置位置和大小
+        -- viewRect = cc.rect(80,280,108,108) ,
+        column = 1 , row = 1,  --列和行的数量 
+        contSize=cc.size(122,126),                 
+        padding = {left = 0 , right = 0 , top = 0 , bottom = 0} , --整体的四周距离
+        columnSpace = 0 , rowSpace = 0                                        --行和列的间距
+    })
+    :onTouch(handler(self,self.touchListener))
+    :addTo(self.Growingtree)
+
+     local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
+    self._list=gettreefriendlist["list"]
+    
+    for i = 1 , #self._list do
+             local item = self.pv:newItem()
+             
+        local node=self:function_template(self._list[i])
+        item:setContentSize(122, 126)
+        item:addChild(node)      -- 为每个单独的item添加一个颜色图块
+        self.pv:addItem(item)          --为pageview添加item
+    end
+    self.pv:reload()    --需要重新刷新才能显示
+          
+  -- self.pv:gotoPage(3/7)
+end
+
+
 
 function GrowingtreeScene:fun_UIListView()
   --(display.width - 594) / 2

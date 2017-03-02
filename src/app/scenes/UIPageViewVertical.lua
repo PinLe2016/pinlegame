@@ -69,7 +69,7 @@ UIPageViewVertical构建函数
     -   top 上边间隙
     -   bottom 下边间隙
 -   bCirc 页面是否循环,默认为false
-
+	contSize--单元格大小
 ]]
 -- end --
 
@@ -82,10 +82,13 @@ function UIPageViewVertical:ctor(params)
 	self.rowSpace_ = params.rowSpace or 0
 	self.padding_ = params.padding or {left = 0, right = 0, top = 0, bottom = 0}
 	self.bCirc = params.bCirc or false
-	self.page_rect_num=7
-	self.page_hight=108
+	self.page_rect_num=5
+	self.page_hight=params.contSize.height
+	self.page_width=params.contSize.width
 	self.border_pos=0
 	self:setClippingRegion(self.viewRect_)
+
+	self._isOver=true
 	-- self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(...)
 	-- 		self:update_(...)
 	-- 	end)
@@ -230,11 +233,8 @@ function UIPageViewVertical:reload(idx)
 			page = self:createPage_(i)
 			page:setVisible(true)
 			table.insert(self.pages_, page)
-			page:setPosition(self.viewRect_.x, self.viewRect_.y+70+self.viewRect_.height-self.page_hight*(i))
+			page:setPosition(self.viewRect_.x+self.page_width/2, self.viewRect_.y+70+self.viewRect_.height-self.page_hight*(i))
 			self:addChild(page)
-			if i==7 then
-				print("get ",page:getPositionY())
-			end
 		end
 	end
 	
@@ -274,30 +274,50 @@ end
 
 -- end --
 
-function UIPageViewVertical:gotoPage(pageIdx, bSmooth, bLeftToRight)
-	if pageIdx < 1 or pageIdx > self:getPageCount() then
-		return self
-	end
-	if pageIdx == self.curPageIdx_ and bSmooth then
-		return self
+function UIPageViewVertical:gotoPage(pageIdx)
+
+	if not self._isOver then
+		print("--_isOver-")
+		return
 	end
 
-	if bSmooth then
-		self:resetPagePos(pageIdx, bLeftToRight)
-		self:scrollPagePos(pageIdx, bLeftToRight)
-	else
-		self.pages_[self.curPageIdx_]:setVisible(false)
-		self.pages_[pageIdx]:setVisible(true)
-		self.pages_[pageIdx]:setPosition(
-			self.viewRect_.x, self.viewRect_.y)
-		self.curPageIdx_ = pageIdx
+	self._isOver=false
 
-		-- self.notifyListener_{name = "clicked",
-		-- 		item = self.items_[clickIdx],
-		-- 		itemIdx = clickIdx,
-		-- 		pageIdx = self.curPageIdx_}
-		self:notifyListener_{name = "pageChange"}
+	-- self:stopAllTransition()
+	local page = self.pages_[1]
+	local posX, posY = page:getPosition()
+	local page_move=self.page_hight*pageIdx
+
+	if posY==self.border_pos and pageIdx<0 then
+		self._isOver=true
+		return
 	end
+
+	if self.pages_[#self.pages_]:getPositionY()==self.border_pos-self.page_hight*(self.page_rect_num-1) and pageIdx>0 then
+		self._isOver=true
+		return
+	end
+
+
+	if posY+page_move<self.border_pos then
+		page_move=self.border_pos
+	end
+
+	-- if self.pages_[#self.pages_]:getPositionY()>self.border_pos-self.page_hight*(self.page_rect_num-1)+page_move then
+	-- 	page_move=(self.border_pos-self.page_hight*(self.page_rect_num))
+	-- end
+
+
+	for i=1,#self.pages_ do
+			local page=self.pages_[i]
+			transition.moveTo(page,
+				{x = posX, y = page:getPositionY()+page_move, time = 0.2,
+				onComplete = function()
+					self.star_curPageIdx_point=self.pages_[1]:getPositionY()
+					self._isOver=true
+				end})
+	end
+
 
 	return self
 end
@@ -400,7 +420,7 @@ function UIPageViewVertical:onTouch_(event)
 	end
 
 	if "began" == event.name then
-		-- self:stopAllTransition()
+		self:stopAllTransition()
 	
 		self.bDrag_ = false
 	elseif "moved" == event.name then
@@ -690,13 +710,12 @@ function UIPageViewVertical:scrollAuto()
 		page_move=self.border_pos-posY
 	end
 
-	if self.pages_[#self.pages_]:getPositionY()>self.border_pos-self.page_hight*6 then
-		page_move=(self.border_pos-self.page_hight*6)-self.pages_[#self.pages_]:getPositionY()
+	if self.pages_[#self.pages_]:getPositionY()>self.border_pos-self.page_hight*(self.page_rect_num-1) then
+		page_move=(self.border_pos-self.page_hight*(self.page_rect_num-1))-self.pages_[#self.pages_]:getPositionY()
 	end
 	-- print("222---",self.pages_[#self.pages_]:getPositionY(),(self.border_pos-self.page_hight*6),page_move)	
 	for i=1,#self.pages_ do
 			local page=self.pages_[i]
-			page:stopAllActions()
 			transition.moveTo(page,
 				{x = posX, y = page:getPositionY()+page_move, time = 0.2,
 				onComplete = function()
