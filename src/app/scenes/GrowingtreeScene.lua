@@ -735,45 +735,40 @@ function GrowingtreeScene:Grawpopup_buffer(prompt_text)
 end
 
 function GrowingtreeScene:function_template(data)
-  self.back_playerid=data["playerid"]
-  ScrollViewMenu=require("app.scenes.ScrollViewMenu")
-  local function touchEvent(sender,eventType)
-                         
-                if eventType == ccui.TouchEventType.ended then
-                            print("button模板")
-                end
+            
+            ScrollViewMenu=require("app.scenes.ScrollViewMenu")
+            local function touchEvent(sender,eventType)
+                       
+              if eventType == ccui.TouchEventType.ended then
+                          print("button模板")
+              end
             end
             local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
             local _name=data["nickname"]
             local _lv=data["playergrade"]
 
             GREEN_SMALL_BTN_IMG = {
-          normal = "png/chengzhangshu-1-touxiang-kuang-1-1.png",
-          pressed = "png/chengzhangshu-1-touxiang-kuang-2-1.png",
-          disabled = "png/chengzhangshu-1-touxiang-kuang-1-1.png"
-      }
+            normal = "png/chengzhangshu-1-touxiang-kuang-1-1.png",
+            pressed = "png/chengzhangshu-1-touxiang-kuang-2-1.png",
+            disabled = "png/chengzhangshu-1-touxiang-kuang-1-1.png"
+            }
 
-      local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
-      :onButtonClicked(function(event)
-                            self.is_friend=true
-                            --LocalData:Instance():set_gettreelist(nil)
-                             Server:Instance():gettreelist(self.back_playerid)
-                             self._growingtreeNode:setPositionX(-220)
-                            if self.scroll_listview then
-                              self.scroll_listview:setVisible(false)
-                            end
-                            self.friend_growingtree_checkbox:setSelected(false)   
-                            self.friend_growingtree_checkbox:setVisible(false)           
-             end)
-             --ScrollViewMenu() --ccui.Button:create()
-      button:setRotation(90)
+            local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
+            :onButtonClicked(function(event)
+                          self.is_friend=true
+                          --LocalData:Instance():set_gettreelist(nil)
+                           Server:Instance():gettreelist(data["playerid"])
+                           self._growingtreeNode:setPositionX(-220)
+                          if self.pv then
+                            self.pv:setVisible(false)
+                          end
+                          self.friend_growingtree_checkbox:setSelected(false)   
+                          self.friend_growingtree_checkbox:setVisible(false)           
+            end)
+            --ScrollViewMenu() --ccui.Button:create()
+            button:setRotation(90)
             button:setTouchEnabled(true)
-            -- button:loadTextures("png/chengzhangshu-di-1-haoyou-3.png", "png/chengzhangshu-di-1-haoyou-2.png", "")
-            -- button:setPosition(cc.p(200,280))
-            -- button:addTouchEventListener(touchEvent)
-            --self:addChild(button)
-            -- local  _image = cc.Sprite:create("png/chengzhangshu-di-1-haoyou-1.png")
-            -- button:onButtonClicked(function(event) end)
+
 
             local  _image = cc.Sprite:create("png/"  ..  _image)
             _image:setPosition(button:getContentSize().width/2,button:getContentSize().height/2)
