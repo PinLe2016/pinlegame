@@ -277,7 +277,6 @@ end
 function UIPageViewVertical:gotoPage(pageIdx)
 
 	if not self._isOver then
-		print("--_isOver-")
 		return
 	end
 
@@ -300,12 +299,12 @@ function UIPageViewVertical:gotoPage(pageIdx)
 
 
 	if posY+page_move<self.border_pos then
-		page_move=self.border_pos
+		page_move=self.border_pos-posY
 	end
 
-	-- if self.pages_[#self.pages_]:getPositionY()>self.border_pos-self.page_hight*(self.page_rect_num-1)+page_move then
-	-- 	page_move=(self.border_pos-self.page_hight*(self.page_rect_num))
-	-- end
+	if self.pages_[#self.pages_]:getPositionY()+page_move>self.border_pos-(self.page_hight*(self.page_rect_num-1)) then
+		page_move=self.border_pos-(self.page_hight*(self.page_rect_num-1))-self.pages_[#self.pages_]:getPositionY()
+	end
 
 
 	for i=1,#self.pages_ do
@@ -698,11 +697,9 @@ function UIPageViewVertical:scrollAuto()
 	
 
 	if  dis>5 then
-			print("1111")
 			page_move=(self.page_hight-page_dis)*symbol_
 	elseif dis<-5 then
 		--todo
-		
 			page_move=(page_dis)*symbol_
 	end
 

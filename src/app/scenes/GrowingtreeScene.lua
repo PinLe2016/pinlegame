@@ -423,20 +423,20 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
            end 
           local tag=sender:getTag() 
            if tag==281 then   
-          	    print("添加好友")
+          	    -- print("添加好友")
                  local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
                  self:addChild(InvitefriendsLayer.new(),1,13)
            elseif tag==41 then
-           	   print("左移一格")
+           	   -- print("左移一格")
               self.pv:gotoPage(-1)
            	elseif tag==42 then
-           	   print("右移一格")
+           	   -- print("右移一格")
                self.pv:gotoPage(1)
            	elseif tag==43 then
-           	   print("左移一列")
+           	   -- print("左移一列")
                self.pv:gotoPage(-5)
            	elseif tag==44 then
-           	   print("右移一列")
+           	   -- print("右移一列")
                self.pv:gotoPage(5)
            	elseif tag==46 then
            	   print("邀请好友")
