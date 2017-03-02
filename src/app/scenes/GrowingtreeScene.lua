@@ -428,12 +428,16 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                  self:addChild(InvitefriendsLayer.new(),1,13)
            elseif tag==41 then
            	   print("左移一格")
+              self.pv:gotoPage(-1)
            	elseif tag==42 then
            	   print("右移一格")
+               self.pv:gotoPage(1)
            	elseif tag==43 then
            	   print("左移一列")
+               self.pv:gotoPage(-5)
            	elseif tag==44 then
            	   print("右移一列")
+               self.pv:gotoPage(5)
            	elseif tag==46 then
            	   print("邀请好友")
                Util:share()
@@ -638,7 +642,8 @@ function GrowingtreeScene:onEnter()
   --好友列表
   NotificationCenter:Instance():AddObserver("MESSAGE_GETTREEFRIENDLIST", self,
                        function()  
-                              self:fun_UIListView()
+                              -- self:fun_UIListView()
+                              self:createPageView()
                       end)
   --背包列表
   NotificationCenter:Instance():AddObserver("MESSAGE_GSTTREEGAMEITEMLIST", self,
@@ -889,144 +894,38 @@ end
 
 --list view  控件使用
 
-function GrowingtreeScene:fun_UIListView()
-  --(display.width - 594) / 2
-
-   local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
-  self._list=gettreefriendlist["list"]
-
-    self.scroll_node = display.newNode()
-   local scroll_bound = cc.rect(14  ,display.cy-92,126, 610)--+display.cy-236  14
-   -- end
-   self.scroll_listview = cc.ui.UIListView.new({viewRect = scroll_bound,
-                     direction = cc.ui.UIListView.DIRECTION_VERTICAL,
-                     async = true,
-                     --bgColor = cc.c4b(255,0, 0,200),
-                     container = self.scroll_node})
-   self.scroll_listview:setDelegate(handler(self, self.sourceDelegate))
-   self.scroll_listview:onScroll(handler(self, self.scrollListener))
-   self.scroll_listview:setPosition(15,0)--display.cy-236
-   self.scroll_listview:addTo(self.Growingtree,100)
-   self.scroll_listview:reload()
-
+function GrowingtreeScene:touchListener(event)
   
 end
 
-function GrowingtreeScene:sell()
-  self.next_dex=self.next_dex+1
-    self:layout_sub(1)
-end 
 
-function GrowingtreeScene:sellto()
-  self.next_dex=self.next_dex+1
-    self:layout_sub(-1)
-end 
+function GrowingtreeScene:createPageView()
 
+    self.pv = require("app.scenes.UIPageViewVertical").new({
+        viewRect = cc.rect(27,display.cy-92,126,610) ,  --设置位置和大小
+        -- viewRect = cc.rect(80,280,108,108) ,
+        column = 1 , row = 1,  --列和行的数量 
+        contSize=cc.size(122,126),                 
+        padding = {left = 0 , right = 0 , top = 0 , bottom = 0} , --整体的四周距离
+        columnSpace = 0 , rowSpace = 0                                        --行和列的间距
+    })
+    :onTouch(handler(self,self.touchListener))
+    :addTo(self.Growingtree)
 
-function GrowingtreeScene:scrollListener(event)
-   
-end
-
-
-function GrowingtreeScene:sourceDelegate(listView, tag, idx)
-
-   if cc.ui.UIListView.COUNT_TAG == tag then
-     return #self._list--self.star_idx
-   elseif cc.ui.UIListView.CELL_TAG == tag then
-      local item
-      item = self.scroll_listview:dequeueItem()
-      
-      local _list=self._list
- 
-      if not item then
-
-        local node=self:function_template(_list[idx])
-        item =  self.scroll_listview:newItem()
-        item:addContent(node,3)
-      else
-
-         dialog_content = item:getContent()
-         if dialog_content then
-            self:function_button_Refresh(_list[idx],dialog_content)
-         end 
-      end
-
-        item:setItemSize(122,126)
-      return item
-  end
-end
-
-
-function GrowingtreeScene:fun_table(next_idx)
-
-  local title_label = cc.ui.UILabel.new({text =next_idx,
-                 size = 20,
-                 align = TEXT_ALIGN_LEFT,
-                 font = "Arial",
-                 -- color=Util:ConvertStringToC3b("yellow"),
-                 x=20,
-                 y=0
-         })
-      -- title_label:setAnchorPoint(0.5,0.5)
-      -- title_label:addTo(self , 101) 
-      return title_label
-end
-
-
-function GrowingtreeScene:layout_sub(next_idx)
- 
-  local width, height = 0, 0
-  local itemW, itemH = 0, 0
-  local margin
-
-  --calcate whole width height
-  if cc.ui.UIScrollView.DIRECTION_VERTICAL == self.scroll_listview.direction then
-    width = self.scroll_listview.viewRect_.width
+     local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
+    self._list=gettreefriendlist["list"]
     
-    for i,v in ipairs(self.scroll_listview.items_) do
-      itemW, itemH = v:getItemSize()
-      itemW = itemW or 0
-      itemH = itemH or 0
-
-      height = height + itemH
+    for i = 1 , #self._list do
+             local item = self.pv:newItem()
+             
+        local node=self:function_template(self._list[i])
+        item:setContentSize(122, 126)
+        item:addChild(node)      -- 为每个单独的item添加一个颜色图块
+        self.pv:addItem(item)          --为pageview添加item
     end
-  end
-  
-
-  self.scroll_listview:setActualRect({x = self.scroll_listview.viewRect_.x,
-    y = self.scroll_listview.viewRect_.y,
-    width = width,
-    height = height})
-  self.scroll_listview.size.width = width
-  self.scroll_listview.size.height = height
-
-  local tempWidth, tempHeight = width, height
-  if cc.ui.UIScrollView.DIRECTION_VERTICAL == self.scroll_listview.direction then
-    itemW, itemH = 0, 0
-
-    local content
-    for i,v in ipairs(self.scroll_listview.items_) do
-      itemW, itemH = v:getItemSize()
-      itemW = itemW or 0
-      itemH = itemH or 0
-
-      tempHeight = tempHeight - itemH
-      content = v:getContent()
-      content:setAnchorPoint(0.5, 0.5)
-      -- content:setPosition(itemW/2, itemH/2)
-      self.scroll_listview:setPositionByAlignment_(content, itemW, itemH, v:getMargin())
-      v:setPosition(self.scroll_listview.viewRect_.x,
-        self.scroll_listview.viewRect_.y + tempHeight)
-    end
-
-  end
-
-
-  self.scroll_listview.container:setPosition(0, (108*next_idx)-108)
-
-
+    self.pv:reload()    --需要重新刷新才能显示
+          
 end
-
 
 
 return GrowingtreeScene
