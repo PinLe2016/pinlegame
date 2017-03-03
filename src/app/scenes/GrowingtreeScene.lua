@@ -465,10 +465,10 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                  self:addChild(InvitefriendsLayer.new(),1,13)
            elseif tag==41 then
            	   print("左移一格")
-              self.pv:gotoPage(1)
+              self.pv:gotoPage(-1)
            	elseif tag==42 then
            	   -- print("右移一格")
-               self.pv:gotoPage(-1)
+               self.pv:gotoPage(1)
 
            	elseif tag==43 then
            	   -- print("左移一列")
