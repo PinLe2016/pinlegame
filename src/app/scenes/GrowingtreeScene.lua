@@ -689,6 +689,12 @@ function GrowingtreeScene:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_GETTREEFRIENDLIST", self,
                        function()  
                               -- self:fun_UIListView()
+                               local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
+                               local _list=gettreefriendlist["list"]
+                               if #_list ==  0 then
+                                  self.pv:setVisible(true)
+                                   return
+                               end
                               self:createPageView()
                       end)
   --背包列表

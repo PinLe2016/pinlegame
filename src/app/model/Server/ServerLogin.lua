@@ -91,17 +91,16 @@ end
 function Server:reg_callback()
      dump(self.data)
     if self.data.err_code~=0  then
-        self:promptbox_box_buffer( self.data.err_msg)
-        print("上课交电费卡拉斯加")
+         self:promptbox_box_buffer( self.data.err_msg)
          NotificationCenter:Instance():PostNotification("zhuceshibai")
-        return
+         return
     end
 
     LocalData:Instance():set_user_data(self.data)--保存玩家数据
-    LocalData:Instance():set_user_reg("2")
+    --LocalData:Instance():set_user_reg("2")
+    NotificationCenter:Instance():PostNotification("REG_CALLBACK")
     self:promptbox_box_buffer("注册成功")
-   -- end
-     -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GET_SERVERLIST_BY_REFRESH)
+    
 end
 function Server:prompt( content )
     self:show_float_message(tostring(content))
