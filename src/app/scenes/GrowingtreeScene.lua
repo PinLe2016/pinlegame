@@ -18,6 +18,7 @@ function GrowingtreeScene:ctor()
        self.pt_table={}  --  8个坑的表
        self.pt_tag_table=0  --  默认标记0 
        self._type_str_text=   nil
+       self._friend_employees_type=1
        self.pv=  nil
        self.is_friend=false
        self._feied_count=1
@@ -55,6 +56,7 @@ function GrowingtreeScene:fun_refresh_friend( )
               if self.pv then
                 self.pv:setVisible(false)
               end
+              self._friend_employees_type=1
               Server:Instance():gettreefriendlist(20,1,1)
 end
 function GrowingtreeScene:init(  )
@@ -111,6 +113,7 @@ function GrowingtreeScene:init(  )
     	self.friend_growingtree_checkbox:addEventListener(function(sender, eventType  )
                            if eventType == ccui.CheckBoxEventType.selected then
                                   self._growingtreeNode:setPositionX(0)
+                                  self._friend_employees_type=1
                                   Server:Instance():gettreefriendlist(20,1,1)
                                   for i=1,8 do
                                     self.pt_table[i]:setTouchEnabled(false)
@@ -485,6 +488,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                   self.pv:setVisible(false)
                end
                self._feied_count=self._feied_count+1
+               self._friend_employees_type=1
                Server:Instance():gettreefriendlist(20,self._feied_count,1)
             end
  end 
@@ -502,12 +506,14 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
           sender:getChildByTag(sender:getTag()+2):setBright(false)
           if tag==52 then   
           	 print("我的好友按钮")
+             self._friend_employees_type=1
              Server:Instance():gettreefriendlist(20,1,1)
               if self.pv then
                 self.pv:setVisible(false)
               end
           elseif tag==53 then
           	  print("我的员工按钮")
+              self._friend_employees_type=2
               Server:Instance():gettreefriendlist(20,1,2)
                if self.pv then
                   self.pv:setVisible(false)
@@ -691,7 +697,7 @@ function GrowingtreeScene:onEnter()
                               -- self:fun_UIListView()
                                local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
                                local _list=gettreefriendlist["list"]
-                               if #_list ==  0 then
+                               if #_list ==  0 and self._friend_employees_type==1 then
                                   self.pv:setVisible(true)
                                    return
                                end
