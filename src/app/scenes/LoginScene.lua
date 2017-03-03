@@ -665,9 +665,22 @@ function LoginScene:onEnter()
 
 
 
---热更消息接收
+--热更消息接收  
  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.VERRSION, self,function()
                           self:getVersionInfo()
+                        end)
+ --  注册成功
+ NotificationCenter:Instance():AddObserver("REG_CALLBACK", self,function()
+                  print("借款纠纷可使肌肤")
+                          self:landing_init()
+                   if self._scode then
+                      cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                   end
+                   if  self.registered then
+                         self.registered:removeFromParent()
+                         self.registered=nil
+                  end
+
                         end)
 
 end
@@ -679,6 +692,7 @@ function LoginScene:onExit()
 
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self)
+  NotificationCenter:Instance():RemoveObserver("REG_CALLBACK", self)
 
 
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)
