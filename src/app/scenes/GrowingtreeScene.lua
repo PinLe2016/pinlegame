@@ -127,10 +127,11 @@ function GrowingtreeScene:init(  )
     	self._growingtreeNode=self.Growingtree:getChildByTag(56)  -- 好友列表栏
     	self.friend_growingtree_checkbox=self._growingtreeNode:getChildByTag(163)  --  好友按钮
     	self.friend_growingtree_checkbox:setTouchEnabled(true)
-
+      self._spdt=self.friend_growingtree_checkbox:getPositionY()
     	self.friend_growingtree_checkbox:addEventListener(function(sender, eventType  )
                            if eventType == ccui.CheckBoxEventType.selected then
                                   self._growingtreeNode:setPositionX(0)
+                                  self.friend_growingtree_checkbox:setPositionY(self.friend_growingtree_checkbox:getPositionY() -40)
                                   self._friend_employees_type=1
                                   Server:Instance():gettreefriendlist(7,1,1)
                                   for i=1,8 do
@@ -138,6 +139,7 @@ function GrowingtreeScene:init(  )
                                   end
                            elseif eventType == ccui.CheckBoxEventType.unselected then
                                   self._growingtreeNode:setPositionX(-220)
+                                  self.friend_growingtree_checkbox:setPositionY(self._spdt)
                                   for i=1,8 do
                                     self.pt_table[i]:setTouchEnabled(true)
                                   end
@@ -312,6 +314,7 @@ function GrowingtreeScene:fun_data()
 			            self.ListNode:setVisible(true)
                               self._type_str_text:setString("播种")
 			            self._growingtreeNode:setPositionX(-220)
+                              self.friend_growingtree_checkbox:setPositionY(self._spdt)
 			            sender:setTouchEnabled(false)
 			            local function stopAction()
 			    		sender:setTouchEnabled(true)
@@ -1037,6 +1040,7 @@ function GrowingtreeScene:function_template(data)
                            Server:Instance():gettreelist(data["playerid"])
                            self.back_playerid=data["playerid"]
                            self._growingtreeNode:setPositionX(-220)
+                           self.friend_growingtree_checkbox:setPositionY(self._spdt)
                           if self.pv then
                             self.pv:setVisible(false)
                           end
