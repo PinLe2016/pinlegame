@@ -227,7 +227,7 @@ function UIPageViewVertical:reload(idx)
 	if pageCount < 1 then
 		return self
 	end
-	dump(pageCount)
+	-- dump(pageCount)
 	if pageCount > 0 then
 		for i =1 , pageCount do
 			page = self:createPage_(i)
