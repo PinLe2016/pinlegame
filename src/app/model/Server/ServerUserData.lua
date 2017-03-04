@@ -421,7 +421,7 @@ function Server:setseedwater_callback()
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
     end
-    -- LocalData:Instance():set_getconfig(self.data)--
+     LocalData:Instance():set_setseedwater(self.data)--
     --Server:Instance():Grawpopup_box_buffer("浇水成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDWATER")
 end
@@ -449,7 +449,7 @@ function Server:setseedmanure_callback()
         return
     end
     
-    --LocalData:Instance():set_gettreegameitemlist(self.data)--
+    LocalData:Instance():set_setseedmanure(self.data)--
     --Server:Instance():Grawpopup_box_buffer("施肥成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDMANURE")
 end
@@ -475,7 +475,7 @@ function Server:setseedreward_callback()
         NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD_FALSE")
         return
     end
-    -- LocalData:Instance():set_getconfig(self.data)--
+     LocalData:Instance():set_setseedreward(self.data)--
     --Server:Instance():Grawpopup_box_buffer("收获成功")
     NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD")
 end

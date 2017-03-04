@@ -204,9 +204,30 @@ end
 function LocalData:get_gettreegameitemlist()
 	return self.gettreegameitemlist or nil
 end
+--  浇水
+function LocalData:set_setseedwater(_setseedwater)
+	self._setseedwater=_setseedwater
+end
 
+function LocalData:get_setseedwater()
+	return self._setseedwater or nil
+end
+--  施肥
+function LocalData:set_setseedmanure(_setseedmanure)
+	self._setseedmanure=_setseedmanure
+end
 
+function LocalData:get_setseedmanure()
+	return self._setseedmanure or nil
+end
+--收获
+function LocalData:set_setseedreward(_setseedreward)
+	self._setseedreward=_setseedreward
+end
 
+function LocalData:get_setseedreward()
+	return self._setseedreward or nil
+end
 
 
 

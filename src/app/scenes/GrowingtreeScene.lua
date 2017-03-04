@@ -795,11 +795,14 @@ function GrowingtreeScene:function_lantern_act( _obj,x,y,_isVisb)
 end
 
  --加经验动画
-function GrowingtreeScene:coinAction(x,y)
+function GrowingtreeScene:coinAction(jin,x,y)
     print("动画",x,"  ",y)
+    if tonumber(jin)  <=  0 then
+     return
+    end
     self._score2 :setVisible(true)
     self._score2:setPosition(x, y)
-    self._score2:setProperty(tostring("20"),"png/guoshiplist.png", 30, 42, "0")
+    self._score2:setProperty(tostring(jin),"png/guoshiplist.png", 30, 42, "0")
      local function logSprRotation(sender)
                      self._score2 :setVisible(false)                   
      end
@@ -851,11 +854,21 @@ function GrowingtreeScene:onEnter()
   --施肥成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE", self,
                        function()  
+                              local _setseedmanure=LocalData:Instance():get_setseedmanure()--
+                               local jin=0
+                              if #_setseedmanure["rewardlist"]  >0  then
+                                      for i=1,#_setseedmanure["rewardlist"] do
+                                          if _setseedmanure["rewardlist"][i]["type"]   ==  0  then
+                                            jin=_setseedmanure["rewardlist"][i]["reward"]
+                                          end
+                                        end
+                              
+                              end
                               Server:Instance():gettreelist(self.back_playerid)
                               self.ListNode:setVisible(false)
                               self:fun_FruitinformationNode(1,1,false,-1)
                               self.pt_tag_table=0
-                              self:coinAction(self._obj_act:getParent():getPositionX()   ,self._obj_act:getParent():getPositionY()-30)
+                              self:coinAction(jin,self._obj_act:getParent():getPositionX()   ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
                       end)
   --施肥不成功
@@ -868,9 +881,20 @@ function GrowingtreeScene:onEnter()
   --  收获成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDREWARD", self,
                        function()  
+                              local _setseedreward=LocalData:Instance():get_setseedreward()--
+                               local jin=0
+                              if #_setseedreward["rewardlist"]  >0  then
+                                      for i=1,#_setseedreward["rewardlist"] do
+                                          if _setseedreward["rewardlist"][i]["type"]   ==  0  then
+                                            jin=_setseedreward["rewardlist"][i]["reward"]
+                                          end
+                                        end
+                              
+                              end
+
                               self.pt_tag_table=0
                               Server:Instance():gettreelist(self.back_playerid)
-                              self:coinAction(self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
+                              self:coinAction(jin,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
 
                       end)
@@ -884,9 +908,19 @@ function GrowingtreeScene:onEnter()
   --浇水成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDWATER", self,
                        function()  
-                              
+                              local _setseedwater= LocalData:Instance():get_setseedwater()--
+                              local jin=0
+                              if #_setseedwater["rewardlist"]  >0  then
+                                      for i=1,#_setseedwater["rewardlist"] do
+                                          if _setseedwater["rewardlist"][i]["type"]   ==  0  then
+                                            jin=_setseedwater["rewardlist"][i]["reward"]
+                                          end
+                                        end
+
+                              end
+                             
                               Server:Instance():gettreelist(self.back_playerid)
-                              self:coinAction(self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
+                              self:coinAction(jin,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
                       end)
   --铲除成功
