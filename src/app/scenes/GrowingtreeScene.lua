@@ -274,8 +274,8 @@ function GrowingtreeScene:fun_data()
             _treegrade=self.lv_table[tonumber(gettreelist["treegrade"])+1]
 	 	for i=1,_treegrade do
     			self.pt_table[i]:setTouchEnabled(true)
-    			self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setString("可种植")
-    			self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setVisible(false)
+    			-- self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setString("可种植")
+    			-- self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setVisible(false)
                   self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):loadTexture("png/chengzhangshu-zhongzi-0.png")
                   self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):setVisible(true)
     			self.pt_table[i]:loadTexture("png/chengzhangshu-1-touming.png")
@@ -332,8 +332,8 @@ function GrowingtreeScene:fun_data()
 	 	for j=1,8 do
 	 		if tostring(tree_seedlist[i]["seedname"]) == tostring(self.zh_state[j]) then
 	 			if tostring(tree_seedlist[i]["seedstatus"]) ==  "2"  and  tonumber(tree_seedlist[i]["stolenamount"]) >0   then   --收获
-                              self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString("可收获")
-                              self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
+                              self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString(tostring(tree_seedlist[i]["gainsamount"]))
+                              self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(true)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
