@@ -40,7 +40,7 @@ end
 
 
 function Server:getgoldspooladlist_callback()
-      dump(self.data)
+      -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
@@ -63,7 +63,7 @@ end
 
 
 function Server:getgoldspoolbyid_callback()
-       dump(self.data)
+       -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
@@ -107,14 +107,14 @@ function Server:getgoldspoolrandomgolds(goldspoolid,usedoublecard,points)
             points=points,
             goldspoolid=goldspoolid,
    }
-   dump(_params)
+   -- dump(_params)
    
     self:request_http("getgoldspoolrandomgolds" , _params ); 
 end
 
 
 function Server:getgoldspoolrandomgolds_callback()
-      dump(self.data)
+      -- dump(self.data)
     if self.data.err_code~=0  then
 
         self:show_float_message("" .. self.data.err_msg)
@@ -143,7 +143,7 @@ end
 
 
 function Server:setgoldspooladurlreward_callback()
-      dump(self.data)
+      -- dump(self.data)
     if self.data.err_code~=0  then
          self:show_float_message("领取金币奖池广告链接金币:" .. self.data.err_msg)
         return

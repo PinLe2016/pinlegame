@@ -52,7 +52,7 @@ function Server:version_shop_url()
 end
 
 function Server:version_shop_url_callback()
-   dump(self.data)
+   -- dump(self.data)
    self.shop_url=self.data
 
    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.VERSION_LINK)
@@ -83,13 +83,13 @@ function Server:reg(username,password,code)
             ip="192.168.0.0",
             origin="0",
         }
-        dump(params)
+        -- dump(params)
     self:request_http("reg" , params ); 
 end
 
 
 function Server:reg_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
          self:promptbox_box_buffer( self.data.err_msg)
          NotificationCenter:Instance():PostNotification("zhuceshibai")
@@ -134,7 +134,7 @@ end
 
 
 function Server:login_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
          -- local a=FloatingLayer:Instance():floatingLayer_init(self.data.err_msg)
@@ -173,7 +173,7 @@ function Server:changepassword(loginname,password,code,type,oldpassword)
 end
 
 function Server:changepassword_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
         return
@@ -203,7 +203,7 @@ function Server:sendmessage(type,phone,code)
 end
 
 function Server:sendmessage_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
         NotificationCenter:Instance():PostNotification("wangjimima")
@@ -254,7 +254,7 @@ function Server:mall(username,password)
             password=crypto.md5(username ..  password),
         }
        
-        dump(self.shop_url)
+        -- dump(self.shop_url)
         --local hp=self.login_url ..  "id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         local hp=self.shop_url.."id="  .. params.loginname  ..  "&md5="  ..  params.password  ..  "&w=640&h=1136" 
         return  hp

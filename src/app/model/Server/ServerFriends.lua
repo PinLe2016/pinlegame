@@ -105,7 +105,7 @@ end
 
 
 function Server:get_reward_of_friends_levelup_callback()
-      dump(self.data)
+      -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("领取好友升级奖励积分&金币:" .. self.data.err_msg)
         return
@@ -129,7 +129,7 @@ end
 
 
 function Server:get_reward_friend_list_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
         return
@@ -154,7 +154,7 @@ end
 
 
 function Server:get_friend_reward_setting_list_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
         return
@@ -178,7 +178,7 @@ end
 
 
 function Server:set_friend_reward_setting_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
         return
