@@ -19,11 +19,11 @@ function GrowingtreeScene:ctor()
        self.pt_tag_table=0  --  默认标记0 
        self._type_str_text=   nil
       self._obj_act=nil
-       self._friend_employees_type=1
        self.pv=  nil
        self.is_friend=false
        self._feied_count=1
        self._Lv_text=nil
+       self._friend_employees_type=1
        --  定时器
        self.count_time=0
        self.secondOne=0
@@ -285,7 +285,7 @@ function GrowingtreeScene:fun_data()
 			            if eventType ~= ccui.TouchEventType.ended then
 			                return
 			            end 
-                  self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,1) 
+                  self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,-1) 
                   self.ListNode:setVisible(false)
                             --  if self.pt_tag_table   ~=   0 then
                             --       if   self.pt_tag_table ~=sender:getTag()  then    
@@ -363,7 +363,7 @@ function GrowingtreeScene:fun_data()
 				            if eventType ~= ccui.TouchEventType.ended then
 				                return
 				            end 
-                    self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,1) 
+                    self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,-1) 
                     self.ListNode:setVisible(false)
                                     -- if self.pt_tag_table   ~=   0 then
                                     --       if   self.pt_tag_table ~=sender:getTag()  then
@@ -563,8 +563,8 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                   self.pv:setVisible(false)
                end
                self._feied_count=self._feied_count+1
-               self._friend_employees_type=1
-               Server:Instance():gettreefriendlist(7,self._feied_count,1)
+               
+               Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
             end
  end 
  function GrowingtreeScene:fun_callback( sender, eventType )
@@ -588,6 +588,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
               end
           elseif tag==53 then
           	  print("我的员工按钮")
+              self._feied_count=1
               self._friend_employees_type=2
               Server:Instance():gettreefriendlist(7,1,2)
                if self.pv then
@@ -846,7 +847,7 @@ function GrowingtreeScene:onEnter()
                        function()  
                               Server:Instance():gettreelist(self.back_playerid)
                               self.ListNode:setVisible(false)
-                              self:fun_FruitinformationNode(1,1,false,1)
+                              self:fun_FruitinformationNode(1,1,false,-1)
                               self.pt_tag_table=0
                               self:coinAction(self._obj_act:getParent():getPositionX()   ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
@@ -854,7 +855,7 @@ function GrowingtreeScene:onEnter()
   --施肥不成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE_FALSE", self,
                        function()  
-                              self:fun_FruitinformationNode(1,1,false,1)
+                              self:fun_FruitinformationNode(1,1,false,-1)
                               self.ListNode:setVisible(false)
                              
                       end)
@@ -885,7 +886,7 @@ function GrowingtreeScene:onEnter()
   --铲除成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDREMOVE", self,
                        function()  
-                              self:fun_FruitinformationNode(1,1,false,1)
+                              self:fun_FruitinformationNode(1,1,false,-1)
                               self.pt_tag_table=0
                               self:unscheduleUpdate()
                               Server:Instance():gettreelist(self.back_playerid)
@@ -1052,7 +1053,7 @@ function GrowingtreeScene:function_template(data)
             --ScrollViewMenu() --ccui.Button:create()
             button:setRotation(90)
             button:setTouchEnabled(true)
-            dump(button:getContentSize())
+            --dump(button:getContentSize())
              if tonumber(data["flag"]) ==  0 then 
                 button:setTouchEnabled(false)
              end
