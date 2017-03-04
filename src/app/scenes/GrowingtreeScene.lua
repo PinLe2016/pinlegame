@@ -1030,6 +1030,9 @@ function GrowingtreeScene:function_template(data)
             
             local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
             :onButtonClicked(function(event)
+                          if tonumber(data["flag"])  ==  100  then
+                                  return
+                          end
                           self.is_friend=true
                           --LocalData:Instance():set_gettreelist(nil)
                            Server:Instance():gettreelist(data["playerid"])
@@ -1049,7 +1052,7 @@ function GrowingtreeScene:function_template(data)
             button:setTouchEnabled(true)
              if tonumber(data["flag"])  ==  100  then
                      local textButton = ccui.Button:create()
-                    textButton:setTouchEnabled(true)
+                    textButton:setTouchEnabled(false)
                     textButton:loadTextures("png/chengzhangshu-di-1-yaoqinghaoyou-1.png", "png/chengzhangshu-di-1-yaoqinghaoyou-2.png", "")
                     textButton:setPosition(cc.p(0, 0))
                     textButton:addTouchEventListener(touchEvent)
