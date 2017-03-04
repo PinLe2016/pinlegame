@@ -995,9 +995,6 @@ function GrowingtreeScene:_ceshi( )
 
 end
 function GrowingtreeScene:function_template(data)
-             
-              
-             
             ScrollViewMenu=require("app.scenes.ScrollViewMenu")
             local function touchEvent(sender,eventType)             
               if eventType == ccui.TouchEventType.ended then
@@ -1008,24 +1005,18 @@ function GrowingtreeScene:function_template(data)
             -- local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
             -- local _name=data["nickname"]
             -- local _lv=data["treegrade"]
-              if tonumber(data["flag"]) ==  0 then  --  1是好友   0  是自己
-                  
+              if tonumber(data["flag"]) ==  0 then  --  1是好友   0  是自己 
                   GREEN_SMALL_BTN_IMG = {
                 normal = "png/chengzhangshu-1-touxiang-kuang-3-1.png",
                 pressed = "png/chengzhangshu-1-touxiang-kuang-3-1.png",
                 disabled = "png/chengzhangshu-1-touxiang-kuang-3-1.png"
-
             }
-
           else
-
             GREEN_SMALL_BTN_IMG = {
                 normal = "png/chengzhangshu-1-touxiang-kuang-1-1.png",
                 pressed = "png/chengzhangshu-1-touxiang-kuang-2-1.png",
                 disabled = "png/chengzhangshu-1-touxiang-kuang-1-1.png"
-
             }
-
               end
             
             local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
@@ -1059,7 +1050,6 @@ function GrowingtreeScene:function_template(data)
                     button:addChild(textButton)
                     return button
             end
-
             --dump(button:getContentSize())
              if tonumber(data["flag"]) ==  0 then 
                 button:setTouchEnabled(false)
@@ -1199,7 +1189,8 @@ function GrowingtreeScene:createPageView()
         item:addChild(node)      -- 为每个单独的item添加一个颜色图块
         self.pv:addItem(item)          --为pageview添加item
     end
-    if #self._list<7 then
+    
+    if #self._list<7   and   self._friend_employees_type==1  then
       local _shu={flag = 100}
       for i=#self._list +1 ,7 do
         local item = self.pv:newItem()
