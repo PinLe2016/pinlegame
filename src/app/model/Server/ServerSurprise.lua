@@ -19,7 +19,7 @@ end
 
 
 function Server:getactivitylist_callback()
-         dump(self.data)
+         -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
@@ -76,7 +76,7 @@ end
 
 
 function Server:getranklistbyactivityid_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动的排行榜失败:" .. self.data.err_msg)
         return
@@ -97,7 +97,7 @@ end
 
 
 function Server:getactivityadlist_callback()
-    dump(self.data)
+    -- dump(self.data)
     if  self.data.err_code~=0  then
         self:show_float_message("活动还没有开始，敬请期待！" .. self.data.err_msg)
         return
@@ -126,7 +126,7 @@ end
 
 
 function Server:setorder_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
@@ -151,7 +151,7 @@ end
 
 
 function Server:getrankinglistofactivies_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
@@ -177,7 +177,7 @@ self:request_http("getactivitypoints" , params );
 end
 
 function Server:getactivitypoints_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         -- self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
@@ -197,7 +197,7 @@ function Server:getrecentgoldslist(count)
 end
 
 function Server:getrecentgoldslist_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
@@ -220,7 +220,7 @@ function Server:getactivitypointsdetail(activityid,playerloginname)
 end
 
 function Server:getactivitypointsdetail_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
@@ -247,7 +247,7 @@ function Server:getactivitywinners(activityid)
 end
 
 function Server:getactivitywinners_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
@@ -267,7 +267,7 @@ function Server:getactivityawards(activityid)
 end
 
 function Server:getactivityawards_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
@@ -286,7 +286,7 @@ function Server:validateactivitycode(code)
 end
 
 function Server:validateactivitycode_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("活动码无效")
         return
@@ -327,7 +327,7 @@ end
 
 function Server:setgamerecord_callback()
     -- MD5_KEY="PINLEGAME"
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("拼图上传数据失败:" .. self.data.err_msg)
         return
@@ -348,7 +348,7 @@ end
 
 
 function Server:getconsignee_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取邮件失败:" .. self.data.err_msg)
         return
@@ -397,7 +397,7 @@ end
 
 
 function Server:settasktarget_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("上传任务失败:" .. self.data.err_msg)
         return
@@ -417,7 +417,7 @@ end
 
 
 function Server:settasktargetrecord_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("领取任务奖励失败:" .. self.data.err_msg)
         return

@@ -11,7 +11,7 @@ end
 
 
 function Server:setuserinfo_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message(self.data.err_msg)
         NotificationCenter:Instance():PostNotification("xiugainicheng")
@@ -55,7 +55,7 @@ function Server:checkin()
     self:request_http("checkin" , params ); 
 end
 function Server:checkin_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message(self.data.err_msg)
         return
@@ -75,7 +75,7 @@ function Server:getcheckinhistory()
     self:request_http("getcheckinhistory" , params ); 
 end
 function Server:getcheckinhistory_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
@@ -132,7 +132,7 @@ function Server:setconsignee(name,phone,provinceId,cityId,address,provincename,c
 end
 
 function Server:setconsignee_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("修改玩家收货地址:" .. self.data.err_msg)
         return
@@ -157,7 +157,7 @@ function Server:getaffichelist (_pageno)
 end
 
 function Server:getaffichelist_callback()
-      dump(self.data)
+      -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取邮件信息:" .. self.data.err_msg)
         return
@@ -175,7 +175,7 @@ function Server:getaffichedetail(_messageid )
 end
 
 function Server:getaffichedetail_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取邮件详情:" .. self.data.err_msg)
         return
@@ -199,7 +199,7 @@ function Server:delaffichebyid(_messageid )
 end
 
 function Server:delaffichebyid_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("删除邮件:" .. self.data.err_msg)
         return
@@ -218,7 +218,7 @@ function Server:getaffichereward(_messageid )
 end
 
 function Server:getaffichereward_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("领取邮件奖励:" .. self.data.err_msg)
         return
@@ -235,7 +235,7 @@ function Server:setfeedback(params)
 end
 
 function Server:setfeedback_callback()
-    dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("玩家反馈:" .. self.data.err_msg)
         return
@@ -255,7 +255,7 @@ function Server:getgoldsranklist(pagesize,pageno,type)
 end
 
 function Server:getgoldsranklist_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
@@ -294,7 +294,7 @@ function Server:setconfig(itemsId ,status)
     self:request_http("setconfig" , params); 
 end
 function Server:setconfig_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
