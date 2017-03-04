@@ -677,7 +677,7 @@ function GrowingtreeScene:function_seed_state(dex)
   end
   --注 ：以收获3种子列表为Null 
   -- dump(seedlist[dex])
-   dump(back_seed_state)
+   --dump(back_seed_state)
   return back_seed_state
 
 end
