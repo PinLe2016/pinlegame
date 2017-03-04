@@ -385,7 +385,6 @@ function InvitefriendsLayer:function_addFriend(  )
                     self._search_name_friend=search_name_friend
                      Server:Instance():getsearchfriendlist(5,1,search_name_friend:getString()) 
                     print("收索添加好友",search_name_friend:getString())
-                    
             end)
             local again_search =self.addFriendSp:getChildByTag(4380)  --换一批
             again_search:addTouchEventListener(function(sender, eventType)
