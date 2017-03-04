@@ -995,15 +995,9 @@ function GrowingtreeScene:_ceshi( )
 
 end
 function GrowingtreeScene:function_template(data)
-                 
-
-            local _image_data= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  --  头像
-            local _name_data=data["nickname"]  -- 昵称
-            local _lv_data=data["treegrade"]  --等级
-            local _drycount_data=data["drycount"]  --水壶  0不是需要
-            local _gaincount_data=data["gaincount"]  --收获 0不是需要
-
-  
+             
+              
+             
             ScrollViewMenu=require("app.scenes.ScrollViewMenu")
             local function touchEvent(sender,eventType)             
               if eventType == ccui.TouchEventType.ended then
@@ -1011,9 +1005,9 @@ function GrowingtreeScene:function_template(data)
               end
 
             end
-            local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
-            local _name=data["nickname"]
-            local _lv=data["treegrade"]
+            -- local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
+            -- local _name=data["nickname"]
+            -- local _lv=data["treegrade"]
               if tonumber(data["flag"]) ==  0 then  --  1是好友   0  是自己
                   
                   GREEN_SMALL_BTN_IMG = {
@@ -1053,12 +1047,28 @@ function GrowingtreeScene:function_template(data)
             --ScrollViewMenu() --ccui.Button:create()
             button:setRotation(90)
             button:setTouchEnabled(true)
+             if tonumber(data["flag"])  ==  100  then
+                     local textButton = ccui.Button:create()
+                    textButton:setTouchEnabled(true)
+                    textButton:loadTextures("png/chengzhangshu-di-1-yaoqinghaoyou-1.png", "png/chengzhangshu-di-1-yaoqinghaoyou-2.png", "")
+                    textButton:setPosition(cc.p(0, 0))
+                    textButton:addTouchEventListener(touchEvent)
+                    button:addChild(textButton)
+                    return button
+            end
+
             --dump(button:getContentSize())
              if tonumber(data["flag"]) ==  0 then 
                 button:setTouchEnabled(false)
              end
             
-            
+              local _image_data= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  --  头像
+              local _name_data=data["nickname"]  -- 昵称
+              local _lv_data=data["treegrade"]  --等级
+              local _drycount_data=data["drycount"]  --水壶  0不是需要
+              local _gaincount_data=data["gaincount"]  --收获 0不是需要
+
+
             local  _image = cc.Sprite:create("png/"..  _image_data)
             _image:setPosition(0,15 )
             _image:setScale(0.55)
@@ -1101,7 +1111,7 @@ function GrowingtreeScene:function_template(data)
             name_text:setFontName("png/chuti.ttf")
             name_text:setPosition(0,55)
             button:addChild(name_text)
-
+            
 
             -- local  _image = cc.Sprite:create("png/"  ..  _image)
             -- _image:setPosition(button:getContentSize().width/2,button:getContentSize().height/2)
@@ -1167,14 +1177,34 @@ function GrowingtreeScene:createPageView()
 
      local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
     self._list=gettreefriendlist["list"]
+--  等级排序
+    local tmp = {}  
+    for i=1,#self._list-1 do  
+        for j=1,#self._list-i do  
+            if self._list[j]["treegrade"] < self._list[j+1]["treegrade"]  then  
+                tmp = self._list[j]  
+                self._list[j] = self._list[j+1]  
+                self._list[j+1] = tmp  
+            end  
+        end  
+    end  
     
     for i = 1 , #self._list do
-             local item = self.pv:newItem()
-             
+        local item = self.pv:newItem()
         local node=self:function_template(self._list[i])
         item:setContentSize(122, 126)
         item:addChild(node)      -- 为每个单独的item添加一个颜色图块
         self.pv:addItem(item)          --为pageview添加item
+    end
+    if #self._list<7 then
+      local _shu={flag = 100}
+      for i=#self._list +1 ,7 do
+        local item = self.pv:newItem()
+        local node=self:function_template(_shu)
+        item:setContentSize(122, 126)
+        item:addChild(node)      -- 为每个单独的item添加一个颜色图块
+        self.pv:addItem(item) 
+      end
     end
     self.pv:reload()    --需要重新刷新才能显示
           
