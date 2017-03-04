@@ -213,6 +213,7 @@ function Server:getsearchfriendlist_callback()
      dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("" .. self.data.err_msg)
+        NotificationCenter:Instance():PostNotification("FRIEND_GETSEARCHFRIENDLIST_FALSE")
         return
     end
     LocalData:Instance():set_getsearchfriendlist(self.data)--保存数据

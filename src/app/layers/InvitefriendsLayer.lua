@@ -15,6 +15,7 @@ function InvitefriendsLayer:ctor()--params
        self.friend_list_type=1
        self.table_insert={}
        self._table_int={}
+       self._search_type=0
        Server:Instance():get_reward_friend_list() --好友列表
 
               local _table=LocalData:Instance():get_gettasklist()
@@ -34,7 +35,15 @@ function InvitefriendsLayer:move_layer(_layer)
      local sque=transition.sequence({cc.EaseBackOut:create(move)})
       _layer:runAction(sque)
 end
-
+function InvitefriendsLayer:fun_friend_act(  )
+         self.Friend_lan = cc.CSLoader:createNode("Friend_lan.csb")  --邀请好友排行榜
+         self:addChild(self.Friend_lan,100)
+          local  move1=cc.MoveTo:create(1, cc.p( self.Friend_lan:getPositionX(),self.Friend_lan:getPositionY()+400 ) )
+          local action2 = cc.FadeOut:create(1)
+         local action = cc.Spawn:create(move1, action2)  --  cc.Sequence:create(move1)--,cc.CallFunc:create(logSprRotation))  
+         self.Friend_lan:stopAllActions()
+         self.Friend_lan:runAction(action)
+end
 function InvitefriendsLayer:init(  )
       
         -- self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
@@ -43,6 +52,7 @@ function InvitefriendsLayer:init(  )
 
        self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
        self:addChild(self.Invitefriends)
+       
        --self:move_layer(self.Invitefriends)
         self:pop_up()--  弹出框
        local back_bt=self.Invitefriends:getChildByTag(82)  --返回
@@ -356,6 +366,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	end
 
 end
+
 function InvitefriendsLayer:function_addFriend(  )
             self.search_friend_pageno=1
             self.addFriendSp = cc.CSLoader:createNode("addFriendSp.csb")  --邀请好友排行榜
@@ -376,13 +387,20 @@ function InvitefriendsLayer:function_addFriend(  )
                     
             end)
             local search_name_friend =self.addFriendSp:getChildByTag(4476)  --收索好友的昵称
-            
+            local function touchEvent(sender,eventType)             
+                    if eventType == 0 then
+                            print("开始",sender:getString()  )
+                    end
+            end
+            search_name_friend:addTouchEventListener(touchEvent)  
             local search_friend =self.addFriendSp:getChildByTag(4379)  --收索好友
+
             search_friend:addTouchEventListener(function(sender, eventType)
                     if eventType ~= ccui.TouchEventType.ended then
                           return
                     end
                     self._search_name_friend=search_name_friend
+                    self._search_type=1
                      Server:Instance():getsearchfriendlist(5,1,search_name_friend:getString()) 
                     print("收索添加好友",search_name_friend:getString())
             end)
@@ -403,9 +421,16 @@ end
 function InvitefriendsLayer:function_addFriend_data( )
             local getsearchfriendlist= LocalData:Instance():get_getsearchfriendlist()--保存数据
             local list=getsearchfriendlist["list"]
-            if #list ==  0  then
-               return
+            if self._search_type==1  and  #list ==  0  then
+                       self:fun_friend_act()
+                       self._search_type=0
+                       self.add_ListView:removeAllItems()
             end
+            if #list ==  0  then
+              
+                   return
+            end
+            self.add_ListView:removeAllItems()
                for i=1,#list do
                    self.add_ListView:pushBackDefaultItem()
                   local  _cell =  self.add_ListView:getItem(i-1)
@@ -466,6 +491,11 @@ function InvitefriendsLayer:onEnter()
                          self:function_addFriend_data()
                         
                       end)
+       NotificationCenter:Instance():AddObserver("FRIEND_GETSEARCHFRIENDLIST_FALSE", self,
+                       function()
+                         self._search_type=0
+                        
+                      end)
        NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
                        function()
                           if self.friend_list_type==1 then
@@ -488,6 +518,7 @@ function InvitefriendsLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_GETSEARCHFRIENDLIST", self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
+        NotificationCenter:Instance():RemoveObserver("FRIEND_GETSEARCHFRIENDLIST_FALSE", self)
 end
 
 return InvitefriendsLayer
