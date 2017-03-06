@@ -746,9 +746,10 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
                                if eventType ~= ccui.TouchEventType.ended then
                                       return
                                end
+                               local _is=true
                                --Server:Instance():setseedremove(self.z_treeid,self.z_seedid)
                                self.floating_layer:fun_Grawpopup("作物还没有收获,真的铲除吗",function (sender, eventType)
-                                              if eventType==1 then
+                                              if eventType==1 and  _is  ==  true then
                                                    Server:Instance():setseedremove(self.z_treeid,self.z_seedid)
                                               end                
                               end)  
