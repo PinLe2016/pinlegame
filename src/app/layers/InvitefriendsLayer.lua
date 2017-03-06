@@ -394,14 +394,18 @@ function InvitefriendsLayer:function_addFriend(  )
             end
             search_name_friend:addTouchEventListener(touchEvent)  
             local search_friend =self.addFriendSp:getChildByTag(4379)  --收索好友
-
+            
             search_friend:addTouchEventListener(function(sender, eventType)
                     if eventType ~= ccui.TouchEventType.ended then
                           return
                     end
                     self._search_name_friend=search_name_friend
                     self._search_type=1
-                     Server:Instance():getsearchfriendlist(5,1,search_name_friend:getString()) 
+                     local _str=""
+                      if self._search_name_friend  ~=  nil then
+                          _str=self._search_name_friend:getString()
+                      end
+                     Server:Instance():getsearchfriendlist(5,1,_str) 
                     print("收索添加好友",search_name_friend:getString())
             end)
             local again_search =self.addFriendSp:getChildByTag(4380)  --换一批
@@ -410,7 +414,12 @@ function InvitefriendsLayer:function_addFriend(  )
                           return
                     end
                     self.search_friend_pageno=self.search_friend_pageno+1
-                    Server:Instance():getsearchfriendlist(5,self.search_friend_pageno,search_name_friend:getString()) 
+                     local _str=""
+                      if self._search_name_friend  ~=  nil then
+                          _str=self._search_name_friend:getString()
+                      end
+
+                    Server:Instance():getsearchfriendlist(5,self.search_friend_pageno,_str) 
                    print("刷新好友")
                     
             end)
@@ -506,7 +515,11 @@ function InvitefriendsLayer:onEnter()
                           elseif self.friend_list_type==0 then
                             Server:Instance():promptbox_box_buffer("成功添加好友") 
                             -- LocalData:Instance():set_getsearchfriendlist(nil)
-                            Server:Instance():getsearchfriendlist(5,1,self._search_name_friend:getString()) 
+                            local _str=""
+                            if self._search_name_friend  ~=  nil then
+                                _str=self._search_name_friend:getString()
+                            end
+                            Server:Instance():getsearchfriendlist(5,1,_str) 
                           end
                           
                           
