@@ -82,7 +82,16 @@ function GrowingtreeScene:init(  )
       local dishu_jia=cc.Sprite:create("png/chengzhangshu-shuihu-jiahao-.png")
       dishu_jia:setPosition(-15, 20)
       self._score2 :addChild(dishu_jia)
-      
+      --  初始化果实收获数量
+      self._score1 =   ccui.TextAtlas:create(tostring("0"),"png/guoshiplist.png", 30, 42, "0")--
+      self._score1 :setAnchorPoint(1,0.5)
+      self._score1 :setVisible(false)
+      self._score1:setRotation(90)
+       --self._score2:setPosition(320, 480)
+      self.Growingtree:addChild(self._score1 ,1,1086)
+      local dishu_number=cc.Sprite:create("png/chengzhangshu-shuihu-jiahao-.png")
+      dishu_number:setPosition(-15, 20)
+      self._score1 :addChild(dishu_number)
 
       -- self:_ceshi()
     	for i=1,8 do
@@ -223,6 +232,7 @@ function GrowingtreeScene:init(  )
 
 end
 function GrowingtreeScene:fun_data()
+  self._deng_act_img:loadTexture("png/chengzhangshu-1-touming.png")
     	for i=1,8 do
     		self.pt_table[i]:loadTexture("png/chengzhangshu-zhong-di-suo.png")
     		self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setVisible(false)
@@ -811,7 +821,23 @@ function GrowingtreeScene:coinAction(jin,x,y)
      self._score2:stopAllActions()
      self._score2:runAction(action)
 end
-
+ --加经收获果实动画
+function GrowingtreeScene:fun_harvest_number(_number,x,y)
+    print("动画",x,"  ",y)
+    -- if tonumber(_number)  <=  0 then
+    --  return
+    -- end
+    self._score1 :setVisible(true)
+    self._score1:setPosition(x, y)
+    self._score1:setProperty(tostring(jin),"png/guoshiplist.png", 30, 42, "0")
+     local function logSprRotation(sender)
+                     self._score1 :setVisible(false)                   
+     end
+     local  move1=cc.MoveTo:create(0.5, cc.p( x+180,y ) )
+     local action = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation))
+     self._score1:stopAllActions()
+     self._score1:runAction(action)
+end
 
 function GrowingtreeScene:onEnter()
  --初始化成长树
@@ -883,7 +909,9 @@ function GrowingtreeScene:onEnter()
                        function()  
                               local _setseedreward=LocalData:Instance():get_setseedreward()--
                                local jin=0
+                               local num=0
                               if #_setseedreward["rewardlist"]  >0  then
+                                 num=_setseedreward["rewardlist"]["gainsamount"]
                                       for i=1,#_setseedreward["rewardlist"] do
                                           if _setseedreward["rewardlist"][i]["type"]   ==  0  then
                                             jin=_setseedreward["rewardlist"][i]["reward"]
@@ -895,6 +923,7 @@ function GrowingtreeScene:onEnter()
                               self.pt_tag_table=0
                               Server:Instance():gettreelist(self.back_playerid)
                               self:coinAction(jin,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
+                              self:fun_harvest_number(num,self._obj_act:getParent():getPositionX()-50  ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
 
                       end)
