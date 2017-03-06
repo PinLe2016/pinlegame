@@ -20,6 +20,7 @@ function GrowingtreeScene:ctor()
        self._type_str_text=   nil
       self._obj_act=nil
        self.pv=  nil
+       self._deng_hua=0
        self.is_friend=false
        self._feied_count=1
        self._Lv_text=nil
@@ -124,6 +125,7 @@ function GrowingtreeScene:init(  )
                    end 
                       if self.is_friend   then
                           self.back_playerid=nil
+                          self._deng_act:setVisible(false)
                           self.is_friend=false
                           Server:Instance():gettreelist(self.back_playerid)
                           self.friend_growingtree_checkbox:setVisible(true)
@@ -289,6 +291,8 @@ function GrowingtreeScene:fun_data()
                   if self.back_playerid  ~=  nil then
                     self.pt_table[i]:setTouchEnabled(false)
                   end
+
+                  self._deng_act_img:loadTexture("png/chengzhangshu-1-touming.png")
     			-- self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setString("可种植")
     			-- self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setVisible(false)
                   self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):loadTexture("png/chengzhangshu-zhongzi-0.png")
@@ -317,6 +321,7 @@ function GrowingtreeScene:fun_data()
                             self._obj_act=sender
                              self._deng_act:setPosition(sender:getParent():getPositionX(),sender:getParent():getPositionY())
                              self._deng_act:setVisible(true)
+                             self._deng_hua=sender:getTag()-103
                              self._deng_act_img:loadTexture("png/chengzhangshu-1-touming.png")
                            
                             self.pt_tag_table=sender:getTag()
@@ -356,25 +361,34 @@ function GrowingtreeScene:fun_data()
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
-	 			     self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
+	 			     --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/chengzhangshu-zhong-di-suo.png")
-                              self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
+                              --self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
 	 			elseif tostring(tree_seedlist[i]["seedstatus"]) ==  "0" then  --  干旱  浇水
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString("可浇水")
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shuihu.png")
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage1[j] )
-                               self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[j] )
+                               --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[j] )
                         else
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage1[j] )
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
-	 			      self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[j] )
+	 			      --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[j] )
                         end
 	 			self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
+                       if tonumber(tree_seedlist[i]["seatcount"])  ==  self._deng_hua then
+                          for p=1,8 do
+                            if tostring(tree_seedlist[i]["seedname"])  ==self.zh_state[p]   then
+                               self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[p] )
+                            end
+                          end
+                       end
                         
+                                                      
+
 	 			self.pt_table[tree_seedlist[i]["seatcount"]]:addTouchEventListener(function(sender, eventType  )
 				            if eventType ~= ccui.TouchEventType.ended then
 				                return
@@ -417,9 +431,11 @@ function GrowingtreeScene:fun_data()
                                                self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),true,z)  --  只是测试
                                                self._deng_act:setPosition(sender:getParent():getPositionX(),sender:getParent():getPositionY())
                                                self._deng_act:setVisible(true)
+                                               self._deng_hua=sender:getTag()-103
                                                for k=1,8 do
                                                   if tostring(tree_seedlist[i]["seedname"]) == tostring(self.zh_state[k]) then
                                                       self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[k] )
+                                                      
                                                   end
                                                  
                                                end
@@ -439,6 +455,7 @@ function GrowingtreeScene:fun_data()
                                               --   end)  
                                                 self._deng_act:setPosition(sender:getParent():getPositionX(),sender:getParent():getPositionY())
                                                self._deng_act:setVisible(true)
+                                               self._deng_hua=sender:getTag()-103
                                                for k=1,8 do
                                                   if tostring(tree_seedlist[i]["seedname"]) == tostring(self.zh_state[k]) then
                                                       self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[k] )
@@ -450,6 +467,7 @@ function GrowingtreeScene:fun_data()
 
                                                  self._deng_act:setPosition(sender:getParent():getPositionX(),sender:getParent():getPositionY())
                                                self._deng_act:setVisible(true)
+                                               self._deng_hua=sender:getTag()-103
                                                for k=1,8 do
                                                   if tostring(tree_seedlist[i]["seedname"]) == tostring(self.zh_state[k]) then
                                                       self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[k] )
@@ -469,6 +487,7 @@ function GrowingtreeScene:fun_data()
                                                 else
                                                         self._deng_act:setPosition(sender:getParent():getPositionX(),sender:getParent():getPositionY())
                                                         self._deng_act:setVisible(true)
+                                                        self._deng_hua=sender:getTag()-103
                                                          for k=1,8 do
                                                             if tostring(tree_seedlist[i]["seedname"]) == tostring(self.zh_state[k]) then
                                                                 self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[k] )
@@ -870,6 +889,7 @@ function GrowingtreeScene:onEnter()
                               Server:Instance():gettreelist(self.back_playerid)
                               self.pt_tag_table=0
                               self.ListNode:setVisible(false)
+                              
                       end)
   --种植不成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDPLANT_FALSE", self,
@@ -890,6 +910,7 @@ function GrowingtreeScene:onEnter()
                                         end
                               
                               end
+                              self._deng_act_img:loadTexture("png/chengzhangshu-1-touming.png")
                               Server:Instance():gettreelist(self.back_playerid)
                               self.ListNode:setVisible(false)
                               self:fun_FruitinformationNode(1,1,false,-1)
@@ -910,6 +931,7 @@ function GrowingtreeScene:onEnter()
                               local _setseedreward=LocalData:Instance():get_setseedreward()--
                                local jin=0
                                local num=0
+                               self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
                               if #_setseedreward["rewardlist"]  >0  then
                                  num=_setseedreward["rewardlist"]["gainsamount"]
                                       for i=1,#_setseedreward["rewardlist"] do
@@ -947,7 +969,7 @@ function GrowingtreeScene:onEnter()
                                         end
 
                               end
-                             
+                             self._deng_act_img:loadTexture("png/chengzhangshu-1-touming.png")
                               Server:Instance():gettreelist(self.back_playerid)
                               self:coinAction(jin,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
@@ -955,10 +977,12 @@ function GrowingtreeScene:onEnter()
   --铲除成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDREMOVE", self,
                        function()  
+                        self._deng_act_img:loadTexture("png/chengzhangshu-1-touming.png")
                               self:fun_FruitinformationNode(1,1,false,-1)
                               self.pt_tag_table=0
                               self:unscheduleUpdate()
                               Server:Instance():gettreelist(self.back_playerid)
+                              
                       end)
 end
 
