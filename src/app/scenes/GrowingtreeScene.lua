@@ -450,7 +450,7 @@ function GrowingtreeScene:fun_data()
                                     self.friend_growingtree_checkbox:setTouchEnabled(false)
                                     self.pt_tag_table=sender:getTag()
                                     -- print("种植1")
-                                   dump(tree_seedlist)
+                                   -- dump(tree_seedlist)
 
                                     for z=1,#tree_seedlist do
 
@@ -990,8 +990,10 @@ function GrowingtreeScene:onEnter()
                                local jin=0
                                local num=0
                                self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
-                              if #_setseedreward["rewardlist"]  >0  then
-                                 num=_setseedreward["gainsamount"]
+
+                              if  _setseedreward["rewardlist"] and #_setseedreward["rewardlist"]  >0  then
+                                 num=_setseedreward["rewardlist"]["gainsamount"]
+
                                       for i=1,#_setseedreward["rewardlist"] do
                                            if _setseedreward["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
                                             jin=_setseedreward["rewardlist"][i]["reward"]
