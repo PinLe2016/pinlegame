@@ -387,12 +387,9 @@ function InvitefriendsLayer:function_addFriend(  )
                     
             end)
             local search_name_friend =self.addFriendSp:getChildByTag(4476)  --收索好友的昵称
-            local function touchEvent(sender,eventType)             
-                    if eventType == 0 then
-                            print("开始",sender:getString()  )
-                    end
-            end
-            search_name_friend:addTouchEventListener(touchEvent)  
+            self:function_keyboard(search_name_friend)--注册键盘监听
+      
+            
             local search_friend =self.addFriendSp:getChildByTag(4379)  --收索好友
             
             search_friend:addTouchEventListener(function(sender, eventType)
@@ -426,6 +423,19 @@ function InvitefriendsLayer:function_addFriend(  )
             
            
 end
+
+function InvitefriendsLayer:function_keyboard(target)
+        local function keyboardReleased(keyCode, event)
+              dump(target:getString())
+          end
+
+
+        local listener = cc.EventListenerKeyboard:create()
+        listener:registerScriptHandler(keyboardReleased, cc.Handler.EVENT_KEYBOARD_RELEASED)
+        local eventDispatcher = target:getEventDispatcher()
+        eventDispatcher:addEventListenerWithSceneGraphPriority(listener, target)
+end
+
 --  刷新添加好友数据
 function InvitefriendsLayer:function_addFriend_data( )
             local getsearchfriendlist= LocalData:Instance():get_getsearchfriendlist()--保存数据
