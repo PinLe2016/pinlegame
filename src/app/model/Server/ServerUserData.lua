@@ -320,7 +320,7 @@ function Server:gettreelist(friendplayerid)
     self:request_http("gettreelist" , params); 
 end
 function Server:gettreelist_callback()
-      dump(self.data)
+      --dump(self.data)
      -- dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
         --self:show_float_message( self.data.err_msg)
