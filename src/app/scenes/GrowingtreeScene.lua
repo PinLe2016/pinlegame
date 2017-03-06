@@ -83,16 +83,27 @@ function GrowingtreeScene:init(  )
       local dishu_jia=cc.Sprite:create("png/chengzhangshu-shuihu-jiahao-.png")
       dishu_jia:setPosition(-15, 20)
       self._score2 :addChild(dishu_jia)
+
+      self.gold_dishu_jia=cc.Sprite:create("png/chengzhangshu-touxiang-jingyan-icon.png")
+      self.gold_dishu_jia:setScale(1.5)
+      self.gold_dishu_jia:setPosition(-50, 20)
+      self._score2 :addChild(self.gold_dishu_jia)
+
       --  初始化果实收获数量
       self._score1 =   ccui.TextAtlas:create(tostring("0"),"png/guoshiplist.png", 30, 42, "0")--
       self._score1 :setAnchorPoint(1,0.5)
       self._score1 :setVisible(false)
       self._score1:setRotation(90)
-       --self._score2:setPosition(320, 480)
+      -- self._score1:setPosition(320, 480)
       self.Growingtree:addChild(self._score1 ,1,1086)
       local dishu_number=cc.Sprite:create("png/chengzhangshu-shuihu-jiahao-.png")
       dishu_number:setPosition(-15, 20)
       self._score1 :addChild(dishu_number)
+
+      local dishu_number_zhong=cc.Sprite:create("png/chengzhangshu-zhongzi-0.png")  --种子
+      dishu_number_zhong:setPosition(-50, 20)
+      self._score1 :addChild(dishu_number_zhong)
+
 
       -- self:_ceshi()
     	for i=1,8 do
@@ -905,8 +916,12 @@ function GrowingtreeScene:onEnter()
                                local jin=0
                               if #_setseedmanure["rewardlist"]  >0  then
                                       for i=1,#_setseedmanure["rewardlist"] do
-                                          if _setseedmanure["rewardlist"][i]["type"]   ==  0  then
+                                          if _setseedmanure["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
                                             jin=_setseedmanure["rewardlist"][i]["reward"]
+                                          self.gold_dishu_jia:setTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
+                                          elseif _setseedmanure["rewardlist"][i]["type"]   ==  1 then
+                                             jin=_setseedmanure["rewardlist"][i]["reward"]
+                                            self.gold_dishu_jia:setTexture("png/chengzhangshu-touxiang-jingbi-icon.png")
                                           end
                                         end
                               
@@ -936,8 +951,12 @@ function GrowingtreeScene:onEnter()
                               if #_setseedreward["rewardlist"]  >0  then
                                  num=_setseedreward["rewardlist"]["gainsamount"]
                                       for i=1,#_setseedreward["rewardlist"] do
-                                          if _setseedreward["rewardlist"][i]["type"]   ==  0  then
+                                           if _setseedreward["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
                                             jin=_setseedreward["rewardlist"][i]["reward"]
+                                          self.gold_dishu_jia:setTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
+                                          elseif _setseedreward["rewardlist"][i]["type"]   ==  1 then
+                                             jin=_setseedreward["rewardlist"][i]["reward"]
+                                            self.gold_dishu_jia:setTexture("png/chengzhangshu-touxiang-jingbi-icon.png")
                                           end
                                         end
                               
@@ -964,8 +983,12 @@ function GrowingtreeScene:onEnter()
                               local jin=0
                               if #_setseedwater["rewardlist"]  >0  then
                                       for i=1,#_setseedwater["rewardlist"] do
-                                          if _setseedwater["rewardlist"][i]["type"]   ==  0  then
+                                          if _setseedwater["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
                                             jin=_setseedwater["rewardlist"][i]["reward"]
+                                          self.gold_dishu_jia:setTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
+                                          elseif _setseedwater["rewardlist"][i]["type"]   ==  1 then
+                                             jin=_setseedwater["rewardlist"][i]["reward"]
+                                            self.gold_dishu_jia:setTexture("png/chengzhangshu-touxiang-jingbi-icon.png")
                                           end
                                         end
 

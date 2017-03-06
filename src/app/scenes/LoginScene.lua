@@ -126,8 +126,6 @@ function LoginScene:_coverlayer( )
                 print("封面")
         end)
 end
-
-
  function LoginScene:registered_init()
 
    local _ybt=self.registered:getChildByTag(220) --注册验证码按钮

@@ -313,8 +313,12 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 		Util:share()
       elseif tag==3627 then  --添加好友
             print("添加好友")
-            self:function_addFriend()
+            self.f_count=0
+            self.f_count_num=0
+            self.f_count_str="旗鼓"
+            self.f_shousuo=false
             self._search_name_friend=nil
+            self:function_addFriend()
             Server:Instance():getsearchfriendlist(5,1) 
       elseif tag==3628 then  --删除好友
            --  print("删除好友")
@@ -388,15 +392,14 @@ function InvitefriendsLayer:function_addFriend(  )
             end)
             local search_name_friend =self.addFriendSp:getChildByTag(4476)  --收索好友的昵称
             self:function_keyboard(search_name_friend)--注册键盘监听
-      
-            
+            self._search_name_friend=search_name_friend
             local search_friend =self.addFriendSp:getChildByTag(4379)  --收索好友
-            
+            self._search_name_friend=search_name_friend
             search_friend:addTouchEventListener(function(sender, eventType)
                     if eventType ~= ccui.TouchEventType.ended then
                           return
                     end
-                    self._search_name_friend=search_name_friend
+                    self.f_shousuo = true
                     self._search_type=1
                      local _str=""
                       if self._search_name_friend  ~=  nil then
@@ -426,9 +429,46 @@ end
 
 function InvitefriendsLayer:function_keyboard(target)
         local function keyboardReleased(keyCode, event)
-              dump(target:getString())
-          end
+                --   print("啊啊",self._search_name_friend:getString())
+                --   dump(self._search_name_friend:getString())
+                --   if self._search_name_friend  ~=  nil   then
+                --      self.f_count=  self._search_name_friend:getStringLength()
+                --   else
+                --     return
+                --   end
+                --   if  self._search_name_friend:getStringLength()  ==  6  and   self.f_count_num== 1 then
+                --        Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
+                --   end
+                --   if  self._search_name_friend:getStringLength()  ==  6 then
+                --      self.f_count_num=0
+                --      self.f_shousuo=false
+                --      return
+                --   end
+                --   print("aaa  ",self.f_count_num,"  ",self.f_count ,  "  ",self.f_shousuo)
+                --   if self.f_count_num <  self.f_count      then
+                --      self.f_count_num=self.f_count
+                --      return
+                --   end 
+                --   if  self.f_count==self._search_name_friend:getMaxLength()  or   self.f_shousuo==false then
+                --     return
+                --   end
 
+                --   local _str=""
+                --   if self._search_name_friend  ~=  nil then
+                --       _str=self._search_name_friend:getString()
+                --   end
+
+                -- Server:Instance():getsearchfriendlist(5,self.search_friend_pageno,_str) 
+                -- self.f_count_num=self.f_count
+
+
+              
+                if self._search_name_friend:getStringLength()  ==  6  and self.f_count== 1 then
+                  Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
+                end
+                self.f_count=  self._search_name_friend:getStringLength()
+          end
+   
 
         local listener = cc.EventListenerKeyboard:create()
         listener:registerScriptHandler(keyboardReleased, cc.Handler.EVENT_KEYBOARD_RELEASED)
@@ -445,10 +485,10 @@ function InvitefriendsLayer:function_addFriend_data( )
                        self._search_type=0
                        self.add_ListView:removeAllItems()
             end
-            if #list ==  0  then
+            -- if #list ==  0  then
               
-                   return
-            end
+            --        return
+            -- end
             self.add_ListView:removeAllItems()
                for i=1,#list do
                    self.add_ListView:pushBackDefaultItem()
