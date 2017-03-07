@@ -1011,7 +1011,7 @@ function GrowingtreeScene:onEnter()
                                 if self.back_playerid  ~=  nil then
                                      num=_setseedreward["stolengainsamountperPlayer"]
                                 else
-                                     num=_setseedreward["gainsamount"]
+                                     num=_setseedreward["remainamount"]
                                 end
                                  
 
