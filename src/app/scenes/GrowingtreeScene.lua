@@ -1008,7 +1008,12 @@ function GrowingtreeScene:onEnter()
                                self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
 
                               if  _setseedreward["rewardlist"] and #_setseedreward["rewardlist"]  >0  then
-                                 num=_setseedreward["gainsamount"]
+                                if self.back_playerid  ~=  nil then
+                                     num=_setseedreward["stolengainsamountperPlayer"]
+                                else
+                                     num=_setseedreward["gainsamount"]
+                                end
+                                 
 
                                       for i=1,#_setseedreward["rewardlist"] do
                                            if _setseedreward["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
