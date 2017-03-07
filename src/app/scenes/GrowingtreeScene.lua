@@ -901,7 +901,7 @@ function GrowingtreeScene:coinAction1(jin,x,y)
      local function logSprRotation(sender)
                      _score3 :setVisible(false)                   
      end
-     local  move1=cc.MoveTo:create(1, cc.p( x+160,y ) )
+     local  move1=cc.MoveTo:create(1, cc.p( x+120,y ) )
      local action = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation))
      _score3:stopAllActions()
      _score3:runAction(action)
@@ -920,7 +920,7 @@ function GrowingtreeScene:fun_harvest_number(_number,x,y)
      local function logSprRotation(sender)
                      self._score1 :setVisible(false)                   
      end
-     local  move1=cc.MoveTo:create(1, cc.p( x+180,y ) )
+     local  move1=cc.MoveTo:create(1, cc.p( x-120,y ) )
      local action = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation))
      self._score1:stopAllActions()
      self._score1:runAction(action)
@@ -1011,7 +1011,7 @@ function GrowingtreeScene:onEnter()
                                 if self.back_playerid  ~=  nil then
                                      num=_setseedreward["stolengainsamountperPlayer"]
                                 else
-                                     num=_setseedreward["remainamount"]
+                                     num=_setseedreward["rewardamount"]
                                 end
                                  
 
@@ -1019,18 +1019,18 @@ function GrowingtreeScene:onEnter()
                                            if _setseedreward["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
                                             jin=_setseedreward["rewardlist"][i]["reward"]
                                           
-                                          self:coinAction1(jin,self._obj_act:getParent():getPositionX()-50  ,self._obj_act:getParent():getPositionY()-30)
+                                          self:coinAction1(jin,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
                                           self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
-                                          elseif _setseedreward["rewardlist"][i]["type"]   ==  1 then
-                                             jin=_setseedreward["rewardlist"][i]["reward"]
+                                          -- elseif _setseedreward["rewardlist"][i]["type"]   ==  1 then
+                                          --    jin=_setseedreward["rewardlist"][i]["reward"]
                                            
-                                            self:coinAction1(jin,self._obj_act:getParent():getPositionX()-100  ,self._obj_act:getParent():getPositionY()-30)
-                                             self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-jingbi-icon.png")
-                                          elseif _setseedreward["rewardlist"][i]["type"]   ==  2 then  --  道具
-                                             jin=_setseedreward["rewardlist"][i]["reward"]
+                                          --   self:coinAction1(jin,self._obj_act:getParent():getPositionX()-100  ,self._obj_act:getParent():getPositionY()-30)
+                                          --    self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-jingbi-icon.png")
+                                          -- elseif _setseedreward["rewardlist"][i]["type"]   ==  2 then  --  道具
+                                          --    jin=_setseedreward["rewardlist"][i]["reward"]
                                            
-                                            self:coinAction1(jin,self._obj_act:getParent():getPositionX()-150  ,self._obj_act:getParent():getPositionY()-30)
-                                           self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-zuanshi-icon.png")
+                                          --   self:coinAction1(jin,self._obj_act:getParent():getPositionX()-150  ,self._obj_act:getParent():getPositionY()-30)
+                                          --  self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-zuanshi-icon.png")
                                           end
                                         end
                               
