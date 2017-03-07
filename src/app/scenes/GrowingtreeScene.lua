@@ -91,20 +91,20 @@ function GrowingtreeScene:init(  )
 
 
       --  初始化 加经验
-      self._score3 =   ccui.TextAtlas:create(tostring("0"),"png/guoshiplist.png", 30, 42, "0")--
-      self._score3 :setAnchorPoint(1,0.5)
-      self._score3 :setVisible(false)
-      self._score3:setRotation(90)
-       --self._score2:setPosition(320, 480)
-      self.Growingtree:addChild(self._score3 ,1,1086)
-      local dishu_jia1=cc.Sprite:create("png/chengzhangshu-shuihu-jiahao-.png")
-      dishu_jia1:setPosition(-15, 20)
-      self._score3 :addChild(dishu_jia1)
+      -- self._score3 =   ccui.TextAtlas:create(tostring("0"),"png/guoshiplist.png", 30, 42, "0")--
+      -- self._score3 :setAnchorPoint(1,0.5)
+      -- self._score3 :setVisible(false)
+      -- self._score3:setRotation(90)
+      --  --self._score2:setPosition(320, 480)
+      -- self.Growingtree:addChild(self._score3 ,1,1086)
+      -- local dishu_jia1=cc.Sprite:create("png/chengzhangshu-shuihu-jiahao-.png")
+      -- dishu_jia1:setPosition(-15, 20)
+      -- self._score3 :addChild(dishu_jia1)
 
-      self.gold_dishu_jia1=cc.Sprite:create("png/chengzhangshu-touxiang-jingyan-icon.png")
-      self.gold_dishu_jia1:setScale(1.5)
-      self.gold_dishu_jia1:setPosition(-50, 20)
-      self._score3 :addChild(self.gold_dishu_jia1)
+      -- self.gold_dishu_jia1=cc.Sprite:create("png/chengzhangshu-touxiang-jingyan-icon.png")
+      -- self.gold_dishu_jia1:setScale(1.5)
+      -- self.gold_dishu_jia1:setPosition(-50, 20)
+      -- self._score3 :addChild(self.gold_dishu_jia1)
 
 
       --  初始化果实收获数量
@@ -674,6 +674,7 @@ function GrowingtreeScene:update(dt)
          self:unscheduleUpdate()
         return
       end
+
        local _table  = Util:FormatTime_colon_bar(self.seed_information["seed_next_time"] -  self.count_time )
        if tonumber(self.seed_information["seed_next_time"]) <= 0 then
          Server:Instance():gettreelist(self.back_playerid)  --目的是刷新数据
@@ -873,22 +874,37 @@ function GrowingtreeScene:coinAction(jin,x,y)
      self._score2:runAction(action)
 end
 
- --加经验动画
+ --加金币动画
 function GrowingtreeScene:coinAction1(jin,x,y)
     print("动画",x,"  ",y)
     if tonumber(jin)  <=  0 then
      return
     end
-    self._score3 :setVisible(true)
-    self._score3:setPosition(x, y)
-    self._score3:setProperty(tostring(jin),"png/guoshiplist.png", 30, 42, "0")
+    local _score3 =   ccui.TextAtlas:create(tostring("0"),"png/guoshiplist.png", 30, 42, "0")--
+      _score3 :setAnchorPoint(1,0.5)
+      _score3 :setVisible(false)
+      _score3:setRotation(90)
+       --self._score2:setPosition(320, 480)
+      self.Growingtree:addChild(_score3 ,1,1086)
+      local dishu_jia1=cc.Sprite:create("png/chengzhangshu-shuihu-jiahao-.png")
+      dishu_jia1:setPosition(-15, 20)
+      _score3 :addChild(dishu_jia1)
+
+      self.gold_dishu_jia1=cc.Sprite:create("png/chengzhangshu-touxiang-jingyan-icon.png")
+      self.gold_dishu_jia1:setScale(1.5)
+      self.gold_dishu_jia1:setPosition(-50, 20)
+      _score3 :addChild(self.gold_dishu_jia1)
+
+    _score3 :setVisible(true)
+    _score3:setPosition(x, y)
+    _score3:setProperty(tostring(jin),"png/guoshiplist.png", 30, 42, "0")
      local function logSprRotation(sender)
-                     self._score3 :setVisible(false)                   
+                     _score3 :setVisible(false)                   
      end
-     local  move1=cc.MoveTo:create(1, cc.p( x+140,y ) )
+     local  move1=cc.MoveTo:create(1, cc.p( x+160,y ) )
      local action = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation))
-     self._score3:stopAllActions()
-     self._score3:runAction(action)
+     _score3:stopAllActions()
+     _score3:runAction(action)
 end
 
  --加经收获果实动画
@@ -904,7 +920,7 @@ function GrowingtreeScene:fun_harvest_number(_number,x,y)
      local function logSprRotation(sender)
                      self._score1 :setVisible(false)                   
      end
-     local  move1=cc.MoveTo:create(1, cc.p( x+160,y ) )
+     local  move1=cc.MoveTo:create(1, cc.p( x+180,y ) )
      local action = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation))
      self._score1:stopAllActions()
      self._score1:runAction(action)
@@ -997,16 +1013,19 @@ function GrowingtreeScene:onEnter()
                                       for i=1,#_setseedreward["rewardlist"] do
                                            if _setseedreward["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
                                             jin=_setseedreward["rewardlist"][i]["reward"]
-                                          self.gold_dishu_jia:setTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
-                                          self:coinAction(jin,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
+                                          
+                                          self:coinAction1(jin,self._obj_act:getParent():getPositionX()-50  ,self._obj_act:getParent():getPositionY()-30)
+                                          self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
                                           elseif _setseedreward["rewardlist"][i]["type"]   ==  1 then
                                              jin=_setseedreward["rewardlist"][i]["reward"]
-                                            self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-jingbi-icon.png")
+                                           
                                             self:coinAction1(jin,self._obj_act:getParent():getPositionX()-100  ,self._obj_act:getParent():getPositionY()-30)
+                                             self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-jingbi-icon.png")
                                           elseif _setseedreward["rewardlist"][i]["type"]   ==  2 then  --  道具
                                              jin=_setseedreward["rewardlist"][i]["reward"]
-                                            self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-zuanshi-icon.png")
-                                            self:coinAction1(jin,self._obj_act:getParent():getPositionX()-100  ,self._obj_act:getParent():getPositionY()-30)
+                                           
+                                            self:coinAction1(jin,self._obj_act:getParent():getPositionX()-150  ,self._obj_act:getParent():getPositionY()-30)
+                                           self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-zuanshi-icon.png")
                                           end
                                         end
                               
@@ -1015,7 +1034,7 @@ function GrowingtreeScene:onEnter()
                               self.pt_tag_table=0
                               Server:Instance():gettreelist(self.back_playerid)
                               --self:coinAction(jin,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
-                              self:fun_harvest_number(num,self._obj_act:getParent():getPositionX()-50  ,self._obj_act:getParent():getPositionY()-30)
+                              self:fun_harvest_number(num,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
 
                       end)
