@@ -1008,11 +1008,11 @@ function GrowingtreeScene:onEnter()
                                self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
 
                               if  _setseedreward["rewardlist"] and #_setseedreward["rewardlist"]  >0  then
-                                if self.back_playerid  ~=  nil then
-                                     num=_setseedreward["stolengainsamountperPlayer"]
-                                else
+                                -- if self.back_playerid  ~=  nil then
+                                --      num=_setseedreward["stolengainsamountperPlayer"]
+                                -- else
                                      num=_setseedreward["rewardamount"]
-                                end
+                                --end
                                  
 
                                       for i=1,#_setseedreward["rewardlist"] do
