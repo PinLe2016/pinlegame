@@ -1,5 +1,7 @@
 Util = {}
 
+
+
 function Util:CenterNodeInParent(node, use_boundbox)
    local parent = node:getParent()
    local size = parent:getContentSize()
@@ -446,9 +448,48 @@ function Util:all_layer_backMusic() -- 所有界面返回音效
     audio.playSound("sound/effect/guanbi.mp3",false)
   end
 end
+--  增加光标
+function Util:function_keyboard(_parent,target,font_size)
+        local alert = ccui.Text:create()
+        alert:setString("|")
+        alert:setFontName("png/chuti.ttf")
+        local _guangbiao_x=target:getPositionX()
+        alert:setPosition(target:getPositionX(),target:getPositionY())
+        alert:setFontName(font_TextName)
+        alert:setFontSize(40)
+        alert:setColor(cc.c3b(0, 0, 0))
+        _parent:addChild(alert)
+
+        local  move=cc.Blink:create(1, 1)  
+        local action = cc.RepeatForever:create(move)
+        alert:runAction(action)
+
+        local function keyboardReleased(keyCode, event)
+                 local str=tostring(target:getString())
+                 local len = Util:fun_Strlen(str)
+                 alert:setPositionX(_guangbiao_x+len*font_size)
+          end
+        local listener = cc.EventListenerKeyboard:create()
+        listener:registerScriptHandler(keyboardReleased, cc.Handler.EVENT_KEYBOARD_RELEASED)
+        local eventDispatcher = target:getEventDispatcher()
+        eventDispatcher:addEventListenerWithSceneGraphPriority(listener, target)
+end
 
 
-
+function Util:fun_Strlen(str)
+    local bytes = { string.byte(str, 1, #str) }
+    local length, begin = 0, false
+    for _, byte in ipairs(bytes) do
+        if byte < 128 or byte >= 192 then
+            begin = false
+            length = length + 1
+        elseif not begin then
+            begin = true
+            length = length + 1
+        end
+    end
+    return length
+end
 
 return Util
 

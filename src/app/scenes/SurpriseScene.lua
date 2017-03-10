@@ -172,6 +172,10 @@ end
             else
                 _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             end
+            -- if cell then
+            --   self:scheduleUpdate()
+            --   return
+            -- end
             if  cell:getChildByTag(38) then
                 local dayText=cell:getChildByTag(38)
                 dayText:setString(tostring(_table[1]))
