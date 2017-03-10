@@ -234,36 +234,41 @@ function LoginScene:landing_init()
   phone_bg=landing:getChildByTag(6)
 
   local Editphone = landing:getChildByTag(6):getChildByTag(16)
-  Editphone:setTouchEnabled(false)
-  Editphone:setVisible(false)
+  self.Dphone_text=Editphone
+  Util:function_keyboard(landing:getChildByTag(6),Editphone,17)
+  --Editphone:setTouchEnabled(false)
+  --Editphone:setVisible(false)
 
    
   local EditPassword=landing:getChildByTag(6):getChildByTag(17)
-  EditPassword:setTouchEnabled(false)
-  EditPassword:setVisible(false)
+  self.Dpassword_text=EditPassword
+  Util:function_keyboard(landing:getChildByTag(6),EditPassword,12)
+
+  --EditPassword:setTouchEnabled(false)
+  --EditPassword:setVisible(false)
 
 
-    local res = " "--res/png/DLkuang.png"
-    local width = 350
-    local height = 40
-    --登陆
-    self.Dphone_text = ccui.EditBox:create(cc.size(width,height),res)
-    self.Dphone_text:setPlaceHolder("请输入手机号码")  --setString
-    self.Dphone_text:setVisible(true)
-    self.Dphone_text:setPosition(cc.p(Editphone:getPositionX(),Editphone:getPositionY()))--( cc.p(107,77 ))  
-    self.Dphone_text:setAnchorPoint(0,0.5)  
-    self.Dphone_text:setMaxLength(11)
-    phone_bg:addChild(self.Dphone_text)
-    print("层级关系",self.Dphone_text:getLocalZOrder(),"  ",phone_bg:getLocalZOrder())
+    -- local res = " "--res/png/DLkuang.png"
+    -- local width = 350
+    -- local height = 40
+    -- --登陆
+    -- self.Dphone_text = ccui.EditBox:create(cc.size(width,height),res)
+    -- self.Dphone_text:setPlaceHolder("请输入手机号码")  --setString
+    -- self.Dphone_text:setVisible(true)
+    -- self.Dphone_text:setPosition(cc.p(Editphone:getPositionX(),Editphone:getPositionY()))--( cc.p(107,77 ))  
+    -- self.Dphone_text:setAnchorPoint(0,0.5)  
+    -- self.Dphone_text:setMaxLength(11)
+    -- phone_bg:addChild(self.Dphone_text)
+    -- print("层级关系",self.Dphone_text:getLocalZOrder(),"  ",phone_bg:getLocalZOrder())
 
-    self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
-    self.Dpassword_text:setVisible(true)
-    phone_bg:addChild(self.Dpassword_text )
-    self.Dpassword_text :setPosition(cc.p(EditPassword:getPositionX(),EditPassword:getPositionY()))--( cc.p(107,25 ))  
-    self.Dpassword_text :setPlaceHolder("请输入密码")
-    self.Dpassword_text :setAnchorPoint(0,0.5)  
-    self.Dpassword_text :setMaxLength(19)
-    self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
+    -- self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
+    -- self.Dpassword_text:setVisible(true)
+    -- phone_bg:addChild(self.Dpassword_text )
+    -- self.Dpassword_text :setPosition(cc.p(EditPassword:getPositionX(),EditPassword:getPositionY()))--( cc.p(107,25 ))  
+    -- self.Dpassword_text :setPlaceHolder("请输入密码")
+    -- self.Dpassword_text :setAnchorPoint(0,0.5)  
+    -- self.Dpassword_text :setMaxLength(19)
+    -- self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
 
 

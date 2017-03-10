@@ -234,8 +234,9 @@ function taskLayer:touch_Callback( sender, eventType )
              local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
             self:addChild(FriendrequestLayer.new())
       elseif  tonumber(targettype) == 2 then  --分享
-             local FriendrequestLayer = require("app.layers.InvitefriendsLayer")  --邀请好友
-            self:addChild(FriendrequestLayer.new())
+            --  local FriendrequestLayer = require("app.layers.InvitefriendsLayer")  --邀请好友
+            -- self:addChild(FriendrequestLayer.new())
+            Util:share()
       elseif  tonumber(targettype) == 3 then
             -- Util:scene_control("SurpriseScene")
              local scene=SurpriseScene.new()

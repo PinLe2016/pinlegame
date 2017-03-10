@@ -16,9 +16,10 @@ function InvitefriendsLayer:ctor()--params
        self.table_insert={}
        self._table_int={}
        self._search_type=0
+       self._table_box={}
        Server:Instance():get_reward_friend_list() --好友列表
 
-              local _table=LocalData:Instance():get_gettasklist()
+      local _table=LocalData:Instance():get_gettasklist()
        local tasklist=_table["tasklist"]
        for i=1,#tasklist  do 
              if  tonumber(tasklist[i]["targettype"])   ==  2   then
@@ -48,7 +49,7 @@ function InvitefriendsLayer:init(  )
       
         -- self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
         -- self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-        -- self:addChild(self.fragment_sprite)
+        -- self:addChild(self.fragment_sprite)text
 
        self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
        self:addChild(self.Invitefriends)
@@ -130,8 +131,10 @@ function InvitefriendsLayer:friends_levelup(  )
 end
 function InvitefriendsLayer:fun_init( _isvisber)
             --以下都是测试  
+            self._table_box={}
              local friendlist_table =  LocalData:Instance():get_reward_friend_list()
              --self.obtain_bt:setColor(cc.c3b(100,100,100)) 
+             local _count=1
              self.obtain_bt:setBright(false) 
              if  not friendlist_table then
              	return
@@ -168,7 +171,7 @@ function InvitefriendsLayer:fun_init( _isvisber)
 	            self.grade =  _cell:getChildByTag(95)  --等级
 	            self.grade:setString( _friendlist[i]["playergrade"] )
 	            self.imgurl =  _cell:getChildByTag(105)  --头像
-	            self.imgurl:loadTexture(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":")))
+	            self.imgurl:loadTexture("png/"   ..   string.lower(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":"))))
                    self.today_golds =  _cell:getChildByTag(102)  --贡献金币
                   self.today_golds:setString( _friendlist[i]["total_golds"] )
                   self.total_golds =  _cell:getChildByTag(101)  --贡献经验
@@ -184,8 +187,10 @@ function InvitefriendsLayer:fun_init( _isvisber)
                   else
                     yao_text_friend:setString("友")
                     move_friend:setVisible(_isvisber)
+                    --self._table_box[_count] = move_friends
+                    table.insert(self._table_box,{k=move_friend})
                   end
-
+                  _count=_count+1
                   move_friend:setTag(i)
                   move_friend:addEventListener(function(sender, eventType  )
                            if eventType == ccui.CheckBoxEventType.selected then
@@ -217,8 +222,6 @@ function InvitefriendsLayer:fun_init( _isvisber)
                   end)
 
            end
-
-	
 end
 function InvitefriendsLayer:pop_up(  )
        self.Friendsstep = cc.CSLoader:createNode("Friendsstep.csb")  --
@@ -327,10 +330,18 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 
             self.addFriend_truebt:setVisible(true)
             self.addFriend_falsebt:setVisible(true)
-            self:fun_init(true)-- 数据初始化
+            --self:fun_init(true)-- 数据初始化
+            for i=1,#self._table_box do
+              self._table_box[i].k:setVisible(true)
+            end
 
       elseif tag==1199 then  --确认删除
             if #self.table_insert ==  0  then
+                --self:fun_init(false)-- 数据初始化
+                 for i=1,#self._table_box do
+                  self._table_box[i].k:setVisible(false)
+                end
+
                 return
             end
             Server:Instance():setfriendoperation(self.table_insert,1)
@@ -339,7 +350,10 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             
             self.addFriend_truebt:setVisible(false)
             self.addFriend_falsebt:setVisible(false)
-            self:fun_init(false)
+            --self:fun_init(false)
+             for i=1,#self._table_box do
+              self._table_box[i].k:setVisible(false)
+            end
 	elseif tag==230 then  --下次再说
 		self.Friendsstep:setVisible(false)
 		self.m_friend:setVisible(false)
@@ -375,6 +389,7 @@ function InvitefriendsLayer:function_addFriend(  )
             self.search_friend_pageno=1
             self.addFriendSp = cc.CSLoader:createNode("addFriendSp.csb")  --邀请好友排行榜
             self:addChild(self.addFriendSp)
+
             self.add_ListView=self.addFriendSp:getChildByTag(4013)
             self.add_ListView:setItemModel(self.add_ListView:getItem(0))
             self.add_ListView:removeAllItems()
@@ -391,6 +406,22 @@ function InvitefriendsLayer:function_addFriend(  )
                     
             end)
             local search_name_friend =self.addFriendSp:getChildByTag(4476)  --收索好友的昵称
+            search_name_friend:setFontSize(22)
+            self.alert = ccui.Text:create()
+            self.alert:setString("|")
+            self.alert:setFontName("png/chuti.ttf")
+            self._guangbiao_x=search_name_friend:getPositionX()
+            self.alert:setPosition(search_name_friend:getPositionX(),search_name_friend:getPositionY())
+            self.alert:setFontName(font_TextName)
+            self.alert:setFontSize(40)
+            self.alert:setColor(cc.c3b(0, 0, 0))
+            self.addFriendSp:addChild(self.alert)
+
+            local  move=cc.Blink:create(1, 1)  
+            local action = cc.RepeatForever:create(move)
+            self.alert:stopAllActions()
+            self.alert:runAction(action)
+
             self:function_keyboard(search_name_friend)--注册键盘监听
             self._search_name_friend=search_name_friend
             local search_friend =self.addFriendSp:getChildByTag(4379)  --收索好友
@@ -429,42 +460,13 @@ end
 
 function InvitefriendsLayer:function_keyboard(target)
         local function keyboardReleased(keyCode, event)
-                --   print("啊啊",self._search_name_friend:getString())
-                --   dump(self._search_name_friend:getString())
-                --   if self._search_name_friend  ~=  nil   then
-                --      self.f_count=  self._search_name_friend:getStringLength()
-                --   else
-                --     return
-                --   end
-                --   if  self._search_name_friend:getStringLength()  ==  6  and   self.f_count_num== 1 then
-                --        Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
-                --   end
-                --   if  self._search_name_friend:getStringLength()  ==  6 then
-                --      self.f_count_num=0
-                --      self.f_shousuo=false
-                --      return
-                --   end
-                --   print("aaa  ",self.f_count_num,"  ",self.f_count ,  "  ",self.f_shousuo)
-                --   if self.f_count_num <  self.f_count      then
-                --      self.f_count_num=self.f_count
-                --      return
-                --   end 
-                --   if  self.f_count==self._search_name_friend:getMaxLength()  or   self.f_shousuo==false then
-                --     return
-                --   end
-
-                --   local _str=""
-                --   if self._search_name_friend  ~=  nil then
-                --       _str=self._search_name_friend:getString()
-                --   end
-
-                -- Server:Instance():getsearchfriendlist(5,self.search_friend_pageno,_str) 
-                -- self.f_count_num=self.f_count
-
-
-              
+                -- print("长度",self._guangbiao_x,"  ",self._search_name_friend:getStringLength(),"  ",self.alert:getFontSize())
+                 local str=tostring(self._search_name_friend:getString())
+                 local len = Util:fun_Strlen(str)
+                 self.alert:setPositionX(self._guangbiao_x+len*13)
+                 print("长度",str,"  ",len)
                 if self._search_name_friend:getStringLength()  ==  6  and self.f_count== 1 then
-                  Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
+                   Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
                 end
                 self.f_count=  self._search_name_friend:getStringLength()
           end
@@ -499,7 +501,6 @@ function InvitefriendsLayer:function_addFriend_data( )
                   local grade =  _cell:getChildByTag(4048)  --等级
                   grade:setString( "LV."  ..  list[i]["grade"] )
                   local imgurl =  _cell:getChildByTag(4044)  --头像
-                  print("头像",string.lower(tostring(Util:sub_str(list[i]["imageUrl"], "/",":"))))
                   imgurl:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(list[i]["imageUrl"], "/",":"))))
                   local gender =  _cell:getChildByTag(4046)  -- 性别
                   --  男 IcnMale.png  女  IcnFemale.png

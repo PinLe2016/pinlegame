@@ -71,7 +71,7 @@ function GrowingtreeScene:init(  )
       self._deng_act:setVisible(false)
        self.roleAction = cc.CSLoader:createTimeline("Growingtree.csb")
        self.Growingtree:runAction(self.roleAction)
-       self.roleAction:setTimeSpeed(2)
+       self.roleAction:setTimeSpeed(1.0)
        self.roleAction:gotoFrameAndPlay(0,40, true)
       --  初始化 加经验
       self._score2 =   ccui.TextAtlas:create(tostring("0"),"png/guoshiplist.png", 30, 42, "0")--
@@ -171,18 +171,23 @@ function GrowingtreeScene:init(  )
     	self.friend_growingtree_checkbox:addEventListener(function(sender, eventType  )
                            if eventType == ccui.CheckBoxEventType.selected then
                                   self._growingtreeNode:setPositionX(0)
+                                 
+                                  -- local  move1=cc.MoveTo:create(1, cc.p( 0,self._growingtreeNode:getPositionY() ) )
+                                  -- self._growingtreeNode:stopAllActions()
+                                  -- self._growingtreeNode:runAction(move1)
+
                                   self.friend_growingtree_checkbox:setPositionY(self.friend_growingtree_checkbox:getPositionY() -40)
                                   self._friend_employees_type=1
                                   Server:Instance():gettreefriendlist(7,1,1)
-                                  for i=1,8 do
-                                    self.pt_table[i]:setTouchEnabled(false)
-                                  end
+                                  -- for i=1,8 do
+                                  --   self.pt_table[i]:setTouchEnabled(false)
+                                  -- end
                            elseif eventType == ccui.CheckBoxEventType.unselected then
                                   self._growingtreeNode:setPositionX(-220)
                                   self.friend_growingtree_checkbox:setPositionY(self._spdt)
-                                  for i=1,8 do
-                                    self.pt_table[i]:setTouchEnabled(true)
-                                  end
+                                  -- for i=1,8 do
+                                  --   self.pt_table[i]:setTouchEnabled(true)
+                                  -- end
                                   if self.pv then
                                     self.pv:setVisible(false)
                                   end
@@ -326,6 +331,7 @@ function GrowingtreeScene:fun_data()
     			-- self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setVisible(false)
                   self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):loadTexture("png/chengzhangshu-zhongzi-0.png")
                   self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):setVisible(true)
+                  self:fun_move_act(self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359),self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):getPositionX(),self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):getPositionY())
                   if self.back_playerid  ~=  nil then
                     self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):setVisible(false)
                   end
@@ -334,6 +340,10 @@ function GrowingtreeScene:fun_data()
 			            if eventType ~= ccui.TouchEventType.ended then
 			                return
 			            end 
+                  self._growingtreeNode:setPositionX(-220)
+                  if self.pv then
+                    self.pv:setVisible(false)
+                  end
                   self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,-1) 
                   self.ListNode:setVisible(false)
                             --  if self.pt_tag_table   ~=   0 then
@@ -364,6 +374,9 @@ function GrowingtreeScene:fun_data()
 			            self.ListNode:setVisible(true)
                               self._type_str_text:setString("播种")
 			            self._growingtreeNode:setPositionX(-220)
+                              if self.pv then
+                                    self.pv:setVisible(false)
+                              end
                               self.friend_growingtree_checkbox:setPositionY(self._spdt)
 			            sender:setTouchEnabled(false)
 			            local function stopAction()
@@ -389,6 +402,7 @@ function GrowingtreeScene:fun_data()
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
+                              self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
 	 			     --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
@@ -401,11 +415,13 @@ function GrowingtreeScene:fun_data()
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage1[j] )
                                --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[j] )
+                                self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
                         else
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage1[j] )
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
 	 			      --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[j] )
+               self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
                         end
 	 			self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
                        if tonumber(tree_seedlist[i]["seatcount"])  ==  self._deng_hua then
@@ -422,6 +438,10 @@ function GrowingtreeScene:fun_data()
 				            if eventType ~= ccui.TouchEventType.ended then
 				                return
 				            end 
+                    self._growingtreeNode:setPositionX(-220)
+                    if self.pv then
+                      self.pv:setVisible(false)
+                    end
                     self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,-1) 
                     self.ListNode:setVisible(false)
                                     -- if self.pt_tag_table   ~=   0 then
@@ -925,7 +945,15 @@ function GrowingtreeScene:fun_harvest_number(_number,x,y)
      self._score1:stopAllActions()
      self._score1:runAction(action)
 end
-
+--  果实上下浮动动画
+function GrowingtreeScene:fun_move_act(_obj,x,y)
+     
+     local  move1=cc.MoveTo:create(1, cc.p( x,y+6 ) )
+     local  move2=cc.MoveTo:create(1, cc.p( x,y-2 ) )
+     local action = cc.RepeatForever:create(cc.Sequence:create(move1,move2))
+     _obj:stopAllActions()
+     _obj:runAction(action)
+end
 
 
 function GrowingtreeScene:onEnter()
@@ -1213,6 +1241,8 @@ function GrowingtreeScene:function_template(data)
             local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
             :onButtonClicked(function(event)
                           if tonumber(data["flag"])  ==  100  then
+                                   local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
+                                    self:addChild(InvitefriendsLayer.new(),1,13)
                                   return
                           end
                           self.is_friend=true
@@ -1233,12 +1263,28 @@ function GrowingtreeScene:function_template(data)
             button:setRotation(90)
             button:setTouchEnabled(true)
              if tonumber(data["flag"])  ==  100  then
-                     local textButton = ccui.Button:create()
+                    local textButton = ccui.Button:create()
                     textButton:setTouchEnabled(false)
-                    textButton:loadTextures("png/chengzhangshu-di-1-yaoqinghaoyou-1.png", "png/chengzhangshu-di-1-yaoqinghaoyou-2.png", "")
+                    textButton:loadTextures("png/chengzhangshu-1-touxiang-kuang-1-1.png", "png/chengzhangshu-1-touxiang-kuang-2-1.png", "")
                     textButton:setPosition(cc.p(0, 0))
                     textButton:addTouchEventListener(touchEvent)
                     button:addChild(textButton)
+
+                    local  friend_image_water = cc.Sprite:create("png/chengzhangshu-1-touxiang-kuang-tianjia.png")
+                    friend_image_water:setPosition(0,15)  --  -10
+                    button:addChild(friend_image_water)
+
+                     local friend_name_text=ccui.Text:create()
+                    friend_name_text:setColor(cc.c3b(160,105,5))
+                    --Lv_text:setString("等级")
+                    friend_name_text:setFontSize(20)
+                    friend_name_text:setString("添加好友")
+                    friend_name_text:setFontName("png/chuti.ttf")
+                    friend_name_text:setPosition(0,-40)
+                    button:addChild(friend_name_text)
+
+
+
                     return button
             end
             --dump(button:getContentSize())
@@ -1274,6 +1320,7 @@ function GrowingtreeScene:function_template(data)
 
              local buttonScale9Sprite = cc.Sprite:create("png/chengzhangshu-1-touxiang-tiao.png")
             buttonScale9Sprite:setScale(2.7,1.5)
+            --buttonScale9Sprite:setContentSize(cc.size(95,13))
             buttonScale9Sprite:setPosition(0,-17)
             button:addChild(buttonScale9Sprite)
 
@@ -1348,16 +1395,25 @@ end
 function GrowingtreeScene:createPageView()
 
     self.pv = require("app.scenes.UIPageViewVertical").new({
-        viewRect = cc.rect(27,388,126,610) ,  --设置位置和大小
+        viewRect = cc.rect(26,238,126,756) ,  --设置位置和大小
         -- viewRect = cc.rect(80,280,108,108) ,
         column = 1 , row = 1,  --列和行的数量 
-        page_rect_num=5,
+        page_rect_num=6,
         contSize=cc.size(122,126),                 
         padding = {left = 0 , right = 0 , top = 0 , bottom = 0} , --整体的四周距离
         columnSpace = 0 , rowSpace = 0                                        --行和列的间距
     })
     :onTouch(handler(self,self.touchListener))
-    :addTo(self.Growingtree)
+    :addTo(self.Growingtree)   --  self._growingtreeNode  Growingtree
+
+
+  
+     -- local  move1=cc.MoveTo:create(1, cc.p(246,0 ) )
+     -- self.pv:stopAllActions()
+     -- self.pv:runAction(move1)
+
+
+
 
      local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
     self._list=gettreefriendlist["list"]
