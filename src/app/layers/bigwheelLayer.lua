@@ -1054,15 +1054,22 @@ function bigwheelLayer:fun_storebrowser(  )
                     
                   end
             end)
+            
+              local share=cc.UM_Share:create()
+              self:addChild(share,1000)
+              share:add_WebView(tostring(self.addetailurl),cc.size(store_size:getContentSize().width ,store_size:getContentSize().height),
+               cc.p(store_size:getPositionX(),store_size:getPositionY()))
 
-              local webview = cc.WebView:create()
-              self.Storebrowser:addChild(webview)
-              webview:setVisible(true)
-              webview:setScalesPageToFit(true)
-              webview:loadURL(tostring(self.addetailurl))
-              webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
-              webview:reload()
-              webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
+                --share:getFinishLoading()--要监听网页是否加载完成 tolua 不支持 lambda表达式绑定,用此方法updata 刷监听
+
+              -- local webview = cc.WebView:create()
+              -- self.Storebrowser:addChild(webview)
+              -- webview:setVisible(true)
+              -- webview:setScalesPageToFit(true)
+              -- webview:loadURL(tostring(self.addetailurl))
+              -- webview:setContentSize(cc.size(store_size:getContentSize().width   ,store_size:getContentSize().height  )) -- 一定要设置大小才能显示
+              -- webview:reload()
+              -- webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY())) 
               if self._rewardgold==0 then
                          Server:Instance():setgoldspooladurlreward(jaclayer_data[1]["adid"])--  奖励金币
                         if self.connection13   and    jaclayer_data[1]["adurlgold"]  then
