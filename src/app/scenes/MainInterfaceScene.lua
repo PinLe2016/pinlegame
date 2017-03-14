@@ -6,15 +6,28 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
 end)
 
 function MainInterfaceScene:extend12()
-            -- local PinUIInput = require("app.scenes.PinUIInput")
-            -- local _fontSize={}
-            -- _fontSize.width=20
-            -- _fontSize.height=200
-            -- local _size={}
-            -- _size.width=20
-            -- _size.height=200
-            -- local qw=PinUIInput.new({fontSize=_fontSize,size=_size,UIInputType=2})
-            -- self:addChild(qw)
+            local PinUIInput = require("app.scenes.PinUIInput")
+            local _fontSize={}--cc.size(200, 200)
+            _fontSize=200
+
+            local _size={}--cc.size(200,400)
+            _size.width=400
+            _size.height=400
+            local qw=PinUIInput.new({fontSize=_fontSize,size=_size,UIInputType=2,x=300,y=400,image="png/chengzhangshu-1-di-2.png"})
+            self:addChild(qw,5000,5151456)
+
+
+    --          local editbox = cc.ui.UIInput.new({
+
+    -- image = "png/chengzhangshu-1-di-2.png", -- 输入控件的背景
+
+    -- x = 200,
+
+    -- y = 800,
+
+    -- size = cc.size(200, 40)
+
+
 
 end
  function MainInterfaceScene:fun_refresh_friend( )

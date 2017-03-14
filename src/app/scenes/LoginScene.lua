@@ -255,18 +255,18 @@ function LoginScene:landing_init()
   phone_bg=landing:getChildByTag(6)
 
   local Editphone = landing:getChildByTag(6):getChildByTag(16)
-  self.Dphone_text=Editphone
+  --self.Dphone_text=Editphone
   -- Util:function_keyboard(landing:getChildByTag(6),Editphone,17)
-  --Editphone:setTouchEnabled(false)
-  --Editphone:setVisible(false)
+  Editphone:setTouchEnabled(false)
+  Editphone:setVisible(false)
 
    
   local EditPassword=landing:getChildByTag(6):getChildByTag(17)
-  self.Dpassword_text=EditPassword
+  --self.Dpassword_text=EditPassword
   -- Util:function_keyboard(landing:getChildByTag(6),EditPassword,12)
 
-  --EditPassword:setTouchEnabled(false)
-  --EditPassword:setVisible(false)
+  EditPassword:setTouchEnabled(false)
+  EditPassword:setVisible(false)
 
 
     -- local res = " "--res/png/DLkuang.png"
@@ -317,7 +317,7 @@ function LoginScene:landing_init()
 local function go_btCallback(sender, eventType)
 
         if eventType == ccui.TouchEventType.ended then
-            if  self.Dphone_text:getString() == "" then
+            if  self.Dphone_text:getText() == "" then
                 Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
                 return
             end
@@ -333,7 +333,7 @@ local function go_btCallback(sender, eventType)
              end
               local callfunc = cc.CallFunc:create(stopAction)
              sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
-             Server:Instance():login(self.Dphone_text:getString(),self.Dpassword_text :getString())
+             Server:Instance():login(self.Dphone_text:getText(),self.Dpassword_text :getText())
 
 
         end   
