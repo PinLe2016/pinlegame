@@ -342,6 +342,8 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
                  for i=1,#self._table_box do
                   self._table_box[i].k:setVisible(false)
                 end
+                self.addFriend_truebt:setVisible(false)
+                self.addFriend_falsebt:setVisible(false)
 
                 return
             end

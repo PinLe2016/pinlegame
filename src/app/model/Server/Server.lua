@@ -56,12 +56,10 @@ function Server:show_http_buffer(is_buffer)
     display.getRunningScene():stopAllActions()
     if is_buffer then
                 --if cc.Director:getInstance():getRunningScene() then
-                dump("网络监听3")
                         --display.getRunningScene():runAction(action)
                --end
     else
                 --if cc.Director:getInstance():getRunningScene() then
-                dump("网络监听4")
                        --cc.Director:getInstance():getRunningScene():push_buffer(false)
                -- end
         

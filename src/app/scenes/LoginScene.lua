@@ -76,7 +76,8 @@ end
               
               local login_info=LocalData:Instance():get_user_data()
               if login_info~=nil and login_info["diamondnum"] then
-                Util:scene_control("MainInterfaceScene")
+                 Util:scene_control("MainInterfaceScene")
+                --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                 return
               end
               self:landing_init()             
@@ -123,6 +124,7 @@ function LoginScene:_coverlayer( )
                                     local login_info=LocalData:Instance():get_user_data()
                                           if login_info~=nil and login_info["diamondnum"] then
                                                     Util:scene_control("MainInterfaceScene")
+                                                    --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                                                     return
                                           end
                                     self:landing_init()  
@@ -141,6 +143,7 @@ function LoginScene:_coverlayer( )
                 local login_info=LocalData:Instance():get_user_data()
                 if login_info~=nil and login_info["diamondnum"] then
                         Util:scene_control("MainInterfaceScene")
+                        --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                         return
                 end
                 self:landing_init()  
@@ -578,6 +581,7 @@ function LoginScene:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
                         Util:scene_control("MainInterfaceScene")
+                        --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                         --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self,
@@ -694,6 +698,7 @@ function LoginScene:onEnter()
  --  注册成功
  NotificationCenter:Instance():AddObserver("REG_CALLBACK", self,function()
                   Util:scene_control("MainInterfaceScene")--成功后直接跳转主界面
+                  --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                    if self._scode then
                       cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
                    end
