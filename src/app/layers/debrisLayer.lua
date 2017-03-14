@@ -65,12 +65,24 @@ end
 
 function debrisLayer:refresh_table()
 
-    local row_rand=self:RandomIndex(self.row,self.row)
-    local col_rand=self:RandomIndex(self.col,self.col)
+    -- local row_rand=self:RandomIndex(self.row,self.row)
+    -- local col_rand=self:RandomIndex(self.col,self.col)
 
     local pos_x, pos_y =self.point.x,self.point.y
     local row ,col =self.row,self.col 
-     local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+    local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+
+    local poin_table={}
+    local num=1
+     for i=1,row do
+        for j=1,col do
+          poin_table[num]=cc.p(pos_x + (i-1)*self._size.width/row, pos_y + (j-1)*self._size.height/col)
+          num=num+1
+        end
+    end
+
+    local sur_table=self:RandomIndex(poin_table)
+    local num_sur=1
    for i=1,row do
         for j=1,col do
                 -- local fragment_sprite = display.newScale9Sprite(path..self.filename, 0,0, cc.size(self._size.width,self._size.height))
@@ -91,11 +103,15 @@ function debrisLayer:refresh_table()
                 self:addChild(clipnode)
                
                 clipnode:setTag(#self.fragment_table + 1)
-                self.fragment_poins[#self.fragment_table + 1]=cc.p(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
+                -- self.fragment_poins[#self.fragment_table + 1]=cc.p(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
+                -- self.fragment_table[#self.fragment_table + 1] = clipnode
+
+                -- clipnode:setPosition(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
+                self.fragment_poins[#self.fragment_table + 1]=sur_table[num_sur]
                 self.fragment_table[#self.fragment_table + 1] = clipnode
 
-                clipnode:setPosition(pos_x + (row_rand[i]-1)*po.width/row, pos_y + (col_rand[j]-1)*po.height/col)
-                --clipnode:setPosition(pos_x + (i-1)*po.width/row, pos_y + (j-1)*po.height/col)
+                clipnode:setPosition(sur_table[num_sur])
+                num_sur=num_sur+1
 
 
                 clipnode:setTouchEnabled(true)
@@ -125,40 +141,50 @@ function debrisLayer:refresh_table()
                 end
        end  
 end
-function debrisLayer:RandomIndex(indexNum, tabNum)
+function debrisLayer:RandomIndex(table)
 
-    indexNum = indexNum or tabNum
+    -- indexNum = indexNum or tabNum
 
-    local t = {}
+   --  local t = {}
 
-    local rt = {}
+   --  local rt = {}
 
-    for i = 1,indexNum do
-        -- math.randomseed(os.time()) 
-        local ri = math.random(1,tabNum + 1 - i)
+   --  for i = 1,indexNum do
+   --      -- math.randomseed(os.time()) 
+   --      local ri = math.random(1,tabNum + 1 - i)
 
-        local v = ri
+   --      local v = ri
 
-        for j = 1,tabNum do
+   --      for j = 1,tabNum do
 
-            if not t[j] then
+   --          if not t[j] then
 
-                ri = ri - 1
+   --              ri = ri - 1
 
-                if ri == 0 then
+   --              if ri == 0 then
 
-                    table.insert(rt,j)
+   --                  table.insert(rt,j)
 
-                    t[j] = true
+   --                  t[j] = true
 
-                end
+   --              end
 
-            end
+   --          end
 
-        end
-   end
-    --dump(rt)
-    return rt
+   --      end
+   -- end
+   --  --dump(rt)
+   --  return rt
+     local indexNum=#table
+      local str = {}
+      for  i = indexNum, 1, -1 do  
+        local  index =  math.random(1, indexNum);
+        local  tempNum = table[i];
+        table[i] = table[index];
+        table[index] = tempNum;
+      end
+      return table
+
   
 end
 
