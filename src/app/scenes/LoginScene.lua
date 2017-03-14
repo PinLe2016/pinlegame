@@ -6,7 +6,7 @@ local LoginScene = class("LoginScene", function()
     return display.newScene("LoginScene")
 end)
 
- local PinUIInput=require("app.scenes.PinUIInput") 
+ -- local PinUIInput=require("app.scenes.PinUIInput") 
 
 
 function  LoginScene:ctor()
@@ -292,28 +292,6 @@ function LoginScene:landing_init()
     -- self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
 
-    local res = " "--res/png/DLkuang.png"
-    local width = 350
-    local height = 40
-    --登陆
-    self.Dphone_text = ccui.EditBox:create(cc.size(width,height),res)
-    self.Dphone_text:setPlaceHolder("请输入手机号码")  --setString
-    self.Dphone_text:setVisible(true)
-    self.Dphone_text:setPosition(cc.p(Editphone:getPositionX(),Editphone:getPositionY()))--( cc.p(107,77 ))  
-    self.Dphone_text:setAnchorPoint(0,0.5)  
-    self.Dphone_text:setMaxLength(11)
-    phone_bg:addChild(self.Dphone_text)
-    print("层级关系",self.Dphone_text:getLocalZOrder(),"  ",phone_bg:getLocalZOrder())
-
-    self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
-    self.Dpassword_text:setVisible(true)
-    phone_bg:addChild(self.Dpassword_text )
-    self.Dpassword_text :setPosition(cc.p(EditPassword:getPositionX(),EditPassword:getPositionY()))--( cc.p(107,25 ))  
-    self.Dpassword_text :setPlaceHolder("请输入密码")
-    self.Dpassword_text :setAnchorPoint(0,0.5)  
-    self.Dpassword_text :setMaxLength(19)
-    self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
-
 local function go_btCallback(sender, eventType)
 
         if eventType == ccui.TouchEventType.ended then
@@ -321,7 +299,7 @@ local function go_btCallback(sender, eventType)
                 Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
                 return
             end
-            if  string.len(self.Dphone_text:getText()) < 11 then
+            if  string.len(self.Dphone_text:getString()) < 11 then
                 Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
                 return
             end
