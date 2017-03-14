@@ -24,6 +24,7 @@ function MainInterfaceScene:ctor()
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.count=0
+      self.main_leve={0,500,1500,8000,15000,40000,80000,150000,400000,80000,2000000,5000000}
       self:Physics_homeback_ref()
       local userdt = LocalData:Instance():get_userdata()
       LocalData:Instance():set_sign(1)
@@ -312,8 +313,8 @@ function MainInterfaceScene:userdata(  )
        local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 
        diamond_text:setString("0")--loadingBar:setPercent(0)
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
-       local jindu=userdt["grade"]/8 *100
-       loadingbar:setPercent(jindu)
+       local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100 --self.main_leve[+1]/5000000 *100
+       loadingbar:setPercent(jindu)--self.main_leve
 end
 function MainInterfaceScene:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
