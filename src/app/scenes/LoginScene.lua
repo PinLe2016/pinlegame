@@ -299,7 +299,7 @@ local function go_btCallback(sender, eventType)
                 Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
                 return
             end
-            if  string.len(self.Dphone_text:getText()) < 11 then
+            if  string.len(self.Dphone_text:getString()) < 11 then
                 Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
                 return
             end
