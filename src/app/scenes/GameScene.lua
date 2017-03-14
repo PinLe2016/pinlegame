@@ -448,7 +448,6 @@ function GameScene:onEnter()
       NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS, self,
                        function()
                         local  _img= LocalData:Instance():get_user_img()
-                        print("发到手机快放假",_img)
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                         dump(list_table)
                         local  jaclayer_data=list_table["adlist"]

@@ -319,17 +319,21 @@ function bigwheelLayer:star_action()
                          return
                        end
                        local _plist=nil
-                     
+                       local count_number=0
                        if ( tonumber(self.Points)<= 9      and  tonumber(self.Points)  ~=  0)     or    (tonumber(LocalData:Instance():getpuzzletime())>=41  and    tonumber(LocalData:Instance():getpuzzletime())  ~=100)      then
                            return
                         elseif tonumber(self.Points)<= 100     or    tonumber(LocalData:Instance():getpuzzletime())>=31 then
                           _plist="endingCoin50.plist"
+                          count_number=450
                         elseif tonumber(self.Points)<= 200     or    tonumber(LocalData:Instance():getpuzzletime())>=21 then
                           _plist="endingCoin120.plist"
+                          count_number=600
                         elseif tonumber(self.Points)<= 250    or    tonumber(LocalData:Instance():getpuzzletime())>=10 then
                           _plist="endingCoin210.plist"
+                          count_number=800
                          elseif tonumber(self.Points)>  250     or    tonumber(LocalData:Instance():getpuzzletime())<10 then
                            _plist="endingCoin320.plist"
+                           count_number=1200
                        end
                        if tonumber(self.Points)  ==  0   and  tonumber(LocalData:Instance():getpuzzletime())  ==100 then
                          return
@@ -344,6 +348,7 @@ function bigwheelLayer:star_action()
 
 
                        local particle2 = cc.ParticleSystemQuad:create(tostring(_plist))
+                       particle2:setTotalParticles(count_number)
                        particle2:setPosition(cc.p(display.cx,display.cy*4/5))
                        self:addChild(particle2)
 

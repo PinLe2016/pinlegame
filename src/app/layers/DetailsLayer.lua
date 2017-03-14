@@ -111,8 +111,8 @@ function DetailsLayer:init(  )
 	local rank_text=details:getChildByTag(41)
 		rank_text:setString(activitybyid["myrank"])
 
-	if tonumber(activitybyid["remaintimes"]) >0 then
-		rank_text:setString("/")
+	if tonumber(activitybyid["myrank"]) > 20  then
+		rank_text:setString("未上榜")
 	end
 
 	local name_text=details:getChildByTag(38)
