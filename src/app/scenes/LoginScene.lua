@@ -734,6 +734,7 @@ function LoginScene:pushFloating(text)
 end 
 
 function LoginScene:push_buffer(is_buffer)
+  dump("网络监听2")
        self.floating_layer:show_http(is_buffer) 
 end 
 function LoginScene:networkbox_buffer(prompt_text)

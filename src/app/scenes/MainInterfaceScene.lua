@@ -426,8 +426,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             end
 
              Util:scene_controlid("MallScene",{type="emil"})
-             
-
+             --self:extend12()
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
@@ -910,6 +909,7 @@ function MainInterfaceScene:pushFloating(text)
 end 
 
 function MainInterfaceScene:push_buffer(is_buffer)
+       dump("网络监听1")
        self.floating_layer:show_http(is_buffer) 
 end 
 function MainInterfaceScene:networkbox_buffer(prompt_text)

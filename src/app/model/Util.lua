@@ -318,8 +318,8 @@ end
 function Util:scene_control(scene)
         local str_scene="app.scenes."..scene
         
-        --display.replaceScene(cc.TransitionJumpZoom:create(3, require(str_scene):new()))
-        display.replaceScene(require(str_scene):new())
+        display.replaceScene(cc.TransitionRotoZoom:create(1, require(str_scene):new()))
+       -- display.replaceScene(require(str_scene):new())
 end
 function Util:scene_controlid(scene,params)
         local str_scene="app.scenes."..scene
