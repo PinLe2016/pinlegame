@@ -46,6 +46,8 @@ function bigwheelLayer:ctor(params)
   self.m_pCircle_2=nil
   self.star_over_time=1--记录星星结束时间
 
+  self.is_online_fin=true
+
   self.fragment_table={ }
       self.Points=params.Points
   self.x_rand=nil
@@ -1054,14 +1056,20 @@ function bigwheelLayer:fun_storebrowser(  )
                     
                   end
             end)
-            
-              local share=cc.UM_Share:create()
-              self:addChild(share,1000)
-              share:add_WebView(tostring(self.addetailurl),cc.size(store_size:getContentSize().width ,store_size:getContentSize().height),
+
+              self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+                  self:update(dt)
+            end)
+
+              self.share=cc.UM_Share:create()
+              self.Storebrowser:addChild(self.share)
+              self.share:add_WebView(tostring(self.addetailurl),cc.size(store_size:getContentSize().width ,store_size:getContentSize().height),
                cc.p(store_size:getPositionX(),store_size:getPositionY()))
-
+              -- self.Storebrowser:setAnchorPoint(0.5,0.5)
+              self.Storebrowser:setScale(0.1)
+              -- self.Storebrowser:setPosition(display.cx, display.cy)
                 --share:getFinishLoading()--要监听网页是否加载完成 tolua 不支持 lambda表达式绑定,用此方法updata 刷监听
-
+              self:scheduleUpdate()
               -- local webview = cc.WebView:create()
               -- self.Storebrowser:addChild(webview)
               -- webview:setVisible(true)
@@ -1102,12 +1110,19 @@ function bigwheelLayer:goldact(  )
 
 end
 
-  function bigwheelLayer:update(dt)
-  self.secondOne = self.secondOne+dt
-  if self.secondOne <1 then return end
-        self.secondOne=0
-                  self.time=1+self.time
-           
+function bigwheelLayer:update(dt)
+  -- self.secondOne = self.secondOne+dt
+  if self.is_online_fin and self.share and self.share:getFinishLoading() then
+
+        local scal=cc.ScaleTo:create(.5,1.0)
+        self.Storebrowser:runAction(scal)
+        self.is_online_fin=false
+        self:unscheduleUpdate()
+  end
+  -- if self.secondOne <1 then return end
+  --       self.secondOne=0
+  --                 self.time=1+self.time
+     
   end
   -- 具体获得金币数
 function bigwheelLayer:big_end(_istrue,x,y,_obj )

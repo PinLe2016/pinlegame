@@ -59,6 +59,7 @@ end
             loadingBar:getChildByTag(255):setString(tostring(self._time).."/100")
             self.particle:setPositionX(loadingBar:getContentSize().width/100 *self._time)
             if self._time>96 then
+              loadingBar:getChildByTag(255):setString("100/100")
               loadingBar:setPercent(100)
             end
             if self._time==100 then
@@ -243,14 +244,14 @@ function LoginScene:landing_init()
 
   local Editphone = landing:getChildByTag(6):getChildByTag(16)
   self.Dphone_text=Editphone
-  Util:function_keyboard(landing:getChildByTag(6),Editphone,17)
+  -- Util:function_keyboard(landing:getChildByTag(6),Editphone,17)
   --Editphone:setTouchEnabled(false)
   --Editphone:setVisible(false)
 
    
   local EditPassword=landing:getChildByTag(6):getChildByTag(17)
   self.Dpassword_text=EditPassword
-  Util:function_keyboard(landing:getChildByTag(6),EditPassword,12)
+  -- Util:function_keyboard(landing:getChildByTag(6),EditPassword,12)
 
   --EditPassword:setTouchEnabled(false)
   --EditPassword:setVisible(false)
@@ -289,7 +290,7 @@ function LoginScene:landing_init()
 local function go_btCallback(sender, eventType)
 
         if eventType == ccui.TouchEventType.ended then
-            if  self.Dphone_text:getText() == "" then
+            if  self.Dphone_text:getString() == "" then
                 Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
                 return
             end
@@ -300,7 +301,7 @@ local function go_btCallback(sender, eventType)
              end
               local callfunc = cc.CallFunc:create(stopAction)
              sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
-             Server:Instance():login(self.Dphone_text:getText(),self.Dpassword_text :getText())
+             Server:Instance():login(self.Dphone_text:getString(),self.Dpassword_text :getString())
 
 
         end   
