@@ -6,7 +6,7 @@ local LoginScene = class("LoginScene", function()
     return display.newScene("LoginScene")
 end)
 
--- local require("app.layers.FloatingLayer") = require("app.layers.FloatingLayer")
+ local PinUIInput=require("app.scenes.PinUIInput") 
 
 
 function  LoginScene:ctor()
@@ -113,10 +113,22 @@ function LoginScene:_coverlayer( )
               a_dvertiImg:loadTexture("res/png/cover"  ..  tostring(i)   ..   ".jpg")--imgurl
               local advertiImg=call:getChildByTag(640)
               if i< 3 then
-                advertiImg:setVisible(false)
+                      advertiImg:setVisible(false)
               elseif i==3 then
-                advertiImg:setVisible(true)
-              self. _advertiImg=advertiImg
+                      --advertiImg:setVisible(true)
+                      self. _advertiImg=advertiImg
+                      call:setTouchEnabled(true)
+                      call:addTouchEventListener(function(sender, eventType  )
+                             if eventType == ccui.TouchEventType.began then
+                                    local login_info=LocalData:Instance():get_user_data()
+                                          if login_info~=nil and login_info["diamondnum"] then
+                                                    Util:scene_control("MainInterfaceScene")
+                                                    return
+                                          end
+                                    self:landing_init()  
+                            end
+                      end)
+
               end
               advertiPv:addPage(call)   
         end
@@ -280,12 +292,27 @@ function LoginScene:landing_init()
     -- self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
 
+    local res = " "--res/png/DLkuang.png"
+    local width = 350
+    local height = 40
+    --登陆
+    self.Dphone_text = ccui.EditBox:create(cc.size(width,height),res)
+    self.Dphone_text:setPlaceHolder("请输入手机号码")  --setString
+    self.Dphone_text:setVisible(true)
+    self.Dphone_text:setPosition(cc.p(Editphone:getPositionX(),Editphone:getPositionY()))--( cc.p(107,77 ))  
+    self.Dphone_text:setAnchorPoint(0,0.5)  
+    self.Dphone_text:setMaxLength(11)
+    phone_bg:addChild(self.Dphone_text)
+    print("层级关系",self.Dphone_text:getLocalZOrder(),"  ",phone_bg:getLocalZOrder())
 
-
-
-
-
-
+    self.Dpassword_text = ccui.EditBox:create(cc.size(width,height),res)
+    self.Dpassword_text:setVisible(true)
+    phone_bg:addChild(self.Dpassword_text )
+    self.Dpassword_text :setPosition(cc.p(EditPassword:getPositionX(),EditPassword:getPositionY()))--( cc.p(107,25 ))  
+    self.Dpassword_text :setPlaceHolder("请输入密码")
+    self.Dpassword_text :setAnchorPoint(0,0.5)  
+    self.Dpassword_text :setMaxLength(19)
+    self.Dpassword_text :setInputFlag(cc.EDITBOX_INPUT_FLAG_PASSWORD)
 
 local function go_btCallback(sender, eventType)
 
@@ -294,6 +321,11 @@ local function go_btCallback(sender, eventType)
                 Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
                 return
             end
+            if  string.len(self.Dphone_text:getText()) < 11 then
+                Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
+                return
+            end
+
             self._gobt:setTouchEnabled(false)
            local function stopAction()
                           self._gobt:setTouchEnabled(true)
@@ -683,8 +715,7 @@ function LoginScene:onEnter()
                         end)
  --  注册成功
  NotificationCenter:Instance():AddObserver("REG_CALLBACK", self,function()
-                  print("借款纠纷可使肌肤")
-                          self:landing_init()
+                  Util:scene_control("MainInterfaceScene")--成功后直接跳转主界面
                    if self._scode then
                       cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
                    end

@@ -6,60 +6,41 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
 end)
 
 function MainInterfaceScene:extend12()
-       -- self.Laohuji = cc.CSLoader:createNode("HitVolesLayer.csb")
-       -- self:addChild(self.Laohuji)
-       -- local spr=display.newSprite("png/dadishu.png")
-       -- spr:setAnchorPoint(cc.p(0,0.0))
-       --   self:addChild(spr)
+            -- local PinUIInput = require("app.scenes.PinUIInput")
+            -- local _fontSize={}
+            -- _fontSize.width=20
+            -- _fontSize.height=200
+            -- local _size={}
+            -- _size.width=20
+            -- _size.height=200
+            -- local qw=PinUIInput.new({fontSize=_fontSize,size=_size,UIInputType=2})
+            -- self:addChild(qw)
 
-       --    local HitVolesLayer = require("app.layers.HitVolesLayer")--惊喜吧 
-       --   self:addChild(HitVolesLayer.new())
-
-
-          local bigwheelLayer = require("app.layers.bigwheelLayer")--惊喜吧 
-         --self:addChild(bigwheelLayer.new())
-         display.replaceScene(bigwheelLayer:new())
-          -- cc.Director:getInstance():pushScene(bigwheelLayer.new({})) 
 end
  function MainInterfaceScene:fun_refresh_friend( )
              
 end
 function MainInterfaceScene:ctor()
-
-	self.floating_layer = require("app.layers.FloatingLayer").new()
+      self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.count=0
-
+      self.main_leve={0,500,1500,8000,15000,40000,80000,150000,400000,80000,2000000,5000000}
       self:Physics_homeback_ref()
-
-       local userdt = LocalData:Instance():get_userdata()
-      -- local  LocalData:Instance():set_getuserinfo(self.data)
+      local userdt = LocalData:Instance():get_userdata()
       LocalData:Instance():set_sign(1)
-        local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d%d")
-        if _index==nil then
-          _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
-        end
-        LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
-       Server:Instance():getconfig()  --  获取后台音效
-
+      local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d%d")
+      if _index==nil then
+      _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
+      end
+      LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+      Server:Instance():getconfig()  --  获取后台音效
       self:listener_home() --注册安卓返回键
       Server:Instance():gettasklist()   --  初始化任务
       --手机归属请求
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)
-     
-
-       --self:hammerAction()
-        -- local spr=display.newSprite("dadishu-wanfajieshao-xinxin.png")
-        -- spr:setPosition(cc.p(display.cx,display.cy))
-        -- self:addChild(spr)
-         -- local particle2 = cc.ParticleSystemQuad:create("zhuanpan_huang.plist")
-         -- particle2:setPosition(cc.p(display.cx,display.cy))
-         -- particle2:setScale(0.5)
-         -- self:addChild(particle2)
-
-     
+      --self:extend12()
 end
 function MainInterfaceScene:hammerAction()
     --创建动画序列
@@ -332,8 +313,8 @@ function MainInterfaceScene:userdata(  )
        local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 
        diamond_text:setString("0")--loadingBar:setPercent(0)
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
-       local jindu=userdt["grade"]/8 *100
-       loadingbar:setPercent(jindu)
+       local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100 --self.main_leve[+1]/5000000 *100
+       loadingbar:setPercent(jindu)--self.main_leve
 end
 function MainInterfaceScene:touch_callback( sender, eventType )
 	if eventType ~= ccui.TouchEventType.ended then
@@ -807,8 +788,7 @@ function MainInterfaceScene:onEnter()
                       end)
 
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
-                       function() 
-                                print("邮件按钮")                   
+                       function()                  
                                --self.biao_ji:setVisible(false) 
                                local affiche=LocalData:Instance():get_getaffiche()
                                 local affichelist=affiche["affichelist"]
@@ -816,11 +796,8 @@ function MainInterfaceScene:onEnter()
                                 if #affichelist==0 then
                                    return
                                 end
-                                print("邮件按钮111") 
-                                for i=1,#affichelist do   
-                                print("邮件按钮22222")      
+                                for i=1,#affichelist do      
                                    if tonumber(affichelist[i]["isread"]) == 0   then  --1已读  0未读 
-                                    print("邮件按钮3333") 
                                                  self.biao_ji:setVisible(true)
                                                 return
                                      end

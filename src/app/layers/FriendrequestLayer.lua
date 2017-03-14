@@ -111,46 +111,51 @@ function FriendrequestLayer:init(  )
        local _table = {3,5,10,20,30,50,80,100}
 
        local lo_img={self.receive_bt1,self.receive_bt2,self.receive_bt3,self.receive_bt4,self.receive_bt5,self.receive_bt6,self.receive_bt7,self.receive_bt8}
-       for i=1,#self.managerlist do    --   tag
+      -- for i=1,#self.managerlist do    --   tag
           for j=1,#_table do
-            if self.managerlist[i]["friendscount"]==_table[j] then  --
+         --   if self.managerlist[i]["friendscount"]==_table[j] then  --
                 --lo_img[i]:setColor(cc.c3b(100,100,100))
-                lo_img[j]:loadTextures("png/yaoqinghaoyou-01-anniu-hui.png", "png/yaoqinghaoyou-01-anniu-hui.png", "")
+                lo_img[j]:setBright(false)--loadTextures("png/yaoqinghaoyou-01-anniu-hui.png", "png/yaoqinghaoyou-01-anniu-hui.png", "")
                 lo_img[j]:setTouchEnabled(false)
               
         end
-          end
+      --    end
          
-       end
+     --  end
 
      
       
       for i=1,8 do  --self.friendlist_num["friendcount"]
-       if _table[i]==tonumber(self.friendlist_num["friendcount"])   then
-           lo_img[i]:setTouchEnabled(true)
-       end
+     --  if _table[i]==tonumber(self.friendlist_num["friendcount"])   then
+       --    lo_img[i]:setTouchEnabled(true)
+      --      lo_img[i]:setBright(true)
+           -- lo_img[i]:loadTextures("png/huodongxiangqing-anniu.png", "png/denglu-di-anniu-di.png", "")
+    --   end
       end
 
+--0可以领取  1已经领取   2好友个数不到不可领取
 
         for i=1,#_table do
         for j=1,#self.managerlist do
             if self.managerlist[j]["friendscount"]==_table[i]   then  
                   if tonumber(self.managerlist[j]["tag"]) ==1 then 
-                      lo_img[i]:setColor(cc.c3b(100,100,100))
+                     -- lo_img[i]:setColor(cc.c3b(100,100,100))  --  3-13
                        lo_img[i]:setTouchEnabled(false)
+                        lo_img[i]:setBright(false)
                   end
             end
           end
       end
- 
+
        for i=1,#self.managerlist do    --   tag
           for j=1,#_table do
-            if self.managerlist[i]["tag"]==0 then  --
-                 lo_img[i]:setColor(cc.c3b(255,255,255))
-                lo_img[j]:setTouchEnabled(true)
-        end
+            if    self.managerlist[i]["friendscount"]==_table[j]      then  --
+                 if self.managerlist[i]["tag"]==0    then
+                 lo_img[j]:setTouchEnabled(true)
+                 lo_img[j]:setBright(true)
+                   end
+            end
           end
-         
        end
 
 

@@ -317,6 +317,8 @@ end
 
 function Util:scene_control(scene)
         local str_scene="app.scenes."..scene
+        
+        --display.replaceScene(cc.TransitionJumpZoom:create(3, require(str_scene):new()))
         display.replaceScene(require(str_scene):new())
 end
 function Util:scene_controlid(scene,params)
@@ -471,8 +473,15 @@ function Util:function_keyboard(_parent,target,font_size)
           end
         local listener = cc.EventListenerKeyboard:create()
         listener:registerScriptHandler(keyboardReleased, cc.Handler.EVENT_KEYBOARD_RELEASED)
+        -- listener:registerScriptKeypadHandler(function(touches, event)
+        --        print("开始的疯狂")
+        --        dump(touches)
+        --        dump(event)
+        -- end,cc.Handler.EVENT_KEYBOARD_RELEASED)
+
         local eventDispatcher = target:getEventDispatcher()
         eventDispatcher:addEventListenerWithSceneGraphPriority(listener, target)
+
 end
 
 

@@ -34,24 +34,9 @@ function GrowingtreeScene:ctor()
 
        self.back_seedplant_seedmanure=" "  --  区别是种植接口还是施肥接口
        self:init()
+       Server:Instance():gettreefriendlist(7,1,1)
        Server:Instance():gettreelist(self.back_playerid)--   成长树初始化接口     
        self.pt_tag_obj=nil  
-      -- self:ve()
-end
-function GrowingtreeScene:ve(  )
-              self.ceshi = cc.CSLoader:createNode("ceshi.csb");
-              self:addChild(self.ceshi)
-
-
-              self.PageView_head=self.ceshi:getChildByTag(3135)
-               self.PageView_head:setRotation(90)
-              local Panel=self.PageView_head:getChildByTag(3136)
-               for i=1,7 do
-                    local  call=Panel:clone() 
-                    self.PageView_head:addPage(call)
-                  end
-
-
 end
 --  在添加好友后刷新数据
 function GrowingtreeScene:fun_refresh_friend( )
@@ -121,9 +106,6 @@ function GrowingtreeScene:init(  )
       local dishu_number_zhong=cc.Sprite:create("png/chengzhangshu-zhongzi-0.png")  --种子
       dishu_number_zhong:setPosition(-50, 20)
       self._score1 :addChild(dishu_number_zhong)
-
-
-      -- self:_ceshi()
     	for i=1,8 do
     		self.pt_table[i]=self.Growingtree:getChildByTag(3248+i):getChildByTag(103+i)  -- 8个坑
     	end
@@ -148,6 +130,7 @@ function GrowingtreeScene:init(  )
 	end)
 
       self.back_huijia_bt=self.Growingtree:getChildByTag(1557)  -- 回家
+      self.back_huijia_bt:setScale(1.5)
       self.back_huijia_bt:addTouchEventListener(function(sender, eventType  )
                   if eventType ~= ccui.TouchEventType.ended then
                     return
@@ -168,6 +151,9 @@ function GrowingtreeScene:init(  )
     	self.friend_growingtree_checkbox=self._growingtreeNode:getChildByTag(163)  --  好友按钮
     	self.friend_growingtree_checkbox:setTouchEnabled(true)
       self._spdt=self.friend_growingtree_checkbox:getPositionY()
+      self._growingtreeNode:setPositionX(0)
+      self.friend_growingtree_checkbox:setSelected(true)
+      self.friend_growingtree_checkbox:setPositionY(self.friend_growingtree_checkbox:getPositionY() -40)
     	self.friend_growingtree_checkbox:addEventListener(function(sender, eventType  )
                            if eventType == ccui.CheckBoxEventType.selected then
                                   self._growingtreeNode:setPositionX(0)
@@ -1147,71 +1133,6 @@ function GrowingtreeScene:promptbox_buffer(prompt_text)
 end
 function GrowingtreeScene:Grawpopup_buffer(prompt_text)
        self.floating_layer:fun_Grawpopup(prompt_text) 
-end
-function GrowingtreeScene:_ceshi( )
-              local function touchEvent(sender,eventType)
-                if eventType == ccui.TouchEventType.ended then
-                     print("结束")
-                end
-            end
-
-            -- local _image_data= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  --  头像
-            -- local _name_data=data["nickname"]  -- 昵称
-            -- local _lv_data=data["playergrade"]  --等级
-            -- local _drycount_data=data["drycount"]  --水壶  0不是需要
-            -- local _gaincount_data=data["gaincount"]  --收获 0不是需要
-
-            local textButton = ccui.Button:create()
-            textButton:setTouchEnabled(true)
-            textButton:loadTextures("png/chengzhangshu-1-touxiang-kuang-1-1.png", "png/chengzhangshu-1-touxiang-kuang-2-1.png", "")
-            textButton:setPosition(cc.p(400, 300))
-            textButton:addTouchEventListener(touchEvent)
-            self:addChild(textButton)
-
-            local  _image = cc.Sprite:create("png/httpgame.pinlegame.comheadheadicon_9.jpg")
-            _image:setPosition(textButton:getContentSize().width/2,textButton:getContentSize().height*0.6 )
-            _image:setScale(0.55)
-            textButton:addChild(_image)
-
-            local  _image_water = cc.Sprite:create("png/chengzhangshu-shuihu-xiao-di.png")
-            _image_water:setPosition(textButton:getContentSize().width * 0.7,textButton:getContentSize().height*0.17)
-            textButton:addChild(_image_water)
-            if true then
-              _image_water:setTexture("png/chengzhangshu-shuihu-xiao.png")
-            end
-
-            local  _image_reward = cc.Sprite:create("png/chengzhangshu-shou-1-xiao-di.png")
-            _image_reward:setPosition(textButton:getContentSize().width * 0.3,textButton:getContentSize().height*0.17)
-            textButton:addChild(_image_reward)
-            if true then
-              _image_reward:setTexture("png/chengzhangshu-shou-1-xiao.png")
-            end
-
-             local buttonScale9Sprite = cc.Sprite:create("png/chengzhangshu-1-touxiang-tiao.png")
-            buttonScale9Sprite:setScale(2.7,1.5)
-            buttonScale9Sprite:setPosition(textButton:getContentSize().width/2,textButton:getContentSize().height*0.35)
-            textButton:addChild(buttonScale9Sprite)
-
-            local  Lv_image = cc.Sprite:create("png/chengzhangshu--shuzi-LV.png")
-            Lv_image:setPosition(textButton:getContentSize().width/2.5,textButton:getContentSize().height*0.33)
-            textButton:addChild(Lv_image)
-
-            local  Lv_text =   ccui.TextAtlas:create((tostring("20")),"png/treefontPlist.png", 12, 15, "0")
-            Lv_text:setPosition(textButton:getContentSize().width*0.5,textButton:getContentSize().height*0.33)
-            Lv_text:setAnchorPoint(0,0.5)
-            textButton:addChild(Lv_text)
-
-
-            local name_text=ccui.Text:create()
-            name_text:setColor(cc.c3b(163,35,0))
-            --Lv_text:setString("等级")
-            name_text:setFontSize(15)
-            name_text:setString(tostring("拼乐"))
-            name_text:setFontName("png/chuti.ttf")
-            name_text:setPosition(textButton:getContentSize().width/2,textButton:getContentSize().height*0.91)
-            textButton:addChild(name_text)
-
-
 end
 function GrowingtreeScene:function_template(data)
             ScrollViewMenu=require("app.scenes.ScrollViewMenu")

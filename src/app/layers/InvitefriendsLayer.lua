@@ -17,6 +17,7 @@ function InvitefriendsLayer:ctor()--params
        self._table_int={}
        self._search_type=0
        self._table_box={}
+
        Server:Instance():get_reward_friend_list() --好友列表
 
       local _table=LocalData:Instance():get_gettasklist()
@@ -53,7 +54,7 @@ function InvitefriendsLayer:init(  )
 
        self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
        self:addChild(self.Invitefriends)
-       
+      
        --self:move_layer(self.Invitefriends)
         self:pop_up()--  弹出框
        local back_bt=self.Invitefriends:getChildByTag(82)  --返回
@@ -469,13 +470,21 @@ function InvitefriendsLayer:function_keyboard(target)
                    Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
                 end
                 self.f_count=  self._search_name_friend:getStringLength()
-          end
+        end
    
 
         local listener = cc.EventListenerKeyboard:create()
         listener:registerScriptHandler(keyboardReleased, cc.Handler.EVENT_KEYBOARD_RELEASED)
         local eventDispatcher = target:getEventDispatcher()
         eventDispatcher:addEventListenerWithSceneGraphPriority(listener, target)
+
+        -- local listener = cc.EventListenerKeyboard:create()
+        -- listener:registerScriptHandler(function (keyCode) print("press keyCode:", keyCode) end, cc.Handler.EVENT_KEYBOARD_PRESSED)
+        -- listener:registerScriptHandler(function (keyCode) print("release keyCode:", keyCode) end, cc.Handler.EVENT_KEYBOARD_RELEASED)
+        -- cc.Director:getInstance():getEventDispatcher():addEventListenerWithFixedPriority(listener,1 )
+
+
+
 end
 
 --  刷新添加好友数据
