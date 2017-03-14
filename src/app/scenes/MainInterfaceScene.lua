@@ -365,8 +365,10 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==125 then 
               --self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
               --self.list_bt:setTouchEnabled(false)
-               local RichlistLayer = require("app.layers.RichlistLayer")--排行榜 
-         self:addChild(RichlistLayer.new(),1,17)
+         --       local RichlistLayer = require("app.layers.RichlistLayer")--排行榜 
+         -- self:addChild(RichlistLayer.new(),1,17)
+
+         display.replaceScene(cc.TransitionProgressInOut:create(1, require("app.layers.RichlistLayer"):new()))
 
 
 	elseif tag==124 then   --  290
@@ -415,18 +417,18 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
 
-            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            if _table and tonumber(_table["shopIsused"])==0 then
-                  local login_info=LocalData:Instance():get_user_data()
-                  local _key=login_info["loginname"]
-                  local _loginkey=login_info["loginkey"]
-                  url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
-                  device.openURL(url)
-                  return
-            end
+            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            -- if _table and tonumber(_table["shopIsused"])==0 then
+            --       local login_info=LocalData:Instance():get_user_data()
+            --       local _key=login_info["loginname"]
+            --       local _loginkey=login_info["loginkey"]
+            --       url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
+            --       device.openURL(url)
+            --       return
+            -- end
 
-             Util:scene_controlid("MallScene",{type="emil"})
-             --self:extend12()
+            --  Util:scene_controlid("MallScene",{type="emil"})
+             self:extend12()
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
@@ -909,7 +911,6 @@ function MainInterfaceScene:pushFloating(text)
 end 
 
 function MainInterfaceScene:push_buffer(is_buffer)
-       dump("网络监听1")
        self.floating_layer:show_http(is_buffer) 
 end 
 function MainInterfaceScene:networkbox_buffer(prompt_text)

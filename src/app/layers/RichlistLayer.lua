@@ -3,12 +3,14 @@
 -- Date: 2016-11-29 15:43:36
 --   财富榜
 local RichlistLayer = class("RichlistLayer", function()
-            return display.newLayer("RichlistLayer")
+            return display.newScene("RichlistLayer")
 end)
 
 local http_number=20
 --标题 活动类型 
 function RichlistLayer:ctor()
+       self.floating_layer = require("app.layers.FloatingLayer").new()
+      self.floating_layer:addTo(self,100000)
 	self:setNodeEventEnabled(true)--layer添加监听
 	self.tablecout=0
 	self.RichlistLayer = cc.CSLoader:createNode("RichlistLayer.csb")
@@ -24,7 +26,7 @@ function RichlistLayer:ctor()
                                     if eventType ~= ccui.TouchEventType.ended then
 		                return
 		            end
-		           self:removeFromParent()
+		           display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                Util:all_layer_backMusic()
                         end)
 
@@ -203,6 +205,28 @@ function RichlistLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver("RICHLIST", self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
             
+end
+
+function RichlistLayer:pushFloating(text)
+   if is_resource then
+       self.floating_layer:showFloat(text)  
+       self.barrier_bg:setVisible(false)
+       self.kuang:setVisible(false)
+   else
+    self.barrier_bg:setVisible(false)
+  self.kuang:setVisible(false)
+       self.floating_layer:showFloat(text) 
+   end
+end 
+
+function RichlistLayer:push_buffer(is_buffer)
+       self.floating_layer:show_http(is_buffer) 
+end 
+function RichlistLayer:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end 
+function RichlistLayer:promptbox_buffer(prompt_text)
+       self.floating_layer:prompt_box(prompt_text) 
 end
 
 
