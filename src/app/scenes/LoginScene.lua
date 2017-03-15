@@ -309,28 +309,114 @@ end
 function LoginScene:landing_init()
       self.WeChat = cc.CSLoader:createNode("WeChat.csb")
       self:addChild(self.WeChat,100)
+      
       self.wechat_bt=self.WeChat:getChildByTag(561)
+      self.wechat_bt:setLocalZOrder(100)
+      --微信登陆按钮
       self.wechat_bt:addTouchEventListener(function(sender, eventType  )
                   if eventType ~= ccui.TouchEventType.ended then
                     return
                   end
+
+                   self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2)
+                   local function stopAction()
+                               
+                  end
+                  local callfunc = cc.CallFunc:create(stopAction)
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
       end)
 
       self.phone_bt=self.WeChat:getChildByTag(562)
+      self.phone_bt:setLocalZOrder(100)
       self.phone_bt:addTouchEventListener(function(sender, eventType  )
                   if eventType ~= ccui.TouchEventType.ended then
                     return
                   end
-                  self:_landing_interface()
-                  self.WeChat:removeFromParent()
+                 
+                  self:function_bt_act(self.phone_bt,"shoujidenglu-anniu-guanxiao-",4,0.2)
+                   local function stopAction()
+                               self:_landing_interface()
+                               self.WeChat:removeFromParent()
+                  end
+                  local callfunc = cc.CallFunc:create(stopAction)
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
+
       end)
 
+     self.sun_img=self.WeChat:getChildByTag(571)  
+     self.water_img=self.WeChat:getChildByTag(572)  
+     self:function_bt_run(self.sun_img,"weixindenglu-ditu-taiyangguang-",2,1)
+     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,0,0)
+     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,50,10)
+     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,100,-40)
      self.left_image=self.WeChat:getChildByTag(565)  
+     self.left_image:setLocalZOrder(99)
      self.right_image=self.WeChat:getChildByTag(566)
+     self.right_image:setLocalZOrder(99)
      self:fun_move_act(self.left_image,self.left_image:getPositionX())
      self:fun_move_act(self.right_image,self.right_image:getPositionX())
      self:fun_endanimation(self.wechat_bt,"weixindenglu-anniu-1.png",-self.wechat_bt:getContentSize().width,true)
      self:fun_endanimation(self.phone_bt,"shoujidenglu-anniu-guanxiao.png",self.phone_bt:getContentSize().width,true)
+end
+--太阳动画 
+function LoginScene:function_bt_run(_obj,_img,_count,_speed)  
+  local animation = cc.Animation:create()
+  local name=nil
+  for i=1,_count do
+    name = "png/".._img..i..".png"
+    animation:addSpriteFrameWithFile(name)
+  end
+  animation:setDelayPerUnit(_speed)
+  animation:setRestoreOriginalFrame(true)
+  --创建动作
+  local animate = cc.Animate:create(animation)
+  local _template = cc.Sprite:create()
+  _template:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
+  self.WeChat:addChild(_template,200)  --  直接在水壶上上面
+  local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
+  --_template:stopAllActions()
+  _template:runAction(seq)--(animate)
+
+end
+--按钮动画 
+function LoginScene:function_bt_act(_obj,_img,_count,_speed)  
+  local animation = cc.Animation:create()
+  local name=nil
+  for i=1,_count do
+    name = "png/".._img..i..".png"
+    animation:addSpriteFrameWithFile(name)
+  end
+  animation:setDelayPerUnit(_speed)
+  animation:setRestoreOriginalFrame(true)
+  --创建动作
+  local animate = cc.Animate:create(animation)
+  local _template = cc.Sprite:create()
+  _template:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
+  self.WeChat:addChild(_template,200)  --  直接在水壶上上面
+  local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
+  --_template:stopAllActions()
+  _template:runAction(seq)--(animate)
+
+end
+--云彩动画 
+function LoginScene:function_lantern_act(_obj,_img,_count,_speed,x,y)  
+  local animation = cc.Animation:create()
+  local name=nil
+  for i=1,_count do
+    name = "png/".._img..i..".png"
+    animation:addSpriteFrameWithFile(name)
+  end
+  animation:setDelayPerUnit(_speed)
+  animation:setRestoreOriginalFrame(true)
+  --创建动作
+  local animate = cc.Animate:create(animation)
+  local _template = cc.Sprite:create()
+  _template:setPosition(cc.p(_obj:getPositionX()+x,_obj:getPositionY()+y))
+  self.WeChat:addChild(_template)  --  直接在水壶上上面
+  local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
+  _template:stopAllActions()
+  _template:runAction(seq)--(animate)
+
 end
 --  登陆界面
 function LoginScene:_landing_interface()
