@@ -7,12 +7,14 @@
 -- Date: 2016-05-09 16:51:38
 --  活动吗
 local activitycodeLayer = class("activitycodeLayer", function()
-            return display.newLayer("activitycodeLayer")
+            return display.newScene("activitycodeLayer")
 end)
 -- 标题 活动类型 
 function activitycodeLayer:ctor()
          --audio.stopMusic("ACTIVITY")
-         Util:stop_music("ACTIVITY")
+          self.floating_layer = require("app.layers.FloatingLayer").new()
+      self.floating_layer:addTo(self,100000)
+         -- Util:stop_music("ACTIVITY")
          self.sur_pageno=1
          --Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self.tablecout=1
@@ -170,13 +172,11 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
 
               elseif tag==744 then
               	if self.inputcodeLayer then
-                   -- audio.stopMusic(G_SOUND["GAMEBG"])
-                   -- audio.playMusic(G_SOUND["ACTIVITY"],true)
-                   Util:stop_music("GAMEBG")
-                   Util:player_music_hit("ACTIVITY",true )
+                   -- Util:stop_music("GAMEBG")
+                   -- Util:player_music_hit("ACTIVITY",true )
                   self:unscheduleUpdate()
-
-              	     self:removeFromParent()
+              	     --self:removeFromParent()
+                     display.replaceScene(cc.TransitionProgressInOut:create(1, require("app.scenes.MainInterfaceScene"):new()))
                      Util:all_layer_backMusic()
               	end
               end
@@ -561,7 +561,14 @@ end
   end
 function activitycodeLayer:onEnter()
       --audio.playMusic(G_SOUND["GAMEBG"],true)
-      Util:player_music_hit("GAMEBG",true )
+      -- Util:player_music_hit("GAMEBG",true )
+
+       local function stopAction()
+                                Util:player_music_hit("PERSONALCHAGE",true )    
+        end
+        local callfunc = cc.CallFunc:create(stopAction)
+       self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+
 	self.tablecout=0
       LocalData:Instance():set_getactivitylist(nil)
       self._typeevt=4
@@ -576,6 +583,8 @@ function activitycodeLayer:onEnter()
                        function()
                          --print("下拉刷新")   --获得图片
                        self:act_list()
+                       
+
                       end)
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.ACTIVITYCODE, self,
                        function()
@@ -599,6 +608,28 @@ function activitycodeLayer:onExit()
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
 	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYCODE, self)
 end
+function activitycodeLayer:pushFloating(text)
+   if is_resource then
+       self.floating_layer:showFloat(text)  
+       self.barrier_bg:setVisible(false)
+       self.kuang:setVisible(false)
+   else
+    self.barrier_bg:setVisible(false)
+  self.kuang:setVisible(false)
+       self.floating_layer:showFloat(text) 
+   end
+end 
+
+function activitycodeLayer:push_buffer(is_buffer)
+       self.floating_layer:show_http(is_buffer) 
+end 
+function activitycodeLayer:networkbox_buffer(prompt_text)
+       self.floating_layer:network_box(prompt_text) 
+end 
+function activitycodeLayer:promptbox_buffer(prompt_text)
+       self.floating_layer:prompt_box(prompt_text) 
+end
+
 
 
 return activitycodeLayer

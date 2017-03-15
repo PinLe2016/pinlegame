@@ -595,7 +595,7 @@ end
 function SurpriseScene:onEnter()
    Server:Instance():getuserinfo() 
       --audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
-      Util:player_music_hit("PERSONALCHAGE",true )
+      -- Util:player_music_hit("PERSONALCHAGE",true )
       LocalData:Instance():set_getactivitylist(nil)
       self.tablecout=0
      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
@@ -607,12 +607,12 @@ function SurpriseScene:onEnter()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
-
-               --  local function stopAction()
-                           self:Surprise_list()
-               --  end
-               --  local callfunc = cc.CallFunc:create(stopAction)
-               -- self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+                        self:Surprise_list()
+                        local function stopAction()
+                                Util:player_music_hit("PERSONALCHAGE",true )         
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
             
 
 

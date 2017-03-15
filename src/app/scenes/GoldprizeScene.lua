@@ -315,7 +315,7 @@ function GoldprizeScene:fun_prizepoolules()
 end
 function GoldprizeScene:onEnter()
 	--audio.playMusic(G_SOUND["GAMEBG"],true)
-	Util:player_music_hit("GAMEBG",true )
+	-- Util:player_music_hit("GAMEBG",true )
   Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid =""})  --发送消息
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self,
@@ -325,6 +325,13 @@ function GoldprizeScene:onEnter()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self,
                        function()
                        self:data_init()  --初始化
+
+                        local function stopAction()
+                                Util:player_music_hit("GAMEBG",true )
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+                       
                       end)
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
                        function()  

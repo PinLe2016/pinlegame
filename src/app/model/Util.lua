@@ -500,6 +500,83 @@ function Util:fun_Strlen(str)
     return length
 end
 
+--  辨别字符串中中包含数字
+function Util:judgeIsAllNumber(string)
+          local isAllNum = false
+
+
+          --先屏蔽加号和空格
+          local s1, e1 = string.find(string, "+")
+          local s2, e2 = string.find(string, " ")
+          if s1 ~= nil or e1 ~= nil or  s2 ~= nil or e2 ~= nil then
+          isAllNum = false
+          else
+          --判断是否有其他符号或者文字
+          local n = tonumber(string)
+          if n then
+          -- print("this num is  ======= " .. n)
+          if n<0 then
+          --是负数，肯定有负号
+          isAllNum = false
+          else
+          local pn = n --此处为取整数部分参见http://blog.csdn.net/daydayup_chf/article/details/46351947
+          -- print("number int part ====== " .. pn)
+
+
+          if pn == n then
+          -- print("***********************")
+          isAllNum = true
+          else
+          --不相等说明有小数点
+          isAllNum = false
+          end
+          end
+          else
+          isAllNum = false
+          -- print("this string is not a number !!!!!")
+          end
+          end
+
+
+          -- --提示
+          -- if isAllNum == false then
+          -- -- print("not is all number !!!!!!!!!!!!")
+          -- self:inputSysTips(InputIsNumber, displayCenter)
+          -- end
+
+
+          return isAllNum
+end
+
+
+
+--  过滤特殊字符
+function Util:filter_spec_chars(s)  
+    local ss = {}  
+    for k = 1, #s do  
+        local c = string.byte(s,k)  
+        if not c then break end  
+        if (c>=48 and c<=57) or (c>= 65 and c<=90) or (c>=97 and c<=122) then  
+            table.insert(ss, string.char(c))  
+        elseif c>=228 and c<=233 then  
+            local c1 = string.byte(s,k+1)  
+            local c2 = string.byte(s,k+2)  
+            if c1 and c2 then  
+                local a1,a2,a3,a4 = 128,191,128,191  
+                if c == 228 then a1 = 184  
+                elseif c == 233 then a2,a4 = 190,c1 ~= 190 and 191 or 165  
+                end  
+                if c1>=a1 and c1<=a2 and c2>=a3 and c2<=a4 then  
+                    k = k + 2  
+                    table.insert(ss, string.char(c,c1,c2))  
+                end  
+            end  
+        end  
+    end  
+    return table.concat(ss)  
+end  
+
+
 return Util
 
 

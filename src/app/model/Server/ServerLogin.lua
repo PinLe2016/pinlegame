@@ -89,7 +89,7 @@ end
 
 
 function Server:reg_callback()
-     -- dump(self.data)
+      dump(self.data)
     if self.data.err_code~=0  then
          self:promptbox_box_buffer( self.data.err_msg)
          NotificationCenter:Instance():PostNotification("zhuceshibai")
@@ -99,7 +99,7 @@ function Server:reg_callback()
     LocalData:Instance():set_user_data(self.data)--保存玩家数据
     --LocalData:Instance():set_user_reg("2")
     NotificationCenter:Instance():PostNotification("REG_CALLBACK")
-    self:promptbox_box_buffer("注册成功")
+    --self:promptbox_box_buffer("注册成功")
     
 end
 function Server:prompt( content )
@@ -134,7 +134,7 @@ end
 
 
 function Server:login_callback()
-    -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
          -- local a=FloatingLayer:Instance():floatingLayer_init(self.data.err_msg)
@@ -173,7 +173,7 @@ function Server:changepassword(loginname,password,code,type,oldpassword)
 end
 
 function Server:changepassword_callback()
-    -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
         return
@@ -203,7 +203,7 @@ function Server:sendmessage(type,phone,code)
 end
 
 function Server:sendmessage_callback()
-    -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
         NotificationCenter:Instance():PostNotification("wangjimima")

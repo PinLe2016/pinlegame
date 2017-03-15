@@ -26,7 +26,8 @@ function RichlistLayer:ctor()
                                     if eventType ~= ccui.TouchEventType.ended then
 		                return
 		            end
-		           display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
+		           --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
+               Util:scene_control("MainInterfaceScene")
                Util:all_layer_backMusic()
                         end)
 
@@ -190,6 +191,12 @@ function RichlistLayer:onEnter()
 	NotificationCenter:Instance():AddObserver("RICHLIST", self,
                        function()
                         self:init()
+                        local function stopAction()
+                                Util:player_music_hit("PERSONALCHAGE",true )         
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+
                       end)
     NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
                          function()

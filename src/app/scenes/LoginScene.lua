@@ -165,6 +165,10 @@ end
            self.layertype=1
            self._random=Util:rand(  ) --随机验证码
            print("邀请码".. self.phone_text:getText(),  self._random)
+           if tostring(Util:judgeIsAllNumber(tostring(self.phone_text:getText())))  ==  "false"  and self.Zpassword_text:getText() ~= "" and string.len(self.phone_text:getText()) == 11 then
+              Server:Instance():promptbox_box_buffer("手机号码格式错误")
+              return
+           end
            Server:Instance():sendmessage(1,self.phone_text:getText())
         end
     end
@@ -211,10 +215,26 @@ end
 
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-                -- if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
-                --       Server:Instance():promptbox_box_buffer("验证码错误")
-                --      return    
+                
+                if  self.phone_text:getText() == "" then
+                      Server:Instance():promptbox_box_buffer("请输入正确的手机号 或者 密码 或者验证码")   --prompt
+                      return
+                end
+                -- if tostring(Util:judgeIsAllNumber(tostring(self.Dphone_text:getText())))  ==  "false"  then
+                --       Server:Instance():promptbox_box_buffer("账号不存在") 
+                --       return
                 -- end
+
+                -- if  string.len(self.Dphone_text:getText()) < 11 then
+                --       Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
+                --       return
+                -- end
+                -- if  string.len(self.Dphone_text:getText()) ==  11  and  self.Dpassword_text :getText()  ==  ""   then
+                --       Server:Instance():promptbox_box_buffer("输入的密码须在6～20位之间哦")   --prompt
+                --       return
+                -- end
+
+
                
                 if self._scode then
                       cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
@@ -296,16 +316,26 @@ function LoginScene:landing_init()
 
 
 local function go_btCallback(sender, eventType)
-
         if eventType == ccui.TouchEventType.ended then
-            if  self.Dphone_text:getText() == "" then
+
+             if  self.Dphone_text:getText() == "" then
                 Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
                 return
             end
+            if tostring(Util:judgeIsAllNumber(tostring(self.Dphone_text:getText())))  ==  "false"  then
+                Server:Instance():promptbox_box_buffer("账号不存在") 
+                return
+            end
+           
             if  string.len(self.Dphone_text:getText()) < 11 then
                 Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
                 return
             end
+            if  string.len(self.Dphone_text:getText()) ==  11  and  self.Dpassword_text :getText()  ==  ""   then
+                Server:Instance():promptbox_box_buffer("输入的密码须在6～20位之间哦")   --prompt
+                return
+            end
+
 
             self._gobt:setTouchEnabled(false)
            local function stopAction()
@@ -389,6 +419,7 @@ function LoginScene:_passwordLayer( )
                      self:touch_Callback(sender, eventType)
                end))
            self.yanzhengma = self.passwordLayer:getChildByTag(291)
+           self.code_bt=self.yanzhengma
           self.yanzhengma:addTouchEventListener((function(sender, eventType  )
                      --self:touch_Callback(sender, eventType)
 
@@ -401,17 +432,19 @@ function LoginScene:_passwordLayer( )
                     self.p_random=Util:rand(  ) --随机验证码\
                     local phone=self.passwordLayer:getChildByTag(293)
                     self._mobilephone=self.Wphone_text:getText()
-                    print(" 长度 ",string.len(self._mobilephone))
-
+                     if tostring(Util:judgeIsAllNumber(tostring(self.Wphone_text:getText())))  ==  "false"  then
+                      Server:Instance():promptbox_box_buffer("请输入正确的手机号") 
+                      return
+                   end 
                     if string.len(self._mobilephone)~=11 then
                      Server:Instance():promptbox_box_buffer("填写手机号码错误")
                      return
                     end
+
                     sender:setTouchEnabled(false)
                     sender:setColor(cc.c3b(100, 100, 100))
                     self.layertype=2
                     Server:Instance():sendmessage(2,self._mobilephone)
-                    print("邀请码"..self.p_random)
 
                end))
 
@@ -470,19 +503,22 @@ function LoginScene:touch_Callback( sender, eventType  )
               elseif tag==303 then
                 local password = self.resetpasswordLayer:getChildByTag(302)
                 local _pass=self.Wpassword_text:getText()
-                 print("提交",_pass,"  ",self._mobilephone)
+                  if  string.len(_pass) <=6  or   string.len(Util:filter_spec_chars(_pass)) ~= string.len(_pass)    then
+                    Server:Instance():promptbox_box_buffer("密码格式不对哦（密码为6-20位数字或字母的组合")   --prompt
+                    return
+                end
                  Server:Instance():changepassword(self._mobilephone,_pass,self.y_yanzhengma,1)  --(1  忘记密码)
               elseif tag==291 then
                 self.code_bt=self.yanzhengma
                   self.p_random=Util:rand(  ) --随机验证码\
                      local phone=self.passwordLayer:getChildByTag(293)
                     self._mobilephone=self.Wphone_text:getText()
-                   print(" 长度 ",string.len(self._mobilephone))
-
+                   
                    if string.len(self._mobilephone)~=11 then
                        Server:Instance():promptbox_box_buffer("填写手机号码错误")
                        return
                    end
+                  
                    sender:setTouchEnabled(false)
                    sender:setColor(cc.c3b(100, 100, 100))
                    self.layertype=2
@@ -493,8 +529,29 @@ end
 function LoginScene:_resetpasswordLayer(  )
 
             self._mobilephone=self.Wphone_text:getText()
+             
+
+              if tostring(Util:judgeIsAllNumber(tostring(self.Wphone_text:getText())))  ==  "false"  then
+                Server:Instance():promptbox_box_buffer("账号不存在") 
+                 self.yanzhengma:setVisible(true)
+                  self.yanzhengma:setTouchEnabled(true)
+                  self.yanzhengma:setColor(cc.c3b(255, 255, 255))
+                  self.yanzhengma:setTitleText("获取验证码")
+                return
+             end
+            if  string.len(self.Wphone_text:getText()) < 11 then
+                          Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
+                          self.yanzhengma:setVisible(true)
+                          self.yanzhengma:setTouchEnabled(true)
+                          self.yanzhengma:setColor(cc.c3b(255, 255, 255))
+                          self.yanzhengma:setTitleText("获取验证码")
+                          return
+            end
+
+
+
             if tostring(self._yanzhengma:getText())=="" then
-                Server:Instance():promptbox_box_buffer("验证码不能为空,请重新输入")
+                 Server:Instance():promptbox_box_buffer("验证码不能为空,请重新输入")
                  self.yanzhengma:setVisible(true)
                   self.yanzhengma:setTouchEnabled(true)
                   self.yanzhengma:setColor(cc.c3b(255, 255, 255))
@@ -602,15 +659,14 @@ function LoginScene:onEnter()
                         print("振奋")
                         if self._scode then
                                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
-                         end
-                         dump(self.yanzhengma)
+                         end  
                              if self.code_bt then
                                    self.code_bt:setVisible(true)
                                     self.code_bt:setTouchEnabled(true)
                                     self.code_bt:setColor(cc.c3b(255, 255, 255))
                                     self.code_bt:setTitleText("获取验证码")
                              end
-                              
+                             
 
 
 

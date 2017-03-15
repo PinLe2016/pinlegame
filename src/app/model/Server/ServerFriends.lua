@@ -81,7 +81,7 @@ function Server:setinvitecode_callback()
         return
     end
 
-    self:show_float_message("恭喜您邀请成功" )
+    self:show_float_message("填写成功，奖励即将发送至您的好友。" )
     local fistname=LocalData:Instance():get_reward_setting_list()
     fistname["invitecode"]=tostring(self.params["invitecode"])
     LocalData:Instance():set_reward_setting_list(fistname)--保存数据

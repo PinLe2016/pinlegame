@@ -948,7 +948,13 @@ function GrowingtreeScene:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_GETTREELIST", self,
                        function()
                        	--Server:Instance():Grawpopup_box_buffer("成功施肥")--测试
-			self:fun_data()
+			     self:fun_data()
+                        local function stopAction()
+                                Util:player_music_hit("PERSONALCHAGE",true )         
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+
                       end)
   --好友列表
   NotificationCenter:Instance():AddObserver("MESSAGE_GETTREEFRIENDLIST", self,
