@@ -6,15 +6,15 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
 end)
 
 function MainInterfaceScene:extend12()
-            local PinUIInput = require("app.scenes.PinUIInput")
-            local _fontSize={}--cc.size(200, 200)
-            _fontSize=200
+            -- local PinUIInput = require("app.scenes.PinUIInput")
+            -- local _fontSize={}--cc.size(200, 200)
+            -- _fontSize=200
 
-            local _size={}--cc.size(200,400)
-            _size.width=400
-            _size.height=400
-            local qw=PinUIInput.new({fontSize=_fontSize,size=_size,UIInputType=2,x=300,y=400,image="png/chengzhangshu-1-di-2.png"})
-            self:addChild(qw,5000,5151456)
+            -- local _size={}--cc.size(200,400)
+            -- _size.width=400
+            -- _size.height=400
+            -- local qw=PinUIInput.new({fontSize=_fontSize,size=_size,UIInputType=2,x=300,y=400,image="png/chengzhangshu-1-di-2.png"})
+            -- self:addChild(qw,5000,5151456)
 
 
     --          local editbox = cc.ui.UIInput.new({
@@ -27,9 +27,11 @@ function MainInterfaceScene:extend12()
 
     -- size = cc.size(200, 40)
 
-
-
+   
 end
+
+
+
  function MainInterfaceScene:fun_refresh_friend( )
              
 end
@@ -53,7 +55,7 @@ function MainInterfaceScene:ctor()
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)  --  公告
-      --self:extend12()
+      self:extend12()
 end
 function MainInterfaceScene:hammerAction()
     --创建动画序列

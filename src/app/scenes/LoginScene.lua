@@ -267,7 +267,73 @@ end
     
 
 end
+function function_name( ... )
+  -- body
+end
+
+
+function LoginScene:fun_move_act(_obj,x)
+     if x<0 then
+       _x=x+math.abs(x)
+      else
+        _x=x/2
+     end
+     local  move1=cc.MoveTo:create(5, cc.p(_x ,_obj:getPositionY() ) )
+     local  move2=cc.MoveTo:create(5, cc.p(  x,_obj:getPositionY() ) )
+     local action = cc.RepeatForever:create(cc.Sequence:create(move1,move2))
+     _obj:stopAllActions()
+     _obj:runAction(action)
+end
+
+function LoginScene:fun_endanimation(_obj,_image,_type,_istrue)   
+      local  cliper = cc.ClippingNode:create()
+      local  _content=_obj
+      local  stencil = _content
+      local spark = display.newSprite("png/"  .. _image  )
+      spark:setPosition(cc.p(_content:getPositionX()-  _type,_content:getPositionY()));
+     -- spark:setColor(cc.c3b(250,100,30))
+      cliper:setAlphaThreshold(0.5)
+      cliper:setStencil(stencil)
+      cliper:addChild(spark)
+      cliper:setVisible(_istrue)
+      self.WeChat:addChild(cliper)
+      local moveTo = cc.MoveTo:create(4,cc.p(_content:getPositionX()+_type,_content:getPositionY()))
+      local moveBack = cc.MoveTo:create(4,cc.p(_content:getPositionX()-_type,_content:getPositionY()))  --moveTo:reverse()  --
+     -- local seq1=cc.Sequence:create(cc.FadeIn:create(4),cc.FadeOut:create(4))  --FadeOut
+      local seq = cc.Sequence:create(moveTo,moveBack)
+      local spawn = cc.Spawn:create( seq)
+      local SpeedTest_action1 = cc.Speed:create(cc.RepeatForever:create(spawn), 2.0)
+      spark:runAction(SpeedTest_action1)
+end 
+--  微信登陆界面
 function LoginScene:landing_init()
+      self.WeChat = cc.CSLoader:createNode("WeChat.csb")
+      self:addChild(self.WeChat,100)
+      self.wechat_bt=self.WeChat:getChildByTag(561)
+      self.wechat_bt:addTouchEventListener(function(sender, eventType  )
+                  if eventType ~= ccui.TouchEventType.ended then
+                    return
+                  end
+      end)
+
+      self.phone_bt=self.WeChat:getChildByTag(562)
+      self.phone_bt:addTouchEventListener(function(sender, eventType  )
+                  if eventType ~= ccui.TouchEventType.ended then
+                    return
+                  end
+                  self:_landing_interface()
+                  self.WeChat:removeFromParent()
+      end)
+
+     self.left_image=self.WeChat:getChildByTag(565)  
+     self.right_image=self.WeChat:getChildByTag(566)
+     self:fun_move_act(self.left_image,self.left_image:getPositionX())
+     self:fun_move_act(self.right_image,self.right_image:getPositionX())
+     self:fun_endanimation(self.wechat_bt,"weixindenglu-anniu-1.png",-self.wechat_bt:getContentSize().width,true)
+     self:fun_endanimation(self.phone_bt,"shoujidenglu-anniu-guanxiao.png",self.phone_bt:getContentSize().width,true)
+end
+--  登陆界面
+function LoginScene:_landing_interface()
     landing = cc.CSLoader:createNode("landing.csb");
     self:addChild(landing)
 
