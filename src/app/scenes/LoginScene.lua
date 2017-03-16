@@ -278,8 +278,8 @@ function LoginScene:fun_move_act(_obj,x)
       else
         _x=x/2
      end
-     local  move1=cc.MoveTo:create(5, cc.p(_x ,_obj:getPositionY() ) )
-     local  move2=cc.MoveTo:create(5, cc.p(  x,_obj:getPositionY() ) )
+     local  move1=cc.MoveTo:create(6, cc.p(_x ,_obj:getPositionY() ) )
+     local  move2=cc.MoveTo:create(6, cc.p(  x,_obj:getPositionY() ) )
      local action = cc.RepeatForever:create(cc.Sequence:create(move1,move2))
      _obj:stopAllActions()
      _obj:runAction(action)
@@ -344,11 +344,14 @@ function LoginScene:landing_init()
       end)
 
      self.sun_img=self.WeChat:getChildByTag(571)  
+     self.sun_img_big=self.WeChat:getChildByTag(573)
      self.water_img=self.WeChat:getChildByTag(572)  
-     self:function_bt_run(self.sun_img,"weixindenglu-ditu-taiyangguang-",2,1)
+     self:function_bt_run(self.sun_img,"weixindenglu-ditu-taiyangguang-1.png")
+     self:function_bt_run(self.sun_img_big,"weixindenglu-ditu-taiyangguang-2.png")
      self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,0,0)
      self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,50,10)
      self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,100,-40)
+     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,200,30)
      self.left_image=self.WeChat:getChildByTag(565)  
      self.left_image:setLocalZOrder(99)
      self.right_image=self.WeChat:getChildByTag(566)
@@ -359,23 +362,12 @@ function LoginScene:landing_init()
      self:fun_endanimation(self.phone_bt,"shoujidenglu-anniu-guanxiao.png",self.phone_bt:getContentSize().width,true)
 end
 --太阳动画 
-function LoginScene:function_bt_run(_obj,_img,_count,_speed)  
-  local animation = cc.Animation:create()
-  local name=nil
-  for i=1,_count do
-    name = "png/".._img..i..".png"
-    animation:addSpriteFrameWithFile(name)
-  end
-  animation:setDelayPerUnit(_speed)
-  animation:setRestoreOriginalFrame(true)
-  --创建动作
-  local animate = cc.Animate:create(animation)
-  local _template = cc.Sprite:create()
-  _template:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
-  self.WeChat:addChild(_template,200)  --  直接在水壶上上面
-  local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
-  --_template:stopAllActions()
-  _template:runAction(seq)--(animate)
+function LoginScene:function_bt_run(_obj,_img)  
+    local taiyangguang1 = display.newSprite("png/"   .. _img  )
+    taiyangguang1:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
+    self.WeChat:addChild(taiyangguang1)  --  直接在水壶上上面
+    local seq=cc.RepeatForever:create(cc.Sequence:create(cc.FadeIn:create(1),cc.FadeOut:create(1)))
+   taiyangguang1:runAction(seq)
 
 end
 --按钮动画 
