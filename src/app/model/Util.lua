@@ -500,6 +500,30 @@ function Util:fun_Strlen(str)
     return length
 end
 
+function Util:getWeixinLoginDate()
+          local user=
+          {
+              nickname=cc.UserDefault:getInstance():getStringForKey("nickname",""),
+              unionid=cc.UserDefault:getInstance():getStringForKey("unionid",""),
+              openid=cc.UserDefault:getInstance():getStringForKey("openid",""),
+              headimgurl=cc.UserDefault:getInstance():getStringForKey("headimgurl",""),
+              country=cc.UserDefault:getInstance():getStringForKey("country",""),
+              province=cc.UserDefault:getInstance():getStringForKey("province",""),
+              city=cc.UserDefault:getInstance():getStringForKey("city","")
+
+          }
+
+            dump(cc.UserDefault:getInstance():getStringForKey("nickname",""))
+            dump(cc.UserDefault:getInstance():getStringForKey("unionid",""))
+            dump(cc.UserDefault:getInstance():getStringForKey("province",""))
+            dump(cc.UserDefault:getInstance():getStringForKey("openid",""))
+            dump(cc.UserDefault:getInstance():getStringForKey("headimgurl",""))
+            dump(cc.UserDefault:getInstance():getStringForKey("country",""))
+            dump(cc.UserDefault:getInstance():getStringForKey("city",""))
+            
+      return user
+end
+
 return Util
 
 

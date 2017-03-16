@@ -46,7 +46,7 @@ function LoginScene:progressbarScene(  )
          -- self:fun_countdown( )
         loadingBar:setPercent(0)
 
-        local alert = ccui.Text:create("0/100", "png/chuti.ttf", 30)
+        local alert = ccui.Text:create("0%", "png/chuti.ttf", 30)
         alert:setAnchorPoint(0.5,0.5)
         alert:setTag(255)
         -- alert:setString("+20")  --  获得金币
@@ -56,10 +56,10 @@ end
  function LoginScene:countdown()
            self._time=self._time+2
             loadingBar:setPercent(self._time)
-            loadingBar:getChildByTag(255):setString(tostring(self._time).."/100")
+            loadingBar:getChildByTag(255):setString(tostring(self._time).."%")
             self.particle:setPositionX(loadingBar:getContentSize().width/100 *self._time)
             if self._time>96 then
-              loadingBar:getChildByTag(255):setString("100/100")
+              loadingBar:getChildByTag(255):setString("100%")
               loadingBar:setPercent(100)
             end
             if self._time==100 then
@@ -848,7 +848,7 @@ function LoginScene:updateLayer()
         -- local progress = string.format("downloading %d%%",percent)
         -- progressLable:setString(progress)
         loadingBar:setPercent(percent)
-        loadingBar:getChildByTag(255):setString(tostring(percent).."/100")
+        loadingBar:getChildByTag(255):setString(tostring(percent).."%")
     end
 
     local function onSuccess()
