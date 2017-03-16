@@ -6,26 +6,32 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
 end)
 
 function MainInterfaceScene:extend12()
-            -- local PinUIInput = require("app.scenes.PinUIInput")
-            -- local _fontSize={}--cc.size(200, 200)
-            -- _fontSize=200
+local PinUIInput = require("app.scenes.PinUIInput")
+local _fontSize={}--cc.size(200, 200)
+_fontSize=200
 
-            -- local _size={}--cc.size(200,400)
-            -- _size.width=400
-            -- _size.height=400
-            -- local qw=PinUIInput.new({fontSize=_fontSize,size=_size,UIInputType=2,x=300,y=400,image="png/chengzhangshu-1-di-2.png"})
-            -- self:addChild(qw,5000,5151456)
+local _size={}--cc.size(200,400)
+_size.width=400
+_size.height=400
+local edit=PinUIInput.new({
+          fontSize=_fontSize,size=_size,UIInputType=2,x=500,y=700,
+          image="png/chengzhangshu-1-di-2.png"})
+self:addChild(edit,5000)
 
 
-    --          local editbox = cc.ui.UIInput.new({
+   local editbox = cc.ui.UIInput.new({
 
-    -- image = "png/chengzhangshu-1-di-2.png", -- 输入控件的背景
+    image = "png/chengzhangshu-1-di-2.png", -- 输入控件的背景
 
-    -- x = 200,
+    x = 300,
 
-    -- y = 800,
+    y = 600,
 
-    -- size = cc.size(200, 40)
+    size = cc.size(200, 40)
+
+})
+
+self:addChild(editbox)
 
    
 end
@@ -55,7 +61,7 @@ function MainInterfaceScene:ctor()
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)  --  公告
-      self:extend12()
+      
 end
 function MainInterfaceScene:hammerAction()
     --创建动画序列
@@ -421,18 +427,18 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
 
-            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            -- if _table and tonumber(_table["shopIsused"])==0 then
-            --       local login_info=LocalData:Instance():get_user_data()
-            --       local _key=login_info["loginname"]
-            --       local _loginkey=login_info["loginkey"]
-            --       url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
-            --       device.openURL(url)
-            --       return
-            -- end
+            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            if _table and tonumber(_table["shopIsused"])==0 then
+                  local login_info=LocalData:Instance():get_user_data()
+                  local _key=login_info["loginname"]
+                  local _loginkey=login_info["loginkey"]
+                  url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
+                  device.openURL(url)
+                  return
+            end
 
-            --  Util:scene_controlid("MallScene",{type="emil"})
-             self:extend12()
+             Util:scene_controlid("MallScene",{type="emil"})
+             --self:extend12()
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then

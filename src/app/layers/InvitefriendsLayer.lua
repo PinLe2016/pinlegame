@@ -410,6 +410,7 @@ function InvitefriendsLayer:function_addFriend(  )
             end)
             local search_name_friend =self.addFriendSp:getChildByTag(4476)  --收索好友的昵称
             search_name_friend:setFontSize(22)
+            --  光标闪烁
             self.alert = ccui.Text:create()
             self.alert:setString("|")
             self.alert:setFontName("png/chuti.ttf")
@@ -463,18 +464,18 @@ end
 
 function InvitefriendsLayer:function_keyboard(target)
         local function keyboardReleased(keyCode, event)
+                print("key")
                 -- print("长度",self._guangbiao_x,"  ",self._search_name_friend:getStringLength(),"  ",self.alert:getFontSize())
                  local str=tostring(self._search_name_friend:getString())
                  local len = Util:fun_Strlen(str)
                  self.alert:setPositionX(self._guangbiao_x+len*13)
-                 print("长度",str,"  ",len)
                 if self._search_name_friend:getStringLength()  ==  6  and self.f_count== 1 then
                    Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
                 end
                 self.f_count=  self._search_name_friend:getStringLength()
         end
    
-
+        target:setKeyboardEnabled(true)
         local listener = cc.EventListenerKeyboard:create()
         listener:registerScriptHandler(keyboardReleased, cc.Handler.EVENT_KEYBOARD_RELEASED)
         local eventDispatcher = target:getEventDispatcher()
