@@ -317,7 +317,6 @@ function LoginScene:landing_init()
                   if eventType ~= ccui.TouchEventType.ended then
                     return
                   end
-
                    self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2)
                    local function stopAction()
                                
@@ -427,7 +426,6 @@ function LoginScene:_landing_interface()
   Editphone:setTouchEnabled(false)
   Editphone:setVisible(false)
 
-   
   local EditPassword=landing:getChildByTag(6):getChildByTag(17)
   --self.Dpassword_text=EditPassword
   -- Util:function_keyboard(landing:getChildByTag(6),EditPassword,12)

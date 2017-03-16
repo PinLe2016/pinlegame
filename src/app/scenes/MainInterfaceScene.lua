@@ -362,14 +362,14 @@ function MainInterfaceScene:touch_callback( sender, eventType )
      --Util:scene_control("PhysicsScene")
       elseif tag==444 then  --游戏中心
 
-            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
-                    self:fun_gamecenter()
-                    return
-            end
-            Util:scene_controlid("MallScene",{type="play_mode"})
+            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            -- if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
+            --         self:fun_gamecenter()
+            --         return
+            -- end
+            -- Util:scene_controlid("MallScene",{type="play_mode"})
 
-          
+          Util:scene_control("GrowingtreeScene")
 
 
       elseif tag==125 then 

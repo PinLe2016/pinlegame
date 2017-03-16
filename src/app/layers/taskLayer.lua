@@ -10,6 +10,8 @@ end)
 function taskLayer:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
        self.sur_pageno=1
+       self.task_state={"普通种子","中级种子","高级种子","钻石种子","惊喜种子","普通化肥","中级化肥","高级化肥"}
+       self.task_stateimage={"chengzhangshu-zhongzi-chu-1.png","chengzhangshu-zhongzi-zhong-1.png","chengzhangshu-zhongzi-gao-1.png","chengzhangshu-zhongzi-zuan-1.png","chengzhangshu-zhongzi-xi-1.png","chengzhangshu-huafei-chuji.png","chengzhangshu-huafei-zhongji.png","chengzhangshu-huafei-gaoji.png"}
        LocalData:Instance():set_gettasklist(nil)
        Server:Instance():gettasklist()
        self:init(  )
@@ -168,10 +170,21 @@ function taskLayer:data_init(  )
 
 
                   local  gold_number=cell:getChildByTag(195)--获得金币   后续的改
-                  local  gold_image=cell:getChildByTag(179)
-
+                  local  gold_image=cell:getChildByTag(179)  --  奖励图片
+                  gold_number:setString("X" ..  tasklist[i]["rewardamount"])
                   if tasklist[i]["rewardtype"] == 0  then  --0为金币，1为积分，2为道具，3为商品
-                     gold_number:setString("X" ..  tasklist[i]["rewardamount"])
+                     gold_image:loadTexture("png/Gjinbi.png")
+                  elseif tasklist[i]["rewardtype"] == 1 then
+                    gold_image:loadTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
+                  elseif tasklist[i]["rewardtype"] == 2 then
+                      for k=1,8 do
+                           if tostring(tasklist[i]["rewarditemname"])  ==  self.task_state[k] then
+                              gold_image:loadTexture("png/"  ..  self.task_stateimage[k])
+                           end
+                      end
+                     
+                  else
+
                   end
                   
                   if tonumber(tasklist[i]["targettype"])  ==  0 then

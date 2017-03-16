@@ -326,10 +326,11 @@ function GrowingtreeScene:fun_data()
 			            if eventType ~= ccui.TouchEventType.ended then
 			                return
 			            end 
-                  self._growingtreeNode:setPositionX(-220)
-                  if self.pv then
-                    self.pv:setVisible(false)
-                  end
+                    self._growingtreeNode:setPositionX(-220)
+                              if self.pv then
+                                    self.pv:setVisible(false)
+                              end
+                    self.friend_growingtree_checkbox:setPositionY(self._spdt)
                   self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,-1) 
                   self.ListNode:setVisible(false)
                             --  if self.pt_tag_table   ~=   0 then
@@ -359,11 +360,11 @@ function GrowingtreeScene:fun_data()
 			            self.friend_growingtree_checkbox:setTouchEnabled(false)
 			            self.ListNode:setVisible(true)
                               self._type_str_text:setString("播种")
-			            self._growingtreeNode:setPositionX(-220)
-                              if self.pv then
-                                    self.pv:setVisible(false)
-                              end
-                              self.friend_growingtree_checkbox:setPositionY(self._spdt)
+			            -- self._growingtreeNode:setPositionX(-220)(xin)
+               --                if self.pv then
+               --                      self.pv:setVisible(false)
+               --                end
+               --                self.friend_growingtree_checkbox:setPositionY(self._spdt)
 			            sender:setTouchEnabled(false)
 			            local function stopAction()
 			    		sender:setTouchEnabled(true)
@@ -424,10 +425,10 @@ function GrowingtreeScene:fun_data()
 				            if eventType ~= ccui.TouchEventType.ended then
 				                return
 				            end 
-                    self._growingtreeNode:setPositionX(-220)
-                    if self.pv then
-                      self.pv:setVisible(false)
-                    end
+                    -- self._growingtreeNode:setPositionX(-220) (xin)
+                    -- if self.pv then
+                    --   self.pv:setVisible(false)
+                    -- end
                     self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,-1) 
                     self.ListNode:setVisible(false)
                                     -- if self.pt_tag_table   ~=   0 then
@@ -824,6 +825,16 @@ function GrowingtreeScene:function_touchlistener(_isTouch)
                     --   self.pv:setVisible(false)
                     -- end
                     -- self.friend_growingtree_checkbox:setSelected(false) 
+
+                    self._growingtreeNode:setPositionX(0)
+                    self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
+                    self.friend_growingtree_checkbox:setSelected(true) 
+                    self._friend_employees_type=1
+                     if self.pv then
+                              self.pv:setVisible(true)
+                    end
+                                  --Server:Instance():gettreefriendlist(7,1,1)
+
    end
       self.Growingtree:setTouchEnabled(_isTouch)  
       self.Growingtree:setTouchSwallowEnabled(false)  
@@ -972,6 +983,11 @@ function GrowingtreeScene:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_GSTTREEGAMEITEMLIST", self,
                        function()  
                               self:fun_backpack_list()
+                              self._growingtreeNode:setPositionX(-220)
+                              if self.pv then
+                                    self.pv:setVisible(false)
+                              end
+                    self.friend_growingtree_checkbox:setPositionY(self._spdt)
                               
                       end)
   --种植成功
@@ -980,7 +996,16 @@ function GrowingtreeScene:onEnter()
                               Server:Instance():gettreelist(self.back_playerid)
                               self.pt_tag_table=0
                               self.ListNode:setVisible(false)
-                              
+                              self._deng_act:setVisible(false)
+                              self._growingtreeNode:setPositionX(0)
+                              self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
+                              self.friend_growingtree_checkbox:setSelected(true) 
+                              self._friend_employees_type=1
+                               if self.pv then
+                                        self.pv:setVisible(true)
+                              end
+
+
                       end)
   --种植不成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDPLANT_FALSE", self,
@@ -1012,6 +1037,15 @@ function GrowingtreeScene:onEnter()
                               self.pt_tag_table=0
                               self:coinAction(jin,self._obj_act:getParent():getPositionX()   ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
+
+                              self._deng_act:setVisible(false)
+                              self._growingtreeNode:setPositionX(0)
+                              self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
+                              self.friend_growingtree_checkbox:setSelected(true) 
+                              self._friend_employees_type=1
+                               if self.pv then
+                                        self.pv:setVisible(true)
+                              end
                       end)
   --施肥不成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE_FALSE", self,

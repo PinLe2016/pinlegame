@@ -234,7 +234,7 @@ function Server:getversion()
 end
 
 function Server:getversion_callback()
-    -- dump(self.data)
+     dump(self.data)
     -- if self.data.err_code~=0  then
     --     self:show_float_message("版本检查:" .. self.data.err_msg)
     --     return
