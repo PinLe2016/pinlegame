@@ -6,15 +6,15 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
 end)
 
 function MainInterfaceScene:extend12()
-            local PinUIInput = require("app.scenes.PinUIInput")
-            local _fontSize={}--cc.size(200, 200)
-            _fontSize=200
+            -- local PinUIInput = require("app.scenes.PinUIInput")
+            -- local _fontSize={}--cc.size(200, 200)
+            -- _fontSize=200
 
-            local _size={}--cc.size(200,400)
-            _size.width=400
-            _size.height=400
-            local qw=PinUIInput.new({fontSize=_fontSize,size=_size,UIInputType=2,x=300,y=400,image="png/chengzhangshu-1-di-2.png"})
-            self:addChild(qw,5000,5151456)
+            -- local _size={}--cc.size(200,400)
+            -- _size.width=400
+            -- _size.height=400
+            -- local qw=PinUIInput.new({fontSize=_fontSize,size=_size,UIInputType=2,x=300,y=400,image="png/chengzhangshu-1-di-2.png"})
+            -- self:addChild(qw,5000,5151456)
 
 
     --          local editbox = cc.ui.UIInput.new({
@@ -27,9 +27,11 @@ function MainInterfaceScene:extend12()
 
     -- size = cc.size(200, 40)
 
-
-
+   
 end
+
+
+
  function MainInterfaceScene:fun_refresh_friend( )
              
 end
@@ -52,8 +54,8 @@ function MainInterfaceScene:ctor()
       --手机归属请求
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
-      Server:Instance():getaffichelist(1)
-      --self:extend12()
+      Server:Instance():getaffichelist(1)  --  公告
+      self:extend12()
 end
 function MainInterfaceScene:hammerAction()
     --创建动画序列
@@ -281,7 +283,8 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
      self:funsetup( true )
     elseif tag==1201 then
      print("成长树")
-     display.replaceScene(require("app.scenes.GrowingtreeScene"):new())
+     --display.replaceScene(require("app.scenes.GrowingtreeScene"):new())
+     Util:scene_control("GrowingtreeScene")
   end
   self.sliding_bg:setScale(0)
   self.setup_box:setSelected(false)
@@ -337,10 +340,11 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 	if tag==56 then --惊喜吧
 		 Util:scene_control("SurpriseScene")
 	elseif tag==72 then --活动码
-    local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
-    self:addChild(activitycodeLayer.new(),1,255)
-		-- self.barrier_bg:setVisible(true)
-		-- self.kuang:setVisible(true)
+    -- local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
+    -- self:addChild(activitycodeLayer.new(),1,255)
+		
+
+    display.replaceScene(cc.TransitionProgressInOut:create(1, require("app.layers.activitycodeLayer"):new()))
 	elseif tag==37 then  --37
     local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
 		self:addChild(PerInformationLayer.new(),1,14)
@@ -365,8 +369,10 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==125 then 
               --self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
               --self.list_bt:setTouchEnabled(false)
-               local RichlistLayer = require("app.layers.RichlistLayer")--排行榜 
-         self:addChild(RichlistLayer.new(),1,17)
+         --       local RichlistLayer = require("app.layers.RichlistLayer")--排行榜 
+         -- self:addChild(RichlistLayer.new(),1,17)
+
+         display.replaceScene(cc.TransitionProgressInOut:create(1, require("app.layers.RichlistLayer"):new()))
 
 
 	elseif tag==124 then   --  290
@@ -415,19 +421,18 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
 
-            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            if _table and tonumber(_table["shopIsused"])==0 then
-                  local login_info=LocalData:Instance():get_user_data()
-                  local _key=login_info["loginname"]
-                  local _loginkey=login_info["loginkey"]
-                  url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
-                  device.openURL(url)
-                  return
-            end
+            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            -- if _table and tonumber(_table["shopIsused"])==0 then
+            --       local login_info=LocalData:Instance():get_user_data()
+            --       local _key=login_info["loginname"]
+            --       local _loginkey=login_info["loginkey"]
+            --       url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
+            --       device.openURL(url)
+            --       return
+            -- end
 
-             Util:scene_controlid("MallScene",{type="emil"})
-             
-
+            --  Util:scene_controlid("MallScene",{type="emil"})
+             self:extend12()
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
@@ -769,7 +774,7 @@ function MainInterfaceScene:init_checkin(  )
 end
 function MainInterfaceScene:onEnter()
 
-  Util:player_music_hit("ACTIVITY",true )
+  --Util:player_music_hit("ACTIVITY",true )
   Server:Instance():getuserinfo()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
@@ -780,6 +785,7 @@ function MainInterfaceScene:onEnter()
                        self.check_biaoji:setVisible(true)
 
                         self:userdata()
+
                        
 
                       end)
@@ -792,6 +798,10 @@ function MainInterfaceScene:onEnter()
                          userdt["golds"]=getuserinfo["golds"]
                          LocalData:Instance():set_userdata(userdt)
                          self:userdata()  --  等级刷新
+
+
+                       
+
                         
                       end)
 
@@ -818,7 +828,15 @@ function MainInterfaceScene:onEnter()
                       end)
 NotificationCenter:Instance():AddObserver("XINYUE", self,
                        function()
-                       self:funsetup(false)  
+
+                         local function stopAction()
+                              --Util:player_music_hit("ACTIVITY",true )
+                              self:funsetup(false)  
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                        self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+
+                       
                       end)
 
 end

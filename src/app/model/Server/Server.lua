@@ -52,12 +52,17 @@ function Server:show_http_buffer(is_buffer)
     local function logSprRotation(sender)
         display.getRunningScene():push_buffer(true)
     end
-    local action = cc.Sequence:create(cc.DelayTime:create(2),cc.CallFunc:create(logSprRotation))
+    local action = cc.Sequence:create(cc.DelayTime:create(3),cc.CallFunc:create(logSprRotation))
     display.getRunningScene():stopAllActions()
     if is_buffer then
-        display.getRunningScene():runAction(action)
+                --if cc.Director:getInstance():getRunningScene() then
+                        --display.getRunningScene():runAction(action)
+               --end
     else
-        display.getRunningScene():push_buffer(false)
+                --if cc.Director:getInstance():getRunningScene() then
+                       --cc.Director:getInstance():getRunningScene():push_buffer(false)
+               -- end
+        
     end
      
 end

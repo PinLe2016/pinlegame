@@ -76,7 +76,8 @@ end
               
               local login_info=LocalData:Instance():get_user_data()
               if login_info~=nil and login_info["diamondnum"] then
-                Util:scene_control("MainInterfaceScene")
+                 Util:scene_control("MainInterfaceScene")
+                --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                 return
               end
               self:landing_init()             
@@ -123,6 +124,7 @@ function LoginScene:_coverlayer( )
                                     local login_info=LocalData:Instance():get_user_data()
                                           if login_info~=nil and login_info["diamondnum"] then
                                                     Util:scene_control("MainInterfaceScene")
+                                                    --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                                                     return
                                           end
                                     self:landing_init()  
@@ -141,6 +143,7 @@ function LoginScene:_coverlayer( )
                 local login_info=LocalData:Instance():get_user_data()
                 if login_info~=nil and login_info["diamondnum"] then
                         Util:scene_control("MainInterfaceScene")
+                        --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                         return
                 end
                 self:landing_init()  
@@ -162,6 +165,10 @@ end
            self.layertype=1
            self._random=Util:rand(  ) --随机验证码
            print("邀请码".. self.phone_text:getText(),  self._random)
+           if tostring(Util:judgeIsAllNumber(tostring(self.phone_text:getText())))  ==  "false"  and self.Zpassword_text:getText() ~= "" and string.len(self.phone_text:getText()) == 11 then
+              Server:Instance():promptbox_box_buffer("手机号码格式错误")
+              return
+           end
            Server:Instance():sendmessage(1,self.phone_text:getText())
         end
     end
@@ -208,10 +215,26 @@ end
 
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
-                -- if tostring(self.Zcode_text:getText())  ~= tostring(self._random) then
-                --       Server:Instance():promptbox_box_buffer("验证码错误")
-                --      return    
+                
+                if  self.phone_text:getText() == "" then
+                      Server:Instance():promptbox_box_buffer("请输入正确的手机号 或者 密码 或者验证码")   --prompt
+                      return
+                end
+                -- if tostring(Util:judgeIsAllNumber(tostring(self.Dphone_text:getText())))  ==  "false"  then
+                --       Server:Instance():promptbox_box_buffer("账号不存在") 
+                --       return
                 -- end
+
+                -- if  string.len(self.Dphone_text:getText()) < 11 then
+                --       Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
+                --       return
+                -- end
+                -- if  string.len(self.Dphone_text:getText()) ==  11  and  self.Dpassword_text :getText()  ==  ""   then
+                --       Server:Instance():promptbox_box_buffer("输入的密码须在6～20位之间哦")   --prompt
+                --       return
+                -- end
+
+
                
                 if self._scode then
                       cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
@@ -244,7 +267,151 @@ end
     
 
 end
+function function_name( ... )
+  -- body
+end
+
+
+function LoginScene:fun_move_act(_obj,x)
+     if x<0 then
+       _x=x+math.abs(x)
+      else
+        _x=x/2
+     end
+     local  move1=cc.MoveTo:create(6, cc.p(_x ,_obj:getPositionY() ) )
+     local  move2=cc.MoveTo:create(6, cc.p(  x,_obj:getPositionY() ) )
+     local action = cc.RepeatForever:create(cc.Sequence:create(move1,move2))
+     _obj:stopAllActions()
+     _obj:runAction(action)
+end
+
+function LoginScene:fun_endanimation(_obj,_image,_type,_istrue)   
+      local  cliper = cc.ClippingNode:create()
+      local  _content=_obj
+      local  stencil = _content
+      local spark = display.newSprite("png/"  .. _image  )
+      spark:setPosition(cc.p(_content:getPositionX()-  _type,_content:getPositionY()));
+     -- spark:setColor(cc.c3b(250,100,30))
+      cliper:setAlphaThreshold(0.5)
+      cliper:setStencil(stencil)
+      cliper:addChild(spark)
+      cliper:setVisible(_istrue)
+      self.WeChat:addChild(cliper)
+      local moveTo = cc.MoveTo:create(4,cc.p(_content:getPositionX()+_type,_content:getPositionY()))
+      local moveBack = cc.MoveTo:create(4,cc.p(_content:getPositionX()-_type,_content:getPositionY()))  --moveTo:reverse()  --
+     -- local seq1=cc.Sequence:create(cc.FadeIn:create(4),cc.FadeOut:create(4))  --FadeOut
+      local seq = cc.Sequence:create(moveTo,moveBack)
+      local spawn = cc.Spawn:create( seq)
+      local SpeedTest_action1 = cc.Speed:create(cc.RepeatForever:create(spawn), 2.0)
+      spark:runAction(SpeedTest_action1)
+end 
+--  微信登陆界面
 function LoginScene:landing_init()
+      self.WeChat = cc.CSLoader:createNode("WeChat.csb")
+      self:addChild(self.WeChat,100)
+      
+      self.wechat_bt=self.WeChat:getChildByTag(561)
+      self.wechat_bt:setLocalZOrder(100)
+      --微信登陆按钮
+      self.wechat_bt:addTouchEventListener(function(sender, eventType  )
+                  if eventType ~= ccui.TouchEventType.ended then
+                    return
+                  end
+
+                   self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2)
+                   local function stopAction()
+                               
+                  end
+                  local callfunc = cc.CallFunc:create(stopAction)
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
+      end)
+
+      self.phone_bt=self.WeChat:getChildByTag(562)
+      self.phone_bt:setLocalZOrder(100)
+      self.phone_bt:addTouchEventListener(function(sender, eventType  )
+                  if eventType ~= ccui.TouchEventType.ended then
+                    return
+                  end
+                 
+                  self:function_bt_act(self.phone_bt,"shoujidenglu-anniu-guanxiao-",4,0.2)
+                   local function stopAction()
+                               self:_landing_interface()
+                               self.WeChat:removeFromParent()
+                  end
+                  local callfunc = cc.CallFunc:create(stopAction)
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
+
+      end)
+
+     self.sun_img=self.WeChat:getChildByTag(571)  
+     self.sun_img_big=self.WeChat:getChildByTag(573)
+     self.water_img=self.WeChat:getChildByTag(572)  
+     self:function_bt_run(self.sun_img,"weixindenglu-ditu-taiyangguang-1.png")
+     self:function_bt_run(self.sun_img_big,"weixindenglu-ditu-taiyangguang-2.png")
+     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,0,0)
+     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,50,10)
+     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,100,-40)
+     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,200,30)
+     self.left_image=self.WeChat:getChildByTag(565)  
+     self.left_image:setLocalZOrder(99)
+     self.right_image=self.WeChat:getChildByTag(566)
+     self.right_image:setLocalZOrder(99)
+     self:fun_move_act(self.left_image,self.left_image:getPositionX())
+     self:fun_move_act(self.right_image,self.right_image:getPositionX())
+     self:fun_endanimation(self.wechat_bt,"weixindenglu-anniu-1.png",-self.wechat_bt:getContentSize().width,true)
+     self:fun_endanimation(self.phone_bt,"shoujidenglu-anniu-guanxiao.png",self.phone_bt:getContentSize().width,true)
+end
+--太阳动画 
+function LoginScene:function_bt_run(_obj,_img)  
+    local taiyangguang1 = display.newSprite("png/"   .. _img  )
+    taiyangguang1:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
+    self.WeChat:addChild(taiyangguang1)  --  直接在水壶上上面
+    local seq=cc.RepeatForever:create(cc.Sequence:create(cc.FadeIn:create(1),cc.FadeOut:create(1)))
+   taiyangguang1:runAction(seq)
+
+end
+--按钮动画 
+function LoginScene:function_bt_act(_obj,_img,_count,_speed)  
+  local animation = cc.Animation:create()
+  local name=nil
+  for i=1,_count do
+    name = "png/".._img..i..".png"
+    animation:addSpriteFrameWithFile(name)
+  end
+  animation:setDelayPerUnit(_speed)
+  animation:setRestoreOriginalFrame(true)
+  --创建动作
+  local animate = cc.Animate:create(animation)
+  local _template = cc.Sprite:create()
+  _template:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
+  self.WeChat:addChild(_template,200)  --  直接在水壶上上面
+  local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
+  --_template:stopAllActions()
+  _template:runAction(seq)--(animate)
+
+end
+--云彩动画 
+function LoginScene:function_lantern_act(_obj,_img,_count,_speed,x,y)  
+  local animation = cc.Animation:create()
+  local name=nil
+  for i=1,_count do
+    name = "png/".._img..i..".png"
+    animation:addSpriteFrameWithFile(name)
+  end
+  animation:setDelayPerUnit(_speed)
+  animation:setRestoreOriginalFrame(true)
+  --创建动作
+  local animate = cc.Animate:create(animation)
+  local _template = cc.Sprite:create()
+  _template:setPosition(cc.p(_obj:getPositionX()+x,_obj:getPositionY()+y))
+  self.WeChat:addChild(_template)  --  直接在水壶上上面
+  local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
+  _template:stopAllActions()
+  _template:runAction(seq)--(animate)
+
+end
+--  登陆界面
+function LoginScene:_landing_interface()
     landing = cc.CSLoader:createNode("landing.csb");
     self:addChild(landing)
 
@@ -293,16 +460,26 @@ function LoginScene:landing_init()
 
 
 local function go_btCallback(sender, eventType)
-
         if eventType == ccui.TouchEventType.ended then
-            if  self.Dphone_text:getText() == "" then
+
+             if  self.Dphone_text:getText() == "" then
                 Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
                 return
             end
+            if tostring(Util:judgeIsAllNumber(tostring(self.Dphone_text:getText())))  ==  "false"  then
+                Server:Instance():promptbox_box_buffer("账号不存在") 
+                return
+            end
+           
             if  string.len(self.Dphone_text:getText()) < 11 then
                 Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
                 return
             end
+            if  string.len(self.Dphone_text:getText()) ==  11  and  self.Dpassword_text :getText()  ==  ""   then
+                Server:Instance():promptbox_box_buffer("输入的密码须在6～20位之间哦")   --prompt
+                return
+            end
+
 
             self._gobt:setTouchEnabled(false)
            local function stopAction()
@@ -386,6 +563,7 @@ function LoginScene:_passwordLayer( )
                      self:touch_Callback(sender, eventType)
                end))
            self.yanzhengma = self.passwordLayer:getChildByTag(291)
+           self.code_bt=self.yanzhengma
           self.yanzhengma:addTouchEventListener((function(sender, eventType  )
                      --self:touch_Callback(sender, eventType)
 
@@ -398,17 +576,19 @@ function LoginScene:_passwordLayer( )
                     self.p_random=Util:rand(  ) --随机验证码\
                     local phone=self.passwordLayer:getChildByTag(293)
                     self._mobilephone=self.Wphone_text:getText()
-                    print(" 长度 ",string.len(self._mobilephone))
-
+                     if tostring(Util:judgeIsAllNumber(tostring(self.Wphone_text:getText())))  ==  "false"  then
+                      Server:Instance():promptbox_box_buffer("请输入正确的手机号") 
+                      return
+                   end 
                     if string.len(self._mobilephone)~=11 then
                      Server:Instance():promptbox_box_buffer("填写手机号码错误")
                      return
                     end
+
                     sender:setTouchEnabled(false)
                     sender:setColor(cc.c3b(100, 100, 100))
                     self.layertype=2
                     Server:Instance():sendmessage(2,self._mobilephone)
-                    print("邀请码"..self.p_random)
 
                end))
 
@@ -467,19 +647,22 @@ function LoginScene:touch_Callback( sender, eventType  )
               elseif tag==303 then
                 local password = self.resetpasswordLayer:getChildByTag(302)
                 local _pass=self.Wpassword_text:getText()
-                 print("提交",_pass,"  ",self._mobilephone)
+                  if  string.len(_pass) <=6  or   string.len(Util:filter_spec_chars(_pass)) ~= string.len(_pass)    then
+                    Server:Instance():promptbox_box_buffer("密码格式不对哦（密码为6-20位数字或字母的组合")   --prompt
+                    return
+                end
                  Server:Instance():changepassword(self._mobilephone,_pass,self.y_yanzhengma,1)  --(1  忘记密码)
               elseif tag==291 then
                 self.code_bt=self.yanzhengma
                   self.p_random=Util:rand(  ) --随机验证码\
                      local phone=self.passwordLayer:getChildByTag(293)
                     self._mobilephone=self.Wphone_text:getText()
-                   print(" 长度 ",string.len(self._mobilephone))
-
+                   
                    if string.len(self._mobilephone)~=11 then
                        Server:Instance():promptbox_box_buffer("填写手机号码错误")
                        return
                    end
+                  
                    sender:setTouchEnabled(false)
                    sender:setColor(cc.c3b(100, 100, 100))
                    self.layertype=2
@@ -490,8 +673,29 @@ end
 function LoginScene:_resetpasswordLayer(  )
 
             self._mobilephone=self.Wphone_text:getText()
+             
+
+              if tostring(Util:judgeIsAllNumber(tostring(self.Wphone_text:getText())))  ==  "false"  then
+                Server:Instance():promptbox_box_buffer("账号不存在") 
+                 self.yanzhengma:setVisible(true)
+                  self.yanzhengma:setTouchEnabled(true)
+                  self.yanzhengma:setColor(cc.c3b(255, 255, 255))
+                  self.yanzhengma:setTitleText("获取验证码")
+                return
+             end
+            if  string.len(self.Wphone_text:getText()) < 11 then
+                          Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
+                          self.yanzhengma:setVisible(true)
+                          self.yanzhengma:setTouchEnabled(true)
+                          self.yanzhengma:setColor(cc.c3b(255, 255, 255))
+                          self.yanzhengma:setTitleText("获取验证码")
+                          return
+            end
+
+
+
             if tostring(self._yanzhengma:getText())=="" then
-                Server:Instance():promptbox_box_buffer("验证码不能为空,请重新输入")
+                 Server:Instance():promptbox_box_buffer("验证码不能为空,请重新输入")
                  self.yanzhengma:setVisible(true)
                   self.yanzhengma:setTouchEnabled(true)
                   self.yanzhengma:setColor(cc.c3b(255, 255, 255))
@@ -578,6 +782,7 @@ function LoginScene:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self,
                        function()
                         Util:scene_control("MainInterfaceScene")
+                        --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                         --display.replaceScene(SurpriseScene:Instance():Surpriseinit())
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self,
@@ -598,15 +803,14 @@ function LoginScene:onEnter()
                         print("振奋")
                         if self._scode then
                                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
-                         end
-                         dump(self.yanzhengma)
+                         end  
                              if self.code_bt then
                                    self.code_bt:setVisible(true)
                                     self.code_bt:setTouchEnabled(true)
                                     self.code_bt:setColor(cc.c3b(255, 255, 255))
                                     self.code_bt:setTitleText("获取验证码")
                              end
-                              
+                             
 
 
 
@@ -694,6 +898,7 @@ function LoginScene:onEnter()
  --  注册成功
  NotificationCenter:Instance():AddObserver("REG_CALLBACK", self,function()
                   Util:scene_control("MainInterfaceScene")--成功后直接跳转主界面
+                  --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                    if self._scode then
                       cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
                    end
@@ -734,6 +939,7 @@ function LoginScene:pushFloating(text)
 end 
 
 function LoginScene:push_buffer(is_buffer)
+  dump("网络监听2")
        self.floating_layer:show_http(is_buffer) 
 end 
 function LoginScene:networkbox_buffer(prompt_text)

@@ -640,9 +640,13 @@ function PhysicsScene:onEnter()
                          --Server:Instance():getactivitybyid(self.id,self.cycle)--  从新初始化
                       end)
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
-                       function()
-                        print("1111")
+                       function()  
                          self:_refresh()
+                         local function stopAction()
+                                Util:player_music_hit("ACTIVITY",true )
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
                         --self:fun_data()
                       end)
 
