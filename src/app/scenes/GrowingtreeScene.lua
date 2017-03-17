@@ -805,14 +805,16 @@ function GrowingtreeScene:function_touchlistener(_isTouch)
                     --   self.pv:setVisible(false)
                     -- end
                     -- self.friend_growingtree_checkbox:setSelected(false) 
-
-                    self._growingtreeNode:setPositionX(0)
-                    self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
-                    self.friend_growingtree_checkbox:setSelected(true) 
-                    self._friend_employees_type=1
-                     if self.pv then
-                              self.pv:setVisible(true)
-                    end
+                    if self.back_playerid  ==  nil then
+                                self._growingtreeNode:setPositionX(0)
+                                self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
+                                self.friend_growingtree_checkbox:setSelected(true) 
+                                self._friend_employees_type=1
+                                 if self.pv then
+                                          self.pv:setVisible(true)
+                                end
+                   end
+                    
                                   --Server:Instance():gettreefriendlist(7,1,1)
 
    end
