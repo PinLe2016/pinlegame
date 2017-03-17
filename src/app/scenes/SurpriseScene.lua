@@ -53,6 +53,12 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     ActivitymainnterfaceiScene = cc.CSLoader:createNode("ActivitymainnterfaceiScene.csb");
     self:addChild(ActivitymainnterfaceiScene)
 
+    self.roleAction = cc.CSLoader:createTimeline("ActivitymainnterfaceiScene.csb")
+    ActivitymainnterfaceiScene:runAction(self.roleAction)
+    self.roleAction:setTimeSpeed(0.3)
+    self.roleAction:gotoFrameAndPlay(0,122, true)
+
+    self.act_loading=ActivitymainnterfaceiScene:getChildByTag(1198)  --  加载标记
     local Soon_bt=ActivitymainnterfaceiScene:getChildByTag(29)--即将
     Soon_bt:addTouchEventListener((function(sender, eventType  )
                      self:list_btCallback(sender, eventType)
@@ -80,9 +86,25 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
     activity_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
-                        self.sur_pageno=self.sur_pageno+1
-                        --self:unscheduleUpdate()
-                        Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)   --下拉刷新功能
+                        
+
+                        if self.sur_pageno==1 then
+                          activity_ListView:jumpToPercentVertical(115)   
+                        else
+                          activity_ListView:jumpToPercentVertical(108)
+                        end
+                        
+                        self.act_loading:setVisible(true)
+                        
+                         local function stopAction()
+                               self.sur_pageno=self.sur_pageno+1
+                              --self:unscheduleUpdate()
+                              Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)   --下拉刷新功能
+                        end 
+                        local callfunc = cc.CallFunc:create(stopAction)
+                        self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+
+
                                  return
                       end
      end))
@@ -213,9 +235,13 @@ end
 
         
 function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")     
-          
-          self.list_table=LocalData:Instance():get_getactivitylist()
+          self.act_loading:setVisible(false)
+          --activity_ListView:jumpToPercentVertical(10)   
 
+          self.list_table=LocalData:Instance():get_getactivitylist()
+          if #self.list_table  == 0  then
+            activity_ListView:jumpToPercentVertical(100)   
+          end
           if self.list_table and  self.tablecout==0 then
                     activity_ListView:removeAllItems() 
           end

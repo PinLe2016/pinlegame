@@ -24,7 +24,13 @@ function GoldprizeScene:init(  )
 
 	self.GoldprizeScene = cc.CSLoader:createNode("Goldprize.csb")
       	self:addChild(self.GoldprizeScene)
-      	 
+      	self.roleAction = cc.CSLoader:createTimeline("Goldprize.csb")
+            self.GoldprizeScene:runAction(self.roleAction)
+            self.roleAction:setTimeSpeed(0.3)
+            self.roleAction:gotoFrameAndPlay(0,122, true)
+      	
+      	self.act_loading=self.GoldprizeScene:getChildByTag(1134)  --  加载标记
+
       	local back=self.GoldprizeScene:getChildByTag(57)
     	back:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
@@ -36,8 +42,25 @@ function GoldprizeScene:init(  )
     	self.jackpot_ListView=self.GoldprizeScene:getChildByTag(127)--奖池列表
     	self.jackpot_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
-                        self.sur_pageno=self.sur_pageno+1
-                        Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid = ""})  --发送消息
+                        -- self.sur_pageno=self.sur_pageno+1
+                        -- Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid = ""})  --发送消息
+                        --self.jackpot_ListView:jumpToPercentVertical(0)
+                        if self.sur_pageno==1 then
+                        	self.jackpot_ListView:jumpToPercentVertical(130)   
+                        else
+                        	self.jackpot_ListView:jumpToPercentVertical(110)
+                        end
+                        
+                        self.act_loading:setVisible(true)
+                        
+                         local function stopAction()
+                         	--self.jackpot_ListView:jumpToPercentVertical(0)
+                               self.sur_pageno=self.sur_pageno+1
+                               Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid = ""})  --发送消息
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                        self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+
                                  return
                       end
 	end))
@@ -50,6 +73,8 @@ end
 
 function GoldprizeScene:data_init(  )
 		-- self.jackpot_ListView:removeAllItems()
+		self.act_loading:setVisible(false)
+		self.jackpot_ListView:jumpToPercentVertical(0)   
 		self.image={}
 		local  list_table=LocalData:Instance():get_getgoldspoollist()
 
@@ -170,7 +195,6 @@ function GoldprizeScene:data_init(  )
 		end
 
 		if tonumber(self.sur_pageno)~=0 then
-	            dump(self.sur_pageno)
 	             self.jackpot_ListView:jumpToPercentVertical(120)
 	           else
 	             self.jackpot_ListView:jumpToPercentVertical(0)

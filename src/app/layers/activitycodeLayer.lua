@@ -31,6 +31,14 @@ end
 function activitycodeLayer:init(  )
 	self.inputcodeLayer = cc.CSLoader:createNode("inputcodeLayer.csb");
     	self:addChild(self.inputcodeLayer)
+
+      self.roleAction = cc.CSLoader:createTimeline("inputcodeLayer.csb")
+      self.inputcodeLayer:runAction(self.roleAction)
+      self.roleAction:setTimeSpeed(0.3)
+      self.roleAction:gotoFrameAndPlay(0,122, true)
+
+      self.act_loading=self.inputcodeLayer:getChildByTag(1273)  --  加载标记
+
             
              local hongdong_bt=self.inputcodeLayer:getChildByTag(115)--输入活动吗
              hongdong_bt:addTouchEventListener((function(sender, eventType  )
@@ -54,9 +62,25 @@ function activitycodeLayer:init(  )
             self.activity_ListView:setItemModel(self.activity_ListView:getItem(0))
             self.activity_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
-                        self.sur_pageno=self.sur_pageno+1
-                        Server:Instance():getactivitylist(tostring(self._typeevt),self.sur_pageno)   --下拉刷新功能
-                        self:unscheduleUpdate()
+                       
+
+                          if self.sur_pageno==1 then
+                          self.activity_ListView:jumpToPercentVertical(115)   
+                        else
+                          self.activity_ListView:jumpToPercentVertical(108)
+                        end
+                        
+                        self.act_loading:setVisible(true)
+                        
+                         local function stopAction()
+                               self.sur_pageno=self.sur_pageno+1
+                              Server:Instance():getactivitylist(tostring(self._typeevt),self.sur_pageno)   --下拉刷新功能
+                              self:unscheduleUpdate()
+                        end 
+                        local callfunc = cc.CallFunc:create(stopAction)
+                        self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+
+
                                  return
                       end
             end))
@@ -232,10 +256,10 @@ end
 function activitycodeLayer:act_list()
 	
           self.list_table=LocalData:Instance():get_getactivitylist()
-          -- dump(self.list_table)
-          -- if  self.list_table then
-          --   self.activity_ListView:removeAllItems() 
-          -- end
+         self.act_loading:setVisible(false)
+          if #self.list_table  == 0  then
+                      activity_ListView:jumpToPercentVertical(100)   
+          end
           self.activity_ListView:removeAllItems() 
           local  sup_data=self.list_table["game"]
            self.sup_data_num= #sup_data
