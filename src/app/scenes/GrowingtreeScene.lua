@@ -780,12 +780,12 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
                                if eventType ~= ccui.TouchEventType.ended then
                                       return
                                end
-                              print("施肥")
-                              self.back_seedplant_seedmanure="施肥"  --  区别是种植接口还是施肥接口
-                              Server:Instance():gettreegameitemlist(1 )  --  施肥接口
-                              self.ListNode:setVisible(true)
-                              self._type_str_text:setString("施肥")
-                              self:fun_FruitinformationNode(self._fertilization_template:getPositionX(),self._fertilization_template:getPositionY(),true,-1)       
+                              self.floating_layer:fun_Grawpopup("化肥功能暂未开放，敬请期待。")
+                              -- self.back_seedplant_seedmanure="施肥"   
+                              -- Server:Instance():gettreegameitemlist(1 )    
+                              -- self.ListNode:setVisible(true)
+                              -- self._type_str_text:setString("施肥")
+                              -- self:fun_FruitinformationNode(self._fertilization_template:getPositionX(),self._fertilization_template:getPositionY(),true,-1)       
             end)
 			
 end
@@ -955,10 +955,10 @@ function GrowingtreeScene:onEnter()
                               -- self:fun_UIListView()
                                local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
                                local _list=gettreefriendlist["list"]
-                               if #_list ==  0 and self._friend_employees_type==1 then
-                                  self.pv:setVisible(true)
-                                   return
-                               end
+                               -- if #_list ==  0 and self._friend_employees_type==1 then
+                               --    self.pv:setVisible(true)
+                               --     return
+                               -- end
                               self:createPageView()
                       end)
   --背包列表
