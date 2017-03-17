@@ -257,6 +257,7 @@ function GrowingtreeScene:fun_data()
   self._deng_act_img:loadTexture("png/chengzhangshu-1-touming.png")
     	for i=1,8 do
     		self.pt_table[i]:loadTexture("png/chengzhangshu-zhong-di-suo.png")
+           self.pt_table[i]:getParent():loadTexture("png/chengzhangshu-zhong-di.png")
     		self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setVisible(false)
             self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):setVisible(false)
     	end
@@ -377,20 +378,22 @@ function GrowingtreeScene:fun_data()
 	 end
 
 	 local tree_seedlist = gettreelist["list"][1]["seedlist"]
-     dump(tree_seedlist)
 	 if not tree_seedlist  or   #tree_seedlist  ==  0 then
 	 	return
 	 end
 	 for i=1,#tree_seedlist do
 	 	for j=1,8 do
 	 		if tostring(tree_seedlist[i]["seedname"]) == tostring(self.zh_state[j]) then
-	 			if tostring(tree_seedlist[i]["seedstatus"]) ==  "2"  and  tonumber(tree_seedlist[i]["stolenamount"]) >0   then   --收获
+                         if tostring(tree_seedlist[i]["seedstatus"]) ==  "2" and tonumber(tree_seedlist[i]["stolenamount"]) == 0 then
+                                   self.pt_table[tree_seedlist[i]["seatcount"]]:getParent():loadTexture("png/chengzhangshu-zhong-chu-1-1.png" )
+	 			           self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
+                        elseif tostring(tree_seedlist[i]["seedstatus"]) ==  "2"  and  tonumber(tree_seedlist[i]["stolenamount"]) >0   then   --收获
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString(tostring(tree_seedlist[i]["gainsamount"]))
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
                               self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
-	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
+                              self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
 	 			     --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/chengzhangshu-zhong-di-suo.png")
@@ -425,40 +428,14 @@ function GrowingtreeScene:fun_data()
 				            if eventType ~= ccui.TouchEventType.ended then
 				                return
 				            end 
-                    -- self._growingtreeNode:setPositionX(-220) (xin)
-                    -- if self.pv then
-                    --   self.pv:setVisible(false)
-                    -- end
+                  
                     self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,-1) 
                     self.ListNode:setVisible(false)
-                                    -- if self.pt_tag_table   ~=   0 then
-                                    --       if   self.pt_tag_table ~=sender:getTag()  then
-                                                       
-                                    --                    return
-                                    --       else
-                                    --                 self._deng_act:setPosition(sender:getParent():getPositionX(),sender:getParent():getPositionY())
-                                    --                 self._deng_act:setVisible(true)
-
-                                    --                 self.friend_growingtree_checkbox:setTouchEnabled(true)
-                                    --                 self.pt_tag_table=0
-                                    --                  for w=1,#tree_seedlist do
-                                    --                        if tonumber(tree_seedlist[w]["seatcount"] )== sender:getTag()-103 then
-                                    --                             self:fun_FruitinformationNode(sender:getParent():getPositionX(),sender:getParent():getPositionY(),false,w) 
-                                    --                             self:unscheduleUpdate()
-                                                                
-                                    --                       end
-                                    --                   end
-                                                    
-                                    --                 return
-                                    --       end
-
-                                    -- end
+                                   
                                     self._obj_act=sender
                                     self.friend_growingtree_checkbox:setTouchEnabled(false)
                                     self.pt_tag_table=sender:getTag()
-                                    -- print("种植1")
-                                   -- dump(tree_seedlist)
-
+                                    
                                     for z=1,#tree_seedlist do
 
                                       if tonumber(tree_seedlist[z]["seatcount"] )== sender:getTag()-103 then  --  所需要的TAG
@@ -478,7 +455,10 @@ function GrowingtreeScene:fun_data()
                                                 
                                                self:scheduleUpdate()
                                             elseif tonumber(tree_seedlist[z]["seedstatus"] )==2 then  --  收获
-
+                                                         if tostring(tree_seedlist[z]["seedstatus"]) ==  "2" and tonumber(tree_seedlist[z]["stolenamount"]) == 0 then
+                                                                       
+                                                                        return
+                                                         end
                                               Server:Instance():setseedreward(self.z_treeid,self.z_seedid)
                                               
                                               -- local _istouch=true
