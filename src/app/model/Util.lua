@@ -451,6 +451,7 @@ function Util:all_layer_backMusic() -- 所有界面返回音效
   end
 end
 --  增加光标
+--  增加光标
 function Util:function_keyboard(_parent,target,font_size)
         local alert = ccui.Text:create()
         alert:setString("|")
@@ -462,25 +463,36 @@ function Util:function_keyboard(_parent,target,font_size)
         alert:setColor(cc.c3b(0, 0, 0))
         _parent:addChild(alert)
 
-        local  move=cc.Blink:create(1, 1)  
-        local action = cc.RepeatForever:create(move)
-        alert:runAction(action)
+       
 
-        local function keyboardReleased(keyCode, event)
-                 local str=tostring(target:getString())
+        alert:setVisible(false)
+
+        local function textFieldEvent(sender, eventType)  
+              if eventType == ccui.TextFiledEventType.attach_with_ime then  
+                  print("attach_with_ime") 
+                   local  move=cc.Blink:create(1, 1)  
+                    local action = cc.RepeatForever:create(move)
+                    alert:runAction(action) 
+                  alert:setVisible(true)
+              elseif eventType == ccui.TextFiledEventType.detach_with_ime then  
+                  print("detach_with_ime") 
+                  alert:stopAllActions() 
+                  alert:setVisible(false)
+              elseif eventType == ccui.TextFiledEventType.insert_text then  
+                  print("insert_text")  
+                  local str=tostring(target:getString())
+                 local len = string.len(str) --Util:fun_Strlen(str)
+                 alert:setPositionX(_guangbiao_x+len*font_size)    
+              elseif eventType == ccui.TextFiledEventType.delete_backward then  
+                  print("delete_backward")
+                  local str=tostring(target:getString())
                  local len = Util:fun_Strlen(str)
-                 alert:setPositionX(_guangbiao_x+len*font_size)
-          end
-        local listener = cc.EventListenerKeyboard:create()
-        listener:registerScriptHandler(keyboardReleased, cc.Handler.EVENT_KEYBOARD_RELEASED)
-        -- listener:registerScriptKeypadHandler(function(touches, event)
-        --        print("开始的疯狂")
-        --        dump(touches)
-        --        dump(event)
-        -- end,cc.Handler.EVENT_KEYBOARD_RELEASED)
+                 alert:setPositionX(_guangbiao_x+len*font_size)      
+      
+        end  
+      end
+      target:addEventListener(textFieldEvent) 
 
-        local eventDispatcher = target:getEventDispatcher()
-        eventDispatcher:addEventListenerWithSceneGraphPriority(listener, target)
 
 end
 
