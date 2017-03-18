@@ -449,7 +449,6 @@ function GameScene:onEnter()
                        function()
                         local  _img= LocalData:Instance():get_user_img()
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
-                        dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
                       
                         local  _addetailurl = tostring(1)
