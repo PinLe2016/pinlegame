@@ -24,6 +24,7 @@ function GrowingtreeScene:ctor()
        self.is_friend=false
        self._feied_count=1
        self._Lv_text=nil
+       self._Lv_text1=nil
        self._friend_employees_type=1
        --  定时器
        self.count_time=0
@@ -50,6 +51,13 @@ function GrowingtreeScene:init(  )
 	
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
+
+      self.left_image=self.Growingtree:getChildByTag(645) 
+      self.left_image:setLocalZOrder(100)
+      self.right_image=self.Growingtree:getChildByTag(644) 
+      self.right_image:setLocalZOrder(100)
+      self.touch_image=self.Growingtree:getChildByTag(966) 
+
       self._deng_act=self.Growingtree:getChildByTag(2679)
       self._deng_act_img=self._deng_act:getChildByTag(2616)
       self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
@@ -144,6 +152,15 @@ function GrowingtreeScene:init(  )
                           self._feied_count=1
                           self.back_huijia_bt:setVisible(false)
                           self.back_bt:setVisible(true)
+                          if self.back_playerid  ==  nil then
+                                self._growingtreeNode:setPositionX(0)
+                                self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
+                                self.friend_growingtree_checkbox:setSelected(true) 
+                                self._friend_employees_type=1
+                                 if self.pv then
+                                          self.pv:setVisible(true)
+                                end
+                        end
                           return
                       end
       end)
@@ -253,6 +270,83 @@ function GrowingtreeScene:init(  )
       self:function_touchlistener(true)
 
 end
+--  头像信息
+function GrowingtreeScene:fun_per(  )
+
+   local gettreelist = LocalData:Instance():get_gettreelist()
+  if self.back_playerid  ~=  nil then
+              self.Growingtree:getChildByTag(380):setVisible(true)
+              self.Growingtree:getChildByTag(581):setVisible(false)
+              local experience_text=self.Growingtree:getChildByTag(380):getChildByTag(392)  --经验值
+              experience_text:setString(gettreelist["treeExp"])
+
+              local gold_text=self.Growingtree:getChildByTag(380):getChildByTag(393)  --金币值
+              gold_text:setString(gettreelist["golds"])
+
+              local diamond_text=self.Growingtree:getChildByTag(380):getChildByTag(394)  --钻石值
+              diamond_text:setString(gettreelist["diamondnum"])
+
+              local head_image=self.Growingtree:getChildByTag(380):getChildByTag(382)  --自己头像
+              print("头像  ",tostring(Util:sub_str(gettreelist["imageUrl"], "/",":")))
+              head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(gettreelist["imageUrl"], "/",":"))))
+
+              local name_text=self.Growingtree:getChildByTag(380):getChildByTag(385)  --自己名字
+              name_text:setString(gettreelist["nickname"])
+
+              local Lv_img=self.Growingtree:getChildByTag(380):getChildByTag(384)  --等级
+              Lv_img:setVisible(false)
+              if self._Lv_text1==nil then
+                self._Lv_text1 =   ccui.TextAtlas:create((tostring(gettreelist["treegrade"])),"png/treefontPlist.png", 12, 15, "0")
+                self._Lv_text1:setPosition(cc.p(Lv_img:getPositionX(),Lv_img:getPositionY()))
+                self._Lv_text1:setAnchorPoint(0,0.5)
+                self.Growingtree:getChildByTag(380):addChild(self._Lv_text1)
+              else
+                self._Lv_text1:setProperty((tostring(gettreelist["treegrade"])),"png/treefontPlist.png", 12, 15, "0")
+              end
+              self._Lv_text1:setVisible(true)
+                if self._Lv_text~=  nil then
+                self._Lv_text:setVisible(false)
+            end
+              return
+  end
+
+
+   self.Growingtree:getChildByTag(380):setVisible(false)
+   self.Growingtree:getChildByTag(581):setVisible(true)
+   local experience_text=self.Growingtree:getChildByTag(581):getChildByTag(87)  --经验值
+   experience_text:setString(gettreelist["treeExp"])
+
+   local gold_text=self.Growingtree:getChildByTag(581):getChildByTag(88)  --金币值
+   gold_text:setString(gettreelist["golds"])
+
+   local diamond_text=self.Growingtree:getChildByTag(581):getChildByTag(89)  --钻石值
+   diamond_text:setString(gettreelist["diamondnum"])
+
+   local head_image=self.Growingtree:getChildByTag(581):getChildByTag(86)  --自己头像
+   print("头像  ",tostring(Util:sub_str(gettreelist["imageUrl"], "/",":")))
+   head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(gettreelist["imageUrl"], "/",":"))))
+
+   local name_text=self.Growingtree:getChildByTag(581):getChildByTag(90)  --自己名字
+   name_text:setString(gettreelist["nickname"])
+
+      local Lv_img=self.Growingtree:getChildByTag(581):getChildByTag(3259)  --等级
+      Lv_img:setVisible(false)
+      if self._Lv_text==nil then
+        self._Lv_text =   ccui.TextAtlas:create((tostring(gettreelist["treegrade"])),"png/treefontPlist.png", 12, 15, "0")
+        self._Lv_text:setPosition(cc.p(Lv_img:getPositionX(),Lv_img:getPositionY()))
+        self._Lv_text:setRotation(90)
+        self._Lv_text:setAnchorPoint(0,0.5)
+        self.Growingtree:addChild(self._Lv_text)
+      else
+        self._Lv_text:setProperty((tostring(gettreelist["treegrade"])),"png/treefontPlist.png", 12, 15, "0")
+      end
+      if self._Lv_text1~=  nil then
+          self._Lv_text1:setVisible(false)
+      end
+       
+       self._Lv_text:setVisible(true)
+
+end
 function GrowingtreeScene:fun_data()
   self._deng_act_img:loadTexture("png/chengzhangshu-1-touming.png")
     	for i=1,8 do
@@ -265,42 +359,7 @@ function GrowingtreeScene:fun_data()
 	 local gettreelist = LocalData:Instance():get_gettreelist()
 	  self.z_treeid=gettreelist["list"][1]["treeid"]  --目前默认只有一棵树
 
-	 local experience_text=self.Growingtree:getChildByTag(87)  --经验值
-	 experience_text:setString(gettreelist["treeExp"])
-
-	 local gold_text=self.Growingtree:getChildByTag(88)  --金币值
-	 gold_text:setString(gettreelist["golds"])
-
-	 local diamond_text=self.Growingtree:getChildByTag(89)  --钻石值
-	 diamond_text:setString(gettreelist["diamondnum"])
-
-	 local head_bt=self.Growingtree:getChildByTag(85)  --自己头像框按钮
-	 head_bt:setTouchEnabled(false)
-	 head_bt:addTouchEventListener(function(sender, eventType  )
-	            if eventType ~= ccui.TouchEventType.ended then
-	                return
-	            end 
-	           print("自己头像框按钮")
-	  end)
-
-	 local head_image=self.Growingtree:getChildByTag(86)  --自己头像
-	 print("头像  ",tostring(Util:sub_str(gettreelist["imageUrl"], "/",":")))
-	 head_image:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(gettreelist["imageUrl"], "/",":"))))
-
-	 local name_text=self.Growingtree:getChildByTag(90)  --自己名字
-	 name_text:setString(gettreelist["nickname"])
-
-      local Lv_img=self.Growingtree:getChildByTag(3259)  --等级
-      Lv_img:setVisible(false)
-      if self._Lv_text==nil then
-        self._Lv_text =   ccui.TextAtlas:create((tostring(gettreelist["treegrade"])),"png/treefontPlist.png", 12, 15, "0")
-        self._Lv_text:setPosition(cc.p(Lv_img:getPositionX(),Lv_img:getPositionY()))
-        self._Lv_text:setRotation(90)
-        self._Lv_text:setAnchorPoint(0,0.5)
-        self.Growingtree:addChild(self._Lv_text)
-      else
-        self._Lv_text:setProperty((tostring(gettreelist["treegrade"])),"png/treefontPlist.png", 12, 15, "0")
-      end
+	self:fun_per()
       
 	local tree_seedlist = gettreelist["list"][1]["seedlist"]
 
@@ -597,6 +656,8 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
               self.pv:gotoPage(-1)
            	elseif tag==42 then
            	   -- print("右移一格")
+      --           self.Scene =  ccs.SceneReader:getInstance():createNodeWithSceneFile("Scene.json")
+      -- self:addChild(self.Scene)
                self.pv:gotoPage(1)
 
            	elseif tag==43 then
@@ -934,7 +995,23 @@ function GrowingtreeScene:fun_move_act(_obj,x,y)
      _obj:stopAllActions()
      _obj:runAction(action)
 end
-
+function GrowingtreeScene:fun_move_act_yun(_obj,y)
+  local _ps=0
+     if y==0 then
+       _ps=1136
+      else
+        _ps=0
+     end
+      local function stopAction()
+         _obj:setPositionY(y)
+      end 
+      local callfunc = cc.CallFunc:create(stopAction)
+     local  move1=cc.MoveTo:create(3, cc.p(_obj:getPositionX(),_ps ) )
+     local  move2=cc.MoveTo:create(2, cc.p(_obj:getPositionX(),y ))
+     local action = cc.Sequence:create(move1,move2,callfunc)
+     _obj:stopAllActions()
+     _obj:runAction(action)
+end
 
 function GrowingtreeScene:onEnter()
  --初始化成长树
@@ -1183,25 +1260,34 @@ function GrowingtreeScene:function_template(data)
               end
             
             local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
-            :onButtonClicked(function(event)
+            :onButtonClicked(function(sender,event)
                           if tonumber(data["flag"])  ==  100  then
                                    local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
                                     self:addChild(InvitefriendsLayer.new(),1,13)
                                   return
                           end
-                          self.is_friend=true
-                          --LocalData:Instance():set_gettreelist(nil)
-                           Server:Instance():gettreelist(data["playerid"])
-                           self.back_playerid=data["playerid"]
-                           self._growingtreeNode:setPositionX(-220)
-                           self.friend_growingtree_checkbox:setPositionY(self._spdt)
-                          if self.pv then
-                            self.pv:setVisible(false)
-                          end
-                          self.back_huijia_bt:setVisible(true)
-                          self.back_bt:setVisible(false)
-                          self.friend_growingtree_checkbox:setSelected(false)   
-                          self.friend_growingtree_checkbox:setVisible(false)           
+                        self.touch_image:setVisible(true)
+                        self:fun_move_act_yun(self.left_image,self.left_image:getPositionY())
+                        self:fun_move_act_yun(self.right_image,self.right_image:getPositionY())
+                         local function stopAction()
+                                  self.touch_image:setVisible(false)
+                                  self.is_friend=true
+                                  --LocalData:Instance():set_gettreelist(nil)
+                                  Server:Instance():gettreelist(data["playerid"])
+                                  self.back_playerid=data["playerid"]
+                                  self._growingtreeNode:setPositionX(-220)
+                                  self.friend_growingtree_checkbox:setPositionY(self._spdt)
+                                  if self.pv then
+                                  self.pv:setVisible(false)
+                                  end
+                                  self.back_huijia_bt:setVisible(true)
+                                  self.back_bt:setVisible(false)
+                                  self.friend_growingtree_checkbox:setSelected(false)   
+                                  self.friend_growingtree_checkbox:setVisible(false)   
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                       self:runAction(cc.Sequence:create(cc.DelayTime:create(2.8),callfunc  ))
+
             end)
             --ScrollViewMenu() --ccui.Button:create()
             button:setRotation(90)
