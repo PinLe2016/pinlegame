@@ -469,22 +469,22 @@ function Util:function_keyboard(_parent,target,font_size)
 
         local function textFieldEvent(sender, eventType)  
               if eventType == ccui.TextFiledEventType.attach_with_ime then  
-                  print("attach_with_ime") 
+                  -- print("attach_with_ime") 
                    local  move=cc.Blink:create(1, 1)  
                     local action = cc.RepeatForever:create(move)
                     alert:runAction(action) 
                   alert:setVisible(true)
               elseif eventType == ccui.TextFiledEventType.detach_with_ime then  
-                  print("detach_with_ime") 
+                  -- print("detach_with_ime") 
                   alert:stopAllActions() 
                   alert:setVisible(false)
               elseif eventType == ccui.TextFiledEventType.insert_text then  
-                  print("insert_text")  
+                  -- print("insert_text")  
                   local str=tostring(target:getString())
                  local len = string.len(str) --Util:fun_Strlen(str)
                  alert:setPositionX(_guangbiao_x+len*font_size)    
               elseif eventType == ccui.TextFiledEventType.delete_backward then  
-                  print("delete_backward")
+                  -- print("delete_backward")
                   local str=tostring(target:getString())
                  local len = Util:fun_Strlen(str)
                  alert:setPositionX(_guangbiao_x+len*font_size)      
@@ -514,27 +514,39 @@ end
 
 
 function Util:getWeixinLoginDate()
+
           local user=
           {
-              nickname=cc.UserDefault:getInstance():getStringForKey("nickname",""),
-              unionid=cc.UserDefault:getInstance():getStringForKey("unionid",""),
-              openid=cc.UserDefault:getInstance():getStringForKey("openid",""),
-              headimgurl=cc.UserDefault:getInstance():getStringForKey("headimgurl",""),
-              country=cc.UserDefault:getInstance():getStringForKey("country",""),
-              province=cc.UserDefault:getInstance():getStringForKey("province",""),
-              city=cc.UserDefault:getInstance():getStringForKey("city","")
-
+              nickname=cc.UserDefault:getInstance():getStringForKey("name",""),
+              unionid=cc.UserDefault:getInstance():getStringForKey("unionId",""),
+              openid=cc.UserDefault:getInstance():getStringForKey("openId",""),
+              headimgurl=cc.UserDefault:getInstance():getStringForKey("icon","")
           }
+          if device.platform=="android" then 
+                user=
+              {
+                  nickname=cc.UserDefault:getInstance():getStringForKey("nickname",""),
+                  unionid=cc.UserDefault:getInstance():getStringForKey("unionid",""),
+                  openid=cc.UserDefault:getInstance():getStringForKey("openid",""),
+                  headimgurl=cc.UserDefault:getInstance():getStringForKey("headimgurl","")
+                  -- country=cc.UserDefault:getInstance():getStringForKey("country",""),
+                  -- province=cc.UserDefault:getInstance():getStringForKey("province",""),
+                  -- city=cc.UserDefault:getInstance():getStringForKey("city","")
 
-            dump(cc.UserDefault:getInstance():getStringForKey("nickname",""))
-            dump(cc.UserDefault:getInstance():getStringForKey("unionid",""))
-            dump(cc.UserDefault:getInstance():getStringForKey("province",""))
-            dump(cc.UserDefault:getInstance():getStringForKey("openid",""))
-            dump(cc.UserDefault:getInstance():getStringForKey("headimgurl",""))
-            dump(cc.UserDefault:getInstance():getStringForKey("country",""))
-            dump(cc.UserDefault:getInstance():getStringForKey("city",""))
+              }
+          end
+
+            dump(user)
+       if user["openid"]=="" then
+           return nil
+        end     
             
       return user
+end
+
+function Util:weixinLogin()
+    local weinxin=cc.UM_Share:create()
+    weinxin:getlogin()
 end
 
 --  辨别字符串中中包含数字
