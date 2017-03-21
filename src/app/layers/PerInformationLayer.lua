@@ -553,7 +553,7 @@ function PerInformationLayer:perinformation_init(  )
     local  bg=self.Perinformation:getChildByTag(26)
     self.image_head=bg:getChildByTag(67)  --头像
         -- self._index=string.sub(tostring((self:chaifen(userdt["imageUrl"])),"."),1,1)
-        dump(LocalData:Instance():get_user_head())
+        -- dump(LocalData:Instance():get_user_head())
         local haer=LocalData:Instance():get_user_head()   --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
         self.image_head:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         
@@ -572,7 +572,7 @@ function PerInformationLayer:perinformation_init(  )
         self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  
        
         local nickname=userdata["loginname"]
-        dump(nickname)
+        -- dump(nickname)
         local nick_sub=string.sub(nickname,1,3)
         nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
         -- dump(userdt)
@@ -959,7 +959,7 @@ function PerInformationLayer:savedata( )
             userdatainit["nickname"]=userdata["nickname"]
             userdatainit["provincename"]=provincename
             userdatainit["districtame"] =self._area:getString()
-            dump(userdatainit)
+            -- dump(userdatainit)
             LocalData:Instance():set_getuserinfo(userdatainit)  --必须打开
             Server:Instance():setuserinfo(params) 
 
@@ -1275,17 +1275,17 @@ function PerInformationLayer:fun_city_info( )
         self.city="2"
         self.conty="3"
         local pinle_location=cc.PinLe_platform:Instance()
-        dump(pinle_location:getProvince())
+        -- dump(pinle_location:getProvince())
         if pinle_location:getProvince()~= "" then --手机定位
             self.province=pinle_location:getProvince()
             self.city=pinle_location:getCity()
             self.conty=pinle_location:getCounty()
-            print("111111--------")
+            -- print("111111--------")
         else
             --手机归属--缺少接口
             local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
             -- 
-            dump(phone_location)
+            -- dump(phone_location)
             self.province=".."
             self.city="."
             if phone_location["provincename"] then
@@ -1304,9 +1304,9 @@ function PerInformationLayer:fun_city_info( )
         local city_gps=self.adress:getChildByTag(52):getChildByTag(58)
         city_gps:setString(self.province..self.city)
         -- end
-        dump(pinle_location:getProvince())
-        dump(pinle_location:getCity())
-        dump(self.province)
+        -- dump(pinle_location:getProvince())
+        -- dump(pinle_location:getCity())
+        -- dump(self.province)
         -- self.province=userdata["provincename"]
         -- self.city=userdata["cityname"]
         -- self.conty="崂山区"
@@ -1552,12 +1552,12 @@ function PerInformationLayer:update(dt)
         self:fun_City()
         self.province_index=self.adress_province_Itempicker:getCellPos()
         is_change=true
-        print("111----",self.city_index,self.adress_city_Itempicker:getCellPos())
+        -- print("111----",self.city_index,self.adress_city_Itempicker:getCellPos())
     end
 
     if self.city_index~= self.adress_city_Itempicker:getCellPos() or is_change then
          self:fun_Conty()
-          print("1111----",self.city_index,self.adress_city_Itempicker:getCellPos())
+          -- print("1111----",self.city_index,self.adress_city_Itempicker:getCellPos())
          self.city_index=self.adress_city_Itempicker:getCellPos()
 
     end
@@ -1577,9 +1577,9 @@ function PerInformationLayer:about_city_http_date()
     local conty=json_conty[tonumber(self.adress_conty_Itempicker:getCellPos()+1)]["name"]---获取区选择
 
 
-    dump(province)
-    dump(city)
-    dump(conty)
+    -- dump(province)
+    -- dump(city)
+    -- dump(conty)
 end
 
 --生日相关数据保存
