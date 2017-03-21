@@ -136,6 +136,7 @@ function Server:request_http(command , params)
         if command~="getactivitylist" and command~="getgoldspoolbyid" and command~="getgoldspoolrandomgolds" then
         self:show_http_buffer(true)-- 传输动画
         end
+
         -- if command=="getgoldspoolbyid"  then
         --     display.getRunningScene():push_buffer(true)
         -- end

@@ -317,7 +317,7 @@ function debrisLayer:saw_issuccess()
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                         -- dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
-                        Server:Instance():setgamerecord(self.adid,0,0,self.count_time)
+                        
                         local  _addetailurl = tostring(1)
                         print("发到手机快放假", #jaclayer_data[1]["addetailurl"])
                         if #jaclayer_data[1]["addetailurl"]  ~=  0 then
@@ -327,6 +327,7 @@ function debrisLayer:saw_issuccess()
 
                         local bigwheelLayer= require("app.layers.bigwheelLayer").new({id=self.deleget.adid,adownerid=self.deleget.adownerid,goldspoolcount= self.deleget.goldspoolcount ,image_name=_img,addetailurl=_addetailurl,choose=self.deleget.choose,Points=0})
                        cc.Director:getInstance():replaceScene(bigwheelLayer) 
+                       Server:Instance():setgamerecord(self.adid,0,0,self.count_time)
 
                    end
                   local callfunc = cc.CallFunc:create(stopAction)
