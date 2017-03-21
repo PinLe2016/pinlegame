@@ -365,7 +365,7 @@ function Server:gettreegameitemlist(type)  --1化肥 2种子 3化肥和种子
     self:request_http("gettreegameitemlist" , params); 
 end
 function Server:gettreegameitemlist_callback()
-     dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
@@ -389,7 +389,7 @@ function Server:setseedplant(treeid,gameitemid,seatcount)
     self:request_http("setseedplant" , params); 
 end
 function Server:setseedplant_callback()
-     dump(self.data)
+     --dump(self.data)
     if self.data.err_code~=0  then
        Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
        NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDPLANT_FALSE")
@@ -415,7 +415,7 @@ function Server:setseedwater(treeid,seedid)
     self:request_http("setseedwater" , params); 
 end
 function Server:setseedwater_callback()
-     dump(self.data)
+     --dump(self.data)
     if self.data.err_code~=0  then
         --self:show_float_message( self.data.err_msg)
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
@@ -442,7 +442,7 @@ function Server:setseedmanure(treeid,seedid,gameitemid)
     self:request_http("setseedmanure" , params); 
 end
 function Server:setseedmanure_callback()
-     dump(self.data)
+     --dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDMANURE_FALSE")
@@ -469,7 +469,7 @@ function Server:setseedreward(treeid,seedid)
     self:request_http("setseedreward" , params); 
 end
 function Server:setseedreward_callback()
-     dump(self.data)
+     --dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD_FALSE")
@@ -495,7 +495,7 @@ function Server:setseedremove(treeid,seedid)
     self:request_http("setseedremove" , params); 
 end
 function Server:setseedremove_callback()
-     dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
