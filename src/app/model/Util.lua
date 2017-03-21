@@ -481,7 +481,7 @@ function Util:function_keyboard(_parent,target,font_size)
               elseif eventType == ccui.TextFiledEventType.insert_text then  
                   -- print("insert_text")  
                   local str=tostring(target:getString())
-                 local len = string.len(str) --Util:fun_Strlen(str)
+                 local len = Util:fun_Strlen(str) --Util:fun_Strlen(str)
                  alert:setPositionX(_guangbiao_x+len*font_size)    
               elseif eventType == ccui.TextFiledEventType.delete_backward then  
                   -- print("delete_backward")
@@ -498,6 +498,7 @@ end
 
 
 function Util:fun_Strlen(str)
+
     local bytes = { string.byte(str, 1, #str) }
     local length, begin = 0, false
     for _, byte in ipairs(bytes) do
