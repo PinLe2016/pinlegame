@@ -53,7 +53,9 @@ function aboutdetailsLayer:init(  )
             self.Zcontent_text=self.advicedata_bg:getChildByTag(207)  --提交内容
             self.Zname_text=self.advicedata_bg:getChildByTag(214)  --输入姓名
             self.Zphone_text=self.advicedata_bg:getChildByTag(215)  --输入手机号
-            self.Zcontent_text:setVisible(false)
+            --self.Zcontent_text:setVisible(false)
+            self.content_text=self.Zcontent_text
+           -- Util:function_keyboard(self.advicedata_bg,self.Zcontent_text,17) 
             self.Zname_text:setVisible(false)
             self.Zphone_text:setVisible(false)
           --   --商务合作
@@ -77,7 +79,8 @@ function aboutdetailsLayer:init(  )
             self.Xcompanyname_text=self.businessback_bg:getChildByTag(366)  --公司名称
             self.Xname_text=self.businessback_bg:getChildByTag(367)  --联系人姓名
             self.Xphone_text=self.businessback_bg:getChildByTag(368)  --联系方式
-            self.Xcontent_text:setVisible(false)
+            --self.Xcontent_text:setVisible(false)
+            self.contenttext =self.Xcontent_text
             self.Xcompanyname_text:setVisible(false)
             self.Xname_text:setVisible(false)
             self.Xphone_text:setVisible(false)
@@ -243,7 +246,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            		print("提交", self.phone_text:getText())     --self.phone_text
                   local _name=self.name_text:getText()   --self.name_text  
                   local _tel=self.phone_text:getText()
-                  local _content=self.content_text:getText()   --getText()  self.content_text
+                  local _content=self.content_text:getString()   --getText()  self.content_text
                   --type    0为建议反馈，1为商务合作   
                   print("1111",_name,_tel,_content)
 
@@ -373,17 +376,17 @@ function aboutdetailsLayer:businesscooperation( )
 
 
      --内容
-    local _res = "  "  
-    self.contenttext = ccui.EditBox:create(cc.size(475,270),_res)
-    self.contenttext:setFont("Arial",22)
-    self.contenttext:setFontColor(cc.c3b(137,39,9))
-    self.contenttext:setPlaceholderFont("Arial",22)
-    self.businessback_bg:addChild(self.contenttext)
-    self.contenttext:setPosition(cc.p(self.Xcontent_text:getPositionX(),self.Xcontent_text:getPositionY()))--( cc.p(130,438 ))  
-    self.contenttext:setPlaceHolder("请输入您的宝贵建议(200字以内)")
+    --local _res = "  "  
+    -- self.contenttext = ccui.EditBox:create(cc.size(475,270),_res)
+    -- self.contenttext:setFont("Arial",22)
+    -- self.contenttext:setFontColor(cc.c3b(137,39,9))
+    -- self.contenttext:setPlaceholderFont("Arial",22)
+    -- self.businessback_bg:addChild(self.contenttext)
+    -- self.contenttext:setPosition(cc.p(self.Xcontent_text:getPositionX(),self.Xcontent_text:getPositionY()))--( cc.p(130,438 ))  
+    -- self.contenttext:setPlaceHolder("请输入您的宝贵建议(200字以内)")
 
-    self.contenttext:setAnchorPoint(0.5,0.5)  
-    self.contenttext:setMaxLength(200)
+    -- self.contenttext:setAnchorPoint(0.5,0.5)  
+    -- self.contenttext:setMaxLength(200)
 
 end
 -- 提交内容
@@ -410,17 +413,17 @@ function aboutdetailsLayer:inputbox(  )
     self.name_text:setMaxLength(14)
 
      --内容
-    local _res ="  "  
-    self.content_text = ccui.EditBox:create(cc.size(470,165),_res)
-    self.content_text:setFontName("Arial")
-    self.content_text:setFontColor(cc.c3b(137,39,9))
-    self.content_text:setFontSize(22)
-    self.content_text:setPlaceholderFont("Arial",22)
-    self.advicedata_bg:addChild(self.content_text)
-    self.content_text:setPosition(cc.p(self.Zcontent_text:getPositionX(),self.Zcontent_text:getPositionY()))--( cc.p(130,438 ))  
-    self.content_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
-    self.content_text:setAnchorPoint(0.5,0.5)  
-    self.content_text:setMaxLength(200)
+    -- local _res ="  "  
+    -- self.content_text = ccui.EditBox:create(cc.size(470,165),_res)
+    -- self.content_text:setFontName("Arial")
+    -- self.content_text:setFontColor(cc.c3b(137,39,9))
+    -- self.content_text:setFontSize(22)
+    -- self.content_text:setPlaceholderFont("Arial",22)
+    -- self.advicedata_bg:addChild(self.content_text)
+    -- self.content_text:setPosition(cc.p(self.Zcontent_text:getPositionX(),self.Zcontent_text:getPositionY()))--( cc.p(130,438 ))  
+    -- self.content_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
+    -- self.content_text:setAnchorPoint(0.5,0.5)  
+    -- self.content_text:setMaxLength(200)
 
 
 

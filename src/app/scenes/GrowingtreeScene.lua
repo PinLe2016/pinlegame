@@ -842,12 +842,12 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
                                       return
                                end
                               
-                              Server:Instance():Grawpopup_box_buffer("化肥功能暂未开放，敬请期待。")
-                              -- self.back_seedplant_seedmanure="施肥"   
-                              -- Server:Instance():gettreegameitemlist(1 )    
-                              -- self.ListNode:setVisible(true)
-                              -- self._type_str_text:setString("施肥")
-                              -- self:fun_FruitinformationNode(self._fertilization_template:getPositionX(),self._fertilization_template:getPositionY(),true,-1)       
+                              --Server:Instance():Grawpopup_box_buffer("化肥功能暂未开放，敬请期待。")
+                              self.back_seedplant_seedmanure="施肥"   
+                              Server:Instance():gettreegameitemlist(1 )    
+                              self.ListNode:setVisible(true)
+                              self._type_str_text:setString("施肥")
+                              self:fun_FruitinformationNode(self._fertilization_template:getPositionX(),self._fertilization_template:getPositionY(),true,-1)       
             end)
 			
 end
@@ -1009,7 +1009,7 @@ function GrowingtreeScene:fun_move_act_yun(_obj,y)
       _obj:setPositionY(_ps)
       local callfunc = cc.CallFunc:create(stopAction)
      local  move1=cc.MoveTo:create(3, cc.p(_obj:getPositionX(),_ps ) )
-     local  move2=cc.MoveTo:create(2, cc.p(_obj:getPositionX(),y ))
+     local  move2=cc.MoveTo:create(1, cc.p(_obj:getPositionX(),y ))
      local action = cc.Sequence:create(move2,callfunc)
      _obj:stopAllActions()
      _obj:runAction(action)
@@ -1099,7 +1099,7 @@ function GrowingtreeScene:onEnter()
                               self:coinAction(jin,self._obj_act:getParent():getPositionX()   ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
 
-                              self._deng_act:setVisible(false)
+                              --self._deng_act:setVisible(false)
                               self._growingtreeNode:setPositionX(0)
                               self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
                               self.friend_growingtree_checkbox:setSelected(true) 
@@ -1113,6 +1113,16 @@ function GrowingtreeScene:onEnter()
                        function()  
                               self:fun_FruitinformationNode(1,1,false,-1)
                               self.ListNode:setVisible(false)
+
+                                if self.back_playerid  ==  nil then
+                                            self._growingtreeNode:setPositionX(0)
+                                            self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
+                                            self.friend_growingtree_checkbox:setSelected(true) 
+                                            self._friend_employees_type=1
+                                             if self.pv then
+                                                      self.pv:setVisible(true)
+                                            end
+                               end
                              
                       end)
   --  收获成功
