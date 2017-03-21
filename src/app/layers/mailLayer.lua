@@ -158,7 +158,6 @@ function mailLayer:init(  )
                  
                   local  mail_content=cell:getChildByTag(53)--邮件内容
                   mail_content:setString(tostring(affichelist[i]["createtime"]))
-                  print("哈哈哈哈哈   ",i-self.tablecout)
             end
               if tonumber(self.tablecout)~=0 then
 

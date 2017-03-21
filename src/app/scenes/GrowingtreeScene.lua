@@ -841,7 +841,8 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
                                if eventType ~= ccui.TouchEventType.ended then
                                       return
                                end
-                              self.floating_layer:fun_Grawpopup("化肥功能暂未开放，敬请期待。")
+                              
+                              Server:Instance():Grawpopup_box_buffer("化肥功能暂未开放，敬请期待。")
                               -- self.back_seedplant_seedmanure="施肥"   
                               -- Server:Instance():gettreegameitemlist(1 )    
                               -- self.ListNode:setVisible(true)
@@ -1005,10 +1006,11 @@ function GrowingtreeScene:fun_move_act_yun(_obj,y)
       local function stopAction()
          _obj:setPositionY(y)
       end 
+      _obj:setPositionY(_ps)
       local callfunc = cc.CallFunc:create(stopAction)
      local  move1=cc.MoveTo:create(3, cc.p(_obj:getPositionX(),_ps ) )
      local  move2=cc.MoveTo:create(2, cc.p(_obj:getPositionX(),y ))
-     local action = cc.Sequence:create(move1,move2,callfunc)
+     local action = cc.Sequence:create(move2,callfunc)
      _obj:stopAllActions()
      _obj:runAction(action)
 end
@@ -1055,7 +1057,7 @@ function GrowingtreeScene:onEnter()
                               Server:Instance():gettreelist(self.back_playerid)
                               self.pt_tag_table=0
                               self.ListNode:setVisible(false)
-                              self._deng_act:setVisible(false)
+                              --self._deng_act:setVisible(false)
                               self._growingtreeNode:setPositionX(0)
                               self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
                               self.friend_growingtree_checkbox:setSelected(true) 
@@ -1269,24 +1271,27 @@ function GrowingtreeScene:function_template(data)
                         self.touch_image:setVisible(true)
                         self:fun_move_act_yun(self.left_image,self.left_image:getPositionY())
                         self:fun_move_act_yun(self.right_image,self.right_image:getPositionY())
-                         local function stopAction()
-                                  self.touch_image:setVisible(false)
-                                  self.is_friend=true
-                                  --LocalData:Instance():set_gettreelist(nil)
-                                  Server:Instance():gettreelist(data["playerid"])
-                                  self.back_playerid=data["playerid"]
-                                  self._growingtreeNode:setPositionX(-220)
-                                  self.friend_growingtree_checkbox:setPositionY(self._spdt)
-                                  if self.pv then
-                                  self.pv:setVisible(false)
-                                  end
-                                  self.back_huijia_bt:setVisible(true)
-                                  self.back_bt:setVisible(false)
-                                  self.friend_growingtree_checkbox:setSelected(false)   
-                                  self.friend_growingtree_checkbox:setVisible(false)   
-                        end
-                        local callfunc = cc.CallFunc:create(stopAction)
-                       self:runAction(cc.Sequence:create(cc.DelayTime:create(2.8),callfunc  ))
+                       --   local function stopAction()
+                                
+                       --  end
+                       --  local callfunc = cc.CallFunc:create(stopAction)
+                       -- self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
+
+                         self.touch_image:setVisible(false)
+                          self.is_friend=true
+                          --LocalData:Instance():set_gettreelist(nil)
+                          Server:Instance():gettreelist(data["playerid"])
+                          self.back_playerid=data["playerid"]
+                          self._growingtreeNode:setPositionX(-220)
+                          self.friend_growingtree_checkbox:setPositionY(self._spdt)
+                          if self.pv then
+                          self.pv:setVisible(false)
+                          end
+                          self.back_huijia_bt:setVisible(true)
+                          self.back_bt:setVisible(false)
+                          self.friend_growingtree_checkbox:setSelected(false)   
+                          self.friend_growingtree_checkbox:setVisible(false)   
+
 
             end)
             --ScrollViewMenu() --ccui.Button:create()
