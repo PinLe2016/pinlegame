@@ -103,10 +103,10 @@ function GameScene:funinit(  )
                   local  _row=3
                   local  _col=4
                   print("第几次",self.Issecond)
-                  if self.Issecond==1 then  --第2次
-                    _row=3--3
-                    _col=5--6
-                  end
+                  -- if self.Issecond==1 then  --第2次
+                  --   _row=3--3
+                  --   _col=5--6
+                  -- end
                    if self.type=="surprise" then
                       local list_table=LocalData:Instance():get_getactivityadlist()["ads"]
 
