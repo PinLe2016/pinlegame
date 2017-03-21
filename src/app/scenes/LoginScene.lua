@@ -323,7 +323,7 @@ function LoginScene:landing_init()
                   end
                    self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2)
                    local function stopAction()
-                               
+                            Util:weixinLogin()   
                   end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
@@ -340,6 +340,7 @@ function LoginScene:landing_init()
                    local function stopAction()
                                self:_landing_interface()
                                self.WeChat:removeFromParent()
+                               -- Util:getWeixinLoginDate()
                   end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
