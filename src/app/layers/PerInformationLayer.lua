@@ -675,10 +675,11 @@ function PerInformationLayer:touch_callback( sender, eventType )
         
     elseif tag==51 then
                  self:_savecity(  )
-                 if self.adress then
+                
                     self:unscheduleUpdate()
-                       self.adress:removeFromParent()
-                 end
+                       self:removeChildByTag(250, true)
+
+               
         
     elseif tag==83 then 
          self._Pname:setVisible(false)
@@ -944,7 +945,7 @@ function PerInformationLayer:savedata( )
             districtame=self._area:getString(),
             districtid=districtid,
         }
-        dump(params)
+        --dump(params)
             local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
             userdatainit["birthday"]=birthday
             userdatainit["cityid"]=cityid
@@ -1159,7 +1160,7 @@ function  PerInformationLayer:add_addItemPickerData(scorll,size)
     picker:setDirection(scorll:getDirection())
     picker:setContSize(size)--cc.size(150, 200)
     -- picker:setInnerContainerSize(cc.size(220,50*34))
-    picker:setParameter(cc.size(size.width,30),5)--cc.size(140,40)
+    picker:setParameter(cc.size(size.width,35),4)--cc.size(140,40)
     picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
     picker:setAnchorPoint(0,0)
     scorll:removeFromParent()
@@ -1174,6 +1175,7 @@ function PerInformationLayer:fun_city_info( )
         self:addChild(self.adress)
         local move = cc.MoveTo:create(0.5,cc.p(0,0))
         self.adress:runAction(cc.Sequence:create(move))
+        self.adress:setTag(250)
 
          self.city_present=self.adress:getChildByTag(131)  --当前城市按钮
          self.city_present:addEventListener(function(sender, eventType  )
@@ -1327,14 +1329,14 @@ function PerInformationLayer:fun_Province( ... )
 
     local json_province=self.city_data["provinces"]
     local m_offset_cell=0
-    for i=1,#json_province+4+self.mail_h do   
+    for i=1,#json_province+3+self.mail_h do   
 
         local button =self.adress_province_Itempicker:getCellLayout(cc.size(60,35))
         local name
         if i<#json_province+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(18)
-            cell_month:setAnchorPoint(cc.p(0,0.5));
+            cell_month:setAnchorPoint(cc.p(0,0));
             cell_month:setColor(cc.c4b(195,141,141))
             cell_month:setPositionX(-0.12)
             cell_month:setFontName("png/chuti.ttf")
@@ -1374,14 +1376,14 @@ function PerInformationLayer:fun_City()
     -- local json_city=self.city_data["provinces"][29]["citys"]
     -- dump(json_city)
     local m_offset_cell=0
-    for i=1,#json_city+4+self.mail_h do   
+    for i=1,#json_city+3+self.mail_h do   
 
         local button =self.adress_city_Itempicker:getCellLayout(cc.size(140,35))
         local name
         if i<#json_city+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(18)
-            cell_month:setAnchorPoint(cc.p(0.5,0.5));
+            cell_month:setFontSize(15)
+            cell_month:setAnchorPoint(cc.p(0.5,0));
             cell_month:setColor(cc.c4b(195,141,141))
             cell_month:setPositionX(67.91)
             cell_month:setFontName("png/chuti.ttf")
@@ -1411,6 +1413,7 @@ function PerInformationLayer:fun_Conty()
 
     local json_city=self.city_data["provinces"][tonumber(self.adress_province_Itempicker:getCellPos()+1)]["citys"]
     -- local json_city=self.city_data["provinces"][29]["citys"]
+    -- dump(json_city)
     if #json_city==0 then
         return
     end
@@ -1418,20 +1421,21 @@ function PerInformationLayer:fun_Conty()
     if #json_conty==0 then
         return
     end
+    -- dump(json_conty)
     -- local json_conty=json_city[8]["areas"]
     -- dump(self.adress_city_Itempicker:getCellPos())
     -- dump(json_conty)
     local m_offset_cell=0
-    for i=1,#json_conty+4+self.mail_h do   
+    for i=1,#json_conty+3+self.mail_h do   
 
         local button =self.adress_conty_Itempicker:getCellLayout(cc.size(70,35))
         local name
         if i<#json_conty+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(18)
-            cell_month:setAnchorPoint(cc.p(0.5,0.5));
+            cell_month:setFontSize(15)
+            cell_month:setAnchorPoint(cc.p(0,0));
             cell_month:setColor(cc.c4b(195,141,141))
-            cell_month:setPositionX(207.86)
+            -- cell_month:setPositionX(207.86)
             cell_month:setFontName("png/chuti.ttf")
             cell_month:setTag(i)
 
@@ -1553,6 +1557,7 @@ function PerInformationLayer:update(dt)
 
     if self.city_index~= self.adress_city_Itempicker:getCellPos() or is_change then
          self:fun_Conty()
+          print("1111----",self.city_index,self.adress_city_Itempicker:getCellPos())
          self.city_index=self.adress_city_Itempicker:getCellPos()
 
     end
