@@ -8,6 +8,7 @@ function PerInformationLayer:ctor()--params
        self:setNodeEventEnabled(true)--layer添加监听
        -- Server:Instance():getuserinfo() -- 初始化数据
        self.head_index=100 -- 初始化
+       self.main_leve={0,500,1500,8000,15000,40000,80000,150000,400000,80000,2000000,5000000}
      --self:init()
        self.secondOne = 0
        self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
@@ -90,6 +91,13 @@ function PerInformationLayer:add_init(  )
                     local rankname=self.showinformation:getChildByTag(1414)   --等级
                     rankname:setString( userdt["rankname"])
 
+                    local LV_name=self.showinformation:getChildByTag(1819)   --等级
+                     LV_name:setString(userdt["rankname"])
+
+                     local loadingbar=self.showinformation:getChildByTag(1817)-- 等级进度条
+                   local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100 --self.main_leve[+1]/5000000 *100
+                   loadingbar:setPercent(jindu)
+
                    
                     local registereday=self.showinformation:getChildByTag(1412)  --注册日期
                     registereday:setString(tostring(os.date("%Y",userdt["registertime"])))
@@ -98,11 +106,14 @@ function PerInformationLayer:add_init(  )
                      local registereday2=self.showinformation:getChildByTag(124)  --注册日期
                     registereday2:setString("-"  .. tostring(os.date("%d",userdt["registertime"])))
                     self.genderman1=self.showinformation:getChildByTag(1403)  --性别
+                    self.genderman1_image=self.showinformation:getChildByTag(202)  --性别图片
                    
                     if userdt["gender"]==0 then    --0女1男2未知
                         self.genderman1:setString("女")
+                        self.genderman1_image:loadTexture("png/IcnFemale.png")
                     elseif userdt["gender"]==1 then
                         self.genderman1:setString("男")
+                        self.genderman1_image:loadTexture("png/IcnMale.png")
                     else
                         self.genderman1:setString(" ")
                     end  
@@ -135,10 +146,8 @@ function PerInformationLayer:add_init(  )
                 local Modify_bt=self.showinformation:getChildByTag(1410)  --修改
                 Modify_bt:addTouchEventListener(function(sender, eventType  )
                       if eventType ~= ccui.TouchEventType.ended then
-                            sender:setScale(0.8)
                             return
                         end
-                     sender:setScale(1)
                      self:init()
                  end)
 
@@ -151,8 +160,17 @@ function PerInformationLayer:add_init(  )
                      sender:setScale(1)
                      Server:Instance():getconsignee({functionparams=""})
                  end)
-
-
+            --  新增加的绑定微信
+            self.per_ListView=self.showinformation:getChildByTag(1821)--  绑定列表
+            self.per_ListView:setItemModel(self.per_ListView:getItem(0))
+            for i=2,2 do  --self.tablecout+
+                        self.per_ListView:pushBackDefaultItem()
+                        local  cell = self.per_ListView:getItem(i-1)
+                        local Panel_image=cell:getChildByTag(1824)
+                        Panel_image:loadTexture("png/shenfen-xiao.png")
+                        local Panel_text=cell:getChildByTag(1825)
+                        Panel_text:setString("身份证认证")
+            end
 end
 --新增加的邮件界面
 function PerInformationLayer:fun_mail(  )
@@ -445,7 +463,19 @@ function PerInformationLayer:init(  )
        --   self:addChild(self.fragment_sprite1)
        self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
        self:addChild(self.Perinformation)
+        local userdt = LocalData:Instance():get_userdata()
+        local gold=self.Perinformation:getChildByTag(1884):getChildByTag(1886)  --  金币
+         gold:setString(userdt["golds"])
+
        --self:move_layer(self.Perinformation)
+       self._birthday_bt=self.Perinformation:getChildByTag(1882)  --  生日
+        self._birthday_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
+        self._adress_bt=self.Perinformation:getChildByTag(1883)  --   地址
+        self._adress_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
 
         self.birthday_bt=self.Perinformation:getChildByTag(26):getChildByTag(245)
         self.birthday_bt:addTouchEventListener(function(sender, eventType  )
@@ -631,18 +661,20 @@ function PerInformationLayer:touch_callback( sender, eventType )
     end
     --local activitypoints=LocalData:Instance():getactivitypoints_callback()
     local tag=sender:getTag()
-    if tag==244 then --城市
+    if tag==1883 then --城市
         self:fun_city_info(  )
-    elseif tag==245 then --生日
+    elseif tag==1882 then --生日
         self._Pname:setTouchEnabled(false)
         self:fun_birthday(  )
-    elseif tag==49 then 
+    elseif tag==169 then 
+                self:_savetime()
+                self._Pname:setTouchEnabled(true)
                  if self.birthday then
-                   
                     self.birthday:removeFromParent()
                  end
         
-    elseif tag==59 then
+    elseif tag==51 then
+                 self:_savecity(  )
                  if self.adress then
                     self:unscheduleUpdate()
                        self.adress:removeFromParent()
@@ -739,7 +771,42 @@ end
 function PerInformationLayer:head( )
         self.head_csb = cc.CSLoader:createNode("Head.csb")
         self:addChild(self.head_csb,20)
-        local head_back=self.head_csb:getChildByTag(21):getChildByTag(25)
+        local  day_bg=self.head_csb:getChildByTag(1900):getChildByTag(1903)
+        local   _size=day_bg:getContentSize()
+        local  _tag=0
+         for i=1, math.ceil(16/4) do
+                for j=1,4 do
+
+                       local _bg=day_bg:clone()
+                       _bg:setTag(_tag)
+                       _bg:addTouchEventListener(function(sender, eventType  )
+                                 if eventType ~= ccui.TouchEventType.ended then
+                                    return
+                                end
+                                self._index=sender:getTag()
+                                self.image_head:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
+                                self.image_head1:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
+                                 LocalData:Instance():set_user_head(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
+                                  local user_dt = LocalData:Instance():get_userdata()
+                                  user_dt["imageUrl"]=string.format("httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
+                                  LocalData:Instance():set_userdata(user_dt)
+                                 if  self.head_csb then
+                                    self._Pname:setVisible(true)
+                                    self.head_csb:removeFromParent()
+                                end
+
+                      end)
+                       local _head_image=_bg:getChildByTag(1901)
+                       local _head_tag=_bg:getChildByTag(1902)
+                       _head_tag:setVisible(false)
+                       _head_image:loadTexture("png/httpgame.pinlegame.comheadheadicon_"  .. _tag .. ".jpg")
+                        _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+9)*(j-1),_bg:getPositionY()-(_size.height+20)* math.ceil(i-1)))
+                       self.head_csb:getChildByTag(1900):addChild(_bg)
+                      _tag=_tag+1
+                end
+            end
+            ------------------------------------------------废-----------------------------------
+        local head_back=self.head_csb:getChildByTag(20)  --  :getChildByTag(25)
         head_back:addTouchEventListener(function(sender, eventType  )
                  self:head_callback(sender, eventType)
         end)
@@ -795,7 +862,7 @@ function PerInformationLayer:head_callback( sender, eventType)
                     return
             end
             local tag=sender:getTag()
-            if tag==25 then --返回
+            if tag==20 then --返回
                 if  self.head_csb then
                     self.head_csb:removeFromParent()
                      self._Pname:setVisible(true)
@@ -803,8 +870,6 @@ function PerInformationLayer:head_callback( sender, eventType)
                 
             elseif tag==24 then  --string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
                 self.image_head:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
-                self.image_head1:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))  --self.head_index 
-                print("头像 ",self._index)
                 LocalData:Instance():set_user_head(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
 
 
@@ -823,9 +888,12 @@ function PerInformationLayer:savedata( )
             if self.genderman:isSelected() then
                 gender="true"
                 self.genderman1:setString("男")
+                self.genderman1_image:loadTexture("png/IcnMale.png")
             elseif self.gendergirl:isSelected() then
                 gender="false"
                 self.genderman1:setString("女")
+                self.genderman1_image:loadTexture("png/IcnFemale.png")
+
             end
            --self.genderman1="  "
            if  self._provincename:getString() == "" then
@@ -901,7 +969,7 @@ function PerInformationLayer:fun_birthday(  )
            local move = cc.MoveTo:create(0.5,cc.p(0,0))
         self.birthday:runAction(cc.Sequence:create(move))
 
-        local birthday_back=self.birthday:getChildByTag(174):getChildByTag(49)
+        local birthday_back=self.birthday:getChildByTag(169)      --  :getChildByTag(49)
             birthday_back:addTouchEventListener(function(sender, eventType  )
             self:touch_callback(sender, eventType)
        end)
@@ -909,6 +977,7 @@ function PerInformationLayer:fun_birthday(  )
             _true:addTouchEventListener(function(sender, eventType  )
             self:touch_callback(sender, eventType)
        end)
+
 
         --年 
         local birthday_scrollview=self.birthday:getChildByTag(174):getChildByTag(170)
@@ -928,12 +997,13 @@ function PerInformationLayer:fun_birthday(  )
         local  m_offset_birthday=0
         local name="1990"
         for i=1,70+4 do   
-            local button =self.birthday_Itempicker:getCellLayout(cc.size(100,40))
+            local button =self.birthday_Itempicker:getCellLayout(cc.size(50,30))
             local cell=ccui.Text:create()
-            cell:setFontSize(38);
+            cell:setFontSize(18);
+            cell:setFontName("png/chuti.ttf")
             cell:setAnchorPoint(cc.p(0.0,0.0));
-            cell:setColor(cc.c4b(195,141,141))
-            cell:setPositionX(5)
+            cell:setColor(cc.c4b(107,173,205))
+            cell:setPositionX(0)
             
             if i<70+3 and i-3>=0 then 
                 cell:setString(tostring(2016-(i-3)))
@@ -971,14 +1041,15 @@ function PerInformationLayer:fun_birthday(  )
         local name="04"
         for i=1,12+4 do   
 
-            local button =self.birthday_month_Itempicker:getCellLayout(cc.size(100,40))
+            local button =self.birthday_month_Itempicker:getCellLayout(cc.size(50,30))
 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(38);
+            cell_month:setFontSize(18);
             cell_month:setAnchorPoint(cc.p(0.0,0.0));
-            cell_month:setColor(cc.c4b(195,141,141))
-            cell_month:setPositionX(20)
+            cell_month:setColor(cc.c4b(107,173,205))
+            cell_month:setPositionX(0)
             cell_month:setTag(i)
+            cell_month:setFontName("png/chuti.ttf")
             
             if i<12+3 and i-3>=0 then 
                 if i<12 then
@@ -1014,13 +1085,14 @@ function PerInformationLayer:fun_birthday(  )
         local  m_offset_daty=0
         local name="04"
         for i=1,31+4 do   
-            local button =self.birthday_daty_Itempicker:getCellLayout(cc.size(100,40))
+            local button =self.birthday_daty_Itempicker:getCellLayout(cc.size(50,30))
 
             local cell_day=ccui.Text:create()
-            cell_day:setFontSize(38);
+            cell_day:setFontSize(18);
+            cell_day:setFontName("png/chuti.ttf")
             cell_day:setAnchorPoint(cc.p(0.0,0.0));
-            cell_day:setColor(cc.c4b(195,141,141))
-            cell_day:setPositionX(20)
+            cell_day:setColor(cc.c4b(107,173,205))
+            cell_day:setPositionX(0)
             
             if i<31+3 and i-3>=0 then 
                 if i<12 then
@@ -1067,10 +1139,10 @@ function  PerInformationLayer:addItemPickerData(scorll,size)
      local dex=0--960-display.height
     local picker =cc.ItemPicker:create()
     picker:setDirection(scorll:getDirection())
-    picker:setContSize(cc.size(150, 200))--cc.size(150, 200)
+    picker:setContSize(cc.size(70, 150))--cc.size(150, 200)
     -- picker:setInnerContainerSize(cc.size(220,50*34))
-    picker:setParameter(cc.size(size.width,40),5)--cc.size(140,40)
-    picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
+    picker:setParameter(cc.size(size.width,30),5)--cc.size(140,40)
+    picker:setPosition(scorll:getPositionX(),scorll:getPositionY()+10)
     picker:setAnchorPoint(0,0)
     scorll:removeFromParent()
     
@@ -1087,7 +1159,7 @@ function  PerInformationLayer:add_addItemPickerData(scorll,size)
     picker:setDirection(scorll:getDirection())
     picker:setContSize(size)--cc.size(150, 200)
     -- picker:setInnerContainerSize(cc.size(220,50*34))
-    picker:setParameter(cc.size(size.width,40),5)--cc.size(140,40)
+    picker:setParameter(cc.size(size.width,30),5)--cc.size(140,40)
     picker:setPosition(scorll:getPositionX(),scorll:getPositionY())
     picker:setAnchorPoint(0,0)
     scorll:removeFromParent()
@@ -1139,7 +1211,7 @@ function PerInformationLayer:fun_city_info( )
 
 
 
-        local city_back=self.adress:getChildByTag(52):getChildByTag(59)
+        local city_back=self.adress:getChildByTag(51)  --  :getChildByTag(59)
         city_back:addTouchEventListener(function(sender, eventType  )
               self:touch_callback(sender, eventType)
         end)
@@ -1153,22 +1225,22 @@ function PerInformationLayer:fun_city_info( )
           
         local adress_province_y= province_text:getPositionY()
 
-        self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,cc.size(100, 200))
+        self.adress_province_Itempicker=self:add_addItemPickerData(province_scrollview,cc.size(70, 140))
         self.adress:getChildByTag(52):addChild(self.adress_province_Itempicker)
 
         --市
         local city_scrollview=self.adress:getChildByTag(52):getChildByTag(63)
         local city_text=city_scrollview:getChildByTag(96)
 
-        self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,cc.size(230, 200))
-        self.adress_city_Itempicker:setPositionX(self.adress_city_Itempicker:getPositionX()-10)
+        self.adress_city_Itempicker=self:add_addItemPickerData(city_scrollview,cc.size(140, 140))
+        self.adress_city_Itempicker:setPositionX(self.adress_city_Itempicker:getPositionX())
         self.adress:getChildByTag(52):addChild(self.adress_city_Itempicker)
 
         --区
         local area_scrollview=self.adress:getChildByTag(52):getChildByTag(64)
         local area_text=area_scrollview:getChildByTag(97)
         
-        self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,cc.size(200, 200))
+        self.adress_conty_Itempicker=self:add_addItemPickerData(area_scrollview,cc.size(70, 140))
         self.adress_conty_Itempicker:setPositionX(self.adress_conty_Itempicker:getPositionX())
         self.adress:getChildByTag(52):addChild(self.adress_conty_Itempicker)
 
@@ -1257,14 +1329,15 @@ function PerInformationLayer:fun_Province( ... )
     local m_offset_cell=0
     for i=1,#json_province+4+self.mail_h do   
 
-        local button =self.adress_province_Itempicker:getCellLayout(cc.size(100,40))
+        local button =self.adress_province_Itempicker:getCellLayout(cc.size(60,35))
         local name
         if i<#json_province+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(34)
-            cell_month:setAnchorPoint(cc.p(0.5,0.0));
+            cell_month:setFontSize(18)
+            cell_month:setAnchorPoint(cc.p(0,0.5));
             cell_month:setColor(cc.c4b(195,141,141))
-            cell_month:setPositionX(55)
+            cell_month:setPositionX(-0.12)
+            cell_month:setFontName("png/chuti.ttf")
             cell_month:setTag(i)
 
             button:addChild(cell_month)
@@ -1303,14 +1376,15 @@ function PerInformationLayer:fun_City()
     local m_offset_cell=0
     for i=1,#json_city+4+self.mail_h do   
 
-        local button =self.adress_city_Itempicker:getCellLayout(cc.size(230,40))
+        local button =self.adress_city_Itempicker:getCellLayout(cc.size(140,35))
         local name
         if i<#json_city+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(22)
-            cell_month:setAnchorPoint(cc.p(0.5,0.0));
+            cell_month:setFontSize(18)
+            cell_month:setAnchorPoint(cc.p(0.5,0.5));
             cell_month:setColor(cc.c4b(195,141,141))
-            cell_month:setPositionX(140)
+            cell_month:setPositionX(67.91)
+            cell_month:setFontName("png/chuti.ttf")
             cell_month:setTag(i)
 
             button:addChild(cell_month)
@@ -1350,14 +1424,15 @@ function PerInformationLayer:fun_Conty()
     local m_offset_cell=0
     for i=1,#json_conty+4+self.mail_h do   
 
-        local button =self.adress_conty_Itempicker:getCellLayout(cc.size(170,40))
+        local button =self.adress_conty_Itempicker:getCellLayout(cc.size(70,35))
         local name
         if i<#json_conty+3+self.mail_dex and i-2-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
-            cell_month:setFontSize(22)
-            cell_month:setAnchorPoint(cc.p(0.0,0.0));
+            cell_month:setFontSize(18)
+            cell_month:setAnchorPoint(cc.p(0.5,0.5));
             cell_month:setColor(cc.c4b(195,141,141))
-            cell_month:setPositionX(20)
+            cell_month:setPositionX(207.86)
+            cell_month:setFontName("png/chuti.ttf")
             cell_month:setTag(i)
 
             button:addChild(cell_month)

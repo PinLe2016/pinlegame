@@ -1284,7 +1284,6 @@ function bigwheelLayer:onEnter()
 
                                     local _table=LocalData:Instance():get_setgamerecord()--保存数据
                                 -- dump(_table)
-                                      print("经济法打开手机卡")
                                       local goldspool=_table["goldspool"]
                                      if tonumber(goldspool["iscard"]) ==1  then  -- 判断奖池次数是否用完 
                                                      self:fun_bigrandom()
