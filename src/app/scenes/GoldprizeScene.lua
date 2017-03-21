@@ -239,7 +239,7 @@ function GoldprizeScene:fun_selectbox( _tag )
 		       
 	self.Selectbox = cc.CSLoader:createNode("Selectbox.csb")
             self:addChild(self.Selectbox)
-
+            self.Selectbox:setTag(999)
 
              local back=self.Selectbox:getChildByTag(145)   --返回
        	 back:addTouchEventListener(function(sender, eventType  )
@@ -366,17 +366,19 @@ function GoldprizeScene:onEnter()
                                     Server:Instance():prompt("今日获得金币机会已经用完啦,继续只能获得积分")  --  然并卵的提示语
                                     
                          else
-                         	local  _Issecond=0
+                         	
+                         	self:removeChild(999, true)
+               --           	local  _Issecond=0
 
-                         	if tonumber(getgoldspoolbyid["getcardamount"]) ~=2 then
+               --           	if tonumber(getgoldspoolbyid["getcardamount"]) ~=2 then
 
-                         		_Issecond=1
-                         	end
-                         	  LocalData:Instance():set_user_img(self.image_name)
-                         	 -- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
-               	           --   cc.Director:getInstance():pushScene(scene)
-               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})
-		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+               --           		_Issecond=1
+               --           	end
+               --           	  LocalData:Instance():set_user_img(self.image_name)
+               --           	 -- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+               -- 	           --   cc.Director:getInstance():pushScene(scene)
+               -- 	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})
+		             -- LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                          end
 		
                       end)

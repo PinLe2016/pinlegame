@@ -54,6 +54,8 @@ function aboutdetailsLayer:init(  )
             self.Zname_text=self.advicedata_bg:getChildByTag(214)  --输入姓名
             self.Zphone_text=self.advicedata_bg:getChildByTag(215)  --输入手机号
             self.Zcontent_text:setVisible(false)
+            --self.content_text=self.Zcontent_text
+           -- Util:function_keyboard(self.advicedata_bg,self.Zcontent_text,17) 
             self.Zname_text:setVisible(false)
             self.Zphone_text:setVisible(false)
           --   --商务合作
@@ -78,6 +80,7 @@ function aboutdetailsLayer:init(  )
             self.Xname_text=self.businessback_bg:getChildByTag(367)  --联系人姓名
             self.Xphone_text=self.businessback_bg:getChildByTag(368)  --联系方式
             self.Xcontent_text:setVisible(false)
+            --self.contenttext =self.Xcontent_text
             self.Xcompanyname_text:setVisible(false)
             self.Xname_text:setVisible(false)
             self.Xphone_text:setVisible(false)
@@ -384,6 +387,7 @@ function aboutdetailsLayer:businesscooperation( )
 
     self.contenttext:setAnchorPoint(0.5,0.5)  
     self.contenttext:setMaxLength(200)
+     self.contenttext:setInputMode(cc.EDITBOX_INPUT_MODE_ANY)
 
 end
 -- 提交内容
@@ -421,6 +425,7 @@ function aboutdetailsLayer:inputbox(  )
     self.content_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
     self.content_text:setAnchorPoint(0.5,0.5)  
     self.content_text:setMaxLength(200)
+    self.content_text:setInputMode(cc.EDITBOX_INPUT_MODE_ANY)
 
 
 
