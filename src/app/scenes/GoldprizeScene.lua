@@ -362,23 +362,27 @@ function GoldprizeScene:onEnter()
                          local getgoldspoolbyid  = LocalData:Instance():get_getgoldspoolbyid()--获得玩了几次数据
                          if tonumber(getgoldspoolbyid["coolingtime"]) == -1  or   tonumber(getgoldspoolbyid["getcardamount"]) == 0  then   --因为getcardamount这个后台不准，所以只能多加一个coolingtime来保险的判断是否玩过两次
 
-                         	LocalData:Instance():set_user_pintu("1")  --主要是要确定点击后  要自动拼图
-                                    Server:Instance():prompt("今日获得金币机会已经用完啦,继续只能获得积分")  --  然并卵的提示语
+                         	--LocalData:Instance():set_user_pintu("1")  --主要是要确定点击后  要自动拼图
+                                    Server:Instance():prompt("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)        
+                                                                if eventType==1  and _istouch  then
+                                                                    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE)
+                                                                end                
+                                                end)    --  然并卵的提示语
                                     
                          else
                          	
-                         	self:removeChildByTag(999, true)
-               --           	local  _Issecond=0
+                         	--self:removeChildByTag(999, true)
+                         	local  _Issecond=0
 
-               --           	if tonumber(getgoldspoolbyid["getcardamount"]) ~=2 then
+                         	if tonumber(getgoldspoolbyid["getcardamount"]) ~=2 then
 
-               --           		_Issecond=1
-               --           	end
-               --           	  LocalData:Instance():set_user_img(self.image_name)
-               --           	 -- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
-               -- 	           --   cc.Director:getInstance():pushScene(scene)
-               -- 	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})
-		             -- LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
+                         		_Issecond=1
+                         	end
+                         	  LocalData:Instance():set_user_img(self.image_name)
+                         	 -- local scene=GameScene.new({adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount})--拼图
+               	           --   cc.Director:getInstance():pushScene(scene)
+               	             Util:scene_controlid("GameScene",{adid= self._dtid,type="audition",img=self.image_name,image="",adownerid=self.adownerid,goldspoolcount=self.goldspoolcount,choose=self.choose,Issecond=_Issecond})
+		             LocalData:Instance():set_actid({act_id=self._dtid,image=" "})--保存数
                          end
 		
                       end)
