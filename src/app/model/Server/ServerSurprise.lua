@@ -370,7 +370,7 @@ end
 
 
 function Server:gettasklist_callback()
-    dump(self.data)
+    --dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("任务列表获取失败" .. self.data.err_msg)
         return

@@ -217,15 +217,17 @@ function mailLayer:fun_emailcontentlayer( )
             self.rewardgolds=self.emailcontentlayer:getChildByTag(55)--领取金币
             self.rewardgolds:setString("X" ..  tostring(affichedetail["rewardgolds"]))
              self.rewardquan=self.emailcontentlayer:getChildByTag(1230)--领取juan
-            self.rewardquan:setString("X" ..  tostring(affichedetail["rewardcards"]))
+            self.rewardquan:setString("X" ..  tostring(affichedetail["rewardcount"]))
 
             local _text=self.emailcontentlayer:getChildByTag(71):getChildByTag(72)--内容
             _text:setString(tostring(affichedetail["content"]))
-
-
+            local _image_corde=self.emailcontentlayer:getChildByTag(1228):getChildByTag(1229)--更改道具图片
+            if tonumber(affichedetail["rewardcount"])  >0  then
+              _image_corde:loadTexture("png/"   .. tostring(affichedetail["rewardimage"])  )
+            end
             local receive_bt=self.emailcontentlayer:getChildByTag(66)--领取
             local receive_bt1=self.emailcontentlayer:getChildByTag(67)--领取
-            if tonumber(affichedetail["rewardgolds"])  <= 0   and  tonumber(affichedetail["rewardcards"])  <= 0  then
+            if tonumber(affichedetail["rewardgolds"])  <= 0   and  tonumber(affichedetail["rewardcount"])  <= 0  then
                receive_bt:setVisible(false)
                receive_bt1:setVisible(false)
             else
@@ -237,7 +239,7 @@ function mailLayer:fun_emailcontentlayer( )
                receive_icogold:setVisible(false)
                self.rewardgolds:setVisible(false)
             end
-             if tonumber(affichedetail["rewardcards"])  <= 0 then
+             if tonumber(affichedetail["rewardcount"])  <= 0 then
                local receive_icocard=self.emailcontentlayer:getChildByTag(1228)--
                receive_icocard:setVisible(false)
                self.rewardquan:setVisible(false)
@@ -248,7 +250,7 @@ function mailLayer:fun_emailcontentlayer( )
                       return
                 end
                 local affichedetail=LocalData:Instance():get_getaffichedetail()
-                if tonumber(affichedetail["rewardgolds"])  <= 0 and tonumber(affichedetail["rewardcards"])  <= 0 then
+                if tonumber(affichedetail["rewardgolds"])  <= 0 and tonumber(affichedetail["rewardcount"])  <= 0 then
                   Server:Instance():prompt("没有可领取的金币")
                   return
                 end
@@ -275,7 +277,7 @@ function mailLayer:onEnter()
                        function()
                         local  affichedetail=LocalData:Instance():get_getaffichedetail()
                         affichedetail["rewardgolds"] = 0  
-                        affichedetail["rewardcards"] = 0  
+                        affichedetail["rewardcount"] = 0  
                         LocalData:Instance():set_getaffichedetail(affichedetail)
                         self.rewardgolds:setString("X0")
                         self.rewardquan:setString("X0")--
