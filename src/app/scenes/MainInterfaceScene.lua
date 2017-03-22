@@ -5,39 +5,6 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
     return display.newScene("MainInterfaceScene")
 end)
 
-function MainInterfaceScene:extend12()
-local PinUIInput = require("app.scenes.PinUIInput")
-local _fontSize={}--cc.size(200, 200)
-_fontSize=200
-
-local _size={}--cc.size(200,400)
-_size.width=400
-_size.height=400
-local edit=PinUIInput.new({
-          fontSize=_fontSize,size=_size,UIInputType=2,x=500,y=700,
-          image="png/chengzhangshu-1-di-2.png"})
-self:addChild(edit,5000)
-
-
-   local editbox = cc.ui.UIInput.new({
-
-    image = "png/chengzhangshu-1-di-2.png", -- 输入控件的背景
-
-    x = 300,
-
-    y = 600,
-
-    size = cc.size(200, 40)
-
-})
-
-self:addChild(editbox)
-
-   
-end
-
-
-
  function MainInterfaceScene:fun_refresh_friend( )
              
 end
@@ -46,6 +13,7 @@ function MainInterfaceScene:ctor()
       self.floating_layer:addTo(self,100000)
       self.count=0
       self.main_leve={0,500,1500,8000,15000,40000,80000,150000,400000,80000,2000000,5000000}
+      self.main_leve_name={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","大公","亲王","王储","国王"}
       self:Physics_homeback_ref()
       local userdt = LocalData:Instance():get_userdata()
       LocalData:Instance():set_sign(1)
@@ -301,6 +269,7 @@ function MainInterfaceScene:userdata(  )
         local _getuserinfo=LocalData:Instance():get_getuserinfo()
        userdt["grade"]=_getuserinfo["grade"]
        userdt["diamondnum"]=_getuserinfo["diamondnum"]
+       userdt["rankname"]  =  self.main_leve_name[tonumber(userdt["grade"]) + 1]
        LocalData:Instance():set_userdata(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
@@ -438,7 +407,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             end
 
              Util:scene_controlid("MallScene",{type="emil"})
-             --self:extend12()
+
 
       elseif tag==49 then  --加
             if self.roleAction:getStartFrame()==0 then
@@ -821,7 +790,7 @@ function MainInterfaceScene:onEnter()
                                --self.biao_ji:setVisible(false) 
                                local affiche=LocalData:Instance():get_getaffiche()
                                 local affichelist=affiche["affichelist"]
-                                dump(affiche)
+                                --dump(affiche)
                                 if #affichelist==0 then
                                    return
                                 end
