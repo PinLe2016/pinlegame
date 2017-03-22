@@ -367,7 +367,7 @@ function GoldprizeScene:onEnter()
                                     
                          else
                          	
-                         	self:removeChild(999, true)
+                         	self:removeChildByTag(999, true)
                --           	local  _Issecond=0
 
                --           	if tonumber(getgoldspoolbyid["getcardamount"]) ~=2 then
