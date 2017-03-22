@@ -363,8 +363,8 @@ function GoldprizeScene:onEnter()
                          if tonumber(getgoldspoolbyid["coolingtime"]) == -1  or   tonumber(getgoldspoolbyid["getcardamount"]) == 0  then   --因为getcardamount这个后台不准，所以只能多加一个coolingtime来保险的判断是否玩过两次
 
                          	--LocalData:Instance():set_user_pintu("1")  --主要是要确定点击后  要自动拼图
-                                    Server:Instance():prompt("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)        
-                                                                if eventType==1  and _istouch  then
+                                    self.floating_layer:showFloat("今日获得金币机会已经用完啦,继续只能获得积分",function (sender, eventType)        
+                                                                if eventType==1    then
                                                                     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE)
                                                                 end                
                                                 end)    --  然并卵的提示语
