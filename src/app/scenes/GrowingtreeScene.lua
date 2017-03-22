@@ -144,6 +144,10 @@ function GrowingtreeScene:init(  )
                     return
                    end 
                       if self.is_friend   then
+
+                      self:fun_move_act_yun(self.left_image,self.left_image:getPositionY())
+                        self:fun_move_act_yun(self.right_image,self.right_image:getPositionY())
+                        
                           self.back_playerid=nil
                           self._deng_act:setVisible(false)
                           self.is_friend=false
