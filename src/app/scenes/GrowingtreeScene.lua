@@ -444,7 +444,7 @@ function GrowingtreeScene:fun_data()
 	 	for j=1,8 do
 	 		if tostring(tree_seedlist[i]["seedname"]) == tostring(self.zh_state[j]) then
                          if tostring(tree_seedlist[i]["seedstatus"]) ==  "2" and tonumber(tree_seedlist[i]["stolenamount"]) == 0 then
-                                   self.pt_table[tree_seedlist[i]["seatcount"]]:getParent():loadTexture("png/chengzhangshu-zhong-chu-1-1.png" )
+                                   self.pt_table[tree_seedlist[i]["seatcount"]]:getParent():loadTexture("png/chengzhangshu-zhong-di-yishou.png" )
 	 			           self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
                         elseif tostring(tree_seedlist[i]["seedstatus"]) ==  "2"  and  tonumber(tree_seedlist[i]["stolenamount"]) >0   then   --收获
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString(tostring(tree_seedlist[i]["gainsamount"]))
