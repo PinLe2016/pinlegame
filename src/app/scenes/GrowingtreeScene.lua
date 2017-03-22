@@ -674,7 +674,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
            	   print("邀请好友")
                -- Util:share()
                local InvitefriendsLayer = require("app.layers.FriendrequestLayer")  --邀请好友排行榜
-                self:addChild(InvitefriendsLayer.new(),1,13)
+                self:addChild(InvitefriendsLayer.new({switch=1}),1,13)
             elseif tag==45 then
                print("刷新好友")
                if self.pv then

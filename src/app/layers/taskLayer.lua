@@ -245,7 +245,7 @@ function taskLayer:touch_Callback( sender, eventType )
             Server:Instance():getcheckinhistory()
        elseif  tonumber(targettype) == 1 then ---待定
              local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
-            self:addChild(FriendrequestLayer.new())
+            self:addChild(FriendrequestLayer.new({switch=1}))  
       elseif  tonumber(targettype) == 2 then  --分享
             --  local FriendrequestLayer = require("app.layers.InvitefriendsLayer")  --邀请好友
             -- self:addChild(FriendrequestLayer.new())

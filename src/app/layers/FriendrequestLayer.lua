@@ -5,8 +5,8 @@
 local FriendrequestLayer = class("FriendrequestLayer", function()
             return display.newScene("FriendrequestLayer")
 end)
-function FriendrequestLayer:ctor()--params
-
+function FriendrequestLayer:ctor(params)--params
+    self.switch = params.switch
      self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
 
@@ -319,8 +319,13 @@ function FriendrequestLayer:touch_callback( sender, eventType )
           -- end
           Util:all_layer_backMusic()
           Server:Instance():gettasklist()
-	        self:removeFromParent()
-        -- Util:scene_control("MainInterfaceScene")
+	    
+      if self.switch==1 then
+        self:removeFromParent()
+      else
+        Util:scene_control("MainInterfaceScene")
+      end
+
 
 	elseif tag==135 then
 		print("hahahdfsfdsfdsf 1")
@@ -409,6 +414,10 @@ function FriendrequestLayer:onEnter()
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.STECODE, self,
                        function()
                       		self:pop_up()--弹出框
+                           local userdt = LocalData:Instance():get_userdata()
+                            userdt["golds"]=userdt["golds"]  +  200
+                            LocalData:Instance():set_userdata(userdt)
+
                       end)
 end
 

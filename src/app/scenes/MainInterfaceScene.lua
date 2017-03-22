@@ -383,7 +383,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友  291
         local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
-            self:addChild(FriendrequestLayer.new(),1,11)
+            self:addChild(FriendrequestLayer.new({switch=2}),1,11)
 
             --  local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
             -- self:addChild(aboutdetailsLayer.new(),1,12)
