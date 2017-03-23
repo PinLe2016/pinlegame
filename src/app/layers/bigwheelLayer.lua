@@ -101,7 +101,7 @@ function bigwheelLayer:ctor(params)
         self:function_HitVolesEnd()
 
          local _table=LocalData:Instance():get_setgamerecord()--保存数据
-                                -- dump(_table)
+                                --dump(_table)
         local goldspool=_table["goldspool"]
        if tonumber(goldspool["iscard"]) ==1  then  -- 判断奖池次数是否用完 
                        self:fun_bigrandom()
@@ -132,11 +132,13 @@ end
 --   转盘随机数出现
 function bigwheelLayer:fun_bigrandom( )
         self._Rtrue=1
-        local function stopAction()
-                self:function_bigwheel()
-       end
-      local callfunc = cc.CallFunc:create(stopAction)
-     self:runAction(cc.Sequence:create(cc.DelayTime:create(self.star_over_time*0.4),callfunc  ))
+       local sp= cc.Sprite:create()
+       self:addChild(sp)
+       local function stopAction() --self.star_over_time
+                   self:function_bigwheel() 
+            end
+            local _callfunc = cc.CallFunc:create(stopAction)
+            sp:runAction(cc.Sequence:create(cc.DelayTime:create(self.star_over_time * 0.4),_callfunc  ))
 end
 --打地鼠结束界面self.Points
 function bigwheelLayer:function_HitVolesEnd(  )
