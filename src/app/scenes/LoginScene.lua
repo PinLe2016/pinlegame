@@ -222,6 +222,12 @@ end
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
                 sender:setTouchEnabled(false)
+                 local function stopAction()
+                                sender:setTouchEnabled(true)      
+                end
+                local callfunc = cc.CallFunc:create(stopAction)
+               self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+               
                 if  self.phone_text:getString () == "" then
                       Server:Instance():promptbox_box_buffer("请输入正确的手机号 或者 密码 或者验证码")   --prompt
                       return
@@ -246,11 +252,7 @@ end
                       cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
                 end
                 Server:Instance():reg(self.phone_text:getString(),self.Zpassword_text:getString(),self.Zcode_text:getString())
-                 local function stopAction()
-                                sender:setTouchEnabled(true)      
-                end
-                local callfunc = cc.CallFunc:create(stopAction)
-               self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+                
           end
     end
 
