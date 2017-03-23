@@ -55,13 +55,21 @@ function Server:show_http_buffer(is_buffer)
     local action = cc.Sequence:create(cc.DelayTime:create(3),cc.CallFunc:create(logSprRotation))
     display.getRunningScene():stopAllActions()
     if is_buffer then
-                --if cc.Director:getInstance():getRunningScene() then
-                        --display.getRunningScene():runAction(action)
-               --end
+                if cc.Director:getInstance():getRunningScene() then
+                        display.getRunningScene():runAction(action)
+               end
     else
-                --if cc.Director:getInstance():getRunningScene() then
-                       --cc.Director:getInstance():getRunningScene():push_buffer(false)
-               -- end
+        -- local function logSprRotation(sender)
+        dump(display.getRunningScene().floating_layer )
+        if display.getRunningScene().floating_layer then
+            display.getRunningScene().floating_layer:show_http(false)
+        end
+       
+            -- display.getRunningScene():push_buffer(false)
+        -- end
+        --  local action = cc.Sequence:create(cc.DelayTime:create(1.0),cc.CallFunc:create(logSprRotation))
+        --  display.getRunningScene():stopAllActions()
+        --   display.getRunningScene():runAction(action)
         
     end
      
@@ -137,9 +145,9 @@ function Server:request_http(command , params)
         self:show_http_buffer(true)-- 传输动画
         end
 
-        -- if command=="getgoldspoolbyid"  then
-        --     display.getRunningScene():push_buffer(true)
-        -- end
+        if command=="getgoldspoolbyid"  then
+            display.getRunningScene():push_buffer(true)
+        end
 
         local time=os.time()
         local parsms_md5={methodtype="json",createtime=time,functionname=command,functionparams=params}

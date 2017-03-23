@@ -318,7 +318,7 @@ end
 function Util:scene_control(scene)
         local str_scene="app.scenes."..scene
         
-        display.replaceScene(cc.TransitionProgressInOut:create(0.5, require(str_scene):new()))
+        display.replaceScene(cc.TransitionProgressInOut:create(0.3, require(str_scene):new()))
        -- display.replaceScene(require(str_scene):new())
 end
 function Util:scene_controlid(scene,params)
