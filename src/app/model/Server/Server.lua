@@ -55,37 +55,33 @@ function Server:show_http_buffer(is_buffer)
     local action = cc.Sequence:create(cc.DelayTime:create(3),cc.CallFunc:create(logSprRotation))
     display.getRunningScene():stopAllActions()
     if is_buffer then
-                if cc.Director:getInstance():getRunningScene() then
+                if display.getRunningScene().floating_layer then
                         display.getRunningScene():runAction(action)
                end
     else
-        -- local function logSprRotation(sender)
-        dump(display.getRunningScene().floating_layer )
+       
         if display.getRunningScene().floating_layer then
             display.getRunningScene().floating_layer:show_http(false)
         end
-       
-            -- display.getRunningScene():push_buffer(false)
-        -- end
-        --  local action = cc.Sequence:create(cc.DelayTime:create(1.0),cc.CallFunc:create(logSprRotation))
-        --  display.getRunningScene():stopAllActions()
-        --   display.getRunningScene():runAction(action)
         
     end
      
 end
 
 function Server:network_box_buffer(prompt_text)
- 
-    display.getRunningScene():networkbox_buffer(prompt_text)
+    if display.getRunningScene().floating_layer then
+        display.getRunningScene():networkbox_buffer(prompt_text)
+    end
 end
 function Server:promptbox_box_buffer(prompt_text)
- 
-    display.getRunningScene():promptbox_buffer(prompt_text)
+    if display.getRunningScene().floating_layer then
+        display.getRunningScene():promptbox_buffer(prompt_text)
+    end
 end
 function Server:Grawpopup_box_buffer(prompt_text)
- 
-    display.getRunningScene():Grawpopup_buffer(prompt_text)
+    if display.getRunningScene().floating_layer then
+         display.getRunningScene():Grawpopup_buffer(prompt_text)
+    end
 end
 
 
