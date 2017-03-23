@@ -570,6 +570,8 @@ function LoginScene:_passwordLayer( )
                end))
 
           local submit = self.passwordLayer:getChildByTag(292)
+          self.changepassword_bt=submit
+          self.changepassword_bt:setTouchEnabled(false)
           submit:addTouchEventListener((function(sender, eventType  )
                      self:touch_Callback(sender, eventType)
                end))
@@ -648,15 +650,15 @@ function LoginScene:touch_Callback( sender, eventType  )
                      self.passwordLayer:removeFromParent()
                 end
              elseif tag==292 then   --修改密码 提交
-
-               if tostring(Util:judgeIsAllNumber(tostring(self._mobilephone:getString())))  ==  "false"  then
-                      Server:Instance():promptbox_box_buffer("请输入正确的手机号") 
-                      return
-                   end 
-              if string.len(self._mobilephone)~=11 then
+               if string.len(self.Wphone_text:getString())~=11 then
                   Server:Instance():promptbox_box_buffer("填写手机号码错误")
                return
               end
+               if tostring(Util:judgeIsAllNumber(tostring(self.Wphone_text:getString())))  ==  "false"  then
+                      Server:Instance():promptbox_box_buffer("请输入正确的手机号") 
+                      return
+                   end 
+             
               if self._yanzhengma:getString()  ==  "" then
                  Server:Instance():promptbox_box_buffer("验证码不能为空")
                  return
@@ -684,6 +686,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                 end
                  Server:Instance():changepassword(self.y_yanzhengma,1,self._mobilephone,_pass)  --(1  忘记密码)
               elseif tag==291 then
+                 self.changepassword_bt:setTouchEnabled(true)
                 self.code_bt=self.yanzhengma
                   self.p_random=Util:rand(  ) --随机验证码\
                      local phone=self.passwordLayer:getChildByTag(293)
