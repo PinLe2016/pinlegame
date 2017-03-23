@@ -89,9 +89,9 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
                         
 
                         if self.sur_pageno==1 then
-                          activity_ListView:jumpToPercentVertical(115)   
+                          activity_ListView:jumpToPercentVertical(100)   
                         else
-                          activity_ListView:jumpToPercentVertical(108)
+                          activity_ListView:jumpToPercentVertical(100)
                         end
                         
                         self.act_loading:setVisible(true)

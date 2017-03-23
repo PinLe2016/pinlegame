@@ -45,10 +45,11 @@ function GoldprizeScene:init(  )
                         -- self.sur_pageno=self.sur_pageno+1
                         -- Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid = ""})  --发送消息
                         --self.jackpot_ListView:jumpToPercentVertical(0)
+                        dump(self.jackpot_ListView:getContentSize())
                         if self.sur_pageno==1 then
-                        	self.jackpot_ListView:jumpToPercentVertical(130)   
+                        	self.jackpot_ListView:jumpToPercentVertical(100)   
                         else
-                        	self.jackpot_ListView:jumpToPercentVertical(110)
+                        	self.jackpot_ListView:jumpToPercentVertical(100)
                         end
                         
                         self.act_loading:setVisible(true)

@@ -65,9 +65,9 @@ function activitycodeLayer:init(  )
                        
 
                           if self.sur_pageno==1 then
-                          self.activity_ListView:jumpToPercentVertical(115)   
+                          self.activity_ListView:jumpToPercentVertical(100)   
                         else
-                          self.activity_ListView:jumpToPercentVertical(108)
+                          self.activity_ListView:jumpToPercentVertical(100)
                         end
                         
                         self.act_loading:setVisible(true)
