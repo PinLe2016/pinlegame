@@ -161,6 +161,7 @@ end
 --  用户名   旧密码   新密码  验证码 类型  (1  验证  2   修改密码 )
 function Server:changepassword(code,type,loginname,password,oldpassword)
     local params = {}
+    changepassword_type=type
      params={
            
             code=code,
@@ -173,14 +174,20 @@ function Server:changepassword(code,type,loginname,password,oldpassword)
 end
 
 function Server:changepassword_callback()
-     dump(self.data)
+     --dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
         return
     end
     --self:promptbox_box_buffer("修改密码成功")
-    dialogdetermine=1-- 修改密码成功
-    NotificationCenter:Instance():PostNotification("CHANGEPASSWORD")
+   -- 修改密码成功
+    if changepassword_type ==3  then
+        NotificationCenter:Instance():PostNotification("CHANGEPASSWORD")
+    else
+         dialogdetermine=1
+        self:promptbox_box_buffer("修改密码成功")
+    end
+    
     -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
 end
 
