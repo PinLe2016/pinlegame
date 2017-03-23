@@ -159,16 +159,16 @@ end
 
 --忘记密码
 --  用户名   旧密码   新密码  验证码 类型  (1  验证  2   修改密码 )
-function Server:changepassword(loginname,password,code,type,oldpassword)
+function Server:changepassword(code,type,loginname,password,oldpassword)
     local params = {}
      params={
-            loginname=loginname,
-            oldpassword=crypto.md5(oldpassword),
+           
             code=code,
             type=type,
+            loginname=loginname,
+            oldpassword=crypto.md5(oldpassword),
             password=crypto.md5(password)
         }
-        dump(params)
     self:request_http("changepassword" , params); 
 end
 
@@ -178,8 +178,9 @@ function Server:changepassword_callback()
         self:promptbox_box_buffer(self.data.err_msg)
         return
     end
-    self:promptbox_box_buffer("修改密码成功")
+    --self:promptbox_box_buffer("修改密码成功")
     dialogdetermine=1-- 修改密码成功
+    NotificationCenter:Instance():PostNotification("CHANGEPASSWORD")
     -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
 end
 

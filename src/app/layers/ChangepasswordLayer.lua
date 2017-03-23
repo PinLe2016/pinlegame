@@ -100,7 +100,7 @@ function ChangepasswordLayer:pass( )
                             return
                   end
 
-                Server:Instance():changepassword(self.loginname,_password," ",2,_oldpassword)  --(1  忘记密码)
+                Server:Instance():changepassword(" ",2,self.loginname,_password,_oldpassword)  --(1  忘记密码)
 end
 
 

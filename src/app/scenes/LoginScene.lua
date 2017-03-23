@@ -648,10 +648,26 @@ function LoginScene:touch_Callback( sender, eventType  )
                      self.passwordLayer:removeFromParent()
                 end
              elseif tag==292 then   --修改密码 提交
+
+               if tostring(Util:judgeIsAllNumber(tostring(self._mobilephone:getString())))  ==  "false"  then
+                      Server:Instance():promptbox_box_buffer("请输入正确的手机号") 
+                      return
+                   end 
+              if string.len(self._mobilephone)~=11 then
+                  Server:Instance():promptbox_box_buffer("填写手机号码错误")
+               return
+              end
+              if self._yanzhengma:getString()  ==  "" then
+                 Server:Instance():promptbox_box_buffer("验证码不能为空")
+                 return
+              end
+
                 if self._scode then
                     cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
               end
-                self:_resetpasswordLayer()
+              
+              Server:Instance():changepassword(self._yanzhengma:getString(),3)
+                --self:_resetpasswordLayer()
                 
               elseif tag==305 then  --重新设置密码  返回
                 self:landing_init()
@@ -666,7 +682,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                     Server:Instance():promptbox_box_buffer("密码格式不对哦（密码为6-20位数字或字母的组合")   --prompt
                     return
                 end
-                 Server:Instance():changepassword(self._mobilephone,_pass,self.y_yanzhengma,1)  --(1  忘记密码)
+                 Server:Instance():changepassword(self.y_yanzhengma,1,self._mobilephone,_pass)  --(1  忘记密码)
               elseif tag==291 then
                 self.code_bt=self.yanzhengma
                   self.p_random=Util:rand(  ) --随机验证码\
@@ -925,6 +941,12 @@ function LoginScene:onEnter()
                   end
 
                         end)
+ --  注册成功
+ NotificationCenter:Instance():AddObserver("CHANGEPASSWORD", self,function()
+                    self:_resetpasswordLayer()
+                    
+                        end)
+
 
 end
 function LoginScene:onExit()
@@ -936,6 +958,7 @@ function LoginScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self)
   NotificationCenter:Instance():RemoveObserver("REG_CALLBACK", self)
+  NotificationCenter:Instance():RemoveObserver("CHANGEPASSWORD", self)
 
 
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)

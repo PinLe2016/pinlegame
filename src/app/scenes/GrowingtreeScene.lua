@@ -54,8 +54,10 @@ function GrowingtreeScene:init(  )
 
       self.left_image=self.Growingtree:getChildByTag(645) 
       self.left_image:setLocalZOrder(100)
+      self.left_image:setTouchEnabled(true)
       self.right_image=self.Growingtree:getChildByTag(644) 
       self.right_image:setLocalZOrder(100)
+      self.right_image:setTouchEnabled(true)
       self.touch_image=self.Growingtree:getChildByTag(966) 
 
       self._deng_act=self.Growingtree:getChildByTag(2679)
@@ -139,11 +141,13 @@ function GrowingtreeScene:init(  )
 
       self.back_huijia_bt=self.Growingtree:getChildByTag(1557)  -- 回家
       self.back_huijia_bt:setScale(1.5)
+      self.back_huijia_bt:setTouchEnabled(false)
       self.back_huijia_bt:addTouchEventListener(function(sender, eventType  )
                   if eventType ~= ccui.TouchEventType.ended then
                     return
                    end 
                       if self.is_friend   then
+                       
 
                       self:fun_move_act_yun(self.left_image,self.left_image:getPositionY())
                         self:fun_move_act_yun(self.right_image,self.right_image:getPositionY())
@@ -1007,8 +1011,10 @@ function GrowingtreeScene:fun_move_act_yun(_obj,y)
       else
         _ps=0
      end
+     self.back_huijia_bt:setTouchEnabled(false)
       local function stopAction()
          _obj:setPositionY(y)
+          self.back_huijia_bt:setTouchEnabled(true)
       end 
       _obj:setPositionY(_ps)
       local callfunc = cc.CallFunc:create(stopAction)

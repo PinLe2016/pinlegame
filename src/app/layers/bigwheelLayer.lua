@@ -108,10 +108,26 @@ function bigwheelLayer:ctor(params)
        end
 
       end
+      self:fun_tasktable()
       --self:fun_bigrandom()
         --转盘随机数出现
        -- self:star_action()
        
+end
+function bigwheelLayer:fun_tasktable(  )
+         local _table=LocalData:Instance():get_gettasklist()
+        local tasklist=_table["tasklist"]
+         for i=1,#tasklist  do 
+               if  tonumber(tasklist[i]["targettype"])   ==  4   then
+                    LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
+               end
+         end
+
+          if LocalData:Instance():get_tasktable() then
+               Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                LocalData:Instance():set_tasktable(nil)--制空 
+         end
+
 end
 --   转盘随机数出现
 function bigwheelLayer:fun_bigrandom( )
@@ -976,13 +992,7 @@ function bigwheelLayer:touch_callback( sender, eventType )
       self:fun_began_start(  )
        Server:Instance():getgoldspoolrandomgolds(self.adid,self.CheckBox_volume,self.Points)  --  转盘随机数
 
-        local _table=LocalData:Instance():get_gettasklist()
-        local tasklist=_table["tasklist"]
-         for i=1,#tasklist  do 
-               if  tonumber(tasklist[i]["targettype"])   ==  4   then
-                    LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
-               end
-         end
+       
        
     elseif tag==130 then
         Util:scene_control("GoldprizeScene")
@@ -1165,10 +1175,10 @@ function bigwheelLayer:fun_bigback( _obj,x,y )
                     if eventType == ccui.TouchEventType.ended then
                           _obj:removeFromParent()
 
-                           if LocalData:Instance():get_tasktable() then
-                                 Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
-                                  LocalData:Instance():set_tasktable(nil)--制空 
-                           end
+                           -- if LocalData:Instance():get_tasktable() then
+                           --       Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                           --        LocalData:Instance():set_tasktable(nil)--制空 
+                           -- end
 
                           if self.pintujinbi then
                                self.pintujinbi:setProperty( tostring(_gold["golds"]),"png/dadishufenshu.png", 24, 26, "0")

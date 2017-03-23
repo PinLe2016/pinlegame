@@ -66,7 +66,7 @@ end
 function taskLayer:data_init(  )
       self.task_list:removeAllItems()
       local _table=LocalData:Instance():get_gettasklist()
-              --dump(_table)
+             -- dump(_table)
       local tasklist=_table["tasklist"]
       if #tasklist==0 then
         self.task_list:setVisible(false)
