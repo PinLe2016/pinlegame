@@ -317,10 +317,9 @@ function debrisLayer:saw_issuccess()
                         local  list_table=LocalData:Instance():get_getgoldspoollistbale()
                         -- dump(list_table)
                         local  jaclayer_data=list_table["adlist"]
-                        
                         local  _addetailurl = tostring(1)
-                        print("发到手机快放假", #jaclayer_data[1]["addetailurl"])
-                        if #jaclayer_data[1]["addetailurl"]  ~=  0 then
+                       
+                        if jaclayer_data[1]["addetailurl"] then
                            _addetailurl=jaclayer_data[1]["addetailurl"]
                         end
                         local  _img= LocalData:Instance():get_user_img()

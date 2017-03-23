@@ -55,29 +55,33 @@ function Server:show_http_buffer(is_buffer)
     local action = cc.Sequence:create(cc.DelayTime:create(3),cc.CallFunc:create(logSprRotation))
     display.getRunningScene():stopAllActions()
     if is_buffer then
-                --if cc.Director:getInstance():getRunningScene() then
-                        --display.getRunningScene():runAction(action)
-               --end
+                if display.getRunningScene().floating_layer then
+                        display.getRunningScene():runAction(action)
+               end
     else
-                --if cc.Director:getInstance():getRunningScene() then
-                       --cc.Director:getInstance():getRunningScene():push_buffer(false)
-               -- end
+       
+        if display.getRunningScene().floating_layer then
+            display.getRunningScene().floating_layer:show_http(false)
+        end
         
     end
      
 end
 
 function Server:network_box_buffer(prompt_text)
- 
-    display.getRunningScene():networkbox_buffer(prompt_text)
+    if display.getRunningScene().floating_layer then
+        display.getRunningScene():networkbox_buffer(prompt_text)
+    end
 end
 function Server:promptbox_box_buffer(prompt_text)
- 
-    display.getRunningScene():promptbox_buffer(prompt_text)
+    if display.getRunningScene().floating_layer then
+        display.getRunningScene():promptbox_buffer(prompt_text)
+    end
 end
 function Server:Grawpopup_box_buffer(prompt_text)
- 
-    display.getRunningScene():Grawpopup_buffer(prompt_text)
+    if display.getRunningScene().floating_layer then
+         display.getRunningScene():Grawpopup_buffer(prompt_text)
+    end
 end
 
 
@@ -137,9 +141,9 @@ function Server:request_http(command , params)
         self:show_http_buffer(true)-- 传输动画
         end
 
-        -- if command=="getgoldspoolbyid"  then
-        --     display.getRunningScene():push_buffer(true)
-        -- end
+        if command=="getgoldspoolbyid"  then
+            display.getRunningScene():push_buffer(true)
+        end
 
         local time=os.time()
         local parsms_md5={methodtype="json",createtime=time,functionname=command,functionparams=params}
