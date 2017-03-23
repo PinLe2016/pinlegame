@@ -464,38 +464,38 @@ function InvitefriendsLayer:function_addFriend(  )
 end
 
 function InvitefriendsLayer:function_keyboard(_parent,target,font_size)
-        local alert = ccui.Text:create()
-        alert:setString("|")
-        alert:setFontName("png/chuti.ttf")
-        local _guangbiao_x=target:getPositionX()
-        alert:setPosition(target:getPositionX(),target:getPositionY())
-        alert:setFontName(font_TextName)
-        alert:setFontSize(40)
-        alert:setColor(cc.c3b(0, 0, 0))
-        _parent:addChild(alert)
-        alert:setVisible(false)
+        -- local alert = ccui.Text:create()
+        -- alert:setString("|")
+        -- alert:setFontName("png/chuti.ttf")
+        -- local _guangbiao_x=target:getPositionX()
+        -- alert:setPosition(target:getPositionX(),target:getPositionY())
+        -- alert:setFontName(font_TextName)
+        -- alert:setFontSize(40)
+        -- alert:setColor(cc.c3b(0, 0, 0))
+        -- _parent:addChild(alert)
+        -- alert:setVisible(false)
 
         local function textFieldEvent(sender, eventType)  
               if eventType == ccui.TextFiledEventType.attach_with_ime then  
                    --print("attach_with_ime") 
                    local  move=cc.Blink:create(1, 1)  
                     local action = cc.RepeatForever:create(move)
-                    alert:runAction(action) 
-                  alert:setVisible(true)
+                    --alert:runAction(action) 
+                  --alert:setVisible(false)
               elseif eventType == ccui.TextFiledEventType.detach_with_ime then  
                    --print("detach_with_ime") 
-                  alert:stopAllActions() 
+                 -- alert:stopAllActions() 
                   --alert:setVisible(false)
               elseif eventType == ccui.TextFiledEventType.insert_text then  
                  --print("insert_text")  
                   local str=tostring(target:getString())
                  local len = Util:fun_Strlen(str) --Util:fun_Strlen(str)
-                 alert:setPositionX(_guangbiao_x+len*font_size)    
+                 --alert:setPositionX(_guangbiao_x+len*font_size)    
               elseif eventType == ccui.TextFiledEventType.delete_backward then  
                    
                   local str=tostring(target:getString())
                  local len = Util:fun_Strlen(str)
-                 alert:setPositionX(_guangbiao_x+len*font_size)     
+                 --alert:setPositionX(_guangbiao_x+len*font_size)     
                  if tonumber(len)  ==  0 then
                     Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
                   end 
