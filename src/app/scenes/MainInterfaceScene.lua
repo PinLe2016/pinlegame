@@ -319,7 +319,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
     -- self:addChild(activitycodeLayer.new(),1,255)
 		
 
-    display.replaceScene(cc.TransitionProgressInOut:create(1, require("app.layers.activitycodeLayer"):new()))
+    display.replaceScene(cc.TransitionProgressInOut:create(0.3, require("app.layers.activitycodeLayer"):new()))
 	elseif tag==37 then  --37
     local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
 		self:addChild(PerInformationLayer.new(),1,14)
@@ -347,7 +347,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
          --       local RichlistLayer = require("app.layers.RichlistLayer")--排行榜 
          -- self:addChild(RichlistLayer.new(),1,17)
 
-         display.replaceScene(cc.TransitionProgressInOut:create(1, require("app.layers.RichlistLayer"):new()))
+         display.replaceScene(cc.TransitionProgressInOut:create(0.3, require("app.layers.RichlistLayer"):new()))
 
 
 	elseif tag==124 then   --  290

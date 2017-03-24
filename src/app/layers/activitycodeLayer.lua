@@ -200,7 +200,7 @@ function activitycodeLayer:touch_btCallback( sender, eventType)
                    -- Util:player_music_hit("ACTIVITY",true )
                   self:unscheduleUpdate()
               	     --self:removeFromParent()
-                     display.replaceScene(cc.TransitionProgressInOut:create(1, require("app.scenes.MainInterfaceScene"):new()))
+                     display.replaceScene(cc.TransitionProgressInOut:create(0.3, require("app.scenes.MainInterfaceScene"):new()))
                      Util:all_layer_backMusic()
               	end
               end

@@ -106,6 +106,37 @@ function Server:prompt( content )
     self:show_float_message(tostring(content))
 end
 
+
+--  微信  微信openid   微信昵称
+function Server:wechatreg(loginname,nickname)
+
+   
+    params={
+            loginname=loginname,
+            nickname=nickname,
+           
+        }
+        -- dump(params)
+    self:request_http("wechatreg" , params ); 
+end
+
+
+function Server:wechatreg_callback()
+      dump(self.data)
+    if self.data.err_code~=0  then
+         self:promptbox_box_buffer( self.data.err_msg)
+         NotificationCenter:Instance():PostNotification("zhuceshibai")
+         return
+    end
+
+    LocalData:Instance():set_user_data(self.data)--保存玩家数据
+    NotificationCenter:Instance():PostNotification("REG_CALLBACK")
+    
+end
+
+
+
+
 --登陆
 function Server:login(username,password)
     print("开始"..username..password)
