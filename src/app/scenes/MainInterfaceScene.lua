@@ -436,6 +436,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
         self.floating_layer:showFloat("您确定要退出登录？",function (sender, eventType)
                                   if eventType==1 then
                                     LocalData:Instance():set_user_data(nil)
+                                    Util:deleWeixinLoginDate()
                                     Util:scene_control("LoginScene")
                                   end
                             end)
