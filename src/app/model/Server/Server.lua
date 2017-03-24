@@ -219,6 +219,7 @@ function Server:on_request_finished_http(event , command)
     io.writefile(cc.FileUtils:getInstance():getWritablePath() .."recv.lua", response..command,"w+")
     if tonumber(self.data["err_code"])==16 then
         LocalData:Instance():set_user_data(nil)
+        Util:deleWeixinLoginDate()
          Util:scene_control("LoginScene")
          return
     end
