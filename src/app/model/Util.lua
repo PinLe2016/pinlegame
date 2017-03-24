@@ -551,17 +551,17 @@ function Util:deleWeixinLoginDate()
           
       if device.platform=="android" then 
 
-            cc.UserDefault:getInstance():setStringForKey("nickname",""),
-            cc.UserDefault:getInstance():setStringForKey("unionid",""),
-            cc.UserDefault:getInstance():setStringForKey("openid",""),
+            cc.UserDefault:getInstance():setStringForKey("nickname","")
+            cc.UserDefault:getInstance():setStringForKey("unionid","")
+            cc.UserDefault:getInstance():setStringForKey("openid","")
             cc.UserDefault:getInstance():setStringForKey("headimgurl","")
             -- country=cc.UserDefault:getInstance():getStringForKey("country",""),
             -- province=cc.UserDefault:getInstance():getStringForKey("province",""),
             -- city=cc.UserDefault:getInstance():getStringForKey("city","")
       else
-            cc.UserDefault:getInstance():setStringForKey("name",""),
-            cc.UserDefault:getInstance():setStringForKey("unionId",""),
-            cc.UserDefault:getInstance():setStringForKey("openId",""),
+            cc.UserDefault:getInstance():setStringForKey("name","")
+            cc.UserDefault:getInstance():setStringForKey("unionId","")
+            cc.UserDefault:getInstance():setStringForKey("openId","")
             cc.UserDefault:getInstance():setStringForKey("icon","")
       end
             
