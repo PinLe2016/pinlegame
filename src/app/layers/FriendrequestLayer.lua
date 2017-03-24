@@ -219,7 +219,7 @@ function FriendrequestLayer:pop_up(  )
                 self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
                 self.invitecode_num:setPlaceHolder("请输入手机号码")
         
-                self.invitecode_num:setMaxLength(11)
+                --self.invitecode_num:setMaxLength(11)
       end
 
 

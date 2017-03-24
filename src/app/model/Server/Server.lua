@@ -152,7 +152,7 @@ function Server:request_http(command , params)
         
         local _key
         local md5
-        if command=="reg" or command=="login" or command=="changepassword" or command=="getversion" or command=="sendmessage"then
+        if command=="wechatreg" or command=="reg" or command=="login" or command=="changepassword" or command=="getversion" or command=="sendmessage"then
             md5=crypto.md5(MD5_KEY..MD5_KEY..post_md5)
             -- local ee=json.encode({functionparams={deviceid="85bd6605a23c0173c7f248753da63337"}})
             -- md5=crypto.md5(MD5_KEY..MD5_KEY..ee)

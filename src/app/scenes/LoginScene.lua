@@ -56,7 +56,9 @@ end
  function LoginScene:countdown(Iswechat)
            if Iswechat   then
                 if cc.UserDefault:getInstance():getStringForKey("nickname") ~= "" then
-                  print("微信发送请求")
+                  print("微信发送请求")  
+                  dump(Util:getWeixinLoginDate())
+                  Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
                 end
             else
                self:fun_progress()
@@ -341,11 +343,14 @@ function LoginScene:landing_init()
                     return
                   end
 
-                   self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2,true)
+                   self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2,true,10011)
                    local function stopAction()
-                           
-                            Util:weixinLogin() 
-                            self:fun_countdown(true)  
+                             self.WeChat:removeChildByTag(10011, true)
+                             
+                             Util:weixinLogin() 
+                             self:fun_countdown(true) 
+
+                             
                   end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
@@ -358,9 +363,9 @@ function LoginScene:landing_init()
                     return
                   end
                  
-                  self:function_bt_act(self.phone_bt,"shoujidenglu-anniu-guanxiao-",4,0.2,true)
+                  self:function_bt_act(self.phone_bt,"shoujidenglu-anniu-guanxiao-",4,0.2,true,20020)
                    local function stopAction()
-                             
+                              self.WeChat:removeChildByTag(20020, true)
                                self:_landing_interface()
                                self.WeChat:removeFromParent()
                                -- Util:getWeixinLoginDate()
@@ -398,7 +403,7 @@ function LoginScene:function_bt_run(_obj,_img)
 
 end
 --按钮动画 
-function LoginScene:function_bt_act(_obj,_img,_count,_speed,isvisible)  
+function LoginScene:function_bt_act(_obj,_img,_count,_speed,isvisible,_tag)  
   local animation = cc.Animation:create()
   local name=nil
   for i=1,_count do
@@ -412,7 +417,7 @@ function LoginScene:function_bt_act(_obj,_img,_count,_speed,isvisible)
   self._template = cc.Sprite:create()
   self._template:setVisible(isvisible)
   self._template:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
-  self.WeChat:addChild(self._template,200)  --  直接在水壶上上面
+  self.WeChat:addChild(self._template,200,_tag)  --  
   local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
   --_template:stopAllActions()
   self._template:runAction(seq)--(animate)
@@ -890,7 +895,7 @@ function LoginScene:onEnter()
                       end)
      NotificationCenter:Instance():AddObserver("zhuceshibai", self,
                        function()
-                         print("zhuceshibai开始99")
+                         cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
                          if  self.registered then
                               --self:landing_init()
                              
@@ -949,6 +954,7 @@ function LoginScene:onEnter()
                         end)
  --  注册成功
  NotificationCenter:Instance():AddObserver("REG_CALLBACK", self,function()
+                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
                   Util:scene_control("MainInterfaceScene")--成功后直接跳转主界面
                   --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                    if self._scode then
