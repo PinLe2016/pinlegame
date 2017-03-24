@@ -13,6 +13,8 @@ function FriendrequestLayer:ctor(params)--params
 
        self:setNodeEventEnabled(true)--layer添加监听
        Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
+        self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
+       self:addChild(self.Friendrequest)
        --Server:Instance():getfriendlist()--查询好友列表   
        --Server:Instance():set_friend_reward_setting()
       
@@ -29,8 +31,7 @@ function FriendrequestLayer:init(  )
        end
 
 
-       self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
-       self:addChild(self.Friendrequest)
+      
        self:pop_up()--弹出框
        local back_bt=self.Friendrequest:getChildByTag(123)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
