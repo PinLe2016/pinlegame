@@ -347,7 +347,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
          --       local RichlistLayer = require("app.layers.RichlistLayer")--排行榜 
          -- self:addChild(RichlistLayer.new(),1,17)
 
-         display.replaceScene(cc.TransitionProgressInOut:create(1, require("app.layers.RichlistLayer"):new()))
+         display.replaceScene(cc.TransitionProgressInOut:create(0.3, require("app.layers.RichlistLayer"):new()))
 
 
 	elseif tag==124 then   --  290
