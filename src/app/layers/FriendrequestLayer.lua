@@ -201,7 +201,7 @@ function FriendrequestLayer:pop_up(  )
       if tostring(friendlist_code["invitecode"])~="0" then
 
                self.invitecode_num = cc.ui.UILabel.new({text = tostring(friendlist_code["invitecode"]),
-                        size = 28,
+                        size = 20,
                         --align = TEXT_ALIGN_CENTER,
                         font = "Arial",
                         color = cc.c4b(255,241,203),
