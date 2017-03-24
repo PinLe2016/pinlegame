@@ -57,8 +57,8 @@ end
            if Iswechat   then
                 if cc.UserDefault:getInstance():getStringForKey("nickname") ~= "" then
                   print("微信发送请求")  
-                  dump(Util:getWeixinLoginDate())
-                  Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
+                  Server:Instance():wechatreg("oTJ8MwMGYEmzCwTeM_CrTLkoXWbw","J.DW")
+                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
                 end
             else
                self:fun_progress()
@@ -349,6 +349,7 @@ function LoginScene:landing_init()
                              
                              Util:weixinLogin() 
                              self:fun_countdown(true) 
+                            
 
                              
                   end
@@ -895,7 +896,7 @@ function LoginScene:onEnter()
                       end)
      NotificationCenter:Instance():AddObserver("zhuceshibai", self,
                        function()
-                         cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
+                         
                          if  self.registered then
                               --self:landing_init()
                              
@@ -954,7 +955,7 @@ function LoginScene:onEnter()
                         end)
  --  注册成功
  NotificationCenter:Instance():AddObserver("REG_CALLBACK", self,function()
-                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
+                  
                   Util:scene_control("MainInterfaceScene")--成功后直接跳转主界面
                   --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                    if self._scode then
