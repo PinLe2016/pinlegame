@@ -678,6 +678,7 @@ function MainInterfaceScene:init_checkin(  )
 
 	local  day_bg=self.checkinlayer:getChildByTag(85)
 	local  day_text=day_bg:getChildByTag(86)
+      day_text:setFontName("png/chuti.ttf")
 	local   _size=day_bg:getContentSize()
 
 	local  checkindata=LocalData:Instance():get_getcheckinhistory() --用户数据

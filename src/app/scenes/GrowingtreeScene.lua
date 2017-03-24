@@ -51,7 +51,6 @@ function GrowingtreeScene:init(  )
 	
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
-
       self.left_image=self.Growingtree:getChildByTag(645) 
       self.left_image:setLocalZOrder(100)
       self.left_image:setTouchEnabled(true)
