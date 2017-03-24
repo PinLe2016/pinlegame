@@ -57,7 +57,7 @@ end
            if Iswechat   then
                 if cc.UserDefault:getInstance():getStringForKey("nickname") ~= "" then
                   print("微信发送请求")  
-                  Server:Instance():wechatreg("oTJ8MwMGYEmzCwTeM_CrTLkoXWbw","J.DW")
+                  Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
                 end
             else
