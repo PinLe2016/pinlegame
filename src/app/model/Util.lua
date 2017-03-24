@@ -471,6 +471,7 @@ function Util:function_keyboard(_parent,target,font_size)
               if eventType == ccui.TextFiledEventType.attach_with_ime then  
                   -- print("attach_with_ime") 
                    local  move=cc.Blink:create(1, 1)  
+                   target:setPlaceHolder("")
                     local action = cc.RepeatForever:create(move)
                     alert:runAction(action) 
                   alert:setVisible(true)

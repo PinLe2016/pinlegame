@@ -43,7 +43,7 @@ function LoginScene:progressbarScene(  )
         self.ProgressbarScene:runAction(self.roleAction)
         self.roleAction:setTimeSpeed(0.3)
          self.roleAction:gotoFrameAndPlay(0,20, true)
-         -- self:fun_countdown( )
+         
         loadingBar:setPercent(0)
 
         local alert = ccui.Text:create("0%", "png/chuti.ttf", 30)
@@ -53,8 +53,19 @@ function LoginScene:progressbarScene(  )
         alert:setPosition(cc.p(loadingBar:getContentSize().width/2, loadingBar:getContentSize().height/2))
         loadingBar:addChild(alert)
 end
- function LoginScene:countdown()
-           self._time=self._time+2
+ function LoginScene:countdown(Iswechat)
+           if Iswechat   then
+                if cc.UserDefault:getInstance():getStringForKey("nickname") ~= "" then
+                  print("微信发送请求")
+                end
+            else
+               self:fun_progress()
+           end
+
+
+end
+function LoginScene:fun_progress( )
+     self._time=self._time+2
             loadingBar:setPercent(self._time)
             loadingBar:getChildByTag(255):setString(tostring(self._time).."%")
             self.particle:setPositionX(loadingBar:getContentSize().width/100 *self._time)
@@ -83,11 +94,10 @@ end
               self:landing_init()             
 
             end
-
 end
-function LoginScene:fun_countdown( )
+function LoginScene:fun_countdown(Iswechat )
       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
-                                self:countdown()
+                                self:countdown(Iswechat)
               end,0.02, false)
 end
 function LoginScene:_coverlayer( )
@@ -308,6 +318,7 @@ function LoginScene:fun_endanimation(_obj,_image,_type,_istrue)
       cliper:setStencil(stencil)
       cliper:addChild(spark)
       cliper:setVisible(_istrue)
+      cliper:setLocalZOrder(9999)
       self.WeChat:addChild(cliper)
       local moveTo = cc.MoveTo:create(4,cc.p(_content:getPositionX()+_type,_content:getPositionY()))
       local moveBack = cc.MoveTo:create(4,cc.p(_content:getPositionX()-_type,_content:getPositionY()))  --moveTo:reverse()  --
@@ -329,9 +340,12 @@ function LoginScene:landing_init()
                   if eventType ~= ccui.TouchEventType.ended then
                     return
                   end
-                   self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2)
+
+                   self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2,true)
                    local function stopAction()
-                            Util:weixinLogin()   
+                           
+                            Util:weixinLogin() 
+                            self:fun_countdown(true)  
                   end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
@@ -344,8 +358,9 @@ function LoginScene:landing_init()
                     return
                   end
                  
-                  self:function_bt_act(self.phone_bt,"shoujidenglu-anniu-guanxiao-",4,0.2)
+                  self:function_bt_act(self.phone_bt,"shoujidenglu-anniu-guanxiao-",4,0.2,true)
                    local function stopAction()
+                             
                                self:_landing_interface()
                                self.WeChat:removeFromParent()
                                -- Util:getWeixinLoginDate()
@@ -383,7 +398,7 @@ function LoginScene:function_bt_run(_obj,_img)
 
 end
 --按钮动画 
-function LoginScene:function_bt_act(_obj,_img,_count,_speed)  
+function LoginScene:function_bt_act(_obj,_img,_count,_speed,isvisible)  
   local animation = cc.Animation:create()
   local name=nil
   for i=1,_count do
@@ -394,12 +409,13 @@ function LoginScene:function_bt_act(_obj,_img,_count,_speed)
   animation:setRestoreOriginalFrame(true)
   --创建动作
   local animate = cc.Animate:create(animation)
-  local _template = cc.Sprite:create()
-  _template:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
-  self.WeChat:addChild(_template,200)  --  直接在水壶上上面
+  self._template = cc.Sprite:create()
+  self._template:setVisible(isvisible)
+  self._template:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
+  self.WeChat:addChild(self._template,200)  --  直接在水壶上上面
   local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
   --_template:stopAllActions()
-  _template:runAction(seq)--(animate)
+  self._template:runAction(seq)--(animate)
 
 end
 --云彩动画 
@@ -570,8 +586,8 @@ function LoginScene:_passwordLayer( )
                end))
 
           local submit = self.passwordLayer:getChildByTag(292)
-          self.changepassword_bt=submit
-          self.changepassword_bt:setTouchEnabled(false)
+          -- self.changepassword_bt=submit
+          -- self.changepassword_bt:setTouchEnabled(false)
           submit:addTouchEventListener((function(sender, eventType  )
                      self:touch_Callback(sender, eventType)
                end))
@@ -686,7 +702,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                 end
                  Server:Instance():changepassword(self.y_yanzhengma,1,self._mobilephone,_pass)  --(1  忘记密码)
               elseif tag==291 then
-                 self.changepassword_bt:setTouchEnabled(true)
+                 --self.changepassword_bt:setTouchEnabled(true)
                 self.code_bt=self.yanzhengma
                   self.p_random=Util:rand(  ) --随机验证码\
                      local phone=self.passwordLayer:getChildByTag(293)
@@ -1084,7 +1100,7 @@ function LoginScene:updateLayer()
         if errorCode == cc.ASSETSMANAGER_NO_NEW_VERSION then
             -- loadingBar:setPercent(100)
             self._time=0
-            self:fun_countdown()
+            self:fun_countdown(false)
             reload(false)
         elseif errorCode == cc.ASSETSMANAGER_NETWORK then
             -- progressLable:setString("network error")
@@ -1175,7 +1191,7 @@ function LoginScene:getVersionInfo()
 
     -- self:landing_init()
     self._time=0
-    self:fun_countdown()
+    self:fun_countdown(false)
 end
 
 
