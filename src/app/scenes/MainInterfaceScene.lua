@@ -487,7 +487,6 @@ end
 function MainInterfaceScene:funsetup( Isture )
         -- self.set_bg=self.MainInterfaceScene:getChildByTag(88)
         -- self.set_bg:setVisible(true)
-        print("------------funsetup-------------")
         self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
         self.set_Xbg=self.MainInterfaceScene:getChildByTag(563)
         self.set_Xbg:setVisible(Isture)
@@ -514,18 +513,15 @@ function MainInterfaceScene:funsetup( Isture )
         local sound_bt=self.set_bg1:getChildByTag(92)  -- 音效
 
         local getconfig=LocalData:Instance():get_getconfig()
-        dump(getconfig)
         local _list = getconfig["list"]
         local _list1=_list[1]["sataus"]
         local _list2=_list[2]["sataus"]
         if tonumber(_list1) == 0 then  --o 开  1  关闭
            LocalData:Instance():set_music_hit(true)
+            audio.resumeMusic()
             Util:player_music_hit("ACTIVITY",true )
            music_bt:setSelected(true)
-           LocalData:Instance():set_music_hit(true)
            
-           Util:player_music_hit("ACTIVITY",true )
-           audio.resumeMusic()
         else
            music_bt:setSelected(false)
            LocalData:Instance():set_music_hit(false)
