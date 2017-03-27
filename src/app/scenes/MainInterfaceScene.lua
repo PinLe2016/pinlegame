@@ -24,11 +24,11 @@ function MainInterfaceScene:ctor()
       LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
       Server:Instance():getconfig()  --  获取后台音效
       self:listener_home() --注册安卓返回键
-      -- Server:Instance():gettasklist()   --  初始化任务
+      Server:Instance():gettasklist()   --  初始化任务
       --手机归属请求
-      -- Server:Instance():getusercitybyphone()--手机归属
+      Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
-      -- Server:Instance():getaffichelist(1)  --  公告
+      Server:Instance():getaffichelist(1)  --  公告
       
 end
 function MainInterfaceScene:hammerAction()
