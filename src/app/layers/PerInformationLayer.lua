@@ -1525,6 +1525,7 @@ function PerInformationLayer:onExit()
 
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self)
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.EMAILADDRESS, self)
+         cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 --拆分头像
 function PerInformationLayer:trim (s) 

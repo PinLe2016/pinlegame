@@ -493,6 +493,7 @@ function SurpriseOverScene:onExit()
        --audio.stopMusic(G_SOUND["PERSONALCHAGE"])
        Util:stop_music("PERSONALCHAGE")
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
+       cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 function SurpriseOverScene:pushFloating(text)
 

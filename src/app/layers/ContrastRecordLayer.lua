@@ -287,6 +287,7 @@ end
 function ContrastRecordLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self)
         --NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
+        cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 return ContrastRecordLayer

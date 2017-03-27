@@ -111,7 +111,7 @@ end
 
 function CustomerLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
-     	 
+     	 cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 

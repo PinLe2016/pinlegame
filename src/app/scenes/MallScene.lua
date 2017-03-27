@@ -67,7 +67,7 @@ end
 
 function MallScene:onExit()
 
-          
+        cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 function MallScene:pushFloating(text)

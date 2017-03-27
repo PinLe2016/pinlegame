@@ -482,6 +482,7 @@ end
 function debrisLayer:onExit()
 
                 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
+                cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 return debrisLayer

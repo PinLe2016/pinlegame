@@ -289,6 +289,7 @@ end
 function DetailsLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self)
+     	  cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 return DetailsLayer

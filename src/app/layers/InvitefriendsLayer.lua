@@ -639,6 +639,7 @@ function InvitefriendsLayer:onExit()
         NotificationCenter:Instance():RemoveObserver("FRIEND_GETSEARCHFRIENDLIST", self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_GETSEARCHFRIENDLIST_FALSE", self)
+        cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 return InvitefriendsLayer

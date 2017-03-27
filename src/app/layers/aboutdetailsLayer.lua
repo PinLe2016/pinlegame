@@ -469,7 +469,7 @@ end
 function aboutdetailsLayer:onExit()
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FEEDBACK, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.TFEDBACK, self)
-     	
+     	cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 

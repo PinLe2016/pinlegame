@@ -425,6 +425,7 @@ end
 function FriendrequestLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self)
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.STECODE, self)
+       cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 return FriendrequestLayer
