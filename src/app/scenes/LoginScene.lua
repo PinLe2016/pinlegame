@@ -189,15 +189,15 @@ end
      -- self.Zphone_text:setVisible(false)
      -- self.Zphone_text:setTouchEnabled(false)
      self.phone_text=self.Zphone_text
-     Util:function_keyboard(self.registered,self.Zphone_text,17)
+     Util:function_keyboard(self.registered,self.Zphone_text,15)
      local password_text=self.registered:getChildByTag(29)
      self.Zpassword_text=password_text
-     Util:function_keyboard(self.registered,password_text,12)
+     Util:function_keyboard(self.registered,password_text,11)
      -- password_text:setVisible(false)
      -- password_text:setTouchEnabled(false)
      local verificationcode_text=self.registered:getChildByTag(30)
      self.Zcode_text=verificationcode_text
-     Util:function_keyboard(self.registered,verificationcode_text,17)
+     Util:function_keyboard(self.registered,verificationcode_text,15)
      -- verificationcode_text:setVisible(false)
      -- verificationcode_text:setTouchEnabled(false)
 
@@ -385,12 +385,6 @@ function LoginScene:landing_init()
      self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,50,10)
      self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,100,-40)
      self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,200,30)
-     self.left_image=self.WeChat:getChildByTag(565)  
-     self.left_image:setLocalZOrder(99)
-     self.right_image=self.WeChat:getChildByTag(566)
-     self.right_image:setLocalZOrder(99)
-     self:fun_move_act(self.left_image,self.left_image:getPositionX())
-     self:fun_move_act(self.right_image,self.right_image:getPositionX())
      self:fun_endanimation(self.wechat_bt,"weixindenglu-anniu-1.png",-self.wechat_bt:getContentSize().width,true)
      self:fun_endanimation(self.phone_bt,"shoujidenglu-anniu-guanxiao.png",self.phone_bt:getContentSize().width,true)
 end
@@ -448,8 +442,18 @@ end
 function LoginScene:_landing_interface()
     landing = cc.CSLoader:createNode("landing.csb");
     self:addChild(landing)
+    landing:setTag(1314)
 
-    print("层级关系222",self.floating_layer:getLocalZOrder(),"  ",landing:getLocalZOrder())
+     local land_back_bt=landing:getChildByTag(3074)
+      land_back_bt:addTouchEventListener(function(sender, eventType  )
+         if eventType ~= ccui.TouchEventType.ended then
+            return
+          end
+                self:landing_init()
+                self:removeChildByTag(1314, true)
+      end)
+
+  
    -- local dialog=FloatingLayer:Instance():floatingLayer_init("多少分开始的")
    -- self:addChild(dialog)
    -- self:replaceScene(dialog)
@@ -632,10 +636,10 @@ function LoginScene:_passwordLayer( )
             -- phone:setVisible(false)
             -- phone:setTouchEnabled(false)
             self.Wphone_text=phone
-            Util:function_keyboard(self.passwordLayer,phone,17) 
+            Util:function_keyboard(self.passwordLayer,phone,15) 
             local Wcode_text = self.passwordLayer:getChildByTag(294)
             self._yanzhengma=Wcode_text
-            Util:function_keyboard(self.passwordLayer,Wcode_text,17) 
+            Util:function_keyboard(self.passwordLayer,Wcode_text,15) 
             -- Wcode_text:setVisible(false)
             -- Wcode_text:setTouchEnabled(false)
 
@@ -783,7 +787,7 @@ function LoginScene:_resetpasswordLayer(  )
              phone:setString(self._mobilephone)
              local password1 = self.resetpasswordLayer:getChildByTag(302)
              self.Wpassword_text=password1
-             Util:function_keyboard(self.resetpasswordLayer,password1,12) 
+             Util:function_keyboard(self.resetpasswordLayer,password1,11) 
              -- password1:setVisible(false)
              -- password1:setTouchEnabled(false)
               local res = "  "--res/png/DLkuang.png"

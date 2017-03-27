@@ -46,14 +46,15 @@ function InvitefriendsLayer:fun_friend_act(  )
          self.Friend_lan:stopAllActions()
          self.Friend_lan:runAction(action)
 end
+
 function InvitefriendsLayer:init(  )
       
         -- self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
         -- self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
         -- self:addChild(self.fragment_sprite)text
 
-       self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
-       self:addChild(self.Invitefriends)
+      self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
+      self:addChild(self.Invitefriends)
       
        --self:move_layer(self.Invitefriends)
         self:pop_up()--  弹出框
