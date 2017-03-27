@@ -51,6 +51,7 @@ function GrowingtreeScene:init(  )
 	
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
+      --self:fun_harvest_act(self.Growingtree,200,300)
       self.left_image=self.Growingtree:getChildByTag(645) 
       self.left_image:setLocalZOrder(100)
       self.left_image:setTouchEnabled(true)
@@ -600,7 +601,10 @@ end
 function GrowingtreeScene:fun_backpack_list(  )
           self.backpack_list:removeAllItems()
           local gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
+          dump(gettreegameitemlist)
           local _list=gettreegameitemlist["list"]
+        
+
           if #_list == 0 then
             return
           end
@@ -628,7 +632,6 @@ function GrowingtreeScene:fun_backpack_list(  )
                         if eventType ~= ccui.TouchEventType.ended then
                               return
                         end 
-                        print("开始")
                         self.z_gameitemid=_list[sender:getTag()]["gameitemid"]
                         if tostring(self.back_seedplant_seedmanure)=="施肥"   then
                                --施肥接口
@@ -898,6 +901,21 @@ function GrowingtreeScene:function_touchlistener(_isTouch)
                return true  
       end)  
 end
+--  收获动画
+function GrowingtreeScene:fun_harvest_act( _obj,_x,_y )
+
+  local dishu_jia1=cc.Sprite:create("png/jinbiba_jiazaitu2.jpg")
+      dishu_jia1:setPosition(cc.p(200,300))
+      _obj:addChild(dishu_jia1)
+                 local bezier ={
+                  
+                  cc.p(_x+15, _y+21.5),
+                  cc.p(_x+30, _y)
+              }
+           local bezierTo = cc.BezierTo:create(2, bezier)
+           dishu_jia1:runAction(bezierTo)
+
+end
 --灯笼动画 
 function GrowingtreeScene:function_lantern_act( _obj,x,y,_isVisb)
   local animation = cc.Animation:create()
@@ -945,7 +963,6 @@ end
 
  --加金币动画
 function GrowingtreeScene:coinAction1(jin,x,y)
-    print("动画",x,"  ",y)
     if tonumber(jin)  <=  0 then
      return
     end
@@ -1066,7 +1083,7 @@ function GrowingtreeScene:onEnter()
                               Server:Instance():gettreelist(self.back_playerid)
                               self.pt_tag_table=0
                               self.ListNode:setVisible(false)
-                              --self._deng_act:setVisible(false)
+                              self._deng_act:setVisible(false)
                               self._growingtreeNode:setPositionX(0)
                               self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
                               self.friend_growingtree_checkbox:setSelected(true) 

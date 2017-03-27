@@ -42,10 +42,6 @@ function GoldprizeScene:init(  )
     	self.jackpot_ListView=self.GoldprizeScene:getChildByTag(127)--奖池列表
     	self.jackpot_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
-                        -- self.sur_pageno=self.sur_pageno+1
-                        -- Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid = ""})  --发送消息
-                        --self.jackpot_ListView:jumpToPercentVertical(0)
-                        dump(self.jackpot_ListView:getContentSize())
                         if self.sur_pageno==1 then
                         	self.jackpot_ListView:jumpToPercentVertical(100)   
                         else
@@ -55,7 +51,7 @@ function GoldprizeScene:init(  )
                         self.act_loading:setVisible(true)
                         
                          local function stopAction()
-                         	--self.jackpot_ListView:jumpToPercentVertical(0)
+                         	
                                self.sur_pageno=self.sur_pageno+1
                                Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid = ""})  --发送消息
                         end
@@ -66,6 +62,10 @@ function GoldprizeScene:init(  )
                       end
 	end))
 	self.jackpot_ListView:setItemModel(self.jackpot_ListView:getItem(0))
+	for i=2,2 do
+		self.jackpot_ListView:pushBackDefaultItem()
+		local  cell = self.jackpot_ListView:getItem(i-1)
+	end
 	-- self.jackpot_ListView:removeAllItems()
 	-- self:data_init()
 

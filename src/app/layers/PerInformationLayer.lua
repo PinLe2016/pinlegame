@@ -36,6 +36,7 @@ function PerInformationLayer:add_init(  )
                  local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
 
                  local userdt = LocalData:Instance():get_userdata()--
+
                  userdt["birthday"]=userdatainit["birthday"]
                  userdt["cityid"]=userdatainit["cityid"]
                  userdt["cityname"]=userdatainit["cityname"]
@@ -89,13 +90,13 @@ function PerInformationLayer:add_init(  )
                     local golds=self.showinformation:getChildByTag(1413)   --金币
                     golds:setString(userdt["golds"])
                     local rankname=self.showinformation:getChildByTag(1414)   --等级
-                    rankname:setString( userdt["rankname"])
+                    rankname:setString("LV."  ..   userdt["grade"])
 
                     local LV_name=self.showinformation:getChildByTag(1819)   --等级
                      LV_name:setString(userdt["rankname"])
-
                      local loadingbar=self.showinformation:getChildByTag(1817)-- 等级进度条
-                   local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100 --self.main_leve[+1]/5000000 *100
+                   --local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100 --self.main_leve[+1]/5000000 *100
+                   local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100
                    loadingbar:setPercent(jindu)
 
                    
@@ -149,6 +150,7 @@ function PerInformationLayer:add_init(  )
                             return
                         end
                      self:init()
+                     self:head()
                  end)
 
                  local mail_bt=self.showinformation:getChildByTag(190)  --填写邮件信息
@@ -162,6 +164,7 @@ function PerInformationLayer:add_init(  )
                  end)
             --  新增加的绑定微信
             self.per_ListView=self.showinformation:getChildByTag(1821)--  绑定列表
+            self.per_ListView:setVisible(false)
             self.per_ListView:setItemModel(self.per_ListView:getItem(0))
             for i=2,2 do  --self.tablecout+
                         self.per_ListView:pushBackDefaultItem()
@@ -684,6 +687,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
     elseif tag==83 then 
          self._Pname:setVisible(false)
          self._turebut:setTouchEnabled(false)
+
          local function stopAction()
                 self._turebut:setTouchEnabled(true)
        end
@@ -704,7 +708,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
 
                  end
           
-            elseif tag==67 then 
+   elseif tag==67 then 
                  self._Pname:setVisible(false)
                         self:head()
     end
