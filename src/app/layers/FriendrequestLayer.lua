@@ -33,6 +33,7 @@ function FriendrequestLayer:init(  )
 
       
        self:pop_up()--弹出框
+
        local back_bt=self.Friendrequest:getChildByTag(123)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
@@ -54,7 +55,8 @@ function FriendrequestLayer:init(  )
                 end
         end)
         self.friendlist_num=LocalData:Instance():get_reward_setting_list()  
-
+        local Invitecode_text=self.Friendrequest:getChildByTag(1465)  --邀请码
+        Invitecode_text:setString("邀请码:" .. self.friendlist_num["activatedcode"] )
         local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
         friend_num:setVisible(false)
         local labelAtlas1 = ccui.TextAtlas:create()
@@ -201,7 +203,7 @@ function FriendrequestLayer:pop_up(  )
       if tostring(friendlist_code["invitecode"])~="0" then
 
                self.invitecode_num = cc.ui.UILabel.new({text = tostring(friendlist_code["invitecode"]),
-                        size = 20,
+                        size = 30,
                         --align = TEXT_ALIGN_CENTER,
                         font = "Arial",
                         color = cc.c4b(255,241,203),
