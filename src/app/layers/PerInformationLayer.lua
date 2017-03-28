@@ -672,9 +672,8 @@ function PerInformationLayer:touch_callback( sender, eventType )
     elseif tag==169 then 
                 self:_savetime()
                 self._Pname:setTouchEnabled(true)
-                 if self.birthday then
-                    self.birthday:removeFromParent()
-                 end
+                
+                 self:removeChildByTag(7878,true)
         
     elseif tag==51 then
                  self:_savecity(  )
@@ -971,6 +970,7 @@ end
 function PerInformationLayer:fun_birthday(  )
         self.birthday = cc.CSLoader:createNode("Birthday.csb")
         self:addChild(self.birthday)
+        self.birthday:setLocalZOrder(7878)
            local move = cc.MoveTo:create(0.5,cc.p(0,0))
         self.birthday:runAction(cc.Sequence:create(move))
 
