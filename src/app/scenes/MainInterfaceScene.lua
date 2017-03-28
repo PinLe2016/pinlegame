@@ -487,7 +487,6 @@ end
 function MainInterfaceScene:funsetup( Isture )
         -- self.set_bg=self.MainInterfaceScene:getChildByTag(88)
         -- self.set_bg:setVisible(true)
-        
         self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
         self.set_Xbg=self.MainInterfaceScene:getChildByTag(563)
         self.set_Xbg:setVisible(Isture)
@@ -519,12 +518,10 @@ function MainInterfaceScene:funsetup( Isture )
         local _list2=_list[2]["sataus"]
         if tonumber(_list1) == 0 then  --o 开  1  关闭
            LocalData:Instance():set_music_hit(true)
+            audio.resumeMusic()
             Util:player_music_hit("ACTIVITY",true )
            music_bt:setSelected(true)
-           LocalData:Instance():set_music_hit(true)
            
-           Util:player_music_hit("ACTIVITY",true )
-           audio.resumeMusic()
         else
            music_bt:setSelected(false)
            LocalData:Instance():set_music_hit(false)
@@ -805,13 +802,12 @@ function MainInterfaceScene:onEnter()
                       end)
 NotificationCenter:Instance():AddObserver("XINYUE", self,
                        function()
-
-                         local function stopAction()
+                         -- local function stopAction()
                               --Util:player_music_hit("ACTIVITY",true )
                               self:funsetup(false)  
-                        end
-                        local callfunc = cc.CallFunc:create(stopAction)
-                        self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+                        -- end
+                        -- local callfunc = cc.CallFunc:create(stopAction)
+                        -- self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
 
                        
                       end)
@@ -820,12 +816,14 @@ end
 
 function MainInterfaceScene:onExit()
   --audio.stopMusic(G_SOUND["ACTIVITY"])
-  Util:stop_music("ACTIVITY")
+  -- Util:stop_music("ACTIVITY")
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECK_POST, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
   NotificationCenter:Instance():RemoveObserver("XINYUE", self)
+  
+  cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 --android 返回键 响应

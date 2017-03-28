@@ -165,7 +165,7 @@ end
 
 function ForhelpLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
-     	 
+     	 cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 

@@ -686,6 +686,7 @@ end
 function HitVolesLayer:onExit()
 
                 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
+                cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 

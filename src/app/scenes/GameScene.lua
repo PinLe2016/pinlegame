@@ -478,11 +478,12 @@ end
 
 function GameScene:onExit()
            --audio.stopMusic(G_SOUND["MENUMUSIC"])
-           Util:stop_music("MENUMUSIC")
+           -- Util:stop_music("MENUMUSIC")
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLISTPIC_LAYER_IMAGE, self)
            NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PRIZEPOOLDETAILS, self)
+          cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 function GameScene:pushFloating(text)

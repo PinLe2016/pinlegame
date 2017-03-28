@@ -1315,7 +1315,7 @@ function bigwheelLayer:onExit()
   
      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.POOL_RANDOM_GOLDS, self)
      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GAMERECORD_POST, self)
-     
+     cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 

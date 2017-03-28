@@ -211,7 +211,7 @@ end
 function RichlistLayer:onExit()
      	  NotificationCenter:Instance():RemoveObserver("RICHLIST", self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
-            
+        cc.Director:getInstance():getTextureCache():removeAllTextures()     
 end
 
 function RichlistLayer:pushFloating(text)

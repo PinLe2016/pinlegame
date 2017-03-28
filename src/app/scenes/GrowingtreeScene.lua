@@ -1266,7 +1266,8 @@ function GrowingtreeScene:onExit()
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDWATER", self)
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDREMOVE", self)
       NotificationCenter:Instance():RemoveObserver("MESSAGE_SETSEEDREWARD_FALSE", self)
-     
+      
+      cc.Director:getInstance():getTextureCache():removeAllTextures() 
      	
 end
 

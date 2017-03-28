@@ -663,10 +663,11 @@ end
 function SurpriseScene:onExit()
       --audio.stopMusic(G_SOUND["PERSONALCHAGE"])
       Util:stop_music("PERSONALCHAGE")
-	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
-	NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PERFECT, self)
+      cc.Director:getInstance():getTextureCache():removeAllTextures() 
 
 end
 --android 返回键 响应

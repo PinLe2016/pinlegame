@@ -29,12 +29,7 @@ function FloatingLayer:show_http(is_show)
     action:gotoFrameAndPlay(0,120,true)
 end
 function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
-   -- if  self.dialog then
-   --        return
-   --  end
-     if LocalData:Instance():get_music() then
-        audio.playSound("sound/effect/tanchu.mp3",false)
-      end
+  
 
     self.dialog = cc.CSLoader:createNode("Dialog.csb");
     self:addChild(self.dialog,20,20)

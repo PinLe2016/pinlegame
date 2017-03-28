@@ -39,6 +39,7 @@ end
 
 function MainScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LOGIN_POST, self)
+  cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 

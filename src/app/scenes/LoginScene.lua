@@ -997,7 +997,7 @@ function LoginScene:onExit()
   NotificationCenter:Instance():RemoveObserver("wangjimima", self)
   NotificationCenter:Instance():RemoveObserver("zhucechegngong", self)
   NotificationCenter:Instance():RemoveObserver("zhuceshibai", self)
-
+  cc.Director:getInstance():getTextureCache():removeAllTextures() 
 
 end
 function LoginScene:pushFloating(text)

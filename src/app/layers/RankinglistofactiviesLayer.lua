@@ -212,6 +212,7 @@ end
 function RankinglistofactiviesLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.RANK_LAYER_IMAGE, self)
        NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
+       cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 
 return RankinglistofactiviesLayer
