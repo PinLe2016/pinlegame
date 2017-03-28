@@ -256,6 +256,7 @@ function GrowingtreeScene:init(  )
 	 self.FruitinformationNode = self.Growingtree:getChildByTag(2489)  --Node  种子信息   界面
        --  种子信息界面
       self._fruitinformation_bg=self.FruitinformationNode:getChildByTag(2424)
+      self._fruitinformation_bg:setScale(0)
 
 	 self.ListNode=self.Growingtree:getChildByTag(779):getChildByTag(733)  --种子和化肥列表
        self._type_str_text=self.ListNode:getChildByTag(975)  -- 类型
@@ -820,6 +821,10 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
       local fruitinformation_bg=self._fruitinformation_bg
       self._fruitinformation_bg:setPosition(cc.p(_x+100,_y))
       self._fruitinformation_bg:setVisible(_isVis)
+      self._fruitinformation_bg:setScale(0)
+       local actionTo = cc.ScaleTo:create(0.3, 1)
+      fruitinformation_bg:runAction(actionTo)
+
       if tostring(self.seed_information1)   ==  "false" then
         return
       end
