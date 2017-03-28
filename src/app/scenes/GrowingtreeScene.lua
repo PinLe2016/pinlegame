@@ -912,10 +912,10 @@ function GrowingtreeScene:fun_harvest_act( _obj,_x,_y )
               cc.p(_x+40, _y+60),
               cc.p(_x+80, _y)
               }
-           local sc1=cc.ScaleTo:create(1, 2)
-           local sc2=cc.ScaleTo:create(1, 0.5)
+           local sc1=cc.ScaleTo:create(0.3, 2)
+           local sc2=cc.ScaleTo:create(0.2, 0.5)
 
-           local bezierTo = cc.BezierTo:create(1, bezier)
+           local bezierTo = cc.BezierTo:create(0.3, bezier)
             local function stopAction()
                     _obj:setPosition(_x,_y) 
                     _obj:setVisible(false) 
