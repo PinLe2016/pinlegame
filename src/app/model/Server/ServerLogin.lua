@@ -165,7 +165,7 @@ end
 
 
 function Server:login_callback()
-     -- dump(self.data)
+      dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
          -- local a=FloatingLayer:Instance():floatingLayer_init(self.data.err_msg)

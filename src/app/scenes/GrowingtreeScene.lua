@@ -51,7 +51,6 @@ function GrowingtreeScene:init(  )
 	
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
-      --self:fun_harvest_act(self.Growingtree,200,300)
       self.left_image=self.Growingtree:getChildByTag(645) 
       self.left_image:setLocalZOrder(100)
       self.left_image:setTouchEnabled(true)
@@ -454,14 +453,18 @@ function GrowingtreeScene:fun_data()
                          if tostring(tree_seedlist[i]["seedstatus"]) ==  "2" and tonumber(tree_seedlist[i]["stolenamount"]) == 0 then
                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getParent():loadTexture("png/chengzhangshu-zhong-di-yishou.png" )
 	 			           self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
                         elseif tostring(tree_seedlist[i]["seedstatus"]) ==  "2"  and  tonumber(tree_seedlist[i]["stolenamount"]) >0   then   --收获
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString(tostring(tree_seedlist[i]["gainsamount"]))
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
-                              self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
-                              self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
                               self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
                               self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
-	 			     --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
+	 			     --  受保护时间
+                               if tonumber(tree_seedlist[i]["gainsprotecttime"]) <=  0 then
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
+                              end
+             --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/chengzhangshu-zhong-di-suo.png")
                               --self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
@@ -526,6 +529,7 @@ function GrowingtreeScene:fun_data()
                                                                        
                                                                         return
                                                          end
+                                              self.harvest_obj=sender   
                                               Server:Instance():setseedreward(self.z_treeid,self.z_seedid)
                                               
                                               -- local _istouch=true
@@ -903,17 +907,24 @@ function GrowingtreeScene:function_touchlistener(_isTouch)
 end
 --  收获动画
 function GrowingtreeScene:fun_harvest_act( _obj,_x,_y )
-
-  local dishu_jia1=cc.Sprite:create("png/jinbiba_jiazaitu2.jpg")
-      dishu_jia1:setPosition(cc.p(200,300))
-      _obj:addChild(dishu_jia1)
-                 local bezier ={
-                  
-                  cc.p(_x+15, _y+21.5),
-                  cc.p(_x+30, _y)
+             local bezier = {
+              cc.p(_x, _y),
+              cc.p(_x+40, _y+60),
+              cc.p(_x+80, _y)
               }
-           local bezierTo = cc.BezierTo:create(2, bezier)
-           dishu_jia1:runAction(bezierTo)
+           local sc1=cc.ScaleTo:create(1, 2)
+           local sc2=cc.ScaleTo:create(1, 0.5)
+
+           local bezierTo = cc.BezierTo:create(1, bezier)
+            local function stopAction()
+                    _obj:setPosition(_x,_y) 
+                    _obj:setVisible(false) 
+            end
+            local callfunc = cc.CallFunc:create(stopAction)
+            local seq=cc.Sequence:create(sc1,sc2,bezierTo,callfunc) 
+
+           _obj:runAction(seq)
+
 
 end
 --灯笼动画 
@@ -1158,7 +1169,11 @@ function GrowingtreeScene:onEnter()
                                local jin=0
                                local num=0
                                self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
-
+                               --  收获动画
+                              self._deng_act:setVisible(false)
+                              self.harvest_obj:getChildByTag(self.harvest_obj:getTag()+359):setVisible(false)
+                              self:fun_harvest_act(self.harvest_obj,self.harvest_obj:getPositionX(),self.harvest_obj:getPositionY()) 
+                              
                               if  _setseedreward["rewardlist"] and #_setseedreward["rewardlist"]  >0  then
                                 -- if self.back_playerid  ~=  nil then
                                 --      num=_setseedreward["stolengainsamountperPlayer"]
@@ -1200,6 +1215,9 @@ function GrowingtreeScene:onEnter()
                        function()  
                               
                               self.pt_tag_table=0
+                              --  测试
+                             
+
 
                       end)
   --浇水成功

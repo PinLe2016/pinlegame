@@ -31,12 +31,13 @@ function bigwheelLayer:networkbox_buffer(prompt_text)
 end
 
 function bigwheelLayer:ctor(params)
+  dump(params)
       self.IF_VOER=false
-        print("IF_VOER1 ",self.IF_VOER)
+       
   self:setNodeEventEnabled(true)--layer添加监听     
   self.floating_layer = require("app.layers.FloatingLayer").new()
   self.floating_layer:addTo(self,100000)
-  print("--fe-----")
+
   self.m_turnBg=nil
   self.m_turnArr=nil
   self.m_pBg=nil
@@ -152,7 +153,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
 
                local _advertiImg=self.HitVolesEndLayer:getChildByTag(201)  --  上面广告图
                local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-               print("广告图1",path  ..  self.image_name)
+
                 _advertiImg:loadTexture(  self.image_name) 
                -- _advertiImg:addTouchEventListener(function(sender, eventType  )
                --       if eventType ~= ccui.TouchEventType.ended then
@@ -165,7 +166,6 @@ function bigwheelLayer:function_HitVolesEnd(  )
                 --self:function_httpgold( self.HitVolesEndLayer,_advertiImg:getPositionX(),_advertiImg:getPositionY()-_advertiImg:getContentSize().height/2-80)
                local back=self.HitVolesEndLayer:getChildByTag(776)  --  返回
                self.end_back=back
-               print("是交罚款多少积分开始")
                back:setVisible(false)
                back:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)

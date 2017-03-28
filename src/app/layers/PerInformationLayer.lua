@@ -96,7 +96,7 @@ function PerInformationLayer:add_init(  )
                      LV_name:setString(userdt["rankname"])
                      local loadingbar=self.showinformation:getChildByTag(1817)-- 等级进度条
                    --local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100 --self.main_leve[+1]/5000000 *100
-                   local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100
+                   local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+1]  *  100
                    loadingbar:setPercent(jindu)
 
                    

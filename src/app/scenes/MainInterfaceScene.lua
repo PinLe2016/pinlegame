@@ -269,7 +269,7 @@ function MainInterfaceScene:userdata(  )
         local _getuserinfo=LocalData:Instance():get_getuserinfo()
        userdt["grade"]=_getuserinfo["grade"]
        userdt["diamondnum"]=_getuserinfo["diamondnum"]
-       userdt["rankname"]  =  self.main_leve_name[tonumber(userdt["grade"]) + 1]
+       userdt["rankname"]  =  self.main_leve_name[tonumber(userdt["grade"])]
        LocalData:Instance():set_userdata(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
        head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
@@ -304,7 +304,7 @@ function MainInterfaceScene:userdata(  )
        local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 
        diamond_text:setString("0")--loadingBar:setPercent(0)
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
-       local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+2]  *  100 --self.main_leve[+1]/5000000 *100
+       local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+1]  *  100 --self.main_leve[+1]/5000000 *100
        loadingbar:setPercent(jindu)--self.main_leve
 end
 function MainInterfaceScene:touch_callback( sender, eventType )

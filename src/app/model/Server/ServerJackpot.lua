@@ -40,7 +40,7 @@ end
 
 
 function Server:getgoldspooladlist_callback()
-      -- dump(self.data)
+       dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
         return
@@ -148,7 +148,25 @@ function Server:setgoldspooladurlreward_callback()
          self:show_float_message("领取金币奖池广告链接金币:" .. self.data.err_msg)
         return
     end
-    
+end
+
+--  3.6.7   获得某一金币奖池上一场的奖励信息
+function Server:getgoldspoolreward(goldspoolid)
+       local _params ={}
+       _params={
+            goldspoolid=goldspoolid
+   }
+   
+    self:request_http("getgoldspoolreward" , _params ); 
+end
+function Server:getgoldspoolreward_callback()
+      dump(self.data)
+    if self.data.err_code~=0  then
+         self:show_float_message( self.data.err_msg)
+        return
+    end
+    LocalData:Instance():set_getgoldspoolreward(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification("GETGOLDSPOOLREWARD")
    
 end
 

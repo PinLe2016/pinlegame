@@ -96,7 +96,12 @@ function LocalData:get_user_img()
 	local user_pintu=cc.UserDefault:getInstance():getStringForKey("pintu12"," ")
 	return user_pintu or nil
 end
-
+function LocalData:set_getgoldspoolreward(getgoldspoolreward)
+	self.getgoldspoolreward=getgoldspoolreward
+end
+function LocalData:get_getgoldspoolreward()
+	return self.getgoldspoolreward or {}
+end
 
 
 
