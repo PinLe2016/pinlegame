@@ -464,6 +464,11 @@ function GrowingtreeScene:fun_data()
                                if tonumber(tree_seedlist[i]["gainsprotecttime"]) <=  0 then
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
+                              else
+                                self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(true)
+
+
                               end
              --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
@@ -1328,7 +1333,7 @@ function GrowingtreeScene:function_template(data)
                                     self:addChild(InvitefriendsLayer.new(),1,13)
                                   return
                           end
-                        self.touch_image:setVisible(true)
+                         self.touch_image:setVisible(true)
                         self:fun_move_act_yun(self.left_image,self.left_image:getPositionY())
                         self:fun_move_act_yun(self.right_image,self.right_image:getPositionY())
                        --   local function stopAction()
@@ -1337,7 +1342,7 @@ function GrowingtreeScene:function_template(data)
                        --  local callfunc = cc.CallFunc:create(stopAction)
                        -- self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
 
-                         self.touch_image:setVisible(false)
+                          self.touch_image:setVisible(false)
                           self.is_friend=true
                           --LocalData:Instance():set_gettreelist(nil)
                           Server:Instance():gettreelist(data["playerid"])
