@@ -167,10 +167,10 @@ end
    local _ybt=self.registered:getChildByTag(220) --注册验证码按钮
    local function Getverificationcode_btCallback(sender, eventType)
          self.code_bt=self.Getverificationcode_bt
-          sender:setScale(0.8)
+         
           _ybt:setVisible(false)
         if eventType == ccui.TouchEventType.ended then
-          sender:setScale(1)
+        
           _ybt:setVisible(true)
           sender:setColor(cc.c3b(100, 100, 100))
           sender:setTouchEnabled(false)
@@ -607,10 +607,10 @@ function LoginScene:_passwordLayer( )
                      --self:touch_Callback(sender, eventType)
 
                       if eventType ~= ccui.TouchEventType.ended then
-                             sender:setScale(0.8)
+                            
                        return
                      end
-                     sender:setScale(1)
+           
 
                     self.p_random=Util:rand(  ) --随机验证码\
                     local phone=self.passwordLayer:getChildByTag(293)
