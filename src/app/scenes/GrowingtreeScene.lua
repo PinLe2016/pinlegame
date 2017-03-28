@@ -690,7 +690,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                if self.pv then
                   self.pv:setVisible(false)
                end
-               self._feied_count=self._feied_count+1
+               self._feied_count=1
                
                Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
             end
