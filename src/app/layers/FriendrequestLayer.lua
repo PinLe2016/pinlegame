@@ -203,7 +203,7 @@ function FriendrequestLayer:pop_up(  )
       if tostring(friendlist_code["invitecode"])~="0" then
 
                self.invitecode_num = cc.ui.UILabel.new({text = tostring(friendlist_code["invitecode"]),
-                        size = 30,
+                        size = 25,
                         --align = TEXT_ALIGN_CENTER,
                         font = "Arial",
                         color = cc.c4b(255,241,203),
@@ -220,7 +220,7 @@ function FriendrequestLayer:pop_up(  )
                 self.invitecode_num:setVisible(false)
                 self.m_feedback:addChild(self.invitecode_num)
                 self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
-                self.invitecode_num:setPlaceHolder("请输入手机号码")
+                self.invitecode_num:setPlaceHolder("请输入邀请码")
         
                 --self.invitecode_num:setMaxLength(11)
       end
