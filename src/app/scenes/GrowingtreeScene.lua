@@ -461,15 +461,16 @@ function GrowingtreeScene:fun_data()
                               self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
                               self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
 	 			     --  受保护时间
-                               if tonumber(tree_seedlist[i]["gainsprotecttime"]) <=  0 then
+                               local  _time_table=Util:FormatTime_colon_bar_time(tree_seedlist[i]["nowtime"] - tree_seedlist[i]["planttime"] )
+                               local  _time_minutes=_time_table-tree_seedlist[i]["gainsprotecttime"]
+                               if tonumber(_time_minutes) <=  0 then
+
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               else
                                 self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(true)
-
-
-                              end
+                             end
              --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/chengzhangshu-zhong-di-suo.png")
@@ -746,7 +747,7 @@ function GrowingtreeScene:update(dt)
 
        local _table  = Util:FormatTime_colon_bar(self.seed_information["seed_next_time"] -  self.count_time )
        if tonumber(self.seed_information["seed_next_time"]) <= 0 then
-         Server:Instance():gettreelist(self.back_playerid)  --目的是刷新数据
+         --Server:Instance():gettreelist(self.back_playerid)  --目的是刷新数据
          return
        end
       self.time_againtime:setString(tostring( _table[2] .. _table[3] .. _table[4] ))
@@ -856,6 +857,7 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
                                self.floating_layer:fun_Grawpopup("作物还没有收获,真的铲除吗",function (sender, eventType)
                                               if eventType==1 and  _is  ==  true then
                                                    Server:Instance():setseedremove(self.z_treeid,self.z_seedid)
+                                                    _is=false
                                               end                
                               end)  
             end)
@@ -928,7 +930,8 @@ function GrowingtreeScene:fun_harvest_act( _obj,_x,_y )
            local bezierTo = cc.BezierTo:create(0.3, bezier)
             local function stopAction()
                     _obj:setPosition(_x,_y) 
-                    _obj:setVisible(false) 
+                    _obj:setVisible(true) 
+                    _obj:setScale(1)
             end
             local callfunc = cc.CallFunc:create(stopAction)
             local seq=cc.Sequence:create(sc1,sc2,bezierTo,callfunc) 
@@ -1143,7 +1146,7 @@ function GrowingtreeScene:onEnter()
                               self.ListNode:setVisible(false)
                               self:fun_FruitinformationNode(1,1,false,-1)
                               self.pt_tag_table=0
-                              self:coinAction(jin,self._obj_act:getParent():getPositionX()   ,self._obj_act:getParent():getPositionY()-30)
+                              --self:coinAction(jin,self._obj_act:getParent():getPositionX()   ,self._obj_act:getParent():getPositionY()-30)
                               self._obj_act=nil
 
                               --self._deng_act:setVisible(false)
@@ -1336,15 +1339,8 @@ function GrowingtreeScene:function_template(data)
                          self.touch_image:setVisible(true)
                         self:fun_move_act_yun(self.left_image,self.left_image:getPositionY())
                         self:fun_move_act_yun(self.right_image,self.right_image:getPositionY())
-                       --   local function stopAction()
-                                
-                       --  end
-                       --  local callfunc = cc.CallFunc:create(stopAction)
-                       -- self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
-
                           self.touch_image:setVisible(false)
                           self.is_friend=true
-                          --LocalData:Instance():set_gettreelist(nil)
                           Server:Instance():gettreelist(data["playerid"])
                           self.back_playerid=data["playerid"]
                           self._growingtreeNode:setPositionX(-220)
@@ -1355,7 +1351,10 @@ function GrowingtreeScene:function_template(data)
                           self.back_huijia_bt:setVisible(true)
                           self.back_bt:setVisible(false)
                           self.friend_growingtree_checkbox:setSelected(false)   
-                          self.friend_growingtree_checkbox:setVisible(false)   
+                          self.friend_growingtree_checkbox:setVisible(false) 
+                          for i=1,8 do
+                            self.pt_table[i]:setTouchEnabled(false)
+                          end  
 
 
             end)

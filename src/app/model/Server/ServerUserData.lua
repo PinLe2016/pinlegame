@@ -495,7 +495,7 @@ function Server:setseedremove(treeid,seedid)
     self:request_http("setseedremove" , params); 
 end
 function Server:setseedremove_callback()
-    -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
