@@ -460,21 +460,23 @@ function GrowingtreeScene:fun_data()
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
                               self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
-	 			     --  受保护时间
+	 			       self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
+                               --  受保护时间
                                local  _time_table=Util:FormatTime_colon_bar_time(tree_seedlist[i]["nowtime"] - tree_seedlist[i]["planttime"] )
                                local  _time_minutes=_time_table-tree_seedlist[i]["gainsprotecttime"]
-                               if tonumber(_time_minutes) <=  0 then
-                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
+                                self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
-                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
-                              else
-                                self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(true)
+                               if tonumber(_time_minutes) >=  0   and self.back_playerid ~= nil  then
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
                              end
              --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/chengzhangshu-zhong-di-suo.png")
                               --self._deng_act_img:loadTexture("png/chengzhangshu-zhong-di-suo.png")
-	 			elseif tostring(tree_seedlist[i]["seedstatus"]) ==  "0" then  --  干旱  浇水
+	 			       self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
+                        elseif tostring(tree_seedlist[i]["seedstatus"]) ==  "0" then  --  干旱  浇水
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString("可浇水")
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shuihu.png")
@@ -482,14 +484,16 @@ function GrowingtreeScene:fun_data()
                               self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage1[j] )
                                --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[j] )
                                 self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
+                              self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
                         else
 	 				self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage1[j] )
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
 	 			      --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage1[j] )
-               self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
+                              self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
+                              self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
                         end
-	 			self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
+	 			--self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
                        if tonumber(tree_seedlist[i]["seatcount"])  ==  self._deng_hua then
                           for p=1,8 do
                             if tostring(tree_seedlist[i]["seedname"])  ==self.zh_state[p]   then
@@ -535,6 +539,9 @@ function GrowingtreeScene:fun_data()
                                                                        
                                                                         return
                                                          end
+                                                         
+
+
                                               self.harvest_obj=sender   
                                               Server:Instance():setseedreward(self.z_treeid,self.z_seedid)
                                               
@@ -577,6 +584,8 @@ function GrowingtreeScene:fun_data()
                                                 --                      Server:Instance():setseedwater(self.z_treeid,self.z_seedid)
                                                 --                 end                
                                                 -- end)  
+
+
                                                 else
                                                         self._deng_act:setPosition(sender:getParent():getPositionX(),sender:getParent():getPositionY())
                                                         self._deng_act:setVisible(true)
@@ -846,7 +855,7 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
       local _image=self._fruitinformation_bg:getChildByTag(2425)  --  样图
       _image:loadTexture("png/"  ..  self.seed_information["seed_image"])
 
-	local remove=self._fruitinformation_bg:getChildByTag(1074)  --  铲除
+	local remove=self._fruitinformation_bg:getChildByTag(4672):getChildByTag(1074)  --  铲除
 	remove:addTouchEventListener(function(sender, eventType  )
                                if eventType ~= ccui.TouchEventType.ended then
                                       return
@@ -861,7 +870,7 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
                               end)  
             end)
 
-	local fertilization=self._fruitinformation_bg:getChildByTag(1075)  --  施肥
+	local fertilization=self._fruitinformation_bg:getChildByTag(4673):getChildByTag(1075)  --  施肥
 	fertilization:addTouchEventListener(function(sender, eventType  )
                                if eventType ~= ccui.TouchEventType.ended then
                                       return
@@ -874,6 +883,13 @@ function GrowingtreeScene:fun_FruitinformationNode( _x , _y,_isVis,_dex)
                               self._type_str_text:setString("施肥")
                               self:fun_FruitinformationNode(self._fertilization_template:getPositionX(),self._fertilization_template:getPositionY(),true,-1)       
             end)
+  if self.back_playerid ~= nil then
+      self._fruitinformation_bg:getChildByTag(4673):setVisible(false)
+      self._fruitinformation_bg:getChildByTag(4672):setVisible(false)
+  else
+       self._fruitinformation_bg:getChildByTag(4673):setVisible(true)
+      self._fruitinformation_bg:getChildByTag(4672):setVisible(true)
+  end
 			
 end
 --  整个界面具备touch事件
