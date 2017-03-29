@@ -464,7 +464,6 @@ function GrowingtreeScene:fun_data()
                                local  _time_table=Util:FormatTime_colon_bar_time(tree_seedlist[i]["nowtime"] - tree_seedlist[i]["planttime"] )
                                local  _time_minutes=_time_table-tree_seedlist[i]["gainsprotecttime"]
                                if tonumber(_time_minutes) <=  0 then
-
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
