@@ -498,6 +498,7 @@ function PerInformationLayer:init(  )
         self:touch_callback(sender, eventType)
     end)
             local head_bt=self.Perinformation:getChildByTag(26):getChildByTag(67)  --头像
+            head_bt:setTouchEnabled(false)
             head_bt:addTouchEventListener(function(sender, eventType  )
                         self:touch_callback(sender, eventType)
             end)
@@ -686,18 +687,21 @@ function PerInformationLayer:touch_callback( sender, eventType )
     elseif tag==83 then 
          self._Pname:setVisible(false)
          self._turebut:setTouchEnabled(false)
-
+         self:removeChildByTag(9888, true)
          local function stopAction()
                 self._turebut:setTouchEnabled(true)
        end
       local callfunc = cc.CallFunc:create(stopAction)
       self._turebut:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
         self:savedata()   --  保存个人信息数据发送Http
-    elseif tag==61 then   --个人信息主界面显示城市
-        self:_savecity(  )
-    elseif tag==48 then 
-        self:_savetime()
-        self._Pname:setTouchEnabled(true)
+    elseif tag==59 then   --个人信息主界面显示城市
+                self:_savecity(  )
+                self:unscheduleUpdate()
+                self:removeChildByTag(250, true)
+    elseif tag==49 then 
+                self:_savetime()
+                self._Pname:setTouchEnabled(true)
+                 self:removeChildByTag(7878,true)
     elseif tag==97 then 
                  if self.Perinformation then
                     self._Pname=nil
@@ -773,8 +777,10 @@ self._provincename1:setString(self._provincename:getString() .. "-" .. self._cit
          self.adress:removeFromParent()
 end
 function PerInformationLayer:head( )
+        self._head_tag_biaoji={}
         self.head_csb = cc.CSLoader:createNode("Head.csb")
         self:addChild(self.head_csb,20)
+        self.head_csb:setTag(9888)
         local  day_bg=self.head_csb:getChildByTag(1900):getChildByTag(1903)
         local   _size=day_bg:getContentSize()
         local  _tag=0
@@ -795,19 +801,26 @@ function PerInformationLayer:head( )
                                   local user_dt = LocalData:Instance():get_userdata()
                                   user_dt["imageUrl"]=string.format("httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
                                   LocalData:Instance():set_userdata(user_dt)
-                                 if  self.head_csb then
-                                    self._Pname:setVisible(true)
-                                    self.head_csb:removeFromParent()
-                                end
+                                  for z=1,16 do
+                                      self._head_tag_biaoji[z]:setVisible(false)
+                                  end
+                                  sender:getChildByTag(1902):setVisible(true)
+
+                                --  if  self.head_csb then
+                                --     self._Pname:setVisible(true)
+                                --     self.head_csb:removeFromParent()
+                                -- end
 
                       end)
                        local _head_image=_bg:getChildByTag(1901)
                        local _head_tag=_bg:getChildByTag(1902)
+                      
+                       table.insert(self._head_tag_biaoji,_head_tag) 
                        _head_tag:setVisible(false)
                        _head_image:loadTexture("png/httpgame.pinlegame.comheadheadicon_"  .. _tag .. ".jpg")
                        if tostring(LocalData:Instance():get_user_head()) ==  "png/httpgame.pinlegame.comheadheadicon_"  .. _tag .. ".jpg" then
                            _head_tag:setVisible(true)
-                           _bg:setTouchEnabled(false)
+                          
                        end
                         _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+9)*(j-1),_bg:getPositionY()-(_size.height+20)* math.ceil(i-1)))
                        self.head_csb:getChildByTag(1900):addChild(_bg)
@@ -983,7 +996,7 @@ function PerInformationLayer:fun_birthday(  )
             birthday_back:addTouchEventListener(function(sender, eventType  )
             self:touch_callback(sender, eventType)
        end)
-        local _true=self.birthday:getChildByTag(174):getChildByTag(48)
+        local _true=self.birthday:getChildByTag(174):getChildByTag(49)
             _true:addTouchEventListener(function(sender, eventType  )
             self:touch_callback(sender, eventType)
        end)
@@ -1185,6 +1198,7 @@ function PerInformationLayer:fun_city_info( )
         local move = cc.MoveTo:create(0.5,cc.p(0,0))
         self.adress:runAction(cc.Sequence:create(move))
         self.adress:setTag(250)
+        self.adress:setLocalZOrder(100)
 
          self.city_present=self.adress:getChildByTag(131)  --当前城市按钮
          self.city_present:addEventListener(function(sender, eventType  )
@@ -1226,7 +1240,7 @@ function PerInformationLayer:fun_city_info( )
         city_back:addTouchEventListener(function(sender, eventType  )
               self:touch_callback(sender, eventType)
         end)
-         local save=self.adress:getChildByTag(52):getChildByTag(61)
+         local save=self.adress:getChildByTag(52):getChildByTag(59)
          save:addTouchEventListener(function(sender, eventType  )
               self:touch_callback(sender, eventType)
         end)
