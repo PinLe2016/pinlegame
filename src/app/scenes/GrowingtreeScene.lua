@@ -467,15 +467,17 @@ function GrowingtreeScene:fun_data()
                               self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
 	 			       self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
                                --  受保护时间
-                               local  _time_table=Util:FormatTime_colon_bar_time(tree_seedlist[i]["nowtime"] - tree_seedlist[i]["planttime"] )
-                               local  _time_minutes=_time_table-tree_seedlist[i]["gainsprotecttime"]
+                               local  _time_minutes=tree_seedlist[i]["nowtime"] - tree_seedlist[i]["planttime"]-tree_seedlist[i]["gainsprotecttime"]*60
                                 self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(true)
-                               if tonumber(_time_minutes) >=  0   and self.back_playerid ~= nil  then
+                               if tonumber(_time_minutes) <=  0   and self.back_playerid ~= nil   then
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
-                                    --self:fun_FruitinformationNode(self.pt_table[tree_seedlist[i]["seatcount"]]:getParent():getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getParent():getPositionY(),true,i)
+                               elseif    self.back_playerid ~= nil and tostring(tree_seedlist[i]["seedname"]) ==  self.zh_state[5]   then
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
+                                    self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
                              end
              --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡

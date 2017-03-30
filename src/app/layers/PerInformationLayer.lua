@@ -783,6 +783,7 @@ function PerInformationLayer:head( )
 
                        local _bg=day_bg:clone()
                        _bg:setTag(_tag)
+                       _bg:setTouchEnabled(true)
                        _bg:addTouchEventListener(function(sender, eventType  )
                                  if eventType ~= ccui.TouchEventType.ended then
                                     return
@@ -804,6 +805,10 @@ function PerInformationLayer:head( )
                        local _head_tag=_bg:getChildByTag(1902)
                        _head_tag:setVisible(false)
                        _head_image:loadTexture("png/httpgame.pinlegame.comheadheadicon_"  .. _tag .. ".jpg")
+                       if tostring(LocalData:Instance():get_user_head()) ==  "png/httpgame.pinlegame.comheadheadicon_"  .. _tag .. ".jpg" then
+                           _head_tag:setVisible(true)
+                           _bg:setTouchEnabled(false)
+                       end
                         _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+9)*(j-1),_bg:getPositionY()-(_size.height+20)* math.ceil(i-1)))
                        self.head_csb:getChildByTag(1900):addChild(_bg)
                       _tag=_tag+1
