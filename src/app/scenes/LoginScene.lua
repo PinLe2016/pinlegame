@@ -357,7 +357,7 @@ function LoginScene:landing_init()
                   end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
-                 --Util:weixinLogin() 
+                 Util:weixinLogin() 
       end)
 
       self.phone_bt=self.WeChat:getChildByTag(562)
