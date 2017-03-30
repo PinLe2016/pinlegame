@@ -353,15 +353,11 @@ function LoginScene:landing_init()
                    self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2,true,10011)
                    local function stopAction()
                              self.WeChat:removeChildByTag(10011, true)
-                             
-                             Util:weixinLogin() 
-                             self:fun_countdown(true) 
-                            
-
-                             
+                             self:fun_countdown(true)         
                   end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
+                 Util:weixinLogin() 
       end)
 
       self.phone_bt=self.WeChat:getChildByTag(562)
