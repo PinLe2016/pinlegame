@@ -16,6 +16,7 @@ function GrowingtreeScene:ctor()
        self.zh_stateimage2={"chengzhangshu-zhongzi-chu-1.png","chengzhangshu-zhongzi-zhong-1.png","chengzhangshu-zhongzi-gao-1.png","chengzhangshu-zhongzi-zuan-1.png","chengzhangshu-zhongzi-xi-1.png","chengzhangshu-huafei-chuji.png","chengzhangshu-huafei-zhongji.png","chengzhangshu-huafei-gaoji.png"}
        self.lv_table={2,2,3,3,4,4,5,6,6,7,8}
        self.pt_table={}  --  8个坑的表
+       self.pt_table_postiony={}
        self.pt_tag_table=0  --  默认标记0 
        self._type_str_text=   nil
       self._obj_act=nil
@@ -115,9 +116,10 @@ function GrowingtreeScene:init(  )
       local dishu_number_zhong=cc.Sprite:create("png/chengzhangshu-zhongzi-0.png")  --种子
       dishu_number_zhong:setPosition(-50, 20)
       self._score1 :addChild(dishu_number_zhong)
-    	for i=1,8 do
+    	for i=1,8 do  
     		self.pt_table[i]=self.Growingtree:getChildByTag(3248+i):getChildByTag(103+i)  -- 8个坑
     	end
+    
 
 
       self._fertilization_template=self.Growingtree:getChildByTag(5391)  -- 施肥信息模板
@@ -171,6 +173,9 @@ function GrowingtreeScene:init(  )
                           return
                       end
       end)
+      for i=1,8 do  
+        self.pt_table_postiony[i]=self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):getPositionY()
+      end
     	self._growingtreeNode=self.Growingtree:getChildByTag(56)  -- 好友列表栏
     	self.friend_growingtree_checkbox=self._growingtreeNode:getChildByTag(163)  --  好友按钮
     	self.friend_growingtree_checkbox:setTouchEnabled(true)
@@ -385,7 +390,7 @@ function GrowingtreeScene:fun_data()
     			-- self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+498):setVisible(false)
                   self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):loadTexture("png/chengzhangshu-zhongzi-0.png")
                   self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):setVisible(true)
-                  self:fun_move_act(self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359),self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):getPositionX(),self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):getPositionY())
+                  self:fun_move_act(self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359),self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):getPositionX(),self.pt_table_postiony[i])
                   if self.back_playerid  ~=  nil then
                     self.pt_table[i]:getChildByTag(self.pt_table[i]:getTag()+359):setVisible(false)
                   end
@@ -470,6 +475,7 @@ function GrowingtreeScene:fun_data()
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
+                                    --self:fun_FruitinformationNode(self.pt_table[tree_seedlist[i]["seatcount"]]:getParent():getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getParent():getPositionY(),true,i)
                              end
              --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
