@@ -13,7 +13,7 @@ function  LoginScene:ctor()
 
    self.floating_layer = require("app.layers.FloatingLayer").new()
    --self.floating_layer:addTo(self,100)
-   self:addChild(self.floating_layer, 100)
+   self:addChild(self.floating_layer, 10000)
 
 
      if qqqq==0 then
@@ -348,16 +348,16 @@ function LoginScene:landing_init()
       self.wechat_bt:addTouchEventListener(function(sender, eventType  )
                   if eventType ~= ccui.TouchEventType.ended then
                     return
-                  end
-
+                  end  
                    self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2,true,10011)
                    local function stopAction()
                              self.WeChat:removeChildByTag(10011, true)
-                             self:fun_countdown(true)         
+                             self:fun_countdown(true)     
+                             self:push_buffer(true)    
                   end
                   local callfunc = cc.CallFunc:create(stopAction)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
-                 Util:weixinLogin() 
+                 --Util:weixinLogin() 
       end)
 
       self.phone_bt=self.WeChat:getChildByTag(562)
