@@ -234,29 +234,36 @@ end
      local function submit_btCallback(sender, eventType)
         if eventType == ccui.TouchEventType.ended then
                 sender:setTouchEnabled(false)
+                local _spr= cc.Sprite:create()
+                self:addChild(_spr)
                  local function stopAction()
                                 sender:setTouchEnabled(true)      
                 end
                 local callfunc = cc.CallFunc:create(stopAction)
-               self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+               _spr:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
                
                 if  self.phone_text:getString () == "" then
                       Server:Instance():promptbox_box_buffer("请输入正确的手机号 或者 密码 或者验证码")   --prompt
                       return
                 end
-                -- if tostring(Util:judgeIsAllNumber(tostring(self.Dphone_text:getText())))  ==  "false"  then
-                --       Server:Instance():promptbox_box_buffer("账号不存在") 
-                --       return
-                -- end
+                if tostring(Util:judgeIsAllNumber(tostring(self.phone_text:getString())))  ==  "false"  then
+                      Server:Instance():promptbox_box_buffer("账号不存在") 
+                      return
+                end
 
-                -- if  string.len(self.Dphone_text:getText()) < 11 then
-                --       Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
-                --       return
-                -- end
-                -- if  string.len(self.Dphone_text:getText()) ==  11  and  self.Dpassword_text :getText()  ==  ""   then
-                --       Server:Instance():promptbox_box_buffer("输入的密码须在6～20位之间哦")   --prompt
-                --       return
-                -- end
+                if  string.len(self.phone_text:getString()) < 11 then
+                      Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
+                      return
+                end
+                if  string.len(self.phone_text:getString()) ==  11  and  self.Zpassword_text :getString()  ==  ""   then
+                      Server:Instance():promptbox_box_buffer("请输入6～20位之间的密码哦")   --prompt
+                      return
+                end
+                 if  string.len(self.Zpassword_text:getString()) <6   or string.len(self.Zpassword_text:getString()) >20   then
+                      Server:Instance():promptbox_box_buffer("输入的密码须在6～20位之间哦")   --prompt
+                      return
+                end
+
 
 
                
