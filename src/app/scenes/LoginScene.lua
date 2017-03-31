@@ -60,6 +60,9 @@ end
                   Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
                 end
+                if cc.UserDefault:getInstance():getStringForKey("is_weixin") == "1" then
+                  self:push_buffer(false) 
+                end
             else
                self:fun_progress()
            end

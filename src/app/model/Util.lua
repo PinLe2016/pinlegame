@@ -546,7 +546,7 @@ function Util:getWeixinLoginDate()
               nickname=cc.UserDefault:getInstance():getStringForKey("name",""),
               unionid=cc.UserDefault:getInstance():getStringForKey("unionId",""),
               openid=cc.UserDefault:getInstance():getStringForKey("openId",""),
-              headimgurl=cc.UserDefault:getInstance():getStringForKey("icon","")
+              headimgurl=cc.UserDefault:getInstance():getStringForKey("icon",""),
               is_weixin=cc.UserDefault:getInstance():getStringForKey("is_weixin","-1")
           }
           if device.platform=="android" then 
@@ -555,7 +555,7 @@ function Util:getWeixinLoginDate()
                   nickname=cc.UserDefault:getInstance():getStringForKey("nickname",""),
                   unionid=cc.UserDefault:getInstance():getStringForKey("unionid",""),
                   openid=cc.UserDefault:getInstance():getStringForKey("openid",""),
-                  headimgurl=cc.UserDefault:getInstance():getStringForKey("headimgurl","")
+                  headimgurl=cc.UserDefault:getInstance():getStringForKey("headimgurl",""),
                   is_weixin=cc.UserDefault:getInstance():getStringForKey("is_weixin","-1")
                   -- country=cc.UserDefault:getInstance():getStringForKey("country",""),
                   -- province=cc.UserDefault:getInstance():getStringForKey("province",""),
