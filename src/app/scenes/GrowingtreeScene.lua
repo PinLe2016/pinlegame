@@ -628,7 +628,7 @@ end
 function GrowingtreeScene:fun_backpack_list(  )
           self.backpack_list:removeAllItems()
           local gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
-          dump(gettreegameitemlist)
+          --dump(gettreegameitemlist)
           local _list=gettreegameitemlist["list"]
         
 

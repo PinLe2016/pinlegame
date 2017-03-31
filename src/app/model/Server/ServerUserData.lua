@@ -321,7 +321,7 @@ function Server:gettreelist(friendplayerid)
 end
 function Server:gettreelist_callback()
       --dump(self.data)
-      dump(self.data["list"][1]["seedlist"])
+      --dump(self.data["list"][1]["seedlist"])
     if self.data.err_code~=0  then
         --self:show_float_message( self.data.err_msg)
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
@@ -495,7 +495,7 @@ function Server:setseedremove(treeid,seedid)
     self:request_http("setseedremove" , params); 
 end
 function Server:setseedremove_callback()
-     dump(self.data)
+     --dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
