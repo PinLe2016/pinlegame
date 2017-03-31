@@ -461,8 +461,8 @@ function GrowingtreeScene:fun_data()
 	 			           self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
                         elseif tostring(tree_seedlist[i]["seedstatus"]) ==  "2"  and  tonumber(tree_seedlist[i]["stolenamount"]) >0   then   --收获
-                              self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString(tostring(tree_seedlist[i]["gainsamount"]))
-                              self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
+                              --self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setString(tostring(tree_seedlist[i]["gainsamount"]))
+                              -- self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(false)
                               self:fun_move_act(self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionX(),self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):getPositionY())
                               self.pt_table[tree_seedlist[i]["seatcount"]]:loadTexture("png/"  .. self.zh_stateimage2[j] )
 	 			       self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(true)
@@ -474,10 +474,12 @@ function GrowingtreeScene:fun_data()
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
+                                    --self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(true)
                                elseif    self.back_playerid ~= nil and tostring(tree_seedlist[i]["seedname"]) ==  self.zh_state[5]   then
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
+                                    --self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(true)
                              end
              --self._deng_act_img:loadTexture("png/"  .. self.zh_stateimage2[j])
                         elseif  tostring(tree_seedlist[i]["seedstatus"]) ==  "4" or tostring(tree_seedlist[i]["seedstatus"]) ==  "3"  then  --  死亡
@@ -1145,7 +1147,7 @@ function GrowingtreeScene:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDPLANT_FALSE", self,
                        function()  
                               self.pt_tag_table=0
-                              self.ListNode:setVisible(false)
+                              self.ListNode:setVisible(true)
                       end)
   --施肥成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE", self,
@@ -1185,7 +1187,7 @@ function GrowingtreeScene:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE_FALSE", self,
                        function()  
                               self:fun_FruitinformationNode(1,1,false,-1)
-                              self.ListNode:setVisible(false)
+                              self.ListNode:setVisible(true)
 
                                 if self.back_playerid  ==  nil then
                                             self._growingtreeNode:setPositionX(0)
