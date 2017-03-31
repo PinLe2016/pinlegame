@@ -540,13 +540,14 @@ end
 
 
 function Util:getWeixinLoginDate()
-
+  --is_weixin 字段，-1 代表未进行授权之前状态，0 代表授权成功，1 代表授权失败或者取消授权
           local user=
           {
               nickname=cc.UserDefault:getInstance():getStringForKey("name",""),
               unionid=cc.UserDefault:getInstance():getStringForKey("unionId",""),
               openid=cc.UserDefault:getInstance():getStringForKey("openId",""),
               headimgurl=cc.UserDefault:getInstance():getStringForKey("icon","")
+              is_weixin=cc.UserDefault:getInstance():getStringForKey("is_weixin","-1")
           }
           if device.platform=="android" then 
                 user=
@@ -555,6 +556,7 @@ function Util:getWeixinLoginDate()
                   unionid=cc.UserDefault:getInstance():getStringForKey("unionid",""),
                   openid=cc.UserDefault:getInstance():getStringForKey("openid",""),
                   headimgurl=cc.UserDefault:getInstance():getStringForKey("headimgurl","")
+                  is_weixin=cc.UserDefault:getInstance():getStringForKey("is_weixin","-1")
                   -- country=cc.UserDefault:getInstance():getStringForKey("country",""),
                   -- province=cc.UserDefault:getInstance():getStringForKey("province",""),
                   -- city=cc.UserDefault:getInstance():getStringForKey("city","")
@@ -579,6 +581,7 @@ function Util:deleWeixinLoginDate()
             cc.UserDefault:getInstance():setStringForKey("unionid","")
             cc.UserDefault:getInstance():setStringForKey("openid","")
             cc.UserDefault:getInstance():setStringForKey("headimgurl","")
+            cc.UserDefault:getInstance():setStringForKey("is_weixin","-1")
             -- country=cc.UserDefault:getInstance():getStringForKey("country",""),
             -- province=cc.UserDefault:getInstance():getStringForKey("province",""),
             -- city=cc.UserDefault:getInstance():getStringForKey("city","")
@@ -587,6 +590,7 @@ function Util:deleWeixinLoginDate()
             cc.UserDefault:getInstance():setStringForKey("unionId","")
             cc.UserDefault:getInstance():setStringForKey("openId","")
             cc.UserDefault:getInstance():setStringForKey("icon","")
+            cc.UserDefault:getInstance():setStringForKey("is_weixin","-1")
       end
             
 end
