@@ -991,7 +991,7 @@ function LoginScene:onEnter()
 end
 function LoginScene:onExit()
   --audio.stopMusic(G_SOUND["LOGO"])
-    Util:stop_music("LOGO")
+    --Util:stop_music("LOGO")
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REG, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
 

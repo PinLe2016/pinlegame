@@ -519,7 +519,7 @@ function MainInterfaceScene:funsetup( Isture )
         if tonumber(_list1) == 0 then  --o 开  1  关闭
            LocalData:Instance():set_music_hit(true)
             audio.resumeMusic()
-            Util:player_music_hit("ACTIVITY",true )
+            --Util:player_music_hit("GAMEBG",true )
            music_bt:setSelected(true)
            
         else
@@ -544,7 +544,7 @@ function MainInterfaceScene:funsetup( Isture )
                             print("开启")
                             LocalData:Instance():set_music_hit(true)
                             audio.resumeMusic()
-                            Util:player_music_hit("ACTIVITY",true )
+                            Util:player_music_hit("GAMEBG",true )
                              Server:Instance():setconfig(_list[1]["itemsId"],0)  --  获取后台音效
                             
                      elseif eventType == ccui.CheckBoxEventType.unselected then
@@ -748,7 +748,7 @@ function MainInterfaceScene:init_checkin(  )
 end
 function MainInterfaceScene:onEnter()
 
-  Util:player_music_hit("ACTIVITY",true )
+  --Util:player_music_hit("GAMEBG",true )
   Server:Instance():getuserinfo()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()
