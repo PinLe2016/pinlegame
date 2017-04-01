@@ -1071,6 +1071,7 @@ function GrowingtreeScene:fun_move_act(_obj,x,y)
      _obj:stopAllActions()
      _obj:runAction(action)
 end
+--  云彩动画
 function GrowingtreeScene:fun_move_act_yun(_obj,y)
   local _ps=0
      if y==0 then
@@ -1086,7 +1087,7 @@ function GrowingtreeScene:fun_move_act_yun(_obj,y)
       _obj:setPositionY(_ps)
       local callfunc = cc.CallFunc:create(stopAction)
      local  move1=cc.MoveTo:create(3, cc.p(_obj:getPositionX(),_ps ) )
-     local  move2=cc.MoveTo:create(1, cc.p(_obj:getPositionX(),y ))
+     local  move2=cc.MoveTo:create(0.5, cc.p(_obj:getPositionX(),y ))
      local action = cc.Sequence:create(move2,callfunc)
      _obj:stopAllActions()
      _obj:runAction(action)
