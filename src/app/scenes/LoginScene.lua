@@ -60,9 +60,6 @@ end
                   Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
                 end
-                if cc.UserDefault:getInstance():getStringForKey("is_weixin") == "1" then
-                  self:push_buffer(false) 
-                end
             else
                self:fun_progress()
            end
@@ -356,10 +353,15 @@ function LoginScene:landing_init()
                    local function stopAction()
                              self.WeChat:removeChildByTag(10011, true)
                              self:fun_countdown(true)     
-                             self:push_buffer(true)    
+                                
                   end
+                  local function stopAction1()   
+                             self:push_buffer(false)    
+                  end
+                  self:push_buffer(true) 
                   local callfunc = cc.CallFunc:create(stopAction)
-                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
+                  local callfunc1 = cc.CallFunc:create(stopAction1)
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc,cc.DelayTime:create(6.0),callfunc1))
                  Util:weixinLogin() 
       end)
 
