@@ -1267,6 +1267,7 @@ function GrowingtreeScene:onEnter()
                        function()  
                               local _setseedwater= LocalData:Instance():get_setseedwater()--
                               local jin=0
+                              self._deng_act:setVisible(false)
                               if #_setseedwater["rewardlist"]  >0  then
                                       for i=1,#_setseedwater["rewardlist"] do
                                           if _setseedwater["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
