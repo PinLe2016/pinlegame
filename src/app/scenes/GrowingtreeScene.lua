@@ -1127,17 +1127,19 @@ function GrowingtreeScene:onEnter()
   --种植成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDPLANT", self,
                        function()  
-                              Server:Instance():gettreelist(self.back_playerid)
+                               Server:Instance():gettreelist(self.back_playerid)
+                              -- self.pt_tag_table=0
+                              -- self.ListNode:setVisible(false)
+                              -- self._deng_act:setVisible(false)
+                              -- self._growingtreeNode:setPositionX(0)
+                              -- self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
+                              -- self.friend_growingtree_checkbox:setSelected(true) 
+                              -- self._friend_employees_type=1
+                              --  if self.pv then
+                              --           self.pv:setVisible(true)
+                              -- end
                               self.pt_tag_table=0
-                              self.ListNode:setVisible(false)
-                              self._deng_act:setVisible(false)
-                              self._growingtreeNode:setPositionX(0)
-                              self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
-                              self.friend_growingtree_checkbox:setSelected(true) 
-                              self._friend_employees_type=1
-                               if self.pv then
-                                        self.pv:setVisible(true)
-                              end
+                              self.ListNode:setVisible(true)
 
 
                       end)
