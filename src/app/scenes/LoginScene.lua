@@ -356,13 +356,15 @@ function LoginScene:landing_init()
                                 
                   end
                   local function stopAction1()   
-                             self:push_buffer(false)    
+                             --self:push_buffer(false)  
+                             self.floating_layer:show_http(false,"授权中")  
                   end
-                  self:push_buffer(true) 
+                  --self:push_buffer(true) 
+                  self.floating_layer:show_http(true,"授权中")
                   local callfunc = cc.CallFunc:create(stopAction)
                   local callfunc1 = cc.CallFunc:create(stopAction1)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc,cc.DelayTime:create(6.0),callfunc1))
-                 Util:weixinLogin() 
+                 --Util:weixinLogin() 
       end)
 
       self.phone_bt=self.WeChat:getChildByTag(562)

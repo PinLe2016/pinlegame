@@ -13,7 +13,7 @@ function FloatingLayer:ctor()
     self:setTouchSwallowEnabled(false)--防止吞吃
 end
 
-function FloatingLayer:show_http(is_show)
+function FloatingLayer:show_http(is_show,str)
        if  is_show==false then
          self:removeChildByTag(250, true)
          return
@@ -22,6 +22,12 @@ function FloatingLayer:show_http(is_show)
      self:setTouchSwallowEnabled(true)--防止吞吃
     local loadingLayer = cc.CSLoader:createNode("loadingLayer.csb")
     self:addChild(loadingLayer,1,250)
+    local _str=loadingLayer:getChildByTag(74)
+    if str then
+      _str:setString("授权中......")
+    else
+      _str:setString("加载中......")
+    end
 
     local action = cc.CSLoader:createTimeline("loadingLayer.csb")
     action:setTimeSpeed(0.5)

@@ -175,7 +175,7 @@ end
 function jackpotEnd:fun_storebrowser(  )
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
       self:addChild(self.Storebrowser)
-      self.Storebrowser:setLocalZOrder(1314)
+      self.Storebrowser:setTag(1314)
       local back=self.Storebrowser:getChildByTag(2122)
       local store_size=self.Storebrowser:getChildByTag(2123)
        back:addTouchEventListener(function(sender, eventType  )
@@ -188,7 +188,7 @@ function jackpotEnd:fun_storebrowser(  )
               self.Storebrowser:addChild(self.share)
               self.share:add_WebView(tostring(self.addetailurl),cc.size(store_size:getContentSize().width ,store_size:getContentSize().height),
                cc.p(store_size:getPositionX(),store_size:getPositionY()))
-              self.Storebrowser:setScale(0.1)
+             -- self.Storebrowser:setScale(0.1)
 end
 
 function jackpotEnd:star_action()
