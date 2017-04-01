@@ -90,7 +90,7 @@ function jackpotEnd:function_HitVolesEnd(  )
                  local _advertiImg=self.HitVolesEndLayer:getChildByTag(201)  --  上面广告图
                 _advertiImg:loadTexture(self.image_name) 
                 _advertiImg:setTouchEnabled(false)
-                _advertiImg:addTouchEventListener(function(sender, eventType  )
+                _bt:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
                end)
                 if goldspool["addetailurl"] then
