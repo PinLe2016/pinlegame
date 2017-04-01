@@ -47,12 +47,14 @@ function jackpotEnd:ctor(params)
         self.roleAction = cc.CSLoader:createTimeline("puzzleEndLayer.csb")
         self.puzzleEndLayer:runAction(self.roleAction)
         self.roleAction:setTimeSpeed(0.3)
+        self.roleAction:gotoFrameAndPlay(0,31, true)
         self:function_puzzle()
    else
         self.HitVolesEndLayer = cc.CSLoader:createNode("HitVolesEndLayer.csb")
         self:addChild(self.HitVolesEndLayer)
         self.roleAction = cc.CSLoader:createTimeline("HitVolesEndLayer.csb")
         self.HitVolesEndLayer:runAction(self.roleAction)
+        self.roleAction:gotoFrameAndPlay(0,31, true)
         self.roleAction:setTimeSpeed(0.3)
         self:function_HitVolesEnd()
    end
@@ -63,7 +65,13 @@ end
 --打地鼠结束界面self.Points
 function jackpotEnd:function_HitVolesEnd(  )
             local _bt=self.HitVolesEndLayer:getChildByTag(69) 
-             _bt:setVisible(false)
+            _bt:setTouchEnabled(false)
+            _bt:setVisible(false)
+             --_bt:setVisible(false)
+             local _bt1=_bt:getChildByTag(71)
+             _bt1:setVisible(false) 
+             local _bt2=_bt:getChildByTag(70) 
+             _bt2:setVisible(false)
                local back=self.HitVolesEndLayer:getChildByTag(776)  --  返回
                back:addTouchEventListener(function(sender, eventType  )
                     self:fun_callback(sender, eventType)
@@ -86,7 +94,8 @@ function jackpotEnd:function_HitVolesEnd(  )
                     self:fun_callback(sender, eventType)
                end)
                 if goldspool["addetailurl"] then
-                  _advertiImg:setTouchEnabled(true)
+                  _bt:setTouchEnabled(true)
+                  _bt:setVisible(true)
                   self.addetailurl=goldspool["addetailurl"]
                 end
 
@@ -109,20 +118,30 @@ end
 
 -- 拼图结束界面
 function jackpotEnd:function_puzzle(  )
+             local _bt=self.puzzleEndLayer:getChildByTag(1324) 
+             _bt:setVisible(false)
+             _bt:setTouchEnabled(false)
+         
+             local _bt1=_bt:getChildByTag(1325)
+             _bt1:setVisible(false) 
+             local _bt2=_bt:getChildByTag(1326) 
+             _bt2:setVisible(false)
 
              local _table=LocalData:Instance():get_getgoldspoolreward()--保存数据
              local goldspool=_table["goldspool"]
+
               local time=self.puzzleEndLayer:getChildByTag(513)  --  时间
               time:setString(tostring(goldspool["gamescore"]) )
 
               local _advertiImg=self.puzzleEndLayer:getChildByTag(356)  --  上面广告图
-              _advertiImg:addTouchEventListener(function(sender, eventType  )
+              _bt:addTouchEventListener(function(sender, eventType  )
                   self:fun_callback(sender, eventType)
              end)
               _advertiImg:setTouchEnabled(false)
               _advertiImg:loadTexture(self.image_name) 
             if goldspool["addetailurl"] then
-                _advertiImg:setTouchEnabled(true)
+                _bt:setTouchEnabled(true)
+                    _bt:setVisible(true)
                 self.addetailurl=goldspool["addetailurl"]
               end
 
@@ -160,9 +179,9 @@ function jackpotEnd:fun_callback( sender, eventType )
                  return
             end
             local tag=sender:getTag()
-            if tag==201 then
+            if tag==69 then
                self:fun_storebrowser()
-            elseif tag==356 then 
+            elseif tag==1324 then 
                self:fun_storebrowser()
             elseif tag==776 then 
                Util:scene_control("GoldprizeScene")
