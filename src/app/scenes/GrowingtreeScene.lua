@@ -672,7 +672,7 @@ function GrowingtreeScene:fun_backpack_list( _istouch)
                               --  种植接口
                         Server:Instance():setseedplant(self.z_treeid,self.z_gameitemid,self.pt_tag_obj:getTag()-103)  --  种种子
                         end
-                        
+                        self:fun_backpack_list(false)
               end)
               local _image=cell:getChildByTag(1693)
               for j=1,8 do
@@ -1141,7 +1141,7 @@ function GrowingtreeScene:onEnter()
                               -- end
                               self.pt_tag_table=0
                               
-                              self:fun_backpack_list(false)
+                              
                               self.ListNode:setVisible(true)
 
 
@@ -1150,6 +1150,7 @@ function GrowingtreeScene:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDPLANT_FALSE", self,
                        function()  
                               self.pt_tag_table=0
+                              self:fun_backpack_list(false)
                               self.ListNode:setVisible(true)
                       end)
   --施肥成功
