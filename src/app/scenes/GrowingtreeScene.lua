@@ -628,7 +628,7 @@ function GrowingtreeScene:fun_data()
 
 end
 --  背包列表
-function GrowingtreeScene:fun_backpack_list(  )
+function GrowingtreeScene:fun_backpack_list( _istouch)
           self.backpack_list:removeAllItems()
           local gettreegameitemlist=LocalData:Instance():get_gettreegameitemlist()
           --dump(gettreegameitemlist)
@@ -658,6 +658,7 @@ function GrowingtreeScene:fun_backpack_list(  )
 
               local bt=cell:getChildByName("Button_13")
               bt:setTag(i) 
+              bt:setTouchEnabled(_istouch)
               bt:addTouchEventListener(function(sender, eventType  )
                         if eventType ~= ccui.TouchEventType.ended then
                               return
@@ -1116,7 +1117,7 @@ function GrowingtreeScene:onEnter()
   --背包列表
   NotificationCenter:Instance():AddObserver("MESSAGE_GSTTREEGAMEITEMLIST", self,
                        function()  
-                              self:fun_backpack_list()
+                              self:fun_backpack_list(true)
                               self._growingtreeNode:setPositionX(-220)
                               if self.pv then
                                     self.pv:setVisible(false)
@@ -1130,7 +1131,7 @@ function GrowingtreeScene:onEnter()
                                Server:Instance():gettreelist(self.back_playerid)
                               -- self.pt_tag_table=0
                               -- self.ListNode:setVisible(false)
-                              -- self._deng_act:setVisible(false)
+                               self._deng_act:setVisible(false)
                               -- self._growingtreeNode:setPositionX(0)
                               -- self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
                               -- self.friend_growingtree_checkbox:setSelected(true) 
@@ -1139,6 +1140,8 @@ function GrowingtreeScene:onEnter()
                               --           self.pv:setVisible(true)
                               -- end
                               self.pt_tag_table=0
+                              
+                              self:fun_backpack_list(false)
                               self.ListNode:setVisible(true)
 
 
