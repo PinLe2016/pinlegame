@@ -551,7 +551,7 @@ function MainInterfaceScene:funsetup( Isture )
                              print("关闭")
                              LocalData:Instance():set_music_hit(false)
                              audio.pauseMusic()
-                             Util:stop_music("ACTIVITY")
+                             --Util:stop_music("ACTIVITY")
                              Server:Instance():setconfig(_list[1]["itemsId"],1)  --  获取后台音效
                      end
         end)
@@ -748,7 +748,7 @@ function MainInterfaceScene:init_checkin(  )
 end
 function MainInterfaceScene:onEnter()
 
-  --Util:player_music_hit("ACTIVITY",true )
+  Util:player_music_hit("ACTIVITY",true )
   Server:Instance():getuserinfo()
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECK_POST, self,
                        function()

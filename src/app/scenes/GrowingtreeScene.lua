@@ -475,7 +475,8 @@ function GrowingtreeScene:fun_data()
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
                                     --self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+498):setVisible(true)
-                               elseif    self.back_playerid ~= nil and tostring(tree_seedlist[i]["seedname"]) ==  self.zh_state[5]   then
+                               --  惊喜种子  和钻石种子不能偷取
+                               elseif    self.back_playerid ~= nil and (tostring(tree_seedlist[i]["seedname"]) ==  self.zh_state[5]  or  tostring(tree_seedlist[i]["seedname"]) ==  self.zh_state[4])   then
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):loadTexture("png/chengzhangshu-shou-1.png")
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:getChildByTag(self.pt_table[tree_seedlist[i]["seatcount"]]:getTag()+359):setVisible(false)
                                     self.pt_table[tree_seedlist[i]["seatcount"]]:setTouchEnabled(false)
@@ -1092,15 +1093,12 @@ end
 
 function GrowingtreeScene:onEnter()
  --初始化成长树
+ --Util:player_music_hit("PERSONALCHAGE",true )         
   NotificationCenter:Instance():AddObserver("MESSAGE_GETTREELIST", self,
                        function()
                        	--Server:Instance():Grawpopup_box_buffer("成功施肥")--测试
 			     self:fun_data()
-                        local function stopAction()
-                                Util:player_music_hit("PERSONALCHAGE",true )         
-                        end
-                        local callfunc = cc.CallFunc:create(stopAction)
-                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+                       
 
                       end)
   --好友列表

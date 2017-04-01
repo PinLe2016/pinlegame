@@ -188,15 +188,10 @@ function RichlistLayer:init(  )
 
 end
 function RichlistLayer:onEnter()
+  --Util:player_music_hit("PERSONALCHAGE",true )    
 	NotificationCenter:Instance():AddObserver("RICHLIST", self,
                        function()
                         self:init()
-                        local function stopAction()
-                                Util:player_music_hit("PERSONALCHAGE",true )         
-                        end
-                        local callfunc = cc.CallFunc:create(stopAction)
-                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
-
                       end)
     NotificationCenter:Instance():AddObserver("FRIEND_SETFRIENDOPERATION", self,
                          function()

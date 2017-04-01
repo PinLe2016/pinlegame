@@ -629,7 +629,7 @@ function PhysicsScene:onTouch(event, x, y)
 end
 
 function PhysicsScene:onEnter()
-
+    --Util:player_music_hit("ACTIVITY",true )
     self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, handler(self, self.onEnterFrame))
     self.world:setAutoStep(false);
     self:scheduleUpdate()
@@ -642,11 +642,7 @@ function PhysicsScene:onEnter()
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()  
                          self:_refresh()
-                         local function stopAction()
-                                Util:player_music_hit("ACTIVITY",true )
-                        end
-                        local callfunc = cc.CallFunc:create(stopAction)
-                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+                       
                         --self:fun_data()
                       end)
 

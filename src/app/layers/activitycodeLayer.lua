@@ -586,13 +586,9 @@ end
   end
 function activitycodeLayer:onEnter()
       --audio.playMusic(G_SOUND["GAMEBG"],true)
-      -- Util:player_music_hit("GAMEBG",true )
+      --Util:player_music_hit("PERSONALCHAGE",true )    
 
-       local function stopAction()
-                                Util:player_music_hit("PERSONALCHAGE",true )    
-        end
-        local callfunc = cc.CallFunc:create(stopAction)
-       self:runAction(cc.Sequence:create(cc.DelayTime:create(1.5),callfunc  ))
+      
 
 	self.tablecout=0
       LocalData:Instance():set_getactivitylist(nil)

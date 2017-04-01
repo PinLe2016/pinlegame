@@ -342,8 +342,8 @@ function SurpriseOverScene:touch_callback( sender, eventType )
              -- audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
              self.end_bt:setTouchEnabled(false)
              self.began_bt:setTouchEnabled(true)
-             Util:stop_music("FALLMONEY")
-             Util:player_music_hit("PERSONALCHAGE",true )
+             --Util:stop_music("FALLMONEY")
+             --Util:player_music_hit("PERSONALCHAGE",true )
 		 self:L_end(  )
              print("就封ID金佛山嗲  ",LocalData:Instance():get_tasktable())
              if  LocalData:Instance():get_tasktable()    then   --  判断惊喜吧是否做完任务
@@ -467,7 +467,7 @@ end
 function SurpriseOverScene:onEnter()
   cc.SpriteFrameCache:getInstance():addSpriteFrames("png/number0-9.plist")
        --audio.playMusic(G_SOUND["PERSONALCHAGE"],true)
-       Util:player_music_hit("PERSONALCHAGE",true )
+       --Util:player_music_hit("PERSONALCHAGE",true )
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self,
                        function()
             --     local _table=LocalData:Instance():get_getactivitypoints()
@@ -491,7 +491,7 @@ end
 function SurpriseOverScene:onExit()
   cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("png/number0-9.plist")
        --audio.stopMusic(G_SOUND["PERSONALCHAGE"])
-       Util:stop_music("PERSONALCHAGE")
+       --Util:stop_music("PERSONALCHAGE")
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.LAOHUJI_LAYER_IMAGE, self)
        cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end

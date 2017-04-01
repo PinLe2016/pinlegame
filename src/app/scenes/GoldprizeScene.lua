@@ -343,7 +343,7 @@ function GoldprizeScene:fun_prizepoolules()
 end
 function GoldprizeScene:onEnter()
 	--audio.playMusic(G_SOUND["GAMEBG"],true)
-	-- Util:player_music_hit("GAMEBG",true )
+	 --Util:player_music_hit("GAMEBG",true )
   Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid =""})  --发送消息
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self,
@@ -354,11 +354,7 @@ function GoldprizeScene:onEnter()
                        function()
                        self:data_init()  --初始化
 
-                        local function stopAction()
-                                Util:player_music_hit("GAMEBG",true )
-                        end
-                        local callfunc = cc.CallFunc:create(stopAction)
-                       self:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+                       
                        
                       end)
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self,
@@ -367,12 +363,12 @@ function GoldprizeScene:onEnter()
                          if tonumber(getgoldspoolbyid["coolingtime"]) == -1  or   tonumber(getgoldspoolbyid["getcardamount"]) == 0  then   --因为getcardamount这个后台不准，所以只能多加一个coolingtime来保险的判断是否玩过两次
 
                          	--LocalData:Instance():set_user_pintu("1")  --主要是要确定点击后  要自动拼图
-                                    self.floating_layer:showFloat("今日该广告机会已经用完啦",function (sender, eventType)        
-                                                                if eventType==1    then
+                                    -- self.floating_layer:showFloat("今日该广告机会已经用完啦",function (sender, eventType)        
+                                    --                             if eventType==1    then
 
                                                                     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE)
-                                                                end                
-                                                end)    --  然并卵的提示语
+                                                --                 end                
+                                                -- end)    --  然并卵的提示语
                                     
                          else
                          	
@@ -411,7 +407,7 @@ end
 
 function GoldprizeScene:onExit()
 	  --audio.stopMusic(G_SOUND["GAMEBG"])
-	  Util:stop_music("GAMEBG")
+	  --Util:stop_music("GAMEBG")
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self)
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self)
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
