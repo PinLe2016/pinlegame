@@ -244,7 +244,7 @@ function GameScene:funsuspended( )
                      if eventType == ccui.CheckBoxEventType.selected then
                             print("开启")
                             audio.resumeMusic()
-                             Util:player_music_hit("MENUMUSIC",true )
+                             Util:player_music_hit("ACTIVITY",true )
                              LocalData:Instance():set_music_hit(true)
                              Server:Instance():setconfig(_list[1]["itemsId"],0)
                      elseif eventType == ccui.CheckBoxEventType.unselected then
@@ -407,7 +407,7 @@ function GameScene:imgurl_download(  )
 end
 function GameScene:onEnter()
      --audio.playMusic(G_SOUND["MENUMUSIC"],true)
-     Util:player_music_hit("MENUMUSIC",true )
+     Util:player_music_hit("ACTIVITY",true )
      if self.type=="surprise" then
         Server:Instance():getactivityadlist(self.adid)--发送请求
     elseif self.type=="audition" then

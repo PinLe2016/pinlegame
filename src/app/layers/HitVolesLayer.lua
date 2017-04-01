@@ -143,7 +143,7 @@ function HitVolesLayer:fun_init(  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             LocalData:Instance():set_music_hit(true)
                              Server:Instance():setconfig(_list[1]["itemsId"],0)  -- 
-                             Util:player_music_hit("MENUMUSIC",true )
+                             Util:player_music_hit("ACTIVITY",true )
                             audio.resumeMusic()
 
                      elseif eventType == ccui.CheckBoxEventType.unselected then
