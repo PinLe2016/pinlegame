@@ -1150,7 +1150,7 @@ function GrowingtreeScene:onEnter()
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDPLANT_FALSE", self,
                        function()  
                               self.pt_tag_table=0
-                              self:fun_backpack_list(false)
+                              self:fun_backpack_list(true)
                               self.ListNode:setVisible(true)
                       end)
   --施肥成功
