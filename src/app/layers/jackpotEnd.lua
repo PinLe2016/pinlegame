@@ -37,19 +37,24 @@ function jackpotEnd:ctor(params)
   self:setNodeEventEnabled(true)--layer添加监听     
   self.floating_layer = require("app.layers.FloatingLayer").new()
   self.floating_layer:addTo(self,100000)
-  Server:Instance():getgoldspoolreward(self._dtid)  --   发送请求
-  if self.choose==1  then
+  -- Server:Instance():getgoldspoolreward(self._dtid)  --   发送请求
+     local _table=LocalData:Instance():get_getgoldspoolreward()--保存数据
+     local goldspool=_table["goldspool"]  --
+    self.choose  = tonumber(goldspool["gametype"])   --gametype  1-打地鼠 2-拼图
+  if self.choose==2  then
         self.puzzleEndLayer = cc.CSLoader:createNode("puzzleEndLayer.csb")
         self:addChild(self.puzzleEndLayer)
         self.roleAction = cc.CSLoader:createTimeline("puzzleEndLayer.csb")
         self.puzzleEndLayer:runAction(self.roleAction)
         self.roleAction:setTimeSpeed(0.3)
+        self:function_puzzle()
    else
         self.HitVolesEndLayer = cc.CSLoader:createNode("HitVolesEndLayer.csb")
         self:addChild(self.HitVolesEndLayer)
         self.roleAction = cc.CSLoader:createTimeline("HitVolesEndLayer.csb")
         self.HitVolesEndLayer:runAction(self.roleAction)
         self.roleAction:setTimeSpeed(0.3)
+        self:function_HitVolesEnd()
    end
        
 end
@@ -195,7 +200,7 @@ function jackpotEnd:star_action()
       local _table=LocalData:Instance():get_getgoldspoolreward()--保存数据
       local goldspool=_table["goldspool"]
        local  xingnumber=0
-       if self.choose==1 then
+       if self.choose==2 then
             if tonumber(goldspool["gamescore"]) >31  then
               xingnumber=1
             elseif tonumber(goldspool["gamescore"]) >= 0  and  tonumber(goldspool["gamescore"])<10 then
@@ -244,18 +249,18 @@ end
 
 function jackpotEnd:onEnter()
 
-  NotificationCenter:Instance():AddObserver("GETGOLDSPOOLREWARD", self,
-                       function()
-                                if self.choose==1  then
-                                      self:function_puzzle()
-                                else
-                                      self:function_HitVolesEnd()
-                                end
-                      end)
+  -- NotificationCenter:Instance():AddObserver("GETGOLDSPOOLREWARD", self,
+  --                      function()
+  --                               if self.choose==1  then
+  --                                     self:function_puzzle()
+  --                               else
+  --                                     self:function_HitVolesEnd()
+  --                               end
+  --                     end)
 end
 
 function jackpotEnd:onExit()
-     NotificationCenter:Instance():RemoveObserver("GETGOLDSPOOLREWARD", self)
+     --NotificationCenter:Instance():RemoveObserver("GETGOLDSPOOLREWARD", self)
      
 end
 

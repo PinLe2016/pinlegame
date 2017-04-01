@@ -223,19 +223,16 @@ function GoldprizeScene:data_init(  )
 
 end
 function GoldprizeScene:fun_selectbox( _tag )
+	local  list_table=LocalData:Instance():get_getgoldspoollist()
+	local  jac_data=list_table["goldspools"]
+	local  _playtimes=jac_data[_tag]["playtimes"] 
+	if tonumber(_playtimes)  >  0  then
+		self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
+		Server:Instance():getgoldspoolreward(jac_data[_tag]["id"])
+		return
+	end
 
-
-	        --          self.choose=1
-	        --           local path=cc.FileUtils:getInstance():getWritablePath()
-	            
-		       -- local  list_table=LocalData:Instance():get_getgoldspoollist()
-		       -- local  jac_data=list_table["goldspools"]
-	        --            Server:Instance():getgoldspoolbyid(jac_data[_tag]["id"])   --主要是判断是否玩完两次
-		       -- self._dtid=jac_data[_tag]["id"]    --为了后面拼图id  准备
-		       -- self.adownerid  =   jac_data[_tag]["adownerid"]
-		       -- self.goldspoolcount  =  jac_data[_tag]["goldspoolcount"]
-		       -- self.image_name  =  tostring(Util:sub_str(jac_data[_tag]["imageurl"], "/",":"))
-
+	      
 
 		       
 	self.Selectbox = cc.CSLoader:createNode("Selectbox.csb")
@@ -387,8 +384,8 @@ function GoldprizeScene:onEnter()
                          end
 		
                       end)
-  --点击弹出框点击确定自动进入拼图界面  够任性吧
-  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE, self,
+  --点击弹出框点击确定自动进入拼图界面  够任性吧  
+  NotificationCenter:Instance():AddObserver("GETGOLDSPOOLREWARD", self,
                        function()
 			 LocalData:Instance():set_user_img(self.image_name)
                         
@@ -397,10 +394,7 @@ function GoldprizeScene:onEnter()
 		              
 		                local jackpotEnd= require("app.layers.jackpotEnd").new({_dtid=self._dtid,image_name=self.image_name,choose=self.choose})
 			    cc.Director:getInstance():replaceScene(jackpotEnd) 
-		            
-
-
-
+		           
                       end)
 
 end
@@ -411,7 +405,7 @@ function GoldprizeScene:onExit()
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self)
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self)
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)
-	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AUTOMATICPUZZLE, self)
+	  NotificationCenter:Instance():RemoveObserver("GETGOLDSPOOLREWARD", self)
 
   	  cc.Director:getInstance():getTextureCache():removeAllTextures() 
 
