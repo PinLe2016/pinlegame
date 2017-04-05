@@ -4,7 +4,6 @@ local PerInformationLayer = class("PerInformationLayer", function()
             return display.newScene("PerInformationLayer")
 end)
 function PerInformationLayer:ctor()--params
-
        self:setNodeEventEnabled(true)--layer添加监听
        -- Server:Instance():getuserinfo() -- 初始化数据
        self.head_index=100 -- 初始化
@@ -36,8 +35,12 @@ function PerInformationLayer:add_init(  )
                  local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
 
                  local userdt = LocalData:Instance():get_userdata()--
-
-                 userdt["birthday"]=userdatainit["birthday"]
+                 if userdatainit["birthday"] then
+                     userdt["birthday"]=userdatainit["birthday"]
+                 else
+                     userdt["birthday"]=tonumber(645379200)
+                 end
+                 
                  userdt["cityid"]=userdatainit["cityid"]
                  userdt["cityname"]=userdatainit["cityname"]
                  userdt["gender"]=userdatainit["gender"]

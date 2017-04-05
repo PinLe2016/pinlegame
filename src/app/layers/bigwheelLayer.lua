@@ -1056,6 +1056,8 @@ function bigwheelLayer:fun_storebrowser(  )
          return
       end
       self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
+      self.Storebrowser:setAnchorPoint(0.5,0.5)
+      self.Storebrowser:setPosition(cc.p(320,568))
       self:addChild(self.Storebrowser)
       local back=self.Storebrowser:getChildByTag(2122)
       local store_size=self.Storebrowser:getChildByTag(2123)

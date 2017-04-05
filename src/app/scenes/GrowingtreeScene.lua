@@ -1367,6 +1367,10 @@ function GrowingtreeScene:function_template(data)
                                     self:addChild(InvitefriendsLayer.new(),1,13)
                                   return
                           end
+                            if tonumber(data["flag"]) ==  0 then 
+                                   print("已经是自己了")
+                                  return
+                            end
                          self.touch_image:setVisible(true)
                         self:fun_move_act_yun(self.left_image,self.left_image:getPositionY())
                         self:fun_move_act_yun(self.right_image,self.right_image:getPositionY())
@@ -1418,9 +1422,10 @@ function GrowingtreeScene:function_template(data)
                     return button
             end
             --dump(button:getContentSize())
-             if tonumber(data["flag"]) ==  0 then 
-                button:setTouchEnabled(false)
-             end
+             -- if tonumber(data["flag"]) ==  0 then 
+             --    button:setTouchEnabled(false)
+
+             -- end
             
               local _image_data= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  --  头像
               local _name_data=data["nickname"]  -- 昵称

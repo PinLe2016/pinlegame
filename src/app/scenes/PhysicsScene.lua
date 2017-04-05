@@ -519,7 +519,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                 return
             end 
 
-           if tag==167 then
+           if tag==77400 then   --  以前的167
                self.phy_bg:removeFromParent()
               self.PhysicsPop:removeFromParent()
             if tonumber(self.cycle)   ~=  0 then
@@ -544,7 +544,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
             cc.Director:getInstance():popScene()
             Server:Instance():getactivitybyid(self.id,self.cycle)
            end
-           if tag==774 then
+           if tag==167 then
               local activitypoints = LocalData:Instance():get_getactivitypoints()
               dump(activitypoints)
               if tonumber(activitypoints["golds"])  -   tonumber(activitypoints["betgolds"])   <=0 then
@@ -568,7 +568,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
              --Util:scene_control("MainInterfaceScene")
              -- cc.Director:getInstance():popScene()
              -- Server:Instance():getactivitybyid(self.id,self.cycle)   --  跟新详情数据
-             print("askdjf积分的刷卡缴费",self.cycle)
+             Util:player_music_hit("GAMEBG",true )
             if tonumber(self.cycle)   ~=  0 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                         local userdt = LocalData:Instance():get_userdata()
@@ -579,6 +579,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                         LocalData:Instance():set_userdata(userdt)
                         --Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
+
                         --Server:Instance():getactivitybyid(self.id,self.cycle)
                 return
             end
@@ -629,7 +630,7 @@ function PhysicsScene:onTouch(event, x, y)
 end
 
 function PhysicsScene:onEnter()
-    --Util:player_music_hit("ACTIVITY",true )
+    Util:player_music_hit("ACTIVITY",true )
     self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, handler(self, self.onEnterFrame))
     self.world:setAutoStep(false);
     self:scheduleUpdate()
@@ -763,9 +764,11 @@ function PhysicsScene:Phypop_up()
             self._back:addTouchEventListener(function(sender, eventType  )
             self:touch_btCallback(sender, eventType)
             end)
-
+            local again_bt_bg=self.PhysicsPop:getChildByTag(775)  --  在来一句
+            again_bt_bg:setVisible(false)
             self.again_bt=self.PhysicsPop:getChildByTag(774)  --  在来一句
             self.again_bt:setTouchEnabled(false)
+            self.again_bt:setVisible(false)
             self.again_bt:addTouchEventListener(function(sender, eventType  )
             self:touch_btCallback(sender, eventType)
             end)

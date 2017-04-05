@@ -55,7 +55,7 @@ function FriendrequestLayer:init(  )
                 end
         end)
         self.friendlist_num=LocalData:Instance():get_reward_setting_list()  
-        local Invitecode_text=self.Friendrequest:getChildByTag(1465)  --邀请码
+        local Invitecode_text=self.Friendrequest:getChildByTag(1044)  --邀请码
         Invitecode_text:setString("邀请码:" .. self.friendlist_num["activatedcode"] )
         local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
         friend_num:setVisible(false)
@@ -195,8 +195,8 @@ function FriendrequestLayer:pop_up(  )
        _invitecodeNum:setVisible(false)
        _invitecodeNum:setTouchEnabled(false)
        local res = " "
-       local width = 350
-       local height = 50
+       local width = 340
+       local height = 40
       
       local friendlist_code =LocalData:Instance():get_reward_setting_list() 
       
