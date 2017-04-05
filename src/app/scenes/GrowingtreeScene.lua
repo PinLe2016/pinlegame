@@ -1368,7 +1368,14 @@ function GrowingtreeScene:function_template(data)
                                   return
                           end
                             if tonumber(data["flag"]) ==  0 then 
-                                   print("已经是自己了")
+                                   local function logSprRotation(sender)
+                                            self.friend_image_ower:setScale(0)              
+                                   end
+                                   local  scto=cc.ScaleTo:create(0.5, 1)
+                                   local action = cc.Sequence:create(scto,cc.CallFunc:create(logSprRotation))
+                                   self.friend_image_ower:stopAllActions()
+                                   self.friend_image_ower:runAction(action)
+
                                   return
                             end
                          self.touch_image:setVisible(true)
@@ -1422,10 +1429,7 @@ function GrowingtreeScene:function_template(data)
                     return button
             end
             --dump(button:getContentSize())
-             -- if tonumber(data["flag"]) ==  0 then 
-             --    button:setTouchEnabled(false)
-
-             -- end
+           
             
               local _image_data= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  --  头像
               local _name_data=data["nickname"]  -- 昵称
@@ -1477,6 +1481,18 @@ function GrowingtreeScene:function_template(data)
             name_text:setFontName("png/chuti.ttf")
             name_text:setPosition(0,55)
             button:addChild(name_text)
+
+              if tonumber(data["flag"]) ==  0 then 
+                self.friend_image_ower = cc.Sprite:create("png/dadishu-choujiang-1-3-lingqujinbi.png")
+                self.friend_image_ower:setAnchorPoint(cc.p(1,0))
+                self.friend_image_ower:setPosition(-20,15)  --  -10
+                button:addChild(self.friend_image_ower)
+                local  friend_image_ower_text = cc.Sprite:create("png/dadishu-choujiang-1-3-lingqujinbi-1.png")
+                friend_image_ower_text:setPosition(62,35)  --  -10
+                self.friend_image_ower:addChild(friend_image_ower_text)
+                self.friend_image_ower:setScale(0)
+
+             end
             
 
             -- local  _image = cc.Sprite:create("png/"  ..  _image)
