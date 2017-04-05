@@ -35,7 +35,7 @@ function PerInformationLayer:add_init(  )
                  local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
 
                  local userdt = LocalData:Instance():get_userdata()--
-                 if userdatainit["birthday"] then
+                 if userdatainit["birthday"] or userdatainit["birthday"] ~= "" then
                      userdt["birthday"]=userdatainit["birthday"]
                  else
                      userdt["birthday"]=tonumber(645379200)
