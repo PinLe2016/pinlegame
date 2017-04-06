@@ -205,7 +205,7 @@ function Server:changepassword(code,type,loginname,password,oldpassword)
 end
 
 function Server:changepassword_callback()
-     --dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
         return

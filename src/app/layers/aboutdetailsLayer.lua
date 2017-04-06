@@ -228,9 +228,12 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            elseif  tag==1294 then--提交建议
  	      self.advice_bg:setVisible(true)
  	      self:inputbox()
+         self.content_text:setString("")
+
            	elseif  tag==1295 then --商务合作
                   self.business_bg:setVisible(true)
                   self:businesscooperation()
+                   self.contenttext:setString("")
            	elseif  tag==1296 then --扫描二维码
            	       print("扫描二维码")
                    self.qr_code:setVisible(true)
@@ -238,7 +241,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            	      -- self.advice_bg:setVisible(false)
            	      self.phone_text:setVisible(false)
            	      self.name_text:setVisible(false)
-           	      self.content_text:setVisible(false)
+           	     -- self.content_text:setVisible(false)
                  self.advice_bg:setVisible(false)
             elseif  tag==98 then --扫描二维码
                   self.advice_bg:setVisible(false)
@@ -275,7 +278,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            		 self.companyname_text:setVisible(false)
            	            self.nametext:setVisible(false)
            	            self.phonetext:setVisible(false)
-           	           self.contenttext:setVisible(false)
+           	         --  self.contenttext:setVisible(false)
            	           --self.cooperation_ListView:setVisible(false)
              self.business_bg:setVisible(false)
             elseif tag==99 then  --商务合作返回
@@ -351,7 +354,7 @@ function aboutdetailsLayer:businesscooperation( )
 
     local res = "  "
     local width = 200
-    local height = 27
+    local height = 35
     --公司名称
     self.companyname_text = ccui.EditBox:create(cc.size(width,height),res)
     self.businessback_bg:addChild(self.companyname_text)
@@ -398,7 +401,7 @@ function aboutdetailsLayer:inputbox(  )
 	
     local res = " "
     local width = 200
-    local height = 27
+    local height = 35
     --手机号
     self.phone_text = ccui.EditBox:create(cc.size(width,height),res)
     self.advicedata_bg:addChild(self.phone_text)

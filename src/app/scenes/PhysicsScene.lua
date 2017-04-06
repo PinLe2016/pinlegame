@@ -552,7 +552,27 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                   return
               end
               if tonumber(activitypoints["remaintimes"]) <=0 then
-                Server:Instance():prompt("您参与次数已经用完")
+                --Server:Instance():prompt("您参与次数已经用完")
+                self.floating_layer:showFloat("您参与次数已经用完",function (sender, eventType)        
+                                  if eventType==1    then
+                                            Util:player_music_hit("GAMEBG",true )
+                                            if tonumber(self.cycle)   ~=  0 then
+                                            local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
+                                            local userdt = LocalData:Instance():get_userdata()
+                                            local activitypoints = LocalData:Instance():get_getactivitypoints()
+                                            if activitypoints["golds"]   then
+                                            userdt["golds"]=activitypoints["golds"]
+                                            end
+                                            LocalData:Instance():set_userdata(userdt)
+                                            cc.Director:getInstance():popScene()
+                                            return
+                                            end
+                                            cc.Director:getInstance():popScene()
+                                            Server:Instance():getactivitybyid(self.id,self.cycle)
+                               
+                            end                
+            end)    --  然并卵的提示语
+
                 return
               end
               self.start_bt:setTouchEnabled(true)

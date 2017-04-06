@@ -708,7 +708,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                     cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
               end
               
-              Server:Instance():changepassword(self._yanzhengma:getString(),3)
+              Server:Instance():changepassword(self._yanzhengma:getString(),3,self.Wphone_text:getString())
                 --self:_resetpasswordLayer()
                 
               elseif tag==305 then  --重新设置密码  返回
