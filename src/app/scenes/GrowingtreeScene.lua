@@ -694,19 +694,32 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                  self:addChild(InvitefriendsLayer.new(),1,13)
            elseif tag==41 then
            	   print("左移一格")
-              self.pv:gotoPage(-1)
+              self.pv:gotoPage(1)
            	elseif tag==42 then
            	   -- print("右移一格")
       --           self.Scene =  ccs.SceneReader:getInstance():createNodeWithSceneFile("Scene.json")
       -- self:addChild(self.Scene)
-               self.pv:gotoPage(1)
+               self.pv:gotoPage(-1)
 
            	elseif tag==43 then
            	   -- print("左移一列")
-               self.pv:gotoPage(-5)
+               --self.pv:gotoPage(-5)
+                if self.pv then
+                  self.pv:setVisible(false)
+               end
+               self._feied_count=self._feied_count-1
+               if self._feied_count<= 0 then
+                 self._feied_count=1
+               end
+               Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
            	elseif tag==44 then
            	   -- print("右移一列")
-               self.pv:gotoPage(5)
+               --self.pv:gotoPage(5)
+                if self.pv then
+                  self.pv:setVisible(false)
+               end
+               self._feied_count=self._feied_count+1
+              Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
            	elseif tag==46 then
            	   print("邀请好友")
                -- Util:share()
@@ -717,7 +730,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                if self.pv then
                   self.pv:setVisible(false)
                end
-               self._feied_count=1
+              
                
                Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
             end
@@ -1369,9 +1382,9 @@ function GrowingtreeScene:function_template(data)
                           end
                             if tonumber(data["flag"]) ==  0 then 
                                    local function logSprRotation(sender)
-                                            self.friend_image_ower:setScale(0)              
+                                           self.friend_image_ower:setScale(0)              
                                    end
-                                   local  scto=cc.ScaleTo:create(0.5, 1)
+                                   local  scto=cc.ScaleTo:create(0.8, 1)
                                    local action = cc.Sequence:create(scto,cc.CallFunc:create(logSprRotation))
                                    self.friend_image_ower:stopAllActions()
                                    self.friend_image_ower:runAction(action)
@@ -1487,10 +1500,19 @@ function GrowingtreeScene:function_template(data)
                 self.friend_image_ower:setAnchorPoint(cc.p(1,0))
                 self.friend_image_ower:setPosition(-20,15)  --  -10
                 button:addChild(self.friend_image_ower)
-                local  friend_image_ower_text = cc.Sprite:create("png/dadishu-choujiang-1-3-lingqujinbi-1.png")
-                friend_image_ower_text:setPosition(62,35)  --  -10
-                self.friend_image_ower:addChild(friend_image_ower_text)
+                -- local  friend_image_ower_text = cc.Sprite:create("png/dadishu-choujiang-1-3-lingqujinbi-1.png")
+                -- friend_image_ower_text:setPosition(62,35)  --  -10
+                -- self.friend_image_ower:addChild(friend_image_ower_text)
                 self.friend_image_ower:setScale(0)
+
+                local name_text1=ccui.Text:create()
+                name_text1:setColor(cc.c3b(0,0,0))
+                name_text1:setFontSize(15)
+                name_text1:setString("已经是自己了")
+                name_text1:setFontName("png/chuti.ttf")
+                name_text1:setPosition(15,30)
+                name_text1:setAnchorPoint(cc.p(0,0))
+                self.friend_image_ower:addChild(name_text1)
 
              end
             

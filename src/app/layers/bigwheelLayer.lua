@@ -819,9 +819,11 @@ function bigwheelLayer:init(  )
            local  list_table=LocalData:Instance():get_getgoldspoolbyid()
           self.volume_num = self.bigwheelLayer:getChildByTag(36)  --  翻倍卡
           self.volume_num:setAnchorPoint(cc.p(1,0.5))
+          self.volume_num:setVisible(false)
           self.volume_num:setString(list_table["doublecardamount"] )
-
+          self.bigwheelLayer:getChildByTag(35):setVisible(false)
           self.CheckBox = self.bigwheelLayer:getChildByTag(34)  --  卷
+          self.CheckBox:setVisible(false)
           self.CheckBox:addEventListener(function(sender, eventType  )
                if eventType == ccui.CheckBoxEventType.selected then
                      

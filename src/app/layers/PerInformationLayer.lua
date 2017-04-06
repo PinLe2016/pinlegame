@@ -89,7 +89,8 @@ function PerInformationLayer:add_init(  )
                         nick_sub=userdt["nickname"]
                     end
                     self._Pname1:setString(nick_sub)
-                   
+                   local _question=self.showinformation:getChildByTag(1820)   --问号
+                   _question:setVisible(false)
                     local golds=self.showinformation:getChildByTag(1413)   --金币
                     golds:setString(userdt["golds"])
                     local rankname=self.showinformation:getChildByTag(1414)   --等级
