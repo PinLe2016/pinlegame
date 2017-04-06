@@ -854,11 +854,13 @@ function MainInterfaceScene:listener_home()
               return
             end
 
-            self.floating_layer:showFloat("您确定要退出游戏？",function (sender, eventType)
-                if eventType==1 then
-                      cc.Director:getInstance():endToLua()
-                end
-            end)  
+            if not self.floating_layer.dialog then
+              self.floating_layer:showFloat("您确定要退出游戏？",function (sender, eventType)
+                  if eventType==1 then
+                        cc.Director:getInstance():endToLua()
+                  end
+              end)  
+            end
 
 
           end
