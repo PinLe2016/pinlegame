@@ -364,7 +364,7 @@ function LoginScene:landing_init()
                   self.floating_layer:show_http(true,"授权中")
                   local callfunc = cc.CallFunc:create(stopAction)
                   local callfunc1 = cc.CallFunc:create(stopAction1)
-                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc,cc.DelayTime:create(6.0),callfunc1))
+                 self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc,cc.DelayTime:create(2.0),callfunc1))
                  Util:weixinLogin() 
       end)
 
