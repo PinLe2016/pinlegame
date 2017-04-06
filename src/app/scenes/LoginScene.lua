@@ -278,7 +278,8 @@ end
      local function callback_btCallback(sender, eventType) 
         if eventType == ccui.TouchEventType.ended then
                    print("取消")
-                   self:landing_init()
+                  -- self:landing_init()
+                   self:_landing_interface()
                    if self._scode then
                       cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
                    end
@@ -471,12 +472,14 @@ function LoginScene:_landing_interface()
   local Editphone = landing:getChildByTag(6):getChildByTag(16)
   self.Dphone_text=Editphone
   Util:function_keyboard(landing:getChildByTag(6),Editphone,17)
+  Editphone:setPlaceHolder("请输入手机号码")
   -- Editphone:setTouchEnabled(false)
   -- Editphone:setVisible(false)
 
   local EditPassword=landing:getChildByTag(6):getChildByTag(17)
   self.Dpassword_text=EditPassword
   Util:function_keyboard(landing:getChildByTag(6),EditPassword,12)
+  EditPassword:setPlaceHolder("请输入密码")
 
   -- EditPassword:setTouchEnabled(false)
   -- EditPassword:setVisible(false)
@@ -547,9 +550,10 @@ local function go_btCallback(sender, eventType)
             self.registered = cc.CSLoader:createNode("registered.csb");
             self:addChild(self.registered);
             if  landing then
+             
                  self.Dpassword_text :setVisible(false)
                  self.Dphone_text:setVisible(false)
-                 landing:removeFromParent()
+                landing:removeFromParent()
                  
                  --password_text:removeFromParent()
             end
@@ -680,7 +684,8 @@ function LoginScene:touch_Callback( sender, eventType  )
                    if self._scode then
                         cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
                  end
-                  self:landing_init()
+                  --self:landing_init()
+                   self:_landing_interface()
                  if  self.passwordLayer then
                      self.passwordLayer:removeFromParent()
                 end
@@ -707,7 +712,8 @@ function LoginScene:touch_Callback( sender, eventType  )
                 --self:_resetpasswordLayer()
                 
               elseif tag==305 then  --重新设置密码  返回
-                self:landing_init()
+                --self:landing_init()
+                 self:_landing_interface()
            
                 if self.resetpasswordLayer then
                    self.resetpasswordLayer:removeFromParent()
