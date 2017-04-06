@@ -1384,7 +1384,7 @@ function GrowingtreeScene:function_template(data)
                                    local function logSprRotation(sender)
                                            self.friend_image_ower:setScale(0)              
                                    end
-                                   local  scto=cc.ScaleTo:create(0.8, 1)
+                                   local  scto=cc.ScaleTo:create(1, 1)
                                    local action = cc.Sequence:create(scto,cc.CallFunc:create(logSprRotation))
                                    self.friend_image_ower:stopAllActions()
                                    self.friend_image_ower:runAction(action)
@@ -1496,24 +1496,11 @@ function GrowingtreeScene:function_template(data)
             button:addChild(name_text)
 
               if tonumber(data["flag"]) ==  0 then 
-                self.friend_image_ower = cc.Sprite:create("png/dadishu-choujiang-1-3-lingqujinbi.png")
+                self.friend_image_ower = cc.Sprite:create("png/chengzhangshu-choujiang-1-3-lingqujinbi.png")
                 self.friend_image_ower:setAnchorPoint(cc.p(1,0))
                 self.friend_image_ower:setPosition(-20,15)  --  -10
                 button:addChild(self.friend_image_ower)
-                -- local  friend_image_ower_text = cc.Sprite:create("png/dadishu-choujiang-1-3-lingqujinbi-1.png")
-                -- friend_image_ower_text:setPosition(62,35)  --  -10
-                -- self.friend_image_ower:addChild(friend_image_ower_text)
                 self.friend_image_ower:setScale(0)
-
-                local name_text1=ccui.Text:create()
-                name_text1:setColor(cc.c3b(0,0,0))
-                name_text1:setFontSize(15)
-                name_text1:setString("已经是自己了")
-                name_text1:setFontName("png/chuti.ttf")
-                name_text1:setPosition(15,30)
-                name_text1:setAnchorPoint(cc.p(0,0))
-                self.friend_image_ower:addChild(name_text1)
-
              end
             
 
