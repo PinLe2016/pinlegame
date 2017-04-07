@@ -1632,7 +1632,7 @@ function GrowingtreeScene:createPageView()
       local _shu={flag = 100}
       for i=#self._list +1 ,self._count_number_friend do
         local item = self.pv:newItem()
-        local node=self:function_template(_shu)
+        local node=self:function_template(_shu,100)
         item:setContentSize(122, 126)
         item:addChild(node)      -- 为每个单独的item添加一个颜色图块
         self.pv:addItem(item) 
