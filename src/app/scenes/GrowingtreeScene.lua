@@ -1459,12 +1459,14 @@ function GrowingtreeScene:function_template(data)
 
             local  _image_water = cc.Sprite:create("png/chengzhangshu-shuihu-xiao-di.png")
             _image_water:setPosition(18,-43)  --  -10
+            _image_water:setTag(10)
             button:addChild(_image_water)
             if tonumber(_drycount_data) > 0 then
               _image_water:setTexture("png/chengzhangshu-shuihu-xiao.png")
             end
 
             local  _image_reward = cc.Sprite:create("png/chengzhangshu-shou-1-xiao-di.png")
+            _image_reward:setTag(20)
             _image_reward:setPosition(-18,-43)
             button:addChild(_image_reward)
             if tonumber(_gaincount_data)  >  0 then
@@ -1529,20 +1531,22 @@ function GrowingtreeScene:function_template(data)
             return button
 end
 
-function GrowingtreeScene:function_button_Refresh(data,button)
-  local function touchEvent(sender,eventType)
-                         
-                if eventType == ccui.TouchEventType.ended then
-                            print("button模板")
-                end
-            end
-            local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
-            local _name=data["nickname"]
-            local _lv=data["playergrade"]
+function GrowingtreeScene:function_button_Refresh(idex,button)
+             local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
+             local _list=gettreefriendlist["list"]
 
-            button:getChildByTag(10):setTexture("png/"  ..  _image)
-            button:getChildByTag(20):setString(tostring(_name))
-            button:getChildByTag(30):setString(tostring(_lv))
+
+            local _drycount=_list[idex]["drycount"]
+            local  _gaincount=_list[idex]["gaincount"]
+            --  10 是水壶  20  手
+            button:getChildByTag(10):setTexture("png/chengzhangshu-shuihu-xiao-di.png")
+            if tonumber(_drycount) > 0 then
+               button:getChildByTag(10):setTexture("png/chengzhangshu-shuihu-xiao.png")
+            end
+            button:getChildByTag(20):setTexture("png/chengzhangshu-shou-1-xiao-di.png")
+            if tonumber(_gaincount) > 0 then
+               button:getChildByTag(20):setTexture("png/chengzhangshu-shou-1-xiao.png")
+            end
 end
 
 
@@ -1554,7 +1558,7 @@ end
 
 
 function GrowingtreeScene:createPageView()
-
+  self._tag_friend_view=1
     self.pv = require("app.scenes.UIPageViewVertical").new({
         viewRect = cc.rect(26,238,126,756) ,  --设置位置和大小
         -- viewRect = cc.rect(80,280,108,108) ,
