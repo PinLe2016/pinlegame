@@ -27,6 +27,7 @@ function GrowingtreeScene:ctor()
        self._Lv_text=nil
        self._Lv_text1=nil
        self._friend_employees_type=1
+       self.is_graw_friend=false
        --  定时器
        self.count_time=0
        self.secondOne=0
@@ -171,8 +172,8 @@ function GrowingtreeScene:init(  )
                                  if self.pv then
                                           self.pv:setVisible(true)
                                 end
-                                -- Server:Instance():gettreefriendlist(30,1,1)
-                               self:function_button_Refresh(self.curr_button) 
+                                 Server:Instance():gettreefriendlist(30,1,1)
+                              
                         end
                           return
                       end
@@ -1130,6 +1131,11 @@ function GrowingtreeScene:onEnter()
                                --    self.pv:setVisible(true)
                                --     return
                                -- end
+                               if self.is_graw_friend then
+                                  self:function_button_Refresh(self.curr_button.dex) 
+                                  self.is_graw_friend=false
+                                  return
+                               end
                               self:createPageView()
                       end)
   --背包列表
@@ -1409,6 +1415,7 @@ function GrowingtreeScene:function_template(data,dex)
                           if self.pv then
                           self.pv:setVisible(false)
                           end
+                          self.is_graw_friend=true
                           self.back_huijia_bt:setVisible(true)
                           self.back_bt:setVisible(false)
                           self.friend_growingtree_checkbox:setSelected(false)   
@@ -1478,7 +1485,8 @@ function GrowingtreeScene:function_template(data,dex)
             if tonumber(_gaincount_data)  >  0 then
               _image_reward:setTexture("png/chengzhangshu-shou-1-xiao.png")
             end
-
+            table.insert(self._table_friend_view_drycount,_image_water)
+            table.insert(self._table_friend_view_gaincount,_image_reward)
              local buttonScale9Sprite = cc.Sprite:create("png/chengzhangshu-1-touxiang-tiao.png")
             buttonScale9Sprite:setScale(2.7,1.5)
             --buttonScale9Sprite:setContentSize(cc.size(95,13))
@@ -1537,7 +1545,7 @@ function GrowingtreeScene:function_template(data,dex)
             return button
 end
 
-function GrowingtreeScene:function_button_Refresh(idex,button)
+function GrowingtreeScene:function_button_Refresh(idex)
              local gettreefriendlist=LocalData:Instance():get_gettreefriendlist()
              local _list=gettreefriendlist["list"]
 
@@ -1545,13 +1553,13 @@ function GrowingtreeScene:function_button_Refresh(idex,button)
             local _drycount=_list[idex]["drycount"]
             local  _gaincount=_list[idex]["gaincount"]
             --  10 是水壶  20  手
-            button:getChildByTag(10):setTexture("png/chengzhangshu-shuihu-xiao-di.png")
+            self._table_friend_view_drycount[idex]:setTexture("png/chengzhangshu-shuihu-xiao-di.png")
             if tonumber(_drycount) > 0 then
-               button:getChildByTag(10):setTexture("png/chengzhangshu-shuihu-xiao.png")
+               self._table_friend_view_drycount[idex]:setTexture("png/chengzhangshu-shuihu-xiao.png")
             end
-            button:getChildByTag(20):setTexture("png/chengzhangshu-shou-1-xiao-di.png")
+            self._table_friend_view_gaincount[idex]:setTexture("png/chengzhangshu-shou-1-xiao-di.png")
             if tonumber(_gaincount) > 0 then
-               button:getChildByTag(20):setTexture("png/chengzhangshu-shou-1-xiao.png")
+               self._table_friend_view_gaincount[idex]:setTexture("png/chengzhangshu-shou-1-xiao.png")
             end
 end
 
@@ -1564,7 +1572,8 @@ end
 
 
 function GrowingtreeScene:createPageView()
-  self._tag_friend_view=1
+  self._table_friend_view_drycount={}
+  self._table_friend_view_gaincount={}
     self.pv = require("app.scenes.UIPageViewVertical").new({
         viewRect = cc.rect(26,238,126,756) ,  --设置位置和大小
         -- viewRect = cc.rect(80,280,108,108) ,
