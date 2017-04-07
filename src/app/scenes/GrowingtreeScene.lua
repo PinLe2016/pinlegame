@@ -167,8 +167,9 @@ function GrowingtreeScene:init(  )
                                 self.friend_growingtree_checkbox:setSelected(true) 
                                 self._friend_employees_type=1
                                  if self.pv then
-                                          self.pv:setVisible(true)
+                                          self.pv:setVisible(false)
                                 end
+                                Server:Instance():gettreefriendlist(30,1,1)
                         end
                           return
                       end
@@ -1596,10 +1597,20 @@ function GrowingtreeScene:createPageView()
         item:addChild(node)      -- 为每个单独的item添加一个颜色图块
         self.pv:addItem(item)          --为pageview添加item
     end
-    
+    self._count_number_friend=0
+    if #self._list  >= 6 then
+         if #self._list%6==0 then
+           self._count_number_friend=#self._list+6
+        else
+          self._count_number_friend=#self._list+ (6-#self._list%6)
+        end
+    else
+         self._count_number_friend=6
+    end
+   
     if #self._list<30   and   self._friend_employees_type==1  then
       local _shu={flag = 100}
-      for i=#self._list +1 ,30 do
+      for i=#self._list +1 ,self._count_number_friend do
         local item = self.pv:newItem()
         local node=self:function_template(_shu)
         item:setContentSize(122, 126)

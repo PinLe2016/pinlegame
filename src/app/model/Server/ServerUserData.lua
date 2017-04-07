@@ -346,7 +346,7 @@ function Server:gettreefriendlist(pagesize,pageno,type)
     self:request_http("gettreefriendlist" , params); 
 end
 function Server:gettreefriendlist_callback()
-     --dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
