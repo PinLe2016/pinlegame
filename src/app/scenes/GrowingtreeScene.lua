@@ -694,16 +694,16 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                  self:addChild(InvitefriendsLayer.new(),1,13)
            elseif tag==41 then
            	   print("左移一格")
-              self.pv:gotoPage(1)
+              self.pv:gotoPage(-1)
            	elseif tag==42 then
            	   -- print("右移一格")
       --           self.Scene =  ccs.SceneReader:getInstance():createNodeWithSceneFile("Scene.json")
       -- self:addChild(self.Scene)
-               self.pv:gotoPage(-1)
+               self.pv:gotoPage(1)
 
            	elseif tag==43 then
            	   -- print("左移一列")
-               self.pv:gotoPage(5)
+               self.pv:gotoPage(-6)
                --  if self.pv then
                --    self.pv:setVisible(false)
                -- end
@@ -714,7 +714,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                -- Server:Instance():gettreefriendlist(30,self._feied_count,self._friend_employees_type)
            	elseif tag==44 then
            	   -- print("右移一列")
-               self.pv:gotoPage(-5)
+               self.pv:gotoPage(6)
               --   if self.pv then
               --     self.pv:setVisible(false)
               --  end
