@@ -1600,7 +1600,7 @@ function GrowingtreeScene:createPageView()
     self._count_number_friend=0
     if #self._list  >= 6 then
          if #self._list%6==0 then
-           self._count_number_friend=#self._list+6
+           --self._count_number_friend=#self._list+6
         else
           self._count_number_friend=#self._list+ (6-#self._list%6)
         end
