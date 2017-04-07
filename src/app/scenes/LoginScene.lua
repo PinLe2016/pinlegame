@@ -120,14 +120,14 @@ function LoginScene:_coverlayer( )
        local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
         local advertiImg1=advertiPa:getChildByTag(640)
         advertiImg1:setVisible(false)
-         for i=2, 3 do  --
+         for i=2, 4 do  --
               local  call=advertiPa:clone() 
               local a_dvertiImg=call:getChildByTag(1533)--cover1.jpg
               a_dvertiImg:loadTexture("res/png/cover"  ..  tostring(i)   ..   ".jpg")--imgurl
               local advertiImg=call:getChildByTag(640)
-              if i< 3 then
+              if i< 4 then
                       advertiImg:setVisible(false)
-              elseif i==3 then
+              elseif i==4 then
                       --advertiImg:setVisible(true)
                       self. _advertiImg=advertiImg
                       call:setTouchEnabled(true)
@@ -721,7 +721,7 @@ function LoginScene:touch_Callback( sender, eventType  )
               elseif tag==303 then
                 local password = self.resetpasswordLayer:getChildByTag(302)
                 local _pass=self.Wpassword_text:getString()
-                  if  string.len(_pass) <=6  or   string.len(Util:filter_spec_chars(_pass)) ~= string.len(_pass)    then
+                  if  string.len(_pass) <6  or   string.len(Util:filter_spec_chars(_pass)) ~= string.len(_pass)    then
                     Server:Instance():promptbox_box_buffer("密码格式不对哦（密码为6-20位数字或字母的组合")   --prompt
                     return
                 end

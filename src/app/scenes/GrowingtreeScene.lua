@@ -36,7 +36,7 @@ function GrowingtreeScene:ctor()
 
        self.back_seedplant_seedmanure=" "  --  区别是种植接口还是施肥接口
        self:init()
-       Server:Instance():gettreefriendlist(7,1,1)
+       Server:Instance():gettreefriendlist(30,1,1)
        Server:Instance():gettreelist(self.back_playerid)--   成长树初始化接口     
        self.pt_tag_obj=nil  
 end
@@ -46,7 +46,7 @@ function GrowingtreeScene:fun_refresh_friend( )
                 self.pv:setVisible(false)
               end
               self._friend_employees_type=1
-              Server:Instance():gettreefriendlist(7,1,1)
+              Server:Instance():gettreefriendlist(30,1,1)
 end
 function GrowingtreeScene:init(  )
 	
@@ -193,7 +193,7 @@ function GrowingtreeScene:init(  )
 
                                   self.friend_growingtree_checkbox:setPositionY(self.friend_growingtree_checkbox:getPositionY() -40)
                                   self._friend_employees_type=1
-                                  Server:Instance():gettreefriendlist(7,1,1)
+                                  Server:Instance():gettreefriendlist(30,1,1)
                                   -- for i=1,8 do
                                   --   self.pt_table[i]:setTouchEnabled(false)
                                   -- end
@@ -703,23 +703,23 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
 
            	elseif tag==43 then
            	   -- print("左移一列")
-               --self.pv:gotoPage(-5)
-                if self.pv then
-                  self.pv:setVisible(false)
-               end
-               self._feied_count=self._feied_count-1
-               if self._feied_count<= 0 then
-                 self._feied_count=1
-               end
-               Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
+               self.pv:gotoPage(5)
+               --  if self.pv then
+               --    self.pv:setVisible(false)
+               -- end
+               -- self._feied_count=self._feied_count-1
+               -- if self._feied_count<= 0 then
+               --   self._feied_count=1
+               -- end
+               -- Server:Instance():gettreefriendlist(30,self._feied_count,self._friend_employees_type)
            	elseif tag==44 then
            	   -- print("右移一列")
-               --self.pv:gotoPage(5)
-                if self.pv then
-                  self.pv:setVisible(false)
-               end
-               self._feied_count=self._feied_count+1
-              Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
+               self.pv:gotoPage(-5)
+              --   if self.pv then
+              --     self.pv:setVisible(false)
+              --  end
+              --  self._feied_count=self._feied_count+1
+              -- Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
            	elseif tag==46 then
            	   print("邀请好友")
                -- Util:share()
@@ -732,7 +732,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                end
               
                
-               Server:Instance():gettreefriendlist(7,self._feied_count,self._friend_employees_type)
+               Server:Instance():gettreefriendlist(30,1,self._friend_employees_type)---self._feied_count
             end
  end 
  function GrowingtreeScene:fun_callback( sender, eventType )
@@ -750,7 +750,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
           if tag==52 then   
           	 print("我的好友按钮")
              self._friend_employees_type=1
-             Server:Instance():gettreefriendlist(7,1,1)
+             Server:Instance():gettreefriendlist(30,1,1)
               if self.pv then
                 self.pv:setVisible(false)
               end
@@ -761,7 +761,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                 end
               self._feied_count=1
               self._friend_employees_type=2
-              Server:Instance():gettreefriendlist(7,1,2)
+              Server:Instance():gettreefriendlist(30,1,2)
                
          end
          self.curr_brightnode=sender
@@ -1597,9 +1597,9 @@ function GrowingtreeScene:createPageView()
         self.pv:addItem(item)          --为pageview添加item
     end
     
-    if #self._list<7   and   self._friend_employees_type==1  then
+    if #self._list<30   and   self._friend_employees_type==1  then
       local _shu={flag = 100}
-      for i=#self._list +1 ,7 do
+      for i=#self._list +1 ,30 do
         local item = self.pv:newItem()
         local node=self:function_template(_shu)
         item:setContentSize(122, 126)

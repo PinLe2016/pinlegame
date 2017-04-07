@@ -19,7 +19,7 @@ function LocalData:set_user_head(userdata)
 end
 
 function LocalData:get_user_head()
-	local user_head=cc.UserDefault:getInstance():getStringForKey("user_head","cre/httpgame.pinlegame.comheadheadicon_0.jpg")
+	local user_head=cc.UserDefault:getInstance():getStringForKey("user_head","png/httpgame.pinlegame.comheadheadicon_7.jpg")
 	return user_head or nil
 end
 --16获取玩家手机归属地

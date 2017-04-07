@@ -803,6 +803,7 @@ function PerInformationLayer:head( )
                                 self.image_head1:loadTexture(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
                                  LocalData:Instance():set_user_head(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
                                   local user_dt = LocalData:Instance():get_userdata()
+                                  LocalData:Instance():set_user_head(string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index)))
                                   user_dt["imageUrl"]=string.format("httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(self._index))
                                   LocalData:Instance():set_userdata(user_dt)
                                   for z=1,16 do
@@ -1507,7 +1508,6 @@ function PerInformationLayer:onEnter()
 
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.USERINFO_LAYER_IMAGE, self,
                        function()
-                            print("个人信息修改")
                               if self.Perinformation then
                                    --self._Pname=nil
 
@@ -1528,10 +1528,8 @@ function PerInformationLayer:onEnter()
 
                          local  userdata=LocalData:Instance():get_user_data()
                             local  loginname= userdata["loginname"]
-                            print("大家快放假啊SD卡",tostring(userdata["nickname"]))
                             self._Pname:setText(tostring(userdata["nickname"]))  
                             self._Pname:setVisible(true)
-                            print("大家快放假啊SD卡111",self._Pname:getText())
                             self._Pname1:setString(tostring(userdata["nickname"]))
                              self._Pname1:setVisible(true)
                            
@@ -1622,20 +1620,4 @@ function PerInformationLayer:about_birthday_http_date()
 end
 
 return PerInformationLayer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

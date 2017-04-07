@@ -21,7 +21,7 @@ function MainInterfaceScene:ctor()
       if _index==nil then
       _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
       end
-      LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+      --LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
       Server:Instance():getconfig()  --  获取后台音效
       self:listener_home() --注册安卓返回键
       Server:Instance():gettasklist()   --  初始化任务
@@ -272,7 +272,10 @@ function MainInterfaceScene:userdata(  )
        userdt["rankname"]  =  self.main_leve_name[tonumber(userdt["grade"])]
        LocalData:Instance():set_userdata(userdt)
        local head=self.MainInterfaceScene:getChildByTag(37)-- 头像
-       head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
+       if LocalData:Instance():get_user_head() then
+            head:loadTexture(LocalData:Instance():get_user_head())   --(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))   ---
+       end
+      
        local name=self.MainInterfaceScene:getChildByTag(38)-- 名字
        local  userdata=LocalData:Instance():get_user_data()
 
