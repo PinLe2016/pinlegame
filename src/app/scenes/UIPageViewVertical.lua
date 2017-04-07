@@ -721,7 +721,7 @@ function UIPageViewVertical:scrollAuto()
 				{x = posX, y = page:getPositionY()+page_move, time = 0.2,
 				onComplete = function()
 					self.star_curPageIdx_point=self.pages_[1]:getPositionY()
-
+					self._isOver=true
 				end})
 	end
 
