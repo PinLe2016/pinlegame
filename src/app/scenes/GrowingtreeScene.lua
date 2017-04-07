@@ -39,6 +39,8 @@ function GrowingtreeScene:ctor()
        Server:Instance():gettreefriendlist(30,1,1)
        Server:Instance():gettreelist(self.back_playerid)--   成长树初始化接口     
        self.pt_tag_obj=nil  
+
+       self.curr_button={}--记录当前BUG
 end
 --  在添加好友后刷新数据
 function GrowingtreeScene:fun_refresh_friend( )
@@ -167,9 +169,10 @@ function GrowingtreeScene:init(  )
                                 self.friend_growingtree_checkbox:setSelected(true) 
                                 self._friend_employees_type=1
                                  if self.pv then
-                                          self.pv:setVisible(false)
+                                          self.pv:setVisible(true)
                                 end
-                                Server:Instance():gettreefriendlist(30,1,1)
+                                -- Server:Instance():gettreefriendlist(30,1,1)
+                               self:function_button_Refresh(self.curr_button) 
                         end
                           return
                       end
@@ -1349,7 +1352,7 @@ end
 function GrowingtreeScene:Grawpopup_buffer(prompt_text)
        self.floating_layer:fun_Grawpopup(prompt_text) 
 end
-function GrowingtreeScene:function_template(data)
+function GrowingtreeScene:function_template(data,dex)
             ScrollViewMenu=require("app.scenes.ScrollViewMenu")
             local function touchEvent(sender,eventType)             
               if eventType == ccui.TouchEventType.ended then
@@ -1376,6 +1379,8 @@ function GrowingtreeScene:function_template(data)
             
             local button = require("app.scenes.ScrollViewMenu").new(GREEN_SMALL_BTN_IMG)
             :onButtonClicked(function(sender,event)
+                          self.curr_button["button"]=sender
+                          self.curr_button["dex"]=dex
                           if tonumber(data["flag"])  ==  100  then
                                    local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
                                     self:addChild(InvitefriendsLayer.new(),1,13)
@@ -1417,6 +1422,7 @@ function GrowingtreeScene:function_template(data)
             --ScrollViewMenu() --ccui.Button:create()
             button:setRotation(90)
             button:setTouchEnabled(true)
+            button:setTag(dex)
              if tonumber(data["flag"])  ==  100  then
                     local textButton = ccui.Button:create()
                     textButton:setTouchEnabled(false)
@@ -1529,20 +1535,22 @@ function GrowingtreeScene:function_template(data)
             return button
 end
 
-function GrowingtreeScene:function_button_Refresh(data,button)
-  local function touchEvent(sender,eventType)
-                         
-                if eventType == ccui.TouchEventType.ended then
-                            print("button模板")
-                end
-            end
-            local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
-            local _name=data["nickname"]
-            local _lv=data["playergrade"]
+function GrowingtreeScene:function_button_Refresh(curr_button)
 
-            button:getChildByTag(10):setTexture("png/"  ..  _image)
-            button:getChildByTag(20):setString(tostring(_name))
-            button:getChildByTag(30):setString(tostring(_lv))
+  -- local function touchEvent(sender,eventType)
+                         
+  --               if eventType == ccui.TouchEventType.ended then
+  --                           print("button模板")
+  --               end
+  --           end
+  --           local _image= string.lower(tostring(Util:sub_str(data["imageUrl"], "/",":")))  
+  --           local _name=data["nickname"]
+  --           local _lv=data["playergrade"]
+
+  --           button:getChildByTag(10):setTexture("png/"  ..  _image)
+  --           button:getChildByTag(20):setString(tostring(_name))
+  --           button:getChildByTag(30):setString(tostring(_lv))
+  dump(curr_button)
 end
 
 
@@ -1592,9 +1600,10 @@ function GrowingtreeScene:createPageView()
     
     for i = 1 , #self._list do
         local item = self.pv:newItem()
-        local node=self:function_template(self._list[i])
+        local node=self:function_template(self._list[i],i)
         item:setContentSize(122, 126)
         item:addChild(node)      -- 为每个单独的item添加一个颜色图块
+        item:setTag(i)
         self.pv:addItem(item)          --为pageview添加item
     end
     self._count_number_friend=0
