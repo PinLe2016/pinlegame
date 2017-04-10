@@ -30,8 +30,6 @@ function FriendrequestLayer:init(  )
              
        end
 
-
-      
        self:pop_up()--弹出框
 
        local back_bt=self.Friendrequest:getChildByTag(123)  --返回

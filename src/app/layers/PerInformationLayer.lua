@@ -470,6 +470,7 @@ function PerInformationLayer:init(  )
        --   self:addChild(self.fragment_sprite1)
        self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
        self:addChild(self.Perinformation)
+       self.Perinformation:setTag(1998)
         local userdt = LocalData:Instance():get_userdata()
         local gold=self.Perinformation:getChildByTag(1884):getChildByTag(1886)  --  金币
          gold:setString(userdt["golds"])
@@ -492,9 +493,10 @@ function PerInformationLayer:init(  )
         city_bt:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
     end)
-        local true_bt=self.Perinformation:getChildByTag(83)  --确定
-        self._turebut=true_bt
-        true_bt:addTouchEventListener(function(sender, eventType  )
+         self._turebut=self.Perinformation:getChildByTag(83)  --确定
+        --self._turebut=true_bt
+        --self._turebut:setTouchEnabled(false)
+        self._turebut:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
     end)
         local back_bt=self.Perinformation:getChildByTag(97)  --返回
@@ -566,10 +568,11 @@ function PerInformationLayer:perinformation_init(  )
         self.image_head:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         
         self.Dphone_text=self.Perinformation:getChildByTag(68)  --名字Dphone_text
+        --self.Dphone_text:setAnchorPoint(cc.p(0,0.5))
         self.Dphone_text:setTouchEnabled(false)
         self.Dphone_text:setVisible(false)
         local res = " "--res/png/DLkuang.png
-        local width = 265
+        local width = 200
         local height = 45
         --登陆
         self._Pname = ccui.EditBox:create(cc.size(width,height),res)
@@ -592,7 +595,7 @@ function PerInformationLayer:perinformation_init(  )
         end
         -- self._Pname:setPlaceHolder(nick_sub)
         self._Pname:setText(nick_sub)
-        self._Pname:setAnchorPoint(0,0.5)  
+        --self._Pname:setAnchorPoint(0,0.5)  
         self._Pname:setMaxLength(6)
 
         --self._Pname:setString(userdt["nickname"])
@@ -689,15 +692,16 @@ function PerInformationLayer:touch_callback( sender, eventType )
                
         
     elseif tag==83 then 
-         self._Pname:setVisible(false)
-         self._turebut:setTouchEnabled(false)
-         self:removeChildByTag(9888, true)
-         local function stopAction()
-                self._turebut:setTouchEnabled(true)
-       end
-      local callfunc = cc.CallFunc:create(stopAction)
-      self._turebut:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
-        self:savedata()   --  保存个人信息数据发送Http
+         --self._Pname:setVisible(false)
+          self._turebut:setTouchEnabled(false)
+          self:removeChildByTag(9888, true)
+
+      --    local function stopAction()
+      --           self._turebut:setTouchEnabled(true)
+      --  end
+      -- local callfunc = cc.CallFunc:create(stopAction)
+      -- sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+         self:savedata()   --  保存个人信息数据发送Http
     elseif tag==59 then   --个人信息主界面显示城市
                 self:_savecity(  )
                 self:unscheduleUpdate()
@@ -1510,7 +1514,7 @@ function PerInformationLayer:onEnter()
                        function()
                               if self.Perinformation then
                                    --self._Pname=nil
-
+                            self._turebut:setTouchEnabled(true)
                             local  userdata=LocalData:Instance():get_user_data()
                             local  loginname= userdata["loginname"]
                             local  nickname=self._Pname:getText()  
@@ -1519,13 +1523,14 @@ function PerInformationLayer:onEnter()
                             LocalData:Instance():set_user_data(userdata)
                             self._Pname=nil
 
-                              self.Perinformation:removeFromParent()
+                              --self.Perinformation:removeFromParent()
+                                self:removeChildByTag(1998, true)
                            end
 
                       end)
      NotificationCenter:Instance():AddObserver("xiugainicheng", self,
                        function()
-
+                         self._turebut:setTouchEnabled(true)
                          local  userdata=LocalData:Instance():get_user_data()
                             local  loginname= userdata["loginname"]
                             self._Pname:setText(tostring(userdata["nickname"]))  
