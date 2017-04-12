@@ -259,7 +259,7 @@ function activitycodeLayer:act_list()
           self.list_table=LocalData:Instance():get_getactivitylist()
          self.act_loading:setVisible(false)
           if #self.list_table  == 0  then
-                      activity_ListView:jumpToPercentVertical(100)   
+                      self.activity_ListView:jumpToPercentVertical(100)   
           end
           self.activity_ListView:removeAllItems() 
           local  sup_data=self.list_table["game"]

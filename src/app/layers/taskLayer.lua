@@ -13,9 +13,30 @@ function taskLayer:ctor()
        self.task_state={"普通种子","中级种子","高级种子","钻石种子","惊喜种子","普通化肥","中级化肥","高级化肥"}
        self.task_stateimage={"chengzhangshu-zhongzi-chu-1.png","chengzhangshu-zhongzi-zhong-1.png","chengzhangshu-zhongzi-gao-1.png","chengzhangshu-zhongzi-zuan-1.png","chengzhangshu-zhongzi-xi-1.png","chengzhangshu-huafei-chuji.png","chengzhangshu-huafei-zhongji.png","chengzhangshu-huafei-gaoji.png"}
        LocalData:Instance():set_gettasklist(nil)
+       self.share = nil
        Server:Instance():gettasklist()
        self:init(  )
 
+end
+function taskLayer:fun_share_friend()--update(dt)
+      local fragment_sprite =display.newSprite()
+      self:addChild(fragment_sprite)
+      local function stopAction()
+           if self.share then
+                       if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
+                           Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                            LocalData:Instance():set_tasktable(nil)--制空
+                            self.share=nil
+                            fragment_sprite:stopAllActions()
+                            Server:Instance():gettasklist()
+                     end
+           end
+       
+      end
+      local callfunc = cc.CallFunc:create(stopAction)
+      fragment_sprite:runAction(cc.RepeatForever:create(cc.Sequence:create(callfunc,cc.DelayTime:create(1))))
+
+         
 end
 function taskLayer:move_layer(_layer)
     local curr_y=_layer:getPositionY()
@@ -216,7 +237,6 @@ function taskLayer:touch_btCallback( sender, eventType )
                  -- local userdt = LocalData:Instance():get_userdata()
                  -- userdt["golds"]=getuserinfo["golds"]
                  -- LocalData:Instance():set_userdata(userdt)
-
                   self.fragment_sprite:setVisible(false)
            		self:removeFromParent()
               -- Util:scene_control("MainInterfaceScene")
@@ -249,7 +269,10 @@ function taskLayer:touch_Callback( sender, eventType )
       elseif  tonumber(targettype) == 2 then  --分享
             --  local FriendrequestLayer = require("app.layers.InvitefriendsLayer")  --邀请好友
             -- self:addChild(FriendrequestLayer.new())
-            Util:share()
+            --self:scheduleUpdate()
+            self.share = Util:share()
+            self:fun_share_friend()
+            
       elseif  tonumber(targettype) == 3 then
             -- Util:scene_control("SurpriseScene")
              local scene=SurpriseScene.new()
