@@ -55,7 +55,7 @@ function LoginScene:progressbarScene(  )
 end
  function LoginScene:countdown(Iswechat)
            if Iswechat   then
-                if cc.UserDefault:getInstance():getStringForKey("nickname") ~= "" then
+                if Util:getWeixinLoginDate() then
                   print("微信发送请求")  
                   Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
