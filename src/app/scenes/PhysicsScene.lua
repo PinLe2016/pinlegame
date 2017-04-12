@@ -548,8 +548,26 @@ function PhysicsScene:touch_btCallback( sender, eventType )
               local activitypoints = LocalData:Instance():get_getactivitypoints()
               dump(activitypoints)
               if tonumber(activitypoints["golds"])  -   tonumber(activitypoints["betgolds"])   <=0 then
-                  Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
-                  return
+                  self.floating_layer:showFloat("金币不足，无法参与活动，快去奖池屯点金币吧！",function (sender, eventType)        
+                                  if eventType==1    then
+                                            Util:player_music_hit("GAMEBG",true )
+                                            if tonumber(self.cycle)   ~=  0 then
+                                            local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
+                                            local userdt = LocalData:Instance():get_userdata()
+                                            local activitypoints = LocalData:Instance():get_getactivitypoints()
+                                            if activitypoints["golds"]   then
+                                            userdt["golds"]=activitypoints["golds"]
+                                            end
+                                            LocalData:Instance():set_userdata(userdt)
+                                            cc.Director:getInstance():popScene()
+                                            return
+                                            end
+                                            cc.Director:getInstance():popScene()
+                                            Server:Instance():getactivitybyid(self.id,self.cycle)
+                                    end
+                              
+                            end)
+                      return
               end
               if tonumber(activitypoints["remaintimes"]) <=0 then
                 --Server:Instance():prompt("您参与次数已经用完")
