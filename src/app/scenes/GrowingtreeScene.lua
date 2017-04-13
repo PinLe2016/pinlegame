@@ -81,6 +81,27 @@ function GrowingtreeScene:fun_Newbieguide(  )
                     Newbieguide_image2:setVisible(true)
             end  )
 end
+function GrowingtreeScene:fun_LockNode(lv)
+      self.LockNode_table={0,0,2,4,6,7,8,10}
+      self.LockNode = cc.CSLoader:createNode("LockNode.csb");
+      self:addChild(self.LockNode)
+      self.LockNode:setTag(3698)
+      local back_bt=self.LockNode:getChildByTag(1171):getChildByTag(746):getChildByTag(752)  
+      back_bt:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                      return
+                    end
+                    self:removeChildByTag(3698, true)
+      end  )
+      local lv_text=self.LockNode:getChildByTag(1171):getChildByTag(746):getChildByTag(750)
+      local _lv=1
+      for i=1,8 do
+        if tonumber(lv)  ==  i then
+            _lv=self.LockNode_table[i]
+        end
+      end
+      lv_text:setString(tostring(_lv)  ..  "级")
+end
 function GrowingtreeScene:init(  )
 	
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
@@ -91,6 +112,7 @@ function GrowingtreeScene:init(  )
         self:fun_Newbieguide()
         cc.UserDefault:getInstance():setStringForKey("Newbieguide","2")
       end
+      
       
       self.left_image=self.Growingtree:getChildByTag(645) 
       self.left_image:setLocalZOrder(100)
@@ -415,7 +437,15 @@ function GrowingtreeScene:fun_data()
 	  self.z_treeid=gettreelist["list"][1]["treeid"]  --目前默认只有一棵树
 
 	self:fun_per()
-      
+      for i=1,8 do
+            self.pt_table[i]:setTouchEnabled(true)
+            self.pt_table[i]:addTouchEventListener(function(sender, eventType  )
+                        if eventType ~= ccui.TouchEventType.ended then
+                            return
+                        end 
+                        self:fun_LockNode(sender:getTag()-103)
+            end)
+      end
 	local tree_seedlist = gettreelist["list"][1]["seedlist"]
 
       local _treegrade=0
