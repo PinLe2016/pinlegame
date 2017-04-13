@@ -83,6 +83,7 @@ function LoginScene:fun_progress( )
                local new_start=cc.UserDefault:getInstance():getStringForKey("new_start","0")
                if new_start=="0" then
                   self:_coverlayer()
+                  cc.UserDefault:getInstance():setStringForKey("Newbieguide","1")
                   cc.UserDefault:getInstance():setStringForKey("new_start","1")
                   return
                end
