@@ -87,7 +87,7 @@ function GrowingtreeScene:init(  )
     	self:addChild(self.Growingtree)
       --  新手引导
       local new_start=cc.UserDefault:getInstance():getStringForKey("Newbieguide","0")
-      if new_start==1 then
+      if tonumber(new_start)==0 then
         self:fun_Newbieguide()
         cc.UserDefault:getInstance():setStringForKey("Newbieguide","2")
       end
