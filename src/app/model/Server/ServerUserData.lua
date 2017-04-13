@@ -506,6 +506,27 @@ function Server:setseedremove_callback()
 end
 
 
+function Server:share_title() 
+    local url="http://123.57.136.223:1033/shareinfo.aspx"
+    local request = network.createHTTPRequest(function(event) self:share_title_callback(event,command) end, url , "GET")
+    request:setTimeout(0.5)
+    request:start()
+end
 
+function Server:share_title_callback(event , command)
+    local ok = (event.name == "completed")
+    local request = event.request
 
+    if not ok then return end
+
+    local code = request:getResponseStatusCode()
+
+    if code ~= 200 then
+        print("response status code : " .. code)
+        return
+    end
+
+    local dataRecv = request:getResponseData()
+     LocalData:Instance():set_share_title(dataRecv)
+end
 

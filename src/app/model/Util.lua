@@ -403,8 +403,8 @@ function Util:share(type)
     end
 
    local login_info=LocalData:Instance():get_user_data()
-   
-   local share=cc.UM_Share:createWithShare(file,login_info["playerid"])
+   local share_title=LocalData:Instance():get_share_title()
+   local share=cc.UM_Share:createWithShare(file,login_info["playerid"],share_title["title"],share_title["content"])
    share:addTo(display.getRunningScene(),1000)
    return share
 end
