@@ -29,6 +29,8 @@ function MainInterfaceScene:ctor()
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
       Server:Instance():getaffichelist(1)  --  公告
+
+      Server:Instance():share_title() --分享内容获取
       
 end
 function MainInterfaceScene:hammerAction()

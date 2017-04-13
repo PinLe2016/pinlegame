@@ -229,6 +229,28 @@ function LocalData:get_setseedreward()
 	return self._setseedreward or nil
 end
 
+--收获
+function LocalData:set_share_title(_setseedreward)
+	local title=Util:lua_string_split(_setseedreward,"@")
+	dump(title)
+	self.share_title={
+			title=title[1],
+			content=title[2]
+		}
+	dump(self.share_title)
+end
+
+function LocalData:get_share_title()
+	if not self.share_title then
+		self.share_title={
+			title="玩拼乐，赚现金！",
+			content="玩拼乐，赚现金！"
+		}
+	end
+	return self.share_title 
+end
+
+
 
 
 
