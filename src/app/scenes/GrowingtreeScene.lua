@@ -51,10 +51,47 @@ function GrowingtreeScene:fun_refresh_friend( )
               self._friend_employees_type=1
               Server:Instance():gettreefriendlist(30,1,1)
 end
+function GrowingtreeScene:fun_Newbieguide(  )
+            self.Newbieguide = cc.CSLoader:createNode("Newbieguide.csb");
+            self:addChild(self.Newbieguide)
+            self.Newbieguide:setTag(6669)
+            local Newbieguide_image1=self.Newbieguide:getChildByTag(540) 
+            local Newbieguide_image2=self.Newbieguide:getChildByTag(664) 
+            local Newbieguide_image3=self.Newbieguide:getChildByTag(665) 
+            Newbieguide_image1:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                      return
+                    end
+                    self:removeChildByTag(6669, true)
+            end)
+            
+            Newbieguide_image2:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                      return
+                    end
+                    Newbieguide_image2:setVisible(false)
+                    Newbieguide_image1:setVisible(true)
+            end )
+
+            Newbieguide_image3:addTouchEventListener(function(sender, eventType  )
+                    if eventType ~= ccui.TouchEventType.ended then
+                      return
+                    end
+                    Newbieguide_image3:setVisible(false)
+                    Newbieguide_image2:setVisible(true)
+            end  )
+end
 function GrowingtreeScene:init(  )
 	
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
+      --  新手引导
+      local new_start=cc.UserDefault:getInstance():getStringForKey("Newbieguide","0")
+      if new_start==1 then
+        self:fun_Newbieguide()
+        cc.UserDefault:getInstance():setStringForKey("Newbieguide","2")
+      end
+      
       self.left_image=self.Growingtree:getChildByTag(645) 
       self.left_image:setLocalZOrder(100)
       self.left_image:setTouchEnabled(true)
