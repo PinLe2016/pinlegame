@@ -796,7 +796,7 @@ function PhysicsScene:Phypop_up()
 
             self.PhysicsPop = cc.CSLoader:createNode("PhysicsPop.csb");
             self:addChild(self.PhysicsPop)
-
+            self.PhysicsPop:getChildByTag(166):setVisible(false)
             self._back=self.PhysicsPop:getChildByTag(167)  --  关闭按钮
             self._back:setVisible(false)
             self._back:addTouchEventListener(function(sender, eventType  )
