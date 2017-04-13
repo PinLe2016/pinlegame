@@ -14,27 +14,27 @@ function taskLayer:ctor()
        self.task_stateimage={"chengzhangshu-zhongzi-chu-1.png","chengzhangshu-zhongzi-zhong-1.png","chengzhangshu-zhongzi-gao-1.png","chengzhangshu-zhongzi-zuan-1.png","chengzhangshu-zhongzi-xi-1.png","chengzhangshu-huafei-chuji.png","chengzhangshu-huafei-zhongji.png","chengzhangshu-huafei-gaoji.png"}
        LocalData:Instance():set_gettasklist(nil)
        self.share = nil
+       self.Act_fragment_sprite=nil
        Server:Instance():gettasklist()
        self:init(  )
 
 end
 function taskLayer:fun_share_friend()--update(dt)
-      local fragment_sprite =display.newSprite()
-      self:addChild(fragment_sprite)
+      self.Act_fragment_sprite =display.newSprite()
+      self:addChild(self.Act_fragment_sprite)
       local function stopAction()
            if self.share then
                        if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
                            Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                             LocalData:Instance():set_tasktable(nil)--制空
                             self.share=nil
-                            fragment_sprite:stopAllActions()
+                            self.Act_fragment_sprite:stopAllActions()
                             Server:Instance():gettasklist()
                      end
            end
-       
       end
       local callfunc = cc.CallFunc:create(stopAction)
-      fragment_sprite:runAction(cc.RepeatForever:create(cc.Sequence:create(callfunc,cc.DelayTime:create(1))))
+      self.Act_fragment_sprite:runAction(cc.RepeatForever:create(cc.Sequence:create(callfunc,cc.DelayTime:create(1))))
 
          
 end
@@ -230,6 +230,7 @@ function taskLayer:touch_btCallback( sender, eventType )
             if eventType ~= ccui.TouchEventType.ended then
                 return
             end 
+
            local tag=sender:getTag()
            if tag==141 then  --返回
            	  if self.taskLayer then
@@ -250,11 +251,13 @@ function taskLayer:touch_Callback( sender, eventType )
 	 if eventType ~= ccui.TouchEventType.ended then
                 return
        end 
+        if self.Act_fragment_sprite ~= nil then
+              self.Act_fragment_sprite:stopAllActions()
+        end
        local tag=sender:getTag() 
        local _table=LocalData:Instance():get_gettasklist()
        local tasklist=_table["tasklist"]
        LocalData:Instance():set_tasktable(tasklist[tag]["targetid"])  --记录
-       print("范德萨发生地方  ",tasklist[tag]["targetid"])
        local targettype=tasklist[tag]["targettype"]  --0为签到，1为邀请好友，2为分享，3为惊喜吧，4为奖池,5为获得金币数，6为获得积分数
        if tonumber(tasklist[tag]["status"]) == 2 then
                
