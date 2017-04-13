@@ -106,6 +106,8 @@ function GrowingtreeScene:init(  )
 	
 	self.Growingtree = cc.CSLoader:createNode("Growingtree.csb");
     	self:addChild(self.Growingtree)
+      self.oneself_gold_y=self.Growingtree:getChildByTag(1696):getChildByTag(1693):getPositionY()
+      self.friend_gold_y=self.Growingtree:getChildByTag(1697):getChildByTag(1695):getPositionY()
       --  新手引导
       local new_start=cc.UserDefault:getInstance():getStringForKey("Newbieguide","0")
       if tonumber(new_start)==0 then
@@ -444,6 +446,7 @@ function GrowingtreeScene:fun_data()
                             return
                         end 
                         self:fun_LockNode(sender:getTag()-103)
+                        
             end)
       end
 	local tree_seedlist = gettreelist["list"][1]["seedlist"]
@@ -1177,7 +1180,50 @@ function GrowingtreeScene:fun_move_act_yun(_obj,y)
      _obj:stopAllActions()
      _obj:runAction(action)
 end
-
+--  自己收获动画（右上角）
+function GrowingtreeScene:fun_oneself_act( _goldNumber)
+          self._gold_bg =  self.Growingtree:getChildByTag(1696)
+          self._gold_bg:setVisible(true)
+          self._gold_text_act =  self._gold_bg:getChildByTag(1693)
+          self._gold_text_act:setString("+"  ..  tostring(_goldNumber))
+          self._gold_act =  self._gold_bg:getChildByTag(1692)
+           local function logSprRotation(sender)
+                   self._gold_act:setScale(1) 
+                   self._gold_bg:setVisible(false)             
+           end
+            local  scto1=cc.ScaleTo:create(0.5,2)
+            local  scto2=cc.ScaleTo:create(0.5,1)
+            local action = cc.Sequence:create(scto1,scto2,cc.CallFunc:create(logSprRotation))
+            self._gold_act:runAction(action)
+             local function logSprRotation1(sender)
+                   self._gold_text_act:setPositionY(self.oneself_gold_y)     
+           end
+            local  move1=cc.MoveTo:create(1,cc.p(self._gold_text_act:getPositionX(),self.oneself_gold_y+40))
+            local action1 = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation1))
+            self._gold_text_act:runAction(action1)
+end
+--  好友收获动画（左上角）
+function GrowingtreeScene:fun_friend_act( f_goldNumber)
+          self.friend_gold_bg =  self.Growingtree:getChildByTag(1697)
+          self.friend_gold_bg:setVisible(true)
+          self.friend__gold_text_act =  self.friend_gold_bg:getChildByTag(1695)
+          self.friend__gold_text_act:setString("+"  ..  tostring(f_goldNumber))
+          self.friend__gold_act =  self.friend_gold_bg:getChildByTag(1694)
+           local function logSprRotation(sender)
+                   self.friend__gold_act:setScale(1) 
+                   self.friend_gold_bg:setVisible(false)             
+           end
+            local  scto1=cc.ScaleTo:create(0.5,2)
+            local  scto2=cc.ScaleTo:create(0.5,1)
+            local action = cc.Sequence:create(scto1,scto2,cc.CallFunc:create(logSprRotation))
+            self.friend__gold_act:runAction(action)
+             local function logSprRotation1(sender)
+                   self.friend__gold_text_act:setPositionY(self.friend_gold_y)     
+           end
+            local  move1=cc.MoveTo:create(1,cc.p(self.friend__gold_text_act:getPositionX(),self.oneself_gold_y+40))
+            local action1 = cc.Sequence:create(move1,cc.CallFunc:create(logSprRotation1))
+            self.friend__gold_text_act:runAction(action1)
+end
 function GrowingtreeScene:onEnter()
  --初始化成长树
  --Util:player_music_hit("PERSONALCHAGE",true )         
@@ -1306,7 +1352,7 @@ function GrowingtreeScene:onEnter()
                               self._deng_act:setVisible(false)
                               self.harvest_obj:getChildByTag(self.harvest_obj:getTag()+359):setVisible(false)
                               self:fun_harvest_act(self.harvest_obj,self.harvest_obj:getPositionX(),self.harvest_obj:getPositionY()) 
-                              
+                               
                               if  _setseedreward["rewardlist"] and #_setseedreward["rewardlist"]  >0  then
                                 -- if self.back_playerid  ~=  nil then
                                 --      num=_setseedreward["stolengainsamountperPlayer"]
@@ -1318,14 +1364,21 @@ function GrowingtreeScene:onEnter()
                                       for i=1,#_setseedreward["rewardlist"] do
                                            if _setseedreward["rewardlist"][i]["type"]   ==  0    then  --  0经验  1  金币
                                             jin=_setseedreward["rewardlist"][i]["reward"]
-                                          
+                                            if self.back_playerid ~=  nil then
+                                              self:fun_friend_act(jin)--fun_oneself_act()
+                                            else
+                                              self:fun_oneself_act(jin)
+                                            end
                                           self:coinAction1(jin,self._obj_act:getParent():getPositionX()  ,self._obj_act:getParent():getPositionY()-30)
                                           self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
-                                          -- elseif _setseedreward["rewardlist"][i]["type"]   ==  1 then
-                                          --    jin=_setseedreward["rewardlist"][i]["reward"]
+                                          elseif _setseedreward["rewardlist"][i]["type"]   ==  1 then
+                                             jin=_setseedreward["rewardlist"][i]["reward"]
                                            
-                                          --   self:coinAction1(jin,self._obj_act:getParent():getPositionX()-100  ,self._obj_act:getParent():getPositionY()-30)
-                                          --    self.gold_dishu_jia1:setTexture("png/chengzhangshu-touxiang-jingbi-icon.png")
+                                             if self.back_playerid ~=  nil then
+                                              self:fun_friend_act(jin)--fun_oneself_act()
+                                            else
+                                              self:fun_oneself_act(jin)
+                                            end
                                           -- elseif _setseedreward["rewardlist"][i]["type"]   ==  2 then  --  道具
                                           --    jin=_setseedreward["rewardlist"][i]["reward"]
                                            
