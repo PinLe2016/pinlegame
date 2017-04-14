@@ -349,6 +349,12 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
                 return
             end
             Server:Instance():setfriendoperation(self.table_insert,1)
+            sender:setTouchEnabled(false)   
+            local function stopAction()
+                  sender:setTouchEnabled(true)      
+            end
+            local callfunc = cc.CallFunc:create(stopAction)
+           sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
            self.friend_list_type=1
       elseif tag==1200 then  --取消删除
             
@@ -575,12 +581,18 @@ function InvitefriendsLayer:function_addFriend_data( )
                           if eventType ~= ccui.TouchEventType.ended then
                                 return
                           end
-                         print("点击添加好友")
                          local _table={}
                          local table_list={}
                          _table["playerid"]=list[sender:getTag()]["playerid"]
                          table_list[1]=_table
                          Server:Instance():setfriendoperation(table_list,0)
+                         sender:setTouchEnabled(false)   
+                        local function stopAction()
+                              sender:setTouchEnabled(true)      
+                        end
+                        local callfunc = cc.CallFunc:create(stopAction)
+                       sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
+
                           self.friend_list_type=0
                   end)
 

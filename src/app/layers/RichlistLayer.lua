@@ -138,14 +138,19 @@ function RichlistLayer:init(  )
 
 
                          local function touchEvent(sender,eventType)
-                         
+                              
                               if eventType == ccui.TouchEventType.ended then
-                                          print("开始")
+                                          sender:setTouchEnabled(false)
                                          local _table={}
                                          local table_list={}
                                          _table["playerid"]=self.ranklist[sender:getTag()]["playerid"]
                                          table_list[1]=_table
                                          Server:Instance():setfriendoperation(table_list,0)
+                                          local function stopAction()
+                                                sender:setTouchEnabled(true)      
+                                          end
+                                          local callfunc = cc.CallFunc:create(stopAction)
+                                         sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
                               end
                         end
                         local button = ccui.Button:create()
@@ -212,11 +217,11 @@ end
 function RichlistLayer:pushFloating(text)
    if is_resource then
        self.floating_layer:showFloat(text)  
-       self.barrier_bg:setVisible(false)
-       self.kuang:setVisible(false)
+       --self.barrier_bg:setVisible(false)
+       --self.kuang:setVisible(false)
    else
-    self.barrier_bg:setVisible(false)
-  self.kuang:setVisible(false)
+    --self.barrier_bg:setVisible(false)
+  --self.kuang:setVisible(false)
        self.floating_layer:showFloat(text) 
    end
 end 

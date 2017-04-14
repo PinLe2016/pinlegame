@@ -109,6 +109,12 @@ function RankinglistofactiviesLayer:Rankinglistofactivies_init()
                      _table["playerid"]=sup_data[sender:getTag()]["playerid"]
                      table_list[1]=_table
                      Server:Instance():setfriendoperation(table_list,0)
+                     sender:setTouchEnabled(false)    
+                      local function stopAction()
+                          sender:setTouchEnabled(true)      
+                    end
+                    local callfunc = cc.CallFunc:create(stopAction)
+                   sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
                     
             end)
             if sup_data[i]["tag"]   ==  1  then   --  1是好友  0  不是好友

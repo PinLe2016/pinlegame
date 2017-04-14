@@ -65,6 +65,7 @@ end
 --打地鼠结束界面self.Points
 function jackpotEnd:function_HitVolesEnd(  )
             local _bt=self.HitVolesEndLayer:getChildByTag(69) 
+            _bt:setTitleText("去围观")
             _bt:setTouchEnabled(false)
             _bt:setVisible(false)
              --_bt:setVisible(false)
@@ -119,6 +120,7 @@ end
 -- 拼图结束界面
 function jackpotEnd:function_puzzle(  )
              local _bt=self.puzzleEndLayer:getChildByTag(1324) 
+             _bt:setTitleText("去围观")
              _bt:setVisible(false)
              _bt:setTouchEnabled(false)
          
