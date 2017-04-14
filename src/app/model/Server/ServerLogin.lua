@@ -97,7 +97,7 @@ function Server:reg_callback()
     end
 
     LocalData:Instance():set_user_data(self.data)--保存玩家数据
-    --LocalData:Instance():set_user_reg("2")
+    --LocalData:Instance():set_user_reg("3")
     NotificationCenter:Instance():PostNotification("REG_CALLBACK")
     --self:promptbox_box_buffer("注册成功")
     

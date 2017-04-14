@@ -469,7 +469,7 @@ function Server:setseedreward(treeid,seedid)
     self:request_http("setseedreward" , params); 
 end
 function Server:setseedreward_callback()
-     --dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD_FALSE")

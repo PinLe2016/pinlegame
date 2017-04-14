@@ -185,7 +185,7 @@ function FloatingLayer:prompt_box(prompt_text )
             if tostring(LocalData:Instance():get_user_reg())  ==  "1"  then    --注册成功
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.REG)--注册相关消息
             end
-              if tostring(LocalData:Instance():get_user_reg())  ==  "2"  then    --注册成功
+              if tostring(LocalData:Instance():get_user_reg())  ==  "3"  then    --注册成功
                NotificationCenter:Instance():PostNotification("zhucechegngong")--注册相关消息
             end
              if  self.dialog  then
