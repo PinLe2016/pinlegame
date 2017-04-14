@@ -101,7 +101,7 @@ end
 function LoginScene:fun_countdown(Iswechat )
       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:countdown(Iswechat)
-              end,1.0, false)
+              end,0.1, false)
 end
 function LoginScene:_coverlayer( )
 
