@@ -60,7 +60,7 @@ end
                   cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
                   if self.is_wechat_reg==false then
                     Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
-                    self.is_wechat_reg==true
+                    self.is_wechat_reg=true
                   end
                   
                  
@@ -105,7 +105,7 @@ end
 function LoginScene:fun_countdown(Iswechat )
       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:countdown(Iswechat)
-              end,0.1, false)
+              end,0.02, false)
 end
 function LoginScene:_coverlayer( )
 
