@@ -14,7 +14,7 @@ function  LoginScene:ctor()
    self.floating_layer = require("app.layers.FloatingLayer").new()
    --self.floating_layer:addTo(self,100)
    self:addChild(self.floating_layer, 10000)
-
+   self.is_wechat_reg=false
 
      if qqqq==0 then
       --请求版本更新链接
@@ -53,12 +53,16 @@ function LoginScene:progressbarScene(  )
         alert:setPosition(cc.p(loadingBar:getContentSize().width/2, loadingBar:getContentSize().height/2))
         loadingBar:addChild(alert)
 end
+--微信发送请求
  function LoginScene:countdown(Iswechat)
            if Iswechat   then
                 if Util:getWeixinLoginDate() then
-                  print("微信发送请求")  
                   cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
-                  Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
+                  if self.is_wechat_reg==false then
+                    Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
+                    self.is_wechat_reg==true
+                  end
+                  
                  
                 end
             else
@@ -365,6 +369,7 @@ function LoginScene:landing_init()
                   local callfunc1 = cc.CallFunc:create(stopAction1)
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc,cc.DelayTime:create(2.0),callfunc1))
                  Util:weixinLogin() 
+                 self.is_wechat_reg=false
       end)
 
       self.phone_bt=self.WeChat:getChildByTag(562)
