@@ -57,8 +57,9 @@ end
            if Iswechat   then
                 if Util:getWeixinLoginDate() then
                   print("微信发送请求")  
+                  cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
                   Server:Instance():wechatreg(Util:getWeixinLoginDate().openid,Util:getWeixinLoginDate().nickname)
-                 cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)
+                 
                 end
             else
                self:fun_progress()
@@ -100,7 +101,7 @@ end
 function LoginScene:fun_countdown(Iswechat )
       self._scnum=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
                                 self:countdown(Iswechat)
-              end,0.02, false)
+              end,1.0, false)
 end
 function LoginScene:_coverlayer( )
 
