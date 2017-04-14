@@ -232,7 +232,31 @@ end
                 -- dump(self.image)
 
   end
+  --完善信息
+function SurpriseScene:fun_perfect( ... )
+   local perfect = cc.CSLoader:createNode("perfect.csb");
+    self:addChild(perfect)
+    perfect:setTag(8890)
+    local false_bt=perfect:getChildByTag(3569)-- 确定
+    false_bt:addTouchEventListener((function(sender, eventType  )
+                     if eventType ~= ccui.TouchEventType.ended then
+                       return
+              end
+               local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
+             self:addChild(PerInformationLayer.new())
+             self:removeChildByTag(8890, true)
+              
+     end))
+    local true_bt=perfect:getChildByTag(3570)-- 取消
+    true_bt:addTouchEventListener((function(sender, eventType  )
+                     if eventType ~= ccui.TouchEventType.ended then
+                       return
+              end
+             self:removeChildByTag(8890, true)
+                       
+     end))
 
+end
         
 function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")     
           self.act_loading:setVisible(false)
@@ -269,8 +293,9 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                     dump(userinfo)
                     if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"] and  userinfo["nickname"]  then
                     else
-                      LocalData:Instance():set_per("1")
-                      Server:Instance():prompt("完善个人信息奖励金币")
+                      --LocalData:Instance():set_per("1")
+                      --Server:Instance():prompt("完善个人信息奖励金币")
+                      self:fun_perfect()
                         return
                     end
 
