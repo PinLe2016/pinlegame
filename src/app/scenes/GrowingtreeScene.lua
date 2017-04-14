@@ -52,6 +52,9 @@ function GrowingtreeScene:fun_refresh_friend( )
               Server:Instance():gettreefriendlist(30,1,1)
 end
 function GrowingtreeScene:fun_Newbieguide(  )
+            local  deng=self.Growingtree:getChildByTag(3248+1):getChildByTag(103+1)
+            self._deng_act:setPosition(deng:getParent():getPositionX(),deng:getParent():getPositionY())
+            self._deng_act:setVisible(true)
             self.Newbieguide = cc.CSLoader:createNode("Newbieguide.csb");
             self:addChild(self.Newbieguide)
             self.Newbieguide:setTag(6669)
@@ -77,6 +80,7 @@ function GrowingtreeScene:fun_Newbieguide(  )
                     if eventType ~= ccui.TouchEventType.ended then
                       return
                     end
+                    self._deng_act:setVisible(false)
                     Newbieguide_image3:setVisible(false)
                     Newbieguide_image2:setVisible(true)
             end  )
@@ -108,14 +112,7 @@ function GrowingtreeScene:init(  )
     	self:addChild(self.Growingtree)
       self.oneself_gold_y=self.Growingtree:getChildByTag(1696):getChildByTag(1693):getPositionY()
       self.friend_gold_y=self.Growingtree:getChildByTag(1697):getChildByTag(1695):getPositionY()
-      --  新手引导
-      local new_start=cc.UserDefault:getInstance():getStringForKey("Newbieguide","0")
-      if tonumber(new_start)==0 then
-        self:fun_Newbieguide()
-        cc.UserDefault:getInstance():setStringForKey("Newbieguide","2")
-      end
-      
-      
+     
       self.left_image=self.Growingtree:getChildByTag(645) 
       self.left_image:setLocalZOrder(100)
       self.left_image:setTouchEnabled(true)
@@ -147,7 +144,13 @@ function GrowingtreeScene:init(  )
       self.gold_dishu_jia:setScale(1.5)
       self.gold_dishu_jia:setPosition(-50, 20)
       self._score2 :addChild(self.gold_dishu_jia)
-
+       --  新手引导
+      local new_start=cc.UserDefault:getInstance():getStringForKey("Newbieguide","0")
+       self:fun_Newbieguide()
+      if tonumber(new_start)==0 then
+        self:fun_Newbieguide()
+        cc.UserDefault:getInstance():setStringForKey("Newbieguide","2")
+      end
 
       --  初始化 加经验
       -- self._score3 =   ccui.TextAtlas:create(tostring("0"),"png/guoshiplist.png", 30, 42, "0")--
@@ -1634,8 +1637,8 @@ function GrowingtreeScene:function_template(data,dex)
 
               if tonumber(data["flag"]) ==  0 then 
                 self.friend_image_ower = cc.Sprite:create("png/chengzhangshu-choujiang-1-3-lingqujinbi.png")
-                self.friend_image_ower:setAnchorPoint(cc.p(1,0))
-                self.friend_image_ower:setPosition(-20,15)  --  -10
+                self.friend_image_ower:setAnchorPoint(cc.p(0.5,0))
+                self.friend_image_ower:setPosition(0,15)  --  -10
                 button:addChild(self.friend_image_ower)
                 self.friend_image_ower:setScale(0)
              end
