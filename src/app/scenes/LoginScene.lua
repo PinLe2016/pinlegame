@@ -267,9 +267,7 @@ end
 
 
                
-                if self._scode then
-                      cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
-                end
+               
                 Server:Instance():reg(self.phone_text:getString(),self.Zpassword_text:getString(),self.Zcode_text:getString())
                 
           end
@@ -828,6 +826,7 @@ end
             if self._code==0 then
               if self.code_bt then
                 self.code_bt:setTouchEnabled(true)
+                self.code_bt:setVisible(true)
                 self.code_bt:setColor(cc.c3b(255, 255, 255))
               end
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止定时器
@@ -868,6 +867,7 @@ function LoginScene:onEnter()
                        self._code=50
                        if  self.layertype==1 then
                            self.code_bt=self.Getverificationcode_bt
+                          -- self.code_bt:setVisible(false)
                         elseif self.layertype==2 then
                            self.code_bt=self.yanzhengma
                        end
@@ -919,15 +919,15 @@ function LoginScene:onEnter()
                          if  self.registered then
                               --self:landing_init()
                              
-                             if self._scode then
-                              print("振奋")
+                             -- if self._scode then
+                             --  print("振奋")
                              
-                                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
-                             end
-                              self.Getverificationcode_bt:setVisible(true)
-                              self.Getverificationcode_bt:setTouchEnabled(true)
-                              self.Getverificationcode_bt:setColor(cc.c3b(255, 255, 255))
-                              self.Getverificationcode_bt:setTitleText("获取验证码")
+                             --    cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                             -- end
+                              -- self.Getverificationcode_bt:setVisible(true)
+                              -- self.Getverificationcode_bt:setTouchEnabled(true)
+                              -- self.Getverificationcode_bt:setColor(cc.c3b(255, 255, 255))
+                              -- self.Getverificationcode_bt:setTitleText("获取验证码")
 
                                -- self.registered:removeFromParent()
                                -- self.registered=nil
