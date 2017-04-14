@@ -116,16 +116,25 @@ function PerInformationLayer:add_init(  )
                     if userdt["gender"]==0 then    --0女1男2未知
                         self.genderman1:setString("女")
                         self.genderman1_image:loadTexture("png/IcnFemale.png")
+                        self.genderman1_image:setVisible(true)
                     elseif userdt["gender"]==1 then
                         self.genderman1:setString("男")
                         self.genderman1_image:loadTexture("png/IcnMale.png")
+                        self.genderman1_image:setVisible(true)
                     else
                         self.genderman1:setString(" ")
+                        self.genderman1_image:setVisible(false)
                     end  
         --初始化年月日
-                local date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
+                
                 self.date_years1=self.showinformation:getChildByTag(1404)
-                self.date_years1:setString(date[1] .. "-" ..  date[2] .. "-" .. date[3] )
+                if userdt["birthday"] == "" then
+                    self.date_years1:setString("")
+                else
+                    local date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
+                    self.date_years1:setString(date[1] .. "-" ..  date[2] .. "-" .. date[3] )
+                end
+                
        
 
                  self._provincename1=self.showinformation:getChildByTag(1405)
@@ -646,13 +655,21 @@ function PerInformationLayer:perinformation_init(  )
             self.gendergirl:setSelected(false)
         end  
         --初始化年月日
-        local date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
+        
         self.date_years=self.Perinformation:getChildByTag(87)
         self.date_month=self.Perinformation:getChildByTag(88)
         self.date_day=self.Perinformation:getChildByTag(89)
-        self.date_years:setString(date[1])
-        self.date_month:setString(date[2])
-        self.date_day:setString(date[3])
+        if userdt["birthday"]=="" then
+            self.date_years:setString("")
+            self.date_month:setString("")
+            self.date_day:setString("")
+        else
+            local date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
+            self.date_years:setString(date[1])
+            self.date_month:setString(date[2])
+            self.date_day:setString(date[3])
+        end
+
         self.scall_years="1990"
         self.scall_month="06"
         self.scall_day="07"
@@ -920,11 +937,16 @@ function PerInformationLayer:savedata( )
                 gender="true"
                 self.genderman1:setString("男")
                 self.genderman1_image:loadTexture("png/IcnMale.png")
+                self.genderman1_image:setVisible(true)
             elseif self.gendergirl:isSelected() then
                 gender="false"
                 self.genderman1:setString("女")
                 self.genderman1_image:loadTexture("png/IcnFemale.png")
-
+                self.genderman1_image:setVisible(true)
+            else
+                gender="false"
+                self.genderman1:setString("")
+                self.genderman1_image:setVisible(false)
             end
            --self.genderman1="  "
            if  self._provincename:getString() == "" then
