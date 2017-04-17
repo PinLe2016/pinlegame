@@ -4,6 +4,11 @@ local PerInformationLayer = class("PerInformationLayer", function()
             return display.newScene("PerInformationLayer")
 end)
 function PerInformationLayer:ctor()--params
+
+    dump(LocalData:Instance():get_user_data())
+    dump(LocalData:Instance():get_userdata())
+    dump(LocalData:Instance():get_getuserinfo())
+
        self:setNodeEventEnabled(true)--layer添加监听
        -- Server:Instance():getuserinfo() -- 初始化数据
        self.head_index=100 -- 初始化
@@ -34,24 +39,24 @@ function PerInformationLayer:add_init(  )
                  local  userdatainit=LocalData:Instance():get_getuserinfo() --初始化个人信息
 
                  local userdt = LocalData:Instance():get_userdata()--
-                 if userdatainit["birthday"] or userdatainit["birthday"] ~= "" then
+                 if userdatainit["birthday"]  then
                      userdt["birthday"]=userdatainit["birthday"]
-                 else
-                     userdt["birthday"]=tonumber(645379200)
+                 -- else
+                 --     userdt["birthday"]=tonumber(645379200)
                  end
                  
                  userdt["cityid"]=userdatainit["cityid"]
                  userdt["cityname"]=userdatainit["cityname"]
                  userdt["gender"]=userdatainit["gender"]
-                 if userdatainit["gender"] == nil then
-                     userdt["gender"]=1
+                 if not userdatainit["gender"]  then
+                     userdt["gender"]=nil
                  end
                  
                  userdt["nickname"]=userdatainit["nickname"]
                  userdt["provincename"]=userdatainit["provincename"]  
                  userdt["districtame"]=userdatainit["districtame"]
                  userdt["registertime"]=userdatainit["registertime"]  
-                if userdt["provincename"] == nil  then
+                if userdatainit["provincename"]   and userdt["provincename"] == nil  then
                     local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
                     if phone_location["provincename"] then
                             userdt["provincename"]=phone_location["provincename"]
@@ -127,7 +132,7 @@ function PerInformationLayer:add_init(  )
         --初始化年月日
                 
                 self.date_years1=self.showinformation:getChildByTag(1404)
-                if userdt["birthday"] == "" then
+                if not userdt["birthday"]  then
                     self.date_years1:setString("")
                 else
                     local date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
@@ -148,6 +153,8 @@ function PerInformationLayer:add_init(  )
                      if area  == "" then
                          self._provincename1:setString(userdt["provincename"] .. "-" .. userdt["cityname"] )
                      end
+                else
+                     self._provincename1:setString("")
                  end
                  
 
@@ -522,12 +529,13 @@ function PerInformationLayer:init(  )
 end
 function  PerInformationLayer:city_init( )
          local userdt = LocalData:Instance():get_userdata()
-         self._provincename=self.Perinformation:getChildByTag(90)
+          self._provincename=self.Perinformation:getChildByTag(90)
          self._provincename:setString(userdt["provincename"])
          self._cityname=self.Perinformation:getChildByTag(91)
          self._cityname:setString(userdt["cityname"])
          self._area=self.Perinformation:getChildByTag(92)
          local  between=self.Perinformation:getChildByTag(26):getChildByTag(95)
+        
          local area=""
          if userdt["districtame"] then
              area=userdt["districtame"]
@@ -537,6 +545,11 @@ function  PerInformationLayer:city_init( )
          if area== "" then
              self._area:setVisible(false)
              between:setVisible(false)
+         end
+            if  not  userdt["provincename"] then
+             self._provincename:setString("")
+            self._cityname:setString("")
+            self._area:setString("")
          end
 end
 --个人信息初始化
@@ -552,13 +565,13 @@ function PerInformationLayer:perinformation_init(  )
      userdt["gender"]=userdatainit["gender"]
      print("正是新别 ",userdatainit["gender"])
       if userdatainit["gender"]  ==  nil  then
-         userdt["gender"]=1
+         userdt["gender"]=nil
      end
      userdt["nickname"]=userdatainit["nickname"]
      userdt["registertime"]=userdatainit["registertime"]
      userdt["provincename"]=userdatainit["provincename"]  
      userdt["districtame"]=userdatainit["districtame"] 
-     if userdt["provincename"] == nil  then
+     if userdatainit["provincename"] and userdt["provincename"] == nil  then
             local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
             if phone_location then
                 userdt["provincename"]=phone_location["provincename"]
@@ -659,7 +672,7 @@ function PerInformationLayer:perinformation_init(  )
         self.date_month=self.Perinformation:getChildByTag(88)
         self.date_day=self.Perinformation:getChildByTag(89)
         local date=nil
-        if  userdt["birthday"] == "" then
+        if  not  userdt["birthday"]  then
             self.date_years:setString("")
             self.date_month:setString("")
             self.date_day:setString("")
@@ -674,7 +687,7 @@ function PerInformationLayer:perinformation_init(  )
         self.scall_month="06"
         self.scall_day="07"
 
-        if userdt["birthday"] ~= "" then
+        if  userdt["birthday"]  then
             self.scall_years=tostring(date[1])
             self.scall_month=tostring(date[2])
             self.scall_day=tostring(date[3])
