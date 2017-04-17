@@ -442,16 +442,19 @@ function GrowingtreeScene:fun_data()
 	  self.z_treeid=gettreelist["list"][1]["treeid"]  --目前默认只有一棵树
 
 	self:fun_per()
-      for i=1,8 do
-            self.pt_table[i]:setTouchEnabled(true)
-            self.pt_table[i]:addTouchEventListener(function(sender, eventType  )
-                        if eventType ~= ccui.TouchEventType.ended then
-                            return
-                        end 
-                        self:fun_LockNode(sender:getTag()-103)
-                        
-            end)
+      if self.back_playerid ==  nil then
+             for i=1,8 do
+                self.pt_table[i]:setTouchEnabled(true)
+                self.pt_table[i]:addTouchEventListener(function(sender, eventType  )
+                            if eventType ~= ccui.TouchEventType.ended then
+                                return
+                            end 
+                            self:fun_LockNode(sender:getTag()-103)
+                            
+                end)
+          end
       end
+     
 	local tree_seedlist = gettreelist["list"][1]["seedlist"]
 
       local _treegrade=0
