@@ -462,7 +462,7 @@ function InvitefriendsLayer:function_addFriend(  )
                           _str=self._search_name_friend:getString()
                       end
 
-                    Server:Instance():getsearchfriendlist(5,self.search_friend_pageno,_str) 
+                    Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
                    print("刷新好友")
                     
             end)

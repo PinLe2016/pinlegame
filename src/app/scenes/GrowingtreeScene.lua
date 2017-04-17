@@ -146,7 +146,7 @@ function GrowingtreeScene:init(  )
       self._score2 :addChild(self.gold_dishu_jia)
        --  新手引导
       local new_start=cc.UserDefault:getInstance():getStringForKey("Newbieguide","0")
-       self:fun_Newbieguide()
+       
       if tonumber(new_start)==0 then
         self:fun_Newbieguide()
         cc.UserDefault:getInstance():setStringForKey("Newbieguide","2")
