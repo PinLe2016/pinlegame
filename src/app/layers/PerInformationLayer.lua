@@ -13,7 +13,6 @@ function PerInformationLayer:ctor()--params
        self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
                 self:update(dt)
         end)
-
        --获取城市定位
        
        --手机归属请求
@@ -659,12 +658,13 @@ function PerInformationLayer:perinformation_init(  )
         self.date_years=self.Perinformation:getChildByTag(87)
         self.date_month=self.Perinformation:getChildByTag(88)
         self.date_day=self.Perinformation:getChildByTag(89)
-        if userdt["birthday"]=="" then
+        local date=nil
+        if  userdt["birthday"] == "" then
             self.date_years:setString("")
             self.date_month:setString("")
             self.date_day:setString("")
         else
-            local date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
+            date=Util:lua_string_split(os.date("%Y/%m/%d",userdt["birthday"]),"/")
             self.date_years:setString(date[1])
             self.date_month:setString(date[2])
             self.date_day:setString(date[3])
@@ -674,7 +674,7 @@ function PerInformationLayer:perinformation_init(  )
         self.scall_month="06"
         self.scall_day="07"
 
-        if userdt["birthday"]~="" then
+        if userdt["birthday"] ~= "" then
             self.scall_years=tostring(date[1])
             self.scall_month=tostring(date[2])
             self.scall_day=tostring(date[3])
