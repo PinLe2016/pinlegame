@@ -91,7 +91,10 @@ end
 function Server:request_version(command , params)
 
 
-    dump(params)
+    --判断网络
+        if not self:NetworkStatus() then
+            return
+        end
     local request = network.createHTTPRequest(function(event) self:on_request_finished_version(event,command) end, params , "POST")
     -- local params_encoded = json.encode(params)
 
