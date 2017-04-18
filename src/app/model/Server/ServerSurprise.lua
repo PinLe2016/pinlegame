@@ -220,7 +220,7 @@ function Server:getactivitypointsdetail(activityid,playerloginname)
 end
 
 function Server:getactivitypointsdetail_callback()
-     -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return

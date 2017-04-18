@@ -520,21 +520,17 @@ function PhysicsScene:touch_btCallback( sender, eventType )
             end 
 
            if tag==77400 then   --  以前的167
+            self:unscheduleUpdate()
                self.phy_bg:removeFromParent()
               self.PhysicsPop:removeFromParent()
             if tonumber(self.cycle)   ~=  0 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                         local userdt = LocalData:Instance():get_userdata()
                          local activitypoints = LocalData:Instance():get_getactivitypoints()
-
-                             userdt["golds"]=activitypoints["golds"]
-                     
+                        userdt["golds"]=activitypoints["golds"]
                         LocalData:Instance():set_userdata(userdt)
-                        
                         cc.Director:getInstance():popScene()
-
                         Server:Instance():getactivitypointsdetail(self.id,self.heroid)
-
                 return
             end
             local userdt = LocalData:Instance():get_userdata()
@@ -603,9 +599,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
               print("好像是客服")
            end
            if tag==31 then  --返回
-             --Util:scene_control("MainInterfaceScene")
-             -- cc.Director:getInstance():popScene()
-             -- Server:Instance():getactivitybyid(self.id,self.cycle)   --  跟新详情数据
+             --self:unscheduleUpdate()
              Util:player_music_hit("GAMEBG",true )
             if tonumber(self.cycle)   ~=  0 then
                         local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
@@ -615,7 +609,7 @@ function PhysicsScene:touch_btCallback( sender, eventType )
                              userdt["golds"]=activitypoints["golds"]
                          end
                         LocalData:Instance():set_userdata(userdt)
-                        --Server:Instance():getactivitypointsdetail(self.id,self.heroid)
+                        Server:Instance():getactivitypointsdetail(self.id,self.heroid)
                         cc.Director:getInstance():popScene()
 
                         --Server:Instance():getactivitybyid(self.id,self.cycle)

@@ -23,14 +23,16 @@ function OnerecordLayer:ctor(params)
          Server:Instance():getactivitypointsdetail(self.id," ")  --个人记录排行榜HTTP
          self:setNodeEventEnabled(true)--layer添加监听
         -- Server:Instance():getactivitybyid(self.id,1)
-end
-function OnerecordLayer:init(  )
-            self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  
+
+         self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  
            self:addChild(self.fragment_sprite)
 
-	self.OnerecordLayer = cc.CSLoader:createNode("OnerecordLayer.csb");
-    	self:addChild(self.OnerecordLayer)
+    self.OnerecordLayer = cc.CSLoader:createNode("OnerecordLayer.csb");
+        self:addChild(self.OnerecordLayer)
             self:move_layer(self.OnerecordLayer)
+end
+function OnerecordLayer:init(  )
+           
 
     	local title_text=self.OnerecordLayer:getChildByTag(87)--标题
             title_text:setString(self.title)
@@ -64,7 +66,7 @@ function OnerecordLayer:Onerecord_init(  )
                   self.rank_list:pushBackDefaultItem()
             	local  cell = self.rank_list:getItem(i-1)
 
-                         local retroactive_bt=cell:getChildByTag(959)  --补签
+                         local retroactive_bt=cell:getChildByName("Button_5")--getChildByTag(959)  --补签  Button_5
 
                         retroactive_bt:setTag(i)
                         retroactive_bt:addTouchEventListener(function(sender, eventType  )

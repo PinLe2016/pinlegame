@@ -17,10 +17,17 @@ function ContrastRecordLayer:ctor(params)
        self.allscore=params.allscore --总积分
        self._type=params._type
       self.phyimage=params.phyimage
-       print("dsfdsfdsfdsg  ",self.id,"   ",self.heroid)
        Server:Instance():getactivitypointsdetail(self.id,self.heroid)  --对比排行榜HTTP
        self:setNodeEventEnabled(true)--layer添加监听
        self.leve_instructions={"伯爵","大公","公爵","国王","侯爵","男爵","平民","亲王","骑士","王储","勋爵","子爵",}
+      
+       self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self:addChild(self.fragment_sprite)
+
+  self.ContrastRecordLayer = cc.CSLoader:createNode("ContrastRecordLayer.csb");
+      self:addChild(self.ContrastRecordLayer)
+
+      self:move_layer(self.ContrastRecordLayer)
        --Server:Instance():getactivitybyid(self.id,1)
        
 end
@@ -33,13 +40,7 @@ function ContrastRecordLayer:move_layer(_layer)
 end
 function ContrastRecordLayer:init(  )
 
-        self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-        self:addChild(self.fragment_sprite)
-
-	self.ContrastRecordLayer = cc.CSLoader:createNode("ContrastRecordLayer.csb");
-    	self:addChild(self.ContrastRecordLayer)
-
-      self:move_layer(self.ContrastRecordLayer)
+        
 
     	local activitybyid=LocalData:Instance():get_getactivitybyid()
       local userdt = LocalData:Instance():get_userdata()--
@@ -119,7 +120,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
 	for i=1,count do
             self.rank_list:pushBackDefaultItem()
 		local  cell = self.rank_list:getItem(i-1)
-            local retroactive_bt=cell:getChildByTag(909)  --补签
+            local retroactive_bt=cell:getChildByName("Button_2")            --getChildByTag(909)  --补签
             retroactive_bt:setTag(i)
             retroactive_bt:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then

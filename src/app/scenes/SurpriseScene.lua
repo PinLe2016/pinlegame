@@ -290,7 +290,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                                return
                     end
                     local userinfo=LocalData:Instance():get_getuserinfo()
-                    dump(userinfo)
+                        --dump(userinfo)
                     if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"] and  userinfo["nickname"]  then
                     else
                       --LocalData:Instance():set_per("1")

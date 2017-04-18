@@ -5,9 +5,9 @@ local PerInformationLayer = class("PerInformationLayer", function()
 end)
 function PerInformationLayer:ctor()--params
 
-    -- dump(LocalData:Instance():get_user_data())
-    -- dump(LocalData:Instance():get_userdata())
-    -- dump(LocalData:Instance():get_getuserinfo())
+    dump(LocalData:Instance():get_user_data())
+    dump(LocalData:Instance():get_userdata())
+    dump(LocalData:Instance():get_getuserinfo())
 
        self:setNodeEventEnabled(true)--layer添加监听
        -- Server:Instance():getuserinfo() -- 初始化数据
