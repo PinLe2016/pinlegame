@@ -273,7 +273,7 @@ function Server:getconfig()
 end
 
 function Server:getconfig_callback()
-     -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
@@ -320,8 +320,7 @@ function Server:gettreelist(friendplayerid)
     self:request_http("gettreelist" , params); 
 end
 function Server:gettreelist_callback()
-      --dump(self.data)
-     -- dump(self.data["list"][1]["seedlist"][5])
+
     if self.data.err_code~=0  then
         --self:show_float_message( self.data.err_msg)
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
@@ -346,7 +345,7 @@ function Server:gettreefriendlist(pagesize,pageno,type)
     self:request_http("gettreefriendlist" , params); 
 end
 function Server:gettreefriendlist_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         return
@@ -469,7 +468,7 @@ function Server:setseedreward(treeid,seedid)
     self:request_http("setseedreward" , params); 
 end
 function Server:setseedreward_callback()
-     dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         Server:Instance():Grawpopup_box_buffer(self.data.err_msg)
         NotificationCenter:Instance():PostNotification("MESSAGE_SETSEEDREWARD_FALSE")

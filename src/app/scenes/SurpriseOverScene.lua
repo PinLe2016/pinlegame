@@ -273,7 +273,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
           -- activitybyid["betgolds"]
           if not  cishu then
                   self.began_bt:setTouchEnabled(false)
-                  audio.playMusic(G_SOUND["FALLMONEY"],true)
+                  -- audio.playMusic(G_SOUND["FALLMONEY"],true)
                   Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle)  --老虎机测试
           else
             local userdt = LocalData:Instance():get_userdata()
@@ -284,7 +284,7 @@ function SurpriseOverScene:touch_callback( sender, eventType )
                     Server:Instance():prompt("金币不足，无法参与活动，快去奖池屯点金币吧！")
               else
                     self.began_bt:setTouchEnabled(false)
-                    audio.playMusic(G_SOUND["FALLMONEY"],true)
+                    -- audio.playMusic(G_SOUND["FALLMONEY"],true)
                     Server:Instance():getactivitypoints(self.actid["act_id"],self.cycle)  --老虎机测试
                     self.laohujiaction:gotoFrameAndPlay(0,42, false)
               end

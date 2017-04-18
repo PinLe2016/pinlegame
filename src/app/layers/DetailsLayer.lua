@@ -22,6 +22,7 @@ end
 function DetailsLayer:init(  )
             
 	local activitybyid=LocalData:Instance():get_getactivitybyid()
+	dump(activitybyid)
             local user=LocalData:Instance():get_user_data()
             self.title=activitybyid["title"]
 	local  function back_btCallback(sender, eventType)
