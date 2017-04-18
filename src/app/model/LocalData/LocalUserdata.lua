@@ -232,12 +232,12 @@ end
 --收获
 function LocalData:set_share_title(_setseedreward)
 	local title=Util:lua_string_split(_setseedreward,"@")
-	dump(title)
+	-- dump(title)
 	self.share_title={
 			title=title[1],
 			content=title[2]
 		}
-	dump(self.share_title)
+	-- dump(self.share_title)
 end
 
 function LocalData:get_share_title()
