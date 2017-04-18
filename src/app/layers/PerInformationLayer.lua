@@ -5,9 +5,9 @@ local PerInformationLayer = class("PerInformationLayer", function()
 end)
 function PerInformationLayer:ctor()--params
 
-    dump(LocalData:Instance():get_user_data())
-    dump(LocalData:Instance():get_userdata())
-    dump(LocalData:Instance():get_getuserinfo())
+    -- dump(LocalData:Instance():get_user_data())
+    -- dump(LocalData:Instance():get_userdata())
+    -- dump(LocalData:Instance():get_getuserinfo())
 
        self:setNodeEventEnabled(true)--layer添加监听
        -- Server:Instance():getuserinfo() -- 初始化数据
@@ -542,10 +542,10 @@ function  PerInformationLayer:city_init( )
          end
          self._area:setString(area)
          self._area:setVisible(true)
-         if area== "" then
-             self._area:setVisible(false)
-             between:setVisible(false)
-         end
+         -- if area== "" then
+         --     self._area:setVisible(false)
+         --     between:setVisible(false)
+         -- end
             if  not  userdt["provincename"] then
              self._provincename:setString("")
             self._cityname:setString("")
