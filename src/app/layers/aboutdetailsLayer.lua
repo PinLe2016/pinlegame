@@ -51,6 +51,8 @@ function aboutdetailsLayer:init(  )
                      self:touch_btCallback(sender, eventType)
                end))
             self.Zcontent_text=self.advicedata_bg:getChildByTag(207)  --提交内容
+            Util:function_advice_keyboard(self.advicedata_bg,self.Zcontent_text,10)
+
             self.Zname_text=self.advicedata_bg:getChildByTag(214)  --输入姓名
             self.Zphone_text=self.advicedata_bg:getChildByTag(215)  --输入手机号
             --self.Zcontent_text:setVisible(false)
@@ -76,6 +78,7 @@ function aboutdetailsLayer:init(  )
                      self:touch_btCallback(sender, eventType)
                end))
             self.Xcontent_text=self.businessback_bg:getChildByTag(365)  --提交内容
+            Util:function_advice_keyboard(self.businessback_bg,self.Xcontent_text,10)
             self.Xcompanyname_text=self.businessback_bg:getChildByTag(366)  --公司名称
             self.Xname_text=self.businessback_bg:getChildByTag(367)  --联系人姓名
             self.Xphone_text=self.businessback_bg:getChildByTag(368)  --联系方式
@@ -227,11 +230,13 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            	   end
            elseif  tag==1294 then--提交建议
  	      self.advice_bg:setVisible(true)
+        self.Zcontent_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
  	      self:inputbox()
          self.content_text:setString("")
 
            	elseif  tag==1295 then --商务合作
                   self.business_bg:setVisible(true)
+                  self.Xcontent_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
                   self:businesscooperation()
                    self.contenttext:setString("")
            	elseif  tag==1296 then --扫描二维码

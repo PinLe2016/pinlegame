@@ -353,6 +353,7 @@ function LoginScene:landing_init()
                   if eventType ~= ccui.TouchEventType.ended then
                     return
                   end  
+                  cc.UserDefault:getInstance():setStringForKey("WeChat_landing","1")
                    self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2,true,10011)
                    local function stopAction()
                              self.WeChat:removeChildByTag(10011, true)
@@ -378,7 +379,7 @@ function LoginScene:landing_init()
                   if eventType ~= ccui.TouchEventType.ended then
                     return
                   end
-                 
+                 cc.UserDefault:getInstance():setStringForKey("WeChat_landing","2")
                   self:function_bt_act(self.phone_bt,"shoujidenglu-anniu-guanxiao-",4,0.2,true,20020)
                    local function stopAction()
                               self.WeChat:removeChildByTag(20020, true)
