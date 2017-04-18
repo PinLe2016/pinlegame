@@ -114,6 +114,9 @@ function GoldprizeScene:data_init(  )
 
 				bg1_image:setTag(2*i-1)
 				bg1_jibiao:setString(tostring(jac_data[2*i-1]["goldspoolcount"]))
+				if tonumber(jac_data[2*i-1]["playtimes"]) >0 then
+					bg1:getChildByTag(4809):setVisible(true)
+				end
 				bg1_image:addTouchEventListener(function(sender, eventType  )
 						if eventType ~= ccui.TouchEventType.ended then
 								return
@@ -162,7 +165,9 @@ function GoldprizeScene:data_init(  )
 		             else
 		               bg2_img:loadTexture(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
 		            end
-
+		            if tonumber(jac_data[2*i]["playtimes"]) >0 then
+					bg2:getChildByTag(4810):setVisible(true)
+			end
 			bg2_img:setTag(2*i)
 			bg2_jiaobiao:setString(tostring(jac_data[2*i]["goldspoolcount"]))
 			bg2_img:addTouchEventListener(function(sender, eventType  )
