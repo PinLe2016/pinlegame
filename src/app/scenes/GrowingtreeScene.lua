@@ -5,6 +5,8 @@
 local GrowingtreeScene = class("GrowingtreeScene", function()
             return display.newScene("GrowingtreeScene")
 end)
+
+local SER_NUM=31
 function GrowingtreeScene:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
        self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -37,7 +39,7 @@ function GrowingtreeScene:ctor()
 
        self.back_seedplant_seedmanure=" "  --  区别是种植接口还是施肥接口
        self:init()
-       Server:Instance():gettreefriendlist(30,1,1)
+       Server:Instance():gettreefriendlist(SER_NUM,1,1)
        Server:Instance():gettreelist(self.back_playerid)--   成长树初始化接口     
        self.pt_tag_obj=nil  
 
@@ -49,7 +51,7 @@ function GrowingtreeScene:fun_refresh_friend( )
                 self.pv:setVisible(false)
               end
               self._friend_employees_type=1
-              Server:Instance():gettreefriendlist(30,1,1)
+              Server:Instance():gettreefriendlist(SER_NUM,1,1)
 end
 function GrowingtreeScene:fun_Newbieguide(  )
             local  deng=self.Growingtree:getChildByTag(3248+1):getChildByTag(103+1)
@@ -236,7 +238,7 @@ function GrowingtreeScene:init(  )
                                  if self.pv then
                                           self.pv:setVisible(true)
                                 end
-                                 Server:Instance():gettreefriendlist(30,1,1)
+                                 Server:Instance():gettreefriendlist(SER_NUM,1,1)
                               
                         end
                           return
@@ -262,7 +264,7 @@ function GrowingtreeScene:init(  )
 
                                   self.friend_growingtree_checkbox:setPositionY(self.friend_growingtree_checkbox:getPositionY() -40)
                                   self._friend_employees_type=1
-                                  Server:Instance():gettreefriendlist(30,1,1)
+                                  Server:Instance():gettreefriendlist(SER_NUM,1,1)
                                   -- for i=1,8 do
                                   --   self.pt_table[i]:setTouchEnabled(false)
                                   -- end
@@ -813,7 +815,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                end
               
                
-               Server:Instance():gettreefriendlist(30,1,self._friend_employees_type)---self._feied_count
+               Server:Instance():gettreefriendlist(SER_NUM,1,self._friend_employees_type)---self._feied_count
             end
  end 
  function GrowingtreeScene:fun_callback( sender, eventType )
@@ -831,7 +833,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
           if tag==52 then   
           	 print("我的好友按钮")
              self._friend_employees_type=1
-             Server:Instance():gettreefriendlist(30,1,1)
+             Server:Instance():gettreefriendlist(SER_NUM,1,1)
               if self.pv then
                 self.pv:setVisible(false)
               end
@@ -842,7 +844,7 @@ function GrowingtreeScene:touch_Nodecallback( sender, eventType )
                 end
               self._feied_count=1
               self._friend_employees_type=2
-              Server:Instance():gettreefriendlist(30,1,2)
+              Server:Instance():gettreefriendlist(SER_NUM,1,2)
                
          end
          self.curr_brightnode=sender
@@ -1754,7 +1756,7 @@ function GrowingtreeScene:createPageView()
          self._count_number_friend=6
     end
    
-    if #self._list<30   and   self._friend_employees_type==1  then
+    if #self._list<SER_NUM   and   self._friend_employees_type==1  then
       local _shu={flag = 100}
       for i=#self._list +1 ,self._count_number_friend do
         local item = self.pv:newItem()
