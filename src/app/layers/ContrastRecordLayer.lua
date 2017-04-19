@@ -176,6 +176,9 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                                 if tonumber(mypointslist[j]["remaintimes"])  <   0 or   tonumber(mypointslist[j]["remaintimes"])  ==   0  then
                                        retroactive_bt:setVisible(false)
                                 end
+                                if j==#mypointslist then
+                                   retroactive_bt:setVisible(false)
+                                end 
                                  -- self.labelAtlas1:setString(tostring(mypointslist[j]["points"]))   --setProperty(mypointslist[j]["points"], "png/cou.png", 26, 35, "0")
                                   --   --11 xin
                                   break

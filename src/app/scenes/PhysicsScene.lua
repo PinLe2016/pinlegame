@@ -851,6 +851,8 @@ function PhysicsScene:Phypop_up()
             for i=530,532 do
               local open_xiangziyangqiu1 =open_xiangzi:getChildByTag(i)  --样求
               _xiangqiu[i-529]=open_xiangziyangqiu1
+              _xiangqiu[i-529]:setPosition(cc.p(82+60*(i-530),-219.53))
+              
             end
             --初始化小球
             for i=520,528 do
