@@ -817,12 +817,16 @@ function PhysicsScene:Phypop_up()
             advert:loadTexture(path..self._imagetu)
 
              local score_text1 =self.PhysicsPop:getChildByTag(171)  --  分数1
+             score_text1:setPosition(cc.p(230,365))
             -- score_text1:loadTexture(string.format("png/Physicstaiqiu-%d.png",self._score1 ))
              local score_text2 =self.PhysicsPop:getChildByTag(168)  --  分数2
+             score_text2:setPosition(cc.p(350,365))
             -- score_text2:loadTexture(string.format("png/Physicstaiqiu-%d.png",self.score2 ))
              local score_text3 =self.PhysicsPop:getChildByTag(169)  --  分数3
+             score_text3:setPosition(cc.p(410,365))
             -- score_text3:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score3))
              local score_text4 =self.PhysicsPop:getChildByTag(170)  --  分数4
+             score_text4:setPosition(cc.p(290,365))
             -- score_text4:loadTexture(string.format("png/Physicstaiqiu-%d.png", self.score4))
               local function logSprRotation(sender)
                  -- self:fun_data()
