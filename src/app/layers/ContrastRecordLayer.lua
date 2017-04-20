@@ -150,7 +150,7 @@ function ContrastRecordLayer:ContrastRecord_init(  )
                 --Server:Instance():getactivitybyid(self.id,self.cycle)
                 
                 local   PhysicsScene  = require("app.scenes.PhysicsScene")   
-                local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid=0,phyimage=self.phyimage})
+                local scene=PhysicsScene.new({id=self.id,cycle=self._tag,heroid=self.heroid,phyimage=self.phyimage})
                 cc.Director:getInstance():pushScene(scene)
 
             end)
