@@ -193,6 +193,10 @@ function PerInformationLayer:add_init(  )
                         local Panel_text=cell:getChildByTag(1825)
                         Panel_text:setString("身份证认证")
             end
+            if (not userdt["gender"])  or  (not userdt["birthday"])   or   (not userdt["provincename"]) then
+                self:init()
+                self:head()
+            end
 end
 --新增加的邮件界面
 function PerInformationLayer:fun_mail(  )
@@ -484,7 +488,7 @@ function PerInformationLayer:init(  )
        --   self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
        --   self:addChild(self.fragment_sprite1)
        self.Perinformation = cc.CSLoader:createNode("Perinformation.csb")
-       self:addChild(self.Perinformation)
+       self.showinformation:addChild(self.Perinformation)
        self.Perinformation:setTag(1998)
         local userdt = LocalData:Instance():get_userdata()
         local gold=self.Perinformation:getChildByTag(1884):getChildByTag(1886)  --  金币
@@ -495,8 +499,16 @@ function PerInformationLayer:init(  )
         self._birthday_bt:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
     end)
+        self._birthday_bt_bg=self.Perinformation:getChildByTag(26):getChildByTag(466)  --  生日背景点击
+        self._birthday_bt_bg:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
         self._adress_bt=self.Perinformation:getChildByTag(1883)  --   地址
         self._adress_bt:addTouchEventListener(function(sender, eventType  )
+        self:touch_callback(sender, eventType)
+    end)
+        self._adress_bt_bg=self.Perinformation:getChildByTag(467)  --   地址背景点击
+        self._adress_bt_bg:addTouchEventListener(function(sender, eventType  )
         self:touch_callback(sender, eventType)
     end)
 
@@ -704,7 +716,12 @@ function PerInformationLayer:touch_callback( sender, eventType )
     local tag=sender:getTag()
     if tag==1883 then --城市
         self:fun_city_info(  )
+    elseif tag==467 then --城市
+        self:fun_city_info(  )
     elseif tag==1882 then --生日
+        self._Pname:setTouchEnabled(false)
+        self:fun_birthday(  )
+     elseif tag==466 then --生日
         self._Pname:setTouchEnabled(false)
         self:fun_birthday(  )
     elseif tag==169 then 
@@ -724,7 +741,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
     elseif tag==83 then 
          --self._Pname:setVisible(false)
           self._turebut:setTouchEnabled(false)
-          self:removeChildByTag(9888, true)
+          self.showinformation:removeChildByTag(9888, true)
 
       --    local function stopAction()
       --           self._turebut:setTouchEnabled(true)
@@ -817,7 +834,7 @@ end
 function PerInformationLayer:head( )
         self._head_tag_biaoji={}
         self.head_csb = cc.CSLoader:createNode("Head.csb")
-        self:addChild(self.head_csb,20)
+        self.showinformation:addChild(self.head_csb,20)
         self.head_csb:setTag(9888)
         local  day_bg=self.head_csb:getChildByTag(1900):getChildByTag(1903)
         local   _size=day_bg:getContentSize()
@@ -1559,7 +1576,7 @@ function PerInformationLayer:onEnter()
                             self._Pname=nil
 
                               --self.Perinformation:removeFromParent()
-                                self:removeChildByTag(1998, true)
+                                self.showinformation:removeChildByTag(1998, true)
                            end
 
                       end)
