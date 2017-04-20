@@ -107,6 +107,9 @@ function OnerecordLayer:Onerecord_init(  )
                                if tonumber(One_data[j]["remaintimes"])  <  0  or   tonumber(One_data[j]["remaintimes"])  ==   0  then
                                        retroactive_bt:setVisible(false)
                                 end
+                                if j==#One_data then
+                                    retroactive_bt:setVisible(false)
+                                end
 
                              break
                         else
