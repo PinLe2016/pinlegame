@@ -601,19 +601,18 @@ function PerInformationLayer:perinformation_init(  )
         self.image_head:loadTexture(haer)--(tostring(Util:sub_str(userdt["imageUrl"], "/",":")))
         
         self.Dphone_text=self.Perinformation:getChildByTag(68)  --名字Dphone_text
-        --self.Dphone_text:setAnchorPoint(cc.p(0,0.5))
         self.Dphone_text:setTouchEnabled(false)
-        self.Dphone_text:setVisible(false)
-        local res = " "--res/png/DLkuang.png
-        local width = 200
-        local height = 45
-        --登陆
-        self._Pname = ccui.EditBox:create(cc.size(width,height),res)
-        self._Pname:setPlaceholderFontColor(cc.c3b(234,82,30))
-        self._Pname:setFontColor(cc.c3b(234,82,30))
-        self.Perinformation:addChild(self._Pname)
-        self._Pname:setVisible(true)
-        self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  
+        self.Dphone_text:setVisible(true)
+        self._Pname=self.Dphone_text
+        -- local res = " "--res/png/DLkuang.png
+        -- local width = 200
+        -- local height = 45
+        -- self._Pname = ccui.EditBox:create(cc.size(width,height),res)
+        -- self._Pname:setPlaceholderFontColor(cc.c3b(234,82,30))
+        -- self._Pname:setFontColor(cc.c3b(234,82,30))
+        -- self.Perinformation:addChild(self._Pname)
+        -- self._Pname:setVisible(true)
+        -- self._Pname:setPosition(cc.p(self.Dphone_text:getPositionX(),self.Dphone_text:getPositionY()))--( cc.p(107,77 ))  
        
         local nickname=userdata["loginname"]
         -- dump(nickname)
@@ -627,7 +626,7 @@ function PerInformationLayer:perinformation_init(  )
             nick_sub=userdt["nickname"]
         end
         -- self._Pname:setPlaceHolder(nick_sub)
-        self._Pname:setText(nick_sub)
+        self._Pname:setString(nick_sub)
         --self._Pname:setAnchorPoint(0,0.5)  
         self._Pname:setMaxLength(6)
 
@@ -726,7 +725,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
         self:fun_birthday(  )
     elseif tag==169 then 
                 self:_savetime()
-                self._Pname:setTouchEnabled(true)
+                self._Pname:setTouchEnabled(false)
                 
                  self:removeChildByTag(7878,true)
         
@@ -755,7 +754,7 @@ function PerInformationLayer:touch_callback( sender, eventType )
                 self:removeChildByTag(250, true)
     elseif tag==49 then 
                 self:_savetime()
-                self._Pname:setTouchEnabled(true)
+                self._Pname:setTouchEnabled(false)
                  self:removeChildByTag(7878,true)
     elseif tag==97 then 
                  if self.Perinformation then
@@ -1016,7 +1015,7 @@ function PerInformationLayer:savedata( )
             end
     local params={
             loginname=loginname,
-            nickname=self._Pname:getText(),  
+            nickname=self._Pname:getString(),  
             provinceid=provinceid,
             provincename=provincename,
             cityid=cityid,
@@ -1569,9 +1568,9 @@ function PerInformationLayer:onEnter()
                             self._turebut:setTouchEnabled(true)
                             local  userdata=LocalData:Instance():get_user_data()
                             local  loginname= userdata["loginname"]
-                            local  nickname=self._Pname:getText()  
+                            local  nickname=self._Pname:getString()
                             userdata["nickname"]=nickname
-                            self._Pname1:setString(tostring(self._Pname:getText()))
+                            self._Pname1:setString(tostring(self._Pname:getString()))
                             LocalData:Instance():set_user_data(userdata)
                             self._Pname=nil
 
@@ -1585,7 +1584,7 @@ function PerInformationLayer:onEnter()
                          self._turebut:setTouchEnabled(true)
                          local  userdata=LocalData:Instance():get_user_data()
                             local  loginname= userdata["loginname"]
-                            self._Pname:setText(tostring(userdata["nickname"]))  
+                            self._Pname:setString(tostring(userdata["nickname"]))  
                             self._Pname:setVisible(true)
                             self._Pname1:setString(tostring(userdata["nickname"]))
                              self._Pname1:setVisible(true)

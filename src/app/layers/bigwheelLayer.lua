@@ -240,6 +240,7 @@ function bigwheelLayer:function_HitVolesEnd(  )
             local  jaclayer_data=list_table["adlist"] 
             if jaclayer_data[1]["adurlgold"] then
               self._goldnum:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
+              self._goldbg:setVisible(true) 
             else
             self._goldbg:setVisible(false)  --
             self._goldnum:setString("+0")
@@ -588,6 +589,7 @@ function bigwheelLayer:Pintu_data_up()
             print("链接1")
             if jaclayer_data[1]["adurlgold"] then
               self._goldnum:setString("+" ..  tostring(jaclayer_data[1]["adurlgold"]))
+              self._goldbg:setVisible(true)
             else
               self._goldbg:setVisible(false)  --
               self._goldnum:setString("+0")
