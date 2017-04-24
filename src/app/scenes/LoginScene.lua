@@ -348,6 +348,13 @@ function LoginScene:landing_init()
       
       self.wechat_bt=self.WeChat:getChildByTag(561)
       self.wechat_bt:setLocalZOrder(100)
+      local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+      if _table and tonumber(_table["shopIsused"])==0 then
+           self.wechat_bt:setVisible(false)
+      else
+          self.wechat_bt:setVisible(true)
+      end
+
       --微信登陆按钮
       self.wechat_bt:addTouchEventListener(function(sender, eventType  )
                   if eventType ~= ccui.TouchEventType.ended then
