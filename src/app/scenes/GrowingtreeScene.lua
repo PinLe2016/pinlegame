@@ -1384,7 +1384,7 @@ function GrowingtreeScene:onEnter()
                                              jin=_setseedreward["rewardlist"][i]["reward"]
                                            
                                              if self.back_playerid ~=  nil then
-                                              self:fun_friend_act(jin)--fun_oneself_act()
+                                              --self:fun_friend_act(jin)--fun_oneself_act()
                                             else
                                               self:fun_oneself_act(jin)
                                             end
