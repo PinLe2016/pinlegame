@@ -26,7 +26,7 @@ function CustomerLayer:init(  )
         self.customer_list=self.customerLayer:getChildByTag(969)--列表
         self.customer_list:setItemModel(self.customer_list:getItem(0))
         self.customer_list:removeAllItems()
-         for i=1,3 do
+         for i=1,2 do
          	self.customer_list:pushBackDefaultItem()
             local  cell = self.customer_list:getItem(i-1)
             cell:setTag(i) 
@@ -35,10 +35,8 @@ function CustomerLayer:init(  )
             end)
             local name_image=cell:getChildByTag(975)--名称
              name_image:loadTexture("png/kefuzhongxing-gonglue-"  ..   i    ..    ".png")
-             if i==2 then
-               cell:setTouchEnabled(false)
-             end
-             if i==3  and  tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0"))  ==  1 then
+             
+             if i==2  and  tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0"))  ==  1 then
                cell:setVisible(false)
              end
 
@@ -58,11 +56,11 @@ function CustomerLayer:callback( sender, eventType )
           	  print("攻略")
               local ForhelpLayer = require("app.layers.ForhelpLayer") --兑换帮助
               self:addChild(ForhelpLayer.new(),1,12)
-          elseif tag==3 then
+          elseif tag==2 then
           	  print("修改密码")
           	   local ChangepasswordLayer = require("app.layers.ChangepasswordLayer") --修改密码
                self:addChild(ChangepasswordLayer.new(),1,12)
-          elseif tag==2 then
+          elseif tag==3 then
           	  print("兑换帮助")
               self:fun_showtip(sender,sender:getPositionX()+  sender:getContentSize().width/2   ,sender:getPositionY() + sender:getContentSize().height/2 )
           	  -- local ForhelpLayer = require("app.layers.ForhelpLayer") --兑换帮助
