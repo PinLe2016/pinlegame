@@ -16,7 +16,7 @@ function  LoginScene:ctor()
    self:addChild(self.floating_layer, 10000)
    self.is_wechat_reg=false
 
-     if qqqq==0 then
+     if version_upd==0 then
       --请求版本更新链接
         self:progressbarScene()
 
@@ -855,10 +855,10 @@ function LoginScene:onEnter()
   
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.VERSION_LINK, self,
                        function()
-                              if qqqq==0 then
+                              if version_upd==0 then
                                   --请求版本更新链接
                                   Server:Instance():getversion()
-                                  qqqq=2
+                                  version_upd=2
                               end
                       end)
 
