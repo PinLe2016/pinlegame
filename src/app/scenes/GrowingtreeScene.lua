@@ -1335,16 +1335,17 @@ function GrowingtreeScene:onEnter()
   --施肥不成功
   NotificationCenter:Instance():AddObserver("MESSAGE_SETSEEDMANURE_FALSE", self,
                        function()  
+                              self.pt_tag_table=0
                               self:fun_FruitinformationNode(1,1,false,-1)
                               self.ListNode:setVisible(true)
 
                                 if self.back_playerid  ==  nil then
-                                            self._growingtreeNode:setPositionX(0)
-                                            self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
-                                            self.friend_growingtree_checkbox:setSelected(true) 
-                                            self._friend_employees_type=1
+                                            -- self._growingtreeNode:setPositionX(0)
+                                            -- self.friend_growingtree_checkbox:setPositionY( self._spdt-40)
+                                            -- self.friend_growingtree_checkbox:setSelected(true) 
+                                             self._friend_employees_type=1
                                              if self.pv then
-                                                      self.pv:setVisible(true)
+                                                      self.pv:setVisible(false)
                                             end
                                end
                              
