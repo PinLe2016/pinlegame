@@ -642,6 +642,17 @@ end
 
 
 function Util:weixinLogin()
+
+    if device.platform=="android" then 
+      local pinle_location=cc.PinLe_platform:Instance()
+      if not pinle_location:isWxInstall() then
+        local url="http://app.qq.com/#id=detail&appid=100733732"
+        device.openURL(url)
+        cc.Director:getInstance():endToLua() 
+        return
+      end
+    end
+
     local weinxin=cc.UM_Share:create()
     weinxin:getlogin()
 end
