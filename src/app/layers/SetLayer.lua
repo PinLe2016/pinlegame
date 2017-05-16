@@ -22,6 +22,14 @@ end
 function SetLayer:fun_init_infor( )
             self.SetNode = cc.CSLoader:createNode("SetNode.csb")
             self:addChild(self.SetNode)
+
+            self.SetNode:setScale(0)
+            self.SetNode:setAnchorPoint(0.5,0.5)
+            self.SetNode:setPosition(320, 568)
+            local actionTo = cc.ScaleTo:create(0.5, 1.2)
+            local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+
             self:set_touch()
             self:per_userdady()
             local getconfig=LocalData:Instance():get_getconfig()
@@ -95,7 +103,14 @@ function SetLayer:set_touch(  )
                        if eventType ~= ccui.TouchEventType.ended then
                            return
                       end
+                      local function stopAction()
                       self:removeFromParent()
+                      end
+                      local actionTo = cc.ScaleTo:create(0.1, 1.2)
+                      local actionTo1 = cc.ScaleTo:create(0.3, 0)
+                      local callfunc = cc.CallFunc:create(stopAction)
+                      self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+              
                   end)
        --  问号 
        local problem_bt=self.SetNode:getChildByName("Button_6")

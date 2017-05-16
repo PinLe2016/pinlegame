@@ -75,6 +75,8 @@ function PerInformationLayer:add_init(  )
                    _question:setVisible(false)
                     local golds=self.showinformation:getChildByTag(1413)   --金币
                     golds:setString(userdt["golds"])
+                    local golds=self.showinformation:getChildByTag(408)   --金币
+                    golds:setString(userdt["golds"])
                     local rankname=self.showinformation:getChildByTag(1414)   --等级
                     rankname:setString("LV."  ..   userdt["grade"])
                     local LV_name=self.showinformation:getChildByTag(1819)   --等级

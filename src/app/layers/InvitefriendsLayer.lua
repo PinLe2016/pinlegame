@@ -50,6 +50,16 @@ end
 function InvitefriendsLayer:init(  )
       self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
       self:addChild(self.Invitefriends)
+
+      self.Invitefriends:setScale(0)
+      self.Invitefriends:setAnchorPoint(0.5,0.5)
+      self.Invitefriends:setPosition(320, 568)
+
+      local actionTo = cc.ScaleTo:create(0.5, 1.2)
+      local actionTo1 = cc.ScaleTo:create(0.1, 1)
+      self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+
+
         self:pop_up()--  弹出框
        local back_bt=self.Invitefriends:getChildByTag(82)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
@@ -275,21 +285,24 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	end
 	local tag=sender:getTag()
 	if tag==82 then --返回
-             Server:Instance():getuserinfo()  --钻石刷新
-            if self.share then
+              Server:Instance():getuserinfo()  --钻石刷新
+              if self.share then
                    if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                         LocalData:Instance():set_tasktable(nil)--制空
                  end
-            end
+              end
+              Server:Instance():gettasklist()
+              Util:all_layer_backMusic()
+              display.getRunningScene():fun_refresh_friend()--  目的是成长树刷新好友
+              local function stopAction()
+              self:removeFromParent()
+              end
+              local actionTo = cc.ScaleTo:create(0.1, 1.2)
+              local actionTo1 = cc.ScaleTo:create(0.3, 0)
+              local callfunc = cc.CallFunc:create(stopAction)
+              self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
 
-
-            -- Server:Instance():getuserinfo() -- 初始化数据
-            Server:Instance():gettasklist()
-		        self:removeFromParent()
-            Util:all_layer_backMusic()
-            display.getRunningScene():fun_refresh_friend()--  目的是成长树刷新好友
-           -- Util:scene_control("MainInterfaceScene")
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)
 		-- self.m_friend:setVisible(true)

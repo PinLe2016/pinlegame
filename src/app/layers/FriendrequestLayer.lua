@@ -13,6 +13,13 @@ function FriendrequestLayer:ctor(params)--params
             Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
             self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
             self:addChild(self.Friendrequest)
+            self.Friendrequest:setScale(0)
+            self.Friendrequest:setAnchorPoint(0.5,0.5)
+            self.Friendrequest:setPosition(320, 568)
+            local actionTo = cc.ScaleTo:create(0.5, 1.2)
+           local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+
 end
 function FriendrequestLayer:init(  )
        local _table=LocalData:Instance():get_gettasklist()
@@ -219,19 +226,27 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 
 
   if tag==123 then --返回
-    if self.share then
-                   if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
-                       Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
-                        LocalData:Instance():set_tasktable(nil)--制空
-                 end
-            end
-          Util:all_layer_backMusic()
-          Server:Instance():gettasklist()
-      if self.switch==1 then
-        self:removeFromParent()
-      else
-        Util:scene_control("MainInterfaceScene")
+      if self.share then
+             if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
+                 Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                  LocalData:Instance():set_tasktable(nil)--制空
+           end
       end
+      Util:all_layer_backMusic()
+      Server:Instance():gettasklist()
+     
+      local function stopAction()
+           if self.switch==1 then
+               self:removeFromParent()
+          else
+              --Util:scene_control("MainInterfaceScene")
+              self:removeFromParent()
+          end
+      end
+      local actionTo = cc.ScaleTo:create(0.1, 1.2)
+      local actionTo1 = cc.ScaleTo:create(0.3, 0)
+      local callfunc = cc.CallFunc:create(stopAction)
+      self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
   elseif tag==161 then  --好友邀请
     self.share=Util:share()
   elseif tag==162 then  --回馈邀请人

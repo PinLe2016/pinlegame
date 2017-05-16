@@ -44,13 +44,16 @@ end
 function taskLayer:init(  )
 
         if not self.taskLayer then
-            self.fragment_sprite =cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-            self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-            self:addChild(self.fragment_sprite)
-
             LocalData:Instance():set_sign(2)
             self.taskLayer = cc.CSLoader:createNode("taskLayer.csb")
             self:addChild(self.taskLayer)
+            self.taskLayer:setScale(0)
+            self.taskLayer:setAnchorPoint(0.5,0.5)
+            self.taskLayer:setPosition(320, 568)
+
+            local actionTo = cc.ScaleTo:create(0.5, 1.2)
+           local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
 
 
@@ -207,17 +210,18 @@ function taskLayer:touch_btCallback( sender, eventType )
 
            local tag=sender:getTag()
            if tag==141 then  --返回
-              if self.taskLayer then
-                 -- local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
-                 -- local userdt = LocalData:Instance():get_userdata()
-                 -- userdt["golds"]=getuserinfo["golds"]
-                 -- LocalData:Instance():set_userdata(userdt)
-                  self.fragment_sprite:setVisible(false)
-              self:removeFromParent()
               -- Util:scene_control("MainInterfaceScene")
               Util:all_layer_backMusic()
               LocalData:Instance():set_sign(1)
-             end
+              local function stopAction()
+              self:removeFromParent()
+              end
+              local actionTo = cc.ScaleTo:create(0.1, 1.2)
+              local actionTo1 = cc.ScaleTo:create(0.3, 0)
+              local callfunc = cc.CallFunc:create(stopAction)
+              self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
+           
            end  
 end
 

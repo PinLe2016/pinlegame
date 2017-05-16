@@ -16,25 +16,34 @@ function mailLayer:ctor()
           self.tablecout  =  0  
           self.sup_data_num =0 
 
-        self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-        self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-        self:addChild(self.fragment_sprite)
-
-
-           self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
+            self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
             self:addChild(self.mailLayer)
+            self.mailLayer:setScale(0)
+            self.mailLayer:setAnchorPoint(0.5,0.5)
+            self.mailLayer:setPosition(320, 568)
+
+            local actionTo = cc.ScaleTo:create(0.5, 1.2)
+           local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            self.mailLayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+
 
 
             local back_bt=self.mailLayer:getChildByTag(46)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
-                                    if eventType ~= ccui.TouchEventType.ended then
-                    return
-                end
-                Util:all_layer_backMusic()
-                  self:removeFromParent()
+                  if eventType ~= ccui.TouchEventType.ended then
+                        return
+                  end
+                  Util:all_layer_backMusic()
                   LocalData:Instance():set_getaffiche(nil)
-                   Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
-                        end)
+                  -- Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
+                  local function stopAction()
+                  self:removeFromParent()
+                  end
+                  local actionTo = cc.ScaleTo:create(0.1, 1.2)
+                  local actionTo1 = cc.ScaleTo:create(0.3, 0)
+                  local callfunc = cc.CallFunc:create(stopAction)
+                  self.mailLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+            end)
 
           
 

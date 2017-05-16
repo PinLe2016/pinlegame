@@ -174,6 +174,11 @@ function MainInterfaceScene:fun_init( )
       newshezhi_bt:addTouchEventListener(function(sender, eventType  )
            self:fun_backbt(sender, eventType)
       end)
+      checkin_bt:setScale(0)
+       task_bt:setScale(0)
+       friend_bt:setScale(0)
+       newshezhi_bt:setScale(0)
+
       self.setup_box=self.MainInterfaceScene:getChildByTag(6227)  --新的设置按钮
       
       self.setup_box:addEventListener(function(sender, eventType  )
@@ -181,24 +186,43 @@ function MainInterfaceScene:fun_init( )
                             sender:setTouchEnabled(false)
                             local function stopAction()
                                   sender:setTouchEnabled(true)
-                                   local actionTo = cc.ScaleTo:create(0.2, 1)
-                                  self.sliding_bg:runAction(actionTo)
+                                  
                             end
-                            local actionTo = cc.RotateTo:create(0.5, 720)
+                            local actionTo =  cc.EaseBackOut:create(cc.RotateBy:create(0.5, 120))  
+                            local actionTo2 = cc.RotateTo:create(0.2, 60)
                             local callfunc = cc.CallFunc:create(stopAction)
                             self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
-                           
+                             local actionTo1 = cc.ScaleTo:create(0.2, 1,1)
+                                  self.sliding_bg:runAction(actionTo1)
+                           checkin_bt:setScale(0)
+                          
+                           checkin_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                            task_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                           friend_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                           newshezhi_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
 
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                               sender:setTouchEnabled(false)
                              local function stopAction()
                                   sender:setTouchEnabled(true)
-                                   local actionTo = cc.ScaleTo:create(0.2, 0)
-                                  self.sliding_bg:runAction(actionTo)
+                                  
                             end
-                            local actionTo = cc.RotateTo:create(0.5, 720)
+                            local actionTo =cc.EaseBackOut:create(cc.RotateBy:create(0.5, -120))  
+                            local actionTo2 = cc.RotateTo:create(0.2, -60)
                             local callfunc = cc.CallFunc:create(stopAction)
                             self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
+                            
+                            local function stopAction1()
+                                   local actionTo1 = cc.ScaleTo:create(0.1, 1,0)
+                                 self.sliding_bg:runAction(actionTo1)
+                                  
+                            end
+                          
+                          local callfunc1 = cc.CallFunc:create(stopAction1)
+                           checkin_bt:runAction(cc.Sequence:create(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)),callfunc1))
+                            task_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                           friend_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                           newshezhi_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
 
                             
                      end
@@ -224,6 +248,8 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
   elseif tag==6225 then
     local SetLayer = require("app.layers.SetLayer")  --邀请好友
     self:addChild(SetLayer.new(),1,11)
+    self.sliding_bg:setScale(0)
+    self.setup_box:setSelected(false)
     elseif tag==1201 then
      print("成长树")
      --display.replaceScene(require("app.scenes.GrowingtreeScene"):new())
@@ -340,7 +366,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
             local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
             self:addChild(mailLayer.new(),1,15)
       elseif tag==581 then  --任务
-            print("任务")
+            self.sliding_bg:setScale(0)
+            self.setup_box:setSelected(false)
             local taskLayer = require("app.layers.taskLayer")  --关于任务界面
             self:addChild(taskLayer.new(),1,16)
       elseif tag==91 then  --设置返回
@@ -352,7 +379,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
       elseif tag==288 then  --邀请好友  291
         local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
             self:addChild(FriendrequestLayer.new({switch=2}),1,11)
-
+self.sliding_bg:setScale(0)
+self.setup_box:setSelected(false)
             --  local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
             -- self:addChild(aboutdetailsLayer.new(),1,12)
 
