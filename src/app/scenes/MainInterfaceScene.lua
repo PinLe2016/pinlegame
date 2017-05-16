@@ -192,7 +192,7 @@ function MainInterfaceScene:fun_init( )
                             local actionTo2 = cc.RotateTo:create(0.2, 60)
                             local callfunc = cc.CallFunc:create(stopAction)
                             self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
-                             local actionTo1 = cc.ScaleTo:create(0.2, 1,1)
+                             local actionTo1 = cc.ScaleTo:create(0.2, 1.5,1.5)
                                   self.sliding_bg:runAction(actionTo1)
                            checkin_bt:setScale(0)
                           
@@ -213,7 +213,7 @@ function MainInterfaceScene:fun_init( )
                             self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
                             
                             local function stopAction1()
-                                   local actionTo1 = cc.ScaleTo:create(0.1, 1,0)
+                                   local actionTo1 = cc.ScaleTo:create(0.1, 1.5,0)
                                  self.sliding_bg:runAction(actionTo1)
                                   
                             end
