@@ -6,13 +6,7 @@
 local mailLayer = class("mailLayer", function()
             return display.newLayer("mailLayer")
 end)
-function mailLayer:move_layer(_layer)   
-   local curr_y=_layer:getPositionY()
-    _layer:setPositionY(curr_y+_layer:getContentSize().height)
-    local move =cc.MoveTo:create(0.3,cc.p(_layer:getPositionX(),curr_y))  
-     local sque=transition.sequence({cc.EaseBackOut:create(move)})
-      _layer:runAction(sque)
-end
+
 function mailLayer:ctor()
 
          self:setNodeEventEnabled(true)--layer添加监听
@@ -30,7 +24,6 @@ function mailLayer:ctor()
            self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
             self:addChild(self.mailLayer)
 
-            self:move_layer(self.mailLayer)
 
             local back_bt=self.mailLayer:getChildByTag(46)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
@@ -66,51 +59,44 @@ end
 
 function mailLayer:init(  )
   print("fadsjfhdsjfhdshf dsfjksafkjds ")
-	local affiche=LocalData:Instance():get_getaffiche()
-  dump(affiche)
-	local affichelist=affiche["affichelist"]
-	-- self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
+  local affiche=LocalData:Instance():get_getaffiche()
+  local affichelist=affiche["affichelist"]
+  -- self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
  --            self:addChild(self.mailLayer)
 
  --            local back_bt=self.mailLayer:getChildByTag(46)--返回
  --            back_bt:addTouchEventListener(function(sender, eventType  )
  --                                    if eventType ~= ccui.TouchEventType.ended then
-	-- 	                return
-	-- 	            end
-	-- 		self:removeFromParent()
+  --                  return
+  --              end
+  --    self:removeFromParent()
  --                  LocalData:Instance():set_getaffiche(nil)
  --                  Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
  --                        end)
             local delete_bt=self.mailLayer:getChildByTag(54)--删除
             delete_bt:addTouchEventListener(function(sender, eventType  )
                                     if eventType ~= ccui.TouchEventType.ended then
-		                             return
-		                        end
-			local affiche=LocalData:Instance():get_getaffiche()
-	                        local affichelist=affiche["affichelist"]
-	                        for i=1,#affichelist do
-	                        	 if tonumber(affichelist[i]["isread"]) == 1   then  --1已读  0未读 
+                                 return
+                            end
+      local affiche=LocalData:Instance():get_getaffiche()
+                          local affichelist=affiche["affichelist"]
+                          for i=1,#affichelist do
+                             if tonumber(affichelist[i]["isread"]) == 1   then  --1已读  0未读 
                               self.tablecout=0
-                  	                   		Server:Instance():delaffichebyid(tostring(affichelist[i]["id"]))  --依次删除
-                  	                   		return
-                          		 end
-                          		 if i == #affichelist    then
-                          		 	Server:Instance():prompt("没有可删除的邮件")
-                          		 	return
-                          		 end
-	                        end
-	                        if 0 == #affichelist    then
-                          		 	Server:Instance():prompt("没有可删除的邮件")
-                          		 end
-			
+                                          Server:Instance():delaffichebyid(tostring(affichelist[i]["id"]))  --依次删除
+                                          return
+                               end
+                               if i == #affichelist    then
+                                Server:Instance():prompt("没有可删除的邮件")
+                                return
+                               end
+                          end
+                          if 0 == #affichelist    then
+                                Server:Instance():prompt("没有可删除的邮件")
+                               end
+      
                         end)
-            local receive_bt=self.mailLayer:getChildByTag(56)--快速领取
-            receive_bt:addTouchEventListener(function(sender, eventType  )
-                                    if eventType ~= ccui.TouchEventType.ended then
-		                return
-		            end
-			print("领取")
-                        end)
+        
 
             -- self.mail_list=self.mailLayer:getChildByTag(47)--邮箱列表
             -- self.mail_list:setItemModel(self.mail_list:getItem(0))
@@ -151,7 +137,7 @@ function mailLayer:init(  )
                         end)
                   local  tag_image=cell:getChildByTag(51)--是否读取标记
                   if tonumber(affichelist[i]["isread"]) == 1   then  --1已读  0未读 
-                  	tag_image:setVisible(false)
+                    tag_image:setVisible(false)
                   end
                   local  mail_title=cell:getChildByTag(52)--邮件标题
                   mail_title:setString(tostring(affichelist[i]["title"]))
@@ -174,7 +160,7 @@ function mailLayer:touch_back(sender, eventType)
                 return
              end
           local tag=sender:getTag()
-          print("事件")
+          print("事件12")
           local affiche=LocalData:Instance():get_getaffiche()
           local affichelist=affiche["affichelist"]
           Server:Instance():getaffichedetail(affichelist[tag]["id"])
@@ -182,32 +168,27 @@ function mailLayer:touch_back(sender, eventType)
 
 end
 function mailLayer:fun_emailcontentlayer( )
-	local affichedetail=LocalData:Instance():get_getaffichedetail()
-  dump(affichedetail)
-    self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-     self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-        self:addChild(self.fragment_sprite1)
-	self.emailcontentlayer = cc.CSLoader:createNode("emailcontentlayer.csb")
-            self:addChild(self.emailcontentlayer)
-              self:move_layer(self.emailcontentlayer)
-
+            local affichedetail=LocalData:Instance():get_getaffichedetail()
+            self.emailcontentlayer = cc.CSLoader:createNode("emailcontentlayer.csb")
+            self:addChild(self.emailcontentlayer,20)
+          
              local back_bt=self.emailcontentlayer:getChildByTag(62)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
-                                    if eventType ~= ccui.TouchEventType.ended then
-            		                return
-            		            end
-		            if self.emailcontentlayer then
-                  self.sur_pageno=1
-                  self.tablecout=0
-                              Server:Instance():getaffichelist(self.sur_pageno)
-                              LocalData:Instance():set_getaffiche(nil)
-
-                            self.mail_list:removeAllItems() 
-                            self.fragment_sprite1:removeFromParent()
-                            self.emailcontentlayer:removeFromParent()
-                            Util:all_layer_backMusic()
-		            end
-			
+                if eventType ~= ccui.TouchEventType.ended then
+                      return
+                end
+               
+                if self.emailcontentlayer then
+                    self.sur_pageno=1
+                    self.tablecout=0
+                    Server:Instance():getaffichelist(self.sur_pageno)
+                    LocalData:Instance():set_getaffiche(nil)
+                    self.mail_list:removeAllItems() 
+                    self.emailcontentlayer:removeFromParent()
+                    Util:all_layer_backMusic()
+                    self.emailcontentlayer=nil
+                end
+      
                         end)
 
             local title_text=self.emailcontentlayer:getChildByTag(63)--标题
@@ -260,20 +241,20 @@ function mailLayer:fun_emailcontentlayer( )
              userdt["golds"]=userdt["golds"] + tonumber(affichedetail["rewardgolds"])
              LocalData:Instance():set_userdata(userdt)
 
-                        end)
+                       end)
 
 end
 function mailLayer:onEnter()
-	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self,
                        function()
                         self:init()
 
                       end)
-	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHDETAIL, self,
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.AFFICHDETAIL, self,
                        function()
                         self:fun_emailcontentlayer( )
                       end)
-	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.TAFFICHEDETAIL, self,
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.TAFFICHEDETAIL, self,
                        function()
                         local  affichedetail=LocalData:Instance():get_getaffichedetail()
                         affichedetail["rewardgolds"] = 0  
@@ -283,7 +264,7 @@ function mailLayer:onEnter()
                         self.rewardquan:setString("X0")--
                       end)
 
-	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self,
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self,
                        function()
                         self.sur_pageno=1
                         Server:Instance():getaffichelist(self.sur_pageno)
@@ -293,10 +274,10 @@ function mailLayer:onEnter()
 end
 
 function mailLayer:onExit()
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHDETAIL, self)
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self)
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.TAFFICHEDETAIL, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHDETAIL, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.TAFFICHEDETAIL, self)
        cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 

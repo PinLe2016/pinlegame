@@ -53,6 +53,14 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     ActivitymainnterfaceiScene = cc.CSLoader:createNode("ActivitymainnterfaceiScene.csb");
     self:addChild(ActivitymainnterfaceiScene)
 
+     local WinningRecord=ActivitymainnterfaceiScene:getChildByTag(1377)
+    WinningRecord:addTouchEventListener(function(sender, eventType  )
+        if eventType ~= ccui.TouchEventType.ended then
+                    return
+        end
+         self:fun_WinningRecord()
+    end)
+
     self.roleAction = cc.CSLoader:createTimeline("ActivitymainnterfaceiScene.csb")
     ActivitymainnterfaceiScene:runAction(self.roleAction)
     self.roleAction:setTimeSpeed(0.3)
@@ -198,14 +206,14 @@ end
             --   self:scheduleUpdate()
             --   return
             -- end
-            if  cell:getChildByTag(38) then
-                local dayText=cell:getChildByTag(38)
+            if  cell:getChildByTag(731):getChildByTag(38) then
+                local dayText=cell:getChildByTag(731):getChildByTag(38)
                 dayText:setString(tostring(_table[1]))
-                local hoursText=cell:getChildByTag(39)
+                local hoursText=cell:getChildByTag(731):getChildByTag(39)
                 hoursText:setString(tostring(_table[2]))
-                local pointsText=cell:getChildByTag(40)
+                local pointsText=cell:getChildByTag(731):getChildByTag(40)
                 pointsText:setString(tostring(_table[3]))
-                local secondsText=cell:getChildByTag(41)
+                local secondsText=cell:getChildByTag(731):getChildByTag(41)
                 secondsText:setString(tostring(_table[4]))
             end
            
@@ -263,6 +271,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           --activity_ListView:jumpToPercentVertical(10)   
 
           self.list_table=LocalData:Instance():get_getactivitylist()
+          dump(self.list_table)
           if #self.list_table  == 0  then
             activity_ListView:jumpToPercentVertical(100)   
           end
@@ -361,9 +370,18 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
              else
                 activity_Panel:loadTexture(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))
             end
-            
-            local Nameprize_text=cell:getChildByTag(42)
+            local winnersPreview=cell:getChildByTag(1373)
+            winnersPreview:addTouchEventListener(function(sender, eventType  )
+                if eventType ~= ccui.TouchEventType.ended then
+                            return
+                end
+                 self:fun_winnersPreview()
+            end)
+
+            local Nameprize_text=cell:getChildByTag(1370):getChildByTag(42)
             Nameprize_text:setString(tostring(sup_data[i]["gsname"]))
+            local Nameprize_ti=cell:getChildByTag(1370):getChildByTag(1371)
+            Nameprize_ti:setString(tostring(sup_data[i]["title"]))
             local type=cell:getChildByTag(133)
             local type_image="png/huodongma-type-" .. sup_data[i]["type"] .. ".png"
             local huojiang_bg=cell:getChildByTag(336)
@@ -395,19 +413,19 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
             local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
             local  _tabletime=Util:FormatTime_colon(_table1)
-             local dayText=cell:getChildByTag(38)
+             local dayText=cell:getChildByTag(731):getChildByTag(38)
             dayText:setString(tostring(_tabletime[1]))
-            local hoursText=cell:getChildByTag(39)
+            local hoursText=cell:getChildByTag(731):getChildByTag(39)
             hoursText:setString(tostring(_tabletime[2]))
-            local pointsText=cell:getChildByTag(40)
+            local pointsText=cell:getChildByTag(731):getChildByTag(40)
             pointsText:setString(tostring(_tabletime[3]))
-            local secondsText=cell:getChildByTag(41)
+            local secondsText=cell:getChildByTag(731):getChildByTag(41)
             secondsText:setString(tostring(_tabletime[4]))
 
             if  self.ser_status==2 then   --往期获奖名单
                
                  huojiang_bg:setVisible(true)
-                 local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
+                
                  if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
                     cell:setTouchEnabled(false)  --禁止点击
                     activity_Panel:setTouchEnabled(true)
@@ -415,23 +433,13 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                     huojiang_bg:setTouchEnabled(false)
                  end
                  
-                 huojiang_bt:setTag(i)
-                 huojiang_bt:addTouchEventListener((function(sender, eventType  )
-                      if eventType ~= ccui.TouchEventType.ended then
-                           return
-                     end
-                      local  win_id=  sup_data[sender:getTag()]["id"]
-                            Server:Instance():getactivitywinners(win_id)
-                            self:_winners( )
-
-               end))
+                 
             -- elseif self.ser_status==0 then
             --         cell:setTouchEnabled(false)  --禁止点击
             --         activity_Panel:setTouchEnabled(true)
             elseif self.ser_status==3 and tonumber(_table1) < 0 then  --我的活动获奖名单
                     huojiang_bg:setVisible(true)
-                     local huojiang_bt=huojiang_bg:getChildByTag(337)--获奖名单按钮
-                     huojiang_bt:setTag(i)
+                    
                       if tonumber(sup_data[i]["isswardprize"])==0 then  --1是已经发奖  0是未发
                          cell:setTouchEnabled(false)  --禁止点击
                           activity_Panel:setTouchEnabled(true)
@@ -439,14 +447,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
                         huojiang_bg:setTouchEnabled(false)
                      end
 
-                    huojiang_bt:addTouchEventListener((function(sender, eventType  )
-                         if eventType ~= ccui.TouchEventType.ended then
-                               return
-                       end
-                    local  win_id=  sup_data[sender:getTag()]["id"]
-                    Server:Instance():getactivitywinners(win_id)
-               end))
-
+                    
 
             else
               huojiang_bg:setVisible(false)
@@ -476,6 +477,37 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
          
 end
+function SurpriseScene:fun_WinningRecord( ... )
+      self.WinningRecord = cc.CSLoader:createNode("WinningRecord.csb")
+      self:addChild(self.WinningRecord)
+      local back=self.WinningRecord:getChildByTag(850)  
+      back:addTouchEventListener(function(sender, eventType  )
+          if eventType ~= ccui.TouchEventType.ended then
+                      return
+          end
+          if self.WinningRecord then
+            self.WinningRecord:removeFromParent()
+            self.WinningRecord=nil
+          end
+      end)
+
+end
+--  奖项预览
+function SurpriseScene:fun_winnersPreview( ... )
+              self.winnersPreview = cc.CSLoader:createNode("winnersPreview.csb")
+              self:addChild(self.winnersPreview)
+              local back=self.winnersPreview:getChildByTag(929)  
+              back:addTouchEventListener(function(sender, eventType  )
+                  if eventType ~= ccui.TouchEventType.ended then
+                              return
+                  end
+                  if self.winnersPreview then
+                    self.winnersPreview:removeFromParent()
+                    self.winnersPreview=nil
+                  end
+              end)
+             
+end
 --  自己获奖名单
 function SurpriseScene:fun_theirwin( _text)
       self.theirwin = cc.CSLoader:createNode("Theirwin.csb")
@@ -499,16 +531,20 @@ function SurpriseScene:fun_theirwin( _text)
 
        --收货人
       local name=self.theirwin:getChildByTag(350)
-      name:setString(_getconsignee["name"])
+      Util:function_advice_keyboard(self.theirwin,name,25)
+     -- name:setString(_getconsignee["name"])
         --手机号
       local phone=self.theirwin:getChildByTag(351)
-      phone:setString(_getconsignee["phone"])
+      Util:function_advice_keyboard(self.theirwin,phone,25)
+    --  phone:setString(_getconsignee["phone"])
         --所在地区
-      local region=self.theirwin:getChildByTag(352)
-      region:setString(_getconsignee["provincename"]  ..  _getconsignee["cityname"])
+      --local region=self.theirwin:getChildByTag(352)
+      --Util:function_advice_keyboard(self.theirwin,region,25)
+   --   region:setString(_getconsignee["provincename"]  ..  _getconsignee["cityname"])
         --详细地址
       local address=self.theirwin:getChildByTag(353)
-      address:setString(_getconsignee["address"])
+      Util:function_advice_keyboard(self.theirwin,address,25)
+   --   address:setString(_getconsignee["address"])
 
 
       local back_bt= self.theirwin:getChildByTag(311)--返回
@@ -518,6 +554,7 @@ function SurpriseScene:fun_theirwin( _text)
               end
               if self.theirwin then
                  self.theirwin:removeFromParent()
+                 self.theirwin=nil
                  Util:all_layer_backMusic()
               end
                    
@@ -530,10 +567,50 @@ function SurpriseScene:fun_theirwin( _text)
                 end
 
                  if self.theirwin then
-                     self.theirwin:removeFromParent()
+
+                  if name:getString() == "" then
+                  Server:Instance():promptbox_box_buffer("姓名不能为空哦")   --prompt
+                  return
+                  end
+                   if phone:getString() == "" then
+                  Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
+                  return
+                  end
+                  if tostring(Util:judgeIsAllNumber(tostring(phone:getString())))  ==  "false"  then
+                  Server:Instance():promptbox_box_buffer("手机号填写错误") 
+                  return
+                  end
+
+                  if  string.len(phone:getString()) < 11 then
+                  Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
+                  return
+                  end
+                  
+                  if address:getString() == "" then
+                  Server:Instance():promptbox_box_buffer("地址不能为空哦！")   --prompt
+                  return
+                  end
+
+
+
+
+                  Server:Instance():setconsignee(name:getString(),phone:getString(),address:getString())
+                    
+
                 end
   
       end))
+
+ if _getconsignee["address"]   or  _getconsignee["name"]  or  _getconsignee["phone"]  then
+     name:setString(_getconsignee["name"])
+     phone:setString(_getconsignee["phone"])
+     address:setString(_getconsignee["address"])
+     determine_bt:setVisible(false)
+     address:setTouchEnabled(false)
+     name:setTouchEnabled(false)
+     phone:setTouchEnabled(false)
+   end
+
 
 end
 --EditBox  封装
@@ -560,23 +637,19 @@ function SurpriseScene:move_layer(_layer)
 end
 --初始化获奖名单
 function SurpriseScene:_winners( )
-  self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-        self:addChild(self.fragment_sprite)
-
+ 
     self.Winners = cc.CSLoader:createNode("Winners.csb");
     self:addChild(self.Winners)
-      self:move_layer(self.Winners)
+    self.Winners:setTag(111)
 
     local back_bt= self.Winners:getChildByTag(63)--返回
     back_bt:addTouchEventListener((function(sender, eventType)
+      print('获奖名单1')
             if eventType ~= ccui.TouchEventType.ended then
                        return
             end
-            if self.Winners then
-              self.fragment_sprite:removeFromParent()
-               self.Winners:removeFromParent()
-               Util:all_layer_backMusic()
-            end
+            self:removeChildByTag(111, true)
+          
                          
      end))
 
@@ -678,11 +751,26 @@ function SurpriseScene:onEnter()
                         self:addChild(PerInformationLayer.new())
                        
                       end)
+      NotificationCenter:Instance():AddObserver("setconsignee_call", self,
+                       function()
+
+                         self.floating_layer:showFloat("填写成功哦！",function (sender, eventType)        
+                                                                if eventType==1    then
+                                                                        self.theirwin:removeFromParent()
+                                                                       self.theirwin=nil
+                                                                  
+                                                                end                
+                                                end)    --  然并卵的提示语
+
+
+                      
+                      end)
 end
 
 function SurpriseScene:onExit()
       --audio.stopMusic(G_SOUND["PERSONALCHAGE"])
       --Util:stop_music("PERSONALCHAGE")
+        NotificationCenter:Instance():RemoveObserver("setconsignee_call", self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)

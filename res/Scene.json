@@ -1,0 +1,28 @@
+{
+  "ID": "21033956-5c51-41fb-9f20-d397287624a5",
+  "Version": "3.10.0.0",
+  "Name": "Scene",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 1607,
+        "Size": {
+          "X": 960.0,
+          "Y": 640.0
+        },
+        "Name": "Scene",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Scene"
+}

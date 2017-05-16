@@ -7,6 +7,7 @@ local DetailsLayer = class("DetailsLayer", function()
 end)
 
 function DetailsLayer:ctor(params)
+	self.floating_layer = require("app.layers.FloatingLayer").new()
        self:setNodeEventEnabled(true)--layer添加监听
        self._ky=params._ky
        self.id=params.id
@@ -16,13 +17,11 @@ function DetailsLayer:ctor(params)
        LocalData:Instance():set_actid({act_id=self.id,image=self.image})--保存数据
        Server:Instance():getactivitybyid(self.id,0)
        Server:Instance():getactivityadlist(self.id)
-
- 
+     
 end
 function DetailsLayer:init(  )
             
 	local activitybyid=LocalData:Instance():get_getactivitybyid()
-	dump(activitybyid)
             local user=LocalData:Instance():get_user_data()
             self.title=activitybyid["title"]
 	local  function back_btCallback(sender, eventType)
@@ -72,6 +71,18 @@ function DetailsLayer:init(  )
 	local details = cc.CSLoader:createNode("DetailsScene.csb")
 	self:addChild(details)
 
+	local det_bt=details:getChildByTag(363):getChildByTag(578)
+	det_bt:addTouchEventListener(function(sender, eventType  )
+                if eventType ~= ccui.TouchEventType.ended then
+                            return
+                end
+                if det_bt:getPositionY()  ==  335 then
+                	det_bt:setPositionY(-111.39)
+                	return
+                end
+                det_bt:setPositionY(335)
+            end)
+
 	local back_bt=details:getChildByTag(32)
 	back_bt:addTouchEventListener(back_btCallback)
 
@@ -79,11 +90,11 @@ function DetailsLayer:init(  )
 	self.began_bt:setTouchEnabled(true)
 	self.began_bt:addTouchEventListener(began_btCallback)
             
-             local rules_bt=details:getChildByTag(27)--规则
-             rules_bt:addTouchEventListener((function(sender, eventType  )
-                     self:list_btCallback(sender, eventType)
-               end)
-              )
+             -- local rules_bt=details:getChildByTag(27)--规则
+             -- rules_bt:addTouchEventListener((function(sender, eventType  )
+             --         self:list_btCallback(sender, eventType)
+             --   end)
+             --  )
 
 	local act_image=details:getChildByTag(35)
 	local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
@@ -116,14 +127,14 @@ function DetailsLayer:init(  )
 		rank_text:setString("未上榜")
 	end
 
-	local name_text=details:getChildByTag(38)
-	name_text:setString(user["nickname"])
+	-- local name_text=details:getChildByTag(38)
+	-- name_text:setString(user["nickname"])
 
-	local status_text=details:getChildByTag(39)
-	status_text:setString(user["rankname"])
+	-- local status_text=details:getChildByTag(39)
+	-- status_text:setString(user["rankname"])
 
-	local head_image=details:getChildByTag(36)
-	head_image:loadTexture(LocalData:Instance():get_user_head())
+	-- local head_image=details:getChildByTag(36)
+	-- head_image:loadTexture(LocalData:Instance():get_user_head())
 
 	local Personalrecord_bt=details:getChildByTag(42)--个人记录
 	if self.type==3   or  self.type==4 then
@@ -284,12 +295,33 @@ function DetailsLayer:onEnter()
                             self:imgurl_download()
 
                       end)
+	   NotificationCenter:Instance():AddObserver("phone", self,
+                       function()
+                       	
+ 
+                            self:fun_wechatphone()
+
+                      end)
+	  NotificationCenter:Instance():AddObserver("setmobile_messg", self,
+                       function()
+                       	
+ 
+                           self.floating_layer:showFloat("填写成功哦！",function (sender, eventType)        
+                                                                if eventType==1    then
+                                                                         Util:scene_control("SurpriseScene")
+                                                                  
+                                                                end                
+                                                end)    --  然并卵
+
+                      end)
 
 end
 
 function DetailsLayer:onExit()
      	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
      	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE, self)
+     	  NotificationCenter:Instance():RemoveObserver("setmobile_messg", self)
+     	  NotificationCenter:Instance():RemoveObserver("phone", self)
      	  cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 

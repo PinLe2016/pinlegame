@@ -117,16 +117,12 @@ end
 --provinceid    否   省份编号    String  String
 --cityid    否   城市编号    String  String
 --address   否   详细地址    String  
-function Server:setconsignee(name,phone,provinceId,cityId,address,provincename,cityname)
+function Server:setconsignee(name,phone,address)
     local params = {}
      params={
             name=name,
             phone=phone,
-            provinceId=provinceId,
-            cityId=cityId,
             address=address,
-            provincename=provincename,
-            cityname=cityname
         }
     self:request_http("setconsignee" , params); 
 end
@@ -134,13 +130,31 @@ end
 function Server:setconsignee_callback()
     -- dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("修改玩家收货地址:" .. self.data.err_msg)
+        self:show_float_message( self.data.err_msg)
         return
     end
     print("保存成功")
-    --self:show_float_message("保存成功！")
-    -- LocalData:Instance():set_getusercitybyphone(self.data)--保存玩家数据
+    Server:Instance():getconsignee()
+    NotificationCenter:Instance():PostNotification("setconsignee_call")
+
 end
+
+function Server:getconsignee()
+    local params = {}
+     params={
+            
+        }
+    self:request_http("getconsignee" , params); 
+end
+
+function Server:getconsignee_callback()
+    if self.data.err_code~=0  then
+        self:show_float_message(self.data.err_msg)
+        return
+    end
+   LocalData:Instance():set_getconsignee(self.data)
+end
+
 
 
 

@@ -21,7 +21,6 @@ function MainInterfaceScene:ctor()
       if _index==nil then
       _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
       end
-      --LocalData:Instance():set_user_head( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
       Server:Instance():getconfig()  --  获取后台音效
       self:listener_home() --注册安卓返回键
       Server:Instance():gettasklist()   --  初始化任务
@@ -31,7 +30,7 @@ function MainInterfaceScene:ctor()
       Server:Instance():getaffichelist(1)  --  公告
 
       Server:Instance():share_title() --分享内容获取
-      
+
 end
 function MainInterfaceScene:hammerAction()
     --创建动画序列
@@ -91,10 +90,6 @@ function MainInterfaceScene:fun_init( )
        self.biao_ji=self.MainInterfaceScene:getChildByTag(1164)--
        self.biao_ji:setVisible(false) 
 
-      self.roleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
-      self:runAction(self.roleAction)
-      self.roleAction:setTimeSpeed(0.3)
-
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self.signanimations:setVisible(false)
       self:addChild(self.signanimations)
@@ -130,26 +125,17 @@ function MainInterfaceScene:fun_init( )
           self:touch_callback(sender, eventType)
       end)
 
-     
-      -- if _table and tonumber(_table["shopIsused"])==0 then
-      --   mall_bt:setTouchEnabled(false)
-      -- end
-
-
       local jackpot_bt=self.MainInterfaceScene:getChildByTag(97)
           jackpot_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
-      local true_bt=self.MainInterfaceScene:getChildByTag(397):getChildByTag(399)
-          true_bt:addTouchEventListener(function(sender, eventType  )
-          self:touch_callback(sender, eventType)
-      end)
+     
        local head=self.MainInterfaceScene:getChildByTag(37)
        local per=self.MainInterfaceScene:getChildByTag(28):getChildByTag(29)  --新的需求
           head:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
-      local checkin_bt= self.MainInterfaceScene:getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
+      local checkin_bt= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
           checkin_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
@@ -158,79 +144,67 @@ function MainInterfaceScene:fun_init( )
           self:touch_callback(sender, eventType)
       end)
 
-       local task_bt= self.MainInterfaceScene:getChildByTag(581)  --任务按钮
+       local task_bt= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(581)  --任务按钮
        task_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
 
-      local setup_bt=self.MainInterfaceScene:getChildByTag(48)  --设置
-      setup_bt:addTouchEventListener(function(sender, eventType  )
-           self:touch_callback(sender, eventType)
-      end)
-      local jia_bt=self.MainInterfaceScene:getChildByTag(49)
-      jia_bt:addTouchEventListener(function(sender, eventType  )
-           self:touch_callback(sender, eventType)
-      end)
-      self.actbg=self.MainInterfaceScene:getChildByTag(51)--加动画
-      self.actbg:setVisible(false)
-      local setup_bt=self.MainInterfaceScene:getChildByTag(53)  --设置按钮
-      setup_bt:addTouchEventListener(function(sender, eventType  )
-
-           self:touch_callback(sender, eventType)
-      end)
+     
       local friends_bt=self.MainInterfaceScene:getChildByTag(52)  --邀请好友排行
       friends_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
-      local friend_bt=self.MainInterfaceScene:getChildByTag(288)--self.signanimations:getChildByTag(291)--  邀请好友
+      local friend_bt=self.MainInterfaceScene:getChildByTag(6222):getChildByTag(288)--self.signanimations:getChildByTag(291)--  邀请好友
       friend_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
-       local fenxiang_bt=self.actbg:getChildByTag(54)--测试分享
-      fenxiang_bt:addTouchEventListener(function(sender, eventType  )
-           print("规则额")
-           self:touch_callback(sender, eventType)
-      end)
+     
       self.sliding_bg=self.MainInterfaceScene:getChildByTag(6222)
       self.sliding_bg:setScale(0)
-      local kefu_bt=self.sliding_bg:getChildByTag(6223)--客服
-      kefu_bt:addTouchEventListener(function(sender, eventType  )
-           self:fun_backbt(sender, eventType)
-      end)
-      local tree_bt=self.sliding_bg:getChildByTag(1201)--成长树
-      tree_bt:addTouchEventListener(function(sender, eventType  )
-           self:fun_backbt(sender, eventType)
-      end)
-      local women_bt=self.sliding_bg:getChildByTag(6224)--我们
-      women_bt:addTouchEventListener(function(sender, eventType  )
-           self:fun_backbt(sender, eventType)
-      end)
+      -- local kefu_bt=self.sliding_bg:getChildByTag(6223)--客服
+      -- kefu_bt:addTouchEventListener(function(sender, eventType  )
+      --      self:fun_backbt(sender, eventType)
+      -- end)
+     
+      -- local women_bt=self.sliding_bg:getChildByTag(6224)--我们
+      -- women_bt:addTouchEventListener(function(sender, eventType  )
+      --      self:fun_backbt(sender, eventType)
+      -- end)
       local newshezhi_bt=self.sliding_bg:getChildByTag(6225)--新的设置声音
       newshezhi_bt:addTouchEventListener(function(sender, eventType  )
            self:fun_backbt(sender, eventType)
       end)
       self.setup_box=self.MainInterfaceScene:getChildByTag(6227)  --新的设置按钮
+      
       self.setup_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
-                            --self.sliding_bg:setScale(1)
-                            local actionTo = cc.ScaleTo:create(0.2, 1)
-                           self.sliding_bg:runAction(actionTo)
+                            sender:setTouchEnabled(false)
+                            local function stopAction()
+                                  sender:setTouchEnabled(true)
+                                   local actionTo = cc.ScaleTo:create(0.2, 1)
+                                  self.sliding_bg:runAction(actionTo)
+                            end
+                            local actionTo = cc.RotateTo:create(0.5, 720)
+                            local callfunc = cc.CallFunc:create(stopAction)
+                            self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
+                           
 
                      elseif eventType == ccui.CheckBoxEventType.unselected then
-                             --self.sliding_bg:setScale(0)
-                             local actionTo = cc.ScaleTo:create(0.2, 0)
-                             self.sliding_bg:runAction(actionTo)
+                              sender:setTouchEnabled(false)
+                             local function stopAction()
+                                  sender:setTouchEnabled(true)
+                                   local actionTo = cc.ScaleTo:create(0.2, 0)
+                                  self.sliding_bg:runAction(actionTo)
+                            end
+                            local actionTo = cc.RotateTo:create(0.5, 720)
+                            local callfunc = cc.CallFunc:create(stopAction)
+                            self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
+
+                            
                      end
       end)
-     
-
-
       self.barrier_bg=self.MainInterfaceScene:getChildByTag(396)
-      self.kuang=self.MainInterfaceScene:getChildByTag(397)
-
-      self.activitycode_text = self.kuang:getChildByTag(58)
-
-
+     
 end
 function MainInterfaceScene:fun_backbt( sender, eventType )
   if eventType ~= ccui.TouchEventType.ended then
@@ -248,8 +222,8 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
      local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
       self:addChild(aboutdetailsLayer.new(),1,12)
   elseif tag==6225 then
-     print("声音")
-     self:funsetup( true )
+    local SetLayer = require("app.layers.SetLayer")  --邀请好友
+    self:addChild(SetLayer.new(),1,11)
     elseif tag==1201 then
      print("成长树")
      --display.replaceScene(require("app.scenes.GrowingtreeScene"):new())
@@ -299,33 +273,31 @@ function MainInterfaceScene:userdata(  )
        LocalData:Instance():set_user_data(userdt)
        local gold_text=self.MainInterfaceScene:getChildByTag(44)-- 金币
        gold_text:setString(userdt["golds"])
-       local diamond_text=self.MainInterfaceScene:getChildByTag(45)-- 
-       diamond_text:setString("0")--loadingBar:setPercent(0)
+      
        local loadingbar=self.MainInterfaceScene:getChildByTag(55)-- 进度条
        local jindu=tonumber(userdt["points"]) /  self.main_leve[tonumber(userdt["grade"])+1]  *  100 --self.main_leve[+1]/5000000 *100
        loadingbar:setPercent(jindu)--self.main_leve
 end
 function MainInterfaceScene:touch_callback( sender, eventType )
-	if eventType ~= ccui.TouchEventType.ended then
-		return
-	end
-	local tag=sender:getTag()
-	if tag==56 then --惊喜吧
-		 Util:scene_control("SurpriseScene")
-	elseif tag==72 then --活动码
+  if eventType ~= ccui.TouchEventType.ended then
+    return
+  end
+  local tag=sender:getTag()
+  if tag==56 then --惊喜吧
+     Util:scene_control("SurpriseScene")
+  elseif tag==72 then --活动码
     -- local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
     -- self:addChild(activitycodeLayer.new(),1,255)
-		
+    
     display.replaceScene(require("app.layers.activitycodeLayer"):new())
     --display.replaceScene(cc.TransitionProgressInOut:create(0.3, require("app.layers.activitycodeLayer"):new()))
-	elseif tag==37 then  --37
+  elseif tag==37 then  --37
     local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
-		self:addChild(PerInformationLayer.new(),1,14)
-	elseif tag==399 then --弹出确定
-		Server:Instance():validateactivitycode(self.activitycode_text:getString())
-		self.activitycode_text:setString(" ")
-	elseif tag==97 then
-		Util:scene_control("GoldprizeScene")
+    self:addChild(PerInformationLayer.new(),1,14)
+  elseif tag==399 then --弹出确定
+
+  elseif tag==97 then
+    Util:scene_control("GoldprizeScene")
      --Util:scene_control("PhysicsScene")
       elseif tag==444 then  --游戏中心
 
@@ -347,7 +319,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
          --display.replaceScene(cc.TransitionProgressInOut:create(0.3, require("app.layers.RichlistLayer"):new()))
 
 
-	elseif tag==124 then   --  290
+  elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       -- self:addChild(self.checkinlayer)
       -- self.checkinlayer:setVisible(true)
@@ -361,9 +333,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
              
        end
 
-	           Server:Instance():getcheckinhistory()  --签到http
+             Server:Instance():getcheckinhistory()  --签到http
       elseif tag==48 then  --设置
-            self:funsetup( true )
       elseif tag==580 then  --邮箱
             print("邮箱")
             local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
@@ -407,17 +378,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
 
       elseif tag==49 then  --加
-            if self.roleAction:getStartFrame()==0 then
-                  print("0000000")
-                  self.actbg:setVisible(true)
-                  self.roleAction:gotoFrameAndPlay(45,0, false)
-            else
-              print("111111")
-                  self.roleAction:gotoFrameAndPlay(0,45, false)
-                  self.actbg:setVisible(false)
-            end
+          
       elseif tag==53 then  --设置
-            self:funsetup( true )
+
 
       elseif tag==52 then  --邀请好友
         local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
@@ -438,7 +401,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
                                   end
                             end)
            
-	end
+  end
 end
 
 function MainInterfaceScene:fun_gamecenter(  )
@@ -479,109 +442,6 @@ function MainInterfaceScene:fun_storebrowser(  )
               webview:setPosition(cc.p(store_size:getPositionX(),store_size:getPositionY()))
 
 end
-
-
-function MainInterfaceScene:funsetup( Isture )
-        -- self.set_bg=self.MainInterfaceScene:getChildByTag(88)
-        -- self.set_bg:setVisible(true)
-        self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
-        self.set_Xbg=self.MainInterfaceScene:getChildByTag(563)
-        self.set_Xbg:setVisible(Isture)
-        self.set_bg1:setVisible(Isture)
-        -- self.fragment_sprite1 = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-        -- self:addChild(self.fragment_sprite1)
-        -- self.fragment_sprite1:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png")
-        --  self.fragment_sprite1:getChildByTag(135):setTouchEnabled(false) 
-
-
-
-          self:move_layer(self.set_bg1)
-        self.set_bg1:setVisible(Isture)
-        local set_back=self.set_bg1:getChildByTag(91)
-        set_back:addTouchEventListener(function(sender, eventType  )
-              self:touch_callback(sender, eventType)
-        end)
-        local cancellation_bt=self.set_bg1:getChildByTag(266)--注销功能
-        cancellation_bt:addTouchEventListener(function(sender, eventType  )
-            self:touch_callback(sender, eventType)
-      end)
-
-        local music_bt=self.set_bg1:getChildByTag(93)  -- 音乐
-        local sound_bt=self.set_bg1:getChildByTag(92)  -- 音效
-
-        local getconfig=LocalData:Instance():get_getconfig()
-        local _list = getconfig["list"]
-        local _list1=_list[1]["sataus"]
-        local _list2=_list[2]["sataus"]
-        if tonumber(_list1) == 0 then  --o 开  1  关闭
-           LocalData:Instance():set_music_hit(true)
-            audio.resumeMusic()
-            --Util:player_music_hit("GAMEBG",true )
-           music_bt:setSelected(true)
-           
-        else
-           music_bt:setSelected(false)
-           LocalData:Instance():set_music_hit(false)
-           audio.pauseMusic()
-        end
-         if tonumber(_list2) == 0 then  --o 开  1  关闭
-           sound_bt:setSelected(true)
-           LocalData:Instance():set_music(true)
-           audio.resumeAllSounds()
-        else
-            LocalData:Instance():set_music(false)
-           sound_bt:setSelected(false)
-           audio.pauseAllSounds()
-        end
-       
-
-
-        music_bt:addEventListener(function(sender, eventType  )
-                     if eventType == ccui.CheckBoxEventType.selected then
-                            print("开启")
-                            LocalData:Instance():set_music_hit(true)
-                            audio.resumeMusic()
-                            Util:player_music_hit("GAMEBG",true )
-                             Server:Instance():setconfig(_list[1]["itemsId"],0)  --  获取后台音效
-                            
-                     elseif eventType == ccui.CheckBoxEventType.unselected then
-                             print("关闭")
-                             LocalData:Instance():set_music_hit(false)
-                             audio.pauseMusic()
-                             --Util:stop_music("ACTIVITY")
-                             Server:Instance():setconfig(_list[1]["itemsId"],1)  --  获取后台音效
-                     end
-        end)
-       
-        sound_bt:addEventListener(function(sender, eventType  )
-                 if eventType == ccui.CheckBoxEventType.selected then
-                        print("开启")
-                         LocalData:Instance():set_music(true)
-                        --audio.resumeAllSounds()--恢复所有音效
-                        Server:Instance():setconfig(_list[2]["itemsId"],0)  --  获取后台音效
-                       -- Util:player_music_hit("ACTIVITY",true )
-                 elseif eventType == ccui.CheckBoxEventType.unselected then
-                        LocalData:Instance():set_music(false)
-                        --audio.pauseAllSounds()  --关闭所有音效
-                        Server:Instance():setconfig(_list[2]["itemsId"],1)  --  获取后台音效
-                         -- Util:stop_music("ACTIVITY")
-                 end
-         end)
-
-end
--- function function_name( ... )
-
---       local function CallFucnCallback3(sender)
---                      local check_bt=self.checkinlayer:getChildByTag(81) 
---                      check_bt:setVisible(true)                                     
---       end
---      local move = cc.MoveTo:create(0.5, cc.p(0,0))
---      local move1 = cc.MoveTo:create(0.2, cc.p(0,10))
---      local move2 = cc.MoveTo:create(0.2, cc.p(0,0))
---      local move3 = cc.MoveTo:create(0.1, cc.p(0,8))
---      local move4 = cc.MoveTo:create(0.1, cc.p(0,0))
---      self.checkinlayer:runAction(cc.Sequence:create(move,move1,move2,move3,move4,cc.CallFunc:create(CallFucnCallback3)))
--- end
 
 function MainInterfaceScene:move_layer(_layer)
       local curr_y=_layer:getPositionY()
@@ -635,32 +495,32 @@ function MainInterfaceScene:fun_checkin( tm )
           -- Util:scene_control("MainInterfaceScene")  --禁止
         end
         
-	local back_bt=self.checkinlayer:getChildByTag(84)  --返回
-	back_bt:addTouchEventListener(function(sender, eventType  )
-	       if eventType ~= ccui.TouchEventType.ended then
-		      return
-	       end
+  local back_bt=self.checkinlayer:getChildByTag(84)  --返回
+  back_bt:addTouchEventListener(function(sender, eventType  )
+         if eventType ~= ccui.TouchEventType.ended then
+          return
+         end
          self.fragment_sprite:setVisible(false)
          self.checkinlayer:removeFromParent()
              self.checkinlayer=nil
              Server:Instance():gettasklist()   --目的是刷新任务数据
              Util:all_layer_backMusic()
-	       
-	end)
-	local check_bt=self.checkinlayer:getChildByTag(87)
+         
+  end)
+  local check_bt=self.checkinlayer:getChildByTag(87)
       self.check_button=check_bt
-	check_bt:addTouchEventListener(function(sender, eventType  )
-	       if eventType ~= ccui.TouchEventType.ended then
-		     return
-	       end
+  check_bt:addTouchEventListener(function(sender, eventType  )
+         if eventType ~= ccui.TouchEventType.ended then
+         return
+         end
              if LocalData:Instance():get_tasktable() then
                Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
              end
              LocalData:Instance():set_tasktable(nil)--制空
-	       Server:Instance():checkin()  --发送消息
-	end)
+         Server:Instance():checkin()  --发送消息
+  end)
 
-	self:init_checkin()-- 初始化签到数据
+  self:init_checkin()-- 初始化签到数据
 
 
 
@@ -670,46 +530,46 @@ function MainInterfaceScene:init_checkin(  )
      
 
 
-	local  day_bg=self.checkinlayer:getChildByTag(85)
-	local  day_text=day_bg:getChildByTag(86)
+  local  day_bg=self.checkinlayer:getChildByTag(85)
+  local  day_text=day_bg:getChildByTag(86)
       day_text:setFontName("png/chuti.ttf")
-	local   _size=day_bg:getContentSize()
+  local   _size=day_bg:getContentSize()
 
-	local  checkindata=LocalData:Instance():get_getcheckinhistory() --用户数据
-	local  days=checkindata["days"]
+  local  checkindata=LocalData:Instance():get_getcheckinhistory() --用户数据
+  local  days=checkindata["days"]
 
             local  totaydays=checkindata["totaldays"]
-            local check_data=self.checkinlayer:getChildByTag(40)
+           
             self.check_biaoji=self.checkinlayer:getChildByTag(39)
 
-             --check_data:loadTexture(string.format("png/qiandao_%d.png", totaydays))
+          
             local  _table={}
             local  _biaojitable={}
             for i=1, math.ceil(totaydays/7-1) do
-            	for j=1,7 do
-            	       local _bg=day_bg:clone()
-            	       local  day_text=_bg:getChildByTag(86)
+              for j=1,7 do
+                     local _bg=day_bg:clone()
+                     local  day_text=_bg:getChildByTag(86)
                          local biaoji=_bg:getChildByTag(484)
                          biaoji:setVisible(false)
                                day_text:setString((i-1)*7+j)
                                _table[(i-1)*7+j]=day_text
                                _biaojitable[(i-1)*7+j]=biaoji
-            	       _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+8)*(j-1),_bg:getPositionY()-_size.height* math.ceil(i-1)))
-            	       self.checkinlayer:addChild(_bg)
-        		      
-        		end
-        	end
-        	for i=1,totaydays-math.ceil(totaydays/7-1)*7 do
-        		 local _bg=day_bg:clone()
-        		 local  day_text=_bg:getChildByTag(86)
+                     _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+8)*(j-1),_bg:getPositionY()-_size.height* math.ceil(i-1)))
+                     self.checkinlayer:addChild(_bg)
+                  
+            end
+          end
+          for i=1,totaydays-math.ceil(totaydays/7-1)*7 do
+             local _bg=day_bg:clone()
+             local  day_text=_bg:getChildByTag(86)
                    local biaoji=_bg:getChildByTag(484)
                    biaoji:setVisible(false)
                          day_text:setString( math.ceil(totaydays/7-1)*7+i)
                          _table[math.ceil(totaydays/7-1)*7+i]=day_text
                          _biaojitable[math.ceil(totaydays/7-1)*7+i]=biaoji
-            	 _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+8)*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
-            	 self.checkinlayer:addChild(_bg)
-        	end
+               _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+8)*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
+               self.checkinlayer:addChild(_bg)
+          end
               _biaojitable[16]:loadTexture("png/Qprize.png")
               --_biaojitable[16]:setVisible(true)
               if not days then
@@ -721,15 +581,15 @@ function MainInterfaceScene:init_checkin(  )
                   if #days==0 then
                       break
                   end
-            	for j=1,#days do
-            		if i==tonumber(os.date("%d",days[j])) then
+              for j=1,#days do
+                if i==tonumber(os.date("%d",days[j])) then
                               if i==16 then
                                 _biaojitable[i]:loadTexture("res/png/Qprize.png")
                               end
-            			_table[i]:setColor(cc.c3b(62, 165, 216))
+                  _table[i]:setColor(cc.c3b(62, 165, 216))
                               _biaojitable[i]:setVisible(true)
-            		end
-            	end
+                end
+              end
             end
 
             local tm = os.date("*t")
@@ -799,12 +659,7 @@ function MainInterfaceScene:onEnter()
                       end)
 NotificationCenter:Instance():AddObserver("XINYUE", self,
                        function()
-                         -- local function stopAction()
-                              --Util:player_music_hit("ACTIVITY",true )
-                              self:funsetup(false)  
-                        -- end
-                        -- local callfunc = cc.CallFunc:create(stopAction)
-                        -- self:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
+                       
 
                        
                       end)
@@ -892,11 +747,7 @@ end
 function MainInterfaceScene:pushFloating(text)
    if is_resource then
        self.floating_layer:showFloat(text)  
-       self.barrier_bg:setVisible(false)
-       self.kuang:setVisible(false)
    else
-   	self.barrier_bg:setVisible(false)
-	self.kuang:setVisible(false)
        self.floating_layer:showFloat(text) 
    end
 end 

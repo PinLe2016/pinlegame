@@ -364,7 +364,7 @@ function activitycodeLayer:act_list()
                      self:fun_theirwin(sup_data[sender:getTag()]["gsname"])
             end))
 
-            local dayText=cell:getChildByTag(756)
+            local dayText=cell:getChildByTag(387):getChildByTag(756)
               local  _time12=sup_data[i]["finishtime"]-sup_data[i]["nowtime"]
             if _time12>0 then
                  local time_label=cell:getChildByTag(753)
@@ -387,9 +387,8 @@ function activitycodeLayer:act_list()
             if self._typeevt  == 5  then  --影藏标记
                local _tag=cell:getChildByTag(753)
                _tag:setVisible(false)
-               local time_bg=cell:getChildByTag(754)
-               time_bg:setVisible(false)
-               local time_=cell:getChildByTag(756)
+              
+               local time_=cell:getChildByTag(387):getChildByTag(756)
                time_:setVisible(false)
                local time_string=cell:getChildByTag(780)
                time_string:setVisible(false)
@@ -481,6 +480,7 @@ function activitycodeLayer:winners_init( )
           end  
 end
 --  自己获奖名单
+--  自己获奖名单
 function activitycodeLayer:fun_theirwin( _text)
       self.theirwin = cc.CSLoader:createNode("Theirwin.csb")
       self:addChild(self.theirwin)
@@ -503,16 +503,19 @@ function activitycodeLayer:fun_theirwin( _text)
 
        --收货人
       local name=self.theirwin:getChildByTag(350)
-      name:setString(_getconsignee["name"])
+      Util:function_advice_keyboard(self.theirwin,name,25)
+      -- name:setString(_getconsignee["name"])
         --手机号
       local phone=self.theirwin:getChildByTag(351)
-      phone:setString(_getconsignee["phone"])
+      Util:function_advice_keyboard(self.theirwin,phone,25)
+      --phone:setString(_getconsignee["phone"])
         --所在地区
-      local region=self.theirwin:getChildByTag(352)
-      region:setString(_getconsignee["provincename"]  ..  _getconsignee["cityname"])
+      --local region=self.theirwin:getChildByTag(352)
+      --region:setString(_getconsignee["provincename"]  ..  _getconsignee["cityname"])
         --详细地址
       local address=self.theirwin:getChildByTag(353)
-      address:setString(_getconsignee["address"])
+      Util:function_advice_keyboard(self.theirwin,address,25)
+      --address:setString(_getconsignee["address"])
 
 
       local back_bt= self.theirwin:getChildByTag(311)--返回
@@ -523,6 +526,7 @@ function activitycodeLayer:fun_theirwin( _text)
               if self.theirwin then
                 Util:all_layer_backMusic()
                  self.theirwin:removeFromParent()
+                 self.theirwin=nil
               end
                    
       end))
@@ -534,10 +538,47 @@ function activitycodeLayer:fun_theirwin( _text)
                 end
 
                  if self.theirwin then
-                     self.theirwin:removeFromParent()
+
+
+                   if name:getString() == "" then
+                  Server:Instance():promptbox_box_buffer("姓名不能为空哦")   --prompt
+                  return
+                  end
+                   if phone:getString() == "" then
+                  Server:Instance():promptbox_box_buffer("填写的手机号不能为空哦！")   --prompt
+                  return
+                  end
+                  if tostring(Util:judgeIsAllNumber(tostring(phone:getString())))  ==  "false"  then
+                  Server:Instance():promptbox_box_buffer("手机号填写错误") 
+                  return
+                  end
+
+                  if  string.len(phone:getString()) < 11 then
+                  Server:Instance():promptbox_box_buffer("手机号填写错误")   --prompt
+                  return
+                  end
+                  
+                  if address:getString() == "" then
+                  Server:Instance():promptbox_box_buffer("地址不能为空哦！")   --prompt
+                  return
+                  end
+                  
+                  Server:Instance():setconsignee(name:getString(),phone:getString(),address:getString())
+                    
                 end
   
       end))
+
+ if _getconsignee["address"]   or  _getconsignee["name"]  or  _getconsignee["phone"]  then
+     name:setString(_getconsignee["name"])
+     phone:setString(_getconsignee["phone"])
+     address:setString(_getconsignee["address"])
+     determine_bt:setVisible(false)
+     address:setTouchEnabled(false)
+     name:setTouchEnabled(false)
+     phone:setTouchEnabled(false)
+   end
+
 
 end
 
@@ -559,7 +600,7 @@ end
                _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
             end
           
-            local dayText=cell:getChildByTag(756)
+            local dayText=cell:getChildByTag(387):getChildByTag(756)
             dayText:setString(tostring(_table[1] .. _table[2] .. _table[3] .. _table[4] ))
         end
 
@@ -620,10 +661,25 @@ function activitycodeLayer:onEnter()
                        --self:_winners( )-- 获奖名单
                        self:winners_init()  --更新数据
                       end)
+  NotificationCenter:Instance():AddObserver("setconsignee_call", self,
+                       function()
+
+                         self.floating_layer:showFloat("填写成功哦！",function (sender, eventType)        
+                                                                if eventType==1    then
+                                                                        self.theirwin:removeFromParent()
+                                                                       self.theirwin=nil
+                                                                  
+                                                                end                
+                                                end)    --  然并卵的提示语
+
+
+                      
+                      end)
 
 end
 
 function activitycodeLayer:onExit()
+  NotificationCenter:Instance():RemoveObserver("setconsignee_call", self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)

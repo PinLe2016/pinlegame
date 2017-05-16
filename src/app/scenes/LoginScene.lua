@@ -728,7 +728,8 @@ function LoginScene:touch_Callback( sender, eventType  )
                  self:_landing_interface()
            
                 if self.resetpasswordLayer then
-                   self.resetpasswordLayer:removeFromParent()
+                   --self.resetpasswordLayer:removeFromParent()
+                   self:removeChildByTag(7531, true)
                 end
               elseif tag==303 then
                 local password = self.resetpasswordLayer:getChildByTag(302)
@@ -802,6 +803,8 @@ function LoginScene:_resetpasswordLayer(  )
            
             self.resetpasswordLayer = cc.CSLoader:createNode("resetpasswordLayer.csb");
             self:addChild(self.resetpasswordLayer);
+            self.resetpasswordLayer:setTag(7531)
+
              local _back = self.resetpasswordLayer:getChildByTag(305)
              _back:addTouchEventListener((function(sender, eventType  )
                      self:touch_Callback(sender, eventType)
@@ -975,7 +978,8 @@ function LoginScene:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self,
                        function()
                          if self.resetpasswordLayer then
-                                self.resetpasswordLayer:removeFromParent()
+                                --self.resetpasswordLayer:removeFromParent()
+                                self:removeChildByTag(7531, true)
                                 self:landing_init()
                          end
                       end)

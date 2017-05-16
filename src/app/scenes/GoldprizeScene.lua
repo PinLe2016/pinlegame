@@ -35,10 +35,7 @@ function GoldprizeScene:init(  )
     	back:addTouchEventListener(function(sender, eventType  )
 		self:touch_callback(sender, eventType)
 	end)
-    	local instructions_bt=self.GoldprizeScene:getChildByTag(58)
-    	instructions_bt:addTouchEventListener(function(sender, eventType  )
-		self:touch_callback(sender, eventType)
-	end)
+    	
     	self.jackpot_ListView=self.GoldprizeScene:getChildByTag(127)--奖池列表
     	self.jackpot_ListView:addScrollViewEventListener((function(sender, eventType  )
                       if eventType  ==6 then
@@ -102,7 +99,6 @@ function GoldprizeScene:data_init(  )
 
 		        local bg1=cell:getChildByTag(63)
 		        local bg1_image=bg1:getChildByTag(121)
-		        local bg1_jibiao=bg1:getChildByTag(986)
 		        local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 				--bg1_image:loadTexture(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))  --图片
 				local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(jac_data[2*i-1]["imageurl"], "/",":")))
@@ -113,7 +109,6 @@ function GoldprizeScene:data_init(  )
 			            end
 
 				bg1_image:setTag(2*i-1)
-				bg1_jibiao:setString(tostring(jac_data[2*i-1]["goldspoolcount"]))
 				if tonumber(jac_data[2*i-1]["playtimes"]) >0 then
 					bg1:getChildByTag(4809):setVisible(true)
 				end
@@ -128,17 +123,12 @@ function GoldprizeScene:data_init(  )
 
 				end)
 
-		    local end1=bg1:getChildByTag(66) --结束
-		    local began1=bg1:getChildByTag(67) --未结束
-		    local title1=bg1:getChildByTag(70)
-
-		    title1:setString(tostring(jac_data[2*i-1]["name"]))
+		  
+		  
 		    local goldsamount1=bg1:getChildByTag(71)--总金币
 		    goldsamount1:setString(tostring(jac_data[2*i-1]["goldsamount"]))  --goldsamount
 
-		    local goldsremain1=bg1:getChildByTag(72) --剩余金币
-		    goldsremain1:setString(tostring(jac_data[2*i-1]["goldsamount"]))
-
+		   
 		    bg2=cell:getChildByTag(64)
 		    bg2:setVisible(false)
 
@@ -156,7 +146,6 @@ function GoldprizeScene:data_init(  )
 			bg2:setVisible(true)
 
 			local bg2_img=bg2:getChildByTag(91)
-			local bg2_jiaobiao=bg2:getChildByTag(985)
 			local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 			--bg2_img:loadTexture(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))  --图片
 			local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(jac_data[2*i]["imageurl"], "/",":")))
@@ -169,7 +158,6 @@ function GoldprizeScene:data_init(  )
 					bg2:getChildByTag(4810):setVisible(true)
 			end
 			bg2_img:setTag(2*i)
-			bg2_jiaobiao:setString(tostring(jac_data[2*i]["goldspoolcount"]))
 			bg2_img:addTouchEventListener(function(sender, eventType  )
 
 					if eventType ~= ccui.TouchEventType.ended then
@@ -187,17 +175,12 @@ function GoldprizeScene:data_init(  )
 
 			end)
 
-		    local end1=bg2:getChildByTag(89) --结束
-		    local began1=bg2:getChildByTag(90) --未结束
-		    local title1=bg2:getChildByTag(60)
-
-		    title1:setString(tostring(jac_data[2*i]["name"]))
+		   
+		  
 		    local goldsamount1=bg2:getChildByTag(61)--总金币
 
 		    goldsamount1:setString(tostring(jac_data[2*i]["goldsamount"]))--goldsamount
-		    local goldsremain1=bg2:getChildByTag(62) --剩余金币
-
-		    goldsremain1:setString(tostring(jac_data[2*i]["goldsamount"]))
+		  
 		end
 
 		if tonumber(self.sur_pageno)~=0 then

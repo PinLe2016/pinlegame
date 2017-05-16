@@ -6,172 +6,104 @@ local FriendrequestLayer = class("FriendrequestLayer", function()
             return display.newScene("FriendrequestLayer")
 end)
 function FriendrequestLayer:ctor(params)--params
-    self.switch = params.switch
-     self.floating_layer = require("app.layers.FloatingLayer").new()
-      self.floating_layer:addTo(self,100000)
-
-
-       self:setNodeEventEnabled(true)--layer添加监听
-       Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
-        self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
-       self:addChild(self.Friendrequest)
-       --Server:Instance():getfriendlist()--查询好友列表   
-       --Server:Instance():set_friend_reward_setting()
-      
+            self.switch = params.switch
+            self.floating_layer = require("app.layers.FloatingLayer").new()
+            self.floating_layer:addTo(self,100000)
+            self:setNodeEventEnabled(true)--layer添加监听
+            Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
+            self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
+            self:addChild(self.Friendrequest)
 end
 function FriendrequestLayer:init(  )
-      
        local _table=LocalData:Instance():get_gettasklist()
        local tasklist=_table["tasklist"]
        for i=1,#tasklist  do 
              if  tonumber(tasklist[i]["targettype"])   ==  1   then
                   LocalData:Instance():set_tasktable(tasklist[i]["targetid"])
-             end
-             
+             end   
        end
-
        self:pop_up()--弹出框
-
        local back_bt=self.Friendrequest:getChildByTag(123)  --返回
-	back_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+            back_bt:addTouchEventListener(function(sender, eventType)
+            self:touch_callback(sender, eventType)
        end)
-      self.dian1=self.Friendrequest:getChildByTag(171)
-      self.dian2=self.Friendrequest:getChildByTag(172)
-
-       local PageView_=self.Friendrequest:getChildByTag(1291)
-       PageView_:addEventListener(function(sender, eventType  )
-                 if eventType == ccui.PageViewEventType.turning then
-                  PageView_:scrollToPage(PageView_:getCurPageIndex())
-                      if PageView_:getCurPageIndex()==0 then
-                      	   self.dian1:setSelected(true)
-                           self.dian2:setSelected(false)
-                       elseif PageView_:getCurPageIndex()==1 then
-                           self.dian1:setSelected(false)
-                           self.dian2:setSelected(true)
-                      end
-                end
-        end)
-        self.friendlist_num=LocalData:Instance():get_reward_setting_list()  
-        local Invitecode_text=self.Friendrequest:getChildByTag(1044)  --邀请码
-        Invitecode_text:setString("邀请码:" .. self.friendlist_num["activatedcode"] )
-        local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
-        friend_num:setVisible(false)
-        local labelAtlas1 = ccui.TextAtlas:create()
-         labelAtlas1:setPosition(cc.p(friend_num:getPositionX(),friend_num:getPositionY()))  
-         labelAtlas1:setProperty(tostring(self.friendlist_num["friendcount"]), "png/cou.png", 26, 35, "0")
-         self.Friendrequest:addChild(labelAtlas1) 
-
-        --friend_num:setString(tostring(self.friendlist_num["friendcount"]) .. "人")
-
-       
-       local _list=self.Friendrequest:getChildByTag(1291):getChildByTag(1292)
-
-      self.receive_bt1=_list:getChildByTag(129):getChildByTag(135)  --领取1
-	self.receive_bt1:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-
-      self.receive_bt2=_list:getChildByTag(130):getChildByTag(138)--领取2
-	self.receive_bt2:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-
-       self.receive_bt3=_list:getChildByTag(131):getChildByTag(141)--领取3
-	self.receive_bt3:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-
-      self.receive_bt4=_list:getChildByTag(132):getChildByTag(144)--领取4
-	self.receive_bt4:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-	
-       local _listble=self.Friendrequest:getChildByTag(1291):getChildByTag(1590)
-
-      self.receive_bt5=_listble:getChildByTag(1591):getChildByTag(1599)  --领取5
-	self.receive_bt5:addTouchEventListener(function(sender, eventType)
-	       self:touch_callback(sender, eventType)
-       end)
-
-      self.receive_bt6=_listble:getChildByTag(1592):getChildByTag(1600)--领取6
-	self.receive_bt6:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-
-      self.receive_bt7=_listble:getChildByTag(1593):getChildByTag(1601)--领取7
-	self.receive_bt7:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-
-      self.receive_bt8=_listble:getChildByTag(1594):getChildByTag(1602)--领取8
-	self.receive_bt8:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-       self.managerlist=self.friendlist_num["managerlist"]  
-       local _table = {3,5,10,20,30,50,80,100}
-
-       local lo_img={self.receive_bt1,self.receive_bt2,self.receive_bt3,self.receive_bt4,self.receive_bt5,self.receive_bt6,self.receive_bt7,self.receive_bt8}
-      -- for i=1,#self.managerlist do    --   tag
-          for j=1,#_table do
-         --   if self.managerlist[i]["friendscount"]==_table[j] then  --
-                --lo_img[i]:setColor(cc.c3b(100,100,100))
-                lo_img[j]:setBright(false)--loadTextures("png/yaoqinghaoyou-01-anniu-hui.png", "png/yaoqinghaoyou-01-anniu-hui.png", "")
-                lo_img[j]:setTouchEnabled(false)
-              
-        end
-      --    end
-         
-     --  end
-
      
-      
-      for i=1,8 do  --self.friendlist_num["friendcount"]
-     --  if _table[i]==tonumber(self.friendlist_num["friendcount"])   then
-       --    lo_img[i]:setTouchEnabled(true)
-      --      lo_img[i]:setBright(true)
-           -- lo_img[i]:loadTextures("png/huodongxiangqing-anniu.png", "png/denglu-di-anniu-di.png", "")
-    --   end
-      end
-
---0可以领取  1已经领取   2好友个数不到不可领取
-
-        for i=1,#_table do
-        for j=1,#self.managerlist do
-            if self.managerlist[j]["friendscount"]==_table[i]   then  
-                  if tonumber(self.managerlist[j]["tag"]) ==1 then 
-                     -- lo_img[i]:setColor(cc.c3b(100,100,100))  --  3-13
-                       lo_img[i]:setTouchEnabled(false)
-                        lo_img[i]:setBright(false)
-                  end
-            end
-          end
-      end
-
-       for i=1,#self.managerlist do    --   tag
-          for j=1,#_table do
-            if    self.managerlist[i]["friendscount"]==_table[j]      then  --
-                 if self.managerlist[i]["tag"]==0    then
-                 lo_img[j]:setTouchEnabled(true)
-                 lo_img[j]:setBright(true)
-                   end
-            end
-          end
-       end
-
-
-
-      
+        self.friendlist_num=LocalData:Instance():get_reward_setting_list()  
+        local friend_num=self.Friendrequest:getChildByTag(160)  --邀请的人数
+        friend_num:setString(tostring(self.friendlist_num["friendcount"]))
+        local ldb_Friends=self.Friendrequest:getChildByTag(333)
+        ldb_Friends:setPercent(tonumber(self.friendlist_num["friendcount"])/200 *100)
        local friend_bt=self.Friendrequest:getChildByTag(161)  --好友邀请
-	friend_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+            friend_bt:addTouchEventListener(function(sender, eventType)
+            self:touch_callback(sender, eventType)
        end)
-
        local feedback_bt=self.Friendrequest:getChildByTag(162)  --回馈邀请人
-	feedback_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+              feedback_bt:addTouchEventListener(function(sender, eventType)
+              self:touch_callback(sender, eventType)
        end)
-       
+      self:fun_scrollToPage()
+end
+function FriendrequestLayer:fun_scrollToPage(  )
+        local pvw_Friends=self.Friendrequest:getChildByTag(346)
+        self.pnl_First=pvw_Friends:getChildByTag(347)
+        self.pnl_Second=pvw_Friends:getChildByTag(412)
+        self.pnl_Third=pvw_Friends:getChildByTag(413)
+         --  左键
+      local YQHY_D_Z=self.Friendrequest:getChildByTag(335)
+      YQHY_D_Z:addTouchEventListener(function(sender, eventType  )
+            if eventType ~= ccui.TouchEventType.ended then
+             return
+            end
+            pvw_Friends:scrollToPage(pvw_Friends:getCurPageIndex()-1)
+      end)
+      --右键
+      local YQHY_D_Y=self.Friendrequest:getChildByTag(336)
+      YQHY_D_Y:addTouchEventListener(function(sender, eventType  )
+            if eventType ~= ccui.TouchEventType.ended then
+             return
+            end
+            pvw_Friends:scrollToPage(pvw_Friends:getCurPageIndex()+1)
+      end)   
+      self:fun_pnl_First(self.pnl_First,348,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_First,356,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_First,364,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_First,372,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_First,380,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_First,388,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_First,396,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_First,404,20,44,55,55,true,true,true)
+
+      self:fun_pnl_First(self.pnl_Second,414,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Second,422,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Second,430,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Second,438,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Second,446,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Second,454,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Second,462,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Second,470,20,44,55,55,true,true,true)
+
+      self:fun_pnl_First(self.pnl_Third,478,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Third,486,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Third,494,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Third,502,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Third,510,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Third,518,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Third,526,20,44,55,55,true,true,true)
+      self:fun_pnl_First(self.pnl_Third,534,20,44,55,55,true,true,true)
+end
+function FriendrequestLayer:fun_pnl_First( pnl,_tag,number,reward1,reward2,reward3,isb1,isb2,isb3 )
+        local ProjectNode_2=pnl:getChildByTag(_tag):getChildByTag(340)
+        local Text_1=ProjectNode_2:getChildByTag(342)
+        Text_1:setString(tostring(number))
+        local Text_2=ProjectNode_2:getChildByTag(343)
+        Text_2:setString(tostring(reward1))
+        Text_2:setVisible(isb1)
+        local Text_3=ProjectNode_2:getChildByTag(345)
+        Text_3:setString(tostring(reward2))
+        Text_3:setVisible(isb2)
+        local Text_4=ProjectNode_2:getChildByTag(344)
+        Text_4:setString(tostring(reward3))
+        Text_4:setVisible(isb3)
 end
 
 function FriendrequestLayer:pop_up(  )
@@ -225,28 +157,28 @@ function FriendrequestLayer:pop_up(  )
 
 
        local friend_back=self.m_friend:getChildByTag(242)  --好友返回
-	friend_back:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  friend_back:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 
        local share_bt=self.m_friend:getChildByTag(243)  --前往邀请  分享
-	share_bt:addTouchEventListener(function(sender, eventType)
-	-- self:touch_callback(sender, eventType)
+  share_bt:addTouchEventListener(function(sender, eventType)
+  -- self:touch_callback(sender, eventType)
        end)
 
       local feedback_back=self.m_feedback:getChildByTag(229)  --回馈返回
-	feedback_back:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  feedback_back:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 
        local _backbt=self.m_feedback:getChildByTag(230)  --下次再说
-	_backbt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  _backbt:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 
        local obtain_bt=self.m_feedback:getChildByTag(231)  --输入获取
-	obtain_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  obtain_bt:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 
    if tostring(friendlist_code["invitecode"])~="0" then
@@ -279,142 +211,62 @@ end
 
 
 function FriendrequestLayer:touch_callback( sender, eventType )
-	if eventType ~= ccui.TouchEventType.ended then
-		return
-	end
-	local tag=sender:getTag()
-     local lo_img={self.receive_bt1,self.receive_bt2,self.receive_bt3,self.receive_bt4,self.receive_bt5,self.receive_bt6,self.receive_bt7,self.receive_bt8}
-     local friendlist_num=LocalData:Instance():get_reward_setting_list()  
-     local managerlist=self.friendlist_num["managerlist"]
-     local _table = {3,5,10,20,30,50,80,100}
+  if eventType ~= ccui.TouchEventType.ended then
+    return
+  end
+  local tag=sender:getTag()
 
---判断是否领取
-    for i=1,#_table do
-        for j=1,#managerlist do
 
-            if tag==lo_img[i]:getTag()  and  self.managerlist[j]["friendscount"]==_table[i]   then  --
-               self.j_count=j
-               if tonumber(managerlist[j]["tag"]) ==1 then   --tag  0可以领取  1已经领取   2好友个数不到不可领取
-                    Server:Instance():prompt("您已经领取过了")
-                     return
-              elseif tonumber(managerlist[j]["tag"])==2 then   --tag  0可以领取  1已经领取   2好友个数不到不可领取
-                    Server:Instance():prompt("您好友个数不到,不可领取")
-                    return
-              end
-              
-          end
 
-        end
-    end
-
-	if tag==123 then --返回
-            -- Server:Instance():getuserinfo()  --钻石刷新
-		if self.share then
+  if tag==123 then --返回
+    if self.share then
                    if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
                        Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
                         LocalData:Instance():set_tasktable(nil)--制空
                  end
             end
-          -- if tonumber(LocalData:Instance():get_sign()) ~=  2 then
-          --   
-          -- end
           Util:all_layer_backMusic()
           Server:Instance():gettasklist()
-	    
       if self.switch==1 then
         self:removeFromParent()
       else
         Util:scene_control("MainInterfaceScene")
       end
-
-
-	elseif tag==135 then
-		print("hahahdfsfdsfdsf 1")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励 
-            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
-                                      Server:Instance():get_friend_reward_setting_list()                
-            end)
-	elseif tag==138 then
-		print("hahahdfsfdsfdsf 2")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
-                                      Server:Instance():get_friend_reward_setting_list()                
-            end)
-	elseif tag==141 then
-		print("hahahdfsfdsfdsf 3")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
-                                      Server:Instance():get_friend_reward_setting_list()                
-            end)
-	elseif tag==144 then
-		print("hahahdfsfdsfdsf 4")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
-                                      Server:Instance():get_friend_reward_setting_list()                
-            end)
-	elseif tag==1599 then
-		print("hahahdfsfdsfdsf 5")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
-                                      Server:Instance():get_friend_reward_setting_list()                
-            end)
-	elseif tag==1600 then
-		print("hahahdfsfdsfdsf 6")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
-                                      Server:Instance():get_friend_reward_setting_list()                
-            end)
-	elseif tag==1601 then
-		print("hahahdfsfdsfdsf 7")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
-                                      Server:Instance():get_friend_reward_setting_list()                
-            end)
-	elseif tag==1602 then
-		print("hahahdfsfdsfdsf 8")
-            Server:Instance():set_friend_reward_setting(self.managerlist[self.j_count]["Id"])--奖励
-            self.floating_layer:showFloat("恭喜您领取成功",function (sender, eventType)
-                                      Server:Instance():get_friend_reward_setting_list()                
-            end)
-	elseif tag==161 then  --好友邀请
-		-- self.Friendsstep:setVisible(true)
-		-- self.m_friend:setVisible(true)
-    print("分享11")
+  elseif tag==161 then  --好友邀请
     self.share=Util:share()
-
-	elseif tag==162 then  --回馈邀请人
-		self.Friendsstep:setVisible(true)
-		self.m_feedback:setVisible(true)
-		self.invitecode_num:setVisible(true)
-	elseif tag==229 then  --回馈返回
-		self.Friendsstep:setVisible(false)
-		self.m_feedback:setVisible(false)
-		self.invitecode_num:setVisible(false)
-	elseif tag==242 then  --好友返回
-		self.Friendsstep:setVisible(false)
-		self.m_friend:setVisible(false)
-	elseif tag==243 then  --分享
-		
-	elseif tag==230 then  --下次再说
-		self.Friendsstep:setVisible(false)
-		self.m_friend:setVisible(false)
-	elseif tag==231 then  --获取输入码
-		local _num=self.invitecode_num:getText()
-		Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
-		print("获取输入码",_num)
-	
-	
-	end
+  elseif tag==162 then  --回馈邀请人
+    self.Friendsstep:setVisible(true)
+    self.m_feedback:setVisible(true)
+    self.invitecode_num:setVisible(true)
+  elseif tag==229 then  --回馈返回
+    self.Friendsstep:setVisible(false)
+    self.m_feedback:setVisible(false)
+    self.invitecode_num:setVisible(false)
+  elseif tag==242 then  --好友返回
+    self.Friendsstep:setVisible(false)
+    self.m_friend:setVisible(false)
+  elseif tag==243 then  --分享
+    
+  elseif tag==230 then  --下次再说
+    self.Friendsstep:setVisible(false)
+    self.m_friend:setVisible(false)
+  elseif tag==231 then  --获取输入码
+    local _num=self.invitecode_num:getText()
+    Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
+    print("获取输入码",_num)
+  
+  
+  end
 end
 function FriendrequestLayer:onEnter()
-	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self,
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self,
                        function()
-                      		 self:init()
+                           self:init()
 
                       end)
-	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.STECODE, self,
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.STECODE, self,
                        function()
-                      		self:pop_up()--弹出框
+                          self:pop_up()--弹出框
                            local userdt = LocalData:Instance():get_userdata()
                             userdt["golds"]=userdt["golds"]  +  200
                             LocalData:Instance():set_userdata(userdt)
@@ -423,8 +275,8 @@ function FriendrequestLayer:onEnter()
 end
 
 function FriendrequestLayer:onExit()
-     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self)
-     	 NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.STECODE, self)
+        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.STECODE, self)
        cc.Director:getInstance():getTextureCache():removeAllTextures() 
 end
 

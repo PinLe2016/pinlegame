@@ -6,7 +6,7 @@
 
 --3.5.1 获取活动专区列表
 
---status	是	要获取的数据状态	String	0未开始1已开始2已结束3我的惊喜
+--status    是   要获取的数据状态    String  0未开始1已开始2已结束3我的惊喜
 -- 4我的未结束活动码活动 5我的已结束活动码活动
 function Server:getactivitylist(status,pageno)
     local params = {}
@@ -30,7 +30,7 @@ function Server:getactivitylist_callback()
 end
 
 
---3.5.2 获取指定活动详情  activitieid	是	活动ID	String	GUID
+--3.5.2 获取指定活动详情  activitieid   是   活动ID    String  GUID
 function Server:getactivitybyid(activityid,cycle)
     local params = {}
     params={
@@ -46,7 +46,7 @@ end
 
 
 function Server:getactivitybyid_callback()
-   -- dump(self.data)
+    dump(self.data)
     if self.data.err_code==0  then
             LocalData:Instance():set_getactivitybyid(self.data)--保存数据
             -- if self.cycle  == 0 then
@@ -55,10 +55,10 @@ function Server:getactivitybyid_callback()
             -- end
             NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE)
            
-    elseif self.data.err_code==1 then
-       -- self:show_float_message("金币不足")
+    elseif self.data.err_code==26 then
+       NotificationCenter:Instance():PostNotification("phone")
     end
-    
+         
     
 end
 
@@ -97,7 +97,7 @@ end
 
 
 function Server:getactivityadlist_callback()
-    -- dump(self.data)
+     dump(self.data)
     if  self.data.err_code~=0  then
         self:show_float_message("活动还没有开始，敬请期待！" .. self.data.err_msg)
         return
@@ -426,7 +426,21 @@ function Server:settasktargetrecord_callback()
       -- LocalData:Instance():set_settasktarget(self.data)--保存数据
        NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.TASKTARGETRECORD)
 end
-
+--  上传手机号
+function Server:setmobile(_phone)
+    local params = {}
+    params={
+            mobile=_phone,
+        }
+    self:request_http("setmobile" , params ); 
+end
+function Server:setmobile_callback()
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+       NotificationCenter:Instance():PostNotification("setmobile_messg")
+end
 
 
 

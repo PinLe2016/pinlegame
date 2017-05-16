@@ -48,28 +48,20 @@ function InvitefriendsLayer:fun_friend_act(  )
 end
 
 function InvitefriendsLayer:init(  )
-      
-        -- self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-        -- self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
-        -- self:addChild(self.fragment_sprite)text
-
       self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
       self:addChild(self.Invitefriends)
-      
-       --self:move_layer(self.Invitefriends)
         self:pop_up()--  弹出框
        local back_bt=self.Invitefriends:getChildByTag(82)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
        end)
-       local friendrequest_bt=self.Invitefriends:getChildByTag(117)  --好友邀请
-	friendrequest_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
-       local feedback_bt=self.Invitefriends:getChildByTag(118)  --回馈邀请人
-	feedback_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
-       end)
+       self.sp_ysprite=self.Invitefriends:getChildByTag(962)  --邀请好友
+       self.sp_ysprite:addTouchEventListener(function(sender, eventType  )
+                         if eventType ~= ccui.TouchEventType.ended then
+                             return
+                        end
+                        print("邀请好友")
+                    end)
       self.obtain_bt=self.Invitefriends:getChildByTag(106):getChildByTag(116)  --一键获取
 	self.obtain_bt:addTouchEventListener(function(sender, eventType)
 	self:touch_callback(sender, eventType)
@@ -174,10 +166,10 @@ function InvitefriendsLayer:fun_init( _isvisber)
 	            self.grade:setString( _friendlist[i]["playergrade"] )
 	            self.imgurl =  _cell:getChildByTag(105)  --头像
 	            self.imgurl:loadTexture("png/"   ..   string.lower(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":"))))
-                   self.today_golds =  _cell:getChildByTag(102)  --贡献金币
-                  self.today_golds:setString( _friendlist[i]["total_golds"] )
-                  self.total_golds =  _cell:getChildByTag(101)  --贡献经验
-                  self.total_golds:setString( _friendlist[i]["total_points"] )
+                  --  self.today_golds =  _cell:getChildByTag(102)  --贡献金币
+                  -- self.today_golds:setString( _friendlist[i]["total_golds"] )
+                  -- self.total_golds =  _cell:getChildByTag(101)  --贡献经验
+                  -- self.total_golds:setString( _friendlist[i]["total_points"] )
                   
 
                    local move_friend =_cell:getChildByName("CheckBox_1")  --删除好友
@@ -326,24 +318,20 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
             self:function_addFriend()
             Server:Instance():getsearchfriendlist(5,1) 
       elseif tag==3628 then  --删除好友
-           --  print("删除好友")
-           -- Server:Instance():setfriendoperation(self.table_insert,1)
-           -- self.friend_list_type=1
-
             self.addFriend_truebt:setVisible(true)
             self.addFriend_falsebt:setVisible(true)
-            --self:fun_init(true)-- 数据初始化
+            self.sp_ysprite:setVisible(false)
             for i=1,#self._table_box do
               self._table_box[i].k:setVisible(true)
             end
 
       elseif tag==1199 then  --确认删除
             if #self.table_insert ==  0  then
-                --self:fun_init(false)-- 数据初始化
                  for i=1,#self._table_box do
                   self._table_box[i].k:setVisible(false)
                 end
                 self.addFriend_truebt:setVisible(false)
+                self.sp_ysprite:setVisible(true)
                 self.addFriend_falsebt:setVisible(false)
 
                 return
@@ -357,7 +345,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
            sender:runAction(cc.Sequence:create(cc.DelayTime:create(1),callfunc  ))
            self.friend_list_type=1
       elseif tag==1200 then  --取消删除
-            
+            self.sp_ysprite:setVisible(true)
             self.addFriend_truebt:setVisible(false)
             self.addFriend_falsebt:setVisible(false)
             --self:fun_init(false)
@@ -379,15 +367,7 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
               else
                 sender:setTouchEnabled(true)
              end
-		--  local receive_table =  LocalData:Instance():get_reward_friend()
-  --    dump(receive_table)
-  --                        local _playerinfo = receive_table["playerinfo"]
-  --                        if _playerinfo["curgolds"]==0 then
-  --                        	Server:Instance():prompt("没有金币领取")
-  --                        	return
-  --                        end
-  --                       local friendlist_table=LocalData:Instance():getfriendlist()
-		-- print("一键获取")
+		
 		Server:Instance():get_reward_of_friends_levelup()
 	  Server:Instance():getuserinfo()
 	
@@ -417,23 +397,7 @@ function InvitefriendsLayer:function_addFriend(  )
             end)
             local search_name_friend =self.addFriendSp:getChildByTag(4476)  --收索好友的昵称
             search_name_friend:setFontSize(22)
-            --  光标闪烁
-            -- self.alert = ccui.Text:create()
-            -- self.alert:setString("|")
-            -- self.alert:setFontName("png/chuti.ttf")
-            -- self._guangbiao_x=search_name_friend:getPositionX()
-            -- self.alert:setPosition(search_name_friend:getPositionX(),search_name_friend:getPositionY())
-            -- self.alert:setFontName(font_TextName)
-            -- self.alert:setFontSize(40)
-            -- self.alert:setColor(cc.c3b(0, 0, 0))
-            -- self.addFriendSp:addChild(self.alert)
-
-            -- local  move=cc.Blink:create(1, 1)  
-            -- local action = cc.RepeatForever:create(move)
-            -- self.alert:stopAllActions()
-            -- self.alert:runAction(action)
-
-            --self:function_keyboard(search_name_friend)--注册键盘监听
+    
             self:function_keyboard(self.addFriendSp,search_name_friend,13)
             self._search_name_friend=search_name_friend
             local search_friend =self.addFriendSp:getChildByTag(4379)  --收索好友
@@ -451,21 +415,21 @@ function InvitefriendsLayer:function_addFriend(  )
                      Server:Instance():getsearchfriendlist(5,1,_str) 
                     print("收索添加好友",search_name_friend:getString())
             end)
-            local again_search =self.addFriendSp:getChildByTag(4380)  --换一批
-            again_search:addTouchEventListener(function(sender, eventType)
-                    if eventType ~= ccui.TouchEventType.ended then
-                          return
-                    end
-                    self.search_friend_pageno=self.search_friend_pageno+1
-                     local _str=""
-                      if self._search_name_friend  ~=  nil then
-                          _str=self._search_name_friend:getString()
-                      end
+            -- local again_search =self.addFriendSp:getChildByTag(4380)  --换一批
+            -- again_search:addTouchEventListener(function(sender, eventType)
+            --         if eventType ~= ccui.TouchEventType.ended then
+            --               return
+            --         end
+            --         self.search_friend_pageno=self.search_friend_pageno+1
+            --          local _str=""
+            --           if self._search_name_friend  ~=  nil then
+            --               _str=self._search_name_friend:getString()
+            --           end
 
-                    Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
-                   print("刷新好友")
+            --         Server:Instance():getsearchfriendlist(5,self.search_friend_pageno) 
+            --        print("刷新好友")
                     
-            end)
+            -- end)
             
            
 end
@@ -550,10 +514,6 @@ function InvitefriendsLayer:function_addFriend_data( )
                        self._search_type=0
                        self.add_ListView:removeAllItems()
             end
-            -- if #list ==  0  then
-              
-            --        return
-            -- end
             self.add_ListView:removeAllItems()
                for i=1,#list do
                    self.add_ListView:pushBackDefaultItem()
@@ -565,13 +525,7 @@ function InvitefriendsLayer:function_addFriend_data( )
                   grade:setString( "LV."  ..  list[i]["grade"] )
                   local imgurl =  _cell:getChildByTag(4044)  --头像
                   imgurl:loadTexture("png/" ..  string.lower(tostring(Util:sub_str(list[i]["imageUrl"], "/",":"))))
-                  local gender =  _cell:getChildByTag(4046)  -- 性别
-                  --  男 IcnMale.png  女  IcnFemale.png
-                  if tostring(list[i]["gender"] )  ==  "true" then   --  true是男
-                      gender:loadTexture("png/IcnMale.png")
-                  else
-                      gender:loadTexture("png/IcnFemale.png")
-                  end
+                 
                   
                   local is_online =  _cell:getChildByTag(4049)  --是否在线
                   is_online:setString( "不在线")

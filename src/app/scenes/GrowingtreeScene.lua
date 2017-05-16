@@ -1593,7 +1593,6 @@ function GrowingtreeScene:function_template(data,dex)
               local _drycount_data=data["drycount"]  --水壶  0不是需要
               local _gaincount_data=data["gaincount"]  --收获 0不是需要
 
-
             local  _image = cc.Sprite:create("png/"..  _image_data)
             _image:setPosition(0,15 )
             _image:setScale(0.55)

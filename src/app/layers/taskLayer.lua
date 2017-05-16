@@ -38,13 +38,7 @@ function taskLayer:fun_share_friend()--update(dt)
 
          
 end
-function taskLayer:move_layer(_layer)
-    local curr_y=_layer:getPositionY()
-    _layer:setPositionY(curr_y+_layer:getContentSize().height)
-    local move =cc.MoveTo:create(0.3,cc.p(_layer:getPositionX(),curr_y))  
-     local sque=transition.sequence({cc.EaseBackOut:create(move)})
-      _layer:runAction(sque)
-end
+
 
 
 function taskLayer:init(  )
@@ -58,7 +52,6 @@ function taskLayer:init(  )
             self.taskLayer = cc.CSLoader:createNode("taskLayer.csb")
             self:addChild(self.taskLayer)
 
-            self:move_layer(self.taskLayer)
 
 
             local back_bt=self.taskLayer:getChildByTag(141)  --返回
@@ -94,33 +87,21 @@ function taskLayer:data_init(  )
         return
       end
 
-	for i=1,#tasklist do
+  for i=1,#tasklist do
                   self.task_list:pushBackDefaultItem()
                   local  cell = self.task_list:getItem(i-1)
-
-                  local  icon_image=cell:getChildByTag(200)--icon
-                  --icon_image:loadTexture(" ")
-
                   local  task_but=cell:getChildByTag(178)--按钮
                   task_but:setTag(i)
                    local  task_text=cell:getChildByTag(1227)--按钮
-                   local  task_ico=cell:getChildByTag(200)--按钮
-                   task_ico:loadTexture("png/task" ..  tonumber(tasklist[i]["targettype"])  ..  ".png")
+                   -- local  task_ico=cell:getChildByTag(200)--按钮
+                   -- task_ico:loadTexture("png/task" ..  tonumber(tasklist[i]["targettype"])  ..  ".png")
                    local dt=tonumber(tasklist[i]["targettype"])
                   if    dt==  0  or   dt  ==  1  or    dt  ==  2 then
-                        local  LoadingBar_1=cell:getChildByTag(197)--
-                        LoadingBar_1:setVisible(false)
-                        local  LoadingBar_2=cell:getChildByTag(177)--
-                         LoadingBar_2:setVisible(false)
+                       
+
                         local  LoadingBar_3=cell:getChildByTag(199)--
                          LoadingBar_3:setVisible(false)
-                         local  LoadingBar_4=cell:getChildByTag(198)--
-                         LoadingBar_4:setVisible(false)
-                          local  LoadingBar_5=cell:getChildByTag(147)--
-                         LoadingBar_5:setVisible(false)
-                         local  LoadingBar_6=cell:getChildByTag(146)--
-                         LoadingBar_6:setVisible(false)
-
+                        
 
                   end
 
@@ -141,13 +122,7 @@ function taskLayer:data_init(  )
                 end
 
                  --print("发的是开发商可",task_text:getStringLength())
-                  if task_text:getStringLength() <= 4   then
-                     task_text:setFontSize(20)
-                  elseif  task_text:getStringLength() > 4   and   task_text:getStringLength() <=  6   then
-                    task_text:setFontSize(17)
-                  else
-                    task_text:setFontSize(13)
-                  end
+                
 
                   
                   task_but:addTouchEventListener(function(sender, eventType  )
@@ -161,16 +136,15 @@ function taskLayer:data_init(  )
                   --local title_bg=cell:getChildByTag(175)
                  
 
-                  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,190,25))
-                  crn:setPosition(cc.p(140,65))
+                  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,280,35))
+                  crn:setPosition(cc.p(135,65))
                   title_bg:addChild(crn)
 
-                  local title = ccui.Text:create()
+                  local title = ccui.Text:create("", "resources/com/huakangfangyuan.ttf", 27)
                   title:setPosition(cc.p(title:getContentSize().width,10))--alert:getPositionX(),alert:getPositionY()
                   title:setAnchorPoint(cc.p(0,0.5))
                   crn:addChild(title)
-                  title:setFontSize(23)
-                  title:setColor(cc.c3b(48, 133, 205))
+                  title:setColor(cc.c3b(245, 126, 20))
                   title:setString(tasklist[i]["description"])
 
                         --描述动画
@@ -192,9 +166,9 @@ function taskLayer:data_init(  )
 
                   local  gold_number=cell:getChildByTag(195)--获得金币   后续的改
                   local  gold_image=cell:getChildByTag(179)  --  奖励图片
-                  gold_number:setString("X" ..  tasklist[i]["rewardamount"])
+                  gold_number:setString(tasklist[i]["rewardamount"])
                   if tasklist[i]["rewardtype"] == 0  then  --0为金币，1为积分，2为道具，3为商品
-                     gold_image:loadTexture("png/Gjinbi.png")
+                     gold_image:loadTexture("resources/youjianjiemian/YJ_icon_1.png")
                   elseif tasklist[i]["rewardtype"] == 1 then
                     gold_image:loadTexture("png/chengzhangshu-touxiang-jingyan-icon.png")
                   elseif tasklist[i]["rewardtype"] == 2 then
@@ -218,8 +192,8 @@ function taskLayer:data_init(  )
                    if tonumber(tasklist[i]["progress"]) > tonumber(tasklist[i]["targetgoal"])    then
                      tasklist[i]["progress"] =  tonumber(tasklist[i]["targetgoal"])
                    end
-      	       local jindu= tonumber(tasklist[i]["progress"]) /  tonumber(tasklist[i]["targetgoal"])  *100
-      	       loadingbar:setPercent(jindu)
+               local jindu= tonumber(tasklist[i]["progress"]) /  tonumber(tasklist[i]["targetgoal"])  *100
+               loadingbar:setPercent(jindu)
 
                 
                   
@@ -233,22 +207,22 @@ function taskLayer:touch_btCallback( sender, eventType )
 
            local tag=sender:getTag()
            if tag==141 then  --返回
-           	  if self.taskLayer then
+              if self.taskLayer then
                  -- local getuserinfo=LocalData:Instance():get_getuserinfo()--保存数据
                  -- local userdt = LocalData:Instance():get_userdata()
                  -- userdt["golds"]=getuserinfo["golds"]
                  -- LocalData:Instance():set_userdata(userdt)
                   self.fragment_sprite:setVisible(false)
-           		self:removeFromParent()
+              self:removeFromParent()
               -- Util:scene_control("MainInterfaceScene")
               Util:all_layer_backMusic()
               LocalData:Instance():set_sign(1)
-           	 end
+             end
            end  
 end
 
 function taskLayer:touch_Callback( sender, eventType )
-	 if eventType ~= ccui.TouchEventType.ended then
+   if eventType ~= ccui.TouchEventType.ended then
                 return
        end 
         if self.Act_fragment_sprite ~= nil then
@@ -313,7 +287,7 @@ function taskLayer:onExit()
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.TASKTARGETRECORD, self)
      
-     	
+      
 end
 
 
