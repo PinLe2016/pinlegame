@@ -28,7 +28,6 @@ function InvitefriendsLayer:ctor()--params
       self.Invitefriends:setAnchorPoint(0.5,0.5)
       self.Invitefriends:setPosition(320, 568)
 
-
       local _table=LocalData:Instance():get_gettasklist()
        local tasklist=_table["tasklist"]
        for i=1,#tasklist  do 
