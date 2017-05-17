@@ -11,7 +11,7 @@ function taskLayer:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
        self.sur_pageno=1
        self.task_state={"普通种子","中级种子","高级种子","钻石种子","惊喜种子","普通化肥","中级化肥","高级化肥"}
-       self.task_stateimage={"chengzhangshu-zhongzi-chu-1.png","chengzhangshu-zhongzi-zhong-1.png","chengzhangshu-zhongzi-gao-1.png","chengzhangshu-zhongzi-zuan-1.png","chengzhangshu-zhongzi-xi-1.png","chengzhangshu-huafei-chuji.png","chengzhangshu-huafei-zhongji.png","chengzhangshu-huafei-gaoji.png"}
+       self.task_stateimage={"resources/com/rewardImage2.png","resources/com/rewardImage3.png","resources/com/rewardImage4.png","resources/com/rewardImage5.png","resources/com/rewardImage6.png","resources/com/rewardImage7.png","resources/com/rewardImage8.png","resources/com/rewardImage9.png"}
        LocalData:Instance():set_gettasklist(nil)
        self.share = nil
        self.Act_fragment_sprite=nil
@@ -194,7 +194,7 @@ function taskLayer:data_init(  )
                   elseif tasklist[i]["rewardtype"] == 2 then
                       for k=1,8 do
                            if tostring(tasklist[i]["rewarditemname"])  ==  self.task_state[k] then
-                              gold_image:loadTexture("png/"  ..  self.task_stateimage[k])
+                              gold_image:loadTexture(  self.task_stateimage[k])
                            end
                       end
                      
