@@ -100,11 +100,13 @@ function SetLayer:fun_init_infor( )
 end
 function SetLayer:set_touch(  )
       --  返回
-       local back=self.SetNode:getChildByName("Button_1")
+       local back=self.SetNode:getChildByName("Image_22")
                   back:addTouchEventListener(function(sender, eventType  )
                        if eventType ~= ccui.TouchEventType.ended then
+                           sender:setScale(1.2)
                            return
                       end
+                      sender:setScale(1)
                       local function stopAction()
                       self:removeFromParent()
                       end

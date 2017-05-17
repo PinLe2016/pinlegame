@@ -59,9 +59,24 @@ function taskLayer:init(  )
 
 
 
-            local back_bt=self.taskLayer:getChildByTag(141)  --返回
+            local back_bt=self.taskLayer:getChildByTag(3242)  --返回
             back_bt:addTouchEventListener((function(sender, eventType  )
-                     self:touch_btCallback(sender, eventType)
+                     if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                  end
+                  sender:setScale(1)
+                  Util:all_layer_backMusic()
+                  LocalData:Instance():set_sign(1)
+                  local function stopAction()
+                  self:removeFromParent()
+                  end
+                  local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                  local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                  local callfunc = cc.CallFunc:create(stopAction)
+                  self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
+
                end))
             self.task_list=self.taskLayer:getChildByTag(143)--邮箱列表
             self.task_list:setItemModel(self.task_list:getItem(0))
@@ -213,16 +228,7 @@ function taskLayer:touch_btCallback( sender, eventType )
            local tag=sender:getTag()
            if tag==141 then  --返回
               -- Util:scene_control("MainInterfaceScene")
-              Util:all_layer_backMusic()
-              LocalData:Instance():set_sign(1)
-              local function stopAction()
-              self:removeFromParent()
-              end
-              local actionTo = cc.ScaleTo:create(0.1, 1.1)
-              local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
-              local callfunc = cc.CallFunc:create(stopAction)
-              self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
-
+              
            
            end  
 end
