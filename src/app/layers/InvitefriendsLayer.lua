@@ -20,6 +20,15 @@ function InvitefriendsLayer:ctor()--params
 
        Server:Instance():get_reward_friend_list() --好友列表
 
+      local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+      self:addChild(fragment_sprite_bg)
+      self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
+      self:addChild(self.Invitefriends)
+      self.Invitefriends:setScale(0.7)
+      self.Invitefriends:setAnchorPoint(0.5,0.5)
+      self.Invitefriends:setPosition(320, 568)
+
+
       local _table=LocalData:Instance():get_gettasklist()
        local tasklist=_table["tasklist"]
        for i=1,#tasklist  do 
@@ -48,14 +57,7 @@ function InvitefriendsLayer:fun_friend_act(  )
 end
 
 function InvitefriendsLayer:init(  )
-      local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-      self:addChild(fragment_sprite_bg)
-      self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
-      self:addChild(self.Invitefriends)
-
-      self.Invitefriends:setScale(0.7)
-      self.Invitefriends:setAnchorPoint(0.5,0.5)
-      self.Invitefriends:setPosition(320, 568)
+     
 
       local actionTo = cc.ScaleTo:create(0.3, 1.1)
       local actionTo1 = cc.ScaleTo:create(0.1, 1)
