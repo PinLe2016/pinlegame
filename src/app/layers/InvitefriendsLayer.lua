@@ -48,14 +48,16 @@ function InvitefriendsLayer:fun_friend_act(  )
 end
 
 function InvitefriendsLayer:init(  )
+      local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+      self:addChild(fragment_sprite_bg)
       self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
       self:addChild(self.Invitefriends)
 
-      self.Invitefriends:setScale(0)
+      self.Invitefriends:setScale(0.7)
       self.Invitefriends:setAnchorPoint(0.5,0.5)
       self.Invitefriends:setPosition(320, 568)
 
-      local actionTo = cc.ScaleTo:create(0.5, 1.2)
+      local actionTo = cc.ScaleTo:create(0.3, 1.1)
       local actionTo1 = cc.ScaleTo:create(0.1, 1)
       self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
@@ -298,8 +300,8 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
               local function stopAction()
               self:removeFromParent()
               end
-              local actionTo = cc.ScaleTo:create(0.1, 1.2)
-              local actionTo1 = cc.ScaleTo:create(0.3, 0)
+              local actionTo = cc.ScaleTo:create(0.1, 1.1)
+              local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
               local callfunc = cc.CallFunc:create(stopAction)
               self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
 

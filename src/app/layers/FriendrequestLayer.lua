@@ -11,12 +11,14 @@ function FriendrequestLayer:ctor(params)--params
             self.floating_layer:addTo(self,100000)
             self:setNodeEventEnabled(true)--layer添加监听
             Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
+            local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+            self:addChild(fragment_sprite_bg)
             self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
             self:addChild(self.Friendrequest)
-            self.Friendrequest:setScale(0)
+            self.Friendrequest:setScale(0.7)
             self.Friendrequest:setAnchorPoint(0.5,0.5)
             self.Friendrequest:setPosition(320, 568)
-            local actionTo = cc.ScaleTo:create(0.5, 1.2)
+            local actionTo = cc.ScaleTo:create(0.3, 1.1)
            local actionTo1 = cc.ScaleTo:create(0.1, 1)
             self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
@@ -243,8 +245,8 @@ function FriendrequestLayer:touch_callback( sender, eventType )
               self:removeFromParent()
           end
       end
-      local actionTo = cc.ScaleTo:create(0.1, 1.2)
-      local actionTo1 = cc.ScaleTo:create(0.3, 0)
+      local actionTo = cc.ScaleTo:create(0.1, 1.1)
+      local actionTo1 = cc.ScaleTo:create(0.3, 1)
       local callfunc = cc.CallFunc:create(stopAction)
       self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
   elseif tag==161 then  --好友邀请

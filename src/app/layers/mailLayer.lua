@@ -9,21 +9,22 @@ end)
 
 function mailLayer:ctor()
 
-         self:setNodeEventEnabled(true)--layer添加监听
-         self.sur_pageno=1
-          LocalData:Instance():set_getaffiche(nil)
-         Server:Instance():getaffichelist(self.sur_pageno) 
-          self.tablecout  =  0  
-          self.sup_data_num =0 
-
+            self:setNodeEventEnabled(true)--layer添加监听
+            self.sur_pageno=1
+            LocalData:Instance():set_getaffiche(nil)
+            Server:Instance():getaffichelist(self.sur_pageno) 
+            self.tablecout  =  0  
+            self.sup_data_num =0 
+            local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+            self:addChild(fragment_sprite_bg)
             self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
             self:addChild(self.mailLayer)
-            self.mailLayer:setScale(0)
+            self.mailLayer:setScale(0.7)
             self.mailLayer:setAnchorPoint(0.5,0.5)
             self.mailLayer:setPosition(320, 568)
 
-            local actionTo = cc.ScaleTo:create(0.5, 1.2)
-           local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            local actionTo = cc.ScaleTo:create(0.3, 1.1)
+            local actionTo1 = cc.ScaleTo:create(0.1, 1)
             self.mailLayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
 
@@ -39,8 +40,8 @@ function mailLayer:ctor()
                   local function stopAction()
                   self:removeFromParent()
                   end
-                  local actionTo = cc.ScaleTo:create(0.1, 1.2)
-                  local actionTo1 = cc.ScaleTo:create(0.3, 0)
+                  local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                  local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
                   local callfunc = cc.CallFunc:create(stopAction)
                   self.mailLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
             end)

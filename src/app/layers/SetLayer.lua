@@ -20,13 +20,15 @@ function SetLayer:ctor()
 
 end
 function SetLayer:fun_init_infor( )
+            local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+            self:addChild(fragment_sprite_bg)
             self.SetNode = cc.CSLoader:createNode("SetNode.csb")
             self:addChild(self.SetNode)
 
-            self.SetNode:setScale(0)
+            self.SetNode:setScale(0.7)
             self.SetNode:setAnchorPoint(0.5,0.5)
             self.SetNode:setPosition(320, 568)
-            local actionTo = cc.ScaleTo:create(0.5, 1.2)
+            local actionTo = cc.ScaleTo:create(0.3, 1.1)
             local actionTo1 = cc.ScaleTo:create(0.1, 1)
             self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
@@ -106,11 +108,11 @@ function SetLayer:set_touch(  )
                       local function stopAction()
                       self:removeFromParent()
                       end
-                      local actionTo = cc.ScaleTo:create(0.1, 1.2)
-                      local actionTo1 = cc.ScaleTo:create(0.3, 0)
+                      local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                      local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
                       local callfunc = cc.CallFunc:create(stopAction)
                       self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
-              
+
                   end)
        --  问号 
        local problem_bt=self.SetNode:getChildByName("Button_6")

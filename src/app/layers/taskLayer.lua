@@ -45,13 +45,15 @@ function taskLayer:init(  )
 
         if not self.taskLayer then
             LocalData:Instance():set_sign(2)
+            local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+            self:addChild(fragment_sprite_bg)
             self.taskLayer = cc.CSLoader:createNode("taskLayer.csb")
             self:addChild(self.taskLayer)
-            self.taskLayer:setScale(0)
+            self.taskLayer:setScale(0.7)
             self.taskLayer:setAnchorPoint(0.5,0.5)
             self.taskLayer:setPosition(320, 568)
 
-            local actionTo = cc.ScaleTo:create(0.5, 1.2)
+            local actionTo = cc.ScaleTo:create(0.3, 1.1)
            local actionTo1 = cc.ScaleTo:create(0.1, 1)
             self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
@@ -216,8 +218,8 @@ function taskLayer:touch_btCallback( sender, eventType )
               local function stopAction()
               self:removeFromParent()
               end
-              local actionTo = cc.ScaleTo:create(0.1, 1.2)
-              local actionTo1 = cc.ScaleTo:create(0.3, 0)
+              local actionTo = cc.ScaleTo:create(0.1, 1.1)
+              local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
               local callfunc = cc.CallFunc:create(stopAction)
               self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
 

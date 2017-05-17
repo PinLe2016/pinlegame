@@ -686,8 +686,6 @@ end
 
 
 function MainInterfaceScene:funsetup( Isture )
-        -- self.set_bg=self.MainInterfaceScene:getChildByTag(88)
-        -- self.set_bg:setVisible(true)
         self.set_bg1=self.MainInterfaceScene:getChildByTag(89)
         self.set_Xbg=self.MainInterfaceScene:getChildByTag(563)
         self.set_Xbg:setVisible(Isture)

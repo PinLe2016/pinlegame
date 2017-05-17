@@ -180,7 +180,7 @@ function MainInterfaceScene:fun_init( )
        newshezhi_bt:setScale(0)
 
       self.setup_box=self.MainInterfaceScene:getChildByTag(6227)  --新的设置按钮
-      
+      --  按钮列表动画
       self.setup_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
                             sender:setTouchEnabled(false)
@@ -211,20 +211,15 @@ function MainInterfaceScene:fun_init( )
                             local actionTo2 = cc.RotateTo:create(0.2, -60)
                             local callfunc = cc.CallFunc:create(stopAction)
                             self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
-                            
                             local function stopAction1()
-                                   local actionTo1 = cc.ScaleTo:create(0.1, 1.5,0)
-                                 self.sliding_bg:runAction(actionTo1)
-                                  
+                                   local actionTo1 = cc.ScaleTo:create(0.2, 1.5,0)
+                                   self.sliding_bg:runAction(actionTo1) 
                             end
-                          
-                          local callfunc1 = cc.CallFunc:create(stopAction1)
-                           checkin_bt:runAction(cc.Sequence:create(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)),callfunc1))
+                            local callfunc1 = cc.CallFunc:create(stopAction1)
+                            newshezhi_bt:runAction(cc.Sequence:create(cc.EaseBounceIn:create(cc.ScaleTo:create(0.3, 0)),callfunc1))
                             task_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
-                           friend_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
-                           newshezhi_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
-
-                            
+                            friend_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                            checkin_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
                      end
       end)
       self.barrier_bg=self.MainInterfaceScene:getChildByTag(396)
@@ -704,7 +699,7 @@ function MainInterfaceScene:onExit()
   NotificationCenter:Instance():RemoveObserver("XINYUE", self)
   
   cc.Director:getInstance():getTextureCache():removeAllTextures() 
-end
+end  
 
 --android 返回键 响应
 function MainInterfaceScene:listener_home() 
