@@ -121,9 +121,22 @@ function PerInformationLayer:add_init(  )
                 else
                      self._provincename1:setString("")
                  end 
-                local back_bt=self.showinformation:getChildByTag(1399)  --返回
+                local back_bt=self.showinformation:getChildByTag(3630)  --返回
                 back_bt:addTouchEventListener(function(sender, eventType  )
-                       self:touch_back(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                    end
+                    sender:setScale(1)
+
+                    if  tostring(LocalData:Instance():get_per())  ==  "1" then
+                            self:removeFromParent()
+                            LocalData:Instance():set_per("0")
+                            return
+                    end
+                    self:removeFromParent()
+                    Util:all_layer_backMusic()
+                    --Util:scene_control("MainInterfaceScene")
                  end)
                 local Modify_bt=self.showinformation:getChildByTag(1410)  --修改
                 Modify_bt:addTouchEventListener(function(sender, eventType  )
@@ -332,17 +345,7 @@ function PerInformationLayer:touch_back( sender, eventType )
     --local activitypoints=LocalData:Instance():getactivitypoints_callback()
     local tag=sender:getTag()
     if tag==1399 then --返回
-        if self.showinformation then
-            if  tostring(LocalData:Instance():get_per())  ==  "1" then
-                 self:removeFromParent()
-                 LocalData:Instance():set_per("0")
-                 return
-            end
-            self:removeFromParent()
-            Util:all_layer_backMusic()
-            --Util:scene_control("MainInterfaceScene")
-            
-        end
+       
     elseif  tag==1410 then
         self:init()
 
