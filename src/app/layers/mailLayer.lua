@@ -146,9 +146,15 @@ function mailLayer:init(  )
                                     self:touch_back(sender, eventType)
                         end)
                   local  tag_image=cell:getChildByTag(51)--是否读取标记
+                  local  tag_image_ico=cell:getChildByTag(50)--是否读取标记
                   if tonumber(affichelist[i]["isread"]) == 1   then  --1已读  0未读 
+                    tag_image:setVisible(true)
+                    tag_image_ico:setVisible(false)
+                  else
                     tag_image:setVisible(false)
+                    tag_image_ico:setVisible(true)
                   end
+
                   local  mail_title=cell:getChildByTag(52)--邮件标题
                   mail_title:setString(tostring(affichelist[i]["title"]))
                  
@@ -179,9 +185,18 @@ function mailLayer:touch_back(sender, eventType)
 end
 function mailLayer:fun_emailcontentlayer( )
             local affichedetail=LocalData:Instance():get_getaffichedetail()
+            local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+            self:addChild(fragment_sprite_bg,19)
             self.emailcontentlayer = cc.CSLoader:createNode("emailcontentlayer.csb")
             self:addChild(self.emailcontentlayer,20)
-          
+
+            self.emailcontentlayer:setScale(0.7)
+            self.emailcontentlayer:setAnchorPoint(0.5,0.5)
+            self.emailcontentlayer:setPosition(320, 568)
+            local actionTo = cc.ScaleTo:create(0.3, 1.1)
+            local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            self.emailcontentlayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+
              local back_bt=self.emailcontentlayer:getChildByTag(62)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
                 if eventType ~= ccui.TouchEventType.ended then
@@ -193,18 +208,27 @@ function mailLayer:fun_emailcontentlayer( )
                     self.tablecout=0
                     Server:Instance():getaffichelist(self.sur_pageno)
                     LocalData:Instance():set_getaffiche(nil)
-                    self.mail_list:removeAllItems() 
-                    self.emailcontentlayer:removeFromParent()
+                    self.mail_list:removeAllItems()                     
                     Util:all_layer_backMusic()
-                    self.emailcontentlayer=nil
+                    local function stopAction()
+                              self.emailcontentlayer:removeFromParent()
+                              self.emailcontentlayer=nil
+                              fragment_sprite_bg:removeFromParent()
+                    end
+                    local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                    local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                    local callfunc = cc.CallFunc:create(stopAction)
+                    self.emailcontentlayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
                 end
       
                         end)
 
             local title_text=self.emailcontentlayer:getChildByTag(63)--标题
             title_text:setString(tostring(affichedetail["title"]))
-            local time_text=self.emailcontentlayer:getChildByTag(65)--时间
-            time_text:setString(tostring(affichedetail["createtime"]))
+            local time_text=self.emailcontentlayer:getChildByTag(65)--有效时间
+            time_text:setString("有效时间  "   ..  tostring(affichedetail["createtime"]))
+            local time_text_data=self.emailcontentlayer:getChildByTag(1367)--时间
+            time_text_data:setString("时间  "   ..  tostring(affichedetail["createtime"]))
             self.rewardgolds=self.emailcontentlayer:getChildByTag(55)--领取金币
             self.rewardgolds:setString("X" ..  tostring(affichedetail["rewardgolds"]))
              self.rewardquan=self.emailcontentlayer:getChildByTag(1230)--领取juan
@@ -214,16 +238,16 @@ function mailLayer:fun_emailcontentlayer( )
             _text:setString(tostring(affichedetail["content"]))
             local _image_corde=self.emailcontentlayer:getChildByTag(1228):getChildByTag(1229)--更改道具图片
             if tonumber(affichedetail["rewardcount"])  >0  then
-              _image_corde:loadTexture("png/"   .. tostring(affichedetail["rewardimage"])  )
+              _image_corde:loadTexture("resources/com/"   .. tostring(affichedetail["rewardimage"])  )
             end
-            local receive_bt=self.emailcontentlayer:getChildByTag(66)--领取
-            local receive_bt1=self.emailcontentlayer:getChildByTag(67)--领取
+            self.emil_receive_bt=self.emailcontentlayer:getChildByTag(66)--领取
+            self.emil_receive_bt1=self.emailcontentlayer:getChildByTag(67)--领取
             if tonumber(affichedetail["rewardgolds"])  <= 0   and  tonumber(affichedetail["rewardcount"])  <= 0  then
-               receive_bt:setVisible(false)
-               receive_bt1:setVisible(false)
+               self.emil_receive_bt:setVisible(true)
+               self.emil_receive_bt1:setVisible(false)
             else
-               receive_bt:setVisible(true)
-               receive_bt1:setVisible(true)
+               self.emil_receive_bt:setVisible(false)
+               self.emil_receive_bt1:setVisible(true)
             end
             if tonumber(affichedetail["rewardgolds"])  <= 0 then
                local receive_icogold=self.emailcontentlayer:getChildByTag(61)--
@@ -236,7 +260,7 @@ function mailLayer:fun_emailcontentlayer( )
                self.rewardquan:setVisible(false)
             end
 
-            receive_bt:addTouchEventListener(function(sender, eventType  )
+            receive_bt1:addTouchEventListener(function(sender, eventType  )
                         if eventType ~= ccui.TouchEventType.ended then
                       return
                 end
@@ -272,6 +296,8 @@ function mailLayer:onEnter()
                         LocalData:Instance():set_getaffichedetail(affichedetail)
                         self.rewardgolds:setString("X0")
                         self.rewardquan:setString("X0")--
+                        self.emil_receive_bt:setVisible(true)
+                        self.emil_receive_bt1:setVisible(false)
                       end)
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DELAFFICHEBYID, self,
