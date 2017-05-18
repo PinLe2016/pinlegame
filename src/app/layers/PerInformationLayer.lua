@@ -88,11 +88,11 @@ function PerInformationLayer:add_init(  )
                     self.genderman1_image=self.showinformation:getChildByTag(202)  --性别图片
                     if userdt["gender"]==0 then    --0女1男2未知
                         self.genderman1:setString("女")
-                        self.genderman1_image:loadTexture("png/IcnFemale.png")
+                        self.genderman1_image:loadTexture("resources/gerenxixin/GRXX_5.png")
                         self.genderman1_image:setVisible(true)
                     elseif userdt["gender"]==1 then
                         self.genderman1:setString("男")
-                        self.genderman1_image:loadTexture("png/IcnMale.png")
+                        self.genderman1_image:loadTexture("resources/gerenxixin/GRXX_2.png")
                         self.genderman1_image:setVisible(true)
                     else
                         self.genderman1:setString(" ")
@@ -153,9 +153,9 @@ function PerInformationLayer:add_init(  )
                         self.per_ListView:pushBackDefaultItem()
                         local  cell = self.per_ListView:getItem(i-1)
                         local Panel_image=cell:getChildByTag(1824)
-                        Panel_image:loadTexture("png/shenfen-xiao.png")
+                        Panel_image:loadTexture("resources/gerenxixin/GRXX_13.png")
                         local Panel_text=cell:getChildByTag(1825)
-                        Panel_text:setString("身份证认证")
+                        Panel_text:setString("身份认证")
             end
             if (not userdt["gender"])  or  (not userdt["birthday"])   or   (not userdt["provincename"]) then
                 self:head()
