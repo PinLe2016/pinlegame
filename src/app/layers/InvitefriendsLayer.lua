@@ -20,11 +20,8 @@ function InvitefriendsLayer:ctor()--params
 
        Server:Instance():get_reward_friend_list() --好友列表
 
-      local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-      self:addChild(fragment_sprite_bg)
-      self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
-      self:addChild(self.Invitefriends)
-      -- self.Invitefriends:setScale(0.7)
+      
+      self:fun_init_infor()
        Util:layer_action(self.Invitefriends,self,"open")
       
       self.Invitefriends:setAnchorPoint(0.5,0.5)
@@ -38,7 +35,14 @@ function InvitefriendsLayer:ctor()--params
              end
              
        end
+       
        self:init()
+end
+function InvitefriendsLayer:fun_init_infor()
+        local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+        self:addChild(fragment_sprite_bg)
+        self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
+        self:addChild(self.Invitefriends)
 end
 function InvitefriendsLayer:move_layer(_layer)
      local curr_y=_layer:getPositionY()
