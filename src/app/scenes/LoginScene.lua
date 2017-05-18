@@ -33,25 +33,35 @@ function  LoginScene:ctor()
 end
 --新增加的进度条
 function LoginScene:progressbarScene(  )
-        self.ProgressbarScene = cc.CSLoader:createNode("ProgressbarScene.csb")
+        self.ProgressbarScene = cc.CSLoader:createNode("LoadingNode.csb");  --LoadingNode   LoginNode_Mobile
         self:addChild(self.ProgressbarScene)
-        loadingBar=self.ProgressbarScene:getChildByTag(328)
+        self.ProgressbarScene:getChildByName("Image_2"):getChildByName("Button_7"):setVisible(false)
+        self.LoadingNodebar=cc.CSLoader:createNode("LoadingNodebar.csb")
+        self.ProgressbarScene:addChild(self.LoadingNodebar)
+
+        loadingBar=self.LoadingNodebar:getChildByName("ldb_Loading")
         self.particle = cc.ParticleSystemQuad:create("loading.plist")
        loadingBar:addChild(self.particle)
 
-        self.roleAction = cc.CSLoader:createTimeline("ProgressbarScene.csb")
-        self.ProgressbarScene:runAction(self.roleAction)
-        self.roleAction:setTimeSpeed(0.3)
-         self.roleAction:gotoFrameAndPlay(0,20, true)
+        -- self.roleAction = cc.CSLoader:createTimeline("ProgressbarScene.csb")
+        -- self.ProgressbarScene:runAction(self.roleAction)
+        -- self.roleAction:setTimeSpeed(0.3)
+        --  self.roleAction:gotoFrameAndPlay(0,20, true)
+        local labelAtlas=self.LoadingNodebar:getChildByName("all_Numberi")
+        local _labelAtlas=self.LoadingNodebar:getChildByName("all_Count")
+        local all_Count = ccui.TextAtlas:create()
+        all_Count:setPosition(cc.p(_labelAtlas:getPositionX(),_labelAtlas:getPositionY()))  
+        all_Count:setProperty( "100","LoadingNode/LG_32.png", 15.6, 23, "0")  --tostring(self.friendlist_num["friendcount"]),
+        self.LoadingNodebar :addChild(all_Count) 
+
+        local all_Numberi = ccui.TextAtlas:create()
+        all_Numberi:setTag(255)
+        all_Numberi :setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
+        all_Numberi:setProperty("0","LoadingNode/LG_32.png", 15.6, 23, "0")  --tostring(self.friendlist_num["friendcount"]),
+        self.LoadingNodebar :addChild( all_Numberi) 
          
         loadingBar:setPercent(0)
-
-        local alert = ccui.Text:create("0%", "png/chuti.ttf", 30)
-        alert:setAnchorPoint(0.5,0.5)
-        alert:setTag(255)
-        -- alert:setString("+20")  --  获得金币
-        alert:setPosition(cc.p(loadingBar:getContentSize().width/2, loadingBar:getContentSize().height/2))
-        loadingBar:addChild(alert)
+        
 end
 --微信发送请求
  function LoginScene:countdown(Iswechat)
@@ -74,10 +84,10 @@ end
 function LoginScene:fun_progress( )
      self._time=self._time+2
             loadingBar:setPercent(self._time)
-            loadingBar:getChildByTag(255):setString(tostring(self._time).."%")
+            self.LoadingNodebar :getChildByTag(255):setString(tostring(self._time).."%")
             self.particle:setPositionX(loadingBar:getContentSize().width/100 *self._time)
             if self._time>96 then
-              loadingBar:getChildByTag(255):setString("100%")
+              self.LoadingNodebar :getChildByTag(255):setString("100%")
               loadingBar:setPercent(100)
             end
             if self._time==100 then
@@ -169,7 +179,7 @@ function LoginScene:_coverlayer( )
 end
  function LoginScene:registered_init()
 
-   local _ybt=self.registered:getChildByTag(220) --注册验证码按钮
+   local _ybt=self.LoginNode_Register:getChildByName("Button_5") --注册验证码按钮
    local function Getverificationcode_btCallback(sender, eventType)
          self.code_bt=self.Getverificationcode_bt
          
@@ -190,19 +200,19 @@ end
         end
     end
      self. _random=000  --初始化
-     self.Zphone_text=self.registered:getChildByTag(28)
+     self.Zphone_text=self.LoginNode_Register:getChildByName("tf_Mobile")
      -- self.Zphone_text:setVisible(false)
      -- self.Zphone_text:setTouchEnabled(false)
      self.phone_text=self.Zphone_text
-     Util:function_keyboard(self.registered,self.Zphone_text,15)
-     local password_text=self.registered:getChildByTag(29)
+     Util:function_keyboard(self.registered,self.Zphone_text,23)
+     local password_text=self.LoginNode_Register:getChildByName("tf_Password")
      self.Zpassword_text=password_text
-     Util:function_keyboard(self.registered,password_text,11)
+     Util:function_keyboard(self.registered,password_text,16)
      -- password_text:setVisible(false)
      -- password_text:setTouchEnabled(false)
-     local verificationcode_text=self.registered:getChildByTag(30)
+     local verificationcode_text=self.LoginNode_Register:getChildByName("tf_Token")
      self.Zcode_text=verificationcode_text
-     Util:function_keyboard(self.registered,verificationcode_text,15)
+     Util:function_keyboard(self.registered,verificationcode_text,22)
      -- verificationcode_text:setVisible(false)
      -- verificationcode_text:setTouchEnabled(false)
 
@@ -279,8 +289,11 @@ end
     end
 
      local function callback_btCallback(sender, eventType) 
-        if eventType == ccui.TouchEventType.ended then
-                   print("取消")
+                    if eventType ~= ccui.TouchEventType.ended then
+                         sender:setScale(1.2)
+                         return
+                    end
+                    sender:setScale(1)
                   -- self:landing_init()
                    self:_landing_interface()
                    if self._scode then
@@ -290,14 +303,12 @@ end
                          self.registered:removeFromParent()
                          self.registered=nil
                   end
-          
-        end
     end
-    self.Getverificationcode_bt=self.registered:getChildByTag(27) --注册验证码按钮
+    self.Getverificationcode_bt=self.LoginNode_Register:getChildByName("btn_Token") --注册验证码按钮
     self.Getverificationcode_bt:addTouchEventListener(Getverificationcode_btCallback)
-     local submit_bt=self.registered:getChildByTag(26)
+     local submit_bt=self.LoginNode_Register:getChildByName("btn_Submit")
     submit_bt:addTouchEventListener(submit_btCallback)
-     local callback_bt=self.registered:getChildByTag(25)
+     local callback_bt=self.registered:getChildByName("Image_2")
     callback_bt:addTouchEventListener(callback_btCallback)
     
 
@@ -324,7 +335,7 @@ function LoginScene:fun_endanimation(_obj,_image,_type,_istrue)
       local  cliper = cc.ClippingNode:create()
       local  _content=_obj
       local  stencil = _content
-      local spark = display.newSprite("png/"  .. _image  )
+      local spark = display.newSprite("LoginScene_Main/"  .. _image  )
       spark:setPosition(cc.p(_content:getPositionX()-  _type,_content:getPositionY()));
      -- spark:setColor(cc.c3b(250,100,30))
       cliper:setAlphaThreshold(0.5)
@@ -343,10 +354,10 @@ function LoginScene:fun_endanimation(_obj,_image,_type,_istrue)
 end 
 --  微信登陆界面
 function LoginScene:landing_init()
-      self.WeChat = cc.CSLoader:createNode("WeChat.csb")
+      self.WeChat = cc.CSLoader:createNode("LoginScene.csb")
       self:addChild(self.WeChat,100)
-      
-      self.wechat_bt=self.WeChat:getChildByTag(561)
+
+      self.wechat_bt=self.WeChat:getChildByName("wechat"):getChildByName("btn_Wechat")   --getChildByTag(561):getChildByTag(561)
       self.wechat_bt:setLocalZOrder(100)
       local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
       if _table and tonumber(_table["shopIsused"])==0 then
@@ -380,7 +391,7 @@ function LoginScene:landing_init()
                  self.is_wechat_reg=false
       end)
 
-      self.phone_bt=self.WeChat:getChildByTag(562)
+      self.phone_bt=self.WeChat:getChildByName("wechat"):getChildByName("btn_Mobile")
       self.phone_bt:setLocalZOrder(100)
       self.phone_bt:addTouchEventListener(function(sender, eventType  )
                   if eventType ~= ccui.TouchEventType.ended then
@@ -397,34 +408,16 @@ function LoginScene:landing_init()
                  self:runAction(cc.Sequence:create(cc.DelayTime:create(0.8),callfunc  ))
 
       end)
-
-     self.sun_img=self.WeChat:getChildByTag(571)  
-     self.sun_img_big=self.WeChat:getChildByTag(573)
-     self.water_img=self.WeChat:getChildByTag(572)  
-     self:function_bt_run(self.sun_img,"weixindenglu-ditu-taiyangguang-1.png")
-     self:function_bt_run(self.sun_img_big,"weixindenglu-ditu-taiyangguang-2.png")
-     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,0,0)
-     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,1,50,10)
-     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,100,-40)
-     self:function_lantern_act(self.water_img,"weixindenglu-guangxiao-shui-",4,0.5,200,30)
-     self:fun_endanimation(self.wechat_bt,"weixindenglu-anniu-1.png",-self.wechat_bt:getContentSize().width,true)
-     self:fun_endanimation(self.phone_bt,"shoujidenglu-anniu-guanxiao.png",self.phone_bt:getContentSize().width,true)
+      self:fun_endanimation(self.wechat_bt,"LG_AN_2_1.png",-self.wechat_bt:getContentSize().width,true)
+     self:fun_endanimation(self.phone_bt,"LG_AN_1_1.png",self.phone_bt:getContentSize().width,true)
 end
---太阳动画 
-function LoginScene:function_bt_run(_obj,_img)  
-    local taiyangguang1 = display.newSprite("png/"   .. _img  )
-    taiyangguang1:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))
-    self.WeChat:addChild(taiyangguang1)  --  直接在水壶上上面
-    local seq=cc.RepeatForever:create(cc.Sequence:create(cc.FadeIn:create(1),cc.FadeOut:create(1)))
-   taiyangguang1:runAction(seq)
 
-end
 --按钮动画 
 function LoginScene:function_bt_act(_obj,_img,_count,_speed,isvisible,_tag)  
   local animation = cc.Animation:create()
   local name=nil
   for i=1,_count do
-    name = "png/".._img..i..".png"
+    name = "LoginScene_Main/".."LG_AN_1_1_"..i..".png"
     animation:addSpriteFrameWithFile(name)
   end
   animation:setDelayPerUnit(_speed)
@@ -440,37 +433,26 @@ function LoginScene:function_bt_act(_obj,_img,_count,_speed,isvisible,_tag)
   self._template:runAction(seq)--(animate)
 
 end
---云彩动画 
-function LoginScene:function_lantern_act(_obj,_img,_count,_speed,x,y)  
-  local animation = cc.Animation:create()
-  local name=nil
-  for i=1,_count do
-    name = "png/".._img..i..".png"
-    animation:addSpriteFrameWithFile(name)
-  end
-  animation:setDelayPerUnit(_speed)
-  animation:setRestoreOriginalFrame(true)
-  --创建动作
-  local animate = cc.Animate:create(animation)
-  local _template = cc.Sprite:create()
-  _template:setPosition(cc.p(_obj:getPositionX()+x,_obj:getPositionY()+y))
-  self.WeChat:addChild(_template)  --  直接在水壶上上面
-  local seq=cc.RepeatForever:create(cc.Sequence:create(animate))    
-  _template:stopAllActions()
-  _template:runAction(seq)--(animate)
 
-end
 --  登陆界面
 function LoginScene:_landing_interface()
-    landing = cc.CSLoader:createNode("landing.csb");
+    -- landing = cc.CSLoader:createNode("landing.csb");
+    -- self:addChild(landing)
+     landing = cc.CSLoader:createNode("LoadingNode.csb");  --LoadingNode   LoginNode_Mobile
     self:addChild(landing)
+    self.LoginNode_Mobile=cc.CSLoader:createNode("LoginNode_Mobile.csb")
+    landing:addChild(self.LoginNode_Mobile)
+
+
     landing:setTag(1314)
 
-     local land_back_bt=landing:getChildByTag(3074)
+     local land_back_bt=landing:getChildByName("Image_2")
       land_back_bt:addTouchEventListener(function(sender, eventType  )
-         if eventType ~= ccui.TouchEventType.ended then
-            return
-          end
+                if eventType ~= ccui.TouchEventType.ended then
+                     sender:setScale(1.2)
+                     return
+                end
+                sender:setScale(1)
                 self:landing_init()
                 self:removeChildByTag(1314, true)
       end)
@@ -481,16 +463,16 @@ function LoginScene:_landing_interface()
    -- self:replaceScene(dialog)
   phone_bg=landing:getChildByTag(6)
 
-  local Editphone = landing:getChildByTag(6):getChildByTag(16)
+  local Editphone = self.LoginNode_Mobile:getChildByName("TextField_1")
   self.Dphone_text=Editphone
-  Util:function_keyboard(landing:getChildByTag(6),Editphone,17)
+  Util:function_keyboard(self.LoginNode_Mobile,Editphone,27)
   Editphone:setPlaceHolder("请输入手机号码")
   -- Editphone:setTouchEnabled(false)
   -- Editphone:setVisible(false)
 
-  local EditPassword=landing:getChildByTag(6):getChildByTag(17)
+  local EditPassword=self.LoginNode_Mobile:getChildByName("TextField_1_Copy")
   self.Dpassword_text=EditPassword
-  Util:function_keyboard(landing:getChildByTag(6),EditPassword,12)
+  Util:function_keyboard(self.LoginNode_Mobile,EditPassword,19)
   EditPassword:setPlaceHolder("请输入密码")
 
   -- EditPassword:setTouchEnabled(false)
@@ -559,8 +541,14 @@ local function go_btCallback(sender, eventType)
 
         if eventType == ccui.TouchEventType.ended then
            print("注册")
-            self.registered = cc.CSLoader:createNode("registered.csb");
-            self:addChild(self.registered);
+            -- self.registered = cc.CSLoader:createNode("registered.csb");
+            -- self:addChild(self.registered);
+
+            self.registered = cc.CSLoader:createNode("LoadingNode.csb");  --LoadingNode   LoginNode_Mobile
+            self:addChild(self.registered)
+            self.LoginNode_Register=cc.CSLoader:createNode("LoginNode_Register.csb")
+            self.registered:addChild(self.LoginNode_Register)
+
             if  landing then
              
                  self.Dpassword_text :setVisible(false)
@@ -580,22 +568,28 @@ local function go_btCallback(sender, eventType)
                  self.Dpassword_text :setVisible(false)
                  self.Dphone_text:setVisible(false)
                  landing:removeFromParent()
-                self.passwordLayer = cc.CSLoader:createNode("passwordLayer.csb");
-                self:addChild(self.passwordLayer);
+                -- self.passwordLayer = cc.CSLoader:createNode("passwordLayer.csb");
+                -- self:addChild(self.passwordLayer);
+
+                self.passwordLayer = cc.CSLoader:createNode("LoadingNode.csb");  --LoadingNode   LoginNode_Mobile
+                self:addChild(self.passwordLayer)
+                self.LoginNode_Forget=cc.CSLoader:createNode("LoginNode_Forget.csb")
+                self.passwordLayer:addChild(self.LoginNode_Forget)
+
                 self:_passwordLayer()
                 self.p_random=00
         end
     end
 
 
-   self._gobt = landing:getChildByTag(6):getChildByTag(11)--登陆
+   self._gobt =self.LoginNode_Mobile:getChildByName("btn_Login")
    --self._gobt=go_bt
     self._gobt:addTouchEventListener(go_btCallback)
 
-     local registered_bt = landing:getChildByTag(6):getChildByTag(12)--注册
+     local registered_bt = self.LoginNode_Mobile:getChildByName("btn_Register")
     registered_bt:addTouchEventListener(registered_btCallback)
 
-     local Forgotpassword_bt = landing:getChildByTag(6):getChildByTag(13)--忘记密码
+     local Forgotpassword_bt = self.LoginNode_Mobile:getChildByName("btn_Fogret")--忘记密码
     Forgotpassword_bt:addTouchEventListener(Forgotpassword_btCallback)
 end
 -- function LoginScene:touchCallback( sender, eventType )
@@ -615,18 +609,32 @@ end
 
 function LoginScene:_passwordLayer( )
 
-          local _back = self.passwordLayer:getChildByTag(290)
+          local _back = self.passwordLayer:getChildByName("Image_2")
           _back:addTouchEventListener((function(sender, eventType  )
-                     self:touch_Callback(sender, eventType)
+                      if eventType ~= ccui.TouchEventType.ended then
+                               sender:setScale(1.2)
+                               return
+                          end
+                          sender:setScale(1)
+
+                          if self._scode then
+                            cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
+                      end
+                      --self:landing_init()
+                       self:_landing_interface()
+                      if  self.passwordLayer then
+                         self.passwordLayer:removeFromParent()
+                      end
+
                end))
 
-          local submit = self.passwordLayer:getChildByTag(292)
+          local submit = self.LoginNode_Forget:getChildByName("btn_Submit")
           -- self.changepassword_bt=submit
           -- self.changepassword_bt:setTouchEnabled(false)
           submit:addTouchEventListener((function(sender, eventType  )
                      self:touch_Callback(sender, eventType)
                end))
-           self.yanzhengma = self.passwordLayer:getChildByTag(291)
+           self.yanzhengma = self.LoginNode_Forget:getChildByName("btn_Token")
            self.code_bt=self.yanzhengma
           self.yanzhengma:addTouchEventListener((function(sender, eventType  )
                      --self:touch_Callback(sender, eventType)
@@ -638,7 +646,7 @@ function LoginScene:_passwordLayer( )
            
 
                     self.p_random=Util:rand(  ) --随机验证码\
-                    local phone=self.passwordLayer:getChildByTag(293)
+                    local phone=self.LoginNode_Forget:getChildByName("TextField_1")
                     self._mobilephone=self.Wphone_text:getString()
                      if tostring(Util:judgeIsAllNumber(tostring(self.Wphone_text:getString())))  ==  "false"  then
                       Server:Instance():promptbox_box_buffer("请输入正确的手机号") 
@@ -657,14 +665,14 @@ function LoginScene:_passwordLayer( )
                end))
 
 
-            local phone=self.passwordLayer:getChildByTag(293)
+            local phone=self.LoginNode_Forget:getChildByName("TextField_1")
             -- phone:setVisible(false)
             -- phone:setTouchEnabled(false)
             self.Wphone_text=phone
-            Util:function_keyboard(self.passwordLayer,phone,15) 
-            local Wcode_text = self.passwordLayer:getChildByTag(294)
+            Util:function_keyboard(self.passwordLayer,phone,17) 
+            local Wcode_text = self.LoginNode_Forget:getChildByName("TextField_1_Copy")
             self._yanzhengma=Wcode_text
-            Util:function_keyboard(self.passwordLayer,Wcode_text,15) 
+            Util:function_keyboard(self.passwordLayer,Wcode_text,16) 
             -- Wcode_text:setVisible(false)
             -- Wcode_text:setTouchEnabled(false)
 
@@ -693,15 +701,8 @@ function LoginScene:touch_Callback( sender, eventType  )
               end
               local tag=sender:getTag()
               if tag==290 then      --修改密码 返回
-                   if self._scode then
-                        cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scode)--停止注册定时器
-                 end
-                  --self:landing_init()
-                   self:_landing_interface()
-                 if  self.passwordLayer then
-                     self.passwordLayer:removeFromParent()
-                end
-             elseif tag==292 then   --修改密码 提交
+                  
+             elseif tag==141 then   --修改密码 提交
                if string.len(self.Wphone_text:getString())~=11 then
                   Server:Instance():promptbox_box_buffer("填写手机号码错误")
                return
@@ -724,15 +725,9 @@ function LoginScene:touch_Callback( sender, eventType  )
                 --self:_resetpasswordLayer()
                 
               elseif tag==305 then  --重新设置密码  返回
-                --self:landing_init()
-                 self:_landing_interface()
-           
-                if self.resetpasswordLayer then
-                   --self.resetpasswordLayer:removeFromParent()
-                   self:removeChildByTag(7531, true)
-                end
-              elseif tag==303 then
-                local password = self.resetpasswordLayer:getChildByTag(302)
+                
+              elseif tag==151 then
+                local password = self.LoginNode_NewPassword:getChildByName("tf_Password")
                 local _pass=self.Wpassword_text:getString()
                   if  string.len(_pass) <6  or   string.len(Util:filter_spec_chars(_pass)) ~= string.len(_pass)    then
                     Server:Instance():promptbox_box_buffer("密码格式不对哦（密码为6-20位数字或字母的组合")   --prompt
@@ -743,7 +738,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                  --self.changepassword_bt:setTouchEnabled(true)
                 self.code_bt=self.yanzhengma
                   self.p_random=Util:rand(  ) --随机验证码\
-                     local phone=self.passwordLayer:getChildByTag(293)
+                     local phone=self.LoginNode_Forget:getChildByName("TextField_1")
                     self._mobilephone=self.Wphone_text:getString()
                    
                    if string.len(self._mobilephone)~=11 then
@@ -801,23 +796,41 @@ function LoginScene:_resetpasswordLayer(  )
                return
             end
            
-            self.resetpasswordLayer = cc.CSLoader:createNode("resetpasswordLayer.csb");
-            self:addChild(self.resetpasswordLayer);
+            -- self.resetpasswordLayer = cc.CSLoader:createNode("resetpasswordLayer.csb");
+            -- self:addChild(self.resetpasswordLayer);
+
+
+            self.resetpasswordLayer = cc.CSLoader:createNode("LoadingNode.csb");  --LoadingNode   LoginNode_Mobile
+            self:addChild(self.resetpasswordLayer)
+            self.LoginNode_NewPassword=cc.CSLoader:createNode("LoginNode_NewPassword.csb")
+            self.resetpasswordLayer:addChild(self.LoginNode_NewPassword)
+
+
+
             self.resetpasswordLayer:setTag(7531)
 
-             local _back = self.resetpasswordLayer:getChildByTag(305)
+             local _back = self.resetpasswordLayer:getChildByName("Image_2")
              _back:addTouchEventListener((function(sender, eventType  )
-                     self:touch_Callback(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                         sender:setScale(1.2)
+                         return
+                    end
+                    sender:setScale(1)
+                    self:_landing_interface()
+                    if self.resetpasswordLayer then
+                    self:removeChildByTag(7531, true)
+                    end
+
                end))
-             local submit = self.resetpasswordLayer:getChildByTag(303)
+             local submit = self.LoginNode_NewPassword:getChildByName("btn_Submit")
              submit:addTouchEventListener((function(sender, eventType  )
                      self:touch_Callback(sender, eventType)
                end))
-             local phone = self.resetpasswordLayer:getChildByTag(300)
+             local phone = self.LoginNode_NewPassword:getChildByName("Text_1")
              phone:setString(self._mobilephone)
-             local password1 = self.resetpasswordLayer:getChildByTag(302)
+             local password1 = self.LoginNode_NewPassword:getChildByName("tf_Password")
              self.Wpassword_text=password1
-             Util:function_keyboard(self.resetpasswordLayer,password1,11) 
+             Util:function_keyboard(self.resetpasswordLayer,password1,15) 
              -- password1:setVisible(false)
              -- password1:setTouchEnabled(false)
               local res = "  "--res/png/DLkuang.png"
