@@ -18,9 +18,10 @@ function FriendrequestLayer:ctor(params)--params
             self.Friendrequest:setScale(0.7)
             self.Friendrequest:setAnchorPoint(0.5,0.5)
             self.Friendrequest:setPosition(320, 568)
-            local actionTo = cc.ScaleTo:create(0.3, 1.1)
-           local actionTo1 = cc.ScaleTo:create(0.1, 1)
-            self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+           --  local actionTo = cc.ScaleTo:create(0.3, 1.1)
+           -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
+           --  self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+           Util:layer_action(self.Friendrequest,self,"open") 
 
 end
 function FriendrequestLayer:init(  )
@@ -237,18 +238,19 @@ function FriendrequestLayer:touch_callback( sender, eventType )
       Util:all_layer_backMusic()
       Server:Instance():gettasklist()
      
-      local function stopAction()
-           if self.switch==1 then
-               self:removeFromParent()
-          else
-              --Util:scene_control("MainInterfaceScene")
-              self:removeFromParent()
-          end
-      end
-      local actionTo = cc.ScaleTo:create(0.1, 1.1)
-      local actionTo1 = cc.ScaleTo:create(0.3, 1)
-      local callfunc = cc.CallFunc:create(stopAction)
-      self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+      -- local function stopAction()
+      --      if self.switch==1 then
+      --          self:removeFromParent()
+      --     else
+      --         --Util:scene_control("MainInterfaceScene")
+      --         self:removeFromParent()
+      --     end
+      -- end
+      -- local actionTo = cc.ScaleTo:create(0.1, 1.1)
+      -- local actionTo1 = cc.ScaleTo:create(0.3, 1)
+      -- local callfunc = cc.CallFunc:create(stopAction)
+      -- self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+      Util:layer_action(self.Friendrequest,self,"close")
   elseif tag==161 then  --好友邀请
     self.share=Util:share()
   elseif tag==162 then  --回馈邀请人

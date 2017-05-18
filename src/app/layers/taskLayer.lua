@@ -53,9 +53,10 @@ function taskLayer:init(  )
             self.taskLayer:setAnchorPoint(0.5,0.5)
             self.taskLayer:setPosition(320, 568)
 
-            local actionTo = cc.ScaleTo:create(0.3, 1.1)
-           local actionTo1 = cc.ScaleTo:create(0.1, 1)
-            self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+           --  local actionTo = cc.ScaleTo:create(0.3, 1.1)
+           -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
+           --  self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+           Util:layer_action(self.taskLayer,self,"open")
 
 
 
@@ -218,11 +219,11 @@ function taskLayer:touch_btCallback( sender, eventType )
               local function stopAction()
               self:removeFromParent()
               end
-              local actionTo = cc.ScaleTo:create(0.1, 1.1)
-              local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
-              local callfunc = cc.CallFunc:create(stopAction)
-              self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
-
+              -- local actionTo = cc.ScaleTo:create(0.1, 1.1)
+              -- local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+              -- local callfunc = cc.CallFunc:create(stopAction)
+              -- self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+              Util:layer_action(self.taskLayer,self,"close")
            
            end  
 end

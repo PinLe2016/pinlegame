@@ -23,10 +23,10 @@ function mailLayer:ctor()
             self.mailLayer:setAnchorPoint(0.5,0.5)
             self.mailLayer:setPosition(320, 568)
 
-            local actionTo = cc.ScaleTo:create(0.3, 1.1)
-            local actionTo1 = cc.ScaleTo:create(0.1, 1)
-            self.mailLayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
-
+            -- local actionTo = cc.ScaleTo:create(0.15, 1.1)
+            -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            -- self.mailLayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+            Util:layer_action(self.mailLayer,self,"open") 
 
 
             local back_bt=self.mailLayer:getChildByTag(46)--返回
@@ -37,13 +37,14 @@ function mailLayer:ctor()
                   Util:all_layer_backMusic()
                   LocalData:Instance():set_getaffiche(nil)
                   -- Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
-                  local function stopAction()
-                  self:removeFromParent()
-                  end
-                  local actionTo = cc.ScaleTo:create(0.1, 1.1)
-                  local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
-                  local callfunc = cc.CallFunc:create(stopAction)
-                  self.mailLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+                  -- local function stopAction()
+                  -- self:removeFromParent()
+                  -- end
+                  -- local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                  -- local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                  -- local callfunc = cc.CallFunc:create(stopAction)
+                  -- self.mailLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+                  Util:layer_action(self.mailLayer,self,"close") 
             end)
 
           

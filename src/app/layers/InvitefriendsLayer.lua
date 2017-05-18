@@ -57,9 +57,10 @@ function InvitefriendsLayer:init(  )
       self.Invitefriends:setAnchorPoint(0.5,0.5)
       self.Invitefriends:setPosition(320, 568)
 
-      local actionTo = cc.ScaleTo:create(0.3, 1.1)
-      local actionTo1 = cc.ScaleTo:create(0.1, 1)
-      self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+      -- local actionTo = cc.ScaleTo:create(0.3, 1.1)
+      -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
+      -- self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+      Util:layer_action(self.Invitefriends,self,"open")
 
 
         self:pop_up()--  弹出框
@@ -297,13 +298,14 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
               Server:Instance():gettasklist()
               Util:all_layer_backMusic()
               display.getRunningScene():fun_refresh_friend()--  目的是成长树刷新好友
-              local function stopAction()
-              self:removeFromParent()
-              end
-              local actionTo = cc.ScaleTo:create(0.1, 1.1)
-              local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
-              local callfunc = cc.CallFunc:create(stopAction)
-              self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+              -- local function stopAction()
+              -- self:removeFromParent()
+              -- end
+              -- local actionTo = cc.ScaleTo:create(0.1, 1.1)
+              -- local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+              -- local callfunc = cc.CallFunc:create(stopAction)
+              -- self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+              Util:layer_action(self.Invitefriends,self,"close")
 
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)

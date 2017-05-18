@@ -28,9 +28,10 @@ function SetLayer:fun_init_infor( )
             self.SetNode:setScale(0.7)
             self.SetNode:setAnchorPoint(0.5,0.5)
             self.SetNode:setPosition(320, 568)
-            local actionTo = cc.ScaleTo:create(0.3, 1.1)
-            local actionTo1 = cc.ScaleTo:create(0.1, 1)
-            self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+            -- local actionTo = cc.ScaleTo:create(0.3, 1.1)
+            -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            -- self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+            Util:layer_action(self.SetNode,self,"open")
 
             self:set_touch()
             self:per_userdady()
@@ -105,13 +106,15 @@ function SetLayer:set_touch(  )
                        if eventType ~= ccui.TouchEventType.ended then
                            return
                       end
-                      local function stopAction()
-                      self:removeFromParent()
-                      end
-                      local actionTo = cc.ScaleTo:create(0.1, 1.1)
-                      local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
-                      local callfunc = cc.CallFunc:create(stopAction)
-                      self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+                      -- local function stopAction()
+                      -- self:removeFromParent()
+                      -- end
+                      -- local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                      -- local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                      -- local callfunc = cc.CallFunc:create(stopAction)
+                      -- self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+                      Util:layer_action(self.SetNode,self,"close")
+
 
                   end)
        --  问号 
