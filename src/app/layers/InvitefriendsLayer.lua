@@ -24,7 +24,9 @@ function InvitefriendsLayer:ctor()--params
       self:addChild(fragment_sprite_bg)
       self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
       self:addChild(self.Invitefriends)
-      self.Invitefriends:setScale(0.7)
+      -- self.Invitefriends:setScale(0.7)
+       Util:layer_action(self.Invitefriends,self,"open")
+      
       self.Invitefriends:setAnchorPoint(0.5,0.5)
       self.Invitefriends:setPosition(320, 568)
 
@@ -58,19 +60,20 @@ end
 function InvitefriendsLayer:init(  )
      
 
-      local actionTo = cc.ScaleTo:create(0.3, 1.1)
-      local actionTo1 = cc.ScaleTo:create(0.1, 1)
-      self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+      -- local actionTo = cc.ScaleTo:create(0.3, 1.1)
+      -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
+      -- self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+     
 
 
         self:pop_up()--  弹出框
        local back_bt=self.Invitefriends:getChildByTag(3187)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
             if eventType ~= ccui.TouchEventType.ended then
-                 sender:setScale(1.2)
+                 -- sender:setScale(1.2)
                  return
             end
-            sender:setScale(1)
+            -- sender:setScale(1)
 
             Server:Instance():getuserinfo()  --钻石刷新
             if self.share then
@@ -311,7 +314,24 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
 	end
 	local tag=sender:getTag()
 	if tag==82 then --返回
-             
+              Server:Instance():getuserinfo()  --钻石刷新
+              if self.share then
+                   if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
+                       Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                        LocalData:Instance():set_tasktable(nil)--制空
+                 end
+              end
+              Server:Instance():gettasklist()
+              Util:all_layer_backMusic()
+              display.getRunningScene():fun_refresh_friend()--  目的是成长树刷新好友
+              -- local function stopAction()
+              -- self:removeFromParent()
+              -- end
+              -- local actionTo = cc.ScaleTo:create(0.1, 1.1)
+              -- local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+              -- local callfunc = cc.CallFunc:create(stopAction)
+              -- self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+              Util:layer_action(self.Invitefriends,self,"close")
 
 	elseif tag==117 then
 		-- self.Friendsstep:setVisible(true)
@@ -402,7 +422,7 @@ function InvitefriendsLayer:function_addFriend(  )
             self.search_friend_pageno=1
             self.addFriendSp = cc.CSLoader:createNode("addFriendSp.csb")  --邀请好友排行榜
             self:addChild(self.addFriendSp)
-            self.addFriendSp:setScale(0.7)
+            -- self.addFriendSp:setScale(0.7)
             self.addFriendSp:setAnchorPoint(0.5,0.5)
             self.addFriendSp:setPosition(320, 568)
             local actionTo = cc.ScaleTo:create(0.3, 1.1)
@@ -416,10 +436,10 @@ function InvitefriendsLayer:function_addFriend(  )
             local back =self.addFriendSp:getChildByTag(3227)  --返回
             back:addTouchEventListener(function(sender, eventType)
                     if eventType ~= ccui.TouchEventType.ended then
-                       sender:setScale(1.2)
+                       -- sender:setScale(1.2)
                        return
                    end
-                  sender:setScale(1)
+                  -- sender:setScale(1)
                     Server:Instance():get_reward_friend_list() --好友列表
                     if self.addFriendSp then
                       local function stopAction()
@@ -427,7 +447,7 @@ function InvitefriendsLayer:function_addFriend(  )
                       self.addFriendSp=nil
                       end
                       local actionTo = cc.ScaleTo:create(0.1, 1.1)
-                      local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                      local actionTo1 = cc.ScaleTo:create(0.1, 0.7)
                       local callfunc = cc.CallFunc:create(stopAction)
                       self.addFriendSp:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
                     end

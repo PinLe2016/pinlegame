@@ -723,6 +723,28 @@ function Util:filter_spec_chars(s)
 end  
 
 
+
+-- 弹办弹出动作 
+function Util:layer_action(object,parent,type)  
+
+      if type=="open" then
+          local actionTo = cc.ScaleTo:create(0.15, 1.1)
+          local actionTo1 = cc.ScaleTo:create(0.1, 1)
+          object:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+          return
+      end
+
+
+      local function stopAction()
+            parent:removeFromParent()
+      end
+      local actionTo = cc.ScaleTo:create(0.1, 1.1)
+      local actionTo1 = cc.ScaleTo:create(0.15, 0.7)
+      local callfunc = cc.CallFunc:create(stopAction)
+      object:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
+end
+
 return Util
 
 
