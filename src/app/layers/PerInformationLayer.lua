@@ -528,7 +528,7 @@ function PerInformationLayer:init(  )
                 end
                 self.per_birthday:setVisible(false)
                 self.per_birthday_text:setVisible(true)
-
+                self:fun_birthday(  )
             end)
             self.Perinformation:getChildByTag(26):getChildByTag(107):addTouchEventListener(function(sender, eventType  )
                 if eventType ~= ccui.TouchEventType.ended then
@@ -536,7 +536,7 @@ function PerInformationLayer:init(  )
                 end
                 self.per_birthday:setVisible(false)
                 self.per_birthday_text:setVisible(true)
-
+                self:fun_birthday(  )
             end)
             self.per_address=self.Perinformation:getChildByTag(26):getChildByTag(244)  --  城市
             self.per_address_data=self.per_address:getChildByTag(51)  --  城市
@@ -547,7 +547,7 @@ function PerInformationLayer:init(  )
                     end
                     self.per_address:setVisible(false)
                     self.per_address_text:setVisible(true)
-                    
+                    self:fun_city_info(  )
             end)
             self.per_address:addTouchEventListener(function(sender, eventType  )
                     if eventType ~= ccui.TouchEventType.ended then
@@ -555,7 +555,7 @@ function PerInformationLayer:init(  )
                     end
                     self.per_address:setVisible(false)
                     self.per_address_text:setVisible(true)
-                    
+                    self:fun_city_info(  )
             end)
 
             self.per_bg=self.Perinformation:getChildByTag(26):getChildByTag(191)  --  背景
@@ -753,13 +753,13 @@ function PerInformationLayer:touch_callback( sender, eventType )
     --local activitypoints=LocalData:Instance():getactivitypoints_callback()
     local tag=sender:getTag()
     if tag==1883 then --城市
-        self:fun_city_info(  )
+        -- self:fun_city_info(  )
     elseif tag==467 then --城市
-        self:fun_city_info(  )
+        -- self:fun_city_info(  )
     elseif tag==1882 then --生日
-        self:fun_birthday(  )
+        -- self:fun_birthday(  )
      elseif tag==466 then --生日
-        self:fun_birthday(  )
+        -- self:fun_birthday(  )
     elseif tag==169 then 
             self.per_birthday:setVisible(true)
             self.per_birthday_text:setVisible(false)
