@@ -145,6 +145,7 @@ function MainInterfaceScene:fun_init( )
       end)
 
        local task_bt= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(581)  --任务按钮
+        local task_bt1= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(92)  --任务按钮
        task_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
@@ -155,6 +156,7 @@ function MainInterfaceScene:fun_init( )
            self:touch_callback(sender, eventType)
       end)
       local friend_bt=self.MainInterfaceScene:getChildByTag(6222):getChildByTag(288)--self.signanimations:getChildByTag(291)--  邀请好友
+      local friend_bt1=self.MainInterfaceScene:getChildByTag(6222):getChildByTag(90)
       friend_bt:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
@@ -171,6 +173,7 @@ function MainInterfaceScene:fun_init( )
       --      self:fun_backbt(sender, eventType)
       -- end)
       local newshezhi_bt=self.sliding_bg:getChildByTag(6225)--新的设置声音
+      local newshezhi_bt1=self.sliding_bg:getChildByTag(91)--新的设置声音
       newshezhi_bt:addTouchEventListener(function(sender, eventType  )
            self:fun_backbt(sender, eventType)
       end)
@@ -178,8 +181,13 @@ function MainInterfaceScene:fun_init( )
        task_bt:setScale(0)
        friend_bt:setScale(0)
        newshezhi_bt:setScale(0)
+        -- checkin_bt1:setScale(0)
+       task_bt1:setScale(0)
+        friend_bt1:setScale(0)
+        newshezhi_bt1:setScale(0)
 
       self.setup_box=self.MainInterfaceScene:getChildByTag(6227)  --新的设置按钮
+       self.setup_box1=self.MainInterfaceScene:getChildByTag(87)  --新的设置按钮动画显示
       --  按钮列表动画
       self.setup_box:addEventListener(function(sender, eventType  )
                      if eventType == ccui.CheckBoxEventType.selected then
@@ -192,14 +200,18 @@ function MainInterfaceScene:fun_init( )
                             local actionTo2 = cc.RotateTo:create(0.2, 60)
                             local callfunc = cc.CallFunc:create(stopAction)
                             self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
-                             local actionTo1 = cc.ScaleTo:create(0.2, 1.5,1.5)
+                            self.setup_box1:runAction(cc.Sequence:create(actionTo,callfunc  ))
+                             local actionTo1 = cc.ScaleTo:create(0.2, 1,1)
                                   self.sliding_bg:runAction(actionTo1)
                            checkin_bt:setScale(0)
                           
                            checkin_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
                             task_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                            task_bt1:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
                            friend_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
                            newshezhi_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                           friend_bt1:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                           newshezhi_bt1:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
 
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                               sender:setTouchEnabled(false)
@@ -211,15 +223,19 @@ function MainInterfaceScene:fun_init( )
                             local actionTo2 = cc.RotateTo:create(0.2, -60)
                             local callfunc = cc.CallFunc:create(stopAction)
                             self.setup_box:runAction(cc.Sequence:create(actionTo,callfunc  ))
+                            self.setup_box1:runAction(cc.Sequence:create(actionTo,callfunc  ))
                             local function stopAction1()
-                                   local actionTo1 = cc.ScaleTo:create(0.2, 1.5,0)
+                                   local actionTo1 = cc.ScaleTo:create(0.2, 1,0)
                                    self.sliding_bg:runAction(actionTo1) 
                             end
                             local callfunc1 = cc.CallFunc:create(stopAction1)
                             newshezhi_bt:runAction(cc.Sequence:create(cc.EaseBounceIn:create(cc.ScaleTo:create(0.3, 0)),callfunc1))
                             task_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                            task_bt1:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
                             friend_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
                             checkin_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                            friend_bt1:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                            newshezhi_bt1:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
                      end
       end)
       self.barrier_bg=self.MainInterfaceScene:getChildByTag(396)
