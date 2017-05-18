@@ -485,7 +485,7 @@ function Util:function_keyboard(_parent,target,font_size)
         local _guangbiao_x=target:getPositionX()
         alert:setPosition(target:getPositionX(),target:getPositionY())
         alert:setFontName(font_TextName)
-        alert:setFontSize(30)
+        alert:setFontSize(35)
         alert:setColor(cc.c3b(0, 0, 0))
         _parent:addChild(alert)
 

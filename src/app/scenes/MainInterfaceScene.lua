@@ -387,17 +387,19 @@ self.setup_box:setSelected(false)
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
 
-            local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            if _table and tonumber(_table["shopIsused"])==0 then
-                  local login_info=LocalData:Instance():get_user_data()
-                  local _key=login_info["loginname"]
-                  local _loginkey=login_info["loginkey"]
-                  url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
-                  device.openURL(url)
-                  return
-            end
+            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            -- if _table and tonumber(_table["shopIsused"])==0 then
+            --       local login_info=LocalData:Instance():get_user_data()
+            --       local _key=login_info["loginname"]
+            --       local _loginkey=login_info["loginkey"]
+            --       url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
+            --       device.openURL(url)
+            --       return
+            -- end
 
-             Util:scene_controlid("MallScene",{type="emil"})
+            --  Util:scene_controlid("MallScene",{type="emil"})
+
+            Util:scene_control("GameSurpriseScene")
 
 
       elseif tag==49 then  --加
