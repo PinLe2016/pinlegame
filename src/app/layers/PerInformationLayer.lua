@@ -88,11 +88,11 @@ function PerInformationLayer:add_init(  )
                     self.genderman1_image=self.showinformation:getChildByTag(202)  --性别图片
                     if userdt["gender"]==0 then    --0女1男2未知
                         self.genderman1:setString("女")
-                        self.genderman1_image:loadTexture("png/IcnFemale.png")
+                        self.genderman1_image:loadTexture("resources/gerenxixin/GRXX_5.png")
                         self.genderman1_image:setVisible(true)
                     elseif userdt["gender"]==1 then
                         self.genderman1:setString("男")
-                        self.genderman1_image:loadTexture("png/IcnMale.png")
+                        self.genderman1_image:loadTexture("resources/gerenxixin/GRXX_2.png")
                         self.genderman1_image:setVisible(true)
                     else
                         self.genderman1:setString(" ")
@@ -121,9 +121,22 @@ function PerInformationLayer:add_init(  )
                 else
                      self._provincename1:setString("")
                  end 
-                local back_bt=self.showinformation:getChildByTag(1399)  --返回
+                local back_bt=self.showinformation:getChildByTag(3630)  --返回
                 back_bt:addTouchEventListener(function(sender, eventType  )
-                       self:touch_back(sender, eventType)
+                    if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                    end
+                    sender:setScale(1)
+
+                    if  tostring(LocalData:Instance():get_per())  ==  "1" then
+                            self:removeFromParent()
+                            LocalData:Instance():set_per("0")
+                            return
+                    end
+                    self:removeFromParent()
+                    Util:all_layer_backMusic()
+                    --Util:scene_control("MainInterfaceScene")
                  end)
                 local Modify_bt=self.showinformation:getChildByTag(1410)  --修改
                 Modify_bt:addTouchEventListener(function(sender, eventType  )
@@ -140,9 +153,9 @@ function PerInformationLayer:add_init(  )
                         self.per_ListView:pushBackDefaultItem()
                         local  cell = self.per_ListView:getItem(i-1)
                         local Panel_image=cell:getChildByTag(1824)
-                        Panel_image:loadTexture("png/shenfen-xiao.png")
+                        Panel_image:loadTexture("resources/gerenxixin/GRXX_13.png")
                         local Panel_text=cell:getChildByTag(1825)
-                        Panel_text:setString("身份证认证")
+                        Panel_text:setString("身份认证")
             end
             if (not userdt["gender"])  or  (not userdt["birthday"])   or   (not userdt["provincename"]) then
                 self:head()
@@ -332,17 +345,7 @@ function PerInformationLayer:touch_back( sender, eventType )
     --local activitypoints=LocalData:Instance():getactivitypoints_callback()
     local tag=sender:getTag()
     if tag==1399 then --返回
-        if self.showinformation then
-            if  tostring(LocalData:Instance():get_per())  ==  "1" then
-                 self:removeFromParent()
-                 LocalData:Instance():set_per("0")
-                 return
-            end
-            self:removeFromParent()
-            Util:all_layer_backMusic()
-            --Util:scene_control("MainInterfaceScene")
-            
-        end
+       
     elseif  tag==1410 then
         self:init()
 
@@ -1508,11 +1511,11 @@ function PerInformationLayer:fun_Province( ... )
 
     local json_province=self.city_data["provinces"]
     local m_offset_cell=0
-    for i=1,#json_province+0+self.mail_h do   
+    for i=1,#json_province+1+self.mail_h do   
 
         local button =self.adress_province_Itempicker:getCellLayout(cc.size(150,60))
         local name
-        if i<#json_province+0+self.mail_dex and i-0-self.mail_dex>0 then 
+        if i<#json_province+1+self.mail_dex and i-0-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(26)
             cell_month:setAnchorPoint(cc.p(0,0));
@@ -1530,7 +1533,7 @@ function PerInformationLayer:fun_Province( ... )
             
            local pos = string.find(self.province, name)   
             if pos then
-                m_offset_cell=i-0-self.mail_dex;
+                m_offset_cell=i-1-self.mail_dex;
             end
         end
 
@@ -1556,11 +1559,11 @@ function PerInformationLayer:fun_City()
     -- local json_city=self.city_data["provinces"][29]["citys"]
     -- dump(json_city)
     local m_offset_cell=0
-    for i=1,#json_city+0+self.mail_h do   
+    for i=1,#json_city+1+self.mail_h do   
 
         local button =self.adress_city_Itempicker:getCellLayout(cc.size(250,60))
         local name
-        if i<#json_city+0+self.mail_dex and i-0-self.mail_dex>0 then 
+        if i<#json_city+1+self.mail_dex and i-0-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(24)
             cell_month:setAnchorPoint(cc.p(0.5,0));
@@ -1578,7 +1581,7 @@ function PerInformationLayer:fun_City()
            local pos = string.find(self.city, name)   
             if pos then
 
-                m_offset_cell=i-0-self.mail_dex;
+                m_offset_cell=i-1-self.mail_dex;
             end
         end
 
@@ -1598,6 +1601,7 @@ function PerInformationLayer:fun_Conty()
     if #json_city==0 then
         return
     end
+    dump(self.adress_city_Itempicker:getCellPos()+1)
     local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
     if #json_conty==0 then
         return
@@ -1607,11 +1611,11 @@ function PerInformationLayer:fun_Conty()
     -- dump(self.adress_city_Itempicker:getCellPos())
     -- dump(json_conty)
     local m_offset_cell=0
-    for i=1,#json_conty+0+self.mail_h do   
+    for i=1,#json_conty+1+self.mail_h do   
 
         local button =self.adress_conty_Itempicker:getCellLayout(cc.size(150,60))
         local name
-        if i<#json_conty+0+self.mail_dex and i-0-self.mail_dex>0 then 
+        if i<#json_conty+1+self.mail_dex and i-0-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(26)
             cell_month:setAnchorPoint(cc.p(0,0));
@@ -1628,7 +1632,7 @@ function PerInformationLayer:fun_Conty()
             name=json_conty[i-0-self.mail_dex]["name"]
            local pos = string.find(self.conty, name)   
             if pos then
-                m_offset_cell=i-0-self.mail_dex;
+                m_offset_cell=i-1-self.mail_dex;
             end
         end
 

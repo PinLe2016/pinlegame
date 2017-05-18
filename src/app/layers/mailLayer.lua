@@ -29,11 +29,13 @@ function mailLayer:ctor()
             Util:layer_action(self.mailLayer,self,"open") 
 
 
-            local back_bt=self.mailLayer:getChildByTag(46)--返回
+            local back_bt=self.mailLayer:getChildByTag(3164)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
-                  if eventType ~= ccui.TouchEventType.ended then
-                        return
+                 if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
                   end
+                  sender:setScale(1)
                   Util:all_layer_backMusic()
                   LocalData:Instance():set_getaffiche(nil)
                   -- Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
@@ -198,11 +200,13 @@ function mailLayer:fun_emailcontentlayer( )
             local actionTo1 = cc.ScaleTo:create(0.1, 1)
             self.emailcontentlayer:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
-             local back_bt=self.emailcontentlayer:getChildByTag(62)--返回
+             local back_bt=self.emailcontentlayer:getChildByTag(3179)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
                 if eventType ~= ccui.TouchEventType.ended then
-                      return
-                end
+                       sender:setScale(1.2)
+                       return
+                  end
+                  sender:setScale(1)
                
                 if self.emailcontentlayer then
                     self.sur_pageno=1

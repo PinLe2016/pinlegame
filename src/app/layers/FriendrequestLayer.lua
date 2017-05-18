@@ -33,9 +33,36 @@ function FriendrequestLayer:init(  )
              end   
        end
        self:pop_up()--弹出框
-       local back_bt=self.Friendrequest:getChildByTag(123)  --返回
+       local back_bt=self.Friendrequest:getChildByTag(3418)  --返回
             back_bt:addTouchEventListener(function(sender, eventType)
-            self:touch_callback(sender, eventType)
+            if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                  end
+            sender:setScale(1)
+
+            if self.share then
+                if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
+                   Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                    LocalData:Instance():set_tasktable(nil)--制空
+                end
+            end
+            Util:all_layer_backMusic()
+            Server:Instance():gettasklist()
+
+            local function stopAction()
+                if self.switch==1 then
+                    self:removeFromParent()
+                else
+                --Util:scene_control("MainInterfaceScene")
+                    self:removeFromParent()
+                end
+            end
+            local actionTo = cc.ScaleTo:create(0.1, 1.1)
+            local actionTo1 = cc.ScaleTo:create(0.3, 1)
+            local callfunc = cc.CallFunc:create(stopAction)
+            self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
        end)
      
         self.friendlist_num=LocalData:Instance():get_reward_setting_list()  
@@ -229,15 +256,6 @@ function FriendrequestLayer:touch_callback( sender, eventType )
 
 
   if tag==123 then --返回
-      if self.share then
-             if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
-                 Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
-                  LocalData:Instance():set_tasktable(nil)--制空
-           end
-      end
-      Util:all_layer_backMusic()
-      Server:Instance():gettasklist()
-     
       -- local function stopAction()
       --      if self.switch==1 then
       --          self:removeFromParent()
@@ -251,6 +269,7 @@ function FriendrequestLayer:touch_callback( sender, eventType )
       -- local callfunc = cc.CallFunc:create(stopAction)
       -- self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
       Util:layer_action(self.Friendrequest,self,"close")
+
   elseif tag==161 then  --好友邀请
     self.share=Util:share()
   elseif tag==162 then  --回馈邀请人

@@ -11,7 +11,7 @@ function taskLayer:ctor()
        self:setNodeEventEnabled(true)--layer添加监听
        self.sur_pageno=1
        self.task_state={"普通种子","中级种子","高级种子","钻石种子","惊喜种子","普通化肥","中级化肥","高级化肥"}
-       self.task_stateimage={"chengzhangshu-zhongzi-chu-1.png","chengzhangshu-zhongzi-zhong-1.png","chengzhangshu-zhongzi-gao-1.png","chengzhangshu-zhongzi-zuan-1.png","chengzhangshu-zhongzi-xi-1.png","chengzhangshu-huafei-chuji.png","chengzhangshu-huafei-zhongji.png","chengzhangshu-huafei-gaoji.png"}
+       self.task_stateimage={"resources/com/rewardImage2.png","resources/com/rewardImage3.png","resources/com/rewardImage4.png","resources/com/rewardImage5.png","resources/com/rewardImage6.png","resources/com/rewardImage7.png","resources/com/rewardImage8.png","resources/com/rewardImage9.png"}
        LocalData:Instance():set_gettasklist(nil)
        self.share = nil
        self.Act_fragment_sprite=nil
@@ -60,9 +60,24 @@ function taskLayer:init(  )
 
 
 
-            local back_bt=self.taskLayer:getChildByTag(141)  --返回
+            local back_bt=self.taskLayer:getChildByTag(3242)  --返回
             back_bt:addTouchEventListener((function(sender, eventType  )
-                     self:touch_btCallback(sender, eventType)
+                     if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                  end
+                  sender:setScale(1)
+                  Util:all_layer_backMusic()
+                  LocalData:Instance():set_sign(1)
+                  local function stopAction()
+                  self:removeFromParent()
+                  end
+                  local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                  local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                  local callfunc = cc.CallFunc:create(stopAction)
+                  self.taskLayer:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
+
                end))
             self.task_list=self.taskLayer:getChildByTag(143)--邮箱列表
             self.task_list:setItemModel(self.task_list:getItem(0))
@@ -180,7 +195,7 @@ function taskLayer:data_init(  )
                   elseif tasklist[i]["rewardtype"] == 2 then
                       for k=1,8 do
                            if tostring(tasklist[i]["rewarditemname"])  ==  self.task_state[k] then
-                              gold_image:loadTexture("png/"  ..  self.task_stateimage[k])
+                              gold_image:loadTexture(  self.task_stateimage[k])
                            end
                       end
                      

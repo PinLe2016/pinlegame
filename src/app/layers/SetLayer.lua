@@ -101,9 +101,10 @@ function SetLayer:fun_init_infor( )
 end
 function SetLayer:set_touch(  )
       --  返回
-       local back=self.SetNode:getChildByName("Button_1")
+       local back=self.SetNode:getChildByName("Image_22")
                   back:addTouchEventListener(function(sender, eventType  )
                        if eventType ~= ccui.TouchEventType.ended then
+                           sender:setScale(1.2)
                            return
                       end
                       -- local function stopAction()
@@ -114,7 +115,6 @@ function SetLayer:set_touch(  )
                       -- local callfunc = cc.CallFunc:create(stopAction)
                       -- self.SetNode:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
                       Util:layer_action(self.SetNode,self,"close")
-
 
                   end)
        --  问号 

@@ -20,6 +20,14 @@ function InvitefriendsLayer:ctor()--params
 
        Server:Instance():get_reward_friend_list() --好友列表
 
+      local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+      self:addChild(fragment_sprite_bg)
+      self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
+      self:addChild(self.Invitefriends)
+      self.Invitefriends:setScale(0.7)
+      self.Invitefriends:setAnchorPoint(0.5,0.5)
+      self.Invitefriends:setPosition(320, 568)
+
       local _table=LocalData:Instance():get_gettasklist()
        local tasklist=_table["tasklist"]
        for i=1,#tasklist  do 
@@ -48,14 +56,7 @@ function InvitefriendsLayer:fun_friend_act(  )
 end
 
 function InvitefriendsLayer:init(  )
-      local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-      self:addChild(fragment_sprite_bg)
-      self.Invitefriends = cc.CSLoader:createNode("Invitefriends.csb")  --邀请好友排行榜
-      self:addChild(self.Invitefriends)
-
-      self.Invitefriends:setScale(0.7)
-      self.Invitefriends:setAnchorPoint(0.5,0.5)
-      self.Invitefriends:setPosition(320, 568)
+     
 
       -- local actionTo = cc.ScaleTo:create(0.3, 1.1)
       -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
@@ -64,9 +65,32 @@ function InvitefriendsLayer:init(  )
 
 
         self:pop_up()--  弹出框
-       local back_bt=self.Invitefriends:getChildByTag(82)  --返回
+       local back_bt=self.Invitefriends:getChildByTag(3187)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+            if eventType ~= ccui.TouchEventType.ended then
+                 sender:setScale(1.2)
+                 return
+            end
+            sender:setScale(1)
+
+            Server:Instance():getuserinfo()  --钻石刷新
+            if self.share then
+                if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
+                    Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+                    LocalData:Instance():set_tasktable(nil)--制空
+                end
+            end
+            Server:Instance():gettasklist()
+            Util:all_layer_backMusic()
+            display.getRunningScene():fun_refresh_friend()--  目的是成长树刷新好友
+            local function stopAction()
+            self:removeFromParent()
+            end
+            local actionTo = cc.ScaleTo:create(0.1, 1.1)
+            local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+            local callfunc = cc.CallFunc:create(stopAction)
+            self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
        end)
        self.sp_ysprite=self.Invitefriends:getChildByTag(962)  --邀请好友
        self.sp_ysprite:addTouchEventListener(function(sender, eventType  )
@@ -128,10 +152,10 @@ function InvitefriendsLayer:friends_levelup(  )
               self.grade:setString( _friendlist[i]["playergrade"] )
               self.imgurl =  _cell:getChildByTag(105)  --头像
               self.imgurl:loadTexture(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":")))
-               self.today_golds =  _cell:getChildByTag(102)  --今日贡献金币
-              self.today_golds:setString( _friendlist[i]["today_golds"] )
-              self.total_golds =  _cell:getChildByTag(101)  --贡献总金币
-              self.total_golds:setString( _friendlist[i]["total_golds"] )
+              --  self.today_golds =  _cell:getChildByTag(102)  --今日贡献金币
+              -- self.today_golds:setString( _friendlist[i]["today_golds"] )
+              -- self.total_golds =  _cell:getChildByTag(101)  --贡献总金币
+              -- self.total_golds:setString( _friendlist[i]["total_golds"] )
        
            end
 
@@ -396,18 +420,34 @@ function InvitefriendsLayer:function_addFriend(  )
             self.search_friend_pageno=1
             self.addFriendSp = cc.CSLoader:createNode("addFriendSp.csb")  --邀请好友排行榜
             self:addChild(self.addFriendSp)
+            self.addFriendSp:setScale(0.7)
+            self.addFriendSp:setAnchorPoint(0.5,0.5)
+            self.addFriendSp:setPosition(320, 568)
+            local actionTo = cc.ScaleTo:create(0.3, 1.1)
+           local actionTo1 = cc.ScaleTo:create(0.1, 1)
+            self.addFriendSp:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+
 
             self.add_ListView=self.addFriendSp:getChildByTag(4013)
             self.add_ListView:setItemModel(self.add_ListView:getItem(0))
             self.add_ListView:removeAllItems()
-            local back =self.addFriendSp:getChildByTag(3882)  --返回
+            local back =self.addFriendSp:getChildByTag(3227)  --返回
             back:addTouchEventListener(function(sender, eventType)
                     if eventType ~= ccui.TouchEventType.ended then
-                          return
-                    end
+                       sender:setScale(1.2)
+                       return
+                   end
+                  sender:setScale(1)
                     Server:Instance():get_reward_friend_list() --好友列表
                     if self.addFriendSp then
+                      local function stopAction()
                       self.addFriendSp:removeFromParent()
+                      self.addFriendSp=nil
+                      end
+                      local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                      local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                      local callfunc = cc.CallFunc:create(stopAction)
+                      self.addFriendSp:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
                     end
 
                     

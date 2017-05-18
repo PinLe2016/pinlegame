@@ -21,13 +21,34 @@ end
 function aboutdetailsLayer:init(  )
           self.aboutdetails = cc.CSLoader:createNode("aboutdetails.csb");
           self:addChild(self.aboutdetails)
+          self.aboutdetails:setScale(0.7)
+          self.aboutdetails:setAnchorPoint(0.5,0.5)
+          self.aboutdetails:setPosition(320, 568)
+          local actionTo = cc.ScaleTo:create(0.3, 1.1)
+          local actionTo1 = cc.ScaleTo:create(0.1, 1)
+          self.aboutdetails:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+
           --  --提交建议
           self.advice_bg=self.aboutdetails:getChildByTag(200)  --提交建议界面
           self.advice_bg:setVisible(false)
           self.advice_bg:getChildByTag(172):getChildByTag(132):loadTexture("resources/com/chengzhangshu-1-touming.png")
-          local adviceback_bt=self.advice_bg:getChildByTag(202)  --提交建议界面返回
+          local adviceback_bt=self.advice_bg:getChildByTag(3071)  --提交建议界面返回
           adviceback_bt:addTouchEventListener((function(sender, eventType  )
-                   self:touch_btCallback(sender, eventType)
+
+                  
+                  if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                  end
+                  sender:setScale(1)
+                    local function stopAction()
+                    self:removeFromParent()
+                    end
+                    local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                    local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                    local callfunc = cc.CallFunc:create(stopAction)
+                    self.aboutdetails:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
              end))
           self.advicedata_bg=self.advice_bg:getChildByTag(204)  --提交数据建议界面
            local submit_bt=self.advicedata_bg:getChildByTag(210)  --提交界面
@@ -45,9 +66,23 @@ function aboutdetailsLayer:init(  )
           self.business_bg=self.aboutdetails:getChildByTag(305)  --商务合作界面
           self.business_bg:setVisible(false)
           self.business_bg:getChildByTag(214):getChildByTag(132):loadTexture("resources/com/chengzhangshu-1-touming.png")
-           local businessback_bt=self.business_bg:getChildByTag(307)  --商务合作界面返回
+           local businessback_bt=self.business_bg:getChildByTag(3069)  --商务合作界面返回
           businessback_bt:addTouchEventListener((function(sender, eventType  )
-                   self:touch_btCallback(sender, eventType)
+                        if eventType ~= ccui.TouchEventType.ended then
+                              sender:setScale(1.2)
+                            return
+                        end
+                        sender:setScale(1)
+
+                        Util:all_layer_backMusic()
+                        local function stopAction()
+                        self:removeFromParent()
+                        end
+                        local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                        local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                        local callfunc = cc.CallFunc:create(stopAction)
+                        self.aboutdetails:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
              end))
           self.businessback_bg=self.business_bg:getChildByTag(308)  --商务数据建议界面
           self._businessname=self.businessback_bg:getChildByTag(354)  --商务名称
@@ -65,9 +100,24 @@ function aboutdetailsLayer:init(  )
           self.Xname_text:setVisible(false)
           self.Xphone_text:setVisible(false)
           local describe_t=self.aboutdetails:getChildByTag(171)  --类型
-           local back_bt=self.aboutdetails:getChildByTag(1290)  --返回
+           local back_bt=self.aboutdetails:getChildByTag(3070)  --返回
            back_bt:addTouchEventListener((function(sender, eventType  )
-                   self:touch_btCallback(sender, eventType)
+                   
+                  if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                  end
+                  sender:setScale(1)
+
+                  Util:all_layer_backMusic()
+                  local function stopAction()
+                  self:removeFromParent()
+                  end
+                  local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                  local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+                  local callfunc = cc.CallFunc:create(stopAction)
+                  self.aboutdetails:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
              end))
             if self._type == 1 then  --提交建议
                   self.advice_bg:setVisible(true)
@@ -146,10 +196,9 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
             end 
            local tag=sender:getTag()
            if tag==1290 then  --返回
-               if self.aboutdetails then
-                Util:all_layer_backMusic()
-                self:removeFromParent()
-               end
+
+              
+
            elseif  tag==1294 then--提交建议
         self.advice_bg:setVisible(true)
         self.Zcontent_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
@@ -165,7 +214,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                    print("扫描二维码")
                    self.qr_code:setVisible(true)
             elseif  tag==202 then --扫描二维码
-                  self:removeFromParent()
+                   
             elseif  tag==98 then --扫描二维码
                   self.advice_bg:setVisible(false)
                   --self.phone_text:setVisible(false)
@@ -195,10 +244,7 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                   Server:Instance():setfeedback({type="0",company="北京拼乐",name=_name,tel=_tel,content=_content})
 
             elseif tag==307 then  --商务合作返回
-                   Util:all_layer_backMusic()
-               
-                        self:removeFromParent()
-             
+                  
             elseif tag==99 then  --商务合作返回
               self.business_bg:setVisible(false)
               self.companyname_text:setVisible(false)
