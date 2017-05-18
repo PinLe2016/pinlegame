@@ -18,11 +18,12 @@ function InvitefriendsLayer:ctor()--params
        self._search_type=0
        self._table_box={}
 
+
        Server:Instance():get_reward_friend_list() --好友列表
 
       
       self:fun_init_infor()
-       Util:layer_action(self.Invitefriends,self,"open")
+       -- Util:layer_action(self.Invitefriends,self,"open")
       
       self.Invitefriends:setAnchorPoint(0.5,0.5)
       self.Invitefriends:setPosition(320, 568)
@@ -64,9 +65,9 @@ end
 function InvitefriendsLayer:init(  )
      
 
-      -- local actionTo = cc.ScaleTo:create(0.3, 1.1)
-      -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
-      -- self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
+      local actionTo = cc.ScaleTo:create(0.08, 1.1)
+      local actionTo1 = cc.ScaleTo:create(0.1, 1)
+      self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
      
 
 
@@ -92,8 +93,8 @@ function InvitefriendsLayer:init(  )
             local function stopAction()
             self:removeFromParent()
             end
-            local actionTo = cc.ScaleTo:create(0.1, 1.1)
-            local actionTo1 = cc.ScaleTo:create(0.3, 0.7)
+            local actionTo = cc.ScaleTo:create(0.08, 1.1)
+            local actionTo1 = cc.ScaleTo:create(0.1, 0.7)
             local callfunc = cc.CallFunc:create(stopAction)
             self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
 
@@ -620,12 +621,22 @@ function InvitefriendsLayer:onEnter()
                        function()
                        	            print("初始化")
                       		--self:init()
-                          if self.x_isviset==0 then
-                             self.x_isviset=1
-                              self:fun_init(true)
-                              return
-                          end
-                          self:fun_init(false)-- 数据初始化
+
+                           local function stopAction()
+                                 if self.x_isviset==0 then
+                                        self.x_isviset=1
+                                        self:fun_init(true)
+                                        return
+                                  end
+                                  self:fun_init(false)-- 数据初始化
+
+                              end
+                        
+                              local callfunc = cc.CallFunc:create(stopAction)
+                              self.Invitefriends:runAction(cc.Sequence:create(cc.DelayTime:create(0.5),callfunc  ))
+
+
+                         
                       end)
 	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self,
                        function()
