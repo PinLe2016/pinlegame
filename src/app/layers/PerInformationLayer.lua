@@ -1511,11 +1511,11 @@ function PerInformationLayer:fun_Province( ... )
 
     local json_province=self.city_data["provinces"]
     local m_offset_cell=0
-    for i=1,#json_province+0+self.mail_h do   
+    for i=1,#json_province+1+self.mail_h do   
 
         local button =self.adress_province_Itempicker:getCellLayout(cc.size(150,60))
         local name
-        if i<#json_province+0+self.mail_dex and i-0-self.mail_dex>0 then 
+        if i<#json_province+1+self.mail_dex and i-0-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(26)
             cell_month:setAnchorPoint(cc.p(0,0));
@@ -1533,7 +1533,7 @@ function PerInformationLayer:fun_Province( ... )
             
            local pos = string.find(self.province, name)   
             if pos then
-                m_offset_cell=i-0-self.mail_dex;
+                m_offset_cell=i-1-self.mail_dex;
             end
         end
 
@@ -1559,11 +1559,11 @@ function PerInformationLayer:fun_City()
     -- local json_city=self.city_data["provinces"][29]["citys"]
     -- dump(json_city)
     local m_offset_cell=0
-    for i=1,#json_city+0+self.mail_h do   
+    for i=1,#json_city+1+self.mail_h do   
 
         local button =self.adress_city_Itempicker:getCellLayout(cc.size(250,60))
         local name
-        if i<#json_city+0+self.mail_dex and i-0-self.mail_dex>0 then 
+        if i<#json_city+1+self.mail_dex and i-0-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(24)
             cell_month:setAnchorPoint(cc.p(0.5,0));
@@ -1581,7 +1581,7 @@ function PerInformationLayer:fun_City()
            local pos = string.find(self.city, name)   
             if pos then
 
-                m_offset_cell=i-0-self.mail_dex;
+                m_offset_cell=i-1-self.mail_dex;
             end
         end
 
@@ -1601,6 +1601,7 @@ function PerInformationLayer:fun_Conty()
     if #json_city==0 then
         return
     end
+    dump(self.adress_city_Itempicker:getCellPos()+1)
     local json_conty=json_city[tonumber(self.adress_city_Itempicker:getCellPos()+1)]["areas"]
     if #json_conty==0 then
         return
@@ -1610,11 +1611,11 @@ function PerInformationLayer:fun_Conty()
     -- dump(self.adress_city_Itempicker:getCellPos())
     -- dump(json_conty)
     local m_offset_cell=0
-    for i=1,#json_conty+0+self.mail_h do   
+    for i=1,#json_conty+1+self.mail_h do   
 
         local button =self.adress_conty_Itempicker:getCellLayout(cc.size(150,60))
         local name
-        if i<#json_conty+0+self.mail_dex and i-0-self.mail_dex>0 then 
+        if i<#json_conty+1+self.mail_dex and i-0-self.mail_dex>0 then 
             local cell_month=ccui.Text:create()
             cell_month:setFontSize(26)
             cell_month:setAnchorPoint(cc.p(0,0));
@@ -1631,7 +1632,7 @@ function PerInformationLayer:fun_Conty()
             name=json_conty[i-0-self.mail_dex]["name"]
            local pos = string.find(self.conty, name)   
             if pos then
-                m_offset_cell=i-0-self.mail_dex;
+                m_offset_cell=i-1-self.mail_dex;
             end
         end
 
