@@ -17,7 +17,7 @@ function GameSurpriseScene:fun_constructor( ... )
       LocalData:Instance():set_getactivitylist(nil)
       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
       self.image_table={}  --  存放图片
-
+      self.timetext_table={} --存放时间
       self.time=0
       self.secondOne = 0
       self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
@@ -40,37 +40,61 @@ function GameSurpriseScene:fun_init( ... )
             -- 规则
             local btn_Guide=self.GameSurpriseScene:getChildByName("btn_Guide")
           	btn_Guide:addTouchEventListener(function(sender, eventType  )
-	               if eventType ~= ccui.TouchEventType.ended then
+	                if eventType ~= ccui.TouchEventType.ended then
 	                   return
 	              end
 	              print("规则")
             end)
             --  本期活动
             local btn_Current=self.GameSurpriseScene:getChildByName("btn_Current")
+            btn_Current:setBright(false)
+     	self.curr_bright=btn_Current
           	btn_Current:addTouchEventListener(function(sender, eventType  )
-	               if eventType ~= ccui.TouchEventType.ended then
-	                   return
-	              end
-	              print("本期活动")
-		self.lvw_Surorise:removeAllItems()
-		--  列表数据刷新
-		
+	               self:list_btCallback(sender, eventType)
             end)
             --  往期活动
             local btn_Past=self.GameSurpriseScene:getChildByName("btn_Past")
           	btn_Past:addTouchEventListener(function(sender, eventType  )
-	               if eventType ~= ccui.TouchEventType.ended then
-	                   return
-	              end
-	              self.lvw_Surorise:removeAllItems()
-		--  列表数据刷新
-		
-	              print("往期活动")
+	              self:list_btCallback(sender, eventType)     
             end)
 
           	self:fun_Surorise()
 end
 
+  function GameSurpriseScene:list_btCallback( sender, eventType )
+              if eventType ~= ccui.TouchEventType.ended then
+                       return
+              end
+              local tag=sender:getName()
+              if self.curr_bright:getName()==tag then
+                  return
+              end
+              self.curr_bright:setBright(true)
+              sender:setBright(false)
+               if tag=="btn_Current" then  
+		print("本期活动")
+		LocalData:Instance():set_getactivitylist(nil)
+		self:scheduleUpdate()
+		self.lvw_Surorise:removeAllItems()
+		self.image_table={}  --  存放图片
+		self.timetext_table={} --存放时间
+		self.sur_pageno=1
+		self.ser_status=1
+		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+               elseif tag=="btn_Past" then
+		LocalData:Instance():set_getactivitylist(nil)
+		self:scheduleUpdate()
+		self.lvw_Surorise:removeAllItems()
+		self.image_table={}  --  存放图片
+		self.timetext_table={} --存放时间
+		self.sur_pageno=2
+		self.ser_status=1
+		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+		print("往期活动")
+	   end
+
+              self.curr_bright=sender
+end
 --初始化列表
 function GameSurpriseScene:fun_Surorise( )
 	self.lvw_Surorise=self.GameSurpriseScene:getChildByName("ProjectNode_3"):getChildByName("lvw_Surorise")--惊喜吧列表
@@ -89,6 +113,9 @@ function GameSurpriseScene:fun_list_data(  )
 	local list_table=LocalData:Instance():get_getactivitylist()
 	local _gamelist=list_table["game"]
 	local num=#_gamelist
+	if num == 0 then
+		return
+	end
 	local jioushu=math.floor(tonumber(num)) % 2  == 1 and 1 or 2   --判段奇数 偶数
 	local _jioushu=0
 	if jioushu==1 then
@@ -133,10 +160,11 @@ function GameSurpriseScene:fun_surprise_data(_obj,_num,istwo)
              else
                 _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
             end
-
-            local _tabletime=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
+            local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
+            local _tabletime=(_time)
             local  _tabletime_data=Util:FormatTime_colon(_tabletime)
             local txt_Pastdate=_obj:getChildByName("txt_Pastdate")
+            table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=_time})
             txt_Pastdate:setString(_tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             --开启定时器
             self:scheduleUpdate()	
@@ -146,17 +174,12 @@ function GameSurpriseScene:update(dt)
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
 	self.secondOne=0
-           -- self.time=1+self.time
-          --   local  sup_data=self.list_table["game"]
-          --   if not sup_data then return end
-          --   for i=1,#sup_data do  --self.tablecout+
-         	-- local  cell = activity_ListView:getItem(i-1)
-          --   local   _table={}
-          --   if self.ser_status==0 then
-          --       _table=Util:FormatTime_colon((sup_data[i]["begintime"]-sup_data[i]["nowtime"])-self.time)
-          --   else
-          --       _table=Util:FormatTime_colon((sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])-self.time)
-          --   end
+            self.time=1+self.time
+         	for i=1,#self.timetext_table do
+         		
+         		self.countdown_time=Util:FormatTime_colon(self.timetext_table[i].time_count-self.time)
+         		self.timetext_table[i].timetext:setString(self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
+         	end
            --  刷新下载的图片
 	if #self.image_table~=0 then
 	   local next_num=0
