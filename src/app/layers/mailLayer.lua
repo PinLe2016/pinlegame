@@ -31,6 +31,10 @@ function mailLayer:ctor()
 
             local back_bt=self.mailLayer:getChildByTag(3164)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
+                  if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                  end
                  if eventType ~= ccui.TouchEventType.ended then
                        sender:setScale(1.2)
                        return
@@ -202,6 +206,11 @@ function mailLayer:fun_emailcontentlayer( )
 
              local back_bt=self.emailcontentlayer:getChildByTag(3179)--返回
             back_bt:addTouchEventListener(function(sender, eventType  )
+                if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                end
+
                 if eventType ~= ccui.TouchEventType.ended then
                        sender:setScale(1.2)
                        return

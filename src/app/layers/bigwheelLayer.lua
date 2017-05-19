@@ -227,6 +227,10 @@ function bigwheelLayer:function_HitVolesEnd(  )
              
             self._goldbg=self.HitVolesEndLayer:getChildByTag(69)  --   金币背景
             self._goldbg:addTouchEventListener(function(sender, eventType  )
+                    if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
                     if eventType ~= ccui.TouchEventType.ended then
                          sender:setScale(0.8)
                          return
@@ -575,6 +579,10 @@ function bigwheelLayer:Pintu_data_up()
 
             self._goldbg=self.puzzleEndLayer:getChildByTag(1324)  --   金币背景
             self._goldbg:addTouchEventListener(function(sender, eventType  )
+                    if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
                     if eventType ~= ccui.TouchEventType.ended then
                          sender:setScale(0.8)
                          return
@@ -665,6 +673,11 @@ function bigwheelLayer:PintuEndAct(_obj)
 end
 --  结束界面返回按钮
 function bigwheelLayer:fun_callback( sender, eventType )
+            if eventType == 3 then
+                       sender:setScale(1)
+                       return
+             end
+
             if eventType ~= ccui.TouchEventType.ended then
                  sender:setScale(0.8)
                  return

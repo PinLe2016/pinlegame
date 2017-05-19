@@ -289,6 +289,10 @@ end
     end
 
      local function callback_btCallback(sender, eventType) 
+                    if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                     end
                     if eventType ~= ccui.TouchEventType.ended then
                          sender:setScale(1.2)
                          return
@@ -448,6 +452,11 @@ function LoginScene:_landing_interface()
 
      local land_back_bt=landing:getChildByName("Image_2")
       land_back_bt:addTouchEventListener(function(sender, eventType  )
+                if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                end
+
                 if eventType ~= ccui.TouchEventType.ended then
                      sender:setScale(1.2)
                      return
@@ -611,6 +620,10 @@ function LoginScene:_passwordLayer( )
 
           local _back = self.passwordLayer:getChildByName("Image_2")
           _back:addTouchEventListener((function(sender, eventType  )
+                      if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                     end
                       if eventType ~= ccui.TouchEventType.ended then
                                sender:setScale(1.2)
                                return
@@ -811,6 +824,11 @@ function LoginScene:_resetpasswordLayer(  )
 
              local _back = self.resetpasswordLayer:getChildByName("Image_2")
              _back:addTouchEventListener((function(sender, eventType  )
+                    if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                     end
+                     
                     if eventType ~= ccui.TouchEventType.ended then
                          sender:setScale(1.2)
                          return

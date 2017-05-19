@@ -116,6 +116,11 @@ function FloatingLayer:network_box(prompt_text )
       local _text=self.networkbox:getChildByTag(172)
       _text:setString(prompt_text)
        back:addTouchEventListener(function(sender, eventType  )
+                  if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
+                    
                  if eventType ~= ccui.TouchEventType.ended then
                         sender:setScale(0.5)
                         return

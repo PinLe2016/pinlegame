@@ -35,6 +35,11 @@ function FriendrequestLayer:init(  )
        self:pop_up()--弹出框
        local back_bt=self.Friendrequest:getChildByTag(3418)  --返回
             back_bt:addTouchEventListener(function(sender, eventType)
+              if eventType == 3 then
+                       sender:setScale(1)
+                       return
+              end
+
             if eventType ~= ccui.TouchEventType.ended then
                        sender:setScale(1.2)
                        return
