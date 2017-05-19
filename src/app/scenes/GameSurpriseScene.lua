@@ -73,36 +73,37 @@ end
               sender:setBright(false)
                if tag=="btn_Current" then  
 		print("本期活动")
-		LocalData:Instance():set_getactivitylist(nil)
-		self:scheduleUpdate()
-		self.lvw_Surorise:removeAllItems()
-		self.image_table={}  --  存放图片
-		self.timetext_table={} --存放时间
-		self.sur_pageno=1
+		self:fun_touch_com()
 		self.ser_status=1
 		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                elseif tag=="btn_Past" then
-		LocalData:Instance():set_getactivitylist(nil)
-		self:scheduleUpdate()
-		self.lvw_Surorise:removeAllItems()
-		self.image_table={}  --  存放图片
-		self.timetext_table={} --存放时间
-		self.sur_pageno=2
-		self.ser_status=1
+		self:fun_touch_com()
+		self.ser_status=2
 		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
 		print("往期活动")
 	   end
 
               self.curr_bright=sender
 end
+function GameSurpriseScene:fun_touch_com( ... )
+	LocalData:Instance():set_getactivitylist(nil)
+	self:scheduleUpdate()
+	self.lvw_Surorise:removeAllItems()
+	self.image_table={}  --  存放图片
+	self.timetext_table={} --存放时间
+	self.sur_pageno=1
+end
 --初始化列表
 function GameSurpriseScene:fun_Surorise( )
 	self.lvw_Surorise=self.GameSurpriseScene:getChildByName("ProjectNode_3"):getChildByName("lvw_Surorise")--惊喜吧列表
 	self.lvw_Surorise:addScrollViewEventListener((function(sender, eventType  )
 	          if eventType  ==6 then
-	                     print("下啦刷新")
+			self.sur_pageno=self.sur_pageno+1
+			LocalData:Instance():set_getactivitylist(nil)
+			Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
 	                     return
 	          end
+
 	end))
 	self.lvw_Surorise:setItemModel(self.lvw_Surorise:getItem(0))
 	self.lvw_Surorise:removeAllItems()
