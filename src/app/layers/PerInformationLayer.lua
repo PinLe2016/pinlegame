@@ -123,10 +123,19 @@ function PerInformationLayer:add_init(  )
                  end 
                 local back_bt=self.showinformation:getChildByTag(3630)  --返回
                 back_bt:addTouchEventListener(function(sender, eventType  )
+                    
+                    if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
+
                     if eventType ~= ccui.TouchEventType.ended then
                        sender:setScale(1.2)
                        return
                     end
+
+                    
+
                     sender:setScale(1)
 
                     if  tostring(LocalData:Instance():get_per())  ==  "1" then

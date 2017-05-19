@@ -62,6 +62,10 @@ function taskLayer:init(  )
 
             local back_bt=self.taskLayer:getChildByTag(3242)  --返回
             back_bt:addTouchEventListener((function(sender, eventType  )
+                    if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                     end
                      if eventType ~= ccui.TouchEventType.ended then
                        sender:setScale(1.2)
                        return

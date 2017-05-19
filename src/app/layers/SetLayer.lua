@@ -103,6 +103,10 @@ function SetLayer:set_touch(  )
       --  返回
        local back=self.SetNode:getChildByName("Image_22")
                   back:addTouchEventListener(function(sender, eventType  )
+                    if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
                        if eventType ~= ccui.TouchEventType.ended then
                            sender:setScale(1.2)
                            return

@@ -36,12 +36,15 @@ function aboutdetailsLayer:init(  )
           local adviceback_bt=self.advice_bg:getChildByTag(3071)  --提交建议界面返回
           adviceback_bt:addTouchEventListener((function(sender, eventType  )
 
-                  
+                  if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
                   if eventType ~= ccui.TouchEventType.ended then
-                       -- sender:setScale(1.2)
+                       sender:setScale(1.2)
                        return
                   end
-                  -- sender:setScale(1)
+                  sender:setScale(1)
                     -- local function stopAction()
                     -- self:removeFromParent()
                     -- end
@@ -70,6 +73,11 @@ function aboutdetailsLayer:init(  )
           self.business_bg:getChildByTag(214):getChildByTag(132):loadTexture("resources/com/chengzhangshu-1-touming.png")
            local businessback_bt=self.business_bg:getChildByTag(3069)  --商务合作界面返回
           businessback_bt:addTouchEventListener((function(sender, eventType  )
+                        if eventType == 3 then
+                           sender:setScale(1)
+                           return
+                        end
+
                         if eventType ~= ccui.TouchEventType.ended then
                               sender:setScale(1.2)
                             return
@@ -105,7 +113,10 @@ function aboutdetailsLayer:init(  )
           local describe_t=self.aboutdetails:getChildByTag(171)  --类型
            local back_bt=self.aboutdetails:getChildByTag(3070)  --返回
            back_bt:addTouchEventListener((function(sender, eventType  )
-                   
+                   if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
                   if eventType ~= ccui.TouchEventType.ended then
                        sender:setScale(1.2)
                        return
