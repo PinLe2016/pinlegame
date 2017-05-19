@@ -360,8 +360,7 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
           	activity_ListView:pushBackDefaultItem()
           	local  cell = activity_ListView:getItem(i-1)
             cell:setTag(i) 
-
-
+            
             local activity_Panel=cell:getChildByTag(36)
             cell:addTouchEventListener(onImageViewClicked)
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(sup_data[i]["ownerurl"], "/",":")))

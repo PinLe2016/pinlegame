@@ -204,15 +204,15 @@ end
      -- self.Zphone_text:setVisible(false)
      -- self.Zphone_text:setTouchEnabled(false)
      self.phone_text=self.Zphone_text
-     Util:function_keyboard(self.registered,self.Zphone_text,23)
+     Util:function_keyboard(self.registered,self.Zphone_text,17)
      local password_text=self.LoginNode_Register:getChildByName("tf_Password")
      self.Zpassword_text=password_text
-     Util:function_keyboard(self.registered,password_text,16)
+     Util:function_keyboard(self.registered,password_text,12)
      -- password_text:setVisible(false)
      -- password_text:setTouchEnabled(false)
      local verificationcode_text=self.LoginNode_Register:getChildByName("tf_Token")
      self.Zcode_text=verificationcode_text
-     Util:function_keyboard(self.registered,verificationcode_text,22)
+     Util:function_keyboard(self.registered,verificationcode_text,17)
      -- verificationcode_text:setVisible(false)
      -- verificationcode_text:setTouchEnabled(false)
 
@@ -465,14 +465,14 @@ function LoginScene:_landing_interface()
 
   local Editphone = self.LoginNode_Mobile:getChildByName("TextField_1")
   self.Dphone_text=Editphone
-  Util:function_keyboard(self.LoginNode_Mobile,Editphone,27)
+  Util:function_keyboard(self.LoginNode_Mobile,Editphone,17)
   Editphone:setPlaceHolder("请输入手机号码")
   -- Editphone:setTouchEnabled(false)
   -- Editphone:setVisible(false)
 
   local EditPassword=self.LoginNode_Mobile:getChildByName("TextField_1_Copy")
   self.Dpassword_text=EditPassword
-  Util:function_keyboard(self.LoginNode_Mobile,EditPassword,19)
+  Util:function_keyboard(self.LoginNode_Mobile,EditPassword,12)
   EditPassword:setPlaceHolder("请输入密码")
 
   -- EditPassword:setTouchEnabled(false)
@@ -672,7 +672,7 @@ function LoginScene:_passwordLayer( )
             Util:function_keyboard(self.passwordLayer,phone,17) 
             local Wcode_text = self.LoginNode_Forget:getChildByName("TextField_1_Copy")
             self._yanzhengma=Wcode_text
-            Util:function_keyboard(self.passwordLayer,Wcode_text,16) 
+            Util:function_keyboard(self.passwordLayer,Wcode_text,17) 
             -- Wcode_text:setVisible(false)
             -- Wcode_text:setTouchEnabled(false)
 
@@ -830,7 +830,7 @@ function LoginScene:_resetpasswordLayer(  )
              phone:setString(self._mobilephone)
              local password1 = self.LoginNode_NewPassword:getChildByName("tf_Password")
              self.Wpassword_text=password1
-             Util:function_keyboard(self.resetpasswordLayer,password1,15) 
+             Util:function_keyboard(self.resetpasswordLayer,password1,12) 
              -- password1:setVisible(false)
              -- password1:setTouchEnabled(false)
               local res = "  "--res/png/DLkuang.png"
