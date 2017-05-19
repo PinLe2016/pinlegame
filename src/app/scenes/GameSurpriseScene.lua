@@ -114,7 +114,7 @@ function GameSurpriseScene:fun_list_data(  )
 	local list_table=LocalData:Instance():get_getactivitylist()
 	local _gamelist=list_table["game"]
 	local num=#_gamelist
-	if num == 0 then
+	if num == 0 and list_table then
 		return
 	end
 	local jioushu=math.floor(tonumber(num)) % 2  == 1 and 1 or 2   --判段奇数 偶数
@@ -130,11 +130,13 @@ function GameSurpriseScene:fun_list_data(  )
 		local  cell = self.lvw_Surorise:getItem(i-1)
 		local  _bg=cell:getChildByName("bg")
 		local  _bg_Copy=cell:getChildByName("bg_Copy")
+		_bg:setTag(2*i-1)
 		_bg_Copy:setVisible(false)
 		self:fun_surprise_data(_bg,i,1)
 		if i*2-1== num  then
 			return
 		end
+		_bg_Copy:setTag(2*i)
 		_bg_Copy:setVisible(true)
 		self:fun_surprise_data(_bg_Copy,i,0)
 	end
@@ -152,7 +154,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,_num,istwo)
 	              end
 	              print("活动编号"  ..  2*_num-1)
 	              local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
-		  self:addChild(SurpriseNode_Detail.new(),1,12)
+		  self:addChild(SurpriseNode_Detail.new({id=_gamelist[sender:getParent():getTag()]["id"]}),1,1)
             end)
 
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))

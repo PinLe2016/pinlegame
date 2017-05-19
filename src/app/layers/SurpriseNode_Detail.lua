@@ -8,10 +8,12 @@ local SurpriseNode_Detail = class("SurpriseNode_Detail", function()
             return display.newLayer("SurpriseNode_Detail")
 end)
 
-function SurpriseNode_Detail:ctor()
+function SurpriseNode_Detail:ctor(params)
        self:setNodeEventEnabled(true)
        --  初始化界面
        self:fun_init()
+       Server:Instance():getactivitybyid(params.id,0)
+       Server:Instance():getactivityadlist(params.id)
 end
 
 function SurpriseNode_Detail:fun_init( ... )
