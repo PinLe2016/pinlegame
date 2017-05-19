@@ -303,7 +303,7 @@ function InvitefriendsLayer:pop_up(  )
        _invitecodeNum:setVisible(false)
        _invitecodeNum:setTouchEnabled(false)
 
-      local res = "res/png/DLkuang.png"
+      local res = "  "--res/png/DLkuang.png"
       local width = 300
       local height = 40
        --登陆

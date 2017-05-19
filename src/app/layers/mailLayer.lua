@@ -247,6 +247,22 @@ function mailLayer:fun_emailcontentlayer( )
             end
             self.emil_receive_bt=self.emailcontentlayer:getChildByTag(66)--领取
             self.emil_receive_bt1=self.emailcontentlayer:getChildByTag(67)--领取
+            self.emil_receive_bt1:addTouchEventListener(function(sender, eventType  )
+                      if eventType ~= ccui.TouchEventType.ended then
+                          return
+                      end
+                      local affichedetail=LocalData:Instance():get_getaffichedetail()
+                          if tonumber(affichedetail["rewardgolds"])  <= 0 and tonumber(affichedetail["rewardcount"])  <= 0 then
+                          Server:Instance():prompt("没有可领取的金币")
+                          return
+                      end
+                      Server:Instance():getuserinfo()
+                      Server:Instance():getaffichereward(affichedetail["id"])
+                      local userdt = LocalData:Instance():get_userdata()
+                      userdt["golds"]=userdt["golds"] + tonumber(affichedetail["rewardgolds"])
+                      LocalData:Instance():set_userdata(userdt)
+
+                       end)
             if tonumber(affichedetail["rewardgolds"])  <= 0   and  tonumber(affichedetail["rewardcount"])  <= 0  then
                self.emil_receive_bt:setVisible(true)
                self.emil_receive_bt1:setVisible(false)
@@ -265,22 +281,7 @@ function mailLayer:fun_emailcontentlayer( )
                self.rewardquan:setVisible(false)
             end
 
-            receive_bt1:addTouchEventListener(function(sender, eventType  )
-                        if eventType ~= ccui.TouchEventType.ended then
-                      return
-                end
-                local affichedetail=LocalData:Instance():get_getaffichedetail()
-                if tonumber(affichedetail["rewardgolds"])  <= 0 and tonumber(affichedetail["rewardcount"])  <= 0 then
-                  Server:Instance():prompt("没有可领取的金币")
-                  return
-                end
-              Server:Instance():getuserinfo()
-             Server:Instance():getaffichereward(affichedetail["id"])
-              local userdt = LocalData:Instance():get_userdata()
-             userdt["golds"]=userdt["golds"] + tonumber(affichedetail["rewardgolds"])
-             LocalData:Instance():set_userdata(userdt)
-
-                       end)
+            
 
 end
 function mailLayer:onEnter()
