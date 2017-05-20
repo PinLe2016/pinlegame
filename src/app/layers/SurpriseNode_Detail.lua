@@ -1,7 +1,3 @@
---
--- Author: peter
--- Date: 2017-05-18 17:30:10
---
 --  新版惊喜吧  活动详情
 
 local SurpriseNode_Detail = class("SurpriseNode_Detail", function()
@@ -12,7 +8,7 @@ function SurpriseNode_Detail:ctor(params)
        self:setNodeEventEnabled(true)
        --  初始化界面
        self:fun_init()
-       Server:Instance():getactivitybyid(params.id,0)
+       Server:Instance():getactivitybyid(params.id,0)  --  详情
        Server:Instance():getactivityadlist(params.id)
 end
 

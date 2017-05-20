@@ -73,25 +73,26 @@ end
               sender:setBright(false)
                if tag=="btn_Current" then  
 		print("本期活动")
-		self:fun_touch_com()
-		self.ser_status=1
+		self:fun_touch_com(1)
+		LocalData:Instance():set_getactivitylist(nil)
 		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                elseif tag=="btn_Past" then
-		self:fun_touch_com()
-		self.ser_status=2
+		self:fun_touch_com(2)
+		LocalData:Instance():set_getactivitylist(nil)
 		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
 		print("往期活动")
 	   end
 
               self.curr_bright=sender
 end
-function GameSurpriseScene:fun_touch_com( ... )
+function GameSurpriseScene:fun_touch_com(num )
 	LocalData:Instance():set_getactivitylist(nil)
 	self:scheduleUpdate()
 	self.lvw_Surorise:removeAllItems()
 	self.image_table={}  --  存放图片
 	self.timetext_table={} --存放时间
 	self.sur_pageno=1
+	self.ser_status=num
 end
 --初始化列表
 function GameSurpriseScene:fun_Surorise( )
@@ -103,12 +104,9 @@ function GameSurpriseScene:fun_Surorise( )
 			Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
 	                     return
 	          end
-
 	end))
 	self.lvw_Surorise:setItemModel(self.lvw_Surorise:getItem(0))
 	self.lvw_Surorise:removeAllItems()
-
-	
 end
 function GameSurpriseScene:fun_list_data(  )
 	local list_table=LocalData:Instance():get_getactivitylist()
@@ -154,7 +152,8 @@ function GameSurpriseScene:fun_surprise_data(_obj,_num,istwo)
 	              end
 	              print("活动编号"  ..  2*_num-1)
 	              local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
-		  self:addChild(SurpriseNode_Detail.new({id=_gamelist[sender:getParent():getTag()]["id"]}),1,1)
+	              local _id=_gamelist[sender:getParent():getTag()]["id"]
+		  self:addChild(SurpriseNode_Detail.new({id=_id}),1,1)
             end)
 
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
