@@ -72,13 +72,20 @@ function InvitefriendsLayer:init(  )
 
 
         self:pop_up()--  弹出框
+      self.No_friends=self.Invitefriends:getChildByTag(901)  --暂无好友
+      self.No_friends:setVisible(false)
        local back_bt=self.Invitefriends:getChildByTag(3187)  --返回
 	back_bt:addTouchEventListener(function(sender, eventType)
+            if eventType == 3 then
+                       sender:setScale(1)
+                       return
+              end
+
             if eventType ~= ccui.TouchEventType.ended then
-                 -- sender:setScale(1.2)
-                 return
-            end
-            -- sender:setScale(1)
+                       sender:setScale(1.2)
+                       return
+                  end
+            sender:setScale(1)
 
             Server:Instance():getuserinfo()  --钻石刷新
             if self.share then
@@ -175,6 +182,7 @@ function InvitefriendsLayer:fun_init( _isvisber)
              local _count=1
              self.obtain_bt:setBright(false) 
              if  not friendlist_table then
+
              	return
              end
               self._ListView:removeAllItems()
@@ -196,6 +204,7 @@ function InvitefriendsLayer:fun_init( _isvisber)
             end
            
             if #friendlist_table["friendlist"]==0 then
+            self.No_friends:setVisible(true)
             	return
             end
             self.table_insert={}
@@ -434,17 +443,21 @@ function InvitefriendsLayer:function_addFriend(  )
            local actionTo1 = cc.ScaleTo:create(0.1, 1)
             self.addFriendSp:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
-
             self.add_ListView=self.addFriendSp:getChildByTag(4013)
             self.add_ListView:setItemModel(self.add_ListView:getItem(0))
             self.add_ListView:removeAllItems()
             local back =self.addFriendSp:getChildByTag(3227)  --返回
             back:addTouchEventListener(function(sender, eventType)
-                    if eventType ~= ccui.TouchEventType.ended then
-                       -- sender:setScale(1.2)
-                       return
-                   end
-                  -- sender:setScale(1)
+                  if eventType == 3 then
+                     sender:setScale(1)
+                     return
+                  end
+
+                  if eventType ~= ccui.TouchEventType.ended then
+                     sender:setScale(1.2)
+                     return
+                  end
+                  sender:setScale(1)
                     Server:Instance():get_reward_friend_list() --好友列表
                     if self.addFriendSp then
                       local function stopAction()

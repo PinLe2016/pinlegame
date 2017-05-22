@@ -10,19 +10,19 @@ function FriendrequestLayer:ctor(params)--params
             self.floating_layer = require("app.layers.FloatingLayer").new()
             self.floating_layer:addTo(self,100000)
             self:setNodeEventEnabled(true)--layer添加监听
-            Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
-            local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
-            self:addChild(fragment_sprite_bg)
-            self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
-            self:addChild(self.Friendrequest)
-            self.Friendrequest:setScale(0.7)
-            self.Friendrequest:setAnchorPoint(0.5,0.5)
-            self.Friendrequest:setPosition(320, 568)
-           --  local actionTo = cc.ScaleTo:create(0.3, 1.1)
-           -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
-           --  self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1  ))
-           Util:layer_action(self.Friendrequest,self,"open") 
+            self:fun_init_infor()
 
+end
+function FriendrequestLayer:fun_init_infor( ... )
+              local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+              self:addChild(fragment_sprite_bg)
+              self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
+              self:addChild(self.Friendrequest)
+              self.Friendrequest:setScale(0.7)
+              self.Friendrequest:setAnchorPoint(0.5,0.5)
+              self.Friendrequest:setPosition(320, 568)
+             Util:layer_action(self.Friendrequest,self,"open") 
+             Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
 end
 function FriendrequestLayer:init(  )
        local _table=LocalData:Instance():get_gettasklist()
@@ -54,19 +54,19 @@ function FriendrequestLayer:init(  )
             end
             Util:all_layer_backMusic()
             Server:Instance():gettasklist()
-
-            local function stopAction()
-                if self.switch==1 then
-                    self:removeFromParent()
-                else
-                --Util:scene_control("MainInterfaceScene")
-                    self:removeFromParent()
-                end
-            end
-            local actionTo = cc.ScaleTo:create(0.1, 1.1)
-            local actionTo1 = cc.ScaleTo:create(0.3, 1)
-            local callfunc = cc.CallFunc:create(stopAction)
-            self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+            Util:layer_action(self.Friendrequest,self,"close") 
+            -- local function stopAction()
+            --     if self.switch==1 then
+            --         self:removeFromParent()
+            --     else
+            --     --Util:scene_control("MainInterfaceScene")
+            --         self:removeFromParent()
+            --     end
+            -- end
+            -- local actionTo = cc.ScaleTo:create(0.1, 1.1)
+            -- local actionTo1 = cc.ScaleTo:create(0.3, 1)
+            -- local callfunc = cc.CallFunc:create(stopAction)
+            -- self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
 
        end)
      
@@ -304,7 +304,13 @@ end
 function FriendrequestLayer:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self,
                        function()
-                           self:init()
+                         --  self:init()
+                          local function stopAction()
+                                self:init()
+                              end
+                        
+                              local callfunc = cc.CallFunc:create(stopAction)
+                              self.Friendrequest:runAction(cc.Sequence:create(cc.DelayTime:create(0.2),callfunc  ))
 
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.STECODE, self,

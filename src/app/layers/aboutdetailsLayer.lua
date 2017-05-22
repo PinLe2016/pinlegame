@@ -111,6 +111,11 @@ function aboutdetailsLayer:init(  )
           self.Xname_text:setVisible(false)
           self.Xphone_text:setVisible(false)
           local describe_t=self.aboutdetails:getChildByTag(171)  --类型
+          local loginname_taxt=self.aboutdetails:getChildByTag(2187)  --返回
+          local  userdata=LocalData:Instance():get_user_data()
+          local nickname=userdata["loginname"]
+          loginname_taxt:setString(nickname)
+
            local back_bt=self.aboutdetails:getChildByTag(3070)  --返回
            back_bt:addTouchEventListener((function(sender, eventType  )
                    if eventType == 3 then

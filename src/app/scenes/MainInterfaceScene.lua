@@ -99,15 +99,36 @@ function MainInterfaceScene:fun_init( )
       flashing:runAction( cc.Sequence:create(cc.Blink:create(3,100)))
       self.signanimationact:gotoFrameAndPlay(0,65, true)
          
+      local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)
+          Surprise_bt:addTouchEventListener(function(sender, eventType  )
+         self:touch_callback(sender, eventType)
+      end)
        self.gamecenter_text=self.MainInterfaceScene:getChildByTag(122)   --游戏中心
+      self.gamecenter_bt=self.MainInterfaceScene:getChildByTag(444)   --游戏中心
+          self.gamecenter_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+      
 
+      self.list_bt=self.MainInterfaceScene:getChildByTag(125)   --  排行榜
+          self.list_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+
+      local activitycode_bt=self.MainInterfaceScene:getChildByTag(72)
+          activitycode_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
 
       local mall_bt=self.MainInterfaceScene:getChildByTag(626)  --商城
       mall_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
 
-  
+      local jackpot_bt=self.MainInterfaceScene:getChildByTag(97)
+          jackpot_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
      
        local head=self.MainInterfaceScene:getChildByTag(37)
        local per=self.MainInterfaceScene:getChildByTag(28):getChildByTag(29)  --新的需求
@@ -300,10 +321,41 @@ function MainInterfaceScene:touch_callback( sender, eventType )
   end
   local tag=sender:getTag()
   if tag==56 then --惊喜吧
+     Util:scene_control("SurpriseScene")
+  elseif tag==72 then --活动码
+    -- local activitycodeLayer = require("app.layers.activitycodeLayer")  --活动吗
+    -- self:addChild(activitycodeLayer.new(),1,255)
     
+    display.replaceScene(require("app.layers.activitycodeLayer"):new())
+    --display.replaceScene(cc.TransitionProgressInOut:create(0.3, require("app.layers.activitycodeLayer"):new()))
   elseif tag==37 then  --37
     local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
     self:addChild(PerInformationLayer.new(),1,14)
+  elseif tag==399 then --弹出确定
+
+  elseif tag==97 then
+    Util:scene_control("GoldprizeScene")
+     --Util:scene_control("PhysicsScene")
+      elseif tag==444 then  --游戏中心
+
+            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
+            -- if _table and tonumber(_table["gameIsused"])==0 then  --  0 苹果测试  1  正式
+            --         self:fun_gamecenter()
+            --         return
+            -- end
+            -- Util:scene_controlid("MallScene",{type="play_mode"})
+          Util:scene_control("GrowingtreeScene")
+
+
+      elseif tag==125 then 
+              --self:fun_showtip( self.list_bt,sender:getPositionX(),sender:getPositionY())
+              --self.list_bt:setTouchEnabled(false)
+         --       local RichlistLayer = require("app.layers.RichlistLayer")--排行榜 
+         -- self:addChild(RichlistLayer.new(),1,17)
+         display.replaceScene(require("app.layers.RichlistLayer"):new())
+         --display.replaceScene(cc.TransitionProgressInOut:create(0.3, require("app.layers.RichlistLayer"):new()))
+
+
   elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       -- self:addChild(self.checkinlayer)
@@ -440,6 +492,158 @@ function MainInterfaceScene:move_layer(_layer)
       _layer:runAction(sque)
 end
 
+--签到
+function MainInterfaceScene:fun_checkin( tm )
+
+      if not self.checkinlayer then   --GRzhezhaoceng
+         self.fragment_sprite = cc.CSLoader:createNode("masklayer.csb")  --背景层
+        self:addChild(self.fragment_sprite)
+        self.fragment_sprite:getChildByTag(135):loadTexture("png/GRzhezhaoceng.png") 
+         self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
+         self:addChild(self.checkinlayer,1,17)
+         self.checkinlayer:setVisible(true)
+         self:move_layer(self.checkinlayer)
+      end
+
+      if not self.checkinlayer then
+        return
+      end
+      
+      if tm==2 then
+            local _sig=LocalData:Instance():get_getcheckinhistory()
+            local userdt = LocalData:Instance():get_userdata()
+            userdt["golds"]=_sig["playerinfo"]["golds"]
+            LocalData:Instance():set_userdata(userdt) --  保存数据
+
+          --       签到增加的金币
+            -- self.Signinact = cc.CSLoader:createNode("Signinact.csb")
+            -- self.checkinlayer:addChild(self.Signinact)
+            -- self.Signin_act = cc.CSLoader:createTimeline("Signinact.csb")
+            -- self.Signinact:runAction(self.Signin_act)
+            -- self.Signin_act:gotoFrameAndPlay(0,80, false)
+             if LocalData:Instance():get_music() then
+                audio.playSound("sound/effect/jinbidiaoluo.mp3",false)
+             end
+            
+
+
+        local particle = cc.ParticleSystemQuad:create("goldCoin(3).plist")
+        particle:setPosition(display.cx,display.cy*4/5)
+        particle:setDuration(1)
+        self:addChild(particle,300)
+
+
+          -- Util:scene_control("MainInterfaceScene")  --禁止
+        end
+        
+  local back_bt=self.checkinlayer:getChildByTag(84)  --返回
+  back_bt:addTouchEventListener(function(sender, eventType  )
+         if eventType ~= ccui.TouchEventType.ended then
+          return
+         end
+         self.fragment_sprite:setVisible(false)
+         self.checkinlayer:removeFromParent()
+             self.checkinlayer=nil
+             Server:Instance():gettasklist()   --目的是刷新任务数据
+             Util:all_layer_backMusic()
+         
+  end)
+  local check_bt=self.checkinlayer:getChildByTag(87)
+      self.check_button=check_bt
+  check_bt:addTouchEventListener(function(sender, eventType  )
+         if eventType ~= ccui.TouchEventType.ended then
+         return
+         end
+             if LocalData:Instance():get_tasktable() then
+               Server:Instance():settasktarget(LocalData:Instance():get_tasktable())
+             end
+             LocalData:Instance():set_tasktable(nil)--制空
+         Server:Instance():checkin()  --发送消息
+  end)
+
+  self:init_checkin()-- 初始化签到数据
+
+
+
+end
+--签到 初始化
+function MainInterfaceScene:init_checkin(  )
+     
+
+
+  local  day_bg=self.checkinlayer:getChildByTag(85)
+  local  day_text=day_bg:getChildByTag(86)
+      day_text:setFontName("png/chuti.ttf")
+  local   _size=day_bg:getContentSize()
+
+  local  checkindata=LocalData:Instance():get_getcheckinhistory() --用户数据
+  local  days=checkindata["days"]
+
+            local  totaydays=checkindata["totaldays"]
+           
+            self.check_biaoji=self.checkinlayer:getChildByTag(39)
+
+          
+            local  _table={}
+            local  _biaojitable={}
+            for i=1, math.ceil(totaydays/7-1) do
+              for j=1,7 do
+                     local _bg=day_bg:clone()
+                     local  day_text=_bg:getChildByTag(86)
+                         local biaoji=_bg:getChildByTag(484)
+                         biaoji:setVisible(false)
+                               day_text:setString((i-1)*7+j)
+                               _table[(i-1)*7+j]=day_text
+                               _biaojitable[(i-1)*7+j]=biaoji
+                     _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+8)*(j-1),_bg:getPositionY()-_size.height* math.ceil(i-1)))
+                     self.checkinlayer:addChild(_bg)
+                  
+            end
+          end
+          for i=1,totaydays-math.ceil(totaydays/7-1)*7 do
+             local _bg=day_bg:clone()
+             local  day_text=_bg:getChildByTag(86)
+                   local biaoji=_bg:getChildByTag(484)
+                   biaoji:setVisible(false)
+                         day_text:setString( math.ceil(totaydays/7-1)*7+i)
+                         _table[math.ceil(totaydays/7-1)*7+i]=day_text
+                         _biaojitable[math.ceil(totaydays/7-1)*7+i]=biaoji
+               _bg:setPosition(cc.p(_bg:getPositionX()+(_size.width+8)*(i-1),_bg:getPositionY()-_size.height* math.ceil(totaydays/7-1)))
+               self.checkinlayer:addChild(_bg)
+          end
+              _biaojitable[16]:loadTexture("png/Qprize.png")
+              --_biaojitable[16]:setVisible(true)
+              if not days then
+                --self.checkinlayer:setVisible(true)
+                  return
+              end
+           
+            for i=1,totaydays do
+                  if #days==0 then
+                      break
+                  end
+              for j=1,#days do
+                if i==tonumber(os.date("%d",days[j])) then
+                              if i==16 then
+                                _biaojitable[i]:loadTexture("res/png/Qprize.png")
+                              end
+                  _table[i]:setColor(cc.c3b(62, 165, 216))
+                              _biaojitable[i]:setVisible(true)
+                end
+              end
+            end
+
+            local tm = os.date("*t")
+            if tm.day ==tonumber(os.date("%d",days[1])) then   --  获取系统时间
+                self.check_button:setVisible(false)
+
+                self.check_biaoji:setVisible(true)
+
+                return
+            else
+               self.check_button:setVisible(true)
+            end
+end
 function MainInterfaceScene:onEnter()
 
   --Util:player_music_hit("GAMEBG",true )

@@ -18,7 +18,38 @@ function GoldprizeScene:ctor()
    self.choose=0 --1p拼图   2   打地鼠
    --LocalData:Instance():set_sign(1)
 end
+--  金币动画
+function GoldprizeScene:gold_act(  )
+	local userdt = LocalData:Instance():get_userdata()
+	self. _table={}
 
+    	for i=1,9 do
+    		local score=self.GoldprizeScene
+    		local score1=self.GoldprizeScene:getChildByTag(1158)
+    		score1:setVisible(false)
+	    	local po1x=score1:getPositionX()
+	    	local po1y=score1:getPositionY()
+	            local laoHuJi1 = cc.LaoHuJiDonghua:create()--cc.CustomClass:create()
+	            local msg = laoHuJi1:helloMsg()
+	            release_print("customClass's msg is : " .. msg)
+	            laoHuJi1:setDate("resources/jiangchijiemian/jiangchijinbiPlist", "resources/jiangchijiemian/JCJM_SZ_", 10,cc.p(po1x+(i-1)*34.3,po1y) );
+	            laoHuJi1:setStartSpeed(30);
+	            score:addChild(laoHuJi1);
+	            self._table[i]=laoHuJi1
+    	end
+    	for i=1,#self. _table do
+                      self. _table[i]:startGo()
+            end
+            local  tempn =   tonumber(userdt["golds"])
+	for i=1,#self. _table do
+		local  stopNum = 0;
+		if (tempn > 0)  then
+			stopNum = tempn % 10;
+			tempn = tempn / 10;
+	            end
+	(self. _table[#self. _table-(i-1)]):stopGo(stopNum);
+	end
+end
 
 function GoldprizeScene:init(  )
 
@@ -65,6 +96,7 @@ function GoldprizeScene:init(  )
 	end
 	-- self.jackpot_ListView:removeAllItems()
 	-- self:data_init()
+	self:gold_act()
 
 end
 
@@ -296,9 +328,19 @@ function GoldprizeScene:imgurl_download(  )
 
 end
 function GoldprizeScene:touch_callback( sender, eventType )
-	if eventType ~= ccui.TouchEventType.ended then
-		return
-	end
+	if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
+
+                    if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                    end
+
+                    
+
+                    sender:setScale(1)
 	local tag=sender:getTag()
 	if tag==57 then --返回
 		if tonumber(LocalData:Instance():get_sign()) ~=  2 then
@@ -329,6 +371,7 @@ end
 function GoldprizeScene:onEnter()
 	--audio.playMusic(G_SOUND["GAMEBG"],true)
 	 --Util:player_music_hit("GAMEBG",true )
+	 cc.SpriteFrameCache:getInstance():addSpriteFrames("resources/jiangchijiemian/jiangchijinbiPlist.plist")
   Server:Instance():getgoldspoollist({pagesize=6,pageno=self.sur_pageno,adownerid =""})  --发送消息
 
   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self,
@@ -390,6 +433,7 @@ end
 function GoldprizeScene:onExit()
 	  --audio.stopMusic(G_SOUND["GAMEBG"])
 	  --Util:stop_music("GAMEBG")
+	   cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("resources/jiangchijiemian/jiangchijinbiPlist.plist")
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_POST, self)
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.JACKPOTLIST_PIC_POST, self)
 	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST, self)

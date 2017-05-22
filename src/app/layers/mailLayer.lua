@@ -54,7 +54,8 @@ function mailLayer:ctor()
             end)
 
           
-
+            self.No_mail=self.mailLayer:getChildByTag(620)--暂无邮件
+            self.No_mail:setVisible(false)
             self.mail_list=self.mailLayer:getChildByTag(47)--邮箱列表
             self.mail_list:setItemModel(self.mail_list:getItem(0))
             self.mail_list:removeAllItems()
@@ -138,7 +139,7 @@ function mailLayer:init(  )
                  print("大于")
                 self.mail_list:removeAllItems()
             else
-                 --return
+                 self.No_mail:setVisible(true)
            end
 
 

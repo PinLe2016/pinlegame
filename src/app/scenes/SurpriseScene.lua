@@ -88,7 +88,29 @@ function SurpriseScene:Surpriseinit()  --floatingLayer_init
     )
     local back_bt=ActivitymainnterfaceiScene:getChildByTag(28)--回顾
     back_bt:addTouchEventListener((function(sender, eventType  )
-                     self:list_btCallback(sender, eventType)
+                     if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                    end
+                    sender:setScale(1)
+                     self:unscheduleUpdate()
+                        --Util:scene_control("MainInterfaceScene")
+
+                        if tonumber(LocalData:Instance():get_sign()) ~=  2 then
+                            Util:scene_control("MainInterfaceScene")
+
+                        else
+                            cc.Director:getInstance():popScene()
+                            Server:Instance():gettasklist()
+                        end
+                        Util:all_layer_backMusic()
+
+
+
                end))
 
     activity_ListView=ActivitymainnterfaceiScene:getChildByTag(33)--惊喜吧列表
@@ -170,17 +192,7 @@ end
                        self:unscheduleUpdate()
                        self.image={nil}
               elseif tag==28 then
-                       self:unscheduleUpdate()
-                        --Util:scene_control("MainInterfaceScene")
-
-                        if tonumber(LocalData:Instance():get_sign()) ~=  2 then
-                            Util:scene_control("MainInterfaceScene")
-
-                        else
-                            cc.Director:getInstance():popScene()
-                            Server:Instance():gettasklist()
-                        end
-                        Util:all_layer_backMusic()
+                      
                         
               end
              self.curr_bright=sender
@@ -386,8 +398,8 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
             local huojiang_bg=cell:getChildByTag(336)
             type:loadTexture(type_image)
               if self.ser_status==0 then
-                local activity_acttie=cell:getChildByTag(37)
-             activity_acttie:setString("距离活动开始还有:")
+                local activity_acttie=cell:getChildByTag(731):getChildByTag(37)
+             activity_acttie:setString("离开始:")
               end
 
                           --prizewinning   无为没有中奖
@@ -412,6 +424,11 @@ function SurpriseScene:Surprise_list(  )--Util:sub_str(command["command"], "/")
 
             local _table1=(sup_data[i]["finishtime"]-sup_data[i]["begintime"])-(sup_data[i]["nowtime"]-sup_data[i]["begintime"])
             local  _tabletime=Util:FormatTime_colon(_table1)
+            if self.ser_status==2 then
+              cell:getChildByTag(731):setVisible(false)
+            else
+              cell:getChildByTag(731):setVisible(true)
+            end
              local dayText=cell:getChildByTag(731):getChildByTag(38)
             dayText:setString(tostring(_tabletime[1]))
             local hoursText=cell:getChildByTag(731):getChildByTag(39)
@@ -639,15 +656,16 @@ function SurpriseScene:_winners( )
  
     self.Winners = cc.CSLoader:createNode("Winners.csb");
     self:addChild(self.Winners)
-    self.Winners:setTag(111)
 
-    local back_bt= self.Winners:getChildByTag(63)--返回
-    back_bt:addTouchEventListener((function(sender, eventType)
-      print('获奖名单1')
+    self.win_back_bt= self.Winners:getChildByTag(63)--返回
+    self.win_back_bt:addTouchEventListener((function(sender, eventType)
             if eventType ~= ccui.TouchEventType.ended then
                        return
             end
-            self:removeChildByTag(111, true)
+            if self.Winners then
+              self.Winners:removeFromParent()
+              self.Winners=nil
+            end
           
                          
      end))
@@ -675,7 +693,23 @@ function SurpriseScene:winners_init( )
             local name_text=cell:getChildByTag(72)--昵称
             name_text:setString(tostring(sup_data[i]["nickname"]))
 
+            local paiming_tex_img=cell:getChildByTag(733)--排名
+            if i==2 then
+             paiming_tex_img:loadTexture("resources/huojiangmingdan/HJMD_icon_2.png")
+            elseif i==3 then
+              paiming_tex_img:loadTexture("resources/huojiangmingdan/HJMD_icon_1.png")
+            elseif i==1 then
+              paiming_tex_img:loadTexture("resources/huojiangmingdan/HJMD_icon_3.png")
+            else
+              paiming_tex_img:setVisible(false)
+            end
+
             local paiming_tex=cell:getChildByTag(71)--排名
+            if i<4 then
+              paiming_tex:setVisible(false)
+            else
+              paiming_tex:setVisible(true)
+            end
             paiming_tex:setString(tostring(i))
 
              local points_text=cell:getChildByTag(73)--积分

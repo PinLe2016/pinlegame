@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_0.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{22,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{22,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,243},{13,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{13,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,81},{21,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{21,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,108},{21,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{21,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,27},{22,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{22,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,189},{20,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{20,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,135},{21,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{21,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_7.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,216},{20,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{20,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_8.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,162},{21,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{21,27}</string>
+			</dict>
+			<key>resources/jiangchijiemian/JCJM_SZ_9.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,54},{22,27}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{22,27}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>jiangchijinbiPlist.png</string>
+			<key>realTextureFileName</key>
+			<string>jiangchijinbiPlist.png</string>
+			<key>size</key>
+			<string>{32,512}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>32</integer>
+			<key>height</key>
+			<integer>512</integer>
+		</dict>
+	</dict>
+</plist>

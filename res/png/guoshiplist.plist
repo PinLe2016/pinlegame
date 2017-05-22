@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>chengzhangshu-shuihu-0-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-1-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,42},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-2-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,84},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-3-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,126},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-4-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,168},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-5-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,210},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-6-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,252},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-7-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,294},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-8-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,336},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+			<key>chengzhangshu-shuihu-9-.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,378},{30,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{30,42}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>guoshiplist.png</string>
+			<key>realTextureFileName</key>
+			<string>guoshiplist.png</string>
+			<key>size</key>
+			<string>{30,420}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>30</integer>
+			<key>height</key>
+			<integer>420</integer>
+		</dict>
+	</dict>
+</plist>
