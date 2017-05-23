@@ -159,7 +159,7 @@ function PerInformationLayer:add_init(  )
             self.per_ListView=self.showinformation:getChildByTag(1821)--  绑定列表
             self.per_ListView:setItemModel(self.per_ListView:getItem(0))
             self.per_ListView:removeAllItems()
-            for i=1,2 do  
+            for i=1,1 do  
                         self.per_ListView:pushBackDefaultItem()
                         local  cell = self.per_ListView:getItem(i-1)
                         if i==1 then
@@ -174,16 +174,28 @@ function PerInformationLayer:add_init(  )
                             Panel_text:setString("身份认证")
                         end
                         local ig_GiftPhoto=cell:getChildByName("Button_10")
-                        ig_GiftPhoto:setTag(i)
+                        ig_GiftPhoto:setTag(i)   
                         ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
                                 if eventType ~= ccui.TouchEventType.ended then
                                     return
                                 end
-                                print("认证",sender:getTag())
                                 local  _tag=sender:getTag()
                                  local authentication = require("app.layers.authentication")--惊喜吧 
                                 self:addChild(authentication.new({_tag=_tag}),1,15)
                         end)
+                        
+                        if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
+                           if tonumber(userdatainit["isphoneverify"])  ==  1   then
+                                 ig_GiftPhoto:setTitleText("已认证")
+                                 ig_GiftPhoto:setTouchEnabled(false)
+                            else
+                               ig_GiftPhoto:setTitleText("未认证")
+                               ig_GiftPhoto:setTouchEnabled(true)
+                            end
+                        else
+                             self.per_ListView:removeAllItems()
+                        end
+                        
 
                         
             end

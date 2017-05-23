@@ -66,7 +66,6 @@ function authentication:fun_Thephoneauthentication( ... )
 		              return
           		  end
           		  Server:Instance():sendmessage(4,str_phone:getString())
-	              print("发送验证码")
             end)
             --提交
             local btn_submit=self.Thephoneauthentication:getChildByTag(1776)
@@ -75,7 +74,6 @@ function authentication:fun_Thephoneauthentication( ... )
 	                   return
 	               end
 	               Server:Instance():phoneverify(str_phone:getString(),str_code:getString())
-	              print("提交")
             end)
 end
 function authentication:fun_Realnameauthentication( ... )
