@@ -72,13 +72,20 @@ function InvitefriendsLayer:init(  )
 
 
         self:pop_up()--  弹出框
+      self.No_friends=self.Invitefriends:getChildByTag(901)  --暂无好友
+      self.No_friends:setVisible(false)
        local back_bt=self.Invitefriends:getChildByTag(3187)  --返回
-	back_bt:addTouchEventListener(function(sender, eventType)
+  back_bt:addTouchEventListener(function(sender, eventType)
+            if eventType == 3 then
+                       sender:setScale(1)
+                       return
+              end
+
             if eventType ~= ccui.TouchEventType.ended then
-                 -- sender:setScale(1.2)
-                 return
-            end
-            -- sender:setScale(1)
+                       sender:setScale(1.2)
+                       return
+                  end
+            sender:setScale(1)
 
             Server:Instance():getuserinfo()  --钻石刷新
             if self.share then
@@ -107,8 +114,8 @@ function InvitefriendsLayer:init(  )
                         print("邀请好友")
                     end)
       self.obtain_bt=self.Invitefriends:getChildByTag(106):getChildByTag(116)  --一键获取
-	self.obtain_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  self.obtain_bt:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
       self.addFriend_bt=self.Invitefriends:getChildByTag(3627)  --添加好友
       self.addFriend_bt:addTouchEventListener(function(sender, eventType)
@@ -175,7 +182,8 @@ function InvitefriendsLayer:fun_init( _isvisber)
              local _count=1
              self.obtain_bt:setBright(false) 
              if  not friendlist_table then
-             	return
+
+              return
              end
               self._ListView:removeAllItems()
 
@@ -196,20 +204,21 @@ function InvitefriendsLayer:fun_init( _isvisber)
             end
            
             if #friendlist_table["friendlist"]==0 then
-            	return
+            self.No_friends:setVisible(true)
+              return
             end
             self.table_insert={}
             local _friendlist=friendlist_table["friendlist"]
             for i=1,#_friendlist do
-	          	 self._ListView:pushBackDefaultItem()
-	          	local  _cell =  self._ListView:getItem(i-1)
-	            _cell:setTag(i)
-	            self.nickname = _cell:getChildByTag(94)  --名字
-	            self.nickname:setString(_friendlist[i]["nickname"])
-	            self.grade =  _cell:getChildByTag(95)  --等级
-	            self.grade:setString( _friendlist[i]["playergrade"] )
-	            self.imgurl =  _cell:getChildByTag(105)  --头像
-	            self.imgurl:loadTexture("png/"   ..   string.lower(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":"))))
+               self._ListView:pushBackDefaultItem()
+              local  _cell =  self._ListView:getItem(i-1)
+              _cell:setTag(i)
+              self.nickname = _cell:getChildByTag(94)  --名字
+              self.nickname:setString(_friendlist[i]["nickname"])
+              self.grade =  _cell:getChildByTag(95)  --等级
+              self.grade:setString( _friendlist[i]["playergrade"] )
+              self.imgurl =  _cell:getChildByTag(105)  --头像
+              self.imgurl:loadTexture("png/"   ..   string.lower(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":"))))
                   --  self.today_golds =  _cell:getChildByTag(102)  --贡献金币
                   -- self.today_golds:setString( _friendlist[i]["total_golds"] )
                   -- self.total_golds =  _cell:getChildByTag(101)  --贡献经验
@@ -288,37 +297,37 @@ function InvitefriendsLayer:pop_up(  )
 
 
        local friend_back=self.m_friend:getChildByTag(242)  --好友返回
-	friend_back:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  friend_back:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 
        local share_bt=self.m_friend:getChildByTag(243)  --前往邀请  分享
-	share_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  share_bt:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 
       local feedback_back=self.m_feedback:getChildByTag(229)  --回馈返回
-	feedback_back:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  feedback_back:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 
        local _backbt=self.m_feedback:getChildByTag(230)  --下次再说
-	_backbt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  _backbt:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 
        local obtain_bt=self.m_feedback:getChildByTag(231)  --输入获取
-	obtain_bt:addTouchEventListener(function(sender, eventType)
-	self:touch_callback(sender, eventType)
+  obtain_bt:addTouchEventListener(function(sender, eventType)
+  self:touch_callback(sender, eventType)
        end)
 end
 
 function InvitefriendsLayer:touch_callback( sender, eventType )
-	if eventType ~= ccui.TouchEventType.ended then
-		return
-	end
-	local tag=sender:getTag()
-	if tag==82 then --返回
+  if eventType ~= ccui.TouchEventType.ended then
+    return
+  end
+  local tag=sender:getTag()
+  if tag==82 then --返回
               Server:Instance():getuserinfo()  --钻石刷新
               if self.share then
                    if self.share:getIs_Share()  and  LocalData:Instance():get_tasktable()    then   --  判断分享是否做完任务
@@ -338,24 +347,24 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
               -- self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
               Util:layer_action(self.Invitefriends,self,"close")
 
-	elseif tag==117 then
-		-- self.Friendsstep:setVisible(true)
-		-- self.m_friend:setVisible(true)
+  elseif tag==117 then
+    -- self.Friendsstep:setVisible(true)
+    -- self.m_friend:setVisible(true)
     self.share = Util:share()
-	elseif tag==118 then
-		self.Friendsstep:setVisible(true)
-		self.m_feedback:setVisible(true)
+  elseif tag==118 then
+    self.Friendsstep:setVisible(true)
+    self.m_feedback:setVisible(true)
             self.invitecode_num:setVisible(true)
-	elseif tag==229 then  --回馈返回
-		self.Friendsstep:setVisible(false)
-		self.m_feedback:setVisible(false)
+  elseif tag==229 then  --回馈返回
+    self.Friendsstep:setVisible(false)
+    self.m_feedback:setVisible(false)
             self.invitecode_num:setVisible(false)
-	elseif tag==242 then  --好友返回
-		self.Friendsstep:setVisible(false)
-		self.m_friend:setVisible(false)
-	elseif tag==243 then  --分享
-		print("分享")
-		Util:share()
+  elseif tag==242 then  --好友返回
+    self.Friendsstep:setVisible(false)
+    self.m_friend:setVisible(false)
+  elseif tag==243 then  --分享
+    print("分享")
+    Util:share()
       elseif tag==3627 then  --添加好友
             print("添加好友")
             self.f_count=0
@@ -400,14 +409,14 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
              for i=1,#self._table_box do
               self._table_box[i].k:setVisible(false)
             end
-	elseif tag==230 then  --下次再说
-		self.Friendsstep:setVisible(false)
-		self.m_friend:setVisible(false)
-	elseif tag==231 then  --获取输入码
-		local _num=self.invitecode_num:getString()
-		Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
-		print("获取输入码",_num)
-	elseif tag==116 then  --一键获取
+  elseif tag==230 then  --下次再说
+    self.Friendsstep:setVisible(false)
+    self.m_friend:setVisible(false)
+  elseif tag==231 then  --获取输入码
+    local _num=self.invitecode_num:getString()
+    Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
+    print("获取输入码",_num)
+  elseif tag==116 then  --一键获取
              if self.gold_text:getString() ==  "0" then
                  --Server:Instance():prompt("没有金币领取")
                  sender:setTouchEnabled(false)
@@ -415,11 +424,11 @@ function InvitefriendsLayer:touch_callback( sender, eventType )
               else
                 sender:setTouchEnabled(true)
              end
-		
-		Server:Instance():get_reward_of_friends_levelup()
-	  Server:Instance():getuserinfo()
-	
-	end
+    
+    Server:Instance():get_reward_of_friends_levelup()
+    Server:Instance():getuserinfo()
+  
+  end
 
 end
 
@@ -434,17 +443,21 @@ function InvitefriendsLayer:function_addFriend(  )
            local actionTo1 = cc.ScaleTo:create(0.1, 1)
             self.addFriendSp:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
-
             self.add_ListView=self.addFriendSp:getChildByTag(4013)
             self.add_ListView:setItemModel(self.add_ListView:getItem(0))
             self.add_ListView:removeAllItems()
             local back =self.addFriendSp:getChildByTag(3227)  --返回
             back:addTouchEventListener(function(sender, eventType)
-                    if eventType ~= ccui.TouchEventType.ended then
-                       -- sender:setScale(1.2)
-                       return
-                   end
-                  -- sender:setScale(1)
+                  if eventType == 3 then
+                     sender:setScale(1)
+                     return
+                  end
+
+                  if eventType ~= ccui.TouchEventType.ended then
+                     sender:setScale(1.2)
+                     return
+                  end
+                  sender:setScale(1)
                     Server:Instance():get_reward_friend_list() --好友列表
                     if self.addFriendSp then
                       local function stopAction()
@@ -617,10 +630,10 @@ function InvitefriendsLayer:function_addFriend_data( )
            end
 end
 function InvitefriendsLayer:onEnter()
-	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self,
                        function()
-                       	            print("初始化")
-                      		--self:init()
+                                    print("初始化")
+                          --self:init()
 
                            local function stopAction()
                                  if self.x_isviset==0 then
@@ -638,9 +651,9 @@ function InvitefriendsLayer:onEnter()
 
                          
                       end)
-	 NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self,
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self,
                        function()
-                      		print("个人信息修改")
+                          print("个人信息修改")
                           self:friends_levelup(  )
                       end)
        NotificationCenter:Instance():AddObserver("FRIEND_GETSEARCHFRIENDLIST", self,
@@ -675,8 +688,8 @@ function InvitefriendsLayer:onEnter()
 end
 
 function InvitefriendsLayer:onExit()
-     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self)
-     	  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self)
+        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDLIST_POST, self)
+        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.FRIENDSLEVELUP, self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_GETSEARCHFRIENDLIST", self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_SETFRIENDOPERATION", self)
         NotificationCenter:Instance():RemoveObserver("FRIEND_GETSEARCHFRIENDLIST_FALSE", self)

@@ -158,13 +158,34 @@ function PerInformationLayer:add_init(  )
             --  新增加的绑定微信
             self.per_ListView=self.showinformation:getChildByTag(1821)--  绑定列表
             self.per_ListView:setItemModel(self.per_ListView:getItem(0))
-            for i=2,2 do  
+            self.per_ListView:removeAllItems()
+            for i=1,2 do  
                         self.per_ListView:pushBackDefaultItem()
                         local  cell = self.per_ListView:getItem(i-1)
-                        local Panel_image=cell:getChildByTag(1824)
-                        Panel_image:loadTexture("resources/gerenxixin/GRXX_13.png")
-                        local Panel_text=cell:getChildByTag(1825)
-                        Panel_text:setString("身份认证")
+                        if i==1 then
+                            local Panel_image=cell:getChildByTag(1824)
+                            Panel_image:loadTexture("resources/gerenxixin/GRXX_14.png")
+                            local Panel_text=cell:getChildByTag(1825)
+                            Panel_text:setString("手机认证")
+                        else
+                            local Panel_image=cell:getChildByTag(1824)
+                            Panel_image:loadTexture("resources/gerenxixin/GRXX_13.png")
+                            local Panel_text=cell:getChildByTag(1825)
+                            Panel_text:setString("身份认证")
+                        end
+                        local ig_GiftPhoto=cell:getChildByName("Button_10")
+                        ig_GiftPhoto:setTag(i)
+                        ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
+                                if eventType ~= ccui.TouchEventType.ended then
+                                    return
+                                end
+                                print("认证",sender:getTag())
+                                local  _tag=sender:getTag()
+                                 local authentication = require("app.layers.authentication")--惊喜吧 
+                                self:addChild(authentication.new({_tag=_tag}),1,15)
+                        end)
+
+                        
             end
             if (not userdt["gender"])  or  (not userdt["birthday"])   or   (not userdt["provincename"]) then
                 self:head()
@@ -944,9 +965,9 @@ function PerInformationLayer:head( )
         local  day_bg=self.head_csb:getChildByTag(1900):getChildByTag(107):getChildByTag(1903)
         local   _size=day_bg:getContentSize()
         local  _tag=0
-         for i=1, math.ceil(18/3) do
+         for i=1, math.ceil(21/3) do
                 for j=1,3 do
-                    if i==6  and  (j==2  or  j==3) then
+                    if i==7  and    j==3 then
                          return
                      end
                        local _bg=day_bg:clone()

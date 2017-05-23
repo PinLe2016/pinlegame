@@ -54,7 +54,7 @@ function FriendrequestLayer:init(  )
             end
             Util:all_layer_backMusic()
             Server:Instance():gettasklist()
-
+            Util:layer_action(self.Friendrequest,self,"close")
             local function stopAction()
                 if self.switch==1 then
                     self:removeFromParent()
@@ -88,52 +88,35 @@ end
 function FriendrequestLayer:fun_scrollToPage(  )
         local pvw_Friends=self.Friendrequest:getChildByTag(346)
         self.pnl_First=pvw_Friends:getChildByTag(347)
-        self.pnl_Second=pvw_Friends:getChildByTag(412)
-        self.pnl_Third=pvw_Friends:getChildByTag(413)
-         --  左键
-      local YQHY_D_Z=self.Friendrequest:getChildByTag(335)
-      YQHY_D_Z:addTouchEventListener(function(sender, eventType  )
-            if eventType ~= ccui.TouchEventType.ended then
-             return
-            end
-            pvw_Friends:scrollToPage(pvw_Friends:getCurPageIndex()-1)
-      end)
-      --右键
-      local YQHY_D_Y=self.Friendrequest:getChildByTag(336)
-      YQHY_D_Y:addTouchEventListener(function(sender, eventType  )
-            if eventType ~= ccui.TouchEventType.ended then
-             return
-            end
-            pvw_Friends:scrollToPage(pvw_Friends:getCurPageIndex()+1)
-      end)   
-      self:fun_pnl_First(self.pnl_First,348,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_First,356,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_First,364,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_First,372,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_First,380,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_First,388,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_First,396,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_First,404,20,44,55,55,true,true,true)
+        
+      --    --  左键
+      -- local YQHY_D_Z=self.Friendrequest:getChildByTag(335)
+      -- YQHY_D_Z:addTouchEventListener(function(sender, eventType  )
+      --       if eventType ~= ccui.TouchEventType.ended then
+      --        return
+      --       end
+      --       pvw_Friends:scrollToPage(pvw_Friends:getCurPageIndex()-1)
+      -- end)
+      -- --右键
+      -- local YQHY_D_Y=self.Friendrequest:getChildByTag(336)
+      -- YQHY_D_Y:addTouchEventListener(function(sender, eventType  )
+      --       if eventType ~= ccui.TouchEventType.ended then
+      --        return
+      --       end
+      --       pvw_Friends:scrollToPage(pvw_Friends:getCurPageIndex()+1)
+      -- end)   
+      self:fun_pnl_First(self.pnl_First,348,20,"","金币 100","",false,true,true,10,3)
+      self:fun_pnl_First(self.pnl_First,356,20,"","金币 200","",false,true,true,10,5)
+      self:fun_pnl_First(self.pnl_First,364,20,"","金币 500","",false,true,true,10,10)
+      self:fun_pnl_First(self.pnl_First,372,20,"","金币 1000","经验 1000",false,true,true,0,20)
+      self:fun_pnl_First(self.pnl_First,380,20,"","金币 2000","经验 2000",false,true,true,0,30)
+      self:fun_pnl_First(self.pnl_First,388,20,"","金币 4000","经验 4000",false,true,true,0,50)
+      self:fun_pnl_First(self.pnl_First,396,20,"","金币 8000","经验 8000",false,true,true,0,80)
+      self:fun_pnl_First(self.pnl_First,404,20,"","金币 20000","经验 10000",false,true,true,0,100)
 
-      self:fun_pnl_First(self.pnl_Second,414,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Second,422,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Second,430,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Second,438,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Second,446,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Second,454,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Second,462,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Second,470,20,44,55,55,true,true,true)
-
-      self:fun_pnl_First(self.pnl_Third,478,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Third,486,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Third,494,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Third,502,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Third,510,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Third,518,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Third,526,20,44,55,55,true,true,true)
-      self:fun_pnl_First(self.pnl_Third,534,20,44,55,55,true,true,true)
+    
 end
-function FriendrequestLayer:fun_pnl_First( pnl,_tag,number,reward1,reward2,reward3,isb1,isb2,isb3 )
+function FriendrequestLayer:fun_pnl_First( pnl,_tag,number,reward1,reward2,reward3,isb1,isb2,isb3 ,_y,_num)
         local ProjectNode_2=pnl:getChildByTag(_tag):getChildByTag(340)
         local Text_1=ProjectNode_2:getChildByTag(342)
         Text_1:setString(tostring(number))
@@ -143,9 +126,12 @@ function FriendrequestLayer:fun_pnl_First( pnl,_tag,number,reward1,reward2,rewar
         local Text_3=ProjectNode_2:getChildByTag(345)
         Text_3:setString(tostring(reward2))
         Text_3:setVisible(isb2)
+        Text_3:setPositionY(Text_3:getPositionY()-_y)
         local Text_4=ProjectNode_2:getChildByTag(344)
         Text_4:setString(tostring(reward3))
         Text_4:setVisible(isb3)
+        local Text_1=ProjectNode_2:getChildByTag(342)
+        Text_1:setString(tostring(_num))
 end
 
 function FriendrequestLayer:pop_up(  )
