@@ -167,7 +167,13 @@ function mailLayer:init(  )
                   mail_title:setString(tostring(affichelist[i]["title"]))
                  
                   local  mail_content=cell:getChildByTag(53)--邮件内容
-                  mail_content:setString(tostring(affichelist[i]["createtime"]))
+                  mail_content:setString(tostring(affichelist[i]["showdays"])  ..  "天")
+                  local  mail_content_type=cell:getChildByTag(133)--邮件内容
+                  if tonumber(affichelist[i]["type"])   ==  1 then
+                    mail_content_type:setVisible(true)
+                  else
+                    mail_content_type:setVisible(false)
+                  end
             end
               if tonumber(self.tablecout)~=0 then
 
@@ -241,7 +247,7 @@ function mailLayer:fun_emailcontentlayer( )
             local title_text=self.emailcontentlayer:getChildByTag(63)--标题
             title_text:setString(tostring(affichedetail["title"]))
             local time_text=self.emailcontentlayer:getChildByTag(65)--有效时间
-            time_text:setString("有效时间  "   ..  tostring(affichedetail["createtime"]))
+            time_text:setString("有效时间  "   ..  tostring(affichedetail["showdays"])   ..  "天")
             local time_text_data=self.emailcontentlayer:getChildByTag(1367)--时间
             time_text_data:setString("时间  "   ..  tostring(affichedetail["createtime"]))
             self.rewardgolds=self.emailcontentlayer:getChildByTag(55)--领取金币
