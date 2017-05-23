@@ -299,6 +299,28 @@ function Server:mall(username,password)
         return  hp
 end
 
+--手机号码验证
+function Server:phoneverify(phone,code)
+    local params = {}
+     params={
+           
+                  phone=phone,
+            code=code
+            
+        }
+    self:request_http("phoneverify" , params); 
+end
+
+function Server:phoneverify_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:promptbox_box_buffer(self.data.err_msg)
+        return
+    end
+    self:promptbox_box_buffer("修改密码成功")
+  
+    -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
+end
 
 
 

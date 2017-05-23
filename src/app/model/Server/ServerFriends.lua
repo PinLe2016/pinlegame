@@ -81,7 +81,7 @@ function Server:setinvitecode_callback()
         return
     end
 
-    self:show_float_message("填写成功，奖励即将发送至您的好友。" )
+    
     local fistname=LocalData:Instance():get_reward_setting_list()
     fistname["invitecode"]=tostring(self.params["invitecode"])
     LocalData:Instance():set_reward_setting_list(fistname)--保存数据
@@ -154,7 +154,7 @@ end
 
 
 function Server:get_friend_reward_setting_list_callback()
-      dump(self.data)
+     -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("查询好友升级奖励金币列表:" .. self.data.err_msg)
         return

@@ -10,7 +10,11 @@ function FriendrequestLayer:ctor(params)--params
             self.floating_layer = require("app.layers.FloatingLayer").new()
             self.floating_layer:addTo(self,100000)
             self:setNodeEventEnabled(true)--layer添加监听
-            Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
+            self:fun_init()
+
+end
+function FriendrequestLayer:fun_init( ... )
+            
             local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
             self:addChild(fragment_sprite_bg)
             self.Friendrequest = cc.CSLoader:createNode("Friendrequest.csb")
@@ -18,11 +22,8 @@ function FriendrequestLayer:ctor(params)--params
             self.Friendrequest:setScale(0.7)
             self.Friendrequest:setAnchorPoint(0.5,0.5)
             self.Friendrequest:setPosition(320, 568)
-           --  local actionTo = cc.ScaleTo:create(0.3, 1.1)
-           -- local actionTo1 = cc.ScaleTo:create(0.1, 1)
-           --  self.Friendrequest:runAction(cc.Sequence:create(actionTo,actionTo1  ))
            Util:layer_action(self.Friendrequest,self,"open") 
-
+            Server:Instance():get_friend_reward_setting_list()  --邀请有礼接口
 end
 function FriendrequestLayer:init(  )
        local _table=LocalData:Instance():get_gettasklist()
@@ -136,52 +137,58 @@ end
 
 function FriendrequestLayer:pop_up(  )
 
-      if self.Friendsstep then
-         self.Friendsstep:removeFromParent()
-         self.Friendsstep=nil
+      if self.fragment_sprite_bg then
+         self.fragment_sprite_bg:removeFromParent()
+         self.fragment_sprite_bg=nil
       end
-
+      self.fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
+      self:addChild(self.fragment_sprite_bg)
        self.Friendsstep = cc.CSLoader:createNode("Friendsstep.csb")  --谈出框
-       self:addChild(self.Friendsstep)
-       self.Friendsstep:setVisible(false)
+       self.fragment_sprite_bg:addChild(self.Friendsstep)
+       self.Friendsstep:setScale(0.7)
+      self.Friendsstep:setAnchorPoint(0.5,0.5)
+      self.Friendsstep:setPosition(320, 568)
+      Util:layer_action(self.Friendsstep,self,"open") 
+
+       self.fragment_sprite_bg:setVisible(false)
        self.m_feedback=self.Friendsstep:getChildByTag(226)  --回馈邀请人界面
        self.m_feedback:setVisible(false)
        self.m_friend=self.Friendsstep:getChildByTag(238)  --邀请好友界面
        self.m_friend:setVisible(false)
        
-       local _invitecodeNum=self.m_feedback:getChildByTag(236) -- 输入邀请码
-       _invitecodeNum:setVisible(false)
-       _invitecodeNum:setTouchEnabled(false)
-       local res = " "
-       local width = 340
-       local height = 40
+       self.invitecode_num=self.m_feedback:getChildByTag(236) -- 输入邀请码
+       self.invitecode_num:setVisible(true)
       
-      local friendlist_code =LocalData:Instance():get_reward_setting_list() 
+       --_invitecodeNum:setTouchEnabled(false)
+      --  local res = " "
+      --  local width = 340
+      --  local height = 40
       
-      if tostring(friendlist_code["invitecode"])~="0" then
+       local friendlist_code =LocalData:Instance():get_reward_setting_list() 
+      -- if tostring(friendlist_code["invitecode"])~="0" then
 
-               self.invitecode_num = cc.ui.UILabel.new({text = tostring(friendlist_code["invitecode"]),
-                        size = 25,
-                        --align = TEXT_ALIGN_CENTER,
-                        font = "Arial",
-                        color = cc.c4b(255,241,203),
-                        })
-          self.invitecode_num:setAnchorPoint(1,0.5)
+      --          self.invitecode_num = cc.ui.UILabel.new({text = tostring(friendlist_code["invitecode"]),
+      --                   size = 25,
+      --                   --align = TEXT_ALIGN_CENTER,
+      --                   font = "Arial",
+      --                   color = cc.c4b(255,241,203),
+      --                   })
+      --     self.invitecode_num:setAnchorPoint(1,0.5)
 
-         self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))
-         self.invitecode_num:addTo(self.m_feedback,100)
+      --    self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))
+      --    self.invitecode_num:addTo(self.m_feedback,100)
       
-          -- self.invitecode_num:setPlaceHolder()
-          -- self.m_feedback:setTouchEnabled(false)
-        else
-                self.invitecode_num = ccui.EditBox:create(cc.size(width,height),res)
-                self.invitecode_num:setVisible(false)
-                self.m_feedback:addChild(self.invitecode_num)
-                self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
-                self.invitecode_num:setPlaceHolder("请输入邀请码")
+      --     -- self.invitecode_num:setPlaceHolder()
+      --     -- self.m_feedback:setTouchEnabled(false)
+      --   else
+      --           self.invitecode_num = ccui.EditBox:create(cc.size(width,height),res)
+      --           self.invitecode_num:setVisible(false)
+      --           self.m_feedback:addChild(self.invitecode_num)
+      --           self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX(),_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
+      --           self.invitecode_num:setPlaceHolder("请输入邀请码")
         
-                --self.invitecode_num:setMaxLength(11)
-      end
+      --           --self.invitecode_num:setMaxLength(11)
+      -- end
 
 
        local friend_back=self.m_friend:getChildByTag(242)  --好友返回
@@ -194,9 +201,30 @@ function FriendrequestLayer:pop_up(  )
   -- self:touch_callback(sender, eventType)
        end)
 
-      local feedback_back=self.m_feedback:getChildByTag(229)  --回馈返回
+      local feedback_back=self.m_feedback:getChildByTag(1844) --回馈返回
   feedback_back:addTouchEventListener(function(sender, eventType)
-  self:touch_callback(sender, eventType)
+                    if eventType == 3 then
+                       sender:setScale(1)
+                       return
+                    end
+
+                    if eventType ~= ccui.TouchEventType.ended then
+                       sender:setScale(1.2)
+                       return
+                    end
+                    
+                      local function stopAction()
+                              sender:setScale(1)
+                            self.fragment_sprite_bg:setVisible(false)
+                            self.m_feedback:setVisible(false)
+                            -- self.invitecode_num:setVisible(false)
+                      end
+                      local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                      local actionTo1 = cc.ScaleTo:create(0.1, 0.7)
+                      local callfunc = cc.CallFunc:create(stopAction)
+                      self.Friendsstep:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
+
+
        end)
 
        local _backbt=self.m_feedback:getChildByTag(230)  --下次再说
@@ -212,6 +240,10 @@ function FriendrequestLayer:pop_up(  )
    if tostring(friendlist_code["invitecode"])~="0" then
       _backbt:setVisible(false)
       obtain_bt:setVisible(false)
+      self.invitecode_num:setVisible(false)
+      self.invitecode_num:setString(tostring(friendlist_code["invitecode"]))
+    else
+       Util:function_keyboard(self.m_feedback,self.invitecode_num,25) 
    end
 end
 
@@ -264,23 +296,33 @@ function FriendrequestLayer:touch_callback( sender, eventType )
   elseif tag==161 then  --好友邀请
     self.share=Util:share()
   elseif tag==162 then  --回馈邀请人
-    self.Friendsstep:setVisible(true)
+    self.fragment_sprite_bg:setVisible(true)
+    Util:layer_action(self.Friendsstep,self,"open")
     self.m_feedback:setVisible(true)
     self.invitecode_num:setVisible(true)
-  elseif tag==229 then  --回馈返回
-    self.Friendsstep:setVisible(false)
-    self.m_feedback:setVisible(false)
-    self.invitecode_num:setVisible(false)
+  elseif tag==1844 then  --回馈返回
+    
   elseif tag==242 then  --好友返回
-    self.Friendsstep:setVisible(false)
+    self.fragment_sprite_bg:setVisible(false)
     self.m_friend:setVisible(false)
   elseif tag==243 then  --分享
     
   elseif tag==230 then  --下次再说
-    self.Friendsstep:setVisible(false)
+    self.fragment_sprite_bg:setVisible(false)
     self.m_friend:setVisible(false)
   elseif tag==231 then  --获取输入码
-    local _num=self.invitecode_num:getText()
+
+    if tostring(Util:judgeIsAllNumber(tostring(self.invitecode_num:getString())))  ==  "false"    then
+      Server:Instance():promptbox_box_buffer("手机号码格式错误")
+      return
+    end
+    if string.len(self.invitecode_num:getString()) < 11 then
+      Server:Instance():promptbox_box_buffer("手机号填写错误")
+      return
+    end
+
+
+    local _num=self.invitecode_num:getString()
     Server:Instance():setinvitecode(tostring(_num))  --测试（与策划不符）
     print("获取输入码",_num)
   
@@ -290,16 +332,26 @@ end
 function FriendrequestLayer:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self,
                        function()
-                           self:init()
+                         --  
+                          local function stopAction()
+                                 self:init()
 
+                              end
+                        
+                              local callfunc = cc.CallFunc:create(stopAction)
+                              self.Friendrequest:runAction(cc.Sequence:create(cc.DelayTime:create(0.2),callfunc  ))
+                          
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.STECODE, self,
                        function()
-                          self:pop_up()--弹出框
-                           local userdt = LocalData:Instance():get_userdata()
-                            userdt["golds"]=userdt["golds"]  +  200
-                            LocalData:Instance():set_userdata(userdt)
-
+                         self.floating_layer:showFloat("填写成功，奖励即将发送至您的好友。",function (sender, eventType)        
+                                                                if eventType==1    then
+                                                                          self:pop_up()--弹出框
+                                                                          local userdt = LocalData:Instance():get_userdata()
+                                                                          userdt["golds"]=userdt["golds"]  +  200
+                                                                          LocalData:Instance():set_userdata(userdt)
+                                                                    end
+                                                end)   
                       end)
 end
 

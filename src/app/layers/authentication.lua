@@ -65,7 +65,7 @@ function authentication:fun_Thephoneauthentication( ... )
 		              Server:Instance():promptbox_box_buffer("手机号填写错误")
 		              return
           		  end
-
+          		  Server:Instance():sendmessage(4,str_phone:getString())
 	              print("发送验证码")
             end)
             --提交
@@ -74,8 +74,7 @@ function authentication:fun_Thephoneauthentication( ... )
 	                if eventType ~= ccui.TouchEventType.ended then
 	                   return
 	               end
-
-
+	               Server:Instance():phoneverify(str_phone:getString(),str_code:getString())
 	              print("提交")
             end)
 end

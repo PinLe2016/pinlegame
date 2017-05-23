@@ -69,9 +69,6 @@ function InvitefriendsLayer:init(  )
       local actionTo1 = cc.ScaleTo:create(0.1, 1)
       self.Invitefriends:runAction(cc.Sequence:create(actionTo,actionTo1  ))
      
-
-
-        self:pop_up()--  弹出框
       self.No_friends=self.Invitefriends:getChildByTag(901)  --暂无好友
       self.No_friends:setVisible(false)
        local back_bt=self.Invitefriends:getChildByTag(3187)  --返回
@@ -270,57 +267,6 @@ function InvitefriendsLayer:fun_init( _isvisber)
 
            end
 end
-function InvitefriendsLayer:pop_up(  )
-       self.Friendsstep = cc.CSLoader:createNode("Friendsstep.csb")  --
-       self:addChild(self.Friendsstep)
-       self.Friendsstep:setVisible(false)
-       self.m_feedback=self.Friendsstep:getChildByTag(226)  --回馈邀请人界面
-       self.m_feedback:setVisible(false)
-       self.m_friend=self.Friendsstep:getChildByTag(238)  --邀请好友界面
-       self.m_friend:setVisible(false)
-       
-       local _invitecodeNum=self.m_feedback:getChildByTag(236) -- 输入邀请码
-       _invitecodeNum:setVisible(false)
-       _invitecodeNum:setTouchEnabled(false)
-
-      local res = " "--res/png/DLkuang.png"
-      local width = 300
-      local height = 40
-       --登陆
-      self.invitecode_num = ccui.EditBox:create(cc.size(width,height),res)
-      self.invitecode_num:setVisible(false)
-      self.m_feedback:addChild(self.invitecode_num)
-      self.invitecode_num:setPosition(cc.p(_invitecodeNum:getPositionX()-130,_invitecodeNum:getPositionY()))--( cc.p(107,77 ))  
-      self.invitecode_num:setPlaceHolder("请输入手机号码")
-      self.invitecode_num:setAnchorPoint(0,0.5)  
-      self.invitecode_num:setMaxLength(11)
-
-
-       local friend_back=self.m_friend:getChildByTag(242)  --好友返回
-  friend_back:addTouchEventListener(function(sender, eventType)
-  self:touch_callback(sender, eventType)
-       end)
-
-       local share_bt=self.m_friend:getChildByTag(243)  --前往邀请  分享
-  share_bt:addTouchEventListener(function(sender, eventType)
-  self:touch_callback(sender, eventType)
-       end)
-
-      local feedback_back=self.m_feedback:getChildByTag(229)  --回馈返回
-  feedback_back:addTouchEventListener(function(sender, eventType)
-  self:touch_callback(sender, eventType)
-       end)
-
-       local _backbt=self.m_feedback:getChildByTag(230)  --下次再说
-  _backbt:addTouchEventListener(function(sender, eventType)
-  self:touch_callback(sender, eventType)
-       end)
-
-       local obtain_bt=self.m_feedback:getChildByTag(231)  --输入获取
-  obtain_bt:addTouchEventListener(function(sender, eventType)
-  self:touch_callback(sender, eventType)
-       end)
-end
 
 function InvitefriendsLayer:touch_callback( sender, eventType )
   if eventType ~= ccui.TouchEventType.ended then
@@ -439,7 +385,7 @@ function InvitefriendsLayer:function_addFriend(  )
             -- self.addFriendSp:setScale(0.7)
             self.addFriendSp:setAnchorPoint(0.5,0.5)
             self.addFriendSp:setPosition(320, 568)
-            local actionTo = cc.ScaleTo:create(0.3, 1.1)
+            local actionTo = cc.ScaleTo:create(0.15, 1.1)
            local actionTo1 = cc.ScaleTo:create(0.1, 1)
             self.addFriendSp:runAction(cc.Sequence:create(actionTo,actionTo1  ))
 
@@ -464,7 +410,7 @@ function InvitefriendsLayer:function_addFriend(  )
                       self.addFriendSp:removeFromParent()
                       self.addFriendSp=nil
                       end
-                      local actionTo = cc.ScaleTo:create(0.1, 1.1)
+                      local actionTo = cc.ScaleTo:create(0.08, 1.1)
                       local actionTo1 = cc.ScaleTo:create(0.1, 0.7)
                       local callfunc = cc.CallFunc:create(stopAction)
                       self.addFriendSp:runAction(cc.Sequence:create(actionTo,actionTo1,callfunc  ))
