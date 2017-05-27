@@ -38,6 +38,9 @@ local m_bRotateEnable = false --是否旋转中
 local m_bRotateOver = false --抽奖是否结束
 local m_bAssign = false --当前是否需要指定抽哪种奖品
 local m_nAwardID = 0 --指定当前抽的奖品ID  
+local m_info_data_1={"66金币","20经验","166金币","1元话费","50经验","5元话费","366金币","100经验","10元话费","1充电宝"}
+local m_info_data_2={"666金币","10元话费","333金币","20元话费","200经验","实物1","5元话费","999金币","100经验","1音响"}
+local m_info_data_3={"1888金币","10积分","2888金币","30话费","200经验","红米","100经验","5888金币","500经验","vr眼镜"}
 
 --------第二套方案------------------
 
@@ -65,6 +68,8 @@ function Dialog_Zhuanpan:Big_wheel( _m_turnBg )
 end
 --------------------------------------------------------------------------------------------------------------
 function Dialog_Zhuanpan:ctor()
+	  	self.m_info={ }
+		self.m_info.data={ }
 		self:init()
 		self:show()
 end
@@ -110,11 +115,14 @@ function Dialog_Zhuanpan:init()
 end
 
 function Dialog_Zhuanpan:show(_str)
-	self:initdata()
+	self:initdata(m_info_data_1)
 	self.m_mainMenu:setTouchEnabled(true)
 	self.m_mainMenu:setVisible(true)
 end
-function Dialog_Zhuanpan:initdata(info)
+
+function Dialog_Zhuanpan:initdata(_type)
+
+--  测试数据
 	info = {
 		data = {		
 			{id = 1,name="S卡x1"},
@@ -125,11 +133,17 @@ function Dialog_Zhuanpan:initdata(info)
 			{id = 6,name="钻石x100"},
 			{id = 7,name="钻石x20"},
 			{id = 8,name="药瓶x5"}
-			
 		}
 	}
 	self.m_info = info
 	m_awardNum = #self.m_info.data
+
+--  文档上面数据
+	-- local _tp=_type
+	-- for i=1,#_tp do
+	-- 	table.insert(self.m_info.data,{id =i,name = _tp[i]})
+	-- end
+	-- m_awardNum = #self.m_info.data
 	
 end
 
