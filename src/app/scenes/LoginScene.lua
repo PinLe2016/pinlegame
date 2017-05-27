@@ -356,6 +356,14 @@ function LoginScene:fun_endanimation(_obj,_image,_type,_istrue)
       local SpeedTest_action1 = cc.Speed:create(cc.RepeatForever:create(spawn), 2.0)
       spark:runAction(SpeedTest_action1)
 end 
+--微信头像下载
+function LoginScene:fun_WeChat_avatar_pic(  )
+    local _table={}
+    _table["imageurl"]=Util:getWeixinLoginDate().headimgurl
+    _table["max_pic_idx"]=1
+    _table["curr_pic_idx"]=1
+    Server:Instance():jackpotlayer_pic(_table["imageurl"],_table) --下载图片
+end
 --  微信登陆界面
 function LoginScene:landing_init()
       self.WeChat = cc.CSLoader:createNode("LoginScene.csb")

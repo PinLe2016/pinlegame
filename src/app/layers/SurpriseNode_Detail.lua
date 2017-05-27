@@ -15,7 +15,7 @@ end
 function SurpriseNode_Detail:fun_init( ... )
 	self.SurpriseNode_Detail = cc.CSLoader:createNode("SurpriseNode_Detail.csb");
 	self:addChild(self.SurpriseNode_Detail)
-	self:fun_radio()
+	--self:fun_radio()
 	--  事件初始化
 	--  返回按钮
 	local btn_Back=self.SurpriseNode_Detail:getChildByName("btn_Back")
@@ -69,7 +69,7 @@ end
 --  广播 跑马灯
 function SurpriseNode_Detail:fun_radio( ... )
      local braodWidth = 150 --跑马灯的长度   
-    local label = cc.Label:createWithSystemFont("跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯跑马灯","Microsoft YaHei",25)   
+    local label = cc.Label:createWithSystemFont("拼了","Microsoft YaHei",25)   
      label:setPosition(cc.p(0, 0))   
      label:setAnchorPoint(cc.p(0,0))   
     local labelWidth = label:getContentSize().width   

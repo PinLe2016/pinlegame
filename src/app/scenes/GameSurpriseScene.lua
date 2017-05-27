@@ -5,13 +5,14 @@ end)
 function GameSurpriseScene:ctor()
       self:fun_init()
       self:fun_constructor()
-
 end
 function GameSurpriseScene:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self:listener_home() --注册安卓返回键
       --  列表发送请求
+      self.jac_data_num_tag=0
+      self.jac_data_num=0
       self.ser_status=1  	-- 1 本期活动  2  往期活动
       self.sur_pageno= 1  --  页数
       LocalData:Instance():set_getactivitylist(nil)
@@ -24,6 +25,37 @@ function GameSurpriseScene:fun_constructor( ... )
 	      	self:update(dt)
       end)
 end
+--  测试老虎机
+function GameSurpriseScene:fun_Slot_machines( ... )
+	self. _table={}
+	for i=1,3 do
+    		local score=self.GameSurpriseScene
+    		
+	    	local po1x=300
+	    	local po1y=400
+	            local laoHuJi1 = cc.LaoHuJiDonghua:create()--cc.CustomClass:create()
+	            local msg = laoHuJi1:helloMsg()
+	            release_print("customClass's msg is : " .. msg)
+	            laoHuJi1:setDate("png/ceshiPlist", "resources/com/rewardImage", 10,cc.p(po1x+(i-1)*50,po1y) );
+	            laoHuJi1:setStartSpeed(30);
+	            score:addChild(laoHuJi1);
+	            self._table[i]=laoHuJi1
+    	end
+    	for i=1,#self. _table do
+                      self. _table[i]:startGo()
+            end
+            local  tempn = 127   
+	for i=1,#self. _table do
+		local  stopNum = 0;
+		if (tempn > 0)  then
+			stopNum = tempn % 10;
+			tempn = tempn / 10;
+	            end
+	(self. _table[#self. _table-(i-1)]):stopGo(stopNum);
+	end
+
+end
+
 function GameSurpriseScene:fun_init( ... )
 	self.GameSurpriseScene = cc.CSLoader:createNode("GameSurpriseScene.csb");
 	self:addChild(self.GameSurpriseScene)
@@ -44,6 +76,8 @@ function GameSurpriseScene:fun_init( ... )
 	                   return
 	              end
 	              print("规则")
+		local Dialog_Zhuanpan = require("app.layers.Dialog_Zhuanpan")  --关于拼乐界面  
+		self:addChild(Dialog_Zhuanpan.new(),1,12)	             
             end)
             --  本期活动
             local btn_Current=self.GameSurpriseScene:getChildByName("btn_Current")
@@ -86,6 +120,8 @@ end
               self.curr_bright=sender
 end
 function GameSurpriseScene:fun_touch_com(num )
+	self.jac_data_num_tag=0
+            self.jac_data_num=0
 	LocalData:Instance():set_getactivitylist(nil)
 	self:scheduleUpdate()
 	self.lvw_Surorise:removeAllItems()
@@ -111,10 +147,14 @@ end
 function GameSurpriseScene:fun_list_data(  )
 	local list_table=LocalData:Instance():get_getactivitylist()
 	local _gamelist=list_table["game"]
-	local num=#_gamelist
-	if num == 0 and list_table then
+	if not list_table then
 		return
 	end
+	local num=#_gamelist
+	if num == 0  then
+		return
+	end
+	print("刷新数据")
 	local jioushu=math.floor(tonumber(num)) % 2  == 1 and 1 or 2   --判段奇数 偶数
 	local _jioushu=0
 	if jioushu==1 then
@@ -122,22 +162,25 @@ function GameSurpriseScene:fun_list_data(  )
  	else
  		_jioushu=num /  2
 	end
-	self.jac_data_num=_jioushu  +  num %  2
-	for i=1,self.jac_data_num do
+	self.jac_data_num=_jioushu  +  num %  2  +self.jac_data_num_tag
+	dump(self.jac_data_num)
+	dump(self.jac_data_num_tag)
+	for i=self.jac_data_num_tag+1,self.jac_data_num do
 		self.lvw_Surorise:pushBackDefaultItem()
 		local  cell = self.lvw_Surorise:getItem(i-1)
 		local  _bg=cell:getChildByName("bg")
 		local  _bg_Copy=cell:getChildByName("bg_Copy")
 		_bg:setTag(2*i-1)
 		_bg_Copy:setVisible(false)
-		self:fun_surprise_data(_bg,i,1)
-		if i*2-1== num  then
+		self:fun_surprise_data(_bg,i-self.jac_data_num_tag,1)
+		if (i-self.jac_data_num_tag)*2-1== num  then
 			return
 		end
 		_bg_Copy:setTag(2*i)
 		_bg_Copy:setVisible(true)
-		self:fun_surprise_data(_bg_Copy,i,0)
+		self:fun_surprise_data(_bg_Copy,i-self.jac_data_num_tag,0)
 	end
+	self.jac_data_num_tag=self.jac_data_num
 end
 --实现数据更新
 function GameSurpriseScene:fun_surprise_data(_obj,_num,istwo)
@@ -151,9 +194,9 @@ function GameSurpriseScene:fun_surprise_data(_obj,_num,istwo)
 	                   return
 	              end
 	              print("活动编号"  ..  2*_num-1)
-	              local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
-	              local _id=_gamelist[sender:getParent():getTag()]["id"]
-		  self:addChild(SurpriseNode_Detail.new({id=_id}),1,1)
+	              -- local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
+	              -- local _id=_gamelist[sender:getParent():getTag()]["id"]
+		 -- self:addChild(SurpriseNode_Detail.new({id=_id}),1,1)
             end)
 
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
@@ -211,6 +254,7 @@ function GameSurpriseScene:Surpriseimages_list(  )
          	Server:Instance():request_pic(sup_data[i]["ownerurl"],com_) 
          end
 end
+
 function GameSurpriseScene:pushFloating(text)
        self.floating_layer:showFloat(text)  
 end 
@@ -227,6 +271,7 @@ function GameSurpriseScene:promptbox_buffer(prompt_text)
 end
 function GameSurpriseScene:onEnter()
 
+cc.SpriteFrameCache:getInstance():addSpriteFrames("png/ceshiPlist.plist")
 
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
@@ -242,7 +287,7 @@ function GameSurpriseScene:onEnter()
 end
 
 function GameSurpriseScene:onExit()
-     
+     cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("png/ceshiPlist.plist")
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 
