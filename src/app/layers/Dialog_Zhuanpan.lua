@@ -1,7 +1,5 @@
 
-local Dialog_Zhuanpan = class("Dialog_Zhuanpan", function()
-    return display.newLayer("Dialog_Zhuanpan")
-end)
+ 
 --私有的
 Dialog_Zhuanpan.m_mainMenu = nil
 Dialog_Zhuanpan.m_info = nil
@@ -27,7 +25,7 @@ local m_bStartAward = false --是否开始抽奖
 local m_nSpeed = 0 --旋转速度  12
 local m_nGroup = 0 --旋转的圈数  12
 
-local setstartAngle=0  --开始角度
+local setstartAngle=36  --开始角度
 local startAngle = setstartAngle 
 local acceleration = 1 --加速度
 
@@ -155,7 +153,7 @@ function Dialog_Zhuanpan:refView()
 end
 --  开始按钮操作
 function Dialog_Zhuanpan:maskTouch()
-	m_nAwardID = math.random(1,m_awardNum)  --＊
+	m_nAwardID = math.random(1,m_awardNum)  --＊＊＊
 	print("抽奖设置id",m_nAwardID)   --  使我们设置的参数
 	self:awardStart()
 end
@@ -238,14 +236,12 @@ end
 function Dialog_Zhuanpan:proRotateStop(startAngle)
 	local testFloat = startAngle + 90
 	testFloat = testFloat % 360
-	dump(startAngle,"startAngle")
-	--dump(testFloat,"testFloat")
 	for i,v in ipairs(self.m_info.data) do
 		--中奖角度范围
 		local tmp = i - 1
 		local angleFrom = 90 + 270 - (tmp + 1) * (360 / m_awardNum)
 		local angleTo = 90 + 270 - tmp * (360 / m_awardNum)
-		print("i = %d,from = %d,to = %d",i,angleFrom,angleTo)
+		--print("i = %d,from = %d,to = %d",i,angleFrom,angleTo)
 		if testFloat > angleFrom and testFloat <= angleTo then
 			local midAngle = angleFrom+(360 / m_awardNum)/2
 			endAngle = midAngle - testFloat

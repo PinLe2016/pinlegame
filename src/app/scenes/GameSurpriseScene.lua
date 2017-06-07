@@ -64,18 +64,29 @@ function GameSurpriseScene:fun_init( ... )
 	--  返回
 	local btn_Back=self.GameSurpriseScene:getChildByName("btn_Back")
           	btn_Back:addTouchEventListener(function(sender, eventType  )
-	               if eventType ~= ccui.TouchEventType.ended then
-	                   return
-	              end
+	                 if eventType == 3 then
+	                    sender:setScale(1)
+	                    return
+	                end
+	                if eventType ~= ccui.TouchEventType.ended then
+	                    sender:setScale(1.2)
+	                return
+	                end
+	                sender:setScale(1)
 	              Util:scene_control("MainInterfaceScene")
             end)
             -- 规则
             local btn_Guide=self.GameSurpriseScene:getChildByName("btn_Guide")
           	btn_Guide:addTouchEventListener(function(sender, eventType  )
+	                 if eventType == 3 then
+	                    sender:setScale(1)
+	                    return
+	                end
 	                if eventType ~= ccui.TouchEventType.ended then
-	                   return
-	              end
-	              print("规则")
+	                    sender:setScale(1.2)
+	                return
+	                end
+	                sender:setScale(1)
 		local Dialog_Zhuanpan = require("app.layers.Dialog_Zhuanpan")  --关于拼乐界面  
 		self:addChild(Dialog_Zhuanpan.new(),1,12)	             
             end)
@@ -89,6 +100,11 @@ function GameSurpriseScene:fun_init( ... )
             --  往期活动
             local btn_Past=self.GameSurpriseScene:getChildByName("btn_Past")
           	btn_Past:addTouchEventListener(function(sender, eventType  )
+	              self:list_btCallback(sender, eventType)     
+            end)
+            --  我的活动
+            local my_bt=self.GameSurpriseScene:getChildByName("my_bt")
+          	my_bt:addTouchEventListener(function(sender, eventType  )
 	              self:list_btCallback(sender, eventType)     
             end)
 
@@ -115,6 +131,11 @@ end
 		LocalData:Instance():set_getactivitylist(nil)
 		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
 		print("往期活动")
+	   elseif tag=="my_bt" then
+		self:fun_touch_com(3)
+		LocalData:Instance():set_getactivitylist(nil)
+		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+		print("我的活动")
 	   end
 
               self.curr_bright=sender
@@ -169,21 +190,23 @@ function GameSurpriseScene:fun_list_data(  )
 		self.lvw_Surorise:pushBackDefaultItem()
 		local  cell = self.lvw_Surorise:getItem(i-1)
 		local  _bg=cell:getChildByName("bg")
+		local  time_bg=_bg:getChildByName("time_bg")
 		local  _bg_Copy=cell:getChildByName("bg_Copy")
+		local  time_bg_Copy=_bg_Copy:getChildByName("time_bg")
 		_bg:setTag(2*i-1)
 		_bg_Copy:setVisible(false)
-		self:fun_surprise_data(_bg,i-self.jac_data_num_tag,1)
+		self:fun_surprise_data(_bg,time_bg,i-self.jac_data_num_tag,1)
 		if (i-self.jac_data_num_tag)*2-1== num  then
 			return
 		end
 		_bg_Copy:setTag(2*i)
 		_bg_Copy:setVisible(true)
-		self:fun_surprise_data(_bg_Copy,i-self.jac_data_num_tag,0)
+		self:fun_surprise_data(_bg_Copy,time_bg_Copy,i-self.jac_data_num_tag,0)
 	end
 	self.jac_data_num_tag=self.jac_data_num
 end
 --实现数据更新
-function GameSurpriseScene:fun_surprise_data(_obj,_num,istwo)
+function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	local obj=_obj
 	local list_table=LocalData:Instance():get_getactivitylist()
 	local _gamelist=list_table["game"]
@@ -194,9 +217,9 @@ function GameSurpriseScene:fun_surprise_data(_obj,_num,istwo)
 	                   return
 	              end
 	              print("活动编号"  ..  2*_num-1)
-	              -- local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
-	              -- local _id=_gamelist[sender:getParent():getTag()]["id"]
-		 -- self:addChild(SurpriseNode_Detail.new({id=_id}),1,1)
+	              local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
+	              local _id=_gamelist[sender:getParent():getTag()]["id"]
+		 self:addChild(SurpriseNode_Detail.new({id=_id}),1,1)
             end)
 
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
@@ -208,7 +231,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,_num,istwo)
             local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
             local _tabletime=(_time)
             local  _tabletime_data=Util:FormatTime_colon(_tabletime)
-            local txt_Pastdate=_obj:getChildByName("txt_Pastdate")
+            local txt_Pastdate=time_obj:getChildByName("txt_Pastdate")
             table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=_time})
             txt_Pastdate:setString(_tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             --开启定时器

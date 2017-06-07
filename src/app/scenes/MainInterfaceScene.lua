@@ -102,8 +102,20 @@ function MainInterfaceScene:fun_init( )
        self.gamecenter_text=self.MainInterfaceScene:getChildByTag(122)   --游戏中心
 
 
-      local mall_bt=self.MainInterfaceScene:getChildByTag(626)  --商城
-      mall_bt:addTouchEventListener(function(sender, eventType  )
+      local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)  --惊喜吧
+      Surprise_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+      local Rotary_bt=self.MainInterfaceScene:getChildByTag(444)  --转盘
+      Rotary_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+      local win_bt=self.MainInterfaceScene:getChildByTag(97)  --中奖
+      win_bt:addTouchEventListener(function(sender, eventType  )
+          self:touch_callback(sender, eventType)
+      end)
+      local help_bt=self.MainInterfaceScene:getChildByTag(125)  --助力榜
+      help_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
 
@@ -300,7 +312,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
   end
   local tag=sender:getTag()
   if tag==56 then --惊喜吧
-    
+     Util:scene_control("GameSurpriseScene")
   elseif tag==37 then  --37
     local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
     self:addChild(PerInformationLayer.new(),1,14)
@@ -319,7 +331,12 @@ function MainInterfaceScene:touch_callback( sender, eventType )
        end
 
              Server:Instance():getcheckinhistory()  --签到http
-      elseif tag==48 then  --设置
+      elseif tag==444 then  --转盘
+        Util:scene_control("LuckyDraw")
+      elseif tag==97 then  --中奖
+        Util:scene_control("TicketCenter")
+      elseif tag==125 then  --助力榜
+        Util:scene_control("PowerHelp")
       elseif tag==580 then  --邮箱
             print("邮箱")
             local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
@@ -362,9 +379,6 @@ self.setup_box:setSelected(false)
             -- end
 
             --  Util:scene_controlid("MallScene",{type="emil"})
-
-            Util:scene_control("GameSurpriseScene")
-
 
       elseif tag==49 then  --加
           
