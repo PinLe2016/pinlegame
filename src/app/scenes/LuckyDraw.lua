@@ -9,8 +9,8 @@ end)
 local m_touchCount = 1 --点击后直接开始抽奖，=2表示先点击转动转盘，再点击一次开始抽奖
 local ROTATE_TIME = 0.1 --旋转Action的时间
 local ROTATE_TIME2 = 1.0 --转盘回滚的时间
-local ROTATE_SPEED = 15 --旋转速度，每次旋50度  ＊
-local ROTATE_GROUP = 15 --旋转圈数，旋转8圈后慢慢停下来  ＊
+local ROTATE_SPEED = 50 --旋转速度，每次旋50度  ＊
+local ROTATE_GROUP = 8 --旋转圈数，旋转8圈后慢慢停下来  ＊
 ------------end------------------------
 local m_imgZhuanpan = nil --转盘图片
 
@@ -22,7 +22,7 @@ local m_nGroup = 0 --旋转的圈数  12
 
 local setstartAngle=0  --开始角度
 local startAngle = setstartAngle 
-local acceleration = 1 --加速度
+local acceleration = 0 --加速度
 
 local endAngle = 0
 local m_bModify = false -- 是否需要调整保证在中间位置
@@ -353,14 +353,14 @@ function LuckyDraw:fun_radio( ... )
                   crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
                   self.LuckyDraw_bg:addChild(crn)
 
-                  local title = ccui.Text:create("恭喜拼乐融资200个亿\n\n恭喜拼乐融资200个亿", "resources/com/huakangfangyuan.ttf", 27)
+                  local title = ccui.Text:create("恭喜拼乐融资200个亿\n\n恭喜刘明鑫中彩800万\n\n恭喜峻峰买上房子", "resources/com/huakangfangyuan.ttf", 27)
                   title:setPosition(cc.p(290,-140))
                   title:setAnchorPoint(cc.p(0.5,0))
                   crn:addChild(title)
-                  title:setColor(cc.c3b(245, 126, 20))
+                  title:setColor(cc.c3b(255, 255, 255))
 
                         --描述动画
-                    local move = cc.MoveTo:create((title:getContentSize().height)/15, cc.p(290,140))
+                    local move = cc.MoveTo:create((title:getContentSize().height)/25, cc.p(290,140))
                     --local move_back = move:reverse()
                      local callfunc = cc.CallFunc:create(function(node, value)
                             title:setPosition(cc.p(290,-140))
