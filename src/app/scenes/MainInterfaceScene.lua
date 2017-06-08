@@ -87,8 +87,7 @@ function MainInterfaceScene:fun_init( )
       self:addChild(self.MainInterfaceScene)
 
 
-       self.biao_ji=self.MainInterfaceScene:getChildByTag(1164)--
-       self.biao_ji:setVisible(false) 
+       
 
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self.signanimations:setVisible(false)
@@ -130,8 +129,14 @@ function MainInterfaceScene:fun_init( )
           checkin_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
-       local mail_bt= self.MainInterfaceScene:getChildByTag(580)  --邮件按钮
-       mail_bt:addTouchEventListener(function(sender, eventType  )
+      
+      
+      self.biao_ji=self.MainInterfaceScene:getChildByTag(6222):getChildByTag(1164)--
+       self.biao_ji:setVisible(false) 
+
+       local mail_bt= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(88)  --
+         local mail_bt1= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(580)  --邮件按钮
+       mail_bt1:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
 
@@ -141,9 +146,9 @@ function MainInterfaceScene:fun_init( )
           self:touch_callback(sender, eventType)
       end)
 
-     
-      local friends_bt=self.MainInterfaceScene:getChildByTag(52)  --邀请好友排行
-      friends_bt:addTouchEventListener(function(sender, eventType  )
+      local friends_bt= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(89)  --
+      local friends_bt1=self.MainInterfaceScene:getChildByTag(6222):getChildByTag(52)  --邀请好友排行
+      friends_bt1:addTouchEventListener(function(sender, eventType  )
            self:touch_callback(sender, eventType)
       end)
       local friend_bt=self.MainInterfaceScene:getChildByTag(6222):getChildByTag(288)--self.signanimations:getChildByTag(291)--  邀请好友
@@ -203,6 +208,10 @@ function MainInterfaceScene:fun_init( )
                            newshezhi_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
                            friend_bt1:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
                            newshezhi_bt1:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                           friends_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                            friends_bt1:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                            mail_bt:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
+                            mail_bt1:runAction(cc.EaseBounceOut:create(cc.ScaleTo:create(0.5, 1)))
 
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                               sender:setTouchEnabled(false)
@@ -227,6 +236,11 @@ function MainInterfaceScene:fun_init( )
                             checkin_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
                             friend_bt1:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
                             newshezhi_bt1:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                            friends_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                            friends_bt1:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                            mail_bt:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+                            mail_bt1:runAction(cc.EaseBounceIn:create(cc.ScaleTo:create(0.4, 0)))
+
                      end
       end)
       self.barrier_bg=self.MainInterfaceScene:getChildByTag(396)
@@ -339,6 +353,8 @@ function MainInterfaceScene:touch_callback( sender, eventType )
         Util:scene_control("PowerHelp")
       elseif tag==580 then  --邮箱
             print("邮箱")
+            self.sliding_bg:setScale(0)
+            self.setup_box:setSelected(false)
             local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
             self:addChild(mailLayer.new(),1,15)
       elseif tag==581 then  --任务
@@ -386,6 +402,8 @@ self.setup_box:setSelected(false)
 
 
       elseif tag==52 then  --邀请好友
+        self.sliding_bg:setScale(0)
+        self.setup_box:setSelected(false)
         local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜
             self:addChild(InvitefriendsLayer.new(),1,13)
       elseif tag==2122 then  --商城返回
