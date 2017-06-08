@@ -1,5 +1,7 @@
 
- 
+ local Dialog_Zhuanpan = class("Dialog_Zhuanpan", function()
+    return display.newScene("Dialog_Zhuanpan")
+end)
 --私有的
 Dialog_Zhuanpan.m_mainMenu = nil
 Dialog_Zhuanpan.m_info = nil

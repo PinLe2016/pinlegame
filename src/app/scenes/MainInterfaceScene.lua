@@ -85,10 +85,7 @@ end
 function MainInterfaceScene:fun_init( )
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
-
-
-       
-
+      self:fun_radio()
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self.signanimations:setVisible(false)
       self:addChild(self.signanimations)
@@ -612,6 +609,30 @@ function MainInterfaceScene:fun_showtip(bt_obj,_x,_y )
           end
           local actionTo = cc.ScaleTo:create(0.5, 1)
           self.showtip_image:runAction( cc.Sequence:create(actionTo,cc.DelayTime:create(0.3 ),cc.CallFunc:create(removeThis)))
+end
+--  广播 跑马灯
+function MainInterfaceScene:fun_radio( ... )
+          local LuckyDraw_text =self.MainInterfaceScene:getChildByTag(268)
+          local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,450,41))
+          crn:setAnchorPoint(0)
+          crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2+6,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
+          self.MainInterfaceScene:addChild(crn)
+
+          local title = ccui.Text:create("恭喜拼乐融资200个亿 ", "resources/com/huakangfangyuan.ttf", 27)
+          title:setPosition(cc.p(-463,8))
+          title:setAnchorPoint(cc.p(0.5,0))
+          crn:addChild(title)
+          title:setColor(cc.c3b(245, 126, 20))
+
+                --描述动画
+            local move = cc.MoveTo:create((title:getContentSize().width)/50, cc.p(-463,8))
+            --local move_back = move:reverse()
+             local callfunc = cc.CallFunc:create(function(node, value)
+                    title:setPosition(cc.p(463,8))
+                  end, {tag=0})
+             local seq = cc.Sequence:create(move,cc.DelayTime:create(1),callfunc  ) 
+            local rep = cc.RepeatForever:create(seq)
+            title:runAction(rep)
 end
 function MainInterfaceScene:pushFloating(text)
    if is_resource then
