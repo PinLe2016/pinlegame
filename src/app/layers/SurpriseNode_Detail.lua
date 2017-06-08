@@ -9,7 +9,7 @@ function SurpriseNode_Detail:ctor(params)
        --  初始化界面
        self:fun_init()
        
-       -- Server:Instance():getactivitybyid(params.id,0)  --  详情
+        Server:Instance():getactivitybyid(params.id,0)  --  详情
        -- Server:Instance():getactivityadlist(params.id)
 end
 
@@ -184,7 +184,7 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
         self:fun_friend_list_data()
 end
 function SurpriseNode_Detail:fun_friend_list_data( ... )
-        for i=1,50 do
+        for i=1,20 do
           self.XQ_FD_LIST:pushBackDefaultItem()
           local  cell = self.XQ_FD_LIST:getItem(i-1)
         end

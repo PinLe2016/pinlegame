@@ -87,8 +87,7 @@ function GameSurpriseScene:fun_init( ... )
 	                return
 	                end
 	                sender:setScale(1)
-		local Dialog_Zhuanpan = require("app.layers.Dialog_Zhuanpan")  --关于拼乐界面  
-		self:addChild(Dialog_Zhuanpan.new(),1,12)	             
+		 print("规则")          
             end)
             --  本期活动
             local btn_Current=self.GameSurpriseScene:getChildByName("btn_Current")
@@ -299,7 +298,7 @@ cc.SpriteFrameCache:getInstance():addSpriteFrames("png/ceshiPlist.plist")
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
 			self.list_table=LocalData:Instance():get_getactivitylist()
-			          dump(self.list_table)
+			          
 			          self:Surpriseimages_list()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
