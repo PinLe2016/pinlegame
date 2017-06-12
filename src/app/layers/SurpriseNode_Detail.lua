@@ -18,32 +18,11 @@ function SurpriseNode_Detail:fun_init( ... )
 	self:addChild(self.DetailsOfSurprise)
       self.XQ_bg=self.DetailsOfSurprise:getChildByName("XQ_bg")
       self.LH_bg=self.XQ_bg:getChildByName("LH_bg")
-      --  初始化分数
-      --  初始化老虎机
-      --self:fun_Slot_machines_init()
       self:fun_touch_bt()
       --  好友列表初始化
       self:fun_friend_list_init()
 end
 
---老虎机
-function SurpriseNode_Detail:fun_Slot_machines_init( ... )
-   self. _table={}
-    for i=1,3 do
-        local score=self.LH_bg
-        local pox_1=self.LH_bg:getChildByName("LH_img_1"):getPositionX()
-        local poy_1=self.LH_bg:getChildByName("LH_img_1"):getPositionY()
-        local pox_2=self.LH_bg:getChildByName("LH_img_2"):getPositionX()
-        local pox_3=self.LH_bg:getChildByName("LH_img_3"):getPositionX()
-        self.laoHuJi1 = cc.LaoHuJiDonghua:create()--cc.CustomClass:create()
-        local msg = self.laoHuJi1:helloMsg()
-        release_print("customClass's msg is : " .. msg)
-        self.laoHuJi1:setDate("DetailsiOfSurprise/LH_Plist", "DetailsiOfSurprise/JXB_YX_S_", 10,cc.p(pox_1+127*(i-1) ,poy_1) );
-        self.laoHuJi1:setStartSpeed(20);
-        score:addChild(self.laoHuJi1);
-        self._table[i]=self.laoHuJi1
-    end
-end
 function SurpriseNode_Detail:fun_Slot_machines( ... )
    
         for i=1,#self. _table do
@@ -133,7 +112,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
-                print("奖项")
+                self:fun_winnersPreview()
       end)
        --开始
       local began_bt=self.DetailsOfSurprise:getChildByName("began_bt")
@@ -214,13 +193,39 @@ self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("XQ_Friend_b
           local  cell = self.XQ_FD_LIST:getItem(i-1)
         end
 end
---成绩分数 
-function SurpriseNode_Detail:fun_score( _obj,PaObj)
-    local dishu_score = ccui.TextAtlas:create()
-    dishu_score:setPosition(cc.p(_obj:getPositionX(),_obj:getPositionY()))  
-    dishu_score:setProperty( "333","DetailsiOfSurprise/JXB_YX_15.png", 18, 21, "0")  --tostring(self.friendlist_num["friendcount"]),
-    PaObj:addChild(dishu_score) 
-    dishu_score:setAnchorPoint(0,0.5)
+--奖项
+function SurpriseNode_Detail:fun_winnersPreview( ... )
+      self.winnersPreview = cc.CSLoader:createNode("winnersPreview.csb");
+      self.winnersPreview:setTag(1311)
+      self:addChild(self.winnersPreview)
+      local back=self.winnersPreview:getChildByName("back")
+       back:addTouchEventListener(function(sender, eventType  )
+              if eventType == 3 then
+                    sender:setScale(1)
+                    return
+                end
+                if eventType ~= ccui.TouchEventType.ended then
+                    sender:setScale(1.2)
+                return
+                end
+                sender:setScale(1)
+                self:removeChildByTag(1311, true)
+      end)
+        self.win_ListView=self.winnersPreview:getChildByName("win_ListView")
+        self.win_ListView:setItemModel(self.win_ListView:getItem(0))
+        self.win_ListView:removeAllItems()
+
+        self:fun_winnersPreview_list_init()
+end
+function SurpriseNode_Detail:fun_winnersPreview_list_init( ... )
+       for i=1,20 do
+          self.win_ListView:pushBackDefaultItem()
+          local  cell = self.win_ListView:getItem(i-1)
+          local number=cell:getChildByName("number")
+          number:setString(i)
+          local prize=cell:getChildByName("prize")
+          prize:setString(i ..  "等奖")
+        end
 end
 function SurpriseNode_Detail:onEnter()
    cc.SpriteFrameCache:getInstance():addSpriteFrames("DetailsiOfSurprise/LH_Plist.plist")
