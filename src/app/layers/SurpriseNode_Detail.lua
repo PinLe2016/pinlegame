@@ -19,14 +19,8 @@ function SurpriseNode_Detail:fun_init( ... )
       self.XQ_bg=self.DetailsOfSurprise:getChildByName("XQ_bg")
       self.LH_bg=self.XQ_bg:getChildByName("LH_bg")
       --  初始化分数
-      local LH_score_1=self.LH_bg:getChildByName("LH_score_1")
-      local LH_score_2=self.LH_bg:getChildByName("LH_score_2")
-      local LH_score_3=self.LH_bg:getChildByName("LH_score_3")
-      self:fun_score(LH_score_1,self.LH_bg)
-      self:fun_score(LH_score_2,self.LH_bg)
-      self:fun_score(LH_score_3,self.LH_bg)
       --  初始化老虎机
-      self:fun_Slot_machines_init()
+      --self:fun_Slot_machines_init()
       self:fun_touch_bt()
       --  好友列表初始化
       self:fun_friend_list_init()
@@ -82,14 +76,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                       sender:setScale(1)
               self:removeFromParent()
       end)
-      --开始按钮
-      local LH_began=self.XQ_bg:getChildByName("LH_began")
-      LH_began:addTouchEventListener(function(sender, eventType  )
-           if eventType ~= ccui.TouchEventType.ended then
-               return
-          end
-        self:fun_Slot_machines()
-      end)
+      
        --  规则按钮
       local XQ_GZ=self.DetailsOfSurprise:getChildByName("XQ_GZ")
       XQ_GZ:addTouchEventListener(function(sender, eventType  )
@@ -133,19 +120,10 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 sender:setScale(1)
                 print("好友助力")
       end)
-          
-end
---  好友列表
-function SurpriseNode_Detail:fun_friend_list_init( ... )
-        local  Friend_Node=self.DetailsOfSurprise:getChildByName("Friend_Node")
-        local XQ_Friend_bg=Friend_Node:getChildByName("XQ_Friend_bg")
-         local XQ_FD_LIST_Back=XQ_Friend_bg:getChildByName("XQ_FD_LIST_Back")
-        XQ_FD_LIST_Back:setVisible(false)
-        XQ_Friend_bg:setTouchEnabled(false)
-        --更多好友
-      local XQ_FD_LIST_More_Bg=XQ_Friend_bg:getChildByName("XQ_FD_LIST_More_Bg")
-      local XQ_FD_LIST_More_Bt=XQ_FD_LIST_More_Bg:getChildByName("XQ_FD_LIST_More_Bt")
-      XQ_FD_LIST_More_Bt:addTouchEventListener(function(sender, eventType  )
+
+       --奖项
+      local award_bt=self.DetailsOfSurprise:getChildByName("award_bt")
+      award_bt:addTouchEventListener(function(sender, eventType  )
               if eventType == 3 then
                     sender:setScale(1)
                     return
@@ -155,11 +133,35 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
                 return
                 end
                 sender:setScale(1)
-                XQ_FD_LIST_Back:setVisible(true)
-                XQ_FD_LIST_More_Bg:setVisible(false)
-                Friend_Node:setPositionY(635)
-                XQ_Friend_bg:setTouchEnabled(true)
+                print("奖项")
       end)
+       --开始
+      local began_bt=self.DetailsOfSurprise:getChildByName("began_bt")
+      began_bt:addTouchEventListener(function(sender, eventType  )
+              if eventType == 3 then
+                    sender:setScale(1)
+                    return
+                end
+                if eventType ~= ccui.TouchEventType.ended then
+                    sender:setScale(1.2)
+                return
+                end
+                sender:setScale(1)
+                 local SlotMachines = require("app.layers.SlotMachines")    
+                self:addChild(SlotMachines.new(),1,1)
+      end)
+          
+end
+--  好友列表
+function SurpriseNode_Detail:fun_friend_list_init( ... )
+        local  Friend_Node=self.DetailsOfSurprise:getChildByName("Friend_Node")
+        local XQ_Friend_bg=Friend_Node:getChildByName("XQ_Friend_bg")
+         local XQ_FD_LIST_Back=XQ_Friend_bg:getChildByName("XQ_FD_LIST_Back")
+         local XQ_FD_LIST_More_Bg=XQ_Friend_bg:getChildByName("XQ_FD_LIST_More_Bg")
+           local XQ_FD_LIST_More_Bt=XQ_Friend_bg:getChildByName("XQ_FD_LIST_More_Bt")
+        XQ_FD_LIST_Back:setVisible(false)
+        XQ_Friend_bg:setTouchEnabled(false)
+      
       --  关闭好友界面
       
       XQ_FD_LIST_Back:addTouchEventListener(function(sender, eventType  )
@@ -176,7 +178,28 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
                 XQ_FD_LIST_More_Bg:setVisible(true)
                 Friend_Node:setPositionY(0)
                 XQ_Friend_bg:setTouchEnabled(false)
+                XQ_FD_LIST_More_Bt:setVisible(true)
       end)
+      --  关闭好友界面
+      
+      XQ_FD_LIST_More_Bt:addTouchEventListener(function(sender, eventType  )
+              if eventType == 3 then
+                    sender:setScale(1)
+                    return
+                end
+                if eventType ~= ccui.TouchEventType.ended then
+                    sender:setScale(1.2)
+                return
+                end
+                sender:setScale(1)
+                XQ_FD_LIST_Back:setVisible(true)
+                XQ_FD_LIST_More_Bg:setVisible(false)
+                Friend_Node:setPositionY(635)
+                XQ_Friend_bg:setTouchEnabled(true)
+                XQ_FD_LIST_More_Bt:setVisible(false)
+      end)
+
+
         self.XQ_FD_LIST=XQ_Friend_bg:getChildByName("XQ_FD_LIST")
         self.XQ_FD_LIST:setItemModel(self.XQ_FD_LIST:getItem(0))
         self.XQ_FD_LIST:removeAllItems()
@@ -184,6 +207,8 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
         self:fun_friend_list_data()
 end
 function SurpriseNode_Detail:fun_friend_list_data( ... )
+--  有没有好友图片
+self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("XQ_Friend_bg"):getChildByName("no_friend_bg"):setVisible(false)
         for i=1,20 do
           self.XQ_FD_LIST:pushBackDefaultItem()
           local  cell = self.XQ_FD_LIST:getItem(i-1)
