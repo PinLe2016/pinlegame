@@ -68,13 +68,19 @@ end
 
 
 -- 获取活动获奖名单接口
+function LocalData:set_getactivityawards(getactivityawards)
+	self.getactivityawards=getactivityawards
+end
+function LocalData:get_getactivityawards()
+	return self.getactivityawards or {}
+end
+-- 获取奖项预览接口
 function LocalData:set_getactivitywinners(getactivitywinners)
 	self.getactivitywinners=getactivitywinners
 end
 function LocalData:get_getactivitywinners()
 	return self.getactivitywinners or {}
 end
-
 --保存当前惊喜吧界面的actid
 function LocalData:set_actid(actid)
 	self.actid=actid

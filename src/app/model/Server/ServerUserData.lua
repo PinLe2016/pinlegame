@@ -133,8 +133,6 @@ function Server:setconsignee_callback()
         self:show_float_message( self.data.err_msg)
         return
     end
-    print("保存成功")
-    Server:Instance():getconsignee()
     NotificationCenter:Instance():PostNotification("setconsignee_call")
 
 end
@@ -153,6 +151,8 @@ function Server:getconsignee_callback()
         return
     end
    LocalData:Instance():set_getconsignee(self.data)
+   NotificationCenter:Instance():PostNotification("getconsignee")
+
 end
 
 

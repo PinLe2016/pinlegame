@@ -167,12 +167,16 @@ function FloatingLayer:fun_Grawpopup( popup_text ,call)
                   return  self.Grawpopup
 
 end
-function FloatingLayer:prompt_box(prompt_text )
+function FloatingLayer:prompt_box(prompt_text ,call)
       self.networkbox = cc.CSLoader:createNode("PromptNode.csb")
       self:addChild(self.networkbox)
+      self.networkbox:setTag(111)
       local back=self.networkbox:getChildByTag(213)
       local _text=self.networkbox:getChildByTag(214)
       _text:setString(prompt_text)
+       if call then
+                    self.call=call
+        end
        back:addTouchEventListener(function(sender, eventType  )
                  if eventType ~= ccui.TouchEventType.ended then
                         return
@@ -180,7 +184,10 @@ function FloatingLayer:prompt_box(prompt_text )
                 if self.networkbox then
                        self.networkbox:removeFromParent()
                 end
-                
+                if self.call then
+                        self.call(self,1)
+                        self:removeChildByTag(111)
+                end
             if tostring(LocalData:Instance():get_user_time()) == "1" then
                NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.JIGSAWCOUNT)
             end

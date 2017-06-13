@@ -247,7 +247,7 @@ function Server:getactivitywinners(activityid)
 end
 
 function Server:getactivitywinners_callback()
-    -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
         return
@@ -267,12 +267,13 @@ function Server:getactivityawards(activityid)
 end
 
 function Server:getactivityawards_callback()
-    -- dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("获取指定活动的广告列表失败:" .. self.data.err_msg)
+        self:show_float_message( self.data.err_msg)
         return
     end
-    self:show_float_message("获取指定活动的广告列表")
+    LocalData:Instance():set_getactivitywinners(self.data)--保存数据
+    NotificationCenter:Instance():PostNotification("GETACTIVITYAWARDS")
 end
 
 -- 3.5.12   验证惊喜吧活动码接

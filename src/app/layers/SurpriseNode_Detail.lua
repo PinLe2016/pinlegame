@@ -5,14 +5,18 @@ local SurpriseNode_Detail = class("SurpriseNode_Detail", function()
 end)
 
 function SurpriseNode_Detail:ctor(params)
+      self.surprise_id=params.id
        self:setNodeEventEnabled(true)
        --  初始化界面
-       self:fun_init()
-       
-        Server:Instance():getactivitybyid(params.id,0)  --  详情
-       -- Server:Instance():getactivityadlist(params.id)
+       self:fun_init()     
+       self:fun_Initialize_variable()
+      Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
 end
-
+--  初始化变量
+function SurpriseNode_Detail:fun_Initialize_variable( ... )
+    self.winnersPreview_comout=0
+    self.winnersPreview_number=0
+end
 function SurpriseNode_Detail:fun_init( ... )
 	self.DetailsOfSurprise = cc.CSLoader:createNode("DetailsOfSurprise.csb");
 	self:addChild(self.DetailsOfSurprise)
@@ -113,6 +117,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 end
                 sender:setScale(1)
                 self:fun_winnersPreview()
+                Server:Instance():getactivityawards(self.surprise_id)  --  奖项预览
       end)
        --开始
       local began_bt=self.DetailsOfSurprise:getChildByName("began_bt")
@@ -212,32 +217,73 @@ function SurpriseNode_Detail:fun_winnersPreview( ... )
                 self:removeChildByTag(1311, true)
       end)
         self.win_ListView=self.winnersPreview:getChildByName("win_ListView")
+        self.win_ListView:addScrollViewEventListener((function(sender, eventType  )
+                  if eventType  ==6 then
+                        LocalData:Instance():set_getactivitywinners(nil)
+                        Server:Instance():getactivityawards(self.surprise_id)
+                                   return
+                  end
+        end))
         self.win_ListView:setItemModel(self.win_ListView:getItem(0))
         self.win_ListView:removeAllItems()
 
-        self:fun_winnersPreview_list_init()
+        
 end
 function SurpriseNode_Detail:fun_winnersPreview_list_init( ... )
-       for i=1,20 do
+       local list_table=LocalData:Instance():get_getactivitywinners()
+       local  sup_data=list_table["awardlist"]
+       local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+       self.winnersPreview_comout=#sup_data
+       if self.winnersPreview_number>=self.winnersPreview_comout then
+         return
+       end
+       for i=1,#sup_data do
           self.win_ListView:pushBackDefaultItem()
           local  cell = self.win_ListView:getItem(i-1)
           local number=cell:getChildByName("number")
-          number:setString(i)
+          number:setString("0 ~ "  ..  sup_data[i]["awardcount"])
           local prize=cell:getChildByName("prize")
-          prize:setString(i ..  "等奖")
+          prize:setString(sup_data[i]["awardorder"] ..  "等奖")
+          local win_name=cell:getChildByName("win_name")
+          win_name:setString(sup_data[i]["goodsname"])
+          local win_img=cell:getChildByName("win_img")  
+          win_img:loadTexture(path..tostring(Util:sub_str(sup_data[i]["goodsimageurl"], "/",":")))
+
         end
+        self.winnersPreview_number=self.winnersPreview_comout
+end
+--下载奖项预览图片
+function SurpriseNode_Detail:winnersPreview_list_image(  )
+         local list_table=LocalData:Instance():get_getactivitywinners()
+         if not list_table then
+           return
+         end
+         local  sup_data=list_table["awardlist"]
+         for i=1,#sup_data do
+          local com_={}
+          com_["command"]=sup_data[i]["goodsimageurl"]
+          com_["max_pic_idx"]=#sup_data
+          com_["curr_pic_idx"]=i
+          com_["TAG"]="getactivitywinners"
+          Server:Instance():request_pic(sup_data[i]["goodsimageurl"],com_) 
+         end
 end
 function SurpriseNode_Detail:onEnter()
    cc.SpriteFrameCache:getInstance():addSpriteFrames("DetailsiOfSurprise/LH_Plist.plist")
-  -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self,
-  --                      function()
-  --                                 self:data_init()
-  --                     end)
+   NotificationCenter:Instance():AddObserver("GETACTIVITYAWARDS", self,
+                       function()
+                                  self:winnersPreview_list_image()
+                      end)
+   NotificationCenter:Instance():AddObserver("GAME_GETACTIVITYAWARDS", self,
+                       function()
+                                  self:fun_winnersPreview_list_init()
+                      end)
 end
 
 function SurpriseNode_Detail:onExit()
-  cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("DetailsiOfSurprise/LH_Plist.plist")
-      --NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self)
+    cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("DetailsiOfSurprise/LH_Plist.plist")
+    NotificationCenter:Instance():RemoveObserver("GETACTIVITYAWARDS", self)
+    NotificationCenter:Instance():RemoveObserver("GAME_GETACTIVITYAWARDS", self)
       
 end
 

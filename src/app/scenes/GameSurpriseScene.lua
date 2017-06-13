@@ -272,6 +272,7 @@ function GameSurpriseScene:Surpriseimages_list(  )
          	com_["command"]=sup_data[i]["ownerurl"]
          	com_["max_pic_idx"]=#sup_data
          	com_["curr_pic_idx"]=i
+         	com_["TAG"]="getactivitylist"
          	Server:Instance():request_pic(sup_data[i]["ownerurl"],com_) 
          end
 end

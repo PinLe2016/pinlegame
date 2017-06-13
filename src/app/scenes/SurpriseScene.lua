@@ -30,7 +30,7 @@ function SurpriseScene:ctor()
       --   local city=pinle_loclation:getCity()
       --   dump(city)
 
-      self:listener_home() --注册安卓返回键
+      self:listener_home() --注册安卓返回。
       self.image={}
 
 end

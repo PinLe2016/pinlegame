@@ -278,8 +278,10 @@ function Server:on_request_finished_pic(event , command)
         io.close(file)
  
     end
-    if tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) then
+    if tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getactivitylist" then
         NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_LIST)
+    elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getactivitywinners" then
+        NotificationCenter:Instance():PostNotification("GAME_GETACTIVITYAWARDS")
     end
 
 
