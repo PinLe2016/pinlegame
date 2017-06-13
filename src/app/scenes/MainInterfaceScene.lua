@@ -618,7 +618,7 @@ function MainInterfaceScene:fun_radio( ... )
           crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2+6,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
           self.MainInterfaceScene:addChild(crn)
 
-          local title = ccui.Text:create("恭喜拼乐融资200个亿", "resources/com/huakangfangyuan.ttf", 27)
+          local title = ccui.Text:create("恭喜拼乐融资成功", "resources/com/huakangfangyuan.ttf", 27)
           title:setPosition(cc.p(-450,8))
           title:setAnchorPoint(cc.p(0,0))
           crn:addChild(title)

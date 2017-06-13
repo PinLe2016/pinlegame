@@ -353,7 +353,7 @@ function LuckyDraw:fun_radio( ... )
                   crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
                   self.LuckyDraw_bg:addChild(crn)
 
-                  local title = ccui.Text:create("恭喜拼乐融资200个亿\n\n恭喜刘明鑫中彩800万\n\n恭喜峻峰买上房子", "resources/com/huakangfangyuan.ttf", 27)
+                  local title = ccui.Text:create("恭喜拼乐融资成功\n\n希望拼乐签约成功\n\n拼乐新版本即将上线", "resources/com/huakangfangyuan.ttf", 27)
                   title:setPosition(cc.p(290,-140))
                   title:setAnchorPoint(cc.p(0.5,0))
                   crn:addChild(title)
