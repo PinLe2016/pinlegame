@@ -5,7 +5,11 @@ local SurpriseNode_Detail = class("SurpriseNode_Detail", function()
 end)
 
 function SurpriseNode_Detail:ctor(params)
+      self.floating_layer = require("app.layers.FloatingLayer").new()
+      self.floating_layer:addTo(self,100000)
+
       self.surprise_id=params.id
+      self.surprise_ownerurl=params.ownerurl
        self:setNodeEventEnabled(true)
        --  初始化界面
        self:fun_init()     
@@ -25,22 +29,29 @@ function SurpriseNode_Detail:fun_init( ... )
       self:fun_touch_bt()
       --  好友列表初始化
       self:fun_friend_list_init()
+      self:fun_lv_touch()
 end
+function SurpriseNode_Detail:fun_data(  )
+           local activitybyid_data=LocalData:Instance():get_getactivitybyid()
+           local  Friend_Node=self.DetailsOfSurprise:getChildByName("Friend_Node")
+           local  DOS_ScrollView=Friend_Node:getChildByName("DOS_ScrollView")
+           local  DOS_LoadingBar=DOS_ScrollView:getChildByName("DOS_LoadingBar")
+           local  DOS_biaoji=DOS_ScrollView:getChildByName("DOS_biaoji")
+           DOS_LoadingBar:setPercent(tonumber(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]))
+           DOS_biaoji:setAnchorPoint(0)
+           DOS_biaoji:setPositionX(tonumber(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"])  * 1360)
 
-function SurpriseNode_Detail:fun_Slot_machines( ... )
-   
-        for i=1,#self. _table do
-              self. _table[i]:startGo()
-        end
-        local  tempn = 123   
-        for i=1,#self. _table do
-            local  stopNum = 0;
-            if (tempn > 0)  then
-                stopNum = tempn % 10;
-                tempn = tempn / 10;
-            end
-            (self. _table[#self. _table-(i-1)]):stopGo(stopNum);
-        end
+
+           --  积分  排名
+           local LH_integral=self.LH_bg:getChildByName("LH_integral")
+           LH_integral:setString(activitybyid_data["score"])
+           local LH_rank=self.LH_bg:getChildByName("LH_rank")
+           LH_rank:setString(activitybyid_data["mylevel"])
+
+           local  advertising_bt=self.DetailsOfSurprise:getChildByName("advertising_bt")
+           local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+           advertising_bt:loadTexture(path..tostring(Util:sub_str(self.surprise_ownerurl, "/",":")))
+
 
 end
 function SurpriseNode_Detail:fun_touch_bt( ... )
@@ -87,7 +98,8 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 end
                 sender:setScale(1)
                  local SurpriseRank = require("app.layers.SurpriseRank")  --关于拼乐界面  
-                  self:addChild(SurpriseRank.new(),1,1)
+                 local activitybyid=LocalData:Instance():get_getactivitybyid()
+                  self:addChild(SurpriseRank.new({id=activitybyid["id"],score=activitybyid["score"],mylevel=activitybyid["mylevel"]}),1,1)
       end)
       --好友助力
       local Friend_help=self.DetailsOfSurprise:getChildByName("Friend_help")
@@ -198,6 +210,41 @@ self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("XQ_Friend_b
           local  cell = self.XQ_FD_LIST:getItem(i-1)
         end
 end
+function SurpriseNode_Detail:fun_lv_touch( ... )
+           local DOS_ScrollView=self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("DOS_ScrollView")
+           local  DOS_bt1=DOS_ScrollView:getChildByName("DOS_bg1"):getChildByName("DOS_bt1")
+           DOS_bt1:addTouchEventListener(function(sender, eventType  )
+                    self:fun_lv_touch_back(sender, eventType)
+          end)
+           local  DOS_bt2=DOS_ScrollView:getChildByName("DOS_bg2"):getChildByName("DOS_bt2")
+           DOS_bt2:addTouchEventListener(function(sender, eventType  )
+                    self:fun_lv_touch_back(sender, eventType)
+          end)
+           local  DOS_bt3=DOS_ScrollView:getChildByName("DOS_bg3"):getChildByName("DOS_bt3")
+           DOS_bt3:addTouchEventListener(function(sender, eventType  )
+                    self:fun_lv_touch_back(sender, eventType)
+          end)
+
+end
+function SurpriseNode_Detail:fun_lv_touch_back( sender, eventType  )
+                if eventType == 3 then
+                    sender:setScale(1)
+                    return
+                end
+                if eventType ~= ccui.TouchEventType.ended then
+                    sender:setScale(1.2)
+                return
+                end
+                sender:setScale(1)
+              local tag=sender:getName()
+              if tag  ==  "DOS_bt1" then
+                self.floating_layer:prompt_box("恭喜您获得:索尼（SONY） 微单相机")
+              elseif tag  ==  "DOS_bt2" then
+                self.floating_layer:prompt_box("恭喜您获得:意大利德龙家用磨豆机")
+              elseif tag  ==  "DOS_bt3" then
+                self.floating_layer:prompt_box("恭喜您获得:小米充电宝")
+              end
+end
 --奖项
 function SurpriseNode_Detail:fun_winnersPreview( ... )
       self.winnersPreview = cc.CSLoader:createNode("winnersPreview.csb");
@@ -278,13 +325,17 @@ function SurpriseNode_Detail:onEnter()
                        function()
                                   self:fun_winnersPreview_list_init()
                       end)
+   NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
+                       function()
+                                  self:fun_data()
+                      end)
 end
 
 function SurpriseNode_Detail:onExit()
     cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("DetailsiOfSurprise/LH_Plist.plist")
     NotificationCenter:Instance():RemoveObserver("GETACTIVITYAWARDS", self)
     NotificationCenter:Instance():RemoveObserver("GAME_GETACTIVITYAWARDS", self)
-      
+    NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
 end
 
 return SurpriseNode_Detail

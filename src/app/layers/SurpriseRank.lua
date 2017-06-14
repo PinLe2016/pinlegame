@@ -8,6 +8,10 @@ end)
 function SurpriseRank:ctor(params)
        self:setNodeEventEnabled(true)
        --  初始化界面
+       self.SurpriseRank_id=params.id
+       self.SurpriseRank_score=params.score
+       self.SurpriseRank_mylevel=params.mylevel
+       Server:Instance():getranklistbyactivityid(self.SurpriseRank_id,20)
        self:fun_init()
 end
 
@@ -16,10 +20,16 @@ function SurpriseRank:fun_init( ... )
       self:addChild(self.SurpriseRank)
       self.SurpriseRank_BG=self.SurpriseRank:getChildByName("SurpriseRank_BG")
       self:fun_touch_bt()
+      self:fun_rank_Information()
       --  好友列表初始化
       self:fun_friend_list_init()
 end
-
+function SurpriseRank:fun_rank_Information( ... )
+         local SurpriseRank_number=self.SurpriseRank_BG:getChildByName("SurpriseRank_number")
+         SurpriseRank_number:setString(self.SurpriseRank_mylevel)
+         local SurpriseRank_SCORE=self.SurpriseRank_BG:getChildByName("SurpriseRank_SCORE")
+         SurpriseRank_SCORE:setString(self.SurpriseRank_score)
+end
 function SurpriseRank:fun_touch_bt( ... )
      --  事件初始化
       --  返回按钮
@@ -45,24 +55,39 @@ function SurpriseRank:fun_friend_list_init( ... )
         self.SurpriseRank_ListView=self.SurpriseRank:getChildByName("SurpriseRankNode"):getChildByName("SurpriseRank_ListView")
         self.SurpriseRank_ListView:setItemModel(self.SurpriseRank_ListView:getItem(0))
         self.SurpriseRank_ListView:removeAllItems()
-        --测试
-        self:fun_friend_list_data()
+        
 end
 function SurpriseRank:fun_friend_list_data( ... )
-        for i=1,50 do
+        local ranklistbyactivityid=LocalData:Instance():get_getranklistbyactivityid()
+        local ranklist=ranklistbyactivityid["ranklist"]
+        if #ranklist  ==  0 then
+          return
+        end
+        --  好友
+        for i=1,#ranklist do
           self.SurpriseRank_ListView:pushBackDefaultItem()
           local  cell = self.SurpriseRank_ListView:getItem(i-1)
+          local rank_number=cell:getChildByName("rank_number")
+          rank_number:setString(i)
+          local SurpriseRank_nickname=cell:getChildByName("SurpriseRank_nickname")
+          SurpriseRank_nickname:setString(ranklist[i]["nickname"])
+          local SurpriseRank_score=cell:getChildByName("SurpriseRank_score")
+          SurpriseRank_score:setString(ranklist[i]["totalPoints"])
+          local SurpriseRank_head=cell:getChildByName("SurpriseRank_head")
+          local _index=string.match(tostring(Util:sub_str(ranklist[i]["hearurl"], "/",":")),"%d")
+          SurpriseRank_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
         end
 end
 function SurpriseRank:onEnter()
-  -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self,
-  --                      function()
-  --                                 self:data_init()
-  --                     end)
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.RANK_LAYER_IMAGE, self,
+                       function()
+                                  
+                                self:fun_friend_list_data()
+                      end)
 end
 
 function SurpriseRank:onExit()
-      --NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.RANK_LAYER_IMAGE, self)
       
 end
 

@@ -626,7 +626,6 @@ function MainInterfaceScene:fun_radio( ... )
 
                 --描述动画
             local move = cc.MoveTo:create((title:getContentSize().width)/50, cc.p(-450,8))
-            --local move_back = move:reverse()
              local callfunc = cc.CallFunc:create(function(node, value)
                     title:setPosition(cc.p(450+title:getContentSize().width,8))
                   end, {tag=0})
@@ -651,20 +650,6 @@ end
 function MainInterfaceScene:promptbox_buffer(prompt_text)
        self.floating_layer:prompt_box(prompt_text) 
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 return MainInterfaceScene
