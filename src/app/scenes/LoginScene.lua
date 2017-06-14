@@ -43,21 +43,17 @@ function LoginScene:progressbarScene(  )
         self.particle = cc.ParticleSystemQuad:create("loading.plist")
        loadingBar:addChild(self.particle)
 
-        -- self.roleAction = cc.CSLoader:createTimeline("ProgressbarScene.csb")
-        -- self.ProgressbarScene:runAction(self.roleAction)
-        -- self.roleAction:setTimeSpeed(0.3)
-        --  self.roleAction:gotoFrameAndPlay(0,20, true)
         local labelAtlas=self.LoadingNodebar:getChildByName("all_Numberi")
         local _labelAtlas=self.LoadingNodebar:getChildByName("all_Count")
         local all_Count = ccui.TextAtlas:create()
         all_Count:setPosition(cc.p(_labelAtlas:getPositionX(),_labelAtlas:getPositionY()))  
-        all_Count:setProperty( "100","LoadingNode/LG_32.png", 15.6, 23, "0")  --tostring(self.friendlist_num["friendcount"]),
+        all_Count:setProperty( "100","LoadingNode/LG_32.png", 19, 23, "0")  --tostring(self.friendlist_num["friendcount"]),
         self.LoadingNodebar :addChild(all_Count) 
 
         local all_Numberi = ccui.TextAtlas:create()
         all_Numberi:setTag(255)
         all_Numberi :setPosition(cc.p(labelAtlas:getPositionX(),labelAtlas:getPositionY()))  
-        all_Numberi:setProperty("0","LoadingNode/LG_32.png", 15.6, 23, "0")  --tostring(self.friendlist_num["friendcount"]),
+        all_Numberi:setProperty("0","LoadingNode/LG_32.png", 19, 23, "0")  --tostring(self.friendlist_num["friendcount"]),
         self.LoadingNodebar :addChild( all_Numberi) 
          
         loadingBar:setPercent(0)
@@ -84,7 +80,7 @@ end
 function LoginScene:fun_progress( )
      self._time=self._time+2
             loadingBar:setPercent(self._time)
-            self.LoadingNodebar :getChildByTag(255):setString(tostring(self._time).."%")
+            self.LoadingNodebar :getChildByTag(255):setString(tostring(self._time))
             self.particle:setPositionX(loadingBar:getContentSize().width/100 *self._time)
             if self._time>96 then
               self.LoadingNodebar :getChildByTag(255):setString("100%")
@@ -898,6 +894,7 @@ end
 
 function LoginScene:onEnter()
   --audio.playMusic(G_SOUND["LOGO"],true)
+  cc.SpriteFrameCache:getInstance():addSpriteFrames("LoadingNode/LG_32.plist")
    Server:Instance():version_login_url()  
     Util:player_music_hit("GAMEBG",true )
    
@@ -1054,6 +1051,7 @@ end
 function LoginScene:onExit()
   --audio.stopMusic(G_SOUND["LOGO"])
     --Util:stop_music("LOGO")
+  cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("LoadingNode/LG_32.plist")
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REG, self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_SCENE, self)
 

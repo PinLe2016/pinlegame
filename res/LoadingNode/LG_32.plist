@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>LoadingNode/LG_0.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,23},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,46},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,69},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,92},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,115},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,138},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_7.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,161},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_8.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,184},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+			<key>LoadingNode/LG_9.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,207},{19,23}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{19,23}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>LG_32.png</string>
+			<key>realTextureFileName</key>
+			<string>LG_32.png</string>
+			<key>size</key>
+			<string>{32,256}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>32</integer>
+			<key>height</key>
+			<integer>256</integer>
+		</dict>
+	</dict>
+</plist>
