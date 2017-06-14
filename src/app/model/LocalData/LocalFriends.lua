@@ -68,6 +68,13 @@ function LocalData:get_getsearchfriendlist()
 	return self.getsearchfriendlist or nil
 end
 
+function LocalData:set_getfriendhelplist(getfriendhelplist)
+	self.getfriendhelplist=getfriendhelplist
+end
+
+function LocalData:get_getfriendhelplist()
+	return self.getfriendhelplist or nil
+end
 
 
 

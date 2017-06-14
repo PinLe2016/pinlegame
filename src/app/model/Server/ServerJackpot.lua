@@ -169,8 +169,27 @@ function Server:getgoldspoolreward_callback()
     NotificationCenter:Instance():PostNotification("GETGOLDSPOOLREWARD")
    
 end
+--  首页好友助力榜
+function Server:getfriendhelplist(_type)
+       local _params ={}
+       _params={
+            _type=_type
+   }
+   
+    self:request_http("getfriendhelplist" , _params ); 
+end
 
 
+function Server:getfriendhelplist_callback()
+       -- dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message("获取奖池专区列表失败:" .. self.data.err_msg)
+        return
+    end
+    -- LocalData:Instance():set_getgoldspoolbyid(self.data)--保存数据
+    -- NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.GOLDSPOOLBYID_POST)
+   
+end
 
 
 

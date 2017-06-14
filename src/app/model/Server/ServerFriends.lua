@@ -249,7 +249,27 @@ function Server:setfriendoperation_callback()
    
    
 end
+--  首页好友助力榜
+function Server:getfriendhelplist(_type)
+       local _params ={}
+       _params={
+            _type=_type
+   }
+   
+    self:request_http("getfriendhelplist" , _params ); 
+end
 
+
+function Server:getfriendhelplist_callback()
+        dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+     LocalData:Instance():set_getfriendhelplist(self.data)--保存数据
+     NotificationCenter:Instance():PostNotification("getfriendhelplist")
+   
+end
 
 
 
