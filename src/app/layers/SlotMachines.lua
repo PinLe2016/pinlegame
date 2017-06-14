@@ -106,7 +106,8 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
-                self:fun_Slot_machines(326)
+
+                self:fun_Slot_machines(tonumber(math.random(1,8)  ..  math.random(1,8) .. math.random(1,8)))
       end)
 
        --帮助
