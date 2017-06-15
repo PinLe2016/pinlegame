@@ -15,17 +15,33 @@ function SurpriseNode_Detail:ctor(params)
        self:fun_init()     
        self:fun_Initialize_variable()
       Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
+
 end
 --  初始化变量
 function SurpriseNode_Detail:fun_Initialize_variable( ... )
     self.winnersPreview_comout=0
     self.winnersPreview_number=0
+    --  定时器
+    self.time=0
+    self.secondOne = 0
+    self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+        self:update(dt)
+    end)
+end
+function SurpriseNode_Detail:update(dt)
+            self.secondOne = self.secondOne+dt
+            if self.secondOne <1 then return end
+            self.secondOne=0
+            self.time=1+self.time
+              self.countdown_time=Util:FormatTime_colon(self.DJS_time-self.time)
+              self.LH_number:setString(self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
 end
 function SurpriseNode_Detail:fun_init( ... )
 	self.DetailsOfSurprise = cc.CSLoader:createNode("DetailsOfSurprise.csb");
 	self:addChild(self.DetailsOfSurprise)
       self.XQ_bg=self.DetailsOfSurprise:getChildByName("XQ_bg")
       self.LH_bg=self.XQ_bg:getChildByName("LH_bg")
+      self.LH_number=self.LH_bg:getChildByName("LH_number")
       self:fun_touch_bt()
       --  好友列表初始化
       self:fun_friend_list_init()
@@ -40,7 +56,10 @@ function SurpriseNode_Detail:fun_data(  )
            DOS_LoadingBar:setPercent(tonumber(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]))
            DOS_biaoji:setAnchorPoint(0)
            DOS_biaoji:setPositionX(tonumber(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"])  * 1360)
-
+           self.LH_number:setString(text)
+           self.DJS_time=(activitybyid_data["finishtime"]-activitybyid_data["begintime"])-(activitybyid_data["nowtime"]-activitybyid_data["begintime"])
+            local  _tabletime_data=Util:FormatTime_colon(self.DJS_time)
+            self.LH_number:setString(_tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
 
            --  积分  排名
            local LH_integral=self.LH_bg:getChildByName("LH_integral")
@@ -51,7 +70,7 @@ function SurpriseNode_Detail:fun_data(  )
            local  advertising_bt=self.DetailsOfSurprise:getChildByName("advertising_bt")
            local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
            advertising_bt:loadTexture(path..tostring(Util:sub_str(self.surprise_ownerurl, "/",":")))
-
+           self:scheduleUpdate()
 
 end
 function SurpriseNode_Detail:fun_touch_bt( ... )
@@ -68,6 +87,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                       return
                       end
                       sender:setScale(1)
+                      self:unscheduleUpdate()
               self:removeFromParent()
       end)
       
