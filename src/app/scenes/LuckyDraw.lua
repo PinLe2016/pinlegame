@@ -9,8 +9,8 @@ end)
 local m_touchCount = 1 --点击后直接开始抽奖，=2表示先点击转动转盘，再点击一次开始抽奖
 local ROTATE_TIME = 0.1 --旋转Action的时间
 local ROTATE_TIME2 = 1.0 --转盘回滚的时间
-local ROTATE_SPEED = 50 --旋转速度，每次旋50度  ＊
-local ROTATE_GROUP = 8 --旋转圈数，旋转8圈后慢慢停下来  ＊
+local ROTATE_SPEED = 500 --旋转速度，每次旋50度  ＊
+local ROTATE_GROUP = 80 --旋转圈数，旋转8圈后慢慢停下来  ＊
 ------------end------------------------
 local m_imgZhuanpan = nil --转盘图片
 
@@ -31,8 +31,8 @@ local m_bRotateEnable = false --是否旋转中
 local m_bRotateOver = false --抽奖是否结束
 local m_bAssign = false --当前是否需要指定抽哪种奖品
 local m_nAwardID = 0 --指定当前抽的奖品ID  
-local m_info_data_1={"110经验","5元话费","1充电宝","366金币","10元话费","50经验","66金币","20经验","166金币","1元话费"}
-local m_info_data_2={"200经验","5元话费","AV眼睛","5888金币","10积分","红米","1888金币","500经验","2888金币","30元话费"}
+local m_info_data_1={"1元话费","110经验","5元话费","1充电宝","366金币","10元话费","50经验","66金币","20经验","166金币"}
+local m_info_data_2={"30元话费","200经验","5元话费","AV眼睛","5888金币","10积分","红米","1888金币","500经验","2888金币"}
 local m_info_data_3={"20元话费","200经验","5元话费","1音响","999金币","10元话费","普通种子","333金币","100经验","666金币"}
 function LuckyDraw:ctor()
       self:fun_init()
@@ -50,9 +50,9 @@ function LuckyDraw:fun_constructor( ... )
 end
 
 function LuckyDraw:fun_LuckyDraw_visble( ... )
-	self.LuckyDraw_Rotary1:setVisible(false)
-	self.LuckyDraw_Rotary2:setVisible(false)
-	self.LuckyDraw_Rotary3:setVisible(false)
+	self.LuckyDraw_zbg1:setVisible(false)
+	self.LuckyDraw_zbg2:setVisible(false)
+	self.LuckyDraw_zbg3:setVisible(false)
 	self.m_info={ }
             self.m_info.data={ }
 end
@@ -66,9 +66,12 @@ function LuckyDraw:fun_init( ... )
 	self:addChild(self.LuckyDraw)
 	self.LuckyDraw_bg=self.LuckyDraw:getChildByName("LuckyDraw_bg")
 	self.LuckyDraw_node=self.LuckyDraw:getChildByName("LuckyDraw_node")
-	self.LuckyDraw_Rotary1=self.LuckyDraw_node:getChildByName("LuckyDraw_Rotary1")
-	self.LuckyDraw_Rotary2=self.LuckyDraw_node:getChildByName("LuckyDraw_Rotary2")
-	self.LuckyDraw_Rotary3=self.LuckyDraw_node:getChildByName("LuckyDraw_Rotary3")
+	self.LuckyDraw_zbg1=self.LuckyDraw_node:getChildByName("LuckyDraw_zbg1")
+	self.LuckyDraw_zbg2=self.LuckyDraw_node:getChildByName("LuckyDraw_zbg2")
+	self.LuckyDraw_zbg3=self.LuckyDraw_node:getChildByName("LuckyDraw_zbg3")
+	self.LuckyDraw_Rotary1=self.LuckyDraw_zbg1:getChildByName("LuckyDraw_Rotary1")
+	self.LuckyDraw_Rotary2=self.LuckyDraw_zbg2:getChildByName("LuckyDraw_Rotary2")
+	self.LuckyDraw_Rotary3=self.LuckyDraw_zbg3:getChildByName("LuckyDraw_Rotary3")
 	
 	--  事件初始化
 	--  返回
@@ -146,19 +149,19 @@ end
 		self:fun_LuckyDraw_visble()
 		self:initdata(m_info_data_1)
 		m_imgZhuanpan = self.LuckyDraw_Rotary1
-		self.LuckyDraw_Rotary1:setVisible(true)
+		self.LuckyDraw_zbg1:setVisible(true)
                elseif tag=="LuckyDraw_Rotary_bt2" then
 		print("500")
 		self:fun_LuckyDraw_visble()
 		self:initdata(m_info_data_2)
 		m_imgZhuanpan = self.LuckyDraw_Rotary2
-		self.LuckyDraw_Rotary2:setVisible(true)
+		self.LuckyDraw_zbg2:setVisible(true)
 	   elseif tag=="LuckyDraw_Rotary_bt3" then
 		print("2000")
 		self:fun_LuckyDraw_visble()
 		self:initdata(m_info_data_3)
 		m_imgZhuanpan = self.LuckyDraw_Rotary3
-		self.LuckyDraw_Rotary3:setVisible(true)
+		self.LuckyDraw_zbg3:setVisible(true)
 	   end
 
               self.curr_bright=sender

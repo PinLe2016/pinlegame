@@ -79,6 +79,7 @@ function TicketCenter:fun_Surorise( )
 	self.TicketCenterlist:addScrollViewEventListener((function(sender, eventType  )
 	          if eventType  ==6 then
 	          		print("刷新")
+	          		audio.playSound("sound/effect/big_win.ogg",false)
 			 self.TicketCenter_pageno=self.TicketCenter_pageno+1
 			 LocalData:Instance():set_getmyrewardlist(nil)
 			Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
