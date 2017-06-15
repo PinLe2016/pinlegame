@@ -11,6 +11,18 @@ function TicketCenter:fun_constructor( ... )
       self.floating_layer:addTo(self,100000)
       self:listener_home() --注册安卓返回键
       self.win_type=0
+      --  请求自己中奖信息
+      self.tck_data_num_tag=1
+      self.tck_data_num=1
+      self.TicketCenter_pageno=1
+      Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
+      --  定时器
+      self.image_table={}  --  存放奖品图片
+      self.time=0
+      self.secondOne = 0
+      self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+	      	self:update(dt)
+      end)
     
 end
 function TicketCenter:fun_init( ... )
@@ -67,22 +79,48 @@ function TicketCenter:fun_Surorise( )
 	self.TicketCenterlist:addScrollViewEventListener((function(sender, eventType  )
 	          if eventType  ==6 then
 	          		print("刷新")
-			-- self.sur_pageno=self.sur_pageno+1
-			-- LocalData:Instance():set_getactivitylist(nil)
-			-- Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+			 self.TicketCenter_pageno=self.TicketCenter_pageno+1
+			 LocalData:Instance():set_getmyrewardlist(nil)
+			Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
 	                     return
 	          end
 	end))
 	self.TicketCenterlist:setItemModel(self.TicketCenterlist:getItem(0))
 	self.TicketCenterlist:removeAllItems()
-	self:fun_list_data()
+	
 end
 function TicketCenter:fun_list_data(  )
-	 for i=1,20 do
+	local myrewardlist=LocalData:Instance():get_getmyrewardlist()
+            local  rewardlist=myrewardlist["rewardlist"]
+            if #rewardlist ==  0 then
+            	return
+            end
+            self.tck_data_num=#rewardlist
+            local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+	 for i=self.tck_data_num_tag,self.tck_data_num do
 	          self.TicketCenterlist:pushBackDefaultItem()
 	          local  cell = self.TicketCenterlist:getItem(i-1)
-	          local cell=cell:getChildByName("TicketCenter_bt")
-	          	cell:addTouchEventListener(function(sender, eventType  )
+	          --  名称
+	          local TicketCenter_NAME=cell:getChildByName("TicketCenter_NAME")
+	          TicketCenter_NAME:setString(rewardlist[i]["goodsname"])
+	          -- 日期""
+	          local TicketCenter_TIME=cell:getChildByName("TicketCenter_TIME")
+	          TicketCenter_TIME:setString(rewardlist[i]["rewardtime"])
+	          --来源
+	          local TicketCenter_source=cell:getChildByName("TicketCenter_source")
+	          TicketCenter_source:setString(rewardlist[i]["activityname"])
+	          --  图片
+	          local TicketCenter_image=cell:getChildByName("TicketCenter_image")
+
+	          local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(rewardlist[i]["activityname"], "/",":")))
+	          if not  file then
+	              table.insert(self.image_table,{_obj = TicketCenter_image ,name=path..tostring(Util:sub_str(rewardlist[i]["activityname"], "/",":"))})
+	           else
+	               TicketCenter_image:loadTexture(path..tostring(Util:sub_str(rewardlist[i]["activityname"], "/",":")))
+	          end
+	          --  信息确认
+	          local TicketCenter_bt=cell:getChildByName("TicketCenter_bt")
+	          TicketCenter_bt:addTouchEventListener(function(sender, eventType  )
 		                 if eventType == 3 then
 		                    sender:setScale(1)
 		                    return
@@ -98,6 +136,49 @@ function TicketCenter:fun_list_data(  )
 			    self.Theirwin:setTag(123)
 		              Server:Instance():getconsignee()
 	            end)
+	           self.tck_data_num_tag=self.tck_data_num
+	          self:scheduleUpdate()
+	end
+end
+
+--下载图片
+function TicketCenter:Theirwin_download_list(  )
+         local myrewardlist=LocalData:Instance():get_getmyrewardlist()
+         local  rewardlist=myrewardlist["rewardlist"]
+         if #rewardlist  ==0  then
+         	return
+         end
+         for i=1,#rewardlist do
+         	local com_={}
+         	com_["command"]=rewardlist[i]["goodsimageurl"]
+         	com_["max_pic_idx"]=#rewardlist
+         	com_["curr_pic_idx"]=i
+         	com_["TAG"]="getmyrewardlist"
+         	Server:Instance():request_pic(rewardlist[i]["goodsimageurl"],com_) 
+         end
+end
+--刷新时间的定时器
+function TicketCenter:update(dt)
+	self.secondOne = self.secondOne+dt
+	if self.secondOne <1 then return end
+	self.secondOne=0
+           
+           --  刷新下载的图片
+	if #self.image_table~=0 then
+	   local next_num=0
+	  for i=1,#self.image_table do
+	      local file=cc.FileUtils:getInstance():isFileExist(self.image_table[i].name)
+	      if file and self.image_table[i]._obj then
+	          local activity_Panel=self.image_table[i]._obj
+	          activity_Panel:loadTexture(self.image_table[i].name)
+	          self.image_table[i]._obj=nil
+	          next_num=next_num+1
+	      end
+	  end
+	  if next_num == #self.image_table then
+	     self.image_table={}
+	     self:unscheduleUpdate()
+	  end
 	end
 end
 --信件确认
@@ -281,12 +362,24 @@ function TicketCenter:onEnter()
                                                                 end                
                                                 end)    --  然并卵的提示语
                       end)
+	    --  下载图片
+	   NotificationCenter:Instance():AddObserver("GAME_GETMYREWARDLIST", self,
+                       function()
+                       			self:fun_list_data()	         
+                      end)
+	   --  中奖列表
+	   NotificationCenter:Instance():AddObserver("getmyrewardlist", self,
+                       function()
+                       
+			         self:Theirwin_download_list()	
+                      end)
 
 end
 
 function TicketCenter:onExit()
       NotificationCenter:Instance():RemoveObserver("getconsignee", self)
       NotificationCenter:Instance():RemoveObserver("setconsignee_call", self)
+      NotificationCenter:Instance():RemoveObserver("getmyrewardlist", self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 
 
 end

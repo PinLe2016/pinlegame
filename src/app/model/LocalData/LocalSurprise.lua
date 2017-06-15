@@ -142,7 +142,14 @@ end
 function LocalData:get_tasktable()
 	return self.tasktable or nil
 end
+--  新版中奖记录
+function LocalData:set_getmyrewardlist(getmyrewardlist)
+	self.getmyrewardlist=getmyrewardlist
+end
 
+function LocalData:get_getmyrewardlist()
+	return self.getmyrewardlist or nil
+end
 
 
 

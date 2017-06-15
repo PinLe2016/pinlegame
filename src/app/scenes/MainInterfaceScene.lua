@@ -27,7 +27,8 @@ function MainInterfaceScene:ctor()
       --手机归属请求
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
-      Server:Instance():getaffichelist(1)  --  公告
+      Server:Instance():getaffichelist(1,1)  --  邮件公告
+      --Server:Instance():getaffichelist(2,2)  --  首页公告  
 
       Server:Instance():share_title() --分享内容获取
 

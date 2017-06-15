@@ -442,7 +442,26 @@ function Server:setmobile_callback()
     end
        NotificationCenter:Instance():PostNotification("setmobile_messg")
 end
+--3.5.14   获取玩家惊喜吧获奖记录接口（命令：getmyrewardlist）
 
+function Server:getmyrewardlist(_pageno)
+    local params = {}
+    params={
+            pageno=_pageno
+        }
+    self:request_http("getmyrewardlist" , params ); 
+end
+
+
+function Server:getmyrewardlist_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        return
+    end
+      LocalData:Instance():set_getmyrewardlist(self.data)--保存数据
+      NotificationCenter:Instance():PostNotification("getmyrewardlist")
+end
 
 
 

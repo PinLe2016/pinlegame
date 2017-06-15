@@ -160,11 +160,12 @@ end
 
 -------邮件系统
 
---3.4.8 获取公告消息（命令：getaffichelist ）
-function Server:getaffichelist (_pageno)
+--3.4.8 获取公告消息（命令：getaffichelist ） type  默认1是邮件  2  是公告
+function Server:getaffichelist (_pageno,_type)
     local params = {
      pagesize=7,
-     pageno=_pageno
+     pageno=_pageno,
+     type=_type
 }
  
     self:request_http("getaffichelist" , params); 
@@ -173,7 +174,7 @@ end
 function Server:getaffichelist_callback()
        dump(self.data)
     if self.data.err_code~=0  then
-        self:show_float_message("获取邮件信息:" .. self.data.err_msg)
+        self:show_float_message( self.data.err_msg)
         return
     end
     LocalData:Instance():set_getaffiche(self.data)--保存玩家数据  AFFICHLIST
