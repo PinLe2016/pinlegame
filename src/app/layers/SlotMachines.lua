@@ -23,6 +23,8 @@ end
 --老虎机
 function SlotMachines:fun_Slot_machines_init( ... )
    self. _table={}
+   self._table_number={}
+   self._table_number_tag=1
     for i=1,3 do
         local score=self.lh_bg
         local pox_1=self.lh_bg:getChildByName("lh_score1"):getPositionX()
@@ -40,11 +42,14 @@ function SlotMachines:fun_Slot_machines_init( ... )
 end
 --  开始
 function SlotMachines:fun_Slot_machines( _num )
-   
+          --  self. _table={}
+          -- self._table_number={}
+          -- self._table_number_tag=1
+
         for i=1,#self. _table do
               self. _table[i]:startGo()
         end
-        local  tempn = _num  
+        local  tempn = 012  
 
          local function fun_stopGo()
 		for i=1,#self. _table do
@@ -53,8 +58,17 @@ function SlotMachines:fun_Slot_machines( _num )
 				stopNum = tempn % 10;
 				tempn = tempn / 10;
 			end
-			(self. _table[#self. _table-(i-1)]):stopGo(stopNum);
+                  table.insert(self._table_number,{number =  stopNum })
 		end
+                  local function fun_stopGo1()
+                      self. _table[self._table_number_tag]:stopGo(self._table_number[#self. _table-(self._table_number_tag-1)].number);
+                      self._table_number_tag=self._table_number_tag+1
+                      if self._table_number_tag==4 then
+                           self._table_number={}
+                           self._table_number_tag=1
+                     end
+                  end
+                  self:runAction( cc.Repeat:create(cc.Sequence:create(cc.DelayTime:create(0.5),cc.CallFunc:create(fun_stopGo1),cc.DelayTime:create(0.5)),3))
           end
           local actionTo = cc.ScaleTo:create(0.5, 1)
           self:runAction( cc.Sequence:create(cc.DelayTime:create(2 ),cc.CallFunc:create(fun_stopGo)))
