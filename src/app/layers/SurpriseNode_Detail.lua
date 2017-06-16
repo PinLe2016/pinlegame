@@ -117,7 +117,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
-                 local SurpriseRank = require("app.layers.SurpriseRank")  --关于拼乐界面  
+                 local SurpriseRank = require("app.layers.SurpriseRank")  --排行榜
                  local activitybyid=LocalData:Instance():get_getactivitybyid()
                   self:addChild(SurpriseRank.new({id=activitybyid["id"],score=activitybyid["score"],mylevel=activitybyid["mylevel"]}),1,1)
       end)

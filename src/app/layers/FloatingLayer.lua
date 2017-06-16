@@ -210,8 +210,78 @@ function FloatingLayer:prompt_box(prompt_text ,call)
        end)
 
 end
+--  恭喜
+function FloatingLayer:fun_congratulations( p_text ,call)
+  print("jkjk")
+                    self.congratulations = cc.CSLoader:createNode("congratulations.csb");
+                    self:addChild(self.congratulations,40,40)
+                    local determine=self.congratulations:getChildByName("GX_CAN")
+                    local _text=self.congratulations:getChildByName("GX_ProjectNode"):getChildByName("NM_Text")
+                    _text:setString(p_text)
+                     determine:addTouchEventListener(function(sender, eventType  )
+                               if eventType ~= ccui.TouchEventType.ended then
+                                      return
+                               end
+                              if self.call then
+                                self.call(self,1)
+                                -- return
+                              end
+                              self:removeChildByTag(40)
+                    end)
+                  local back=self.congratulations:getChildByName("GX_NO")
+                  back:addTouchEventListener(function(sender, eventType  )
+                           if eventType ~= ccui.TouchEventType.ended then
+                                  return
+                           end
+                           if self.call then
+                              self.call(self,2)
+                              -- return
+                            end
+                          self:removeChildByTag(40)
+                  end)
 
+                  if call then
+                    self.call=call
+                  end
+                  return  self.congratulations
 
+end
+
+--  通知
+function FloatingLayer:fun_NotificationMessage( po_text ,call)
+                    self.NotificationMessage = cc.CSLoader:createNode("NotificationMessage.csb");
+                    self:addChild(self.NotificationMessage,50,50)
+                    local determine=self.NotificationMessage:getChildByName("TZ_TRUE")
+                    local _text=self.congratulations:getChildByName("TZ_NODE"):getChildByName("NM_Text")
+                    _text:setString(po_text)
+                     determine:addTouchEventListener(function(sender, eventType  )
+                               if eventType ~= ccui.TouchEventType.ended then
+                                      return
+                               end
+                              if self.call then
+                                self.call(self,1)
+                                -- return
+                              end
+                              self:removeChildByTag(50)
+                    end)
+                  local back=self.NotificationMessage:getChildByName("TZ_FALSE")
+                  back:addTouchEventListener(function(sender, eventType  )
+                           if eventType ~= ccui.TouchEventType.ended then
+                                  return
+                           end
+                           if self.call then
+                              self.call(self,2)
+                              -- return
+                            end
+                          self:removeChildByTag(50)
+                  end)
+
+                  if call then
+                    self.call=call
+                  end
+                  return  self.NotificationMessage
+
+end
 
 -- function FloatingLayer:showFloat(text,is_resource,resourceType)
 -- 	self.float_number = self.float_number + 1
