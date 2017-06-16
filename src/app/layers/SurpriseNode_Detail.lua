@@ -3,14 +3,58 @@
 local SurpriseNode_Detail = class("SurpriseNode_Detail", function()
             return display.newLayer("SurpriseNode_Detail")
 end)
-
+function SurpriseNode_Detail:fun_Popup_window( ... )
+       --  弹窗
+       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)  ==3 then
+          self.floating_layer:fun_congratulations("拼乐送您给您的助力大礼包,把他发送给您的微信好友,只要他们成功登陆拼乐,你们双方都会获得当前活动20次参与机会,最高可获得100次",
+            function (sender, eventType)
+                                  if eventType==1 then
+                                    print("马上助力")
+                                  end
+                            end)
+       end
+       self:Popup_window()
+       local tab=os.date("*t");
+       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) ~= tab.day  then
+         cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday",tab.day)
+         self.floating_layer:fun_NotificationMessage("2距离大奖越来越近,赶快邀请好友给您赢大奖",function (sender, eventType)
+                                  if eventType==1 then
+                                    print("马上助力")
+                                  end
+                            end)
+        else
+           if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)  ==  2    then
+              cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",4)
+              self.floating_layer:fun_NotificationMessage("您已经成功参与惊喜吧活动,离奖品只差一步,赶快邀请好友助力帮您赢大奖",function (sender, eventType)
+                                  if eventType==1 then
+                                    print("马上助力")
+                                  end
+                            end)
+            else
+              if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)  ~= 2 and cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)  ~= 4 then
+                cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",2)
+              end
+              
+           end
+        
+       end
+end
+function SurpriseNode_Detail:Popup_window(  )
+    local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",0)
+    local tab=os.date("*t");
+     if new_time_two~=0 then
+       cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday",tab.day)
+     end
+end
 function SurpriseNode_Detail:ctor(params)
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
-
+      self.time_count_n=1
       self.surprise_id=params.id
       self.surprise_ownerurl=params.ownerurl
        self:setNodeEventEnabled(true)
+       self:fun_Popup_window()
+
        --  初始化界面
        self:fun_init()     
        self:fun_Initialize_variable()
@@ -86,6 +130,13 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                           sender:setScale(1.2)
                       return
                       end
+                       local tab=os.date("*t");
+                       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) == tab.day  then
+                         local _count=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)
+                         cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_count_count",_count+self.time_count_n)
+                        else
+                          cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_count_count",0)
+                        end
                       sender:setScale(1)
                       self:unscheduleUpdate()
               self:removeFromParent()

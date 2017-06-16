@@ -252,7 +252,7 @@ function FloatingLayer:fun_NotificationMessage( po_text ,call)
                     self.NotificationMessage = cc.CSLoader:createNode("NotificationMessage.csb");
                     self:addChild(self.NotificationMessage,50,50)
                     local determine=self.NotificationMessage:getChildByName("TZ_TRUE")
-                    local _text=self.congratulations:getChildByName("TZ_NODE"):getChildByName("NM_Text")
+                    local _text=self.NotificationMessage:getChildByName("TZ_NODE"):getChildByName("NM_Text")
                     _text:setString(po_text)
                      determine:addTouchEventListener(function(sender, eventType  )
                                if eventType ~= ccui.TouchEventType.ended then

@@ -49,7 +49,7 @@ function SlotMachines:fun_Slot_machines( _num )
         for i=1,#self. _table do
               self. _table[i]:startGo()
         end
-        local  tempn = 012  
+        local  tempn = _num  
 
          local function fun_stopGo()
 		for i=1,#self. _table do
