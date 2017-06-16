@@ -31,7 +31,10 @@ function SurpriseNode_Detail:fun_Popup_window( ... )
                                   end
                             end)
             else
-              if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)  ~= 2 and cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)  ~= 4 then
+              local _tm=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)
+              if _tm  ~= 2 and _tm  ~= 4 and  _tm  ==  10 then
+                cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",6)
+              elseif _tm  ~= 2 and _tm  ~= 4 and  _tm  ==  6 then
                 cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",2)
               end
               
@@ -44,6 +47,7 @@ function SurpriseNode_Detail:Popup_window(  )
     local tab=os.date("*t");
      if new_time_two~=0 then
        cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday",tab.day)
+       cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",10)
      end
 end
 function SurpriseNode_Detail:ctor(params)
