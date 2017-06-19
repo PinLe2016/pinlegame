@@ -31,21 +31,40 @@ local m_bRotateEnable = false --是否旋转中
 local m_bRotateOver = false --抽奖是否结束
 local m_bAssign = false --当前是否需要指定抽哪种奖品
 local m_nAwardID = 0 --指定当前抽的奖品ID  
-local m_info_data_1={"1元话费","110经验","5元话费","1充电宝","366金币","10元话费","50经验","66金币","20经验","166金币"}
-local m_info_data_2={"30元话费","200经验","5元话费","AV眼睛","5888金币","10积分","红米","1888金币","500经验","2888金币"}
-local m_info_data_3={"20元话费","200经验","5元话费","1音响","999金币","10元话费","普通种子","333金币","100经验","666金币"}
+local m_info_data_1={}--{"1元话费","110经验","5元话费","1充电宝","366金币","10元话费","50经验","66金币","20经验","166金币"}
+local m_info_data_2={}--{"30元话费","200经验","5元话费","AV眼睛","5888金币","10积分","红米","1888金币","500经验","2888金币"}
+local m_info_data_3={}--{"20元话费","200经验","5元话费","1音响","999金币","10元话费","普通种子","333金币","100经验","666金币"}
+local m_info_data_name1={}
+local m_info_data_name2={}
+local m_info_data_name3={}
+local m_info_data_obj1={}
+local m_info_data_obj2={}
+local m_info_data_obj3={}
+local LuckyDraw_type=1
+
+
 function LuckyDraw:ctor()
+	Server:Instance():getrecentfortunewheelrewardlist()
       self:fun_init()
       self:fun_constructor()
+      --Server:Instance():getfortunewheelrewards(200)
+      
+      -- Server:Instance():getfortunewheelrandomreward()
 end
 function LuckyDraw:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self:listener_home() --注册安卓返回键
+      --  定时器
+      self.image_table={}  --  存放奖品图片
+      self.time=0
+      self.secondOne = 0
+      self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+	      	self:update(dt)
+      end)
       self.m_info={ }
       self.m_info.data={ }
       self:init()
-      self:show()
       self:fun_radio()
 end
 
@@ -72,7 +91,7 @@ function LuckyDraw:fun_init( ... )
 	self.LuckyDraw_Rotary1=self.LuckyDraw_zbg1:getChildByName("LuckyDraw_Rotary1")
 	self.LuckyDraw_Rotary2=self.LuckyDraw_zbg2:getChildByName("LuckyDraw_Rotary2")
 	self.LuckyDraw_Rotary3=self.LuckyDraw_zbg3:getChildByName("LuckyDraw_Rotary3")
-	
+	self:fun_win_img_init()
 	--  事件初始化
 	--  返回
 	local LuckyDraw_back=self.LuckyDraw_bg:getChildByName("LuckyDraw_back")
@@ -107,6 +126,26 @@ function LuckyDraw:fun_init( ... )
             end)
             self:fun_draw_go()
 
+end
+function LuckyDraw:fun_win_img_init( ... )
+	for i=1,10 do
+		table.insert(m_info_data_name1,{name = self.LuckyDraw_Rotary1:getChildByName("rewardImg"   ..   i):getChildByName("rewardImgname"   ..   i)})
+	end
+	for i=1,10 do
+		table.insert(m_info_data_name2,{name = self.LuckyDraw_Rotary2:getChildByName("rewardImg"   ..   i):getChildByName("rewardImgname"   ..   i)})
+	end
+	for i=1,10 do
+		table.insert(m_info_data_name3,{name = self.LuckyDraw_Rotary3:getChildByName("rewardImg"   ..   i):getChildByName("rewardImgname"   ..   i)})
+	end
+	for i=1,10 do
+		table.insert(m_info_data_obj1,{name = self.LuckyDraw_Rotary1:getChildByName("rewardImg"   ..   i)})
+	end
+	for i=1,10 do
+		table.insert(m_info_data_obj2,{name = self.LuckyDraw_Rotary2:getChildByName("rewardImg"   ..   i)})
+	end
+	for i=1,10 do
+		table.insert(m_info_data_obj3,{name = self.LuckyDraw_Rotary3:getChildByName("rewardImg"   ..   i)})
+	end
 end
 function LuckyDraw:fun_draw_go( ... )
 	local go_bt=self.LuckyDraw_node:getChildByName("go_bt")
@@ -146,20 +185,29 @@ end
               sender:setBright(false)
                if tag=="LuckyDraw_Rotary_bt1" then  
 		print("200")
+		self:unscheduleUpdate()
+		self.image_table={}
+		LuckyDraw_type=1
+		Server:Instance():getfortunewheelrewards(200)
 		self:fun_LuckyDraw_visble()
-		self:initdata(m_info_data_1)
 		m_imgZhuanpan = self.LuckyDraw_Rotary1
 		self.LuckyDraw_zbg1:setVisible(true)
                elseif tag=="LuckyDraw_Rotary_bt2" then
 		print("500")
+		self:unscheduleUpdate()
+		self.image_table={}
+		LuckyDraw_type=2
+		Server:Instance():getfortunewheelrewards(500)
 		self:fun_LuckyDraw_visble()
-		self:initdata(m_info_data_2)
 		m_imgZhuanpan = self.LuckyDraw_Rotary2
 		self.LuckyDraw_zbg2:setVisible(true)
 	   elseif tag=="LuckyDraw_Rotary_bt3" then
 		print("2000")
+		self:unscheduleUpdate()
+		self.image_table={}
+		LuckyDraw_type=3
+		Server:Instance():getfortunewheelrewards(2000)
 		self:fun_LuckyDraw_visble()
-		self:initdata(m_info_data_3)
 		m_imgZhuanpan = self.LuckyDraw_Rotary3
 		self.LuckyDraw_zbg3:setVisible(true)
 	   end
@@ -175,7 +223,7 @@ function LuckyDraw:init()
 end
 
 function LuckyDraw:show(_str)
-	self:initdata(m_info_data_1)
+	self:initdata(_str)
 end
 
 function LuckyDraw:initdata(_type)
@@ -386,18 +434,137 @@ end
 function LuckyDraw:promptbox_buffer(prompt_text)
        self.floating_layer:prompt_box(prompt_text) 
 end
+--下载图片
+function LuckyDraw:LuckyDraw_download_list(  )
+         local fortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
+         local  rewardlist=fortunewheelrewards["rewardlist"]
+         if #rewardlist  ==0  then
+         	return
+         end
+         local _number=0
+         local _number_count=0
+         for i=1,#rewardlist do
+         	if tonumber(rewardlist[i]["type"] ) ==1 then
+         		_number=_number+1
+         	end
+         end
+         for i=1,#rewardlist do
+         	local com_={}
+         	if  tonumber(rewardlist[i]["type"] )  ==1  then  --  1  实物  2  金币  3  话费
+         		_number_count=_number_count+1
+         		com_["command"]=rewardlist[i]["goodsimageurl"]
+	         	com_["max_pic_idx"]=_number
+	         	com_["curr_pic_idx"]=_number_count
+	         	com_["TAG"]="getfortunewheelrewards"
+	         	Server:Instance():request_pic(rewardlist[i]["goodsimageurl"],com_) 
+         	end
+         	
+         end
+end
+--刷新时间的定时器
+function LuckyDraw:update(dt)
+	self.secondOne = self.secondOne+dt
+	if self.secondOne <1 then return end
+	self.secondOne=0
+           
+           --  刷新下载的图片
+	if #self.image_table~=0 then
+	   local next_num=0
+	  for i=1,#self.image_table do
+	      local file=cc.FileUtils:getInstance():isFileExist(self.image_table[i].name)
+	      if file and self.image_table[i]._obj then
+	          local activity_Panel=self.image_table[i]._obj
+	          activity_Panel:loadTexture(self.image_table[i].name)
+	          self.image_table[i]._obj=nil
+	          next_num=next_num+1
+	      end
+	  end
+	  if next_num == #self.image_table then
+	     self.image_table={}
+	     self:unscheduleUpdate()
+	  end
+	end
+end
 function LuckyDraw:onEnter()
-	-- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
- --                       function()
-	-- 		self:fun_list_data()
-			          
- --                      end)--
+	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELREWARDS", self,
+                       function()
+			local fortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
+			local rewardlist= fortunewheelrewards["rewardlist"]
+			local _obj_name=m_info_data_name1
+			local _info_data=m_info_data_1
+			local  _img=m_info_data_obj1
+			if LuckyDraw_type==1 then
+				_obj_name=m_info_data_name1
+				_info_data=m_info_data_1
+				_img=m_info_data_obj1
+			elseif LuckyDraw_type==2 then
+				_obj_name=m_info_data_name2
+				_info_data=m_info_data_2
+				_img=m_info_data_obj2
+			else
+				_obj_name=m_info_data_name3
+				_info_data=m_info_data_3
+				_img=m_info_data_obj3
+			end
+			for i=1,#rewardlist do
+				_obj_name[i].name:setString(rewardlist[i]["name"])
+				_info_data[i]=rewardlist[i]["name"]
+				if tonumber(rewardlist[i]["type"])  ==  2 then  --金币
+					_img[i].name:loadTexture("Dialog_Zhuanpan/ZLB_CJ_10.png")
+				elseif tonumber(rewardlist[i]["type"])  ==  3 then   --  话费
+					_img[i].name:loadTexture("Dialog_Zhuanpan/ZLB_CJ_18.png")
+				end
+			end
+			self:show(_info_data)
+			self:LuckyDraw_download_list()
+                      end)--
+
+	NotificationCenter:Instance():AddObserver("msg_getfortunewheelrewards", self,
+                       function()
+                       		local fortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
+			local rewardlist= fortunewheelrewards["rewardlist"]
+			local  _img=m_info_data_obj1
+			if LuckyDraw_type==1 then
+				_img=m_info_data_obj1
+			elseif LuckyDraw_type==2 then
+				_img=m_info_data_obj2
+			else
+				_img=m_info_data_obj3
+			end
+			local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+		            for i=1,#rewardlist do
+				if tonumber(rewardlist[i]["type"])  ==  1 then  --实物
+				          local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(rewardlist[i]["goodsimageurl"], "/",":")))
+				          if not  file then
+				              table.insert(self.image_table,{_obj = _img[i].name ,name=path..tostring(Util:sub_str(rewardlist[i]["goodsimageurl"], "/",":"))})
+				           else
+				               _img[i].name:loadTexture(path..tostring(Util:sub_str(rewardlist[i]["goodsimageurl"], "/",":")))
+				          end
+				end
+			end
+			self:scheduleUpdate()
+                      end)--
 end
 
 function LuckyDraw:onExit()
-      -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
+      self:fun_table_init()
+       NotificationCenter:Instance():RemoveObserver("GAME_GETFORTUNEWHEELREWARDS", self)
+       NotificationCenter:Instance():RemoveObserver("msg_getfortunewheelrewards", self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 
 
+end
+function LuckyDraw:fun_table_init( ... )
+      m_info_data_1={}
+      m_info_data_2={}
+      m_info_data_3={}
+      m_info_data_name1={}
+      m_info_data_name2={}
+      m_info_data_name3={}
+      m_info_data_obj1={}
+      m_info_data_obj2={}
+      m_info_data_obj3={}
+      LuckyDraw_type=1
+      self.image_table={}
 end
 --android 返回键 响应
 function LuckyDraw:listener_home() 

@@ -17,7 +17,7 @@ function SurpriseNode_Detail:fun_Popup_window( ... )
        local tab=os.date("*t");
        if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) ~= tab.day  then
          cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday",tab.day)
-         self.floating_layer:fun_NotificationMessage("2距离大奖越来越近,赶快邀请好友给您赢大奖",function (sender, eventType)
+         self.floating_layer:fun_NotificationMessage("距离大奖越来越近,赶快邀请好友给您赢大奖",function (sender, eventType)
                                   if eventType==1 then
                                     print("马上助力")
                                   end

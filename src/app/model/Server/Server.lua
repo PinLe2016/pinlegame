@@ -284,6 +284,8 @@ function Server:on_request_finished_pic(event , command)
         NotificationCenter:Instance():PostNotification("GAME_GETACTIVITYAWARDS")
     elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getmyrewardlist" then
         NotificationCenter:Instance():PostNotification("GAME_GETMYREWARDLIST")
+    elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getfortunewheelrewards" then
+        NotificationCenter:Instance():PostNotification("msg_getfortunewheelrewards")
     end
 
 
@@ -467,6 +469,7 @@ require("app.model.Server.ServerSurprise")
 require("app.model.Server.ServerUserData")   
 require("app.model.Server.ServerJackpot") 
 require("app.model.Server.ServerFriends") 
+require("app.model.Server.ServerLuckyDraw") 
 
 
 
