@@ -93,7 +93,7 @@ function InvitefriendsLayer:init(  )
             end
             Server:Instance():gettasklist()
             Util:all_layer_backMusic()
-            display.getRunningScene():fun_refresh_friend()--  目的是成长树刷新好友
+            --display.getRunningScene():fun_refresh_friend()--  目的是成长树刷新好友
             local function stopAction()
             self:removeFromParent()
             end

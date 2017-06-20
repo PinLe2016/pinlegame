@@ -443,7 +443,7 @@ function LuckyDraw:fun_radio( _text ,_number)
                   title:setAnchorPoint(cc.p(0.5,0))
                   crn:addChild(title)
                   title:setColor(cc.c3b(255, 255, 255))
-
+               
                         --描述动画
                     local move = cc.MoveTo:create((title:getContentSize().height)/(10+_number*5), cc.p(290,300+LuckyDraw_text:getContentSize().height))
                     --local move_back = move:reverse()
@@ -519,6 +519,7 @@ function LuckyDraw:update(dt)
 	  end
 	end
 end
+
 function LuckyDraw:onEnter()
 	--  动态广播返回数据
 	NotificationCenter:Instance():AddObserver("GAME_GETRECENTFORTUNEWHEELREWARDLIST", self,
@@ -529,18 +530,17 @@ function LuckyDraw:onEnter()
                        			return
                        		end
                        		for i=1,#rewardlist  do
-                       			self.radio_table[1]="恭喜" ..  rewardlist[i]["nickname"] ..  "获得"  ..  rewardlist[i]["rewardname"]  ..  "\n\n"
+                       			self.radio_table[i]="恭喜" ..  rewardlist[i]["nickname"] ..  "获得"  ..  rewardlist[i]["rewardname"]  
                        		end
-                       		self:fun_radio(self.radio_table[1],#rewardlist-1 )
+                       		self:fun_radio(table.concat(self.radio_table,"\n\n"),#rewardlist-1 )
                       end)--
 	--  点击GO  返回的数据
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD", self,
                        function()
                        		local fortunewheelrandomreward=LocalData:Instance():get_getfortunewheelrandomreward()
-                       		local rewardid=fortunewheelrandomreward["rewardid"]
+                       		local rewardid="a1cb043f-5de4-4031-a238-d7b0e6a7514b"--fortunewheelrandomreward["rewardid"]
                        		for i=1,#self.rewardid_table do
                        			if self.rewardid_table[i]  == rewardid  then
-                       				--self.x_rand=i
                        				self:maskTouch(i)
                        			end
                        		end
@@ -573,7 +573,7 @@ function LuckyDraw:onEnter()
 				if tonumber(rewardlist[i]["type"])  ==  2 then  --金币
 					_img[i].name:loadTexture("Dialog_Zhuanpan/ZLB_CJ_10.png")
 				elseif tonumber(rewardlist[i]["type"])  ==  3 then   --  话费
-					_img[i].name:loadTexture("Dialog_Zhuanpan/ZLB_CJ_18.png")
+					_img[i].name:loadTexture("Dialog_Zhuanpan/ZLB_CJ_13.png")
 				end
 			end
 			self.go_bt:setTouchEnabled(true)
