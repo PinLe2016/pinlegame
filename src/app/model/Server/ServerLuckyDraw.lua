@@ -33,7 +33,7 @@ end
 
 
 function Server:getrecentfortunewheelrewardlist_callback()
-       dump(self.data)
+       --dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
@@ -43,10 +43,10 @@ function Server:getrecentfortunewheelrewardlist_callback()
    
 end
 --3.6.10  获取大转盘随机奖励接口(getfortunewheelrandomreward)
-function Server:getfortunewheelrandomreward()
+function Server:getfortunewheelrandomreward(_golds)
        local _params ={}
        _params={
-          -- count=_count
+           golds=_golds
    }
     self:request_http("getfortunewheelrandomreward" , _params ); 
 end

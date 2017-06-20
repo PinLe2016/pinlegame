@@ -44,17 +44,19 @@ local LuckyDraw_type=1
 
 
 function LuckyDraw:ctor()
-	Server:Instance():getrecentfortunewheelrewardlist()
       self:fun_init()
       self:fun_constructor()
-      --Server:Instance():getfortunewheelrewards(200)
-      
-      -- Server:Instance():getfortunewheelrandomreward()
+      Server:Instance():getfortunewheelrewards(200)
+      Server:Instance():getrecentfortunewheelrewardlist()
+       
 end
 function LuckyDraw:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self:listener_home() --注册安卓返回键
+      self.radio_table={}  --  广播表
+      self.rewardid_table={}
+      self.x_rand=0
       --  定时器
       self.image_table={}  --  存放奖品图片
       self.time=0
@@ -65,7 +67,6 @@ function LuckyDraw:fun_constructor( ... )
       self.m_info={ }
       self.m_info.data={ }
       self:init()
-      self:fun_radio()
 end
 
 function LuckyDraw:fun_LuckyDraw_visble( ... )
@@ -92,6 +93,9 @@ function LuckyDraw:fun_init( ... )
 	self.LuckyDraw_Rotary2=self.LuckyDraw_zbg2:getChildByName("LuckyDraw_Rotary2")
 	self.LuckyDraw_Rotary3=self.LuckyDraw_zbg3:getChildByName("LuckyDraw_Rotary3")
 	self:fun_win_img_init()
+
+	self.go_bt=self.LuckyDraw_node:getChildByName("go_bt")
+	self.go_bt:setTouchEnabled(false)
 	--  事件初始化
 	--  返回
 	local LuckyDraw_back=self.LuckyDraw_bg:getChildByName("LuckyDraw_back")
@@ -148,8 +152,8 @@ function LuckyDraw:fun_win_img_init( ... )
 	end
 end
 function LuckyDraw:fun_draw_go( ... )
-	local go_bt=self.LuckyDraw_node:getChildByName("go_bt")
-          	go_bt:addTouchEventListener(function(sender, eventType  )
+	
+          	self.go_bt:addTouchEventListener(function(sender, eventType  )
 	                 if eventType == 3 then
 	                    sender:setScale(1)
 
@@ -160,10 +164,33 @@ function LuckyDraw:fun_draw_go( ... )
 	                return
 	                end
 	                sender:setScale(1)
-	              print("go")
+	              self.go_bt:setTouchEnabled(false)
 	              self:fun_LuckyDraw_touch(false)
-	              self:maskTouch()  --  第一种
+	              local _LuckyDraw_type=200
+	              if _LuckyDraw_type==1 then
+	              	_LuckyDraw_type=200
+	              elseif _LuckyDraw_type==2 then
+	              	_LuckyDraw_type=500
+	              else
+	              	_LuckyDraw_type=2000
+	              end
+	              Server:Instance():getfortunewheelrandomreward(_LuckyDraw_type)
+	              
             end)
+end
+--  初始化点击GO 
+function LuckyDraw:fun_began_start()
+       local function CallFucnCallback3(sender)
+                if self.x_rand~=0 then
+                  self:maskTouch(self.x_rand)
+                  self.x_rand=0
+                else
+                  self:fun_began_start()
+                end
+
+        end
+        local  pAction1 =cc.RotateBy:create(0.1,360)
+        m_imgZhuanpan:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
 end
   function LuckyDraw:list_btCallback( sender, eventType )
               
@@ -188,6 +215,8 @@ end
 		self:unscheduleUpdate()
 		self.image_table={}
 		LuckyDraw_type=1
+		self.rewardid_table={}
+		self.go_bt:setTouchEnabled(false)
 		Server:Instance():getfortunewheelrewards(200)
 		self:fun_LuckyDraw_visble()
 		m_imgZhuanpan = self.LuckyDraw_Rotary1
@@ -197,6 +226,8 @@ end
 		self:unscheduleUpdate()
 		self.image_table={}
 		LuckyDraw_type=2
+		self.rewardid_table={}
+		self.go_bt:setTouchEnabled(false)
 		Server:Instance():getfortunewheelrewards(500)
 		self:fun_LuckyDraw_visble()
 		m_imgZhuanpan = self.LuckyDraw_Rotary2
@@ -206,6 +237,8 @@ end
 		self:unscheduleUpdate()
 		self.image_table={}
 		LuckyDraw_type=3
+		self.rewardid_table={}
+		self.go_bt:setTouchEnabled(false)
 		Server:Instance():getfortunewheelrewards(2000)
 		self:fun_LuckyDraw_visble()
 		m_imgZhuanpan = self.LuckyDraw_Rotary3
@@ -244,7 +277,7 @@ function LuckyDraw:refView()
 	
 end
 --  开始按钮操作
-function LuckyDraw:maskTouch()
+function LuckyDraw:maskTouch(_id)
 	m_nAwardID = math.random(1,m_awardNum)  --＊＊＊
 	print("抽奖设置id",m_nAwardID)   --  使我们设置的参数
 	self:awardStart()
@@ -278,6 +311,7 @@ end
 --转盘停止
 function LuckyDraw:awardEnd()
 	self:fun_LuckyDraw_touch(true)
+	self.go_bt:setTouchEnabled(true)
 	dump("抽奖成功,抽到"..self.m_info.data[m_nAwardID].name)
 end
 function LuckyDraw:doRotateAction(node,callback,time,speed)
@@ -396,7 +430,7 @@ function LuckyDraw:resetRotate()
 	self:setRotateOver(false)
 end
 --  广播 跑马灯
-function LuckyDraw:fun_radio( ... )
+function LuckyDraw:fun_radio( _text ,_number)
 	local LuckyDraw_text =self.LuckyDraw_bg:getChildByName("LuckyDraw_text")
 	LuckyDraw_text:setVisible(false)
 	local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,560,140))
@@ -404,19 +438,19 @@ function LuckyDraw:fun_radio( ... )
                   crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
                   self.LuckyDraw_bg:addChild(crn)
 
-                  local title = ccui.Text:create("恭喜拼乐融资成功\n\n希望拼乐签约成功\n\n拼乐新版本即将上线", "resources/com/huakangfangyuan.ttf", 27)
-                  title:setPosition(cc.p(290,-140))
+                  local title = ccui.Text:create(_text, "resources/com/huakangfangyuan.ttf", 27)
+                  title:setPosition(cc.p(290,-300-LuckyDraw_text:getContentSize().height))
                   title:setAnchorPoint(cc.p(0.5,0))
                   crn:addChild(title)
                   title:setColor(cc.c3b(255, 255, 255))
 
                         --描述动画
-                    local move = cc.MoveTo:create((title:getContentSize().height)/25, cc.p(290,140))
+                    local move = cc.MoveTo:create((title:getContentSize().height)/(10+_number*5), cc.p(290,300+LuckyDraw_text:getContentSize().height))
                     --local move_back = move:reverse()
                      local callfunc = cc.CallFunc:create(function(node, value)
-                            title:setPosition(cc.p(290,-140))
+                            title:setPosition(cc.p(290,-400-LuckyDraw_text:getContentSize().height))
                           end, {tag=0})
-                     local seq = cc.Sequence:create(move,cc.DelayTime:create(1),callfunc  ) 
+                     local seq = cc.Sequence:create(move,cc.DelayTime:create(0.2),callfunc  ) 
                     local rep = cc.RepeatForever:create(seq)
                     title:runAction(rep)
 end
@@ -486,6 +520,32 @@ function LuckyDraw:update(dt)
 	end
 end
 function LuckyDraw:onEnter()
+	--  动态广播返回数据
+	NotificationCenter:Instance():AddObserver("GAME_GETRECENTFORTUNEWHEELREWARDLIST", self,
+                       function()
+                       		local  recentfortunewheelrewardlist=LocalData:Instance():get_getrecentfortunewheelrewardlist()
+                       		local rewardlist= recentfortunewheelrewardlist["rewardlist"]
+                       		if #rewardlist  ==  0 then
+                       			return
+                       		end
+                       		for i=1,#rewardlist  do
+                       			self.radio_table[1]="恭喜" ..  rewardlist[i]["nickname"] ..  "获得"  ..  rewardlist[i]["rewardname"]  ..  "\n\n"
+                       		end
+                       		self:fun_radio(self.radio_table[1],#rewardlist-1 )
+                      end)--
+	--  点击GO  返回的数据
+	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD", self,
+                       function()
+                       		local fortunewheelrandomreward=LocalData:Instance():get_getfortunewheelrandomreward()
+                       		local rewardid=fortunewheelrandomreward["rewardid"]
+                       		for i=1,#self.rewardid_table do
+                       			if self.rewardid_table[i]  == rewardid  then
+                       				--self.x_rand=i
+                       				self:maskTouch(i)
+                       			end
+                       		end
+                      end)--
+
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELREWARDS", self,
                        function()
 			local fortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
@@ -509,12 +569,14 @@ function LuckyDraw:onEnter()
 			for i=1,#rewardlist do
 				_obj_name[i].name:setString(rewardlist[i]["name"])
 				_info_data[i]=rewardlist[i]["name"]
+				self.rewardid_table[i]=rewardlist[i]["rewardid"]
 				if tonumber(rewardlist[i]["type"])  ==  2 then  --金币
 					_img[i].name:loadTexture("Dialog_Zhuanpan/ZLB_CJ_10.png")
 				elseif tonumber(rewardlist[i]["type"])  ==  3 then   --  话费
 					_img[i].name:loadTexture("Dialog_Zhuanpan/ZLB_CJ_18.png")
 				end
 			end
+			self.go_bt:setTouchEnabled(true)
 			self:show(_info_data)
 			self:LuckyDraw_download_list()
                       end)--
@@ -544,12 +606,15 @@ function LuckyDraw:onEnter()
 			end
 			self:scheduleUpdate()
                       end)--
+	
 end
 
 function LuckyDraw:onExit()
       self:fun_table_init()
        NotificationCenter:Instance():RemoveObserver("GAME_GETFORTUNEWHEELREWARDS", self)
+       NotificationCenter:Instance():RemoveObserver("GAME_GETRECENTFORTUNEWHEELREWARDLIST", self)
        NotificationCenter:Instance():RemoveObserver("msg_getfortunewheelrewards", self)
+       NotificationCenter:Instance():RemoveObserver("GAME_GETFORTUNEWHEELRANDOMREWARD", self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 
 
 end
@@ -565,6 +630,7 @@ function LuckyDraw:fun_table_init( ... )
       m_info_data_obj3={}
       LuckyDraw_type=1
       self.image_table={}
+      self.radio_table={}
 end
 --android 返回键 响应
 function LuckyDraw:listener_home() 
