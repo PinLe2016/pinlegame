@@ -434,7 +434,7 @@ function LuckyDraw:fun_radio( _text ,_number)
 	local LuckyDraw_text =self.LuckyDraw_bg:getChildByName("LuckyDraw_text")
 	LuckyDraw_text:setVisible(false)
 	local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,560,140))
-	crn:setAnchorPoint(0)
+	crn:setAnchorPoint(cc.p(0,0))
                   crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
                   self.LuckyDraw_bg:addChild(crn)
 
