@@ -161,22 +161,22 @@ function taskLayer:data_init(  )
                   --local title_bg=cell:getChildByTag(175)
                  
 
-                  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,280,35))
-                  crn:setPosition(cc.p(135,65))
+                  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,280,100))
+                  crn:setPosition(cc.p(135,50))
                   title_bg:addChild(crn)
 
-                  local title = ccui.Text:create("", "resources/com/huakangfangyuan.ttf", 27)
-                  title:setPosition(cc.p(title:getContentSize().width,10))--alert:getPositionX(),alert:getPositionY()
+                  local title = ccui.Text:create("", "resources/com/huakangfangyuan.ttf", 25)
+                  title:setPosition(cc.p(title:getContentSize().width,25))--alert:getPositionX(),alert:getPositionY()
                   title:setAnchorPoint(cc.p(0,0.5))
                   crn:addChild(title)
                   title:setColor(cc.c3b(245, 126, 20))
                   title:setString(tasklist[i]["description"])
 
                         --描述动画
-                    local move = cc.MoveTo:create((title:getContentSize().width)/50, cc.p(-(title:getContentSize().width), 10))
+                    local move = cc.MoveTo:create((title:getContentSize().width)/50, cc.p(-(title:getContentSize().width), 25))
                     --local move_back = move:reverse()
                      local callfunc = cc.CallFunc:create(function(node, value)
-                            title:setPosition(cc.p(title:getContentSize().width,10))
+                            title:setPosition(cc.p(title:getContentSize().width,25))
                           end, {tag=0})
                      local seq = cc.Sequence:create(move,cc.DelayTime:create(3),callfunc  ) 
                     local rep = cc.RepeatForever:create(seq)

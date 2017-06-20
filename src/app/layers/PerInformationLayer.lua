@@ -180,21 +180,21 @@ function PerInformationLayer:add_init(  )
                                     return
                                 end
                                 local  _tag=sender:getTag()
-                                 local authentication = require("app.layers.authentication")--惊喜吧 
+                                 local authentication = require("app.layers.authentication") 
                                 self:addChild(authentication.new({_tag=_tag}),1,15)
                         end)
                         
-                        if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
-                           if tonumber(userdatainit["isphoneverify"])  ==  1   then
-                                 ig_GiftPhoto:setTitleText("已认证")
-                                 ig_GiftPhoto:setTouchEnabled(false)
-                            else
-                               ig_GiftPhoto:setTitleText("未认证")
-                               ig_GiftPhoto:setTouchEnabled(true)
-                            end
-                        else
-                             self.per_ListView:removeAllItems()
-                        end
+                        -- if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
+                        --    if tonumber(userdatainit["isphoneverify"])  ==  1   then
+                        --          ig_GiftPhoto:setTitleText("已认证")
+                        --          ig_GiftPhoto:setTouchEnabled(false)
+                        --     else
+                        --        ig_GiftPhoto:setTitleText("未认证")
+                        --        ig_GiftPhoto:setTouchEnabled(true)
+                        --     end
+                        -- else
+                        --      self.per_ListView:removeAllItems()
+                        -- end
                         
 
                         

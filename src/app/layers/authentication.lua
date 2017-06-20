@@ -124,7 +124,7 @@ function authentication:onEnter()
 end
 
 function authentication:onExit()
-      --NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self)
+     -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self)
       
 end
 
