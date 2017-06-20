@@ -545,6 +545,11 @@ function LuckyDraw:onEnter()
                        			end
                        		end
                       end)--
+	--  GO 错误
+	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD_FALSE", self,
+                       function()
+                       		self:fun_LuckyDraw_touch(true)
+                      end)--
 
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELREWARDS", self,
                        function()
@@ -611,6 +616,7 @@ end
 
 function LuckyDraw:onExit()
       self:fun_table_init()
+       NotificationCenter:Instance():RemoveObserver("GAME_GETFORTUNEWHEELRANDOMREWARD_FALSE", self)
        NotificationCenter:Instance():RemoveObserver("GAME_GETFORTUNEWHEELREWARDS", self)
        NotificationCenter:Instance():RemoveObserver("GAME_GETRECENTFORTUNEWHEELREWARDLIST", self)
        NotificationCenter:Instance():RemoveObserver("msg_getfortunewheelrewards", self)
