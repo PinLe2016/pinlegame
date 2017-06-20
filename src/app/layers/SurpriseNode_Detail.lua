@@ -134,6 +134,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                           sender:setScale(1.2)
                       return
                       end
+                      sender:setScale(1)
                        local tab=os.date("*t");
                        if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) == tab.day  then
                          local _count=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)
@@ -141,7 +142,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                         else
                           cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_count_count",0)
                         end
-                      sender:setScale(1)
+                      
                       self:unscheduleUpdate()
               self:removeFromParent()
       end)

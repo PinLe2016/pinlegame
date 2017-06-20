@@ -129,6 +129,19 @@ function SetLayer:set_touch(  )
                       end
                       print("问号")
                   end)
+      local STGY_bt=self.SetNode:getChildByName("Image_59")
+                  STGY_bt:addTouchEventListener(function(sender, eventType  )
+                        if eventType == 3 then
+                              sender:setScale(1)
+                              return
+                          end
+                          if eventType ~= ccui.TouchEventType.ended then
+                              sender:setScale(1.2)
+                          return
+                          end
+                          sender:setScale(1)
+                      print("设置关于 ")
+                  end)
 	--  意见反馈
 	 local btn_Feedback=self.SetNode:getChildByName("Button_2")
               btn_Feedback:addTouchEventListener(function(sender, eventType  )
