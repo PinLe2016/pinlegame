@@ -8,6 +8,12 @@ function authentication:ctor(params)
        local _tag=params._tag
        self:setNodeEventEnabled(true)
        --  初始化界面
+           --  定时器
+    self.time=50
+    self.secondOne = 0
+    self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
+        self:update(dt)
+    end)
        self:fun_init(_tag)
 end
 function authentication:fun_init(_tag)
@@ -49,11 +55,12 @@ function authentication:fun_Thephoneauthentication( ... )
 		         return
 		      end
 		      sender:setScale(1)
+		      self:unscheduleUpdate()
 		      Util:layer_action(self.ThephoneauthenticationNode,self,"close") 
             end)
             --发送验证码
-            local btn_code=self.Thephoneauthentication:getChildByTag(1778)
-          	btn_code:addTouchEventListener(function(sender, eventType  )
+            self.btn_code=self.Thephoneauthentication:getChildByTag(1778)
+          	self.btn_code:addTouchEventListener(function(sender, eventType  )
 	                if eventType ~= ccui.TouchEventType.ended then
 	                   return
 	               end
@@ -65,6 +72,7 @@ function authentication:fun_Thephoneauthentication( ... )
 		              Server:Instance():promptbox_box_buffer("手机号填写错误")
 		              return
           		  end
+          		  self.btn_code:setTouchEnabled(false)
           		  Server:Instance():sendmessage(4,str_phone:getString())
             end)
             --提交
@@ -73,6 +81,10 @@ function authentication:fun_Thephoneauthentication( ... )
 	                if eventType ~= ccui.TouchEventType.ended then
 	                   return
 	               end
+	               self:unscheduleUpdate()
+	               self.time=50
+	               self.btn_code:setTitleText("获取验证码")
+	               self.btn_code:setTouchEnabled(true)
 	               Server:Instance():phoneverify(str_phone:getString(),str_code:getString())
             end)
 end
@@ -115,16 +127,36 @@ function authentication:fun_Realnameauthentication( ... )
 	              print("提交")
             end)
 end
+function authentication:update(dt)
+            self.secondOne = self.secondOne+dt
+            if self.secondOne <1 then return end
+            self.secondOne=0
+            self.time=self.time-1
+            self.btn_code:setTitleText(tostring(self.time)  ..  " S")
+            if self.time==0 then
+            	self:unscheduleUpdate()
+            	self.btn_code:setTitleText("获取验证码")
+            	self.btn_code:setTouchEnabled(true)
+            	self.time=50
+            end
+              
+end
 function authentication:onEnter()
    
-  -- NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self,
-  --                      function()
-  --                                 self:data_init()
-  --                     end)
+  NotificationCenter:Instance():AddObserver("wangjimima", self,
+                       function()
+                                  self.btn_code:setTouchEnabled(true)
+                      end)
+    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self,
+                       function()
+                                  self.btn_code:setTitleText("50S")
+                                  self:scheduleUpdate()
+                      end)
 end
 
 function authentication:onExit()
-     -- NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.GETTASKLIST, self)
+      NotificationCenter:Instance():RemoveObserver("wangjimima", self)
+      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
       
 end
 
