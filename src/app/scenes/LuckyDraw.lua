@@ -40,7 +40,7 @@ local m_info_data_name3={}
 local m_info_data_obj1={}
 local m_info_data_obj2={}
 local m_info_data_obj3={}
-local LuckyDraw_type=1
+local LuckyDraw_type=200
 
 
 function LuckyDraw:ctor()
@@ -48,7 +48,6 @@ function LuckyDraw:ctor()
       self:fun_constructor()
       Server:Instance():getfortunewheelrewards(200)
       Server:Instance():getrecentfortunewheelrewardlist()
-       
 end
 function LuckyDraw:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -56,6 +55,7 @@ function LuckyDraw:fun_constructor( ... )
       self:listener_home() --注册安卓返回键
       self.radio_table={}  --  广播表
       self.rewardid_table={}
+      self.reward_IsGold=2
       self.x_rand=0
       --  定时器
       self.image_table={}  --  存放奖品图片
@@ -164,19 +164,42 @@ function LuckyDraw:fun_draw_go( ... )
 	                return
 	                end
 	                sender:setScale(1)
+
 	              self.go_bt:setTouchEnabled(false)
 	              self:fun_LuckyDraw_touch(false)
 	              local _LuckyDraw_type=200
-	              if _LuckyDraw_type==1 then
+	              if _LuckyDraw_type==200 then
 	              	_LuckyDraw_type=200
-	              elseif _LuckyDraw_type==2 then
+	              elseif _LuckyDraw_type==500 then
 	              	_LuckyDraw_type=500
 	              else
 	              	_LuckyDraw_type=2000
 	              end
 	              Server:Instance():getfortunewheelrandomreward(_LuckyDraw_type)
+	              self:fun_Isgold(self.reward_IsGold)
+	              self.reward_IsGold=1
 	              
             end)
+end
+function LuckyDraw:fun_Isgold(_type)
+	if _type==1 then
+		local fortunewheelrandomreward=LocalData:Instance():get_getfortunewheelrandomreward()
+		local remaingolds = tonumber(fortunewheelrandomreward["remaingolds"])
+		if tonumber(remaingolds) - LuckyDraw_type < 0 then
+			self.floating_layer:showFloat("金币不足")
+			return  
+		end
+	else
+		local getfortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
+	            local remaingolds = tonumber(getfortunewheelrewards["remaingolds"])
+		if tonumber(remaingolds) - LuckyDraw_type < 0 then
+			self.floating_layer:showFloat("金币不足")  
+			return
+		end
+	end
+	self:fun_began_start()
+
+	
 end
 --  初始化点击GO 
 function LuckyDraw:fun_began_start()
@@ -214,7 +237,8 @@ end
 		print("200")
 		self:unscheduleUpdate()
 		self.image_table={}
-		LuckyDraw_type=1
+		LuckyDraw_type=200
+		self.reward_IsGold=2
 		self.rewardid_table={}
 		self.go_bt:setTouchEnabled(false)
 		Server:Instance():getfortunewheelrewards(200)
@@ -225,7 +249,8 @@ end
 		print("500")
 		self:unscheduleUpdate()
 		self.image_table={}
-		LuckyDraw_type=2
+		LuckyDraw_type=500
+		self.reward_IsGold=2
 		self.rewardid_table={}
 		self.go_bt:setTouchEnabled(false)
 		Server:Instance():getfortunewheelrewards(500)
@@ -236,7 +261,8 @@ end
 		print("2000")
 		self:unscheduleUpdate()
 		self.image_table={}
-		LuckyDraw_type=3
+		LuckyDraw_type=2000
+		self.reward_IsGold=2
 		self.rewardid_table={}
 		self.go_bt:setTouchEnabled(false)
 		Server:Instance():getfortunewheelrewards(2000)
@@ -541,7 +567,8 @@ function LuckyDraw:onEnter()
                        		local rewardid="a1cb043f-5de4-4031-a238-d7b0e6a7514b"--fortunewheelrandomreward["rewardid"]
                        		for i=1,#self.rewardid_table do
                        			if self.rewardid_table[i]  == rewardid  then
-                       				self:maskTouch(i)
+                       				--self:maskTouch(i)
+                       				self.x_rand=i
                        			end
                        		end
                       end)--
@@ -558,11 +585,11 @@ function LuckyDraw:onEnter()
 			local _obj_name=m_info_data_name1
 			local _info_data=m_info_data_1
 			local  _img=m_info_data_obj1
-			if LuckyDraw_type==1 then
+			if LuckyDraw_type==200 then
 				_obj_name=m_info_data_name1
 				_info_data=m_info_data_1
 				_img=m_info_data_obj1
-			elseif LuckyDraw_type==2 then
+			elseif LuckyDraw_type==500 then
 				_obj_name=m_info_data_name2
 				_info_data=m_info_data_2
 				_img=m_info_data_obj2
@@ -591,9 +618,9 @@ function LuckyDraw:onEnter()
                        		local fortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
 			local rewardlist= fortunewheelrewards["rewardlist"]
 			local  _img=m_info_data_obj1
-			if LuckyDraw_type==1 then
+			if LuckyDraw_type==200 then
 				_img=m_info_data_obj1
-			elseif LuckyDraw_type==2 then
+			elseif LuckyDraw_type==500 then
 				_img=m_info_data_obj2
 			else
 				_img=m_info_data_obj3
@@ -634,7 +661,7 @@ function LuckyDraw:fun_table_init( ... )
       m_info_data_obj1={}
       m_info_data_obj2={}
       m_info_data_obj3={}
-      LuckyDraw_type=1
+      LuckyDraw_type=200
       self.image_table={}
       self.radio_table={}
 end
