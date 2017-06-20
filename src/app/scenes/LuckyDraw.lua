@@ -530,7 +530,7 @@ function LuckyDraw:onEnter()
                        			return
                        		end
                        		for i=1,#rewardlist  do
-                       			self.radio_table[i]="恭喜" ..  rewardlist[i]["nickname"] ..  "获得"  ..  rewardlist[i]["rewardname"]  
+                       			self.radio_table[i]="恭喜 " ..  rewardlist[i]["nickname"] ..  " 获得 "  ..  rewardlist[i]["rewardname"]  
                        		end
                        		self:fun_radio(table.concat(self.radio_table,"\n\n"),#rewardlist-1 )
                       end)--
