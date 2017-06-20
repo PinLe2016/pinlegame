@@ -15,7 +15,7 @@ end)
 end
 -- 新  一些弹窗
 function MainInterfaceScene:Popup_window( ... )
-     local new_time_two=cc.UserDefault:getInstance():getStringForKey("new_time_two",0)
+     local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("new_time_two",0)
      if new_time_two~=0 then
        cc.UserDefault:getInstance():setIntegerForKey("new_time_two",os.time())
      end
