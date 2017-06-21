@@ -233,6 +233,23 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=_time})
             txt_Pastdate:setString(_tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             --开启定时器
+            --  活动类型
+            local sp_ActivityType=_obj:getChildByName("sp_ActivityType")
+            sp_ActivityType:loadTexture("SurpriseImage/JXB_BQHD_0"  .. tostring(_gamelist[2*_num-istwo]["type"])  ..  ".png")
+            local part=_obj:getChildByName("part")
+            if tonumber(_gamelist[2*_num-istwo]["isnew"])  == 1 then  --  新  0  是 老 
+            	part:setVisible(true)
+            else
+            	part:setVisible(false)
+            end
+            --  是否中奖
+            local Notwinimage=_obj:getChildByName("Notwinimage")
+            local winimage=_obj:getChildByName("winimage")
+            if tonumber(_gamelist[2*_num-istwo]["myrecord"])== 1  and  not tonumber(_gamelist[2*_num-istwo]["prizewinning"]) then
+            	Notwinimage:setVisible(true)
+            else
+            	winimage:setVisible(true)
+            end
             self:scheduleUpdate()	
 end
 --刷新时间的定时器

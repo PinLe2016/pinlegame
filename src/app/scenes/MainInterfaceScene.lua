@@ -625,7 +625,7 @@ function MainInterfaceScene:fun_showtip(bt_obj,_x,_y )
           end
           self.showtip_image= display.newSprite("png/jingqingqidai-zi.png")
           self.showtip_image:setScale(0)
-          self.showtip_image:setAnchorPoint(0, 0)
+          self.showtip_image:setAnchorPoint(cc.p(0,0))
           self:addChild(self.showtip_image)
           self.showtip_image:setPosition(_x, _y)
 
@@ -642,7 +642,7 @@ end
 function MainInterfaceScene:fun_radio( ... )
           local LuckyDraw_text =self.MainInterfaceScene:getChildByTag(268)
           local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,450,41))
-          crn:setAnchorPoint(0)
+          crn:setAnchorPoint(cc.p(0,0))
           crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2+6,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
           self.MainInterfaceScene:addChild(crn)
 
