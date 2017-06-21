@@ -286,6 +286,8 @@ function Server:on_request_finished_pic(event , command)
         NotificationCenter:Instance():PostNotification("GAME_GETMYREWARDLIST")
     elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getfortunewheelrewards" then
         NotificationCenter:Instance():PostNotification("msg_getfortunewheelrewards")
+     elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getactivitybyid" then
+        NotificationCenter:Instance():PostNotification("msg_getactivitybyid")
     end
 
 

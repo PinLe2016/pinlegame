@@ -150,6 +150,14 @@ end
 function LocalData:get_getmyrewardlist()
 	return self.getmyrewardlist or nil
 end
+--  水果机
+function LocalData:set_activitygame(activitygame)
+	self.activitygame=activitygame
+end
+
+function LocalData:get_activitygame()
+	return self.activitygame or nil
+end
 
 
 

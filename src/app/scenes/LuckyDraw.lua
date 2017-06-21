@@ -304,7 +304,7 @@ function LuckyDraw:refView()
 end
 --  开始按钮操作
 function LuckyDraw:maskTouch(_id)
-	m_nAwardID = math.random(1,m_awardNum)  --＊＊＊
+	m_nAwardID =_id --math.random(1,m_awardNum)  --＊＊＊
 	print("抽奖设置id",m_nAwardID)   --  使我们设置的参数
 	self:awardStart()
 end
@@ -564,7 +564,7 @@ function LuckyDraw:onEnter()
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD", self,
                        function()
                        		local fortunewheelrandomreward=LocalData:Instance():get_getfortunewheelrandomreward()
-                       		local rewardid="a1cb043f-5de4-4031-a238-d7b0e6a7514b"--fortunewheelrandomreward["rewardid"]
+                       		local rewardid=fortunewheelrandomreward["rewardid"]
                        		for i=1,#self.rewardid_table do
                        			if self.rewardid_table[i]  == rewardid  then
                        				--self:maskTouch(i)

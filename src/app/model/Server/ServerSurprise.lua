@@ -463,6 +463,28 @@ function Server:getmyrewardlist_callback()
       NotificationCenter:Instance():PostNotification("getmyrewardlist")
 end
 
+--3.5.14   获取玩家惊喜吧获奖记录接口（命令：getmyrewardlist）
+
+function Server:activitygame(_activityid)
+    local params = {}
+    params={
+            activityid=_activityid
+        }
+    self:request_http("activitygame" , params ); 
+end
+
+
+function Server:activitygame_callback()
+     dump(self.data)
+    if self.data.err_code~=0  then
+        self:show_float_message( self.data.err_msg)
+        NotificationCenter:Instance():PostNotification("activitygamefalse")
+        return
+    end
+      LocalData:Instance():set_activitygame(self.data)--保存数据
+      NotificationCenter:Instance():PostNotification("activitygame")
+end
+
 
 
 

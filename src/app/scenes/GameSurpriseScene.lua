@@ -217,7 +217,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	              print("活动编号"  ..  2*_num-1)
 	              local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
 	              local _parm=_gamelist[sender:getParent():getTag()]
-		 self:addChild(SurpriseNode_Detail.new({id=_parm["id"],ownerurl=_parm["ownerurl"]}),1,1)
+		 self:addChild(SurpriseNode_Detail.new({id=_parm["id"]}),1,1)
             end)
 
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
