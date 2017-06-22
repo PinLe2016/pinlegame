@@ -13,7 +13,7 @@ end
 
 
 function Server:getfortunewheelrewards_callback()
-       dump(self.data)
+       --dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message( self.data.err_msg)
         return
@@ -33,7 +33,7 @@ end
 
 
 function Server:getrecentfortunewheelrewardlist_callback()
-       --dump(self.data)
+       dump(self.data)
     if self.data.err_code~=0  then
 
         self:show_float_message( self.data.err_msg)
@@ -55,7 +55,7 @@ end
 
 
 function Server:getfortunewheelrandomreward_callback()
-       dump(self.data)
+       --dump(self.data)
     if self.data.err_code~=0  then
         --self:show_float_message( self.data.err_msg)
         NotificationCenter:Instance():PostNotification("GAME_GETFORTUNEWHEELRANDOMREWARD_FALSE")  

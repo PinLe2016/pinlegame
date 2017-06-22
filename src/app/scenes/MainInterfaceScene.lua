@@ -22,14 +22,10 @@ function MainInterfaceScene:Popup_window( ... )
 
 end
 function MainInterfaceScene:ctor()
-  -- local date1=os.date("%Y-%m-%d %H:%M:%S")
-  --  dump(date1)
-  --  tab=os.date("*t");
-  --  print(tab.year, tab.month, tab.day, tab.hour, tab.min, tab.sec);
-  -- print("蓝色的罚款是",os.time())
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.count=0
+      self.radio_table={}  --  广播表
       self.main_leve={0,500,1500,8000,15000,40000,80000,150000,400000,80000,2000000,5000000}
       self.main_leve_name={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","大公","亲王","王储","国王"}
       self:Physics_homeback_ref()
@@ -54,8 +50,7 @@ function MainInterfaceScene:ctor()
       --手机归属请求
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
-      Server:Instance():getaffichelist(1,1)  --  邮件公告
-      --Server:Instance():getaffichelist(2,2)  --  首页公告  
+      Server:Instance():getaffichelist(1,1)  --  邮件公告  
 
       Server:Instance():share_title() --分享内容获取
 
@@ -113,7 +108,6 @@ end
 function MainInterfaceScene:fun_init( )
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
-      self:fun_radio()
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self.signanimations:setVisible(false)
       self:addChild(self.signanimations)
@@ -143,8 +137,6 @@ function MainInterfaceScene:fun_init( )
           self:touch_callback(sender, eventType)
       end)
 
-  
-     
        local head=self.MainInterfaceScene:getChildByTag(37)
        local per=self.MainInterfaceScene:getChildByTag(28):getChildByTag(29)  --新的需求
           head:addTouchEventListener(function(sender, eventType  )
@@ -540,16 +532,17 @@ function MainInterfaceScene:onEnter()
                                --self.biao_ji:setVisible(false) 
                                local affiche=LocalData:Instance():get_getaffiche()
                                 local affichelist=affiche["affichelist"]
-                                --dump(affiche)
                                 if #affichelist==0 then
                                    return
                                 end
                                 for i=1,#affichelist do      
+                                  self.radio_table[i]=affichelist[i]["title"]
                                    if tonumber(affichelist[i]["isread"]) == 0   then  --1已读  0未读 
                                                  self.biao_ji:setVisible(true)
-                                                return
                                      end
                               end
+                              self:fun_radio(table.concat(self.radio_table,"    ") ,#self.radio_table)
+
                       end)
 NotificationCenter:Instance():AddObserver("XINYUE", self,
                        function()
@@ -639,23 +632,23 @@ function MainInterfaceScene:fun_showtip(bt_obj,_x,_y )
           self.showtip_image:runAction( cc.Sequence:create(actionTo,cc.DelayTime:create(0.3 ),cc.CallFunc:create(removeThis)))
 end
 --  广播 跑马灯
-function MainInterfaceScene:fun_radio( ... )
+function MainInterfaceScene:fun_radio(_text ,_number_sd)
           local LuckyDraw_text =self.MainInterfaceScene:getChildByTag(268)
           local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,450,41))
           crn:setAnchorPoint(cc.p(0,0))
           crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2+6,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
           self.MainInterfaceScene:addChild(crn)
 
-          local title = ccui.Text:create("恭喜拼乐融资成功", "resources/com/huakangfangyuan.ttf", 27)
-          title:setPosition(cc.p(-450,8))
-          title:setAnchorPoint(cc.p(0,0))
+          local title = ccui.Text:create(_text, "resources/com/huakangfangyuan.ttf", 27)
+          title:setPosition(cc.p(450+title:getContentSize().width,8))
+          title:setAnchorPoint(cc.p(0.5,0))
           crn:addChild(title)
           title:setColor(cc.c3b(255, 255, 255))
 
                 --描述动画
-            local move = cc.MoveTo:create((title:getContentSize().width)/50, cc.p(-450,8))
+            local move = cc.MoveTo:create((title:getContentSize().width)/(10 + _number_sd *5), cc.p(-450-title:getContentSize().width,8))
              local callfunc = cc.CallFunc:create(function(node, value)
-                    title:setPosition(cc.p(450+title:getContentSize().width,8))
+                    title:setPosition(cc.p(450+title:getContentSize().width+title:getContentSize().width,8))
                   end, {tag=0})
              local seq = cc.Sequence:create(move,cc.DelayTime:create(1),callfunc  ) 
             local rep = cc.RepeatForever:create(seq)
