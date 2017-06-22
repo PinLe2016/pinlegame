@@ -515,11 +515,6 @@ function MainInterfaceScene:onEnter()
                          userdt["golds"]=getuserinfo["golds"]
                          LocalData:Instance():set_userdata(userdt)
                          self:userdata()  --  等级刷新
-
-
-                       
-
-                        
                       end)
 
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CHECKINHISTORY_POST, self,

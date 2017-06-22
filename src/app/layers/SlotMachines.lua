@@ -98,7 +98,7 @@ function SlotMachines:fun_Slot_machines_init( ... )
     end
 end
 --  开始
-function SlotMachines:fun_Slot_machines( _num )
+function SlotMachines:fun_Slot_machines( _num,_point )
           --  self. _table={}
           -- self._table_number={}
           -- self._table_number_tag=1
@@ -126,6 +126,7 @@ function SlotMachines:fun_Slot_machines( _num )
                            local function fun_stopGo2()
                               self:fun_Initialize_data()
                               self.hl_began:setTouchEnabled(true)
+                              self:fun_PowerWindows(_point)
                            end
                            self:runAction( cc.Sequence:create(cc.DelayTime:create(2 ),cc.CallFunc:create(fun_stopGo2)))
                      end
@@ -134,9 +135,26 @@ function SlotMachines:fun_Slot_machines( _num )
           end
           local actionTo = cc.ScaleTo:create(0.5, 1)
           self:runAction( cc.Sequence:create(cc.DelayTime:create(2 ),cc.CallFunc:create(fun_stopGo)))
-
-       
-
+end
+function SlotMachines:fun_PowerWindows( _text )
+  local PowerWindows = cc.CSLoader:createNode("PowerWindows.csb");
+  self:addChild(PowerWindows)
+  PowerWindows:setTag(123)
+  local number=PowerWindows:getChildByName("number")
+  number:setString(tostring(_text))
+  local pwtrue=PowerWindows:getChildByName("true")
+            pwtrue:addTouchEventListener(function(sender, eventType  )
+                   if eventType == 3 then
+                      sender:setScale(1)
+                      return
+                  end
+                  if eventType ~= ccui.TouchEventType.ended then
+                      sender:setScale(1.2)
+                  return
+                  end
+                  sender:setScale(1)
+                   self:removeChildByTag(123,true)
+            end)
 end
 function SlotMachines:fun_touch_bt( ... )
      --  事件初始化
@@ -214,7 +232,7 @@ function SlotMachines:onEnter()
   NotificationCenter:Instance():AddObserver("activitygame", self,
                        function()
                                   local activitygame=LocalData:Instance():get_activitygame()
-                                  self:fun_Slot_machines(tonumber(activitygame["fruit"]))
+                                  self:fun_Slot_machines(tonumber(activitygame["fruit"]),activitygame["points"])
                       end)
   NotificationCenter:Instance():AddObserver("activitygamefalse", self,
                        function()

@@ -239,7 +239,6 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             local sp_ActivityType_TEXT=sp_ActivityType:getChildByName("sp_ActivityType_TEXT")
             sp_ActivityType_TEXT:setString(_gamelist[2*_num-istwo]["area"])
 
-            sp_ActivityType:loadTexture("SurpriseImage/JXB_BQHD_0"  .. tostring(_gamelist[2*_num-istwo]["type"])  ..  ".png")
             local part=_obj:getChildByName("part")
             if tonumber(_gamelist[2*_num-istwo]["isnew"])  == 1 then  --  新  0  是 老 
             	part:setVisible(true)
@@ -249,13 +248,25 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             --  我的爵位
             local time_lv=time_obj:getChildByName("time_lv")
             time_lv:setString("我的爵位     "  ..  _gamelist[2*_num-istwo]["mylevel"])
+            --  是否参与
+            local YICY=_obj:getChildByName("YICY")
+            local NOCY=_obj:getChildByName("NOCY")
+            if tonumber(_gamelist[2*_num-istwo]["myrecord"])==0 then   --  0未参与 1参与
+            	NOCY:setVisible(true)
+            	YICY:setVisible(false)
+          else
+          	             NOCY:setVisible(false)
+            	 YICY:setVisible(true)
+            end
             --  是否中奖
             local Notwinimage=_obj:getChildByName("Notwinimage")
             local winimage=_obj:getChildByName("winimage")
             if _time_Anegativenumber<0  and  not tonumber(_gamelist[2*_num-istwo]["prizewinning"]) then
             	Notwinimage:setVisible(true)
+            	winimage:setVisible(false)
             elseif _time_Anegativenumber<0  and   tonumber(_gamelist[2*_num-istwo]["prizewinning"]) then
             	winimage:setVisible(true)
+            	Notwinimage:setVisible(false)
             end
             --  我的活动参加个数
             local Text_1=self.GameSurpriseScene:getChildByName("Text_1")
