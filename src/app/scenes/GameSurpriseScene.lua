@@ -233,9 +233,12 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=_time})
             txt_Pastdate:setString(_tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             --开启定时器
-            --  活动类型
+            --  活动类型  全国  和  地方
             local _time_Anegativenumber=tonumber(_time)
             local sp_ActivityType=_obj:getChildByName("sp_ActivityType")
+            local sp_ActivityType_TEXT=sp_ActivityType:getChildByName("sp_ActivityType_TEXT")
+            sp_ActivityType_TEXT:setString(_gamelist[2*_num-istwo]["area"])
+
             sp_ActivityType:loadTexture("SurpriseImage/JXB_BQHD_0"  .. tostring(_gamelist[2*_num-istwo]["type"])  ..  ".png")
             local part=_obj:getChildByName("part")
             if tonumber(_gamelist[2*_num-istwo]["isnew"])  == 1 then  --  新  0  是 老 

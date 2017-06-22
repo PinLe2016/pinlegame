@@ -5,7 +5,6 @@ local SlotMachines = class("SlotMachines", function()
 end)
 _SlotMachines_id=nil
 function SlotMachines:ctor(params)
-       dump(params)
        self.floating_layer = require("app.layers.FloatingLayer").new()
        self.floating_layer:addTo(self,100000)
        self.SlotMachinesgametimes=params.SlotMachinesgametimes
@@ -128,7 +127,7 @@ function SlotMachines:fun_Slot_machines( _num )
                               self:fun_Initialize_data()
                               self.hl_began:setTouchEnabled(true)
                            end
-                           self:runAction( cc.Sequence:create(cc.DelayTime:create(1 ),cc.CallFunc:create(fun_stopGo2)))
+                           self:runAction( cc.Sequence:create(cc.DelayTime:create(2 ),cc.CallFunc:create(fun_stopGo2)))
                      end
                   end
                   self:runAction( cc.Repeat:create(cc.Sequence:create(cc.DelayTime:create(0.5),cc.CallFunc:create(fun_stopGo1),cc.DelayTime:create(0.5)),3))
