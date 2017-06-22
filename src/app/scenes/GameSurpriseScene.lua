@@ -13,7 +13,7 @@ function GameSurpriseScene:fun_constructor( ... )
       --  列表发送请求
       self.jac_data_num_tag=0
       self.jac_data_num=0
-      self.ser_status=1  	-- 1 本期活动  2  往期活动
+      self.ser_status=1  	-- 1 本期活动  2  往期活动   0  是我的活动
       self.sur_pageno= 1  --  页数
       LocalData:Instance():set_getactivitylist(nil)
       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
@@ -226,7 +226,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
              else
                 _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
             end
-            local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
+            local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["nowtime"] )--_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
             local _tabletime=(_time)
             local  _tabletime_data=Util:FormatTime_colon(_tabletime)
             local txt_Pastdate=time_obj:getChildByName("txt_Pastdate")
@@ -249,12 +249,23 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             --  是否中奖
             local Notwinimage=_obj:getChildByName("Notwinimage")
             local winimage=_obj:getChildByName("winimage")
-            --print("拼乐",_time_Anegativenumber)
             if _time_Anegativenumber<0  and  not tonumber(_gamelist[2*_num-istwo]["prizewinning"]) then
             	Notwinimage:setVisible(true)
-            else
+            elseif _time_Anegativenumber<0  and   tonumber(_gamelist[2*_num-istwo]["prizewinning"]) then
             	winimage:setVisible(true)
             end
+            --  我的活动参加个数
+            local Text_1=self.GameSurpriseScene:getChildByName("Text_1")
+            local Image_49=self.GameSurpriseScene:getChildByName("Image_49")
+            if tonumber(self.ser_status) == 3 then
+            	Text_1:setVisible(true)
+            	Image_49:setVisible(true)
+            	Text_1:setString(tostring(#_gamelist))
+            else
+            	Text_1:setVisible(false)
+            	Image_49:setVisible(false)
+            end
+            
             self:scheduleUpdate()	
 end
 --刷新时间的定时器

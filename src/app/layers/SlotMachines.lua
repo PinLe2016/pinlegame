@@ -185,10 +185,10 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
-                if self.SlotMachinesgametimes<=0 then
-                    self.floating_layer:prompt_box("您的次数已经用完")
-                    return
-                end
+                -- if self.SlotMachinesgametimes<=0 then
+                --     self.floating_layer:prompt_box("您的次数已经用完")
+                --     return
+                -- end
                 self.hl_began:setTouchEnabled(false)
                 Server:Instance():activitygame(self.SlotMachinesId)
       end)

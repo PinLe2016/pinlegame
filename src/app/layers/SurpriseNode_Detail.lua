@@ -258,10 +258,10 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 end
                 sender:setScale(1)
                 local sup_data=LocalData:Instance():get_getactivitybyid()
-                 if tonumber(sup_data["gametimes"])<=0 then
-                    self.floating_layer:prompt_box("您的次数已经用完")
-                    return
-                end
+                --  if tonumber(sup_data["gametimes"])<=0 then
+                --     self.floating_layer:prompt_box("您的次数已经用完")
+                --     return
+                -- end
                 local _SlotMachinesTable={}
                 
                 _SlotMachinesTable["SlotMachinesId"] = sup_data["id"]
