@@ -168,9 +168,9 @@ function LuckyDraw:fun_draw_go( ... )
 	              self.go_bt:setTouchEnabled(false)
 	              self:fun_LuckyDraw_touch(false)
 	              local _LuckyDraw_type=200
-	              if _LuckyDraw_type==200 then
+	              if LuckyDraw_type==200 then
 	              	_LuckyDraw_type=200
-	              elseif _LuckyDraw_type==500 then
+	              elseif LuckyDraw_type==500 then
 	              	_LuckyDraw_type=500
 	              else
 	              	_LuckyDraw_type=2000
@@ -567,7 +567,6 @@ function LuckyDraw:onEnter()
                        		local rewardid=fortunewheelrandomreward["rewardid"]
                        		for i=1,#self.rewardid_table do
                        			if self.rewardid_table[i]  == rewardid  then
-                       				--self:maskTouch(i)
                        				self.x_rand=i
                        			end
                        		end
