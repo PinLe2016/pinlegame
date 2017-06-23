@@ -187,7 +187,7 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
-                print('规则')
+                self:fun_Integralrecord()
       end)
      
       --开始
@@ -226,6 +226,25 @@ function SlotMachines:fun_touch_bt( ... )
       end)
       
           
+end
+--  个人记录
+function SlotMachines:fun_Integralrecord( ... )
+         self.Integralrecord = cc.CSLoader:createNode("Integralrecord.csb");
+         self:addChild(self.Integralrecord)
+         self.Integralrecord:setTag(987)
+         local TicketCenter_informationBT=self.Integralrecord:getChildByName("Image_156")
+            TicketCenter_informationBT:addTouchEventListener(function(sender, eventType  )
+                   if eventType == 3 then
+                      sender:setScale(1)
+                      return
+                  end
+                  if eventType ~= ccui.TouchEventType.ended then
+                      sender:setScale(1.2)
+                  return
+                  end
+                  sender:setScale(1)
+                  self:removeChildByTag(987, true)
+            end)
 end
 function SlotMachines:onEnter()
    cc.SpriteFrameCache:getInstance():addSpriteFrames("DetailsiOfSurprise/LH_Plist.plist")
