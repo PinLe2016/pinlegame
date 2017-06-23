@@ -142,7 +142,7 @@ function SlotMachines:fun_PowerWindows( _text )
   PowerWindows:setTag(123)
   local number=PowerWindows:getChildByName("number")
   number:setString(tostring(_text))
-  local pwtrue=PowerWindows:getChildByName("true")
+  local pwtrue=PowerWindows:getChildByName("Image_1")
             pwtrue:addTouchEventListener(function(sender, eventType  )
                    if eventType == 3 then
                       sender:setScale(1)
