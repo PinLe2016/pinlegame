@@ -273,7 +273,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 _SlotMachinesTable["SlotMachineslevelmin"] = sup_data["levelmin"]
                 _SlotMachinesTable["SlotMachineslevelmax"] = sup_data["levelmax"]
                 _SlotMachinesTable["SlotMachinesgametimes"] = sup_data["gametimes"]
-                _SlotMachinesTable["SlotMachinesscore"] = sup_data["score"]
+                _SlotMachinesTable["SlotMachinesscore"] = sup_data["totalpoints"]
                 _SlotMachinesTable["SlotMachines_id"] = self.surprise_id                
                  local SlotMachines = require("app.layers.SlotMachines")    
                 self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)

@@ -37,7 +37,7 @@ function SlotMachines:fun_Initialize_infor( ... )
       self.slotbumber=self.lh_bg:getChildByName("bumber") --  次数
       self.slotbumber:setString("剩余"  ..  tostring(self.SlotMachinesgametimes)  ..  "次")
       self.slotintegral=self.lh_bg:getChildByName("integral") --  积分
-      self.slotintegral:setString(tostring("0"))
+      self.slotintegral:setString(tostring(self.SlotMachinesscore))
       self.slotlevel=self.lh_bg:getChildByName("level") --  等级
       self.slotlevel:setString(tostring(self.SlotMachinesmylevel))
       self.slotlv_name1=self.lh_bg:getChildByName("lv_name1") --  进度条当前等级
