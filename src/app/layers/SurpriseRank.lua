@@ -47,7 +47,6 @@ function SurpriseRank:fun_touch_bt( ... )
               self:removeFromParent()
       end)
     
-          
 end
 --  好友列表
 function SurpriseRank:fun_friend_list_init( ... )
@@ -59,6 +58,7 @@ function SurpriseRank:fun_friend_list_init( ... )
 end
 function SurpriseRank:fun_friend_list_data( ... )
         local ranklistbyactivityid=LocalData:Instance():get_getranklistbyactivityid()
+        -- dump(ranklistbyactivityid)
         local ranklist=ranklistbyactivityid["ranklist"]
         if #ranklist  ==  0 then
           return
@@ -68,14 +68,19 @@ function SurpriseRank:fun_friend_list_data( ... )
           self.SurpriseRank_ListView:pushBackDefaultItem()
           local  cell = self.SurpriseRank_ListView:getItem(i-1)
           local rank_number=cell:getChildByName("rank_number")
-          rank_number:setString(i)
+          rank_number:setString(tonumber(ranklist[i]["rank"]))
           local SurpriseRank_nickname=cell:getChildByName("SurpriseRank_nickname")
           SurpriseRank_nickname:setString(ranklist[i]["nickname"])
           local SurpriseRank_score=cell:getChildByName("SurpriseRank_score")
           SurpriseRank_score:setString(ranklist[i]["totalPoints"])
           local SurpriseRank_head=cell:getChildByName("SurpriseRank_head")
-          local _index=string.match(tostring(Util:sub_str(ranklist[i]["hearurl"], "/",":")),"%d")
-          SurpriseRank_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+          local _index=string.match(tostring(Util:sub_str(ranklist[i]["headimageurl"], "/",":")),"%d")
+          if not _index then
+            SurpriseRank_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(1)))
+          else
+            SurpriseRank_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+          end
+         -- SurpriseRank_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
         end
 end
 function SurpriseRank:onEnter()

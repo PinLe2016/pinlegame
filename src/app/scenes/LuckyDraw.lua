@@ -10,7 +10,7 @@ local m_touchCount = 1 --点击后直接开始抽奖，=2表示先点击转动�
 local ROTATE_TIME = 0.1 --旋转Action的时间
 local ROTATE_TIME2 = 1.0 --转盘回滚的时间
 local ROTATE_SPEED = 500 --旋转速度，每次旋50度  ＊
-local ROTATE_GROUP = 80 --旋转圈数，旋转8圈后慢慢停下来  ＊
+local ROTATE_GROUP = 10 --旋转圈数，旋转8圈后慢慢停下来  ＊
 ------------end------------------------
 local m_imgZhuanpan = nil --转盘图片
 
@@ -212,7 +212,7 @@ function LuckyDraw:fun_began_start()
                 end
 
         end
-        local  pAction1 =cc.RotateBy:create(0.1,360)
+        local  pAction1 =cc.RotateBy:create(0.1,-360)
         m_imgZhuanpan:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
 end
   function LuckyDraw:list_btCallback( sender, eventType )

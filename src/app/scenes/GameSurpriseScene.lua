@@ -224,11 +224,17 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
                 _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
             end
             local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["nowtime"] )--_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
+	local _str1="剩余时间"
+	if _time <0  then
+		_str1="结束时间: "
+	else
+		_str1="剩余时间: "
+	end
             local _tabletime=(_time)
             local  _tabletime_data=Util:FormatTime_colon(_tabletime)
             local txt_Pastdate=time_obj:getChildByName("txt_Pastdate")
-            table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=_time})
-            txt_Pastdate:setString(_tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
+            table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=_time,_str2=_str1})
+            txt_Pastdate:setString(_str1  .. _tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             --开启定时器
             --  活动类型  全国  和  地方
             local _time_Anegativenumber=tonumber(_time)
@@ -288,7 +294,7 @@ function GameSurpriseScene:update(dt)
          	for i=1,#self.timetext_table do
          		
          		self.countdown_time=Util:FormatTime_colon(self.timetext_table[i].time_count-self.time)
-         		self.timetext_table[i].timetext:setString(self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
+         		self.timetext_table[i].timetext:setString(self.timetext_table[i]._str2 ..  self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
          	end
            --  刷新下载的图片
 	if #self.image_table~=0 then

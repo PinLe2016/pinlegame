@@ -61,7 +61,7 @@ function SlotMachines:fun_Initialize_data( ... )
       local activitygame=LocalData:Instance():get_activitygame()
       self.slotlh_ldb:setPercent(tonumber(activitygame["levelminpoints"])  / tonumber(activitygame["levelmaxpoints"])  *100)
       self.slotbumber:setString("剩余"  ..  tostring(activitygame["remaintimes"])  ..  "次")
-      self.slotintegral:setString(tostring(activitygame["points"]))
+      self.slotintegral:setString(tostring(activitygame["totalpoints"]))
       self.slotlevel:setString(tostring(activitygame["level"]))
       self.slotlv_name1:setString(tostring(activitygame["level"]))
       local _lv=1

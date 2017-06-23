@@ -89,6 +89,11 @@ end
 function SurpriseNode_Detail:fun_init( ... )
 	self.DetailsOfSurprise = cc.CSLoader:createNode("DetailsOfSurprise.csb");
 	self:addChild(self.DetailsOfSurprise)
+      self._DOS_ScrollView=self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("DOS_ScrollView")
+      --  初始化
+      self.introduce = cc.CSLoader:createNode("introduce.csb");
+      self.introduce:setVisible(false)
+      self:addChild(self.introduce)
       self.XQ_bg=self.DetailsOfSurprise:getChildByName("XQ_bg")
       self.LH_bg=self.XQ_bg:getChildByName("LH_bg")
       self.LH_number=self.LH_bg:getChildByName("LH_number")
@@ -100,10 +105,9 @@ end
 function SurpriseNode_Detail:fun_data(  )
            local _lv=1
            local activitybyid_data=LocalData:Instance():get_getactivitybyid()
-           local  Friend_Node=self.DetailsOfSurprise:getChildByName("Friend_Node")
-           local  DOS_ScrollView=Friend_Node:getChildByName("DOS_ScrollView")
-           local  DOS_LoadingBar=DOS_ScrollView:getChildByName("DOS_LoadingBar")
-           local  DOS_biaoji=DOS_ScrollView:getChildByName("DOS_biaoji")
+           local  Friend_Node=self.DetailsOfSurprise:getChildByName("Friend_Node") 
+           local  DOS_LoadingBar=self._DOS_ScrollView:getChildByName("DOS_LoadingBar")
+           local  DOS_biaoji=self._DOS_ScrollView:getChildByName("DOS_biaoji")
            for i=1,#self.LV_hierarchy_table do
              if tostring(self.LV_hierarchy_table[i]) == activitybyid_data["mylevel"] then
                _lv=i
@@ -123,7 +127,7 @@ function SurpriseNode_Detail:fun_data(  )
 
            --  积分  排名
            local LH_integral=self.LH_bg:getChildByName("LH_integral")
-           LH_integral:setString(activitybyid_data["score"])
+           LH_integral:setString(activitybyid_data["totalpoints"])
            local LH_rank=self.LH_bg:getChildByName("LH_rank")
            LH_rank:setString(activitybyid_data["mylevel"])
            self:fun_touch_bt_htp()
@@ -170,7 +174,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 sender:setScale(1)
                  local SurpriseRank = require("app.layers.SurpriseRank")  --排行榜
                  local activitybyid=LocalData:Instance():get_getactivitybyid()
-                  self:addChild(SurpriseRank.new({id=activitybyid["id"],score=activitybyid["score"],mylevel=activitybyid["mylevel"]}),1,1)
+                  self:addChild(SurpriseRank.new({id=activitybyid["id"],score=activitybyid["totalpoints"],mylevel=activitybyid["mylevel"]}),1,1)
       end)
       --好友助力
       local Friend_help=self.DetailsOfSurprise:getChildByName("Friend_help")
@@ -344,24 +348,42 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
         self.XQ_FD_LIST=XQ_Friend_bg:getChildByName("XQ_FD_LIST")
         self.XQ_FD_LIST:setItemModel(self.XQ_FD_LIST:getItem(0))
         self.XQ_FD_LIST:removeAllItems()
-        --测试
-        self:fun_friend_list_data()
+        
 end
 function SurpriseNode_Detail:fun_friend_list_data( ... )
 --  有没有好友图片
-self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("XQ_Friend_bg"):getChildByName("no_friend_bg"):setVisible(false)
-        for i=1,20 do
+        local sup_data=LocalData:Instance():get_getactivitybyid()
+        local friendhelp=sup_data["friendhelp"]
+        if not sup_data["friendhelp"]   then
+            self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("XQ_Friend_bg"):getChildByName("no_friend_bg"):setVisible(true)
+            return
+        else
+          self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("XQ_Friend_bg"):getChildByName("no_friend_bg"):setVisible(false)
+        end
+        if #friendhelp  <=  0 then
+          return
+        end
+        for i=1,#friendhelp do
           self.XQ_FD_LIST:pushBackDefaultItem()
           local  cell = self.XQ_FD_LIST:getItem(i-1)
+          local XQ_FD_LIST_Head=cell:getChildByName("XQ_FD_LIST_Head")
+          XQ_FD_LIST_Head:loadTexture("png/httpgame.pinlegame.comheadheadicon_"  ..  math.random(1,8) .. ".jpg")
+          --local _index=string.match(tostring(Util:sub_str(friendhelp[i]["head"], "/",":")),"%d")
+          --XQ_FD_LIST_Head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+          local XQ_FD_LIST_Nickname=cell:getChildByName("XQ_FD_LIST_Nickname")
+          XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
+          local XQ_FD_LIST_Number=cell:getChildByName("XQ_FD_LIST_Number")
+          --XQ_FD_LIST_Number:setString(friendhelp[i]["nick"])
+          XQ_FD_LIST_Number:setString(math.random(1,8))
+          local XQ_FD_LIST_img=cell:getChildByName("XQ_FD_LIST_img")
+         -- XQ_FD_LIST_img:loadTexture("json")
         end
 end
 function SurpriseNode_Detail:fun_lv_touch( ... )
            self.win_package_table={}
-           local DOS_ScrollView=self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("DOS_ScrollView")
-           
            for i=1,9 do
-                 local  DOS_bt1=DOS_ScrollView:getChildByName("DOS_bg"  ..  tostring(i)):getChildByName("DOS_bt"  ..  tostring(i))
-                 DOS_bt1:setVisible(false)
+                 local  DOS_bt1=self._DOS_ScrollView:getChildByName("DOS_bg"  ..  tostring(i)):getChildByName("DOS_bt"  ..  tostring(i))
+                 DOS_bt1:setVisible(true)
                  self.win_package_table[i]=DOS_bt1
                  DOS_bt1:addTouchEventListener(function(sender, eventType  )
                         self:fun_lv_touch_back(sender, eventType)
@@ -380,38 +402,55 @@ function SurpriseNode_Detail:fun_win_package_table( ... )
            end
 end
 function SurpriseNode_Detail:fun_lv_touch_back( sender, eventType  )
-                if eventType == 3 then
-                    sender:setScale(1)
-                    return
-                end
-                if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(1.2)
-                return
-                end
-                sender:setScale(1)
-              local tag=sender:getName()
+             local _x=self._DOS_ScrollView:getPositionX()
+             local _y=self._DOS_ScrollView:getPositionY()
+             local sender_x=sender:getParent():getPositionX()
+             local sender_y=sender:getParent():getPositionY()
+             local tag=sender:getName()
              local getactivitywinners=LocalData:Instance():get_getactivitywinners()
              local awardlist=getactivitywinners["awardlist"]
 
-              if tag  ==  "DOS_bt1" then
-                self.floating_layer:prompt_box(awardlist[9]["goodsname"])
-              elseif tag  ==  "DOS_bt2" then
-                self.floating_layer:prompt_box(awardlist[8]["goodsname"])
-              elseif tag  ==  "DOS_bt3" then
-                self.floating_layer:prompt_box(awardlist[7]["goodsname"])
-              elseif tag  ==  "DOS_bt4" then
-                self.floating_layer:prompt_box(awardlist[6]["goodsname"])
-              elseif tag  ==  "DOS_bt5" then
-                self.floating_layer:prompt_box(awardlist[5]["goodsname"])
-              elseif tag  ==  "DOS_bt6" then
-                self.floating_layer:prompt_box(awardlist[4]["goodsname"])
-              elseif tag  ==  "DOS_bt7" then
-                self.floating_layer:prompt_box(awardlist[3]["goodsname"])
-              elseif tag  ==  "DOS_bt8" then
-                self.floating_layer:prompt_box(awardlist[2]["goodsname"])
-              elseif tag  ==  "DOS_bt9" then
-                self.floating_layer:prompt_box(awardlist[1]["goodsname"])
-              end
+                if eventType == 3 then
+                    sender:setScale(1)
+                    self.introduce:setVisible(false)
+                    return
+                end
+                if eventType ~= ccui.TouchEventType.ended then
+                          sender:setScale(1.2)
+                          if tag  ==  "DOS_bt1" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          elseif tag  ==  "DOS_bt2" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          elseif tag  ==  "DOS_bt3" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          elseif tag  ==  "DOS_bt4" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          elseif tag  ==  "DOS_bt5" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          elseif tag  ==  "DOS_bt6" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          elseif tag  ==  "DOS_bt7" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          elseif tag  ==  "DOS_bt8" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          elseif tag  ==  "DOS_bt9" then
+                            self:function_introduce(awardlist[1]["goodsname"],sender_x+_x,sender_y+_y,true)
+                          end
+                      return
+                end
+                sender:setScale(1)
+                self.introduce:setVisible(false)
+             
+
+
+end
+function SurpriseNode_Detail:function_introduce(_text ,_x,_y,_isvisible)
+             
+            self.introduce:setPosition(cc.p(_x+10,_y+20))
+            self.introduce:setVisible(_isvisible)
+             local introduce_Text=self.introduce:getChildByName("introduce_Text")
+             introduce_Text:setString(tostring(_text))
+             return   self.introduce
 end
 --奖项
 function SurpriseNode_Detail:fun_winnersPreview(  )
@@ -515,6 +554,8 @@ function SurpriseNode_Detail:onEnter()
                        function()
                         self:fun_data()
                         self:winnersPreview_Home_image()
+                        self:fun_friend_list_data()
+
                                   
 
                       end)
