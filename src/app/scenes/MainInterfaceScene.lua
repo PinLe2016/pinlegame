@@ -629,6 +629,7 @@ end
 --  广播 跑马灯
 function MainInterfaceScene:fun_radio(_text ,_number_sd)
           local LuckyDraw_text =self.MainInterfaceScene:getChildByTag(268)
+          LuckyDraw_text:getChildByTag(3323):setVisible(false)
           local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,450,41))
           crn:setAnchorPoint(cc.p(0,0))
           crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2+6,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))

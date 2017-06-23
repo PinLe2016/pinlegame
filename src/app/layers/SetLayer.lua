@@ -121,14 +121,7 @@ function SetLayer:set_touch(  )
                       Util:layer_action(self.SetNode,self,"close")
 
                   end)
-       --  问号 
-       local problem_bt=self.SetNode:getChildByName("Button_6")
-                  problem_bt:addTouchEventListener(function(sender, eventType  )
-                       if eventType ~= ccui.TouchEventType.ended then
-                           return
-                      end
-                      print("问号")
-                  end)
+
       local STGY_bt=self.SetNode:getChildByName("Image_59")
                   STGY_bt:addTouchEventListener(function(sender, eventType  )
                         if eventType == 3 then
@@ -140,7 +133,8 @@ function SetLayer:set_touch(  )
                           return
                           end
                           sender:setScale(1)
-                      print("设置关于 ")
+                      local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
+                     self:addChild(aboutdetailsLayer.new(0),1,12)
                   end)
 	--  意见反馈
 	 local btn_Feedback=self.SetNode:getChildByName("Button_2")
@@ -166,8 +160,7 @@ function SetLayer:set_touch(  )
                    if eventType ~= ccui.TouchEventType.ended then
                        return
                   end
-                   local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
-                  self:addChild(aboutdetailsLayer.new(0),1,12)
+                   self:fun_storebrowser("https://www.baidu.com")
               end)
               --  注销
 	 local btn_CheckOut=self.SetNode:getChildByName("Button_5")
@@ -184,6 +177,24 @@ function SetLayer:set_touch(  )
                             end)
               end)
 
+end
+-- 外部链接
+function SetLayer:fun_storebrowser( _url)
+      self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
+      self:addChild(self.Storebrowser)
+      self.Storebrowser:setTag(1314)
+      local back=self.Storebrowser:getChildByTag(2122)
+      local store_size=self.Storebrowser:getChildByTag(2123)
+       back:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                  end
+                  self:removeChildByTag(1314, true)
+            end)
+              self.share=cc.UM_Share:create()
+              self.Storebrowser:addChild(self.share)
+              self.share:add_WebView(tostring(_url),cc.size(store_size:getContentSize().width ,store_size:getContentSize().height),
+               cc.p(store_size:getPositionX(),store_size:getPositionY()))
 end
 function SetLayer:per_userdady( )
 	-- 头像

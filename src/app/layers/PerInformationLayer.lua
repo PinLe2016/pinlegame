@@ -485,7 +485,6 @@ function PerInformationLayer:init(  )
 
             self.per_gender=self.Perinformation:getChildByTag(57)  --  性别
             self.per_gender_img=self.per_gender:getChildByTag(58)  --  性别图片
-            self.per_gender_bt=self.per_gender:getChildByTag(59)  --  性别按钮
             self.per_gender_name=self.per_gender:getChildByTag(60)  --  性别名称
             self.per_gender_text=self.Perinformation:getChildByTag(899)  --  性别
             self.per_gender_male=self.per_gender_text:getChildByTag(896):getChildByTag(897)  --  性别男
@@ -503,12 +502,6 @@ function PerInformationLayer:init(  )
             end
 
             self.per_gender:addTouchEventListener(function(sender, eventType  )
-                if eventType ~= ccui.TouchEventType.ended then
-                            return
-                end
-                self.per_gender_text:setVisible(true)
-            end)
-            self.per_gender_bt:addTouchEventListener(function(sender, eventType  )
                 if eventType ~= ccui.TouchEventType.ended then
                             return
                 end

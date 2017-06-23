@@ -173,7 +173,6 @@ function GameSurpriseScene:fun_list_data(  )
 	if num == 0  then
 		return
 	end
-	print("刷新数据")
 	local jioushu=math.floor(tonumber(num)) % 2  == 1 and 1 or 2   --判段奇数 偶数
 	local _jioushu=0
 	if jioushu==1 then
@@ -182,8 +181,6 @@ function GameSurpriseScene:fun_list_data(  )
  		_jioushu=num /  2
 	end
 	self.jac_data_num=_jioushu  +  num %  2  +self.jac_data_num_tag
-	dump(self.jac_data_num)
-	dump(self.jac_data_num_tag)
 	for i=self.jac_data_num_tag+1,self.jac_data_num do
 		self.lvw_Surorise:pushBackDefaultItem()
 		local  cell = self.lvw_Surorise:getItem(i-1)
@@ -345,12 +342,12 @@ cc.SpriteFrameCache:getInstance():addSpriteFrames("png/ceshiPlist.plist")
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
 			self.list_table=LocalData:Instance():get_getactivitylist()
-			          
+			          self:fun_list_data()
 			          self:Surpriseimages_list()
                       end)--
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self,
                        function()
-			self:fun_list_data()
+			--self:fun_list_data()  --  关闭目的是刷新快
 			          
                       end)--
 end
