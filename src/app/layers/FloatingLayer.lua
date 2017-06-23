@@ -110,10 +110,10 @@ function FloatingLayer:touch_callback( sender, eventType )
 end
 
 function FloatingLayer:network_box(prompt_text )
-      self.networkbox = cc.CSLoader:createNode("networkbox.csb")
+      self.networkbox = cc.CSLoader:createNode("PromptNode.csb")
       self:addChild(self.networkbox)
-      local back=self.networkbox:getChildByTag(171)
-      local _text=self.networkbox:getChildByTag(172)
+      local back=self.networkbox:getChildByTag(213)
+      local _text=self.networkbox:getChildByTag(214)
       _text:setString(prompt_text)
        back:addTouchEventListener(function(sender, eventType  )
                   if eventType == 3 then
