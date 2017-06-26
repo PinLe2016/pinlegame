@@ -403,8 +403,6 @@ function Util:share(_id,_loginname,type)
               file="res/screenshoot.jpg"
           end
 
-
-
            local login_info=LocalData:Instance():get_user_data()
            local share_title=LocalData:Instance():get_share_title()
            local share=cc.UM_Share:createWithShare(file,act_id,share_title["title"],share_title["content"],_loginname)

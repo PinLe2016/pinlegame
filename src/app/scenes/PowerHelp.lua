@@ -113,8 +113,10 @@ function PowerHelp:fun_list_data(  )
    	          cell:getChildByName("head"):loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 	          cell:getChildByName("nickname"):setString(friendhelplist[i]["nickname"])
 	          cell:getChildByName("number"):setString(friendhelplist[i]["amount"])
-	          --cell:getChildByName("winname"):setString(self.data_power[i][4])
-	          
+	          if friendhelplist[i]["goodsname"] then
+	          	cell:getChildByName("winname"):setString(friendhelplist[i]["goodsname"])
+	          end
+	         
 	end
 end
 function PowerHelp:pushFloating(text)
