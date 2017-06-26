@@ -5,6 +5,7 @@ end)
 function GameSurpriseScene:ctor()
       self:fun_init()
       self:fun_constructor()
+      --Server:Instance():activityfriendhelp("6343d09f-9fde-4176-9eda-0706a99f893a","123","http://www.PinleGame.com/GameImage/0db4d6fc-69d1-4d0c-b46b-f8a44d53f49c.jpg") 
 end
 function GameSurpriseScene:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -267,9 +268,17 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             if tonumber(_gamelist[2*_num-istwo]["myrecord"])==0 then   --  0未参与 1参与
             	NOCY:setVisible(true)
             	YICY:setVisible(false)
+            	local time_bg1=time_obj:getChildByName("time_bg1")
+            	time_bg1:loadTexture("SurpriseImage/JXB_BQHD_6.png")
+            	local JCJM_6=_obj:getChildByName("JCJM_6")
+            	JCJM_6:loadTexture("SurpriseImage/JXB_BQHD_5.png")
           else
           	             NOCY:setVisible(false)
             	 YICY:setVisible(true)
+            	 local time_bg1=time_obj:getChildByName("time_bg1")
+            	time_bg1:loadTexture("SurpriseImage/JXB_BQHD_14.png")
+            	local JCJM_6=_obj:getChildByName("JCJM_6")
+            	JCJM_6:loadTexture("SurpriseImage/JXB_BQHD_13.png")
             end
             --  是否中奖
             local Notwinimage=_obj:getChildByName("Notwinimage")

@@ -485,7 +485,21 @@ function Server:activitygame_callback()
       NotificationCenter:Instance():PostNotification("activitygame")
 end
 
+--  H5测试
+function Server:activityfriendhelp(activityid,nickname,headimageurl)
+    local params = {}
+    params={
+            activityid=activityid,
+            nickname=nickname,
+            headimageurl=headimageurl
+        }
+    self:request_http("activityfriendhelp" , params ); 
+end
 
+function Server:activityfriendhelp_callback()
+     dump(self.data)
+    
+end
 
 
 
