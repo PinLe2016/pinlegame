@@ -15,6 +15,8 @@ function SlotMachines:ctor(params)
        self.SlotMachinesId=params.SlotMachinesId
        SlotMachines_id=params.SlotMachines_id
        self.LV_hierarchy_table={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","国王"}
+       self._table_points_tag={1,2,3,5,10,20,30}
+       self._table_points_tag_img={{0,1,2},{0,0,2},{1,1,2},{2,1,2},{0,0,0},{1,1,1},{2,3,2}}
        self:setNodeEventEnabled(true)
        --  初始化界面
        self:fun_init()
@@ -187,6 +189,7 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                Server:Instance():getactivitypointsdetail(self.SlotMachinesId,"")
                 self:fun_Integralrecord()
       end)
      
@@ -222,11 +225,13 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
-                print("帮助")
+                local _userdata=LocalData:Instance():get_user_data()
+                local loginname=_userdata["loginname"]
+                self.share=Util:share(self.SlotMachinesId,loginname)
       end)
-      
-          
+       
 end
+
 --  个人记录
 function SlotMachines:fun_Integralrecord( ... )
          self.Integralrecord = cc.CSLoader:createNode("Integralrecord.csb");
@@ -245,6 +250,40 @@ function SlotMachines:fun_Integralrecord( ... )
                   sender:setScale(1)
                   self:removeChildByTag(987, true)
             end)
+      self.XQ_FD_LIST_View=self.Integralrecord:getChildByName("ListView_5")
+      self.XQ_FD_LIST_View:setItemModel(self.XQ_FD_LIST_View:getItem(0))
+      self.XQ_FD_LIST_View:removeAllItems()
+      
+end
+function SlotMachines:fun_SlotMachines_list_data( ... )
+              local getactivitypointsdetail=LocalData:Instance():get_getactivitypointsdetail()
+              local mypointslist=getactivitypointsdetail["mypointslist"]
+              if #mypointslist  <=0  then
+                return
+              end
+              
+               for i=1,#mypointslist  do
+                      self.XQ_FD_LIST_View:pushBackDefaultItem()
+                      local  cell = self.XQ_FD_LIST_View:getItem(i-1)
+                      local WIN_TEXT=cell:getChildByName("WIN_TEXT")
+                      WIN_TEXT:setString(mypointslist[i]["points"])
+                      local _img1="DetailsiOfSurprise/JXB_YX_S_0.png"
+                      local _img2="DetailsiOfSurprise/JXB_YX_S_1.png"
+                      local _img3="DetailsiOfSurprise/JXB_YX_S_2.png"
+                      for j=1,#self._table_points_tag do
+                          if tonumber(mypointslist[i]["points"])==self._table_points_tag[j] then
+                              _img1="DetailsiOfSurprise/JXB_YX_S_"  .. self._table_points_tag_img[j][1]   ..   ".png"
+                              _img2="DetailsiOfSurprise/JXB_YX_S_"  .. self._table_points_tag_img[j][1]   ..   ".png"
+                              _img3="DetailsiOfSurprise/JXB_YX_S_"  .. self._table_points_tag_img[j][1]   ..   ".png"
+                          end
+                      end
+                      local WIN_TYPE_1=cell:getChildByName("WIN_TYPE_1")
+                      WIN_TYPE_1:loadTexture(_img1)
+                      local WIN_TYPE_2=cell:getChildByName("WIN_TYPE_2")
+                      WIN_TYPE_2:loadTexture(_img2)
+                      local WIN_TYPE_3=cell:getChildByName("WIN_TYPE_3")
+                      WIN_TYPE_3:loadTexture(_img3)
+                end
 end
 function SlotMachines:onEnter()
    cc.SpriteFrameCache:getInstance():addSpriteFrames("DetailsiOfSurprise/LH_Plist.plist")
@@ -257,12 +296,17 @@ function SlotMachines:onEnter()
                        function()
                                   self.hl_began:setTouchEnabled(true)
                       end)
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self,
+                       function()
+                                  self:fun_SlotMachines_list_data()
+                      end)
 end
 
 function SlotMachines:onExit()
   cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("DetailsiOfSurprise/LH_Plist.plist")
   NotificationCenter:Instance():RemoveObserver("activitygame", self)
   NotificationCenter:Instance():RemoveObserver("activitygamefalse", self)
+  NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self)
       
 end
 

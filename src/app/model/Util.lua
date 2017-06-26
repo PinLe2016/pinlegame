@@ -389,26 +389,27 @@ function Util:captureScreen()
 end
 
 --分享功能
-function Util:share(type)
- 
-  -- local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
-  local file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
+function Util:share(_id,_loginname,type)
+          local act_id=_id
+          local loginname=_loginname
+          -- local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
+          local file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
 
-   if type and device.platform~="ios" then
-      file=Util:captureScreen()
-    end
+           if type and device.platform~="ios" then
+              file=Util:captureScreen()
+            end
 
-     if device.platform=="ios" then
-      file="res/screenshoot.jpg"
-  end
+             if device.platform=="ios" then
+              file="res/screenshoot.jpg"
+          end
 
 
 
-   local login_info=LocalData:Instance():get_user_data()
-   local share_title=LocalData:Instance():get_share_title()
-   local share=cc.UM_Share:createWithShare(file,login_info["playerid"],share_title["title"],share_title["content"])
-   share:addTo(display.getRunningScene(),1000)
-   return share
+           local login_info=LocalData:Instance():get_user_data()
+           local share_title=LocalData:Instance():get_share_title()
+           local share=cc.UM_Share:createWithShare(file,act_id,share_title["title"],share_title["content"],_loginname)
+           share:addTo(display.getRunningScene(),1000)
+           return share
 end
 
 

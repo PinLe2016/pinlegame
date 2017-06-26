@@ -206,16 +206,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	local list_table=LocalData:Instance():get_getactivitylist()
 	local _gamelist=list_table["game"]
 	local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-	local ig_GiftPhoto=_obj:getChildByName("ig_GiftPhoto")
-          	ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
-	               if eventType ~= ccui.TouchEventType.ended then
-	                   return
-	              end
-	              print("活动编号"  ..  2*_num-1)
-	              local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
-	              local _parm=_gamelist[sender:getParent():getTag()]
-		 self:addChild(SurpriseNode_Detail.new({id=_parm["id"]}),1,1)
-            end)
+	
 
             local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
             if not  file then
@@ -235,6 +226,25 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             local txt_Pastdate=time_obj:getChildByName("txt_Pastdate")
             table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=_time,_str2=_str1})
             txt_Pastdate:setString(_str1  .. _tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
+            
+            local ig_GiftPhoto=_obj:getChildByName("ig_GiftPhoto")
+          	ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
+	               if eventType ~= ccui.TouchEventType.ended then
+	                   return
+	              end
+	              if _time >=0 then
+	              	 local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
+	              	local _parm=_gamelist[sender:getParent():getTag()]
+		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"]}),1,1)
+		 else
+		 	local SurpriseNode_Detail = require("app.layers.DetailsSurpreissue")  --关于拼乐界面  
+	              	local _parm=_gamelist[sender:getParent():getTag()]
+		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"]}),1,1)
+	              end
+	             
+            end)
+
+
             --开启定时器
             --  活动类型  全国  和  地方
             local _time_Anegativenumber=tonumber(_time)

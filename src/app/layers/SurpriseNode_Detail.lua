@@ -175,19 +175,8 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                   self:addChild(SurpriseRank.new({id=activitybyid["id"],score=activitybyid["totalpoints"],mylevel=activitybyid["mylevel"]}),1,1)
       end)
       --好友助力
-      local Friend_help=self.DetailsOfSurprise:getChildByName("Friend_help")
-      Friend_help:addTouchEventListener(function(sender, eventType  )
-              if eventType == 3 then
-                    sender:setScale(1)
-                    return
-                end
-                if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(1.2)
-                return
-                end
-                sender:setScale(1)
-                print("好友助力")
-      end)
+      self.Friend_help=self.DetailsOfSurprise:getChildByName("Friend_help")
+      self.Friend_help:setVisible(false)
 
        --奖项
       local award_bt=self.DetailsOfSurprise:getChildByName("award_bt")
@@ -539,6 +528,26 @@ function SurpriseNode_Detail:winnersPreview_Home_image(  )
           com_["TAG"]="getactivitybyid"
           Server:Instance():request_pic(sup_data["imageurl"],com_) 
 end
+function SurpriseNode_Detail:fun_help_data( ... )
+                        self.Friend_help:setVisible(true)
+                         local activitybyid_data=LocalData:Instance():get_getactivitybyid()
+                         local _activitybyid_id=activitybyid_data["id"]
+                         local _userdata=LocalData:Instance():get_user_data()
+                         local loginname=_userdata["loginname"]
+                        self.Friend_help:addTouchEventListener(function(sender, eventType  )
+                                if eventType == 3 then
+                                      sender:setScale(1)
+                                      return
+                                  end
+                                  if eventType ~= ccui.TouchEventType.ended then
+                                      sender:setScale(1.2)
+                                  return
+                                  end
+                                  sender:setScale(1)
+                                  print("好友助力")
+                                  self.share=Util:share(_activitybyid_id,loginname)
+                        end)
+end
 function SurpriseNode_Detail:onEnter()
    cc.SpriteFrameCache:getInstance():addSpriteFrames("DetailsiOfSurprise/LH_Plist.plist")
    --下载图片
@@ -557,7 +566,7 @@ function SurpriseNode_Detail:onEnter()
                         self:fun_data()
                         self:winnersPreview_Home_image()
                         self:fun_friend_list_data()
-
+                        self:fun_help_data()
                                   
 
                       end)

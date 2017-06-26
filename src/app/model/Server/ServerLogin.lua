@@ -107,7 +107,7 @@ function Server:prompt( content )
 end
 
 
---  微信  微信openid   微信昵称
+--  微信  微信openid   微信昵称   
 function Server:wechatreg(loginname,nickname)
 
    
