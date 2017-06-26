@@ -239,7 +239,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 		 else
 		 	local SurpriseNode_Detail = require("app.layers.DetailsSurpreissue")  --关于拼乐界面  
 	              	local _parm=_gamelist[sender:getParent():getTag()]
-		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"]}),1,1)
+		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"],mylevel=_parm["mylevel"]}),1,1)
 	              end
 	             
             end)

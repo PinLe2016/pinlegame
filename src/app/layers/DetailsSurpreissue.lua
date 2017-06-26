@@ -54,8 +54,10 @@ function DetailsSurpreissue:ctor(params)
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.surprise_id=params.id
+      self.surprise_mylevel=params.mylevel
       self.time_count_n=1
       self.lv_table_image_idex={14,15,16,17,13,12,11,10,9}
+      self.LV_hierarchy_table={"国王","公爵","侯爵","伯爵","子爵","男爵","勋爵","骑士","平民"}
       Server:Instance():getactivitywinners(self.surprise_id)  --  获奖名单
        self:setNodeEventEnabled(true)
        self:fun_Popup_window()
@@ -91,10 +93,17 @@ function DetailsSurpreissue:fun_init( ... )
       self.XQ_bg=self.DetailsOfSurprise:getChildByName("XQ_bg")
       self.LH_bg=self.XQ_bg:getChildByName("LH_bg")
       self.LH_number=self.LH_bg:getChildByName("LH_number")
-      self.LV_IMG=self.LH_bg:getChildByName("LV_IMG")
-      --self.LV_IMG:loadTexture("json")
       self.ProjectNode_3=self.DetailsOfSurprise:getChildByName("ProjectNode_3")
       self.XQ_Friend_bg=self.ProjectNode_3:getChildByName("XQ_Friend_bg")
+
+      self.LV_IMG=self.LH_bg:getChildByName("LV_IMG")
+      for i=1,#self.LV_hierarchy_table do
+          if self.surprise_mylevel  == self.LV_hierarchy_table[i]  then
+           self.LV_IMG:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"   ..  self.lv_table_image_idex[i]  ..   ".png")
+          end
+      end
+      self.Text_10=self.LH_bg:getChildByName("Text_10")
+
       self.XQ_FD_LIST=self.XQ_Friend_bg:getChildByName("XQ_FD_LIST")
       self.XQ_FD_LIST:setItemModel(self.XQ_FD_LIST:getItem(0))
       self.XQ_FD_LIST:removeAllItems()
@@ -135,6 +144,13 @@ function DetailsSurpreissue:fun_win_list_data( ... )
 	          end
 	          
 	          XQ_FD_LIST_img:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"   ..  self.lv_table_image_idex[img_index]  ..   ".png")
+                local  userdata=LocalData:Instance():get_user_data()
+                local nickname=userdata["loginname"]
+                if nickname== winnerlist[i]["nickname"] then
+                    self.Text_10:setString(tostring(i))
+                else
+                  self.Text_10:setString("暂未上榜")
+                end
 
 	  end
 end
