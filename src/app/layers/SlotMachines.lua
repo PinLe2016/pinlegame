@@ -126,6 +126,15 @@ function SlotMachines:fun_Slot_machines( _num,_point )
                            self._table_number={}
                            self._table_number_tag=1
                            local function fun_stopGo2()
+                              local count=self:stringToTable(tostring(_num))
+                              if count==1 then
+                                Util:player_music_new("open_box.mp3",false )
+                              elseif count==2 then
+                                Util:player_music_new("big_win.mp3",false )
+                              else
+                                Util:player_music_new("super_big.mp3",false )
+                              end
+                              
                               self:fun_Initialize_data()
                               self.hl_began:setTouchEnabled(true)
                               self:fun_PowerWindows(_point)
@@ -205,6 +214,7 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:player_music_new("spin_button.mp3",false )
                 -- if self.SlotMachinesgametimes<=0 then
                 --     self.floating_layer:prompt_box("您的次数已经用完")
                 --     return
@@ -285,6 +295,29 @@ function SlotMachines:fun_SlotMachines_list_data( ... )
                       WIN_TYPE_3:loadTexture(_img3)
                 end
 end
+--  判断字符串中相同的个数
+function SlotMachines:stringToTable(str)  
+  local _count_one=0
+  local _count_two=0
+  local _count_three=0
+  local _table={}
+   for i=1,3 do
+    _table[i]=string.char(string.byte(str, i))
+   end
+   for i=1,#_table do
+    if tonumber(_table[i]) == 0 then
+      _count_one=_count_one+1
+    end
+    if tonumber(_table[i]) == 1 then
+      _count_two=_count_two+1
+    end
+    if tonumber(_table[i]) == 2 then
+      _count_three=_count_three+1
+    end
+   end
+   local _count=_count_one>=_count_two  and _count_one or _count_two
+   return    _count>=_count_three  and _count or _count_three
+end 
 function SlotMachines:onEnter()
    cc.SpriteFrameCache:getInstance():addSpriteFrames("DetailsiOfSurprise/LH_Plist.plist")
   NotificationCenter:Instance():AddObserver("activitygame", self,
@@ -311,6 +344,7 @@ function SlotMachines:onExit()
 end
 
 return SlotMachines
+
 
 
 

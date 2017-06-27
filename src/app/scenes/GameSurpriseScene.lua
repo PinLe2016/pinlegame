@@ -26,36 +26,6 @@ function GameSurpriseScene:fun_constructor( ... )
 	      	self:update(dt)
       end)
 end
---  测试老虎机
-function GameSurpriseScene:fun_Slot_machines( ... )
-	self. _table={}
-	for i=1,3 do
-    		local score=self.GameSurpriseScene
-    		
-	    	local po1x=300
-	    	local po1y=400
-	            local laoHuJi1 = cc.LaoHuJiDonghua:create()--cc.CustomClass:create()
-	            local msg = laoHuJi1:helloMsg()
-	            release_print("customClass's msg is : " .. msg)
-	            laoHuJi1:setDate("png/ceshiPlist", "resources/com/rewardImage", 10,cc.p(po1x+(i-1)*50,po1y) );
-	            laoHuJi1:setStartSpeed(30);
-	            score:addChild(laoHuJi1);
-	            self._table[i]=laoHuJi1
-    	end
-    	for i=1,#self. _table do
-                      self. _table[i]:startGo()
-            end
-            local  tempn = 127   
-	for i=1,#self. _table do
-		local  stopNum = 0;
-		if (tempn > 0)  then
-			stopNum = tempn % 10;
-			tempn = tempn / 10;
-	            end
-	(self. _table[#self. _table-(i-1)]):stopGo(stopNum);
-	end
-
-end
 
 function GameSurpriseScene:fun_init( ... )
 	self.GameSurpriseScene = cc.CSLoader:createNode("GameSurpriseScene.csb");
@@ -360,9 +330,8 @@ end
 function GameSurpriseScene:promptbox_buffer(prompt_text)
        self.floating_layer:prompt_box(prompt_text) 
 end
-function GameSurpriseScene:onEnter()
 
-cc.SpriteFrameCache:getInstance():addSpriteFrames("png/ceshiPlist.plist")
+function GameSurpriseScene:onEnter()
 
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
@@ -378,7 +347,6 @@ cc.SpriteFrameCache:getInstance():addSpriteFrames("png/ceshiPlist.plist")
 end
 
 function GameSurpriseScene:onExit()
-     cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("png/ceshiPlist.plist")
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 

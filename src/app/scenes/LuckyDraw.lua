@@ -164,7 +164,7 @@ function LuckyDraw:fun_draw_go( ... )
 	                return
 	                end
 	                sender:setScale(1)
-
+	                Util:player_music_new("spin_button.mp3",false )
 	              self.go_bt:setTouchEnabled(false)
 	              self:fun_LuckyDraw_touch(false)
 	              local _LuckyDraw_type=200
@@ -203,6 +203,14 @@ function LuckyDraw:fun_Isgold(_type)
 end
 --  初始化点击GO 
 function LuckyDraw:fun_began_start()
+	if LuckyDraw_type==200 then
+		Util:player_music_new("bg_5_f.mp3",true )
+	elseif LuckyDraw_type==500 then
+		Util:player_music_new("bg_7_f.mp3",true )
+	else
+		Util:player_music_new("bg_9_f.mp3",true )
+	end
+	
        local function CallFucnCallback3(sender)
                 if self.x_rand~=0 then
                   self:maskTouch(self.x_rand)
@@ -304,6 +312,7 @@ function LuckyDraw:refView()
 end
 --  开始按钮操作
 function LuckyDraw:maskTouch(_id)
+
 	m_nAwardID =_id --math.random(1,m_awardNum)  --＊＊＊
 	print("抽奖设置id",m_nAwardID)   --  使我们设置的参数
 	self:awardStart()
@@ -338,6 +347,8 @@ end
 function LuckyDraw:awardEnd()
 	self:fun_LuckyDraw_touch(true)
 	self.go_bt:setTouchEnabled(true)
+
+	Util:player_music_new("spin_button.mp3",false )
 	dump("抽奖成功,抽到"..self.m_info.data[m_nAwardID].name)
 end
 function LuckyDraw:doRotateAction(node,callback,time,speed)
@@ -368,6 +379,7 @@ function LuckyDraw:rotateOver()
 			self:proRotateStop(startAngle)
 			if m_bModify then
 				dump("校准开始")
+				audio.stopAllSounds()
 				m_bStartAward = false
 				startAngle = startAngle + endAngle
 				self:doRotateAction(m_imgZhuanpan,handler(self,self.rotateOver),ROTATE_TIME2,endAngle)

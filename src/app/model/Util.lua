@@ -441,7 +441,6 @@ function Util:dateTotimestamp(birthday)
 end
 --音效
 function Util:player_music(musicname,cycle ) --音乐名字，是否重播，是否设置禁止播放
-
     if LocalData:Instance():get_music() then
       audio.playSound(G_SOUND[musicname],cycle)
     else
@@ -463,11 +462,19 @@ end
 --关闭
 function Util:stop_music( musicname ) -- 停止播放音乐
     
-     -- if not LocalData:Instance():get_music_hit() then
+      if not LocalData:Instance():get_music_hit() then
        audio.stopMusic(G_SOUND[musicname])
-   --  else
-   --    print("抱歉无法关闭音乐")
-   -- end   
+     else
+       print("抱歉无法关闭音乐")
+    end   
+end
+--音效
+function Util:player_music_new(musicname,cycle ) --音乐名字，是否重播，是否设置禁止播放
+    --if LocalData:Instance():get_music() then
+      audio.playSound("sound/effect/"  ..  musicname,cycle)
+    --else
+     -- print("抱歉无法播放音乐")
+   --end   
 end
 
 function Util:all_layer_backMusic() -- 所有界面返回音效

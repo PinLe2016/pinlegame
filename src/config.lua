@@ -130,6 +130,8 @@ G_SOUND={
 	WIN="sound/effect/win.mp3",
 	--弹球音效
 	PHYSICS="sound/effect/click.mp3",
+	
+
 }
 
 
