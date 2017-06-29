@@ -142,7 +142,7 @@ function MainInterfaceScene:fun_init( )
        local per=self.MainInterfaceScene:getChildByTag(28):getChildByTag(29)  --新的需求
        head:addTouchEventListener(function(sender, eventType  )
                       if eventType == 3 then
-                          sender:setScale(0.6)
+                          sender:setScale(0.5)
                           head_img_liang:setVisible(false)
                           return
                       end
@@ -151,7 +151,7 @@ function MainInterfaceScene:fun_init( )
                           head_img_liang:setVisible(true)
                       return
                       end
-                      sender:setScale(0.6)
+                      sender:setScale(0.5)
                       head_img_liang:setVisible(false)
                       local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
                      self:addChild(PerInformationLayer.new(),1,14)
