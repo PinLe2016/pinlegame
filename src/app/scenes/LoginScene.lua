@@ -58,6 +58,23 @@ function LoginScene:progressbarScene(  )
          
         loadingBar:setPercent(0)
         
+        self:fun_LoadingNodebar_act(self.LoadingNodebar)
+        
+end
+function LoginScene:fun_LoadingNodebar_act( _obj )
+              local act_bg=_obj:getChildByName("act_bg")
+              local act_h1=act_bg:getChildByName("act_h1")
+              local act_h2=act_bg:getChildByName("act_h2")
+              local actionT1 = cc.RotateTo:create( 1, 1)
+              local actionTo1 = cc.RotateTo:create( 1, -1)
+              local actionT2 = cc.RotateTo:create( 1, 3)
+              local actionTo2 = cc.RotateTo:create( 1, -3)
+              local actionT3 = cc.RotateTo:create( 1, 2)
+              local actionTo3 = cc.RotateTo:create( 1, -2)
+              act_bg:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+              act_h1:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
+              act_h2:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
+
 end
 --微信发送请求
  function LoginScene:countdown(Iswechat)
@@ -87,10 +104,7 @@ function LoginScene:fun_progress( )
               loadingBar:setPercent(100)
             end
             if self._time==100 then
-              -- loadingBar:setPercent(100)
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
-               --判断是否是第一次登陆
-               -- cc.UserDefault:getInstance():setStringForKey("new_start","0")
                local new_start=cc.UserDefault:getInstance():getStringForKey("new_start","0")
                if new_start=="0" then
                   self:_coverlayer()
@@ -101,7 +115,6 @@ function LoginScene:fun_progress( )
               local login_info=LocalData:Instance():get_user_data()
               if login_info~=nil and login_info["diamondnum"] then
                  Util:scene_control("MainInterfaceScene")
-                --display.replaceScene(require("app.scenes.MainInterfaceScene"):new())
                 return
               end
               self:landing_init()             
@@ -200,15 +213,15 @@ end
      -- self.Zphone_text:setVisible(false)
      -- self.Zphone_text:setTouchEnabled(false)
      self.phone_text=self.Zphone_text
-     Util:function_keyboard(self.registered,self.Zphone_text,17)
+     Util:function_keyboard(self.registered,self.Zphone_text,17,245,126,20)
      local password_text=self.LoginNode_Register:getChildByName("tf_Password")
      self.Zpassword_text=password_text
-     Util:function_keyboard(self.registered,password_text,12)
+     Util:function_keyboard(self.registered,password_text,12,245,126,20)
      -- password_text:setVisible(false)
      -- password_text:setTouchEnabled(false)
      local verificationcode_text=self.LoginNode_Register:getChildByName("tf_Token")
      self.Zcode_text=verificationcode_text
-     Util:function_keyboard(self.registered,verificationcode_text,17)
+     Util:function_keyboard(self.registered,verificationcode_text,17,245,126,20)
      -- verificationcode_text:setVisible(false)
      -- verificationcode_text:setTouchEnabled(false)
 
@@ -362,9 +375,11 @@ function LoginScene:fun_WeChat_avatar_pic(  )
 end
 --  微信登陆界面
 function LoginScene:landing_init()
+      dump("微信登陆动画")
       self.WeChat = cc.CSLoader:createNode("LoginScene.csb")
       self:addChild(self.WeChat,100)
-
+      
+        self:fun_LoadingNodebar_act(self.WeChat)
       self.wechat_bt=self.WeChat:getChildByName("wechat"):getChildByName("btn_Wechat")   --getChildByTag(561):getChildByTag(561)
       self.wechat_bt:setLocalZOrder(100)
       local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
@@ -478,14 +493,14 @@ function LoginScene:_landing_interface()
 
   local Editphone = self.LoginNode_Mobile:getChildByName("TextField_1")
   self.Dphone_text=Editphone
-  Util:function_keyboard(self.LoginNode_Mobile,Editphone,17)
+  Util:function_keyboard(self.LoginNode_Mobile,Editphone,17,245,126,20)
   Editphone:setPlaceHolder("请输入手机号码")
   -- Editphone:setTouchEnabled(false)
   -- Editphone:setVisible(false)
 
   local EditPassword=self.LoginNode_Mobile:getChildByName("TextField_1_Copy")
   self.Dpassword_text=EditPassword
-  Util:function_keyboard(self.LoginNode_Mobile,EditPassword,12)
+  Util:function_keyboard(self.LoginNode_Mobile,EditPassword,12,245,126,20)
   EditPassword:setPlaceHolder("请输入密码")
 
   -- EditPassword:setTouchEnabled(false)
@@ -686,10 +701,10 @@ function LoginScene:_passwordLayer( )
             -- phone:setVisible(false)
             -- phone:setTouchEnabled(false)
             self.Wphone_text=phone
-            Util:function_keyboard(self.passwordLayer,phone,17) 
+            Util:function_keyboard(self.passwordLayer,phone,17,245,126,20) 
             local Wcode_text = self.LoginNode_Forget:getChildByName("TextField_1_Copy")
             self._yanzhengma=Wcode_text
-            Util:function_keyboard(self.passwordLayer,Wcode_text,17) 
+            Util:function_keyboard(self.passwordLayer,Wcode_text,17,245,126,20) 
             -- Wcode_text:setVisible(false)
             -- Wcode_text:setTouchEnabled(false)
 
@@ -852,7 +867,7 @@ function LoginScene:_resetpasswordLayer(  )
              phone:setString(self._mobilephone)
              local password1 = self.LoginNode_NewPassword:getChildByName("tf_Password")
              self.Wpassword_text=password1
-             Util:function_keyboard(self.resetpasswordLayer,password1,12) 
+             Util:function_keyboard(self.resetpasswordLayer,password1,12,245,126,20) 
              -- password1:setVisible(false)
              -- password1:setTouchEnabled(false)
               local res = "  "--res/png/DLkuang.png"

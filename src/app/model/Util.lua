@@ -484,7 +484,7 @@ function Util:all_layer_backMusic() -- 所有界面返回音效
 end
 --  增加光标
 --  增加光标
-function Util:function_keyboard(_parent,target,font_size)
+function Util:function_keyboard(_parent,target,font_size,_color1,_color2,_color3)
         local alert = ccui.Text:create()
         alert:setString("|")
         -- alert:setFontName("png/chuti.ttf")
@@ -492,7 +492,12 @@ function Util:function_keyboard(_parent,target,font_size)
         alert:setPosition(target:getPositionX(),target:getPositionY()+5)
         alert:setFontName(font_TextName)
         alert:setFontSize(35)
-        alert:setColor(cc.c3b(0, 0, 0))
+        if not _color1 then
+         alert:setColor(cc.c3b(0, 0, 0))
+        else
+          alert:setColor(cc.c3b(_color1, _color2, _color3))
+        end
+        
         _parent:addChild(alert)
 
        
