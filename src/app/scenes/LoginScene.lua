@@ -65,12 +65,12 @@ function LoginScene:fun_LoadingNodebar_act( _obj )
               local act_bg=_obj:getChildByName("act_bg")
               local act_h1=act_bg:getChildByName("act_h1")
               local act_h2=act_bg:getChildByName("act_h2")
-              local actionT1 = cc.RotateTo:create( 1, 1)
-              local actionTo1 = cc.RotateTo:create( 1, -1)
-              local actionT2 = cc.RotateTo:create( 1, 3)
-              local actionTo2 = cc.RotateTo:create( 1, -3)
-              local actionT3 = cc.RotateTo:create( 1, 2)
-              local actionTo3 = cc.RotateTo:create( 1, -2)
+              local actionT1 = cc.RotateTo:create( 1, 1.5)
+              local actionTo1 = cc.RotateTo:create( 1, -1.5)
+              local actionT2 = cc.RotateTo:create( 1, 1)
+              local actionTo2 = cc.RotateTo:create( 1, -1)
+              local actionT3 = cc.RotateTo:create( 1, 1)
+              local actionTo3 = cc.RotateTo:create( 1, -1)
               act_bg:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
               act_h1:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
               act_h2:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
@@ -196,7 +196,7 @@ end
         if eventType == ccui.TouchEventType.ended then
         
           _ybt:setVisible(true)
-          sender:setColor(cc.c3b(100, 100, 100))
+          --sender:setColor(cc.c3b(100, 100, 100))
           sender:setTouchEnabled(false)
            self.layertype=1
            self._random=Util:rand(  ) --随机验证码
@@ -213,15 +213,15 @@ end
      -- self.Zphone_text:setVisible(false)
      -- self.Zphone_text:setTouchEnabled(false)
      self.phone_text=self.Zphone_text
-     Util:function_keyboard(self.registered,self.Zphone_text,17,245,126,20)
+     Util:function_keyboard(self.registered,self.Zphone_text,23,245,126,20)
      local password_text=self.LoginNode_Register:getChildByName("tf_Password")
      self.Zpassword_text=password_text
-     Util:function_keyboard(self.registered,password_text,12,245,126,20)
+     Util:function_keyboard(self.registered,password_text,14,245,126,20)
      -- password_text:setVisible(false)
      -- password_text:setTouchEnabled(false)
      local verificationcode_text=self.LoginNode_Register:getChildByName("tf_Token")
      self.Zcode_text=verificationcode_text
-     Util:function_keyboard(self.registered,verificationcode_text,17,245,126,20)
+     Util:function_keyboard(self.registered,verificationcode_text,23,245,126,20)
      -- verificationcode_text:setVisible(false)
      -- verificationcode_text:setTouchEnabled(false)
 
@@ -375,7 +375,7 @@ function LoginScene:fun_WeChat_avatar_pic(  )
 end
 --  微信登陆界面
 function LoginScene:landing_init()
-      dump("微信登陆动画")
+     
       self.WeChat = cc.CSLoader:createNode("LoginScene.csb")
       self:addChild(self.WeChat,100)
       
@@ -493,14 +493,14 @@ function LoginScene:_landing_interface()
 
   local Editphone = self.LoginNode_Mobile:getChildByName("TextField_1")
   self.Dphone_text=Editphone
-  Util:function_keyboard(self.LoginNode_Mobile,Editphone,17,245,126,20)
+  Util:function_keyboard(self.LoginNode_Mobile,Editphone,23,245,126,20)
   Editphone:setPlaceHolder("请输入手机号码")
   -- Editphone:setTouchEnabled(false)
   -- Editphone:setVisible(false)
 
   local EditPassword=self.LoginNode_Mobile:getChildByName("TextField_1_Copy")
   self.Dpassword_text=EditPassword
-  Util:function_keyboard(self.LoginNode_Mobile,EditPassword,12,245,126,20)
+  Util:function_keyboard(self.LoginNode_Mobile,EditPassword,14,245,126,20)
   EditPassword:setPlaceHolder("请输入密码")
 
   -- EditPassword:setTouchEnabled(false)
@@ -690,7 +690,7 @@ function LoginScene:_passwordLayer( )
                     end
 
                     sender:setTouchEnabled(false)
-                    sender:setColor(cc.c3b(100, 100, 100))
+                    --sender:setColor(cc.c3b(100, 100, 100))
                     self.layertype=2
                     Server:Instance():sendmessage(2,self._mobilephone)
 
@@ -701,10 +701,10 @@ function LoginScene:_passwordLayer( )
             -- phone:setVisible(false)
             -- phone:setTouchEnabled(false)
             self.Wphone_text=phone
-            Util:function_keyboard(self.passwordLayer,phone,17,245,126,20) 
+            Util:function_keyboard(self.passwordLayer,phone,23,245,126,20) 
             local Wcode_text = self.LoginNode_Forget:getChildByName("TextField_1_Copy")
             self._yanzhengma=Wcode_text
-            Util:function_keyboard(self.passwordLayer,Wcode_text,17,245,126,20) 
+            Util:function_keyboard(self.passwordLayer,Wcode_text,23,245,126,20) 
             -- Wcode_text:setVisible(false)
             -- Wcode_text:setTouchEnabled(false)
 
@@ -779,7 +779,7 @@ function LoginScene:touch_Callback( sender, eventType  )
                    end
                   
                    sender:setTouchEnabled(false)
-                   sender:setColor(cc.c3b(100, 100, 100))
+                   --sender:setColor(cc.c3b(100, 100, 100))
                    self.layertype=2
                   Server:Instance():sendmessage(2,self._mobilephone)
                   print("邀请码"..self.p_random)
@@ -867,7 +867,7 @@ function LoginScene:_resetpasswordLayer(  )
              phone:setString(self._mobilephone)
              local password1 = self.LoginNode_NewPassword:getChildByName("tf_Password")
              self.Wpassword_text=password1
-             Util:function_keyboard(self.resetpasswordLayer,password1,12,245,126,20) 
+             Util:function_keyboard(self.resetpasswordLayer,password1,14,245,126,20) 
              -- password1:setVisible(false)
              -- password1:setTouchEnabled(false)
               local res = "  "--res/png/DLkuang.png"
