@@ -226,7 +226,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                     return
                 end
                 if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(1.2)
+                    sender:setScale(0.8)
                 return
                 end
                 sender:setScale(1)
@@ -339,8 +339,10 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
 end
 function SurpriseNode_Detail:fun_friend_list_data( ... )
 --  有没有好友图片
+        self.XQ_FD_LIST:removeAllItems()
         local sup_data=LocalData:Instance():get_getactivitybyid()
         local friendhelp=sup_data["friendhelp"]
+       
         if not sup_data["friendhelp"]   then
             self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("XQ_Friend_bg"):getChildByName("no_friend_bg"):setVisible(true)
             return
@@ -487,7 +489,12 @@ function SurpriseNode_Detail:fun_winnersPreview_list_init( ... )
           self.win_ListView:pushBackDefaultItem()
           local  cell = self.win_ListView:getItem(i-1)
           local number=cell:getChildByName("number")
-          number:setString("0 ~ "  ..  sup_data[i]["awardcount"])
+          --number:setString("0 ~ "  ..  sup_data[i]["awardcount"])  s
+          local _bj=i
+          if _bj>=9 then
+            _bj=9
+          end
+          number:setString(self.LV_hierarchy_table[10-_bj])
           local prize=cell:getChildByName("prize")
           prize:setString(sup_data[i]["awardorder"] ..  "等奖")
           local win_name=cell:getChildByName("win_name")

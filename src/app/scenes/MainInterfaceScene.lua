@@ -139,8 +139,19 @@ function MainInterfaceScene:fun_init( )
 
        local head=self.MainInterfaceScene:getChildByTag(37)
        local per=self.MainInterfaceScene:getChildByTag(28):getChildByTag(29)  --新的需求
-          head:addTouchEventListener(function(sender, eventType  )
-          self:touch_callback(sender, eventType)
+       head:addTouchEventListener(function(sender, eventType  )
+                      if eventType == 3 then
+                          sender:setScale(0.6)
+                          return
+                      end
+                      if eventType ~= ccui.TouchEventType.ended then
+                          sender:setScale(0.8)
+                      return
+                      end
+                      sender:setScale(0.6)
+                      local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
+                     self:addChild(PerInformationLayer.new(),1,14)
+
       end)
       local checkin_bt= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
           checkin_bt:addTouchEventListener(function(sender, eventType  )
@@ -345,8 +356,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
   if tag==56 then --惊喜吧
      Util:scene_control("GameSurpriseScene")
   elseif tag==37 then  --37
-    local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
-    self:addChild(PerInformationLayer.new(),1,14)
+    
   elseif tag==124 then   --  290
       -- self.checkinlayer = cc.CSLoader:createNode("checkinLayer.csb")
       -- self:addChild(self.checkinlayer)
@@ -536,7 +546,7 @@ function MainInterfaceScene:onEnter()
                                                  self.biao_ji:setVisible(true)
                                      end
                               end
-                              self:fun_radio(table.concat(self.radio_table,"    ") ,#self.radio_table)
+                              self:fun_radio(table.concat(self.radio_table,"            ") ,#self.radio_table)
 
                       end)
 NotificationCenter:Instance():AddObserver("XINYUE", self,

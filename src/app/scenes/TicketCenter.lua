@@ -88,7 +88,6 @@ function TicketCenter:fun_Surorise( )
 	end))
 	self.TicketCenterlist:setItemModel(self.TicketCenterlist:getItem(0))
 	self.TicketCenterlist:removeAllItems()
-	
 end
 function TicketCenter:fun_list_data(  )
 	local myrewardlist=LocalData:Instance():get_getmyrewardlist()
@@ -117,10 +116,11 @@ function TicketCenter:fun_list_data(  )
 	          if not  file then
 	              table.insert(self.image_table,{_obj = TicketCenter_image ,name=path..tostring(Util:sub_str(rewardlist[i]["activityname"], "/",":"))})
 	           else
-	               TicketCenter_image:loadTexture(path..tostring(Util:sub_str(rewardlist[i]["activityname"], "/",":")))
+	               TicketCenter_image:loadTexture(path..tostring(Util:sub_str(rewardlist[i]["goodsimageurl"], "/",":")))
 	          end
 	          --  信息确认
 	          local TicketCenter_bt=cell:getChildByName("TicketCenter_bt")
+	          TicketCenter_bt:setTag(i)
 	          TicketCenter_bt:addTouchEventListener(function(sender, eventType  )
 		                 if eventType == 3 then
 		                    sender:setScale(1)
@@ -132,6 +132,7 @@ function TicketCenter:fun_list_data(  )
 		                end
 		                sender:setScale(1)
 		                self.win_type=2
+		                self._win_img=path..tostring(Util:sub_str(rewardlist[sender:getTag()]["goodsimageurl"], "/",":"))
 		                self.Theirwin = cc.CSLoader:createNode("Theirwin.csb");
 			    self:addChild(self.Theirwin)
 			    self.Theirwin:setTag(123)
@@ -183,7 +184,8 @@ function TicketCenter:update(dt)
 	end
 end
 --信件确认
-function TicketCenter:fun_Theirwin(  )
+function TicketCenter:fun_Theirwin( _img)
+	dump(_img)
 	local win_consignee=LocalData:Instance():get_getconsignee()
 	local Theirwin_back=self.Theirwin:getChildByName("Theirwin_back")
           	Theirwin_back:addTouchEventListener(function(sender, eventType  )
@@ -202,6 +204,8 @@ function TicketCenter:fun_Theirwin(  )
             local Theirwin_phone=self.Theirwin:getChildByName("Theirwin_phone")
             local Theirwin_address=self.Theirwin:getChildByName("Theirwin_address")
             local Theirwin_submit=self.Theirwin:getChildByName("Theirwin_submit")
+            local Theirwin_win_image=self.Theirwin:getChildByName("Theirwin_win_image")
+            Theirwin_win_image:loadTexture(_img)
             Util:function_advice_keyboard(self.Theirwin,Theirwin_name,25)
             Util:function_advice_keyboard(self.Theirwin,Theirwin_phone,25)
             Util:function_advice_keyboard(self.Theirwin,Theirwin_address,25)
@@ -345,7 +349,7 @@ function TicketCenter:onEnter()
                        	if self.win_type==1 then
                        		self:fun_PerfectInformation() 
                        	else
-                       		self:fun_Theirwin() 
+                       		self:fun_Theirwin(self._win_img) 
                        	end
 			
 			         
@@ -372,7 +376,8 @@ function TicketCenter:onEnter()
 	   NotificationCenter:Instance():AddObserver("getmyrewardlist", self,
                        function()
                        
-			         self:Theirwin_download_list()	
+			         self:Theirwin_download_list()
+			         self:fun_list_data()	
                       end)
 
 end

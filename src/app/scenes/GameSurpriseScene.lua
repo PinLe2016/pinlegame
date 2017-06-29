@@ -4,8 +4,12 @@ local GameSurpriseScene = class("GameSurpriseScene", function()
 end)
 function GameSurpriseScene:ctor()
       self:fun_init()
+      self.ser_status=1   -- 1 本期活动  2  往期活动   0  是我的活动
+      self.sur_pageno= 1  --  页数
+      LocalData:Instance():set_getactivitylist(nil)
+      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
       self:fun_constructor()
-      --Server:Instance():activityfriendhelp("6343d09f-9fde-4176-9eda-0706a99f893a","123","http://www.PinleGame.com/GameImage/0db4d6fc-69d1-4d0c-b46b-f8a44d53f49c.jpg") 
+     
 end
 function GameSurpriseScene:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -14,10 +18,7 @@ function GameSurpriseScene:fun_constructor( ... )
       --  列表发送请求
       self.jac_data_num_tag=0
       self.jac_data_num=0
-      self.ser_status=1  	-- 1 本期活动  2  往期活动   0  是我的活动
-      self.sur_pageno= 1  --  页数
-      LocalData:Instance():set_getactivitylist(nil)
-      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+      
       self.image_table={}  --  存放图片
       self.timetext_table={} --存放时间
       self.time=0
@@ -192,17 +193,39 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	else
 		_str1="剩余时间: "
 	end
-            local _tabletime=(_time)
+            local time_bj=_time
+            if time_bj<=0 then
+              time_bj=time_bj+604800  --  目的是 7天后删除 
+            end
+            local _tabletime=(time_bj)
             local  _tabletime_data=Util:FormatTime_colon(_tabletime)
             local txt_Pastdate=time_obj:getChildByName("txt_Pastdate")
-            table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=_time,_str2=_str1})
+            table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=time_bj,_str2=_str1})
             txt_Pastdate:setString(_str1  .. _tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             
             local ig_GiftPhoto=_obj:getChildByName("ig_GiftPhoto")
           	ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
-	               if eventType ~= ccui.TouchEventType.ended then
-	                   return
-	              end
+	               if eventType == 3 then
+                          sender:setScale(1)
+                          return
+                      end
+                      if eventType ~= ccui.TouchEventType.ended then
+                          sender:setScale(0.8)
+                      return
+                      end
+                      sender:setScale(1)
+	               local userinfo=LocalData:Instance():get_getuserinfo()
+	               if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"]   then           
+	               else
+	                       self.floating_layer:prompt_box("完善信息才能参加惊喜吧哦！",function (sender, eventType)      
+	                                                                if eventType==1    then
+	                                                                    local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
+	             				                                self:addChild(PerInformationLayer.new())
+	                                                                end                
+	                           end) 
+		               		return
+	                end
+
 	              if _time >=0 then
 	              	 local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
 	              	local _parm=_gamelist[sender:getParent():getTag()]
@@ -236,15 +259,15 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             local YICY=_obj:getChildByName("YICY")
             local NOCY=_obj:getChildByName("NOCY")
             if tonumber(_gamelist[2*_num-istwo]["myrecord"])==0 then   --  0未参与 1参与
-            	NOCY:setVisible(true)
-            	YICY:setVisible(false)
+            	-- NOCY:setVisible(true)
+            	-- YICY:setVisible(false)
             	local time_bg1=time_obj:getChildByName("time_bg1")
             	time_bg1:loadTexture("SurpriseImage/JXB_BQHD_6.png")
             	local JCJM_6=_obj:getChildByName("JCJM_6")
             	JCJM_6:loadTexture("SurpriseImage/JXB_BQHD_5.png")
           else
-          	             NOCY:setVisible(false)
-            	 YICY:setVisible(true)
+          	   --           NOCY:setVisible(false)
+            	 -- YICY:setVisible(true)
             	 local time_bg1=time_obj:getChildByName("time_bg1")
             	time_bg1:loadTexture("SurpriseImage/JXB_BQHD_14.png")
             	local JCJM_6=_obj:getChildByName("JCJM_6")
@@ -332,7 +355,7 @@ function GameSurpriseScene:promptbox_buffer(prompt_text)
 end
 
 function GameSurpriseScene:onEnter()
-
+	--dump(crypto.md5("18810673231岁月如风"))
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
 			self.list_table=LocalData:Instance():get_getactivitylist()

@@ -13,9 +13,10 @@
 local aboutdetailsLayer = class("aboutdetailsLayer", function()
             return display.newLayer("aboutdetailsLayer")
 end)
-function aboutdetailsLayer:ctor(_type)
+function aboutdetailsLayer:ctor(_type,_nick_name)
        self:setNodeEventEnabled(true)--layer添加监听
        self._type=_type
+       self.nick_name=_nick_name
        self:init()
 end
 function aboutdetailsLayer:init(  )
@@ -63,10 +64,12 @@ function aboutdetailsLayer:init(  )
           self.Zcontent_text=self.advicedata_bg:getChildByTag(207)  --提交内容
           Util:function_advice_keyboard(self.advicedata_bg,self.Zcontent_text,10)
           self.Zname_text=self.advicedata_bg:getChildByTag(214)  --输入姓名
+          Util:function_advice_keyboard(self.advicedata_bg,self.Zname_text,10)
           self.Zphone_text=self.advicedata_bg:getChildByTag(215)  --输入手机号
+          Util:function_advice_keyboard(self.advicedata_bg,self.Zphone_text,10)
           self.content_text=self.Zcontent_text
-          self.Zname_text:setVisible(false)
-          self.Zphone_text:setVisible(false)
+          self.name_text=self.Zname_text
+          self.phone_text=self.Zphone_text
           -- --   --商务合作
           self.business_bg=self.aboutdetails:getChildByTag(305)  --商务合作界面
           self.business_bg:setVisible(false)
@@ -104,13 +107,18 @@ function aboutdetailsLayer:init(  )
           self.Xcontent_text=self.businessback_bg:getChildByTag(365)  --提交内容
           Util:function_advice_keyboard(self.businessback_bg,self.Xcontent_text,10)
           self.Xcompanyname_text=self.businessback_bg:getChildByTag(366)  --公司名称
+          Util:function_advice_keyboard(self.businessback_bg,self.Xcompanyname_text,10)
           self.Xname_text=self.businessback_bg:getChildByTag(367)  --联系人姓名
+          Util:function_advice_keyboard(self.businessback_bg,self.Xname_text,10)
           self.Xphone_text=self.businessback_bg:getChildByTag(368)  --联系方式
+          Util:function_advice_keyboard(self.businessback_bg,self.Xphone_text,10)
           self.contenttext =self.Xcontent_text
-          self.Xcompanyname_text:setVisible(false)
-          self.Xname_text:setVisible(false)
-          self.Xphone_text:setVisible(false)
+          self.companyname_text=self.Xcompanyname_text
+          self.nametext=self.Xname_text
+          self.phonetext=self.Xphone_text
           local describe_t=self.aboutdetails:getChildByTag(171)  --类型
+          local account_t=self.aboutdetails:getChildByTag(2187)  --账号
+          account_t:setString(tostring(self.nick_name))
            local back_bt=self.aboutdetails:getChildByTag(3070)  --返回
            back_bt:addTouchEventListener((function(sender, eventType  )
                    if eventType == 3 then
@@ -137,12 +145,12 @@ function aboutdetailsLayer:init(  )
             if self._type == 1 then  --提交建议
                   self.advice_bg:setVisible(true)
                   self.Zcontent_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
-                  self:inputbox()
+                  --self:inputbox()
                   self.content_text:setString("")
             elseif self._type == 2 then  --  商务合作
                   self.business_bg:setVisible(true)
                   self.Xcontent_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
-                  self:businesscooperation()
+                  --self:businesscooperation()
                   self.contenttext:setString("")
             end
              
@@ -217,13 +225,13 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
            elseif  tag==1294 then--提交建议
         self.advice_bg:setVisible(true)
         self.Zcontent_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
-        self:inputbox()
+        --self:inputbox()
          self.content_text:setString("")
 
             elseif  tag==1295 then --商务合作
                   self.business_bg:setVisible(true)
                   self.Xcontent_text:setPlaceHolder("请输入您的宝贵建议(200字以内)")
-                  self:businesscooperation()
+                  --self:businesscooperation()
                    self.contenttext:setString("")
             elseif  tag==1296 then --扫描二维码
                    print("扫描二维码")
@@ -236,9 +244,9 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                   --self.name_text:setVisible(false)
                   --self.content_text:setVisible(false)
             elseif  tag==210 then   --提交  记住在正确时候消息这界面消失   
-              print("提交", self.phone_text:getText())     --self.phone_text
-                  local _name=self.name_text:getText()   --self.name_text  
-                  local _tel=self.phone_text:getText()
+              print("提交", self.phone_text:getString())     --self.phone_text
+                  local _name=self.name_text:getString()   --self.name_text  
+                  local _tel=self.phone_text:getString()
                   local _content=self.content_text:getString()   --getText()  self.content_text
                   --type    0为建议反馈，1为商务合作   
                   print("1111",_name,_tel,_content)
@@ -269,10 +277,10 @@ function aboutdetailsLayer:touch_btCallback( sender, eventType )
                        self.cooperation_ListView:setVisible(false)
                        
             elseif tag==364 then  --商务合作提交  
-                  local _name=self.nametext:getText()--getString()  --
-                  local _tel= self.phonetext:getText()  --self.phonetext
+                  local _name=self.nametext:getString()--getString()  --
+                  local _tel= self.phonetext:getString()  --self.phonetext
                   local _content=self.contenttext:getString()  --self.contenttext
-                  local _company=self.companyname_text:getText()  --self.companyname_text
+                  local _company=self.companyname_text:getString()  --self.companyname_text
                    if (_name=="请输入联系人姓名"  or  _name== "") or (_tel=="请输入联系方式"  or  _tel== "")  or (_content=="请输入您的宝贵建议(200字以内)"  or  _content== "") or (_company=="请输入公司名称"  or  _company== "")  then
                             LocalData:Instance():set_back("0")
                             Server:Instance():prompt("请您完善信息")
@@ -335,16 +343,19 @@ function aboutdetailsLayer:businesscooperation( )
     self.companyname_text:setPlaceHolder("请输入公司名称")
     self.companyname_text:setAnchorPoint(0.5,0.5)  
     self.companyname_text:setMaxLength(14)
-    self.companyname_text:setFontColor(cc.c3b(255,255,255))
-    self.companyname_text:setFontName("resources/com/huakangfangyuan.ttf")
+    self.companyname_text:setFontColor(cc.c3b(228,136,47))
+    self.companyname_text:setPlaceholderFont("Arial",20)
+    self.companyname_text:setFont("Arial",20)
+
     --联系人姓名
     self.nametext = ccui.EditBox:create(cc.size(width,height),res)
     self.businessback_bg:addChild(self.nametext)
     self.nametext:setPosition(cc.p(self.Xname_text:getPositionX(),self.Xname_text:getPositionY()))--( cc.p(130,323 ))  
     self.nametext:setPlaceHolder("请输入联系人姓名")
     self.nametext:setAnchorPoint(0.5,0.5) 
-    self.nametext:setFontColor(cc.c3b(255,255,255))
-    self.nametext:setFontName("resources/com/huakangfangyuan.ttf")
+    self.nametext:setFontColor(cc.c3b(228,136,47))
+    self.nametext:setPlaceholderFont("Arial",20)
+    self.nametext:setFont("Arial",20)
     self.nametext:setMaxLength(14)
      --联系方式
     self.phonetext = ccui.EditBox:create(cc.size(width,height),res)
@@ -352,8 +363,9 @@ function aboutdetailsLayer:businesscooperation( )
     self.phonetext:setPosition(cc.p(self.Xphone_text:getPositionX(),self.Xphone_text:getPositionY()))--( cc.p(130,323 ))  
     self.phonetext:setPlaceHolder("请输入联系方式")
     self.phonetext:setAnchorPoint(0.5,0.5) 
-    self.phonetext:setFontName("resources/com/huakangfangyuan.ttf")
-    self.phonetext:setFontColor(cc.c3b(255,255,255))
+    self.phonetext:setPlaceholderFont("Arial",20)
+    self.phonetext:setFont("Arial",20)
+    self.phonetext:setFontColor(cc.c3b(228,136,47))
     self.phonetext:setMaxLength(11)
 end
 -- 提交内容
@@ -369,16 +381,20 @@ function aboutdetailsLayer:inputbox(  )
     self.phone_text:setPlaceHolder("请输入手机号码")
     self.phone_text:setAnchorPoint(0.5,0.5)  
     self.phone_text:setMaxLength(11)
-    self.phone_text:setFontName("resources/com/huakangfangyuan.ttf")
-    self.phone_text:setFontColor(cc.c3b(255,255,255))
+    self.phone_text:setFontColor(cc.c3b(228,136,47))
+    self.phone_text:setPlaceholderFont("Arial",20)
+    self.phone_text:setFont("Arial",20)
+    self.phone_text:setPlaceholderFontColor(cc.c3b(228,136,47))
     -- 姓名
     self.name_text = ccui.EditBox:create(cc.size(width,height),res)
     self.advicedata_bg:addChild(self.name_text)
     self.name_text:setPosition(cc.p(self.Zname_text:getPositionX(),self.Zname_text:getPositionY()))--( cc.p(130,323 ))  
     self.name_text:setPlaceHolder("请输入姓名")
-    self.name_text:setFontName("resources/com/huakangfangyuan.ttf")
+    self.name_text:setFontColor(cc.c3b(228,136,47))
+    self.name_text:setPlaceholderFontColor(cc.c3b(228,136,47))
+    self.name_text:setPlaceholderFont("Arial",20)
+    self.name_text:setFont("Arial",20)
     self.name_text:setAnchorPoint(0.5,0.5) 
-    self.name_text:setFontColor(cc.c3b(255,255,255))
     self.name_text:setMaxLength(14)
 end
 

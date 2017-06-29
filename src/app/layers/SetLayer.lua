@@ -121,7 +121,8 @@ function SetLayer:set_touch(  )
                       Util:layer_action(self.SetNode,self,"close")
 
                   end)
-
+        local  userd_ata=LocalData:Instance():get_user_data()
+        local nick_name=userd_ata["loginname"]
       local STGY_bt=self.SetNode:getChildByName("Image_59")
                   STGY_bt:addTouchEventListener(function(sender, eventType  )
                         if eventType == 3 then
@@ -134,7 +135,7 @@ function SetLayer:set_touch(  )
                           end
                           sender:setScale(1)
                       local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
-                     self:addChild(aboutdetailsLayer.new(0),1,12)
+                     self:addChild(aboutdetailsLayer.new(0,nick_name),1,12)
                   end)
 	--  意见反馈
 	 local btn_Feedback=self.SetNode:getChildByName("Button_2")
@@ -143,7 +144,7 @@ function SetLayer:set_touch(  )
                        return
                   end
                    local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
-                  self:addChild(aboutdetailsLayer.new(1),1,12)
+                  self:addChild(aboutdetailsLayer.new(1,nick_name),1,12)
               end)
               --  商务合作
 	 local btn_Cooperation=self.SetNode:getChildByName("Button_3")
@@ -152,7 +153,7 @@ function SetLayer:set_touch(  )
                        return
                   end
                    local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
-                  self:addChild(aboutdetailsLayer.new(2),1,12)
+                  self:addChild(aboutdetailsLayer.new(2,nick_name),1,12)
               end)
               --  点赞
 	 local btn_Commend=self.SetNode:getChildByName("Button_4")

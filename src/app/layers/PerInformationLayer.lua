@@ -4,7 +4,8 @@ local PerInformationLayer = class("PerInformationLayer", function()
             return display.newScene("PerInformationLayer")
 end)
 function PerInformationLayer:ctor()--params
-
+       self.floating_layer = require("app.layers.FloatingLayer").new()
+       self.floating_layer:addTo(self,100000)
        self:setNodeEventEnabled(true)--layer添加监听
        -- Server:Instance():getuserinfo() -- 初始化数据
        self.head_index=100 -- 初始化
@@ -176,9 +177,15 @@ function PerInformationLayer:add_init(  )
                         local ig_GiftPhoto=cell:getChildByName("Button_10")
                         ig_GiftPhoto:setTag(i)   
                         ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
-                                if eventType ~= ccui.TouchEventType.ended then
+                                if eventType == 3 then
+                                    sender:setScale(1)
                                     return
                                 end
+                                if eventType ~= ccui.TouchEventType.ended then
+                                    sender:setScale(1.2)
+                                return
+                                end
+                                sender:setScale(1)
                                 local  _tag=sender:getTag()
                                  local authentication = require("app.layers.authentication") 
                                 self:addChild(authentication.new({_tag=_tag}),1,15)
@@ -502,9 +509,15 @@ function PerInformationLayer:init(  )
             end
 
             self.per_gender:addTouchEventListener(function(sender, eventType  )
-                if eventType ~= ccui.TouchEventType.ended then
-                            return
-                end
+                if eventType == 3 then
+                        sender:setScale(1)
+                        return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
                 self.per_gender_text:setVisible(true)
             end)
             self.per_gender_text:addTouchEventListener(function(sender, eventType  )
@@ -514,9 +527,15 @@ function PerInformationLayer:init(  )
                 self.per_gender_text:setVisible(false)
             end)
             self.per_gender_male:addTouchEventListener(function(sender, eventType  )
-                if eventType ~= ccui.TouchEventType.ended then
-                            return
-                end
+                if eventType == 3 then
+                        sender:setScale(1)
+                        return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
                 self.per_gender_text:setVisible(false)
                 self.per_gender_name:setString("男")
                 self.per_gender_name_tex=1
@@ -524,9 +543,15 @@ function PerInformationLayer:init(  )
                 self:savedata()
             end)
             self.per_gender_female:addTouchEventListener(function(sender, eventType  )
-                if eventType ~= ccui.TouchEventType.ended then
-                            return
-                end
+                if eventType == 3 then
+                        sender:setScale(1)
+                        return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
                 self.per_gender_text:setVisible(false)
                 self.per_gender_name_tex=0
                 self.per_gender_name:setString("女")
@@ -538,37 +563,81 @@ function PerInformationLayer:init(  )
             self.per_name_data=self.per_name:getChildByTag(56)  --  姓名
             self.per_name_text=self.Perinformation:getChildByTag(80)  --  姓名
             self.per_name:getChildByTag(55):addTouchEventListener(function(sender, eventType  )
-                if eventType ~= ccui.TouchEventType.ended then
-                            return
-                end
-                self.per_name:setVisible(false)
-                self.per_name_text:setVisible(true)
-                self._Pname:setVisible(true)
+                if eventType == 3 then
+                        sender:setScale(1)
+                        return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
+                    local  userdatainit=LocalData:Instance():get_getuserinfo()
+                    if tonumber(userdatainit["alternick"]) ==0  then
+                        self.floating_layer:prompt_box("昵称只能修改一次，是否确认修改",function (sender, eventType)      
+                                                                if eventType==1    then
+                                                                    self.per_name:setVisible(false)
+                                                                    self.per_name_text:setVisible(true)
+                                                                    self._Pname:setVisible(true)
+                                                                end                
+                           end)    --  然并卵的提示语
+                     else
+                         self.floating_layer:prompt_box("昵称不可被更改")
+                    end
+                
             end)
             self.per_name:addTouchEventListener(function(sender, eventType  )
-                if eventType ~= ccui.TouchEventType.ended then
-                            return
-                end
-                self.per_name:setVisible(false)
-                self.per_name_text:setVisible(true)
-                self._Pname:setVisible(true)
+                if eventType == 3 then
+                        sender:setScale(1)
+                        return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
+                     local  userdatainit=LocalData:Instance():get_getuserinfo()
+                    if tonumber(userdatainit["alternick"]) ==0  then
+                        self.floating_layer:prompt_box("昵称只能修改一次，是否确认修改",function (sender, eventType)      
+                                                                if eventType==1    then
+                                                                    self.per_name:setVisible(false)
+                                                                    self.per_name_text:setVisible(true)
+                                                                    self._Pname:setVisible(true)
+                                                                end                
+                           end)    --  然并卵的提示语
+                     else
+                         self.floating_layer:prompt_box("昵称不可被更改")
+                    end
+                
             end)
 
             self.per_birthday=self.Perinformation:getChildByTag(26):getChildByTag(245)  --  生日
-            self.per_birthday_data=self.Perinformation:getChildByTag(26):getChildByTag(106)  --  生日
+            self.per_birthday_data=self.per_birthday:getChildByTag(106)  --  生日
             self.per_birthday_text=self.Perinformation:getChildByTag(466)
             self.per_birthday:addTouchEventListener(function(sender, eventType  )
-                if eventType ~= ccui.TouchEventType.ended then
-                            return
-                end
+                if eventType == 3 then
+                        sender:setScale(1)
+                        return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
                 self.per_birthday:setVisible(false)
                 self.per_birthday_text:setVisible(true)
                 self:fun_birthday(  )
             end)
-            self.Perinformation:getChildByTag(26):getChildByTag(107):addTouchEventListener(function(sender, eventType  )
-                if eventType ~= ccui.TouchEventType.ended then
-                            return
-                end
+            self.per_birthday:getChildByTag(107):addTouchEventListener(function(sender, eventType  )
+                if eventType == 3 then
+                        sender:setScale(1)
+                        return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
                 self.per_birthday:setVisible(false)
                 self.per_birthday_text:setVisible(true)
                 self:fun_birthday(  )
@@ -577,17 +646,29 @@ function PerInformationLayer:init(  )
             self.per_address_data=self.per_address:getChildByTag(51)  --  城市
             self.per_address_text=self.Perinformation:getChildByTag(467)  --  城市
              self.per_address:getChildByTag(52):addTouchEventListener(function(sender, eventType  )
-                    if eventType ~= ccui.TouchEventType.ended then
-                                return
+                    if eventType == 3 then
+                        sender:setScale(1)
+                        return
                     end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
                     self.per_address:setVisible(false)
                     self.per_address_text:setVisible(true)
                     self:fun_city_info(  )
             end)
             self.per_address:addTouchEventListener(function(sender, eventType  )
-                    if eventType ~= ccui.TouchEventType.ended then
-                                return
+                   if eventType == 3 then
+                        sender:setScale(1)
+                        return
                     end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
                     self.per_address:setVisible(false)
                     self.per_address_text:setVisible(true)
                     self:fun_city_info(  )
@@ -782,9 +863,15 @@ function PerInformationLayer:perinformation_init(  )
 
 end
 function PerInformationLayer:touch_callback( sender, eventType )
-    if eventType ~= ccui.TouchEventType.ended then
-        return
-    end
+                 if eventType == 3 then
+                        sender:setScale(1)
+                        return
+                    end
+                    if eventType ~= ccui.TouchEventType.ended then
+                        sender:setScale(1.2)
+                    return
+                    end
+                    sender:setScale(1)
     --local activitypoints=LocalData:Instance():getactivitypoints_callback()
     local tag=sender:getTag()
     if tag==1883 then --城市
