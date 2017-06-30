@@ -187,11 +187,11 @@ function InvitefriendsLayer:fun_init( _isvisber)
              local databg_text=self.Invitefriends:getChildByTag(106)  --数据背
 
             self.gold_text=databg_text:getChildByTag(113)  --未领取的金币
-            self.gold_text:setString("0")
+            self.gold_text:setString("+ 0")
             if not friendlist_table["one_points"] then
               return
             end
-             self.gold_text:setString(friendlist_table["one_golds"])
+             self.gold_text:setString("+ "  ..  friendlist_table["one_golds"])
             if tostring(friendlist_table["one_golds"])  ==  "0" then
               --self.obtain_bt:setColor(cc.c3b(100,100,100))  
               self.obtain_bt:setBright(false) 

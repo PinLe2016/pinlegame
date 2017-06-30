@@ -205,16 +205,21 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             txt_Pastdate:setString(_str1  .. _tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             
             local ig_GiftPhoto=_obj:getChildByName("ig_GiftPhoto")
+            local kuang=_obj:getChildByName("kuang")
+            kuang:setVisible(false)
           	ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
 	               if eventType == 3 then
                           sender:setScale(1)
+                          kuang:setVisible(false)
                           return
                       end
                       if eventType ~= ccui.TouchEventType.ended then
                           sender:setScale(0.8)
+                          kuang:setVisible(true)
                       return
                       end
                       sender:setScale(1)
+                      kuang:setVisible(false)
 	               local userinfo=LocalData:Instance():get_getuserinfo()
 	               if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"]   then           
 	               else

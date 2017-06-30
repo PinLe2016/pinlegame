@@ -104,21 +104,42 @@ function MainInterfaceScene:Physics_homeback_ref( )
 
 
 end
+function MainInterfaceScene:test()
 
+  -- cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
+  cc.Director:getInstance():setDepthTest(true)
+
+  local sp=display.newSprite("resources/zhujiemian/ZJM_XG_10.png")
+  sp:setPosition(display.cx,display.cy)
+
+
+  local nodegird = cc.NodeGrid:create()
+  nodegird:addChild(sp)
+  self:addChild(nodegird)
+  local Liquid=cc.Liquid:create(0.5, cc.size(10, 10), 2, 5.0);
+  local WavesTiles3D=cc.WavesTiles3D:create(10, cc.size(20, 20), 10, 20)
+  local Waves3D=cc.Waves3D:create(5, cc.size(15, 10), 10, 20)
+  
+  local ripple=cc.Ripple3D:create(5, cc.size(5, 5), cc.p(320, 480), 240, 4, 160)
+ nodegird:runAction( cc.RepeatForever:create(WavesTiles3D));--cc.RepeatForever:create(
+
+end
 function MainInterfaceScene:fun_init( )
+      
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
       local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
-      local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png")
+      local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png") --BG-1  ZJM_XG_10
       local gridNode = cc.NodeGrid:create()
       gridNode:addChild(fragment_sprite)
-      gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()))
+      gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()))  --(cc.p(320,568))--
       self.MainInterfaceScene:addChild(gridNode,0,0)
-      local  waves = cc.Waves:create(3, cc.size(10,5), 4, 6, true, false)
+      --gridNode:setLocalZOrder(200)
+      local  waves =cc.Waves:create(3, cc.size(10,5), 2, 6, true, false)
       local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
       gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( waves) ) )
+     -- self:test()
 
-      
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self.signanimations:setVisible(false)
       self:addChild(self.signanimations)
