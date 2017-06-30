@@ -37,7 +37,7 @@ function SlotMachines:fun_Initialize_infor( ... )
       self.slotlh_ldb=self.lh_bg:getChildByName("lh_ldb")  -- 进度条
       self.slotlh_ldb:setPercent(tonumber(self.SlotMachineslevelmin)  / tonumber(self.SlotMachineslevelmax)  *100)
       self.slotbumber=self.lh_bg:getChildByName("bumber") --  次数
-      self.slotbumber:setString("剩余"  ..  tostring(self.SlotMachinesgametimes)  ..  "次")
+      self.slotbumber:setString( tostring(self.SlotMachinesgametimes)  )
       self.slotintegral=self.lh_bg:getChildByName("integral") --  积分
       self.slotintegral:setString(tostring(self.SlotMachinesscore))
       self.slotlevel=self.lh_bg:getChildByName("level") --  等级
@@ -62,7 +62,10 @@ end
 function SlotMachines:fun_Initialize_data( ... )
       local activitygame=LocalData:Instance():get_activitygame()
       self.slotlh_ldb:setPercent(tonumber(activitygame["levelminpoints"])  / tonumber(activitygame["levelmaxpoints"])  *100)
-      self.slotbumber:setString("剩余"  ..  tostring(activitygame["remaintimes"])  ..  "次")
+      self.slotbumber:setString(  tostring(activitygame["remaintimes"])    )
+       local actionT1 = cc.ScaleTo:create( 0.2, 1.5)
+      local actionTo1 = cc.ScaleTo:create( 0.2, 1)
+      self.slotbumber:runAction(cc.Sequence:create(actionT1, actionTo1))
       self.slotintegral:setString(tostring(activitygame["totalpoints"]))
       self.slotlevel:setString(tostring(activitygame["level"]))
       self.slotlv_name1:setString(tostring(activitygame["level"]))
@@ -225,6 +228,7 @@ function SlotMachines:fun_touch_bt( ... )
 
        --帮助
       local help_bt=self.lh_bg:getChildByName("help_bt")
+      self:fun_LoadingNodebar_act(help_bt)
       help_bt:addTouchEventListener(function(sender, eventType  )
               if eventType == 3 then
                     sender:setScale(1)
@@ -241,7 +245,12 @@ function SlotMachines:fun_touch_bt( ... )
       end)
        
 end
+function SlotMachines:fun_LoadingNodebar_act( _obj )
+              local actionT1 = cc.RotateTo:create( 1, 2)
+              local actionTo1 = cc.RotateTo:create( 1, -2)
+              _obj:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
 
+end
 --  个人记录
 function SlotMachines:fun_Integralrecord( ... )
          self.Integralrecord = cc.CSLoader:createNode("Integralrecord.csb");

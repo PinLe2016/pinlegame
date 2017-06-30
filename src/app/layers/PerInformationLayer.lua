@@ -175,17 +175,21 @@ function PerInformationLayer:add_init(  )
                             Panel_text:setString("身份认证")
                         end
                         local ig_GiftPhoto=cell:getChildByName("Button_10")
+                        local ig_GiftPhoto_k=cell:getChildByName("Image_202")
                         ig_GiftPhoto:setTag(i)   
                         ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
                                 if eventType == 3 then
                                     sender:setScale(1)
+                                    ig_GiftPhoto_k:setVisible(false)
                                     return
                                 end
                                 if eventType ~= ccui.TouchEventType.ended then
                                     sender:setScale(1.2)
+                                    ig_GiftPhoto_k:setVisible(true)
                                 return
                                 end
                                 sender:setScale(1)
+                                ig_GiftPhoto_k:setVisible(false)
                                 local  _tag=sender:getTag()
                                  local authentication = require("app.layers.authentication") 
                                 self:addChild(authentication.new({_tag=_tag}),1,15)
@@ -705,8 +709,22 @@ function PerInformationLayer:init(  )
     end)
   
             local head_bt=self.Perinformation:getChildByTag(26):getChildByTag(67)  --头像
+            local head_bt_k=self.Perinformation:getChildByTag(26):getChildByTag(1269)  --头像框
             head_bt:addTouchEventListener(function(sender, eventType  )
-                        self:touch_callback(sender, eventType)
+                         if eventType == 3 then
+                            sender:setScale(0.9)
+                            head_bt_k:setVisible(false)
+                            return
+                        end
+                        if eventType ~= ccui.TouchEventType.ended then
+                            sender:setScale(0.8)
+                            head_bt_k:setVisible(true)
+                        return
+                        end
+                        sender:setScale(0.9)
+                        head_bt_k:setVisible(false)
+                        self._Pname:setVisible(false)
+                        self:head()
             end)
         self:perinformation_init()
         
@@ -1607,6 +1625,9 @@ function PerInformationLayer:fun_city_info( )
         -- if self.province ~="1" then
         local city_gps=self.adress:getChildByTag(52):getChildByTag(58)
         city_gps:setString(self.province..self.city)
+         local TextField_gps=self.adress:getChildByTag(52):getChildByTag(1350)
+         Util:function_advice_keyboard(self.adress:getChildByTag(52),TextField_gps,10)  --  新增加的手机归属地
+         --TextField_gps:setString(self.province..self.city)
         -- end
         -- dump(pinle_location:getProvince())
         -- dump(pinle_location:getCity())

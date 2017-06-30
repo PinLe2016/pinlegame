@@ -108,6 +108,17 @@ end
 function MainInterfaceScene:fun_init( )
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
+      local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
+      local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png")
+      local gridNode = cc.NodeGrid:create()
+      gridNode:addChild(fragment_sprite)
+      gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()))
+      self.MainInterfaceScene:addChild(gridNode,0,0)
+      local  waves = cc.Waves:create(3, cc.size(10,5), 4, 6, true, false)
+      local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
+      gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( waves) ) )
+
+      
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self.signanimations:setVisible(false)
       self:addChild(self.signanimations)
@@ -121,18 +132,22 @@ function MainInterfaceScene:fun_init( )
 
 
       local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)  --惊喜吧
+      Surprise_bt:setLocalZOrder(2)
       Surprise_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
       local Rotary_bt=self.MainInterfaceScene:getChildByTag(444)  --转盘
+      Rotary_bt:setLocalZOrder(2)
       Rotary_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
       local win_bt=self.MainInterfaceScene:getChildByTag(97)  --中奖
+      win_bt:setLocalZOrder(2)
       win_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
       local help_bt=self.MainInterfaceScene:getChildByTag(125)  --助力榜
+      help_bt:setLocalZOrder(2)
       help_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)
       end)
@@ -157,6 +172,7 @@ function MainInterfaceScene:fun_init( )
                      self:addChild(PerInformationLayer.new(),1,14)
 
       end)
+       self.MainInterfaceScene:getChildByTag(6222):setLocalZOrder(2)
       local checkin_bt= self.MainInterfaceScene:getChildByTag(6222):getChildByTag(124)  --self.signanimations:getChildByTag(290)  签到按钮
           checkin_bt:addTouchEventListener(function(sender, eventType  )
           self:touch_callback(sender, eventType)

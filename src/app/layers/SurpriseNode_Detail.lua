@@ -176,11 +176,13 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
       end)
       --好友助力
       self.Friend_help=self.DetailsOfSurprise:getChildByName("Friend_help")
+      self:fun_LoadingNodebar_act(self.Friend_help)
       self.Friend_help:setVisible(false)
 
        --奖项
-      local award_bt=self.DetailsOfSurprise:getChildByName("award_bt")
-      award_bt:addTouchEventListener(function(sender, eventType  )
+      self.award_bt=self.DetailsOfSurprise:getChildByName("award_bt")
+      self.award_bt:setVisible(true)
+      self.award_bt:addTouchEventListener(function(sender, eventType  )
               if eventType == 3 then
                     sender:setScale(1)
                     return
@@ -195,6 +197,12 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
       end)
        
           
+end
+function SurpriseNode_Detail:fun_LoadingNodebar_act( _obj )
+              local actionT1 = cc.RotateTo:create( 1, 2)
+              local actionTo1 = cc.RotateTo:create( 1, -2)
+              _obj:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+
 end
 function SurpriseNode_Detail:fun_touch_bt_htp( ... )
       local activitybyid=LocalData:Instance():get_getactivitybyid()
@@ -235,10 +243,12 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 end
       end)
       --开始
-      local began_bt=self.DetailsOfSurprise:getChildByName("began_bt")
-      local HL_gametimes=began_bt:getChildByName("HL_gametimes")
+      self.began_bt=self.DetailsOfSurprise:getChildByName("began_bt")
+      self.began_bt:setVisible(true)
+      self.award_bt:setVisible(true)
+      local HL_gametimes=self.began_bt:getChildByName("HL_gametimes")
       HL_gametimes:setString(tostring(activitybyid["gametimes"]))
-      began_bt:addTouchEventListener(function(sender, eventType  )
+      self.began_bt:addTouchEventListener(function(sender, eventType  )
               if eventType == 3 then
                     sender:setScale(1)
                     return
@@ -248,6 +258,9 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 return
                 end
                 sender:setScale(1)
+                self.Friend_help:setVisible(false)
+                self.began_bt:setVisible(false)
+                self.award_bt:setVisible(false)
                 local sup_data=LocalData:Instance():get_getactivitybyid()
                 --  if tonumber(sup_data["gametimes"])<=0 then
                 --     self.floating_layer:prompt_box("您的次数已经用完")
@@ -560,6 +573,7 @@ function SurpriseNode_Detail:onEnter()
    --下载图片
    NotificationCenter:Instance():AddObserver("GETACTIVITYAWARDS", self,
                        function()
+
                                   self:winnersPreview_list_image()
                                   self:fun_win_package_table()
                       end)

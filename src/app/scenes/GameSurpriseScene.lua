@@ -31,6 +31,7 @@ end
 function GameSurpriseScene:fun_init( ... )
 	self.GameSurpriseScene = cc.CSLoader:createNode("GameSurpriseScene.csb");
 	self:addChild(self.GameSurpriseScene)
+
 	--  事件初始化
 	--  返回
 	local btn_Back=self.GameSurpriseScene:getChildByName("btn_Back")

@@ -7,6 +7,7 @@ end)
 
 function SurpriseRank:ctor(params)
        self:setNodeEventEnabled(true)
+       self.LV_hierarchy_table={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","国王"}
        --  初始化界面
        self.SurpriseRank_id=params.id
        self.SurpriseRank_score=params.score
@@ -67,8 +68,12 @@ function SurpriseRank:fun_friend_list_data( ... )
         for i=1,#ranklist do
           self.SurpriseRank_ListView:pushBackDefaultItem()
           local  cell = self.SurpriseRank_ListView:getItem(i-1)
-          local rank_number=cell:getChildByName("rank_number")
-          rank_number:setString(tonumber(ranklist[i]["rank"]))
+          local rank_number=cell:getChildByName("rank_number")  
+          local _bj=i
+          if i>=9 then
+            _bj=i
+          end
+          rank_number:setString(self.LV_hierarchy_table[10-_bj])
           local SurpriseRank_nickname=cell:getChildByName("SurpriseRank_nickname")
           SurpriseRank_nickname:setString(ranklist[i]["nickname"])
           local SurpriseRank_score=cell:getChildByName("SurpriseRank_score")
