@@ -452,7 +452,7 @@ end
 function SurpriseNode_Detail:function_introduce(_text ,_x,_y,_isvisible,_obj)
             self.introduce = cc.CSLoader:createNode("introduce.csb");
             _obj:addChild(self.introduce)
-            self.introduce:setPosition(cc.p(40,40))
+            self.introduce:setPosition(cc.p(40,30))
             self.introduce:setVisible(_isvisible)
              local introduce_Text=self.introduce:getChildByName("introduce_Text")
              introduce_Text:setString(tostring(_text))
