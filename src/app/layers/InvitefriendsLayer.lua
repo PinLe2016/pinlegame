@@ -17,13 +17,9 @@ function InvitefriendsLayer:ctor()--params
        self._table_int={}
        self._search_type=0
        self._table_box={}
-
-
-       Server:Instance():get_reward_friend_list() --好友列表
-
+       self:fun_init_infor()
+       
       
-      self:fun_init_infor()
-       -- Util:layer_action(self.Invitefriends,self,"open")
       
       self.Invitefriends:setAnchorPoint(0.5,0.5)
       self.Invitefriends:setPosition(320, 568)
@@ -38,6 +34,7 @@ function InvitefriendsLayer:ctor()--params
        end
        
        self:init()
+       Server:Instance():get_reward_friend_list() --好友列表
 end
 function InvitefriendsLayer:fun_init_infor()
         local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
@@ -71,8 +68,8 @@ function InvitefriendsLayer:init(  )
      
       self.No_friends=self.Invitefriends:getChildByTag(901)  --暂无好友
       self.No_friends:setVisible(false)
-       local back_bt=self.Invitefriends:getChildByTag(3187)  --返回
-  back_bt:addTouchEventListener(function(sender, eventType)
+      self.back_bt=self.Invitefriends:getChildByTag(3187)  --返回
+  self.back_bt:addTouchEventListener(function(sender, eventType)
             if eventType == 3 then
                        sender:setScale(1)
                        return
@@ -175,7 +172,6 @@ function InvitefriendsLayer:fun_init( _isvisber)
             --以下都是测试  
             self._table_box={}
              local friendlist_table =  LocalData:Instance():get_reward_friend_list()
-             --self.obtain_bt:setColor(cc.c3b(100,100,100)) 
              local _count=1
              self.obtain_bt:setBright(false) 
              if  not friendlist_table then
@@ -193,10 +189,8 @@ function InvitefriendsLayer:fun_init( _isvisber)
             end
              self.gold_text:setString("+ "  ..  friendlist_table["one_golds"])
             if tostring(friendlist_table["one_golds"])  ==  "0" then
-              --self.obtain_bt:setColor(cc.c3b(100,100,100))  
               self.obtain_bt:setBright(false) 
             else
-              --self.obtain_bt:setColor(cc.c3b(255,255,255))
               self.obtain_bt:setBright(true)   
             end
            
@@ -215,13 +209,12 @@ function InvitefriendsLayer:fun_init( _isvisber)
               self.grade =  _cell:getChildByTag(95)  --等级
               self.grade:setString( _friendlist[i]["playergrade"] )
               self.imgurl =  _cell:getChildByTag(105)  --头像
-              self.imgurl:loadTexture("png/"   ..   string.lower(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":"))))
-                  --  self.today_golds =  _cell:getChildByTag(102)  --贡献金币
-                  -- self.today_golds:setString( _friendlist[i]["total_golds"] )
-                  -- self.total_golds =  _cell:getChildByTag(101)  --贡献经验
-                  -- self.total_golds:setString( _friendlist[i]["total_points"] )
-                  
-
+               local _index=string.match(tostring(Util:sub_str(_friendlist[i]["imgurl"], "/",":")),"%d")
+                if not _index then
+                  self.imgurl:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(1)))
+                else
+                  self.imgurl:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+                end
                    local move_friend =_cell:getChildByName("CheckBox_1")  --删除好友
 
                    local yao_text_friend =_cell:getChildByTag(4411)  --邀字 
@@ -231,7 +224,6 @@ function InvitefriendsLayer:fun_init( _isvisber)
                   else
                     yao_text_friend:setString("友")
                     move_friend:setVisible(_isvisber)
-                    --self._table_box[_count] = move_friends
                     table.insert(self._table_box,{k=move_friend})
                   end
                   _count=_count+1
@@ -241,22 +233,11 @@ function InvitefriendsLayer:fun_init( _isvisber)
                                    local t_table_int =  {}
                                    t_table_int["playerid"]=_friendlist[i]["playerId"]
                                   table.insert(self.table_insert, t_table_int)
-                                  print("添加",self.table_insert[1])
-                                  -- if #self.table_insert  ~= 0 then
-                                  --   for i=1,#self.table_insert do
-                                  --   print("添加 ",self.table_insert[i]["playerid"])
-                                  -- end
-                                  -- end
-
                            elseif eventType == ccui.CheckBoxEventType.unselected then
-                                   print("删除")
                                    if #self.table_insert >0  then
                                       for j=1,#self.table_insert do
-
-                                        --print("删除 ss ",self.table_insert[j]["playerid"]," ",_friendlist[i]["playerId"])
                                         if tostring(self.table_insert[j]["playerid"]) == tostring(_friendlist[i]["playerId"]) then
                                             table.remove(self.table_insert,j)
-                                            --table.remove(self._table_int,i)
                                             return
                                         end
                                       end

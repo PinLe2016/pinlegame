@@ -65,15 +65,23 @@ function LoginScene:fun_LoadingNodebar_act( _obj )
               local act_bg=_obj:getChildByName("act_bg")
               local act_h1=act_bg:getChildByName("act_h1")
               local act_h2=act_bg:getChildByName("act_h2")
-              local actionT1 = cc.RotateTo:create( 1, 1.5)
-              local actionTo1 = cc.RotateTo:create( 1, -1.5)
-              local actionT2 = cc.RotateTo:create( 1, 1)
-              local actionTo2 = cc.RotateTo:create( 1, -1)
-              local actionT3 = cc.RotateTo:create( 1, 1)
-              local actionTo3 = cc.RotateTo:create( 1, -1)
+              local act_hU1=act_h1:getChildByName("act_hU1")
+              local act_hU2=act_h2:getChildByName("act_hU2")
+              local actionT1 = cc.RotateTo:create( 1, 2)
+              local actionTo1 = cc.RotateTo:create( 1, -2)
+              local actionT2 = cc.RotateTo:create( 1, 3)
+              local actionTo2 = cc.RotateTo:create( 1, -3)
+              local actionT3 = cc.RotateTo:create( 1, 2)
+              local actionTo3 = cc.RotateTo:create( 1, -2)
+              local actionT4 = cc.RotateTo:create( 1, 10)
+              local actionTo4 = cc.RotateTo:create( 1, -10)
+              local actionT5 = cc.RotateTo:create( 1, 4)
+              local actionTo5 = cc.RotateTo:create( 1, -4)
               act_bg:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
               act_h1:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
               act_h2:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
+              act_hU1:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT4, actionTo4)))
+              act_hU2:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT5, actionTo5)))
 
 end
 --微信发送请求
@@ -391,9 +399,15 @@ function LoginScene:landing_init()
 
       --微信登陆按钮
       self.wechat_bt:addTouchEventListener(function(sender, eventType  )
+                   if eventType == 3 then
+                      sender:setScale(1)
+                      return
+                  end
                   if eventType ~= ccui.TouchEventType.ended then
-                    return
-                  end  
+                      sender:setScale(1.2)
+                  return
+                  end
+                  sender:setScale(1)
                   cc.UserDefault:getInstance():setStringForKey("WeChat_landing","1")
                    self:function_bt_act(self.wechat_bt,"weixindenglu-anniu-guangxiao-",4,0.2,true,10011)
                    local function stopAction()
@@ -417,9 +431,15 @@ function LoginScene:landing_init()
       self.phone_bt=self.WeChat:getChildByName("wechat"):getChildByName("btn_Mobile")
       self.phone_bt:setLocalZOrder(100)
       self.phone_bt:addTouchEventListener(function(sender, eventType  )
-                  if eventType ~= ccui.TouchEventType.ended then
-                    return
+                   if eventType == 3 then
+                      sender:setScale(1)
+                      return
                   end
+                  if eventType ~= ccui.TouchEventType.ended then
+                      sender:setScale(1.2)
+                  return
+                  end
+                  sender:setScale(1)
                  cc.UserDefault:getInstance():setStringForKey("WeChat_landing","2")
                   self:function_bt_act(self.phone_bt,"shoujidenglu-anniu-guanxiao-",4,0.2,true,20020)
                    local function stopAction()

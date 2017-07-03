@@ -199,8 +199,8 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
           
 end
 function SurpriseNode_Detail:fun_LoadingNodebar_act( _obj )
-              local actionT1 = cc.RotateTo:create( 1, 2)
-              local actionTo1 = cc.RotateTo:create( 1, -2)
+              local actionT1 = cc.RotateTo:create( 1, 5)
+              local actionTo1 = cc.RotateTo:create( 1, -5)
               _obj:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
 
 end

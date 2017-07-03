@@ -128,17 +128,16 @@ function MainInterfaceScene:fun_init( )
       
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
-      local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
-      local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png") --BG-1  ZJM_XG_10
-      local gridNode = cc.NodeGrid:create()
-      gridNode:addChild(fragment_sprite)
-      gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()))  --(cc.p(320,568))--
-      self.MainInterfaceScene:addChild(gridNode,0,0)
-      --gridNode:setLocalZOrder(200)
-      local  waves =cc.Waves:create(3, cc.size(10,5), 2, 6, true, false)
-      local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
-      gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( waves) ) )
-     -- self:test()
+      -- local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
+      -- local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png") --BG-1  ZJM_XG_10
+      -- local gridNode = cc.NodeGrid:create()
+      -- gridNode:addChild(fragment_sprite)
+      -- gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()+20))  --(cc.p(320,568))--
+      -- self.MainInterfaceScene:addChild(gridNode,0,0)
+      -- local  waves =cc.Waves:create(3, cc.size(10,5), 2, 6, true, false)
+      -- local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
+      -- gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( waves) ) )
+
 
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self.signanimations:setVisible(false)
@@ -150,8 +149,6 @@ function MainInterfaceScene:fun_init( )
       self.signanimationact:gotoFrameAndPlay(0,65, true)
          
        self.gamecenter_text=self.MainInterfaceScene:getChildByTag(122)   --游戏中心
-
-
       local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)  --惊喜吧
       Surprise_bt:setLocalZOrder(2)
       Surprise_bt:addTouchEventListener(function(sender, eventType  )
