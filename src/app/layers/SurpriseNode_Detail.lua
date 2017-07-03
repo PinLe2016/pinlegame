@@ -230,14 +230,14 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
       self._advertising_bt=self.DetailsOfSurprise:getChildByName("advertising_bt")
       self._advertising_bt:addTouchEventListener(function(sender, eventType  )
             if eventType == 3 then
-                    sender:setScale(1)
+                  --  sender:setScale(1)
                     return
                 end
                 if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(0.8)
+                  --  sender:setScale(0.8)
                 return
                 end
-                sender:setScale(1)
+             --   sender:setScale(1)
                 if activitybyid["description"]  ~= "" then
                    self:fun_storebrowser(tostring(activitybyid["description"]))
                 end
