@@ -129,15 +129,17 @@ function MainInterfaceScene:fun_init( )
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
       --  加载波浪动画
-      -- local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
-      -- local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png") --BG-1  ZJM_XG_10
-      -- local gridNode = cc.NodeGrid:create()
-      -- gridNode:addChild(fragment_sprite)
-      -- gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()+20))  --(cc.p(320,568))--
-      -- self.MainInterfaceScene:addChild(gridNode,0,0)
-      -- local  waves =cc.Waves:create(3, cc.size(10,5), 2, 6, true, false)
-      -- local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
-      -- gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( waves) ) )
+      local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
+      local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png") --BG-1  ZJM_XG_10
+      local gridNode = cc.NodeGrid:create()
+      gridNode:addChild(fragment_sprite)
+      gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()))  --(cc.p(320,568))--
+      self.MainInterfaceScene:addChild(gridNode,0,0)
+      local  waves =cc.Waves:create(3, cc.size(10,5), 2, 3, true, false)
+      local  liquid  = cc.Liquid:create(3, cc.size(10, 10), 2, 2.0);
+      local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
+      gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( liquid) ) )
+
 
       self.signanimations = cc.CSLoader:createNode("signanimations.csb")
       self.signanimations:setVisible(false)

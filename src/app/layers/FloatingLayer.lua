@@ -24,15 +24,15 @@ function FloatingLayer:show_http(is_show,str)
     self:addChild(loadingLayer,1,250)
     local _str=loadingLayer:getChildByTag(74)
     if str then
-      _str:setString("授权中......")
+      _str:setString("授权中...")
     else
-      _str:setString("加载中......")
+      _str:setString("加载中...")
     end
 
     local action = cc.CSLoader:createTimeline("loadingLayer.csb")
     action:setTimeSpeed(0.5)
     loadingLayer:runAction(action)
-    action:gotoFrameAndPlay(0,120,true)
+    action:gotoFrameAndPlay(0,30,true)
 end
 function FloatingLayer:showFloat(dialogtextString,call)  --floatingLayer_init
   
