@@ -277,6 +277,7 @@ function MainInterfaceScene:fun_init( )
 
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                               sender:setTouchEnabled(false)
+                              Util:all_layer_backMusic()
                              local function stopAction()
                                   sender:setTouchEnabled(true)
                                   

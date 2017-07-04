@@ -65,6 +65,8 @@ end
 --  初始化变量
 function SurpriseNode_Detail:fun_Initialize_variable( ... )
     self.LV_hierarchy_table={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","国王"}
+    self.LV_hierarchy_table_LV_IMG={"9","10","11","12","13","17","16","14","15"}
+    self.LV_hierarchy_table_LV_IMG_NAME={"28","27","26","25","24","23","22","29","21"}
     self.LV_hierarchy_table_number={0,7,16,26,37,50,65,81,100}
     self.winnersPreview_comout=0
     self.winnersPreview_number=0
@@ -523,12 +525,22 @@ function SurpriseNode_Detail:fun_winnersPreview_list_init( ... )
           self.win_ListView:pushBackDefaultItem()
           local  cell = self.win_ListView:getItem(i-1)
           local number=cell:getChildByName("number")
+          local Image_84=cell:getChildByName("Image_84")
+          local Image_85=cell:getChildByName("Image_85")
           --number:setString("0 ~ "  ..  sup_data[i]["awardcount"])  s
           local _bj=i
+          local _obj=1
           if _bj>=9 then
             _bj=9
           end
-          number:setString(self.LV_hierarchy_table[10-_bj])
+          for j=1,9 do
+            if self.LV_hierarchy_table[10-_bj]  ==  self.LV_hierarchy_table[j] then
+              _obj=j
+            end
+          end
+          --number:setString(self.LV_hierarchy_table[10-_bj])
+          Image_84:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"  .. self.LV_hierarchy_table_LV_IMG[_obj]  ..   ".png")
+          Image_85:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"  .. self.LV_hierarchy_table_LV_IMG_NAME[_obj]  ..   ".png")
           local prize=cell:getChildByName("prize")
           prize:setString(sup_data[i]["awardorder"] ..  "等奖")
           local win_name=cell:getChildByName("win_name")
