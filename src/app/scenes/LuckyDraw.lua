@@ -48,6 +48,7 @@ function LuckyDraw:ctor()
       self:fun_constructor()
       Server:Instance():getfortunewheelrewards(200)
       Server:Instance():getrecentfortunewheelrewardlist()
+      
 end
 function LuckyDraw:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -81,6 +82,31 @@ function LuckyDraw:fun_LuckyDraw_touch( istouch )
 	self.LuckyDraw_Rotary_bt2:setTouchEnabled(istouch)
 	self.LuckyDraw_Rotary_bt3:setTouchEnabled(istouch)
 end
+function LuckyDraw:fun_LuckyDrawGoNode( ... )
+	 --  新手引导
+	local new_start=cc.UserDefault:getInstance():getStringForKey("Newbieguide","0")
+	if tonumber(new_start)==0 then
+	self.GONODE=cc.CSLoader:createNode("LuckyDrawGoNode.csb")
+	self.GONODE:setTag(568)
+	self:addChild(self.GONODE)
+	self.shareroleAction = cc.CSLoader:createTimeline("LuckyDrawGoNode.csb")
+     	self.GONODE:runAction(self.shareroleAction)
+     	self.shareroleAction:setTimeSpeed(1)
+     	self.shareroleAction:gotoFrameAndPlay(0,80, true)
+     	local Image_2=self.GONODE:getChildByName("Image_2")
+            Image_2:addTouchEventListener(function(sender, eventType  )
+                     
+                      if eventType ~= ccui.TouchEventType.ended then
+                           return
+                      end
+                     self:removeChildByTag(568, true)
+
+      end)
+	        cc.UserDefault:getInstance():setStringForKey("Newbieguide","2")
+	end
+
+	
+end
 function LuckyDraw:fun_init( ... )
 	self.LuckyDraw = cc.CSLoader:createNode("LuckyDraw.csb");
 	self:addChild(self.LuckyDraw)
@@ -93,7 +119,7 @@ function LuckyDraw:fun_init( ... )
 	self.LuckyDraw_Rotary2=self.LuckyDraw_zbg2:getChildByName("LuckyDraw_Rotary2")
 	self.LuckyDraw_Rotary3=self.LuckyDraw_zbg3:getChildByName("LuckyDraw_Rotary3")
 	self:fun_win_img_init()
-
+	self:fun_LuckyDrawGoNode()
 	self.go_bt=self.LuckyDraw_node:getChildByName("go_bt")
 	self.go_bt:setTouchEnabled(false)
 	--  事件初始化
