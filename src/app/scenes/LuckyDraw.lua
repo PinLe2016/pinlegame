@@ -135,6 +135,7 @@ function LuckyDraw:fun_init( ... )
 	                return
 	                end
 	                sender:setScale(1)
+	                Util:all_layer_backMusic()
 	              Util:scene_control("MainInterfaceScene")
             end)
             --  200
@@ -229,13 +230,7 @@ function LuckyDraw:fun_Isgold(_type)
 end
 --  初始化点击GO 
 function LuckyDraw:fun_began_start()
-	if LuckyDraw_type==200 then
-		Util:player_music_new("bg_5_f.mp3",true )
-	elseif LuckyDraw_type==500 then
-		Util:player_music_new("bg_7_f.mp3",true )
-	else
-		Util:player_music_new("bg_9_f.mp3",true )
-	end
+		
 	
        local function CallFucnCallback3(sender)
                 if self.x_rand~=0 then
@@ -264,7 +259,7 @@ end
                 return
                 end
                 sender:setScale(1)
-
+                Util:all_layer_backMusic()
               self.curr_bright:setBright(true)
               sender:setBright(false)
                if tag=="LuckyDraw_Rotary_bt1" then  
@@ -338,7 +333,7 @@ function LuckyDraw:refView()
 end
 --  开始按钮操作
 function LuckyDraw:maskTouch(_id)
-
+	
 	m_nAwardID =_id --math.random(1,m_awardNum)  --＊＊＊
 	print("抽奖设置id",m_nAwardID)   --  使我们设置的参数
 	self:awardStart()
@@ -371,10 +366,10 @@ function LuckyDraw:awardStart()
 end
 --转盘停止
 function LuckyDraw:awardEnd()
+	audio.stopAllSounds()
+	Util:player_music_new("huode.mp3",false )
 	self:fun_LuckyDraw_touch(true)
 	self.go_bt:setTouchEnabled(true)
-
-	Util:player_music_new("spin_button.mp3",false )
 	dump("抽奖成功,抽到"..self.m_info.data[m_nAwardID].name)
 end
 function LuckyDraw:doRotateAction(node,callback,time,speed)
@@ -613,6 +608,8 @@ function LuckyDraw:onEnter()
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD_FALSE", self,
                        function()
                        		self:fun_LuckyDraw_touch(true)
+                       		audio.stopAllSounds()
+		            Util:player_music_new("jbbuzu.mp3",true )
                       end)--
 
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELREWARDS", self,

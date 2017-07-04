@@ -179,6 +179,7 @@ function MainInterfaceScene:fun_init( )
                       return
                       end
                       sender:setScale(0.5)
+                      Util:all_layer_backMusic()
                       head_img_liang:setVisible(false)
                       local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
                      self:addChild(PerInformationLayer.new(),1,14)
@@ -252,6 +253,7 @@ function MainInterfaceScene:fun_init( )
                                   sender:setTouchEnabled(true)
                                   
                             end
+                            Util:all_layer_backMusic()
                             local actionTo =  cc.EaseBackOut:create(cc.RotateBy:create(0.5, 120))  
                             local actionTo2 = cc.RotateTo:create(0.2, 60)
                             local callfunc = cc.CallFunc:create(stopAction)
@@ -322,6 +324,7 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
      local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
       self:addChild(aboutdetailsLayer.new(),1,12)
   elseif tag==6225 then
+    Util:all_layer_backMusic()
     local SetLayer = require("app.layers.SetLayer")  --邀请好友
     self:addChild(SetLayer.new(),1,11)
     self.sliding_bg:setScale(0)
@@ -386,6 +389,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
   end
   local tag=sender:getTag()
   if tag==56 then --惊喜吧
+    Util:all_layer_backMusic()
      Util:scene_control("GameSurpriseScene")
   elseif tag==37 then  --37
     
@@ -405,13 +409,17 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
              Server:Instance():getcheckinhistory()  --签到http
       elseif tag==444 then  --转盘
+        Util:all_layer_backMusic()
         Util:scene_control("TicketCenter")
       elseif tag==97 then  --中奖
+        Util:all_layer_backMusic()
         Util:scene_control("LuckyDraw")
       elseif tag==125 then  --助力榜
+        Util:all_layer_backMusic()
         Util:scene_control("PowerHelp")
       elseif tag==580 then  --邮箱
             print("邮箱")
+            Util:all_layer_backMusic()
             self.sliding_bg:setScale(0)
             self.setup_box:setSelected(false)
             local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
@@ -428,6 +436,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
           
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友  291
+        Util:all_layer_backMusic()
         local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
             self:addChild(FriendrequestLayer.new({switch=2}),1,11)
 self.sliding_bg:setScale(0)
@@ -443,15 +452,7 @@ self.setup_box:setSelected(false)
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
 
-            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            -- if _table and tonumber(_table["shopIsused"])==0 then
-            --       local login_info=LocalData:Instance():get_user_data()
-            --       local _key=login_info["loginname"]
-            --       local _loginkey=login_info["loginkey"]
-            --       url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
-            --       device.openURL(url)
-            --       return
-            -- end
+            
 
             --  Util:scene_controlid("MallScene",{type="emil"})
 
@@ -461,6 +462,7 @@ self.setup_box:setSelected(false)
 
 
       elseif tag==52 then  --邀请好友
+        Util:all_layer_backMusic()
         self.sliding_bg:setScale(0)
         self.setup_box:setSelected(false)
         local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜

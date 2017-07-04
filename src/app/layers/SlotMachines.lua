@@ -104,16 +104,15 @@ function SlotMachines:fun_Slot_machines_init( ... )
 end
 --  开始
 function SlotMachines:fun_Slot_machines( _num,_point )
-          --  self. _table={}
-          -- self._table_number={}
-          -- self._table_number_tag=1
-
+         audio.stopAllSounds()
+       Util:player_music_new("bg_7_f.mp3",true )
         for i=1,#self. _table do
               self. _table[i]:startGo()
         end
         local  tempn = _num  
 
          local function fun_stopGo()
+
 		for i=1,#self. _table do
 			local  stopNum = 0;
 			if (tempn > 0)  then
@@ -129,6 +128,7 @@ function SlotMachines:fun_Slot_machines( _num,_point )
                            self._table_number={}
                            self._table_number_tag=1
                            local function fun_stopGo2()
+                            audio.stopAllSounds()
                               local count=self:stringToTable(tostring(_num))
                               if count==1 then
                                 Util:player_music_new("open_box.mp3",false )
@@ -137,7 +137,7 @@ function SlotMachines:fun_Slot_machines( _num,_point )
                               else
                                 Util:player_music_new("super_big.mp3",false )
                               end
-                              
+                              audio.resumeMusic()
                               self:fun_Initialize_data()
                               self.hl_began:setTouchEnabled(true)
                               self:fun_PowerWindows(_point)
@@ -210,6 +210,7 @@ function SlotMachines:fun_touch_bt( ... )
                       return
                       end
                       sender:setScale(1)
+                      Util:all_layer_backMusic()
                       self:removeFromParent()
                       Server:Instance():getactivitybyid(SlotMachines_id,0)  --  详情
 
@@ -227,6 +228,7 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 Server:Instance():getactivitypointsdetail(self.SlotMachinesId,"")
                 self:fun_Integralrecord()
       end)
@@ -243,6 +245,7 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                audio.pauseMusic()
                 Util:player_music_new("spin_button.mp3",false )
                 -- if self.SlotMachinesgametimes<=0 then
                 --     self.floating_layer:prompt_box("您的次数已经用完")
@@ -266,7 +269,7 @@ function SlotMachines:fun_touch_bt( ... )
                 end
                 sender:setScale(1)
                 local _userdata=LocalData:Instance():get_user_data()
-                local loginname=_userdata["loginname"]
+                local loginname=_userdata["nickname"]
                 self.share=Util:share(self.SlotMachinesId,loginname)
       end)
        
@@ -293,6 +296,7 @@ function SlotMachines:fun_Integralrecord( ... )
                   return
                   end
                   sender:setScale(1)
+                  Util:all_layer_backMusic()
                   self:removeChildByTag(987, true)
             end)
       self.XQ_FD_LIST_View=self.Integralrecord:getChildByName("ListView_5")

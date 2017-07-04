@@ -34,6 +34,7 @@ function PowerHelp:fun_init( ... )
 	                    sender:setScale(1.2)
 	                return
 	                end
+	                Util:all_layer_backMusic()
 	                sender:setScale(1)
 	              Util:scene_control("MainInterfaceScene")
             end)
@@ -71,12 +72,15 @@ end
               self.curr_bright:setBright(true)
               sender:setBright(false)
                if tag=="day_bt" then  
+               	Util:all_layer_backMusic()
 		 LocalData:Instance():set_getfriendhelplist(nil)
 		 Server:Instance():getfriendhelplist(0)
                elseif tag=="weeks_bt" then
+               	Util:all_layer_backMusic()
 		LocalData:Instance():set_getfriendhelplist(nil)
 		 Server:Instance():getfriendhelplist(1)
 	   elseif tag=="month_bt" then
+	   	Util:all_layer_backMusic()
 		LocalData:Instance():set_getfriendhelplist(nil)
 		 Server:Instance():getfriendhelplist(2)
 	   end

@@ -45,6 +45,7 @@ function GameSurpriseScene:fun_init( ... )
 	                return
 	                end
 	                sender:setScale(1)
+                  Util:all_layer_backMusic()
 	              Util:scene_control("MainInterfaceScene")
             end)
             -- 规则
@@ -93,20 +94,23 @@ end
               self.curr_bright:setBright(true)
               sender:setBright(false)
                if tag=="btn_Current" then  
-		print("本期活动")
-		self:fun_touch_com(1)
-		LocalData:Instance():set_getactivitylist(nil)
-		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+            		print("本期活动")
+                        Util:all_layer_backMusic()
+            		self:fun_touch_com(1)
+            		LocalData:Instance():set_getactivitylist(nil)
+            		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
                elseif tag=="btn_Past" then
-		self:fun_touch_com(2)
-		LocalData:Instance():set_getactivitylist(nil)
-		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
-		print("往期活动")
+                        Util:all_layer_backMusic()
+                        self:fun_touch_com(2)
+                        LocalData:Instance():set_getactivitylist(nil)
+                        Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+                        print("往期活动")
 	   elseif tag=="my_bt" then
-		self:fun_touch_com(3)
-		LocalData:Instance():set_getactivitylist(nil)
-		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
-		print("我的活动")
+                      Util:all_layer_backMusic()
+                      self:fun_touch_com(3)
+                      LocalData:Instance():set_getactivitylist(nil)
+                      Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+                      print("我的活动")
 	   end
 
               self.curr_bright=sender
@@ -355,7 +359,7 @@ function GameSurpriseScene:promptbox_buffer(prompt_text)
 end
 
 function GameSurpriseScene:onEnter()
-	--dump(crypto.md5("18810673231岁月如风"))
+	Util:player_music_hit("ACTIVITY",true )
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
 			self.list_table=LocalData:Instance():get_getactivitylist()
@@ -370,6 +374,7 @@ function GameSurpriseScene:onEnter()
 end
 
 function GameSurpriseScene:onExit()
+  Util:player_music_hit("GAMEBG",true )
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 

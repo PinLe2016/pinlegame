@@ -60,8 +60,7 @@ function SurpriseNode_Detail:ctor(params)
        --  初始化界面
        self:fun_init()     
        self:fun_Initialize_variable()
-      Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
-
+       Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
 end
 --  初始化变量
 function SurpriseNode_Detail:fun_Initialize_variable( ... )
@@ -155,6 +154,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                       return
                       end
                       sender:setScale(1)
+                      Util:all_layer_backMusic()
                        local tab=os.date("*t");
                        if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) == tab.day  then
                          local _count=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)
@@ -179,6 +179,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                  local SurpriseRank = require("app.layers.SurpriseRank")  --排行榜
                  local activitybyid=LocalData:Instance():get_getactivitybyid()
                   self:addChild(SurpriseRank.new({id=activitybyid["id"],score=activitybyid["totalpoints"],mylevel=activitybyid["mylevel"]}),1,1)
@@ -201,6 +202,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 self.winnersPreview:setVisible(true)
                 --Server:Instance():getactivityawards(self.surprise_id)  --  奖项预览
       end)
@@ -267,6 +269,8 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 return
                 end
                 sender:setScale(1)
+                audio.stopAllSounds()
+                Util:player_music_new("GO.mp3",false )
                 self.Friend_help:setVisible(false)
                 self.began_bt:setVisible(false)
                 self.award_bt:setVisible(false)
@@ -333,6 +337,7 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 XQ_FD_LIST_Back:setVisible(false)
                 XQ_FD_LIST_More_Bg:setVisible(true)
                 Friend_Node:setPositionY(0)
@@ -351,6 +356,7 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 XQ_FD_LIST_Back:setVisible(true)
                 XQ_FD_LIST_More_Bg:setVisible(false)
                 Friend_Node:setPositionY(635)
@@ -387,7 +393,7 @@ function SurpriseNode_Detail:fun_friend_list_data( ... )
           --local _index=string.match(tostring(Util:sub_str(friendhelp[i]["head"], "/",":")),"%d")
           --XQ_FD_LIST_Head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
           local XQ_FD_LIST_Nickname=cell:getChildByName("XQ_FD_LIST_Nickname")
-          XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
+          --XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
           local XQ_FD_LIST_Number=cell:getChildByName("XQ_FD_LIST_Number")
           --XQ_FD_LIST_Number:setString(friendhelp[i]["nick"])
           XQ_FD_LIST_Number:setString(math.random(1,8))
@@ -489,6 +495,7 @@ function SurpriseNode_Detail:fun_winnersPreview(  )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 self.winnersPreview:setVisible(false)
       end)
         self.win_ListView=self.winnersPreview:getChildByName("win_ListView")
@@ -567,7 +574,7 @@ function SurpriseNode_Detail:fun_help_data( ... )
                          local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                          local _activitybyid_id=activitybyid_data["id"]
                          local _userdata=LocalData:Instance():get_user_data()
-                         local loginname=_userdata["loginname"]
+                         local loginname=_userdata["nickname"]
                         self.Friend_help:addTouchEventListener(function(sender, eventType  )
                                 if eventType == 3 then
                                       sender:setScale(1)
@@ -578,7 +585,7 @@ function SurpriseNode_Detail:fun_help_data( ... )
                                   return
                                   end
                                   sender:setScale(1)
-                                  print("好友助力")
+                                  Util:all_layer_backMusic()
                                   self.share=Util:share(_activitybyid_id,loginname)
                         end)
 end
@@ -598,10 +605,10 @@ function SurpriseNode_Detail:onEnter()
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
-                        self:fun_data()
-                        self:winnersPreview_Home_image()
-                        self:fun_friend_list_data()
-                        self:fun_help_data()
+                         self:fun_data()
+                         self:winnersPreview_Home_image()
+                         self:fun_friend_list_data()
+                         self:fun_help_data()
                                   
 
                       end)
