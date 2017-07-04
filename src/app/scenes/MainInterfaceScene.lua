@@ -124,11 +124,8 @@ function MainInterfaceScene:test()
  nodegird:runAction( cc.RepeatForever:create(WavesTiles3D));--cc.RepeatForever:create(
 
 end
-function MainInterfaceScene:fun_init( )
-      
-      self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
-      self:addChild(self.MainInterfaceScene)
-      --  加载波浪动画
+function MainInterfaceScene:fun_MainInterfaceScene_act(  )
+             --  加载波浪动画
       local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
       local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png") --BG-1  ZJM_XG_10
       local gridNode = cc.NodeGrid:create()
@@ -139,16 +136,34 @@ function MainInterfaceScene:fun_init( )
       local  liquid  = cc.Liquid:create(3, cc.size(10, 10), 2, 2.0);
       local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
       gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( liquid) ) )
+      --  树叶
+      local   Image_4749=self.MainInterfaceScene:getChildByTag(4749)
+      local   Image_4750=self.MainInterfaceScene:getChildByTag(4750)
+       local actionT1 = cc.RotateTo:create( 1, 5)
+      local actionTo1 = cc.RotateTo:create( 1.5, -5)
+      local actionT2 = cc.RotateTo:create( 1.5, 5)
+      local actionTo2 = cc.RotateTo:create( 2.5, -6)
+      Image_4749:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+      Image_4750:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))    
+      --  船  
+      --  local   Image_4757=self.MainInterfaceScene:getChildByTag(4757)
+      -- local actionT1 = cc.ScaleTo:create(14.8, 0.8)
+      -- local actionTo1 = cc.ScaleTo:create( 0.01, 1)
+      -- Image_4757:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+end
 
+function MainInterfaceScene:fun_init( )
+      
+      self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
+      self:addChild(self.MainInterfaceScene)
+      self.shareroleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
+     self.MainInterfaceScene:runAction(self.shareroleAction)
+     self.shareroleAction:setTimeSpeed(0.15)
+     self.shareroleAction:gotoFrameAndPlay(0,160, true)
 
-      self.signanimations = cc.CSLoader:createNode("signanimations.csb")
-      self.signanimations:setVisible(false)
-      self:addChild(self.signanimations)
-      self.signanimationact = cc.CSLoader:createTimeline("signanimations.csb")
-      self.signanimations:runAction(self.signanimationact)
-      local flashing=self.signanimations:getChildByTag(286)
-      flashing:runAction( cc.Sequence:create(cc.Blink:create(3,100)))
-      self.signanimationact:gotoFrameAndPlay(0,65, true)
+      self:fun_MainInterfaceScene_act()
+
+     
          
        self.gamecenter_text=self.MainInterfaceScene:getChildByTag(122)   --游戏中心
       local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)  --惊喜吧

@@ -265,19 +265,13 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             local YICY=_obj:getChildByName("YICY")
             local NOCY=_obj:getChildByName("NOCY")
             if tonumber(_gamelist[2*_num-istwo]["myrecord"])==0 then   --  0未参与 1参与
-            	-- NOCY:setVisible(true)
-            	-- YICY:setVisible(false)
-            	local time_bg1=time_obj:getChildByName("time_bg1")
-            	time_bg1:loadTexture("SurpriseImage/JXB_BQHD_6.png")
-            	local JCJM_6=_obj:getChildByName("JCJM_6")
-            	JCJM_6:loadTexture("SurpriseImage/JXB_BQHD_5.png")
+            	NOCY:setVisible(true)
+            	YICY:setVisible(false)
+            	
           else
-          	   --           NOCY:setVisible(false)
-            	 -- YICY:setVisible(true)
-            	 local time_bg1=time_obj:getChildByName("time_bg1")
-            	time_bg1:loadTexture("SurpriseImage/JXB_BQHD_14.png")
-            	local JCJM_6=_obj:getChildByName("JCJM_6")
-            	JCJM_6:loadTexture("SurpriseImage/JXB_BQHD_13.png")
+          	       NOCY:setVisible(false)
+            	 YICY:setVisible(true)
+            	
             end
             --  是否中奖
             local Notwinimage=_obj:getChildByName("Notwinimage")

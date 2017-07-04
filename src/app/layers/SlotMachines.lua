@@ -154,6 +154,16 @@ function SlotMachines:fun_PowerWindows( _text )
   local PowerWindows = cc.CSLoader:createNode("PowerWindows.csb");
   self:addChild(PowerWindows)
   PowerWindows:setTag(123)
+  local Image_guang=PowerWindows:getChildByName("Image_9")
+  Image_guang:setScale(0)
+  local actionT1= cc.ScaleTo:create( 1, 1)
+  local actionTo1 = cc.ScaleTo:create( 1, 0)
+   local actionT2 = cc.RotateBy:create( 4, 90)
+   local actionTo2 = cc.RotateBy:create(4, -90)
+  Image_guang:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+  Image_guang:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
+
+  
   local number=PowerWindows:getChildByName("number")
   number:setString(tostring(_text))
   local pwtrue=PowerWindows:getChildByName("Image_1")
