@@ -27,6 +27,7 @@ function SlotMachines:fun_init( ... )
 	self.SlotMachines = cc.CSLoader:createNode("SlotMachines.csb");
 	self:addChild(self.SlotMachines)
 	self.lh_bg=self.SlotMachines:getChildByName("lh_bg")
+      self:fun_PowerWindows("11")
       -- --  初始化老虎机
       self:fun_Slot_machines_init()
       self:fun_touch_bt()
@@ -152,8 +153,14 @@ function SlotMachines:fun_Slot_machines( _num,_point )
 end
 function SlotMachines:fun_PowerWindows( _text )
   local PowerWindows = cc.CSLoader:createNode("PowerWindows.csb");
-  self:addChild(PowerWindows)
+  self:addChild(PowerWindows) 
+  --local Image_8=PowerWindows:getChildByName("Image_8")
   PowerWindows:setTag(123)
+  --local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,LuckyDraw_text:getContentSize().width,-LuckyDraw_text:getContentSize().height/2))
+  -- crn:setAnchorPoint(cc.p(0,0))
+  -- crn:setPosition(cc.p(Image_8:getPositionX(),Image_8:getPositionY()))
+  -- self.MainInterfaceScene:addChild(crn)
+
   local Image_guang=PowerWindows:getChildByName("Image_9")
   Image_guang:setScale(0)
   local actionT1= cc.ScaleTo:create( 1, 1)

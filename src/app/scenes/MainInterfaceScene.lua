@@ -104,26 +104,7 @@ function MainInterfaceScene:Physics_homeback_ref( )
 
 
 end
-function MainInterfaceScene:test()
 
-  -- cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
-  cc.Director:getInstance():setDepthTest(true)
-
-  local sp=display.newSprite("resources/zhujiemian/ZJM_XG_10.png")
-  sp:setPosition(display.cx,display.cy)
-
-
-  local nodegird = cc.NodeGrid:create()
-  nodegird:addChild(sp)
-  self:addChild(nodegird)
-  local Liquid=cc.Liquid:create(0.5, cc.size(10, 10), 2, 5.0);
-  local WavesTiles3D=cc.WavesTiles3D:create(10, cc.size(20, 20), 10, 20)
-  local Waves3D=cc.Waves3D:create(5, cc.size(15, 10), 10, 20)
-  
-  local ripple=cc.Ripple3D:create(5, cc.size(5, 5), cc.p(320, 480), 240, 4, 160)
- nodegird:runAction( cc.RepeatForever:create(WavesTiles3D));--cc.RepeatForever:create(
-
-end
 function MainInterfaceScene:fun_MainInterfaceScene_act(  )
              --  加载波浪动画
       local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
@@ -145,11 +126,7 @@ function MainInterfaceScene:fun_MainInterfaceScene_act(  )
       local actionTo2 = cc.RotateTo:create( 2.5, -6)
       Image_4749:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
       Image_4750:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))    
-      --  船  
-      --  local   Image_4757=self.MainInterfaceScene:getChildByTag(4757)
-      -- local actionT1 = cc.ScaleTo:create(14.8, 0.8)
-      -- local actionTo1 = cc.ScaleTo:create( 0.01, 1)
-      -- Image_4757:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+      
 end
 
 function MainInterfaceScene:fun_init( )
@@ -428,9 +405,9 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
              Server:Instance():getcheckinhistory()  --签到http
       elseif tag==444 then  --转盘
-        Util:scene_control("LuckyDraw")
-      elseif tag==97 then  --中奖
         Util:scene_control("TicketCenter")
+      elseif tag==97 then  --中奖
+        Util:scene_control("LuckyDraw")
       elseif tag==125 then  --助力榜
         Util:scene_control("PowerHelp")
       elseif tag==580 then  --邮箱

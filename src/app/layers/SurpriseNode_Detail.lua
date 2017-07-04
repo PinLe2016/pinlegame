@@ -114,10 +114,19 @@ function SurpriseNode_Detail:fun_data(  )
            if _lv==#self.LV_hierarchy_table then
               DOS_LoadingBar:setPercent(100)
             else
-              DOS_LoadingBar:setPercent(tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv])    ))
+              if activitybyid_data["levelmax"]  and activitybyid_data["levelmin"]  then
+                DOS_LoadingBar:setPercent(tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv])    ))
+              else
+                DOS_LoadingBar:setPercent(0)
+              end
+              
            end
            -- 进度条的角标
-           DOS_biaoji:setPositionX(24+tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv]))  * 1281)
+           if activitybyid_data["levelmax"]  and activitybyid_data["levelmin"] then
+              DOS_biaoji:setPositionX(24+tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv]))  * 1281)
+           else
+             DOS_biaoji:setPositionX(24)
+           end
            self.LH_number:setString(text)
            self.DJS_time=(activitybyid_data["finishtime"]-activitybyid_data["begintime"])-(activitybyid_data["nowtime"]-activitybyid_data["begintime"])
             local  _tabletime_data=Util:FormatTime_colon(self.DJS_time)
@@ -267,11 +276,16 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 --     return
                 -- end
                 local _SlotMachinesTable={}
-                
+                local _levelmin=0
+                local _levelmax=0
+                if sup_data["levelmin"]  and sup_data["levelmax"] then
+                  _levelmin=sup_data["levelmin"]
+                  _levelmax=sup_data["levelmax"]
+                end
                 _SlotMachinesTable["SlotMachinesId"] = sup_data["id"]
                 _SlotMachinesTable["SlotMachinesmylevel"] = sup_data["mylevel"]
-                _SlotMachinesTable["SlotMachineslevelmin"] = sup_data["levelmin"]
-                _SlotMachinesTable["SlotMachineslevelmax"] = sup_data["levelmax"]
+                _SlotMachinesTable["SlotMachineslevelmin"] = _levelmin
+                _SlotMachinesTable["SlotMachineslevelmax"] = _levelmax
                 _SlotMachinesTable["SlotMachinesgametimes"] = sup_data["gametimes"]
                 _SlotMachinesTable["SlotMachinesscore"] = sup_data["totalpoints"]
                 _SlotMachinesTable["SlotMachines_id"] = self.surprise_id                
