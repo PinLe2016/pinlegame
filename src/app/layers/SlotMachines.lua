@@ -164,7 +164,7 @@ function SlotMachines:fun_Slot_machines( _num,_point )
                               self.hl_began:setTouchEnabled(true)
                               self:fun_PowerWindows(_point)
                            end
-                           self:runAction( cc.Sequence:create(cc.DelayTime:create(2 ),cc.CallFunc:create(fun_stopGo2)))
+                           self:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo2)))
                      end
                   end
                   self:runAction( cc.Repeat:create(cc.Sequence:create(cc.DelayTime:create(0.5),cc.CallFunc:create(fun_stopGo1),cc.DelayTime:create(0.5)),3))
