@@ -9,7 +9,8 @@ function SurpriseNode_Detail:ctor(params)
       self.time_count_n=1
       self.surprise_id=params.id
        self:setNodeEventEnabled(true)
-
+       cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",1)
+       cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel_refresh",0)
        --  初始化界面
        self:fun_init()     
        self:fun_Initialize_variable()

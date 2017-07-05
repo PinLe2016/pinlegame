@@ -290,7 +290,13 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
-                cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",1)
+                local _pop_new_count_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_count_two",0)
+                if _pop_new_count_two==3 then
+                  cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",4)
+                else
+                  cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",1)
+                end
+                
                 audio.pauseMusic()
                 Util:player_music_new("spin_button.mp3",false )
                 if self.SlotMachinesgametimes<=0 then

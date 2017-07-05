@@ -270,6 +270,8 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
                       local _pop_new_count_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_count_two",0)
 	               if _pop_new_count_two~=0 and _pop_new_count_two~=2 then
                        cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",2)
+                      elseif _pop_new_count_two==2 then
+                         cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",3)
                      end
                      local userinfo=LocalData:Instance():get_getuserinfo()
 	               if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"]   then           
