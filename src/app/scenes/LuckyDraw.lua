@@ -609,7 +609,7 @@ function LuckyDraw:onEnter()
                        function()
                        		self:fun_LuckyDraw_touch(true)
                        		audio.stopAllSounds()
-		            Util:player_music_new("jbbuzu.mp3",true )
+		            Util:player_music_new("jbbuzu.mp3",false )
                       end)--
 
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELREWARDS", self,

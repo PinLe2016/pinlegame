@@ -165,7 +165,7 @@ function SlotMachines:fun_PowerWindows( _text )
   crn:addChild(fragment_sprite)
   
   Image_guang:setScale(0)
-  local actionT1= cc.ScaleTo:create( 1, 1.0)
+  local actionT1= cc.ScaleTo:create( 1, 1.1)
   local actionTo1 = cc.ScaleTo:create( 1, 1.8)
    local actionT2 = cc.RotateBy:create( 4, 90)
    local actionTo2 = cc.RotateBy:create(4, 90)
