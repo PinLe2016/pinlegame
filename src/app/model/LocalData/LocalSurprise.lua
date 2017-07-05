@@ -4,15 +4,12 @@
 --
 -- 获取活动专区列表
 function LocalData:set_getactivitylist(getactivitylist)
-
 	if  not getactivitylist then
 	     self.getactivitylist=getactivitylist
 	     return
 	end
-	-- dump(getactivitylist)
 	if self.getactivitylist then
 		for k,v in pairs(getactivitylist["game"]) do
-
 			table.insert(self.getactivitylist["game"],v)
 		end
 		return

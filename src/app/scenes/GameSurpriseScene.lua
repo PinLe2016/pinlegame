@@ -53,7 +53,7 @@ function GameSurpriseScene:fun_constructor( ... )
       --  列表发送请求
       self.jac_data_num_tag=0
       self.jac_data_num=0
-      
+      self.count_cishu=0
       self.image_table={}  --  存放图片
       self.timetext_table={} --存放时间
       self.time=0
@@ -151,6 +151,7 @@ end
 end
 function GameSurpriseScene:fun_touch_com(num )
 	self.jac_data_num_tag=0
+  self.count_cishu=0
             self.jac_data_num=0
 	LocalData:Instance():set_getactivitylist(nil)
 	self:scheduleUpdate()
@@ -166,7 +167,7 @@ function GameSurpriseScene:fun_Surorise( )
 	self.lvw_Surorise:addScrollViewEventListener((function(sender, eventType  )
 	          if eventType  ==6 then
 			self.sur_pageno=self.sur_pageno+1
-			LocalData:Instance():set_getactivitylist(nil)
+			--LocalData:Instance():set_getactivitylist(nil)
 			Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
 	                     return
 	          end
@@ -180,7 +181,8 @@ function GameSurpriseScene:fun_list_data(  )
 	if not list_table then
 		return
 	end
-	local num=#_gamelist
+	local num=#_gamelist-self.count_cishu
+      
 	if num == 0  then
 		return
 	end
@@ -191,7 +193,7 @@ function GameSurpriseScene:fun_list_data(  )
  	else
  		_jioushu=num /  2
 	end
-	self.jac_data_num=_jioushu  +  num %  2  +self.jac_data_num_tag
+	self.jac_data_num=_jioushu  +  num %  2   +self.jac_data_num_tag
 	for i=self.jac_data_num_tag+1,self.jac_data_num do
 		self.lvw_Surorise:pushBackDefaultItem()
 		local  cell = self.lvw_Surorise:getItem(i-1)
@@ -201,15 +203,16 @@ function GameSurpriseScene:fun_list_data(  )
 		local  time_bg_Copy=_bg_Copy:getChildByName("time_bg")
 		_bg:setTag(2*i-1)
 		_bg_Copy:setVisible(false)
-		self:fun_surprise_data(_bg,time_bg,i-self.jac_data_num_tag,1)
+		self:fun_surprise_data(_bg,time_bg,i,1)
 		if (i-self.jac_data_num_tag)*2-1== num  then
 			return
 		end
 		_bg_Copy:setTag(2*i)
 		_bg_Copy:setVisible(true)
-		self:fun_surprise_data(_bg_Copy,time_bg_Copy,i-self.jac_data_num_tag,0)
+		self:fun_surprise_data(_bg_Copy,time_bg_Copy,i,0)
 	end
 	self.jac_data_num_tag=self.jac_data_num
+     self.count_cishu=#_gamelist
 end
 --实现数据更新
 function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
