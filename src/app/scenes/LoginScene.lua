@@ -38,7 +38,7 @@ function LoginScene:progressbarScene(  )
         self.ProgressbarScene:getChildByName("Image_2"):getChildByName("Button_7"):setVisible(false)
         self.LoadingNodebar=cc.CSLoader:createNode("LoadingNodebar.csb")
         self.ProgressbarScene:addChild(self.LoadingNodebar)
-
+        self.LoadingNodebar:getChildByName("ProjectNode_1"):getChildByName("Image_2"):setVisible(false)
         loadingBar=self.LoadingNodebar:getChildByName("ldb_Loading")
         self.particle = cc.ParticleSystemQuad:create("loading.plist")
        loadingBar:addChild(self.particle)
