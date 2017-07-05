@@ -179,9 +179,9 @@ function SlotMachines:fun_PowerWindows( _text )
   local fragment_sprite = display.newSprite("PromptBox/JXB_YX_29.png")
   local Image_8=PowerWindows:getChildByName("Image_8")
   local Image_guang=PowerWindows:getChildByName("Image_9")
-  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,Image_8:getContentSize().width,Image_8:getContentSize().height))
+  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,Image_8:getContentSize().width-1,Image_8:getContentSize().height-4))
   crn:setAnchorPoint(cc.p(0.5,0.5))
-  crn:setPosition(cc.p(Image_8:getPositionX()-Image_8:getContentSize().width/2,Image_8:getPositionY()-Image_8:getContentSize().height/2))
+  crn:setPosition(cc.p(Image_8:getPositionX()-Image_8:getContentSize().width/2+1,Image_8:getPositionY()-Image_8:getContentSize().height/2+4))
   PowerWindows:addChild(crn)
   fragment_sprite:setPosition(cc.p(Image_8:getContentSize().width/2-5,Image_8:getContentSize().height/2+20))
   crn:addChild(fragment_sprite)
@@ -231,7 +231,7 @@ function SlotMachines:fun_PowerWindows( _text )
                                     end
               end)
         else
-          self.floating_layer:fun_congratulations("成绩不满意,好友帮您得积分","稍后助力","马上助力","助理啦",,function (sender, eventType)
+          self.floating_layer:fun_congratulations("成绩不满意,好友帮您得积分","稍后助力","马上助力","助理啦",function (sender, eventType)
                                     if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
                                       local loginname=_userdata["nickname"]

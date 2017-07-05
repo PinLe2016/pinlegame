@@ -292,9 +292,9 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                        local SlotMachines = require("app.layers.SlotMachines")    
                                       self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)
                                   end
-                                  return
+                                  
                   end)
-                    
+                    return
                 end
                 local _SlotMachinesTable={}
                 local _levelmin=0
