@@ -211,13 +211,18 @@ function FloatingLayer:prompt_box(prompt_text ,call)
 
 end
 --  恭喜
-function FloatingLayer:fun_congratulations( p_text ,call)
-  print("jkjk")
+function FloatingLayer:fun_congratulations( p_text ,p_false,p_true,p_title,call)
                     self.congratulations = cc.CSLoader:createNode("congratulations.csb");
                     self:addChild(self.congratulations,40,40)
                     local determine=self.congratulations:getChildByName("GX_CAN")
                     local _text=self.congratulations:getChildByName("GX_ProjectNode"):getChildByName("NM_Text")
                     _text:setString(p_text)
+                    local Text_4=self.congratulations:getChildByName("Text_4")
+                    Text_4:setString(p_false)
+                    local Text_5=self.congratulations:getChildByName("Text_5")
+                    Text_5:setString(p_true)
+                    local Text_6=self.congratulations:getChildByName("Text_6")
+                    Text_6:setString(p_title)
                      determine:addTouchEventListener(function(sender, eventType  )
                                if eventType ~= ccui.TouchEventType.ended then
                                       return

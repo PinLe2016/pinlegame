@@ -4,23 +4,6 @@
 local MainInterfaceScene = class("MainInterfaceScene", function()
     return display.newScene("MainInterfaceScene")
 end)
-
- function MainInterfaceScene:Popup_window_Twoday( )
-             local _table={"距离大奖越来越近,赶快邀请好友给您助力了","您的排名被超越,好友助力"}
-              self.floating_layer:fun_NotificationMessage(_table[math.random(1,2)],function (sender, eventType)
-                                  if eventType==1 then
-                                    print("马上助力")
-                                  end
-                            end)
-end
--- 新  一些弹窗
-function MainInterfaceScene:Popup_window( ... )
-     local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("new_time_two",0)
-     if new_time_two==0 then
-       cc.UserDefault:getInstance():setIntegerForKey("new_time_two",os.time())
-     end
-
-end
 function MainInterfaceScene:ctor()
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
@@ -34,14 +17,6 @@ function MainInterfaceScene:ctor()
       local _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d%d")
       if _index==nil then
       _index=string.match(tostring(Util:sub_str(userdt["imageUrl"], "/",":")),"%d")
-      end
-
-      --2天不等就弹窗
-      self:Popup_window()
-      local _KEY=cc.UserDefault:getInstance():getIntegerForKey("new_time_two",0)
-      if _KEY~=0 and  tonumber(_KEY) +  172800  <= os.time()  then
-          self:Popup_window_Twoday()
-          cc.UserDefault:getInstance():setIntegerForKey("new_time_two",os.time())
       end
 
       Server:Instance():getconfig()  --  获取后台音效

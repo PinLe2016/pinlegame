@@ -2,60 +2,13 @@
 local SurpriseNode_Detail = class("SurpriseNode_Detail", function()
             return display.newLayer("SurpriseNode_Detail")
 end)
-function SurpriseNode_Detail:fun_Popup_window( ... )
-       --  弹窗
-       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)  ==3 then
-          self.floating_layer:fun_congratulations("拼乐送您给您的助力大礼包,把他发送给您的微信好友,只要他们成功登陆拼乐,你们双方都会获得当前活动20次参与机会,最高可获得100次",
-            function (sender, eventType)
-                                  if eventType==1 then
-                                    print("马上助力")
-                                  end
-                            end)
-       end
-       self:Popup_window()
-       local tab=os.date("*t");
-       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) ~= tab.day  then
-         cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday",tab.day)
-         self.floating_layer:fun_NotificationMessage("距离大奖越来越近,赶快邀请好友给您赢大奖",function (sender, eventType)
-                                  if eventType==1 then
-                                    print("马上助力")
-                                  end
-                            end)
-        else
-           if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)  ==  2    then
-              cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",4)
-              self.floating_layer:fun_NotificationMessage("您已经成功参与惊喜吧活动,离奖品只差一步,赶快邀请好友助力帮您赢大奖",function (sender, eventType)
-                                  if eventType==1 then
-                                    print("马上助力")
-                                  end
-                            end)
-            else
-              local _tm=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)
-              if _tm  ~= 2 and _tm  ~= 4 and  _tm  ==  10 then
-                cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",6)
-              elseif _tm  ~= 2 and _tm  ~= 4 and  _tm  ==  6 then
-                cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",2)
-              end
-              
-           end
-        
-       end
-end
-function SurpriseNode_Detail:Popup_window(  )
-    local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",0)
-    local tab=os.date("*t");
-     if new_time_two~=0 then
-       cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday",tab.day)
-       cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",10)
-     end
-end
+--  弹窗
 function SurpriseNode_Detail:ctor(params)
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.time_count_n=1
       self.surprise_id=params.id
        self:setNodeEventEnabled(true)
-       self:fun_Popup_window()
 
        --  初始化界面
        self:fun_init()     
@@ -135,9 +88,37 @@ function SurpriseNode_Detail:fun_data(  )
 
            --  积分  排名
            local LH_integral=self.LH_bg:getChildByName("LH_integral")
-           LH_integral:setString(activitybyid_data["totalpoints"])
+           if activitybyid_data["totalpoints"] then
+             LH_integral:setString(activitybyid_data["totalpoints"])
+            else
+              LH_integral:setString("0")
+           end
+           
            local LH_rank=self.LH_bg:getChildByName("LH_rank")
-           LH_rank:setString(activitybyid_data["mylevel"])
+           if activitybyid_data["mylevel"] then
+             LH_rank:setString(activitybyid_data["mylevel"])
+            else
+              LH_rank:setString("平民")
+           end
+           --  爵位提升弹窗
+           local pop_new_mylevel=cc.UserDefault:getInstance():getIntegerForKey("pop_new_mylevel",1)
+           local pop_new_mylevel_refresh=cc.UserDefault:getInstance():getIntegerForKey("pop_new_mylevel_refresh",0)
+           if pop_new_mylevel_refresh>pop_new_mylevel then
+                  self.floating_layer:fun_congratulations("恭喜你得爵位提升了","稍后助力","马上助力","恭喜",function (sender, eventType)
+                                      if eventType==1 then
+                                         local activitybyid_data=LocalData:Instance():get_getactivitybyid()
+                                         local _activitybyid_id=activitybyid_data["id"]
+                                         local _userdata=LocalData:Instance():get_user_data()
+                                         local loginname=_userdata["nickname"]
+                                         self.share=Util:share(_activitybyid_id,loginname)
+                                      end
+                end)
+           end
+           for i=1,9 do
+             if self.LV_hierarchy_table[i]  == LH_rank:getString()  then
+                cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",i)
+             end
+           end
            self:fun_touch_bt_htp()
            self:scheduleUpdate()
 
@@ -157,13 +138,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                       end
                       sender:setScale(1)
                       Util:all_layer_backMusic()
-                       local tab=os.date("*t");
-                       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) == tab.day  then
-                         local _count=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)
-                         cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_count_count",_count+self.time_count_n)
-                        else
-                          cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_count_count",0)
-                        end
+                       
                       
                       self:unscheduleUpdate()
               self:removeFromParent()
@@ -184,7 +159,15 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 Util:all_layer_backMusic()
                  local SurpriseRank = require("app.layers.SurpriseRank")  --排行榜
                  local activitybyid=LocalData:Instance():get_getactivitybyid()
-                  self:addChild(SurpriseRank.new({id=activitybyid["id"],score=activitybyid["totalpoints"],mylevel=activitybyid["mylevel"]}),1,1)
+                 local _score=0
+                 local _mylevel="平民"
+                 if activitybyid["totalpoints"] then
+                   _score=activitybyid["totalpoints"]
+                 end
+                if activitybyid["mylevel"] then
+                   _mylevel=activitybyid["mylevel"]
+                end
+                  self:addChild(SurpriseRank.new({id=activitybyid["id"],score=_score,mylevel=_mylevel}),1,1)
       end)
       --好友助力
       self.Friend_help=self.DetailsOfSurprise:getChildByName("Friend_help")
@@ -277,10 +260,42 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 self.began_bt:setVisible(false)
                 self.award_bt:setVisible(false)
                 local sup_data=LocalData:Instance():get_getactivitybyid()
-                --  if tonumber(sup_data["gametimes"])<=0 then
-                --     self.floating_layer:prompt_box("您的次数已经用完")
-                --     return
-                -- end
+                 if tonumber(sup_data["gametimes"])<=0 then
+                    self.floating_layer:fun_congratulations("好友助力得积分,大奖等你拿","稍后助力","马上助力","助力赢大奖",function (sender, eventType)
+                                  if eventType==1 then
+                                     local activitybyid_data=LocalData:Instance():get_getactivitybyid()
+                                     local _activitybyid_id=activitybyid_data["id"]
+                                     local _userdata=LocalData:Instance():get_user_data()
+                                     local loginname=_userdata["nickname"]
+                                     self.share=Util:share(_activitybyid_id,loginname)
+                                  else
+                                      local _SlotMachinesTable={}
+                                      local _levelmin=0
+                                      local _levelmax=0
+                                      if sup_data["levelmin"]  and sup_data["levelmax"] then
+                                        _levelmin=sup_data["levelmin"]
+                                        _levelmax=sup_data["levelmax"]
+                                      end
+                                      _SlotMachinesTable["SlotMachinesId"] = sup_data["id"]
+                                      _SlotMachinesTable["SlotMachinesmylevel"] = "平民"
+                                      if  sup_data["mylevel"] then
+                                        _SlotMachinesTable["SlotMachinesmylevel"] = sup_data["mylevel"]
+                                      end
+                                      _SlotMachinesTable["SlotMachineslevelmin"] = _levelmin
+                                      _SlotMachinesTable["SlotMachineslevelmax"] = _levelmax
+                                      _SlotMachinesTable["SlotMachinesgametimes"] = sup_data["gametimes"]
+                                      _SlotMachinesTable["SlotMachinesscore"] = 0
+                                      if sup_data["totalpoints"] then
+                                        _SlotMachinesTable["SlotMachinesscore"] = sup_data["totalpoints"]
+                                      end
+                                      _SlotMachinesTable["SlotMachines_id"] = self.surprise_id                
+                                       local SlotMachines = require("app.layers.SlotMachines")    
+                                      self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)
+                                  end
+                                  return
+                  end)
+                    
+                end
                 local _SlotMachinesTable={}
                 local _levelmin=0
                 local _levelmax=0
@@ -289,11 +304,17 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                   _levelmax=sup_data["levelmax"]
                 end
                 _SlotMachinesTable["SlotMachinesId"] = sup_data["id"]
-                _SlotMachinesTable["SlotMachinesmylevel"] = sup_data["mylevel"]
+                _SlotMachinesTable["SlotMachinesmylevel"] = "平民"
+                if  sup_data["mylevel"] then
+                  _SlotMachinesTable["SlotMachinesmylevel"] = sup_data["mylevel"]
+                end
                 _SlotMachinesTable["SlotMachineslevelmin"] = _levelmin
                 _SlotMachinesTable["SlotMachineslevelmax"] = _levelmax
                 _SlotMachinesTable["SlotMachinesgametimes"] = sup_data["gametimes"]
-                _SlotMachinesTable["SlotMachinesscore"] = sup_data["totalpoints"]
+                _SlotMachinesTable["SlotMachinesscore"] = 0
+                if sup_data["totalpoints"] then
+                  _SlotMachinesTable["SlotMachinesscore"] = sup_data["totalpoints"]
+                end
                 _SlotMachinesTable["SlotMachines_id"] = self.surprise_id                
                  local SlotMachines = require("app.layers.SlotMachines")    
                 self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)

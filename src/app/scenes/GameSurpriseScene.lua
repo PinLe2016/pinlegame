@@ -3,13 +3,48 @@ local GameSurpriseScene = class("GameSurpriseScene", function()
             return display.newScene("GameSurpriseScene")
 end)
 function GameSurpriseScene:ctor()
+      self:fun_constructor()
       self:fun_init()
       self.ser_status=1   -- 1 本期活动  2  往期活动   0  是我的活动
       self.sur_pageno= 1  --  页数
       LocalData:Instance():set_getactivitylist(nil)
       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
-      self:fun_constructor()
+      
      
+end
+--  弹窗
+function GameSurpriseScene:fun_Popup_window_Twoday( ... )
+         --  每天第一次登陆的时候弹出
+         local tab=os.date("*t");
+         local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_time",0)
+         if new_time_two==0  or tonumber(tab.day)  ~= tonumber(new_time_two)  then
+            self.floating_layer:fun_congratulations("推荐给你最好的朋友,一起赢大奖","稍后推荐","前去推荐","推荐",function (sender, eventType)
+                                  if eventType==1 then
+                                    self:fun_storebrowser("http://sj.qq.com/myapp/detail.htm?apkName=com.pinle.pinlegame")
+                                  end
+            end)
+            cc.UserDefault:getInstance():setIntegerForKey("pop_new_time",tab.day)
+            return  true
+         end
+         return  false    
+end
+-- 外部链接
+function GameSurpriseScene:fun_storebrowser( _url)
+      self.Storebrowser = cc.CSLoader:createNode("Storebrowser.csb")
+      self:addChild(self.Storebrowser)
+      self.Storebrowser:setTag(1314)
+      local back=self.Storebrowser:getChildByTag(2122)
+      local store_size=self.Storebrowser:getChildByTag(2123)
+       back:addTouchEventListener(function(sender, eventType  )
+                 if eventType ~= ccui.TouchEventType.ended then
+                        return
+                  end
+                  self:removeChildByTag(1314, true)
+            end)
+              self.share=cc.UM_Share:create()
+              self.Storebrowser:addChild(self.share)
+              self.share:add_WebView(tostring(_url),cc.size(store_size:getContentSize().width ,store_size:getContentSize().height),
+               cc.p(store_size:getPositionX(),store_size:getPositionY()))
 end
 function GameSurpriseScene:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -31,7 +66,6 @@ end
 function GameSurpriseScene:fun_init( ... )
 	self.GameSurpriseScene = cc.CSLoader:createNode("GameSurpriseScene.csb");
 	self:addChild(self.GameSurpriseScene)
-
 	--  事件初始化
 	--  返回
 	local btn_Back=self.GameSurpriseScene:getChildByName("btn_Back")
@@ -45,7 +79,7 @@ function GameSurpriseScene:fun_init( ... )
 	                return
 	                end
 	                sender:setScale(1)
-                  Util:all_layer_backMusic()
+                     Util:all_layer_backMusic()
 	              Util:scene_control("MainInterfaceScene")
             end)
             -- 规则
@@ -192,12 +226,12 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
                 _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
             end
             local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["nowtime"] )--_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
-	local _str1="剩余时间"
-	if _time <0  then
-		_str1="结束时间: "
-	else
-		_str1="剩余时间: "
-	end
+      	local _str1="剩余时间"
+      	if _time <0  then
+      		_str1="结束时间: "
+      	else
+      		_str1="剩余时间: "
+      	end
             local time_bj=_time
             if time_bj<=0 then
               time_bj=time_bj+604800  --  目的是 7天后删除 
@@ -224,7 +258,17 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
                       end
                      -- sender:setScale(1)
                       kuang:setVisible(false)
-	               local userinfo=LocalData:Instance():get_getuserinfo()
+                      --  每天第一次进入本期活动登陆弹窗
+                      if self.ser_status==1 then
+                        if self:fun_Popup_window_Twoday()  then
+                          return
+                        end
+                      end
+                      local _pop_new_count_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_count_two",0)
+	               if _pop_new_count_two~=0 and _pop_new_count_two~=2 then
+                       cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",2)
+                     end
+                     local userinfo=LocalData:Instance():get_getuserinfo()
 	               if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"]   then           
 	               else
 	                       self.floating_layer:prompt_box("完善信息才能参加惊喜吧哦！",function (sender, eventType)      
@@ -359,6 +403,8 @@ function GameSurpriseScene:promptbox_buffer(prompt_text)
 end
 
 function GameSurpriseScene:onEnter()
+      --  参与惊喜吧任意活动两次
+      cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",0)
 	Util:player_music_hit("ACTIVITY",true )
 	NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self,
                        function()
@@ -374,7 +420,9 @@ function GameSurpriseScene:onEnter()
 end
 
 function GameSurpriseScene:onExit()
-  Util:player_music_hit("GAMEBG",true )
+     --  参与惊喜吧任意活动两次
+     cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",0)
+      Util:player_music_hit("GAMEBG",true )
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 

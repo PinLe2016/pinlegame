@@ -3,53 +3,6 @@
 local DetailsSurpreissue = class("DetailsSurpreissue", function()
             return display.newLayer("DetailsSurpreissue")
 end)
-function DetailsSurpreissue:fun_Popup_window( ... )
-       --  弹窗
-       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)  ==3 then
-          self.floating_layer:fun_congratulations("拼乐送您给您的助力大礼包,把他发送给您的微信好友,只要他们成功登陆拼乐,你们双方都会获得当前活动20次参与机会,最高可获得100次",
-            function (sender, eventType)
-                                  if eventType==1 then
-                                    print("马上助力")
-                                  end
-                            end)
-       end
-       self:Popup_window()
-       local tab=os.date("*t");
-       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) ~= tab.day  then
-         cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday",tab.day)
-         self.floating_layer:fun_NotificationMessage("距离大奖越来越近,赶快邀请好友给您赢大奖",function (sender, eventType)
-                                  if eventType==1 then
-                                    print("马上助力")
-                                  end
-                            end)
-        else
-           if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)  ==  2    then
-              cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",4)
-              self.floating_layer:fun_NotificationMessage("您已经成功参与惊喜吧活动,离奖品只差一步,赶快邀请好友助力帮您赢大奖",function (sender, eventType)
-                                  if eventType==1 then
-                                    print("马上助力")
-                                  end
-                            end)
-            else
-              local _tm=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",0)
-              if _tm  ~= 2 and _tm  ~= 4 and  _tm  ==  10 then
-                cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",6)
-              elseif _tm  ~= 2 and _tm  ~= 4 and  _tm  ==  6 then
-                cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_two",2)
-              end
-              
-           end
-        
-       end
-end
-function DetailsSurpreissue:Popup_window(  )
-    local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",0)
-    local tab=os.date("*t");
-     if new_time_two~=0 then
-       cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday",tab.day)
-       cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_two",10)
-     end
-end
 function DetailsSurpreissue:ctor(params)
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
@@ -59,15 +12,12 @@ function DetailsSurpreissue:ctor(params)
       self.lv_table_image_idex={14,15,16,17,13,12,11,10,9}
       self.LV_hierarchy_table={"国王","公爵","侯爵","伯爵","子爵","男爵","勋爵","骑士","平民"}
       Server:Instance():getactivitywinners(self.surprise_id)  --  获奖名单
-       self:setNodeEventEnabled(true)
-       self:fun_Popup_window()
+      self:setNodeEventEnabled(true)
 
        --  初始化界面
        self:fun_init()     
-        self:fun_Initialize_variable()
-        Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
-
-
+       self:fun_Initialize_variable()
+       Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
 end
 --  初始化变量
 function DetailsSurpreissue:fun_Initialize_variable( ... )
@@ -167,13 +117,7 @@ function DetailsSurpreissue:fun_touch( ... )
                       end
                       sender:setScale(1)
                       Util:all_layer_backMusic()
-                       local tab=os.date("*t");
-                       if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) == tab.day  then
-                         local _count=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)
-                         cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_count_count",_count+self.time_count_n)
-                        else
-                          cc.UserDefault:getInstance():setIntegerForKey("new_time_tabday_count_count",0)
-                        end
+                       
                       
                       self:unscheduleUpdate()
               self:removeFromParent()

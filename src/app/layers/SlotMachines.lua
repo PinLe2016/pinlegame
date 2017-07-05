@@ -5,6 +5,7 @@ local SlotMachines = class("SlotMachines", function()
 end)
 _SlotMachines_id=nil
 function SlotMachines:ctor(params)
+      dump(params)
        self.floating_layer = require("app.layers.FloatingLayer").new()
        self.floating_layer:addTo(self,100000)
        self.SlotMachinesgametimes=params.SlotMachinesgametimes
@@ -14,15 +15,29 @@ function SlotMachines:ctor(params)
        self.SlotMachinesscore=params.SlotMachinesscore
        self.SlotMachinesId=params.SlotMachinesId
        SlotMachines_id=params.SlotMachines_id
+       self.score_three={}
        self.LV_hierarchy_table={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","国王"}
        self._table_points_tag={1,2,3,5,10,20,30}
        self._table_points_tag_img={{0,1,2},{0,0,2},{1,1,2},{2,1,2},{0,0,0},{1,1,1},{2,3,2}}
        self:setNodeEventEnabled(true)
        --  初始化界面
        self:fun_init()
+       self:fun_Popup_window()
        
 end
-
+--  弹窗
+function SlotMachines:fun_Popup_window( ... )
+         local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_count_two",0)
+         if new_time_two == 2 then
+            self.floating_layer:fun_congratulations("您已经成功参与惊喜吧活动,离奖品只差一步,赶紧好友助力帮您赢大奖！","稍后助力","马上助力","恭喜",function (sender, eventType)
+                                  if eventType==1 then
+                                      local _userdata=LocalData:Instance():get_user_data()
+                                      local loginname=_userdata["nickname"]
+                                      self.share=Util:share(self.SlotMachinesId,loginname)
+                                  end
+            end)
+         end
+end
 function SlotMachines:fun_init( ... )
 	self.SlotMachines = cc.CSLoader:createNode("SlotMachines.csb");
 	self:addChild(self.SlotMachines)
@@ -63,11 +78,17 @@ function SlotMachines:fun_Initialize_data( ... )
       local activitygame=LocalData:Instance():get_activitygame()
       self.slotlh_ldb:setPercent(tonumber(activitygame["levelminpoints"])  / tonumber(activitygame["levelmaxpoints"])  *100)
       self.slotbumber:setString(  tostring(activitygame["remaintimes"])    )
+      self.SlotMachinesgametimes=activitygame["remaintimes"]
        local actionT1 = cc.ScaleTo:create( 0.2, 1.5)
       local actionTo1 = cc.ScaleTo:create( 0.2, 1)
       self.slotbumber:runAction(cc.Sequence:create(actionT1, actionTo1))
       self.slotintegral:setString(tostring(activitygame["totalpoints"]))
       self.slotlevel:setString(tostring(activitygame["level"]))
+      for i=1,9 do
+        if self.LV_hierarchy_table[i] == tostring(activitygame["level"]) then
+           cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel_refresh",i)
+        end
+      end
       self.slotlv_name1:setString(tostring(activitygame["level"]))
       local _lv=1
       for i=1,#self.LV_hierarchy_table do
@@ -104,6 +125,7 @@ function SlotMachines:fun_Slot_machines_init( ... )
 end
 --  开始
 function SlotMachines:fun_Slot_machines( _num,_point )
+      self.score_three[#self.score_three+1]=_num
          audio.stopAllSounds()
        Util:player_music_new("bg_7_f.mp3",true )
         for i=1,#self. _table do
@@ -195,6 +217,29 @@ function SlotMachines:fun_PowerWindows( _text )
                   sender:setScale(1)
                    self:removeChildByTag(123,true)
             end)
+      --  连续三次分数弹窗
+      if #self.score_three<3 then
+        return
+      end
+     
+        if self.score_three[#self.score_three] +  self.score_three[#self.score_three-1] +self.score_three[#self.score_three-2] >9 then
+            self.floating_layer:fun_congratulations("距离大奖越来越近了,赶快邀请好友给您助力","稍后助力","马上助力","助理啦",function (sender, eventType)
+                                    if eventType==1 then
+                                      local _userdata=LocalData:Instance():get_user_data()
+                                      local loginname=_userdata["nickname"]
+                                      self.share=Util:share(self.SlotMachinesId,loginname)
+                                    end
+              end)
+        else
+          self.floating_layer:fun_congratulations("成绩不满意,好友帮您得积分","稍后助力","马上助力","助理啦",,function (sender, eventType)
+                                    if eventType==1 then
+                                      local _userdata=LocalData:Instance():get_user_data()
+                                      local loginname=_userdata["nickname"]
+                                      self.share=Util:share(self.SlotMachinesId,loginname)
+                                    end
+              end)
+        end
+      
 end
 function SlotMachines:fun_touch_bt( ... )
      --  事件初始化
@@ -245,12 +290,19 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",1)
                 audio.pauseMusic()
                 Util:player_music_new("spin_button.mp3",false )
-                -- if self.SlotMachinesgametimes<=0 then
-                --     self.floating_layer:prompt_box("您的次数已经用完")
-                --     return
-                -- end
+                if self.SlotMachinesgametimes<=0 then
+                    self.floating_layer:fun_congratulations("金币,积分天天送,抓紧好友助力吧！","稍后助力","马上助力","助力赢大奖",function (sender, eventType)
+                                  if eventType==1 then
+                                      local _userdata=LocalData:Instance():get_user_data()
+                                      local loginname=_userdata["nickname"]
+                                      self.share=Util:share(self.SlotMachinesId,loginname)
+                                  end
+                    end)
+                    return
+                end
                 self.hl_began:setTouchEnabled(false)
                 Server:Instance():activitygame(self.SlotMachinesId)
       end)
