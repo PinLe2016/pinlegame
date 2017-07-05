@@ -607,6 +607,7 @@ function LuckyDraw:onEnter()
 	--  GO 错误
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD_FALSE", self,
                        function()
+                       		self.go_bt:setTouchEnabled(true)
                        		self:fun_LuckyDraw_touch(true)
                        		audio.stopAllSounds()
 		            Util:player_music_new("jbbuzu.mp3",false )
