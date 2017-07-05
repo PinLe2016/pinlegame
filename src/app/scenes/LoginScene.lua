@@ -357,7 +357,7 @@ function LoginScene:fun_endanimation(_obj,_image,_type,_istrue)
       local  _content=_obj
       local  stencil = _content
       local spark = display.newSprite("LoginScene_Main/"  .. _image  )
-      spark:setPosition(cc.p(_content:getPositionX()-  _type,_content:getPositionY()));
+      spark:setPosition(cc.p(_content:getPositionX()-  _type,_content:getPositionY()+8));
      -- spark:setColor(cc.c3b(250,100,30))
       cliper:setAlphaThreshold(0.5)
       cliper:setStencil(stencil)
@@ -365,8 +365,8 @@ function LoginScene:fun_endanimation(_obj,_image,_type,_istrue)
       cliper:setVisible(_istrue)
       cliper:setLocalZOrder(9999)
       self.WeChat:addChild(cliper)
-      local moveTo = cc.MoveTo:create(4,cc.p(_content:getPositionX()+_type,_content:getPositionY()))
-      local moveBack = cc.MoveTo:create(4,cc.p(_content:getPositionX()-_type,_content:getPositionY()))  --moveTo:reverse()  --
+      local moveTo = cc.MoveTo:create(4,cc.p(_content:getPositionX()+_type,_content:getPositionY()+8))
+      local moveBack = cc.MoveTo:create(4,cc.p(_content:getPositionX()-_type,_content:getPositionY()+8))  --moveTo:reverse()  --
      -- local seq1=cc.Sequence:create(cc.FadeIn:create(4),cc.FadeOut:create(4))  --FadeOut
       local seq = cc.Sequence:create(moveTo,moveBack)
       local spawn = cc.Spawn:create( seq)
