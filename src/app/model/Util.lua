@@ -403,9 +403,14 @@ function Util:share(_id,_loginname,type)
               file="res/screenshoot.jpg"
           end
 
-           local login_info=LocalData:Instance():get_user_data()
+            local login_info=LocalData:Instance():get_user_data()
            local share_title=LocalData:Instance():get_share_title()
-           local share=cc.UM_Share:createWithShare(file,act_id,share_title["title"],share_title["content"],_loginname)
+           local complete_url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23e98e660f59078a&redirect_uri=http%3A%2F%2Fplaytest.pinlegame.com%2Fassist.html&response_type=code&"
+           local url=string.format("scope=snsapi_userinfo&state=%s|%s#wechat_redirect",act_id,_loginname)
+           complete_url=complete_url..url
+           dump(complete_url)
+           dump(type)
+           local share=cc.UM_Share:createWithShare(type,"",share_title["title"],share_title["content"],complete_url)
            share:addTo(display.getRunningScene(),1000)
            return share
 end
