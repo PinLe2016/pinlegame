@@ -218,12 +218,12 @@ function SlotMachines:fun_PowerWindows( _text )
                    self:removeChildByTag(123,true)
             end)
       --  连续三次分数弹窗
-      if #self.score_three<3 then
+      if #self.score_three<3   or #self.score_three>3 then
         return
       end
      
         if self.score_three[#self.score_three] +  self.score_three[#self.score_three-1] +self.score_three[#self.score_three-2] >9 then
-            self.floating_layer:fun_congratulations("距离大奖越来越近了,赶快邀请好友给您助力","稍后助力","马上助力","助理啦",function (sender, eventType)
+            self.floating_layer:fun_congratulations("距离大奖越来越近了,赶快邀请好友给您助力","稍后助力","马上助力","助力啦",function (sender, eventType)
                                     if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
                                       local loginname=_userdata["nickname"]
@@ -231,7 +231,7 @@ function SlotMachines:fun_PowerWindows( _text )
                                     end
               end)
         else
-          self.floating_layer:fun_congratulations("成绩不满意,好友帮您得积分","稍后助力","马上助力","助理啦",function (sender, eventType)
+          self.floating_layer:fun_congratulations("成绩不满意,好友帮您得积分","稍后助力","马上助力","助力啦",function (sender, eventType)
                                     if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
                                       local loginname=_userdata["nickname"]

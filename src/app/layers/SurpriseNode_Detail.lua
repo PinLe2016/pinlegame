@@ -113,6 +113,8 @@ function SurpriseNode_Detail:fun_data(  )
                                          self.share=Util:share(_activitybyid_id,loginname)
                                       end
                 end)
+                  cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",pop_new_mylevel_refresh)
+                  cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel_refresh",pop_new_mylevel_refresh)
            end
            for i=1,9 do
              if self.LV_hierarchy_table[i]  == LH_rank:getString()  then
