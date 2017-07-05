@@ -46,7 +46,7 @@ function TicketCenter:fun_init( ... )
 	                return
 	                end
 	                sender:setScale(1)
-	              
+	              Util:all_layer_backMusic()
 	              --Util:layer_action(self.TicketCenter,self,"close") 
 	              Util:scene_control("MainInterfaceScene")
             end)
@@ -61,6 +61,7 @@ function TicketCenter:fun_init( ... )
 	                return
 	                end
 	                sender:setScale(1)
+	                Util:all_layer_backMusic()
 	                self.win_type=1
 	                self.PerfectInformation = cc.CSLoader:createNode("PerfectInformation.csb");
 		    self:addChild(self.PerfectInformation)
@@ -131,6 +132,7 @@ function TicketCenter:fun_list_data(  )
 		                return
 		                end
 		                sender:setScale(1)
+		                Util:all_layer_backMusic()
 		                self.win_type=2
 		                self._win_img=path..tostring(Util:sub_str(rewardlist[sender:getTag()]["goodsimageurl"], "/",":"))
 		                self.Theirwin = cc.CSLoader:createNode("Theirwin.csb");
@@ -198,6 +200,7 @@ function TicketCenter:fun_Theirwin( _img)
 	                return
 	                end
 	                sender:setScale(1)
+	                Util:all_layer_backMusic()
 	              self:removeChildByTag(123, true)
             end)
             local Theirwin_name=self.Theirwin:getChildByName("Theirwin_name")
@@ -228,7 +231,7 @@ function TicketCenter:fun_Theirwin( _img)
 	                return
 	                end
 	                sender:setScale(1)
-
+	                Util:all_layer_backMusic()
 	                  if Theirwin_name:getString() == "" then
 	                  Server:Instance():promptbox_box_buffer("姓名不能为空哦")   --prompt
 	                  return
@@ -272,6 +275,7 @@ function TicketCenter:fun_PerfectInformation(  )
 	                return
 	                end
 	                sender:setScale(1)
+	                Util:all_layer_backMusic()
 	              self:removeChildByTag(213, true)
             end)
             local PerfectInformation_phone=PerfectInformation_BG:getChildByName("PerfectInformation_phone")
@@ -302,7 +306,7 @@ function TicketCenter:fun_PerfectInformation(  )
 	                return
 	                end
 	                sender:setScale(1)
-
+	                Util:all_layer_backMusic()
 	                if PerfectInformation_name:getString() == "" then
 	                  Server:Instance():promptbox_box_buffer("姓名不能为空哦")   --prompt
 	                  return

@@ -60,12 +60,13 @@ function SurpriseNode_Detail:ctor(params)
        --  初始化界面
        self:fun_init()     
        self:fun_Initialize_variable()
-      Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
-
+       Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
 end
 --  初始化变量
 function SurpriseNode_Detail:fun_Initialize_variable( ... )
     self.LV_hierarchy_table={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","国王"}
+    self.LV_hierarchy_table_LV_IMG={"9","10","11","12","13","17","16","14","15"}
+    self.LV_hierarchy_table_LV_IMG_NAME={"28","27","26","25","24","23","22","29","21"}
     self.LV_hierarchy_table_number={0,7,16,26,37,50,65,81,100}
     self.winnersPreview_comout=0
     self.winnersPreview_number=0
@@ -114,10 +115,19 @@ function SurpriseNode_Detail:fun_data(  )
            if _lv==#self.LV_hierarchy_table then
               DOS_LoadingBar:setPercent(100)
             else
-              DOS_LoadingBar:setPercent(tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv])    ))
+              if activitybyid_data["levelmax"]  and activitybyid_data["levelmin"]  then
+                DOS_LoadingBar:setPercent(tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv])    ))
+              else
+                DOS_LoadingBar:setPercent(0)
+              end
+              
            end
            -- 进度条的角标
-           DOS_biaoji:setPositionX(24+tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv]))  * 1281)
+           if activitybyid_data["levelmax"]  and activitybyid_data["levelmin"] then
+              DOS_biaoji:setPositionX(24+tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv]))  * 1281)
+           else
+             DOS_biaoji:setPositionX(24)
+           end
            self.LH_number:setString(text)
            self.DJS_time=(activitybyid_data["finishtime"]-activitybyid_data["begintime"])-(activitybyid_data["nowtime"]-activitybyid_data["begintime"])
             local  _tabletime_data=Util:FormatTime_colon(self.DJS_time)
@@ -146,6 +156,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                       return
                       end
                       sender:setScale(1)
+                      Util:all_layer_backMusic()
                        local tab=os.date("*t");
                        if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) == tab.day  then
                          local _count=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)
@@ -170,6 +181,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                  local SurpriseRank = require("app.layers.SurpriseRank")  --排行榜
                  local activitybyid=LocalData:Instance():get_getactivitybyid()
                   self:addChild(SurpriseRank.new({id=activitybyid["id"],score=activitybyid["totalpoints"],mylevel=activitybyid["mylevel"]}),1,1)
@@ -192,6 +204,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 self.winnersPreview:setVisible(true)
                 --Server:Instance():getactivityawards(self.surprise_id)  --  奖项预览
       end)
@@ -258,6 +271,8 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 return
                 end
                 sender:setScale(1)
+                audio.stopAllSounds()
+                Util:player_music_new("GO.mp3",false )
                 self.Friend_help:setVisible(false)
                 self.began_bt:setVisible(false)
                 self.award_bt:setVisible(false)
@@ -267,11 +282,16 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 --     return
                 -- end
                 local _SlotMachinesTable={}
-                
+                local _levelmin=0
+                local _levelmax=0
+                if sup_data["levelmin"]  and sup_data["levelmax"] then
+                  _levelmin=sup_data["levelmin"]
+                  _levelmax=sup_data["levelmax"]
+                end
                 _SlotMachinesTable["SlotMachinesId"] = sup_data["id"]
                 _SlotMachinesTable["SlotMachinesmylevel"] = sup_data["mylevel"]
-                _SlotMachinesTable["SlotMachineslevelmin"] = sup_data["levelmin"]
-                _SlotMachinesTable["SlotMachineslevelmax"] = sup_data["levelmax"]
+                _SlotMachinesTable["SlotMachineslevelmin"] = _levelmin
+                _SlotMachinesTable["SlotMachineslevelmax"] = _levelmax
                 _SlotMachinesTable["SlotMachinesgametimes"] = sup_data["gametimes"]
                 _SlotMachinesTable["SlotMachinesscore"] = sup_data["totalpoints"]
                 _SlotMachinesTable["SlotMachines_id"] = self.surprise_id                
@@ -319,6 +339,7 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 XQ_FD_LIST_Back:setVisible(false)
                 XQ_FD_LIST_More_Bg:setVisible(true)
                 Friend_Node:setPositionY(0)
@@ -337,6 +358,7 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 XQ_FD_LIST_Back:setVisible(true)
                 XQ_FD_LIST_More_Bg:setVisible(false)
                 Friend_Node:setPositionY(635)
@@ -373,7 +395,7 @@ function SurpriseNode_Detail:fun_friend_list_data( ... )
           --local _index=string.match(tostring(Util:sub_str(friendhelp[i]["head"], "/",":")),"%d")
           --XQ_FD_LIST_Head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
           local XQ_FD_LIST_Nickname=cell:getChildByName("XQ_FD_LIST_Nickname")
-          XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
+          --XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
           local XQ_FD_LIST_Number=cell:getChildByName("XQ_FD_LIST_Number")
           --XQ_FD_LIST_Number:setString(friendhelp[i]["nick"])
           XQ_FD_LIST_Number:setString(math.random(1,8))
@@ -452,7 +474,7 @@ end
 function SurpriseNode_Detail:function_introduce(_text ,_x,_y,_isvisible,_obj)
             self.introduce = cc.CSLoader:createNode("introduce.csb");
             _obj:addChild(self.introduce)
-            self.introduce:setPosition(cc.p(40,40))
+            self.introduce:setPosition(cc.p(40,30))
             self.introduce:setVisible(_isvisible)
              local introduce_Text=self.introduce:getChildByName("introduce_Text")
              introduce_Text:setString(tostring(_text))
@@ -475,6 +497,7 @@ function SurpriseNode_Detail:fun_winnersPreview(  )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 self.winnersPreview:setVisible(false)
       end)
         self.win_ListView=self.winnersPreview:getChildByName("win_ListView")
@@ -502,12 +525,22 @@ function SurpriseNode_Detail:fun_winnersPreview_list_init( ... )
           self.win_ListView:pushBackDefaultItem()
           local  cell = self.win_ListView:getItem(i-1)
           local number=cell:getChildByName("number")
+          local Image_84=cell:getChildByName("Image_84")
+          local Image_85=cell:getChildByName("Image_85")
           --number:setString("0 ~ "  ..  sup_data[i]["awardcount"])  s
           local _bj=i
+          local _obj=1
           if _bj>=9 then
             _bj=9
           end
-          number:setString(self.LV_hierarchy_table[10-_bj])
+          for j=1,9 do
+            if self.LV_hierarchy_table[10-_bj]  ==  self.LV_hierarchy_table[j] then
+              _obj=j
+            end
+          end
+          --number:setString(self.LV_hierarchy_table[10-_bj])
+          Image_84:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"  .. self.LV_hierarchy_table_LV_IMG[_obj]  ..   ".png")
+          Image_85:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"  .. self.LV_hierarchy_table_LV_IMG_NAME[_obj]  ..   ".png")
           local prize=cell:getChildByName("prize")
           prize:setString(sup_data[i]["awardorder"] ..  "等奖")
           local win_name=cell:getChildByName("win_name")
@@ -553,7 +586,7 @@ function SurpriseNode_Detail:fun_help_data( ... )
                          local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                          local _activitybyid_id=activitybyid_data["id"]
                          local _userdata=LocalData:Instance():get_user_data()
-                         local loginname=_userdata["loginname"]
+                         local loginname=_userdata["nickname"]
                         self.Friend_help:addTouchEventListener(function(sender, eventType  )
                                 if eventType == 3 then
                                       sender:setScale(1)
@@ -564,7 +597,7 @@ function SurpriseNode_Detail:fun_help_data( ... )
                                   return
                                   end
                                   sender:setScale(1)
-                                  print("好友助力")
+                                  Util:all_layer_backMusic()
                                   self.share=Util:share(_activitybyid_id,loginname)
                         end)
 end
@@ -584,10 +617,10 @@ function SurpriseNode_Detail:onEnter()
                       end)
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
-                        self:fun_data()
-                        self:winnersPreview_Home_image()
-                        self:fun_friend_list_data()
-                        self:fun_help_data()
+                         self:fun_data()
+                         self:winnersPreview_Home_image()
+                         self:fun_friend_list_data()
+                         self:fun_help_data()
                                   
 
                       end)

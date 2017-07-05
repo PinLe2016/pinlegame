@@ -112,7 +112,7 @@ function DetailsSurpreissue:fun_init( ... )
 end
 function DetailsSurpreissue:fun_win_list_data( ... )
 	local getactivitywinners=LocalData:Instance():get_getactivitywinners()
-	local winnerlist =getactivitywinners["winnerlist "]
+	local winnerlist =getactivitywinners["winnerlist"]
 	if #winnerlist  <= 0  then
 		return
 	end
@@ -166,6 +166,7 @@ function DetailsSurpreissue:fun_touch( ... )
                       return
                       end
                       sender:setScale(1)
+                      Util:all_layer_backMusic()
                        local tab=os.date("*t");
                        if cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday",tab.day) == tab.day  then
                          local _count=cc.UserDefault:getInstance():getIntegerForKey("new_time_tabday_count_count",0)
@@ -191,6 +192,7 @@ function DetailsSurpreissue:fun_touch( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 XQ_FD_LIST_Back:setVisible(true)
                 XQ_FD_LIST_More_Bg:setVisible(false)
                 self.ProjectNode_3:setPositionY(350)
@@ -209,6 +211,7 @@ function DetailsSurpreissue:fun_touch( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 XQ_FD_LIST_Back:setVisible(false)
                 XQ_FD_LIST_More_Bg:setVisible(true)
                 XQ_FD_LIST_More_Bt:setVisible(true)

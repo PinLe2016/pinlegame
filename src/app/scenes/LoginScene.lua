@@ -138,7 +138,7 @@ function LoginScene:_coverlayer( )
 
       self.coverlayer = cc.CSLoader:createNode("coverlayer.csb")
       self:addChild(self.coverlayer)
-
+      cc.UserDefault:getInstance():setStringForKey("Newbieguide","0")
       local advertiPv=self.coverlayer:getChildByTag(1531)
       local advertiPa = advertiPv:getChildByTag(1532)
 

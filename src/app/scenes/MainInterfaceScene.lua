@@ -104,49 +104,43 @@ function MainInterfaceScene:Physics_homeback_ref( )
 
 
 end
-function MainInterfaceScene:test()
 
-  -- cc.Director:getInstance():setProjection(cc.DIRECTOR_PROJECTION3_D);
-  cc.Director:getInstance():setDepthTest(true)
-
-  local sp=display.newSprite("resources/zhujiemian/ZJM_XG_10.png")
-  sp:setPosition(display.cx,display.cy)
-
-
-  local nodegird = cc.NodeGrid:create()
-  nodegird:addChild(sp)
-  self:addChild(nodegird)
-  local Liquid=cc.Liquid:create(0.5, cc.size(10, 10), 2, 5.0);
-  local WavesTiles3D=cc.WavesTiles3D:create(10, cc.size(20, 20), 10, 20)
-  local Waves3D=cc.Waves3D:create(5, cc.size(15, 10), 10, 20)
-  
-  local ripple=cc.Ripple3D:create(5, cc.size(5, 5), cc.p(320, 480), 240, 4, 160)
- nodegird:runAction( cc.RepeatForever:create(WavesTiles3D));--cc.RepeatForever:create(
-
+function MainInterfaceScene:fun_MainInterfaceScene_act(  )
+             --  加载波浪动画
+      local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
+      local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png") --BG-1  ZJM_XG_10
+      local gridNode = cc.NodeGrid:create()
+      gridNode:addChild(fragment_sprite)
+      gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()))  --(cc.p(320,568))--
+      self.MainInterfaceScene:addChild(gridNode,0,0)
+      local  waves =cc.Waves:create(3, cc.size(10,5), 2, 3, true, false)
+      local  liquid  = cc.Liquid:create(3, cc.size(10, 10), 2, 2.0);
+      local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
+      gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( liquid) ) )
+      --  树叶
+      local   Image_4749=self.MainInterfaceScene:getChildByTag(4749)
+      local   Image_4750=self.MainInterfaceScene:getChildByTag(4750)
+       local actionT1 = cc.RotateTo:create( 1, 5)
+      local actionTo1 = cc.RotateTo:create( 1.5, -5)
+      local actionT2 = cc.RotateTo:create( 1.5, 5)
+      local actionTo2 = cc.RotateTo:create( 2.5, -6)
+      Image_4749:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+      Image_4750:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))    
+      
 end
+
 function MainInterfaceScene:fun_init( )
       
       self.MainInterfaceScene = cc.CSLoader:createNode("MainInterfaceScene.csb")
       self:addChild(self.MainInterfaceScene)
-      --  加载波浪动画
-      -- local   Image_211=self.MainInterfaceScene:getChildByTag(1988)
-      -- local fragment_sprite = cc.Sprite:create("resources/zhujiemian/ZJM_XG_10.png") --BG-1  ZJM_XG_10
-      -- local gridNode = cc.NodeGrid:create()
-      -- gridNode:addChild(fragment_sprite)
-      -- gridNode:setPosition(cc.p(Image_211:getPositionX(),Image_211:getPositionY()+20))  --(cc.p(320,568))--
-      -- self.MainInterfaceScene:addChild(gridNode,0,0)
-      -- local  waves =cc.Waves:create(3, cc.size(10,5), 2, 6, true, false)
-      -- local  shaky = cc.Shaky3D:create(1, cc.size(15,10), 4, false)
-      -- gridNode:runAction( cc.RepeatForever:create(cc.Sequence:create( waves) ) )
+      self.shareroleAction = cc.CSLoader:createTimeline("MainInterfaceScene.csb")
+     self.MainInterfaceScene:runAction(self.shareroleAction)
+     self.shareroleAction:setTimeSpeed(0.15)
+     self.shareroleAction:gotoFrameAndPlay(0,160, true)
 
-      self.signanimations = cc.CSLoader:createNode("signanimations.csb")
-      self.signanimations:setVisible(false)
-      self:addChild(self.signanimations)
-      self.signanimationact = cc.CSLoader:createTimeline("signanimations.csb")
-      self.signanimations:runAction(self.signanimationact)
-      local flashing=self.signanimations:getChildByTag(286)
-      flashing:runAction( cc.Sequence:create(cc.Blink:create(3,100)))
-      self.signanimationact:gotoFrameAndPlay(0,65, true)
+      self:fun_MainInterfaceScene_act()
+
+     
          
        self.gamecenter_text=self.MainInterfaceScene:getChildByTag(122)   --游戏中心
       local Surprise_bt=self.MainInterfaceScene:getChildByTag(56)  --惊喜吧
@@ -185,6 +179,7 @@ function MainInterfaceScene:fun_init( )
                       return
                       end
                       sender:setScale(0.5)
+                      Util:all_layer_backMusic()
                       head_img_liang:setVisible(false)
                       local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
                      self:addChild(PerInformationLayer.new(),1,14)
@@ -258,6 +253,7 @@ function MainInterfaceScene:fun_init( )
                                   sender:setTouchEnabled(true)
                                   
                             end
+                            Util:all_layer_backMusic()
                             local actionTo =  cc.EaseBackOut:create(cc.RotateBy:create(0.5, 120))  
                             local actionTo2 = cc.RotateTo:create(0.2, 60)
                             local callfunc = cc.CallFunc:create(stopAction)
@@ -281,6 +277,7 @@ function MainInterfaceScene:fun_init( )
 
                      elseif eventType == ccui.CheckBoxEventType.unselected then
                               sender:setTouchEnabled(false)
+                              Util:all_layer_backMusic()
                              local function stopAction()
                                   sender:setTouchEnabled(true)
                                   
@@ -328,6 +325,7 @@ function MainInterfaceScene:fun_backbt( sender, eventType )
      local aboutdetailsLayer = require("app.layers.aboutdetailsLayer")  --关于拼乐界面  
       self:addChild(aboutdetailsLayer.new(),1,12)
   elseif tag==6225 then
+    Util:all_layer_backMusic()
     local SetLayer = require("app.layers.SetLayer")  --邀请好友
     self:addChild(SetLayer.new(),1,11)
     self.sliding_bg:setScale(0)
@@ -392,6 +390,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
   end
   local tag=sender:getTag()
   if tag==56 then --惊喜吧
+    Util:all_layer_backMusic()
      Util:scene_control("GameSurpriseScene")
   elseif tag==37 then  --37
     
@@ -411,13 +410,17 @@ function MainInterfaceScene:touch_callback( sender, eventType )
 
              Server:Instance():getcheckinhistory()  --签到http
       elseif tag==444 then  --转盘
-        Util:scene_control("LuckyDraw")
-      elseif tag==97 then  --中奖
+        Util:all_layer_backMusic()
         Util:scene_control("TicketCenter")
+      elseif tag==97 then  --中奖
+        Util:all_layer_backMusic()
+        Util:scene_control("LuckyDraw")
       elseif tag==125 then  --助力榜
+        Util:all_layer_backMusic()
         Util:scene_control("PowerHelp")
       elseif tag==580 then  --邮箱
             print("邮箱")
+            Util:all_layer_backMusic()
             self.sliding_bg:setScale(0)
             self.setup_box:setSelected(false)
             local mailLayer = require("app.layers.mailLayer")  --关于邮箱界面
@@ -434,6 +437,7 @@ function MainInterfaceScene:touch_callback( sender, eventType )
           
             self.set_bg1:setVisible(false)
       elseif tag==288 then  --邀请好友  291
+        Util:all_layer_backMusic()
         local FriendrequestLayer = require("app.layers.FriendrequestLayer")  --邀请好友
             self:addChild(FriendrequestLayer.new({switch=2}),1,11)
 self.sliding_bg:setScale(0)
@@ -449,15 +453,7 @@ self.setup_box:setSelected(false)
             -- self:addChild(self.Ruledescription)
       elseif tag==626 then  --商城
 
-            -- local _table=LocalData:Instance():get_version_date()--游戏中心和 商城开关
-            -- if _table and tonumber(_table["shopIsused"])==0 then
-            --       local login_info=LocalData:Instance():get_user_data()
-            --       local _key=login_info["loginname"]
-            --       local _loginkey=login_info["loginkey"]
-            --       url=Server:Instance():mall(tostring(_key),tostring(_loginkey))
-            --       device.openURL(url)
-            --       return
-            -- end
+            
 
             --  Util:scene_controlid("MallScene",{type="emil"})
 
@@ -467,6 +463,7 @@ self.setup_box:setSelected(false)
 
 
       elseif tag==52 then  --邀请好友
+        Util:all_layer_backMusic()
         self.sliding_bg:setScale(0)
         self.setup_box:setSelected(false)
         local InvitefriendsLayer = require("app.layers.InvitefriendsLayer")  --邀请好友排行榜

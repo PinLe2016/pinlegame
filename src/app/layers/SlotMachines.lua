@@ -104,16 +104,15 @@ function SlotMachines:fun_Slot_machines_init( ... )
 end
 --  开始
 function SlotMachines:fun_Slot_machines( _num,_point )
-          --  self. _table={}
-          -- self._table_number={}
-          -- self._table_number_tag=1
-
+         audio.stopAllSounds()
+       Util:player_music_new("bg_7_f.mp3",true )
         for i=1,#self. _table do
               self. _table[i]:startGo()
         end
         local  tempn = _num  
 
          local function fun_stopGo()
+
 		for i=1,#self. _table do
 			local  stopNum = 0;
 			if (tempn > 0)  then
@@ -129,6 +128,7 @@ function SlotMachines:fun_Slot_machines( _num,_point )
                            self._table_number={}
                            self._table_number_tag=1
                            local function fun_stopGo2()
+                            audio.stopAllSounds()
                               local count=self:stringToTable(tostring(_num))
                               if count==1 then
                                 Util:player_music_new("open_box.mp3",false )
@@ -137,7 +137,7 @@ function SlotMachines:fun_Slot_machines( _num,_point )
                               else
                                 Util:player_music_new("super_big.mp3",false )
                               end
-                              
+                              audio.resumeMusic()
                               self:fun_Initialize_data()
                               self.hl_began:setTouchEnabled(true)
                               self:fun_PowerWindows(_point)
@@ -152,9 +152,35 @@ function SlotMachines:fun_Slot_machines( _num,_point )
 end
 function SlotMachines:fun_PowerWindows( _text )
   local PowerWindows = cc.CSLoader:createNode("PowerWindows.csb");
-  self:addChild(PowerWindows)
+  self:addChild(PowerWindows) 
   PowerWindows:setTag(123)
+  local fragment_sprite = display.newSprite("PromptBox/JXB_YX_29.png")
+  local Image_8=PowerWindows:getChildByName("Image_8")
+  local Image_guang=PowerWindows:getChildByName("Image_9")
+  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,Image_8:getContentSize().width,Image_8:getContentSize().height))
+  crn:setAnchorPoint(cc.p(0.5,0.5))
+  crn:setPosition(cc.p(Image_8:getPositionX()-Image_8:getContentSize().width/2,Image_8:getPositionY()-Image_8:getContentSize().height/2))
+  PowerWindows:addChild(crn)
+  fragment_sprite:setPosition(cc.p(Image_8:getContentSize().width/2-5,Image_8:getContentSize().height/2+20))
+  crn:addChild(fragment_sprite)
+  
+  Image_guang:setScale(0)
+  local actionT1= cc.ScaleTo:create( 1, 1.0)
+  local actionTo1 = cc.ScaleTo:create( 1, 1.8)
+   local actionT2 = cc.RotateBy:create( 4, 90)
+   local actionTo2 = cc.RotateBy:create(4, 90)
+  fragment_sprite:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+  fragment_sprite:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
+  local Image_5=PowerWindows:getChildByName("Image_5")
+  local Image_6=PowerWindows:getChildByName("Image_6")
+  local Image_7=PowerWindows:getChildByName("Image_7")
+  Image_5:setLocalZOrder(2)
+  Image_6:setLocalZOrder(2)
+  Image_7:setLocalZOrder(2)
+
+  
   local number=PowerWindows:getChildByName("number")
+  number:setLocalZOrder(2)
   number:setString(tostring(_text))
   local pwtrue=PowerWindows:getChildByName("Image_1")
             pwtrue:addTouchEventListener(function(sender, eventType  )
@@ -184,6 +210,7 @@ function SlotMachines:fun_touch_bt( ... )
                       return
                       end
                       sender:setScale(1)
+                      Util:all_layer_backMusic()
                       self:removeFromParent()
                       Server:Instance():getactivitybyid(SlotMachines_id,0)  --  详情
 
@@ -201,6 +228,7 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                Util:all_layer_backMusic()
                 Server:Instance():getactivitypointsdetail(self.SlotMachinesId,"")
                 self:fun_Integralrecord()
       end)
@@ -217,6 +245,7 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                audio.pauseMusic()
                 Util:player_music_new("spin_button.mp3",false )
                 -- if self.SlotMachinesgametimes<=0 then
                 --     self.floating_layer:prompt_box("您的次数已经用完")
@@ -240,7 +269,7 @@ function SlotMachines:fun_touch_bt( ... )
                 end
                 sender:setScale(1)
                 local _userdata=LocalData:Instance():get_user_data()
-                local loginname=_userdata["loginname"]
+                local loginname=_userdata["nickname"]
                 self.share=Util:share(self.SlotMachinesId,loginname)
       end)
        
@@ -267,6 +296,7 @@ function SlotMachines:fun_Integralrecord( ... )
                   return
                   end
                   sender:setScale(1)
+                  Util:all_layer_backMusic()
                   self:removeChildByTag(987, true)
             end)
       self.XQ_FD_LIST_View=self.Integralrecord:getChildByName("ListView_5")

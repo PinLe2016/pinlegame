@@ -48,6 +48,7 @@ function LuckyDraw:ctor()
       self:fun_constructor()
       Server:Instance():getfortunewheelrewards(200)
       Server:Instance():getrecentfortunewheelrewardlist()
+      
 end
 function LuckyDraw:fun_constructor( ... )
       self.floating_layer = require("app.layers.FloatingLayer").new()
@@ -81,6 +82,31 @@ function LuckyDraw:fun_LuckyDraw_touch( istouch )
 	self.LuckyDraw_Rotary_bt2:setTouchEnabled(istouch)
 	self.LuckyDraw_Rotary_bt3:setTouchEnabled(istouch)
 end
+function LuckyDraw:fun_LuckyDrawGoNode( ... )
+	 --  新手引导
+	local new_start=cc.UserDefault:getInstance():getStringForKey("Newbieguide","0")
+	if tonumber(new_start)==0 then
+	self.GONODE=cc.CSLoader:createNode("LuckyDrawGoNode.csb")
+	self.GONODE:setTag(568)
+	self:addChild(self.GONODE)
+	self.shareroleAction = cc.CSLoader:createTimeline("LuckyDrawGoNode.csb")
+     	self.GONODE:runAction(self.shareroleAction)
+     	self.shareroleAction:setTimeSpeed(1)
+     	self.shareroleAction:gotoFrameAndPlay(0,80, true)
+     	local Image_2=self.GONODE:getChildByName("Image_2")
+            Image_2:addTouchEventListener(function(sender, eventType  )
+                     
+                      if eventType ~= ccui.TouchEventType.ended then
+                           return
+                      end
+                     self:removeChildByTag(568, true)
+
+      end)
+	        cc.UserDefault:getInstance():setStringForKey("Newbieguide","2")
+	end
+
+	
+end
 function LuckyDraw:fun_init( ... )
 	self.LuckyDraw = cc.CSLoader:createNode("LuckyDraw.csb");
 	self:addChild(self.LuckyDraw)
@@ -93,7 +119,7 @@ function LuckyDraw:fun_init( ... )
 	self.LuckyDraw_Rotary2=self.LuckyDraw_zbg2:getChildByName("LuckyDraw_Rotary2")
 	self.LuckyDraw_Rotary3=self.LuckyDraw_zbg3:getChildByName("LuckyDraw_Rotary3")
 	self:fun_win_img_init()
-
+	self:fun_LuckyDrawGoNode()
 	self.go_bt=self.LuckyDraw_node:getChildByName("go_bt")
 	self.go_bt:setTouchEnabled(false)
 	--  事件初始化
@@ -109,6 +135,7 @@ function LuckyDraw:fun_init( ... )
 	                return
 	                end
 	                sender:setScale(1)
+	                Util:all_layer_backMusic()
 	              Util:scene_control("MainInterfaceScene")
             end)
             --  200
@@ -203,13 +230,7 @@ function LuckyDraw:fun_Isgold(_type)
 end
 --  初始化点击GO 
 function LuckyDraw:fun_began_start()
-	if LuckyDraw_type==200 then
-		Util:player_music_new("bg_5_f.mp3",true )
-	elseif LuckyDraw_type==500 then
-		Util:player_music_new("bg_7_f.mp3",true )
-	else
-		Util:player_music_new("bg_9_f.mp3",true )
-	end
+		
 	
        local function CallFucnCallback3(sender)
                 if self.x_rand~=0 then
@@ -238,7 +259,7 @@ end
                 return
                 end
                 sender:setScale(1)
-
+                Util:all_layer_backMusic()
               self.curr_bright:setBright(true)
               sender:setBright(false)
                if tag=="LuckyDraw_Rotary_bt1" then  
@@ -312,7 +333,7 @@ function LuckyDraw:refView()
 end
 --  开始按钮操作
 function LuckyDraw:maskTouch(_id)
-
+	
 	m_nAwardID =_id --math.random(1,m_awardNum)  --＊＊＊
 	print("抽奖设置id",m_nAwardID)   --  使我们设置的参数
 	self:awardStart()
@@ -345,10 +366,10 @@ function LuckyDraw:awardStart()
 end
 --转盘停止
 function LuckyDraw:awardEnd()
+	audio.stopAllSounds()
+	Util:player_music_new("huode.mp3",false )
 	self:fun_LuckyDraw_touch(true)
 	self.go_bt:setTouchEnabled(true)
-
-	Util:player_music_new("spin_button.mp3",false )
 	dump("抽奖成功,抽到"..self.m_info.data[m_nAwardID].name)
 end
 function LuckyDraw:doRotateAction(node,callback,time,speed)
@@ -587,6 +608,8 @@ function LuckyDraw:onEnter()
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD_FALSE", self,
                        function()
                        		self:fun_LuckyDraw_touch(true)
+                       		audio.stopAllSounds()
+		            Util:player_music_new("jbbuzu.mp3",true )
                       end)--
 
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELREWARDS", self,

@@ -45,6 +45,7 @@ function SurpriseRank:fun_touch_bt( ... )
                       return
                       end
                       sender:setScale(1)
+                      Util:all_layer_backMusic()
               self:removeFromParent()
       end)
     

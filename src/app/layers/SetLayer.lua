@@ -111,6 +111,8 @@ function SetLayer:set_touch(  )
                            sender:setScale(1.2)
                            return
                       end
+                      sender:setScale(1)
+                      Util:all_layer_backMusic()
                       -- local function stopAction()
                       -- self:removeFromParent()
                       -- end
@@ -161,7 +163,7 @@ function SetLayer:set_touch(  )
                    if eventType ~= ccui.TouchEventType.ended then
                        return
                   end
-                   self:fun_storebrowser("https://www.baidu.com")
+                   self:fun_storebrowser("http://sj.qq.com/myapp/detail.htm?apkName=com.pinle.pinlegame")
               end)
               --  注销
 	 local btn_CheckOut=self.SetNode:getChildByName("Button_5")
