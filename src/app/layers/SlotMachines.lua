@@ -79,9 +79,6 @@ function SlotMachines:fun_Initialize_data( ... )
       self.slotlh_ldb:setPercent(tonumber(activitygame["levelminpoints"])  / tonumber(activitygame["levelmaxpoints"])  *100)
       self.slotbumber:setString(  tostring(activitygame["remaintimes"])    )
       self.SlotMachinesgametimes=activitygame["remaintimes"]
-       local actionT1 = cc.ScaleTo:create( 0.2, 1.5)
-      local actionTo1 = cc.ScaleTo:create( 0.2, 1)
-      self.slotbumber:runAction(cc.Sequence:create(actionT1, actionTo1))
       self.slotintegral:setString(tostring(activitygame["totalpoints"]))
       self.slotlevel:setString(tostring(activitygame["level"]))
       for i=1,9 do
@@ -300,6 +297,12 @@ function SlotMachines:fun_touch_bt( ... )
                                   end
                     end)
                     return
+                end
+                if tonumber(self.slotbumber:getString())>0 then
+                  self.slotbumber:setString(  tostring(tonumber(self.slotbumber:getString()) -1 )  )
+                  local actionT1 = cc.ScaleTo:create( 0.2, 1.5)
+                  local actionTo1 = cc.ScaleTo:create( 0.2, 1)
+                  self.slotbumber:runAction(cc.Sequence:create(actionT1, actionTo1))
                 end
                 self.hl_began:setTouchEnabled(false)
                 Server:Instance():activitygame(self.SlotMachinesId)
