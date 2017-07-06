@@ -176,6 +176,10 @@ function SlotMachines:fun_PowerWindows( _text )
   local PowerWindows = cc.CSLoader:createNode("PowerWindows.csb");
   self:addChild(PowerWindows) 
   PowerWindows:setTag(123)
+  local function fun_stopGo()
+        self:removeChildByTag(123,true)
+  end
+  PowerWindows:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo)))
   local fragment_sprite = display.newSprite("PromptBox/JXB_YX_29.png")
   local Image_8=PowerWindows:getChildByName("Image_8")
   local Image_guang=PowerWindows:getChildByName("Image_9")
@@ -204,6 +208,8 @@ function SlotMachines:fun_PowerWindows( _text )
   local number=PowerWindows:getChildByName("number")
   number:setLocalZOrder(2)
   number:setString(tostring(_text))
+ 
+
   local pwtrue=PowerWindows:getChildByName("Image_1")
             pwtrue:addTouchEventListener(function(sender, eventType  )
                    if eventType == 3 then
@@ -239,7 +245,10 @@ function SlotMachines:fun_PowerWindows( _text )
                                     end
               end)
         end
-      
+      local function fun_stopGo()
+        self:removeChildByTag(123,true)
+      end
+      PowerWindows:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo)))
 end
 function SlotMachines:fun_touch_bt( ... )
      --  事件初始化

@@ -57,6 +57,9 @@ function GameSurpriseScene:fun_constructor( ... )
       self.image_table={}  --  存放图片
       self.timetext_table={} --存放时间
       self.time=0
+      self.LV_hierarchy_table={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","国王"}
+      self.LV_hierarchy_table_LV_IMG={"9","10","11","12","13","17","16","14","15"}
+      self.LV_hierarchy_table_LV_IMG_NAME={"28","27","26","25","24","23","22","29","21"}
       self.secondOne = 0
       self:addNodeEventListener(cc.NODE_ENTER_FRAME_EVENT, function(dt)
 	      	self:update(dt)
@@ -320,7 +323,20 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             end
             --  我的爵位
             local time_lv=time_obj:getChildByName("time_lv")
-            time_lv:setString("我的爵位     "  ..  _gamelist[2*_num-istwo]["mylevel"])
+            local s_lv_sp=time_obj:getChildByName("s_lv_sp")
+            local s_lv_img=time_obj:getChildByName("s_lv_img")
+            -- time_lv:setString("我的爵位     "  ..  _gamelist[2*_num-istwo]["mylevel"])
+            local lv_obj=1
+            for j=1,9 do
+                if _gamelist[2*_num-istwo]["mylevel"]  ==  self.LV_hierarchy_table[j] then
+                  lv_obj=j
+                end
+            end
+          s_lv_sp:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"  .. self.LV_hierarchy_table_LV_IMG[lv_obj]  ..   ".png")
+          s_lv_img:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"  .. self.LV_hierarchy_table_LV_IMG_NAME[lv_obj]  ..   ".png")
+          
+
+
             --  是否参与
             local YICY=_obj:getChildByName("YICY")
             local NOCY=_obj:getChildByName("NOCY")
