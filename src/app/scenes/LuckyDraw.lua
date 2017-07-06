@@ -375,7 +375,7 @@ function LuckyDraw:awardEnd()
 	local function fun_stopGo()
 	        self:fun_LuckyDrawEndAct()
 	  end
-	  self:runAction( cc.Sequence:create(cc.DelayTime:create(1),cc.CallFunc:create(fun_stopGo)))
+	  self:runAction( cc.Sequence:create(cc.DelayTime:create(0.5),cc.CallFunc:create(fun_stopGo)))
 	dump("抽奖成功,抽到"..self.m_info.data[m_nAwardID].name)
 end
 function LuckyDraw:doRotateAction(node,callback,time,speed)
