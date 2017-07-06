@@ -63,7 +63,6 @@ function SurpriseNode_Detail:fun_init( ... )
 	self:addChild(self.DetailsOfSurprise)
       self.introduce=nil
       self._DOS_ScrollView=self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("DOS_ScrollView")
-
       self.XQ_bg=self.DetailsOfSurprise:getChildByName("XQ_bg")
       self.LH_bg=self.XQ_bg:getChildByName("LH_bg")
       self.LH_number=self.LH_bg:getChildByName("LH_number")
@@ -93,6 +92,7 @@ function SurpriseNode_Detail:fun_data(  )
               end
               
            end
+           self._DOS_ScrollView:scrollToPercentHorizontal(tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv])    ),1,true)
            -- 进度条的角标
            if activitybyid_data["levelmax"]  and activitybyid_data["levelmin"] then
               DOS_biaoji:setPositionX(24+tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv]))  * 1281)
@@ -643,7 +643,6 @@ function SurpriseNode_Detail:fun_help_data( ... )
                          local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                          local _activitybyid_id=activitybyid_data["id"]
                          local _userdata=LocalData:Instance():get_user_data()
-                         dump(_userdata)
                          local loginname=_userdata["loginname"]
                         self.Friend_help:addTouchEventListener(function(sender, eventType  )
                                 if eventType == 3 then
