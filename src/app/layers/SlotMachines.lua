@@ -32,7 +32,7 @@ function SlotMachines:fun_Popup_window( ... )
             self.floating_layer:fun_congratulations("您已经成功参与惊喜吧活动,离奖品只差一步,赶紧好友助力帮您赢大奖！","稍后助力","马上助力","恭喜",function (sender, eventType)
                                   if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
-                                      local loginname=_userdata["nickname"]
+                                      local loginname=_userdata["loginname"]
                                       self.share=Util:share(self.SlotMachinesId,loginname)
                                   end
             end)
@@ -218,7 +218,7 @@ function SlotMachines:fun_PowerWindows( _text )
             self.floating_layer:fun_congratulations("距离大奖越来越近了,赶快邀请好友给您助力","稍后助力","马上助力","助力啦",function (sender, eventType)
                                     if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
-                                      local loginname=_userdata["nickname"]
+                                      local loginname=_userdata["loginname"]
                                       self.share=Util:share(self.SlotMachinesId,loginname)
                                     end
               end)
@@ -226,7 +226,7 @@ function SlotMachines:fun_PowerWindows( _text )
           self.floating_layer:fun_congratulations("成绩不满意,好友帮您得积分","稍后助力","马上助力","助力啦",function (sender, eventType)
                                     if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
-                                      local loginname=_userdata["nickname"]
+                                      local loginname=_userdata["loginname"]
                                       self.share=Util:share(self.SlotMachinesId,loginname)
                                     end
               end)
@@ -295,7 +295,7 @@ function SlotMachines:fun_touch_bt( ... )
                     self.floating_layer:fun_congratulations("金币,积分天天送,抓紧好友助力吧！","稍后助力","马上助力","助力赢大奖",function (sender, eventType)
                                   if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
-                                      local loginname=_userdata["nickname"]
+                                      local loginname=_userdata["loginname"]
                                       self.share=Util:share(self.SlotMachinesId,loginname)
                                   end
                     end)
@@ -319,7 +319,7 @@ function SlotMachines:fun_touch_bt( ... )
                 end
                 sender:setScale(1)
                 local _userdata=LocalData:Instance():get_user_data()
-                local loginname=_userdata["nickname"]
+                local loginname=_userdata["loginname"]
                 self.share=Util:share(self.SlotMachinesId,loginname)
       end)
        

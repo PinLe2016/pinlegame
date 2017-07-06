@@ -127,7 +127,7 @@ function SurpriseNode_Detail:fun_data(  )
                                          local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                                          local _activitybyid_id=activitybyid_data["id"]
                                          local _userdata=LocalData:Instance():get_user_data()
-                                         local loginname=_userdata["nickname"]
+                                         local loginname=_userdata["loginname"]
                                          self.share=Util:share(_activitybyid_id,loginname)
                                       end
                 end)
@@ -286,7 +286,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                      local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                                      local _activitybyid_id=activitybyid_data["id"]
                                      local _userdata=LocalData:Instance():get_user_data()
-                                     local loginname=_userdata["nickname"]
+                                     local loginname=_userdata["loginname"]
                                      self.share=Util:share(_activitybyid_id,loginname)
                                   else
                                       local _SlotMachinesTable={}
@@ -643,7 +643,8 @@ function SurpriseNode_Detail:fun_help_data( ... )
                          local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                          local _activitybyid_id=activitybyid_data["id"]
                          local _userdata=LocalData:Instance():get_user_data()
-                         local loginname=_userdata["nickname"]
+                         dump(_userdata)
+                         local loginname=_userdata["loginname"]
                         self.Friend_help:addTouchEventListener(function(sender, eventType  )
                                 if eventType == 3 then
                                       sender:setScale(1)
