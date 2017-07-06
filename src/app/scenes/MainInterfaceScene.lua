@@ -662,7 +662,7 @@ function MainInterfaceScene:fun_radio(_text ,_number_sd)
           title:setColor(cc.c3b(255, 255, 255))
 
                 --描述动画
-            local move = cc.MoveTo:create((title:getContentSize().width)/(10 + _number_sd *5), cc.p(-450-title:getContentSize().width,8))
+            local move = cc.MoveTo:create((title:getContentSize().width)/(20 + _number_sd *5), cc.p(-450-title:getContentSize().width,8))
              local callfunc = cc.CallFunc:create(function(node, value)
                     title:setPosition(cc.p(450+title:getContentSize().width+title:getContentSize().width,8))
                   end, {tag=0})

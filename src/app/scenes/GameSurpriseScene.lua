@@ -257,6 +257,14 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             txt_Pastdate:setString(_str1  .. _tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             
             local ig_GiftPhoto=_obj:getChildByName("ig_GiftPhoto")
+            --  是否新活动
+            local part=ig_GiftPhoto:getChildByName("part")
+            if tonumber(_gamelist[2*_num-istwo]["isnew"])  == 1 then  --  新  0  是 老 
+              part:setVisible(true)
+            else
+              part:setVisible(false)
+            end
+
             local kuang=_obj:getChildByName("kuang")
             kuang:setVisible(false)
           	ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
@@ -295,7 +303,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	                           end) 
 		               		return
 	                end
-
+                  sender:getChildByName("part"):setVisible(false)
 	              if _time >=0 then
 	              	 local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
 	              	local _parm=_gamelist[sender:getParent():getTag()]
@@ -316,12 +324,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             local sp_ActivityType_TEXT=sp_ActivityType:getChildByName("sp_ActivityType_TEXT")
             sp_ActivityType_TEXT:setString(_gamelist[2*_num-istwo]["area"])
 
-            local part=_obj:getChildByName("part")
-            if tonumber(_gamelist[2*_num-istwo]["isnew"])  == 1 then  --  新  0  是 老 
-            	part:setVisible(true)
-            else
-            	part:setVisible(false)
-            end
+            
             --  我的爵位
             local time_lv=time_obj:getChildByName("time_lv")
             local s_lv_sp=time_obj:getChildByName("s_lv_sp")
