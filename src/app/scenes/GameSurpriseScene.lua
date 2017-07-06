@@ -180,6 +180,7 @@ function GameSurpriseScene:fun_Surorise( )
       self.lvw_Surorise:setInnerContainerSize(self.lvw_Surorise:getContentSize())
 end
 function GameSurpriseScene:fun_list_data(  )
+      self.lvw_Surorise:setInnerContainerSize(self.lvw_Surorise:getContentSize())
 	local list_table=LocalData:Instance():get_getactivitylist()
 	local _gamelist=list_table["game"]
 	if not list_table then
