@@ -7,6 +7,7 @@ function SurpriseNode_Detail:ctor(params)
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.time_count_n=1
+      self.image_table={}
       self.surprise_id=params.id
        self:setNodeEventEnabled(true)
        cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",1)
@@ -40,6 +41,22 @@ function SurpriseNode_Detail:update(dt)
             self.time=1+self.time
               self.countdown_time=Util:FormatTime_colon(self.DJS_time-self.time)
               self.LH_number:setString(self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
+
+            if #self.image_table~=0 then
+             local next_num=0
+             for i=1,#self.image_table do
+                local file=cc.FileUtils:getInstance():isFileExist(self.image_table[i].name)
+                if file and self.image_table[i]._obj then
+                    local activity_Panel=self.image_table[i]._obj
+                    activity_Panel:loadTexture(self.image_table[i].name)
+                    self.image_table[i]._obj=nil
+                    next_num=next_num+1
+                end
+            end
+            if next_num == #self.image_table then
+               self.image_table={}
+            end
+          end
 end
 function SurpriseNode_Detail:fun_init( ... )
 	self.DetailsOfSurprise = cc.CSLoader:createNode("DetailsOfSurprise.csb");
@@ -229,14 +246,14 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
       self._advertising_bt=self.DetailsOfSurprise:getChildByName("advertising_bt")
       self._advertising_bt:addTouchEventListener(function(sender, eventType  )
             if eventType == 3 then
-                  --  sender:setScale(1)
+                    sender:setScale(1)
                     return
                 end
                 if eventType ~= ccui.TouchEventType.ended then
-                  --  sender:setScale(0.8)
+                    sender:setScale(0.8)
                 return
                 end
-             --   sender:setScale(1)
+                sender:setScale(1)
                 if activitybyid["description"]  ~= "" then
                    self:fun_storebrowser(tostring(activitybyid["description"]))
                 end
@@ -415,11 +432,15 @@ function SurpriseNode_Detail:fun_friend_list_data( ... )
           self.XQ_FD_LIST:pushBackDefaultItem()
           local  cell = self.XQ_FD_LIST:getItem(i-1)
           local XQ_FD_LIST_Head=cell:getChildByName("XQ_FD_LIST_Head")
-          XQ_FD_LIST_Head:loadTexture("png/httpgame.pinlegame.comheadheadicon_"  ..  math.random(1,8) .. ".jpg")
-          --local _index=string.match(tostring(Util:sub_str(friendhelp[i]["head"], "/",":")),"%d")
-          --XQ_FD_LIST_Head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+          local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
+          local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(friendhelp[i]["head"], "/",":"))  ..  ".png")
+            if not  file then
+              table.insert(self.image_table,{_obj = XQ_FD_LIST_Head ,name=path..tostring(Util:sub_str(friendhelp[i]["head"], "/",":"))  ..  ".png"})
+             else
+                 XQ_FD_LIST_Head:loadTexture(path..tostring(Util:sub_str(friendhelp[i]["head"], "/",":"))  ..  ".png"  )
+             end
           local XQ_FD_LIST_Nickname=cell:getChildByName("XQ_FD_LIST_Nickname")
-          --XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
+          XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
           local XQ_FD_LIST_Number=cell:getChildByName("XQ_FD_LIST_Number")
           --XQ_FD_LIST_Number:setString(friendhelp[i]["nick"])
           XQ_FD_LIST_Number:setString(math.random(1,8))
@@ -605,6 +626,18 @@ function SurpriseNode_Detail:winnersPreview_Home_image(  )
           com_["TAG"]="getactivitybyid"
           Server:Instance():request_pic(sup_data["imageurl"],com_) 
 end
+--下载好友头像预览图片
+function SurpriseNode_Detail:fun_winnersPreview_Home_image(  )
+         local list_table=LocalData:Instance():get_getactivitybyid()
+         local  sup_data=list_table["friendhelp"]
+         for i=1,#sup_data do
+          local com_={}
+          com_["command"]=sup_data[i]["head"]
+          com_["max_pic_idx"]=#sup_data
+          com_["curr_pic_idx"]=i
+          Server:Instance():sp_request_pic(sup_data[i]["head"],com_) 
+         end
+end
 function SurpriseNode_Detail:fun_help_data( ... )
                         self.Friend_help:setVisible(true)
                          local activitybyid_data=LocalData:Instance():get_getactivitybyid()
@@ -643,6 +676,7 @@ function SurpriseNode_Detail:onEnter()
                        function()
                          self:fun_data()
                          self:winnersPreview_Home_image()
+                         self:fun_winnersPreview_Home_image()
                          self:fun_friend_list_data()
                          self:fun_help_data()
                                   

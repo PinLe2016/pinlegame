@@ -118,7 +118,6 @@ function DetailsSurpreissue:fun_touch( ... )
                       sender:setScale(1)
                       Util:all_layer_backMusic()
                        
-                      
                       self:unscheduleUpdate()
               self:removeFromParent()
       end)
@@ -193,7 +192,7 @@ function DetailsSurpreissue:fun_ctor_data( ... )
                     return
                 end
                 if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(1.2)
+                    sender:setScale(0.8)
                 return
                 end
                 sender:setScale(1)

@@ -388,7 +388,7 @@ function GameSurpriseScene:update(dt)
            --  刷新下载的图片
 	if #self.image_table~=0 then
 	   local next_num=0
-	  for i=1,#self.image_table do
+	   for i=1,#self.image_table do
 	      local file=cc.FileUtils:getInstance():isFileExist(self.image_table[i].name)
 	      if file and self.image_table[i]._obj then
 	          local activity_Panel=self.image_table[i]._obj:getChildByName("ig_GiftPhoto")

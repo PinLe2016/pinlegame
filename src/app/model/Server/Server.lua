@@ -294,6 +294,54 @@ function Server:on_request_finished_pic(event , command)
 end
 
 
+function Server:sp_request_pic(url,command)
+    self.pic_url=url
+    local request = network.createHTTPRequest(function(event) self:sp_on_request_finished_pic(event,command) end, url , "GET")
+    request:setTimeout(0.5)
+    request:start()
+
+end
+
+function Server:sp_on_request_finished_pic(event , command)
+    local ok = (event.name == "completed")
+    local request = event.request
+
+    if not ok then return end
+
+    local code = request:getResponseStatusCode()
+
+    if code ~= 200 then
+        -- 请求结束，但没有返回 200 响应代码
+        -- self:show_float_message("服务器返回代码错误:" .. code)
+        print("response status code : " .. code)
+        return
+    end
+    local dataRecv = request:getResponseData()
+    -- local fileObject = self.download_file_list[self.download_progress]
+  
+    local str=Util:sub_str(command["command"], "/",":")    
+    -- dump(str)--.."res/pic/"
+    local file_path = self.writablePath.."down_pic/"..str  .. ".png"
+
+    -- if device.platform=="ios" or device.platform=="mac" then
+    --     print("下载图片走这里？")
+    --     file_path=self.writablePath.."res/down_pic/"..str
+    -- end
+    local file = io.open( file_path, "w+b")
+    if file then
+        if file:write(dataRecv) == nil then
+        -- self:show_error("can not save file : " .. file_path)
+            print("can not save file")
+            return false
+        end
+        io.close(file)
+ 
+    end
+   
+
+
+end
+
 --活动下载图片
 
 function Server:actrequest_pic(url,command)
@@ -323,7 +371,7 @@ function Server:acton_request_finished_pic(event , command)
   
     local str=Util:sub_str(command["imgurl"], "/",":")    
     -- dump(str)
-    local file_path = self.writablePath.."down_pic/"..str
+    local file_path = self.writablePath.."down_pic/"..str  
 
     -- if device.platform=="ios" or device.platform=="mac" then
     --     file_path=self.writablePath.."res/down_pic/"..str
