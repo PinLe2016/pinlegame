@@ -394,7 +394,7 @@ function SurpriseNode_Detail:fun_friend_list_init( ... )
         self.XQ_FD_LIST=XQ_Friend_bg:getChildByName("XQ_FD_LIST")
         self.XQ_FD_LIST:setItemModel(self.XQ_FD_LIST:getItem(0))
         self.XQ_FD_LIST:removeAllItems()
-        
+        self.XQ_FD_LIST:setInnerContainerSize(self.XQ_FD_LIST:getContentSize())
 end
 function SurpriseNode_Detail:fun_friend_list_data( ... )
 --  有没有好友图片
@@ -534,7 +534,7 @@ function SurpriseNode_Detail:fun_winnersPreview(  )
         end))
         self.win_ListView:setItemModel(self.win_ListView:getItem(0))
         self.win_ListView:removeAllItems()
-
+        self.win_ListView:setInnerContainerSize(self.win_ListView:getContentSize())
         
 end
 function SurpriseNode_Detail:fun_winnersPreview_list_init( ... )

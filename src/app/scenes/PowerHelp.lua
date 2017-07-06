@@ -101,6 +101,7 @@ function PowerHelp:fun_Surorise( )
 	end))
 	self.PowerHelp_list:setItemModel(self.PowerHelp_list:getItem(0))
 	self.PowerHelp_list:removeAllItems()
+	self.PowerHelp_list:setInnerContainerSize(self.PowerHelp_list:getContentSize())
 end
 function PowerHelp:fun_list_data(  )
 	self.PowerHelp_list:removeAllItems()

@@ -360,7 +360,7 @@ function SlotMachines:fun_Integralrecord( ... )
       self.XQ_FD_LIST_View=self.Integralrecord:getChildByName("ListView_5")
       self.XQ_FD_LIST_View:setItemModel(self.XQ_FD_LIST_View:getItem(0))
       self.XQ_FD_LIST_View:removeAllItems()
-      
+      self.XQ_FD_LIST_View:setInnerContainerSize(self.XQ_FD_LIST_View:getContentSize())
 end
 function SlotMachines:fun_SlotMachines_list_data( ... )
               local getactivitypointsdetail=LocalData:Instance():get_getactivitypointsdetail()

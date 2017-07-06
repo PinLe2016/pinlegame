@@ -174,6 +174,7 @@ function GameSurpriseScene:fun_Surorise( )
 	end))
 	self.lvw_Surorise:setItemModel(self.lvw_Surorise:getItem(0))
 	self.lvw_Surorise:removeAllItems()
+      self.lvw_Surorise:setInnerContainerSize(self.lvw_Surorise:getContentSize())
 end
 function GameSurpriseScene:fun_list_data(  )
 	local list_table=LocalData:Instance():get_getactivitylist()

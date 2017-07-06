@@ -57,7 +57,7 @@ function DetailsSurpreissue:fun_init( ... )
       self.XQ_FD_LIST=self.XQ_Friend_bg:getChildByName("XQ_FD_LIST")
       self.XQ_FD_LIST:setItemModel(self.XQ_FD_LIST:getItem(0))
       self.XQ_FD_LIST:removeAllItems()
-
+      self.XQ_FD_LIST:setInnerContainerSize(self.XQ_FD_LIST:getContentSize())
       self:fun_touch()
 end
 function DetailsSurpreissue:fun_win_list_data( ... )

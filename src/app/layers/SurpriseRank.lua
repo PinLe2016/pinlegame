@@ -56,7 +56,7 @@ function SurpriseRank:fun_friend_list_init( ... )
         self.SurpriseRank_ListView=self.SurpriseRank:getChildByName("SurpriseRankNode"):getChildByName("SurpriseRank_ListView")
         self.SurpriseRank_ListView:setItemModel(self.SurpriseRank_ListView:getItem(0))
         self.SurpriseRank_ListView:removeAllItems()
-        
+        self.SurpriseRank_ListView:setInnerContainerSize(self.SurpriseRank_ListView:getContentSize())
 end
 function SurpriseRank:fun_friend_list_data( ... )
         local ranklistbyactivityid=LocalData:Instance():get_getranklistbyactivityid()

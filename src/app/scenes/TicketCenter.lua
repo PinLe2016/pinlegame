@@ -89,6 +89,7 @@ function TicketCenter:fun_Surorise( )
 	end))
 	self.TicketCenterlist:setItemModel(self.TicketCenterlist:getItem(0))
 	self.TicketCenterlist:removeAllItems()
+	self.TicketCenterlist:setInnerContainerSize(self.TicketCenterlist:getContentSize())
 end
 function TicketCenter:fun_list_data(  )
 	local myrewardlist=LocalData:Instance():get_getmyrewardlist()
