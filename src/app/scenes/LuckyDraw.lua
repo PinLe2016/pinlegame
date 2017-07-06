@@ -604,7 +604,7 @@ function LuckyDraw:fun_LuckyDrawEndAct(  )
    local actionTo3 = cc.ScaleTo:create( 1, 0.8)
    local Image_103=LuckyDrawEndAct:getChildByName("Image_103")
    --Image_103:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
-  
+  local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
   local fortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
   local rewardlist= fortunewheelrewards["rewardlist"]
   if tonumber(rewardlist[self.x_rand_is]["type"])  ==  2 then  --金币
