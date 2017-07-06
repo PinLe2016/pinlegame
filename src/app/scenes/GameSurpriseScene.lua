@@ -187,6 +187,9 @@ function GameSurpriseScene:fun_list_data(  )
 	if num == 0  then
 		return
 	end
+      if #_gamelist  == self.count_cishu  then
+         return
+      end
 	local jioushu=math.floor(tonumber(num)) % 2  == 1 and 1 or 2   --判段奇数 偶数
 	local _jioushu=0
 	if jioushu==1 then
@@ -205,7 +208,10 @@ function GameSurpriseScene:fun_list_data(  )
 		_bg:setTag(2*i-1)
 		_bg_Copy:setVisible(false)
 		self:fun_surprise_data(_bg,time_bg,i,1)
+
 		if (i-self.jac_data_num_tag)*2-1== num  then
+                  self.count_cishu=#_gamelist
+                  self.jac_data_num_tag=self.jac_data_num
 			return
 		end
 		_bg_Copy:setTag(2*i)

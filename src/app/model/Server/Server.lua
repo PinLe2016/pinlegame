@@ -140,7 +140,7 @@ function Server:request_http(command , params)
             return
         end
 
-        if command~="getactivitylist" and command~="getgoldspoolbyid" and command~="getgoldspoolrandomgolds" then
+        if  command~="getgoldspoolbyid" and command~="getgoldspoolrandomgolds" then
         self:show_http_buffer(true)-- 传输动画
         end
 
