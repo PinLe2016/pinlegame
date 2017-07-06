@@ -11,6 +11,7 @@ function TicketCenter:fun_constructor( ... )
       self.floating_layer:addTo(self,100000)
       self:listener_home() --注册安卓返回键
       self.win_type=0
+      Server:Instance():getconsignee()
       --  请求自己中奖信息
       self.tck_data_num_tag=1
       self.tck_data_num=1
@@ -94,6 +95,8 @@ end
 function TicketCenter:fun_list_data(  )
 	local myrewardlist=LocalData:Instance():get_getmyrewardlist()
             local  rewardlist=myrewardlist["rewardlist"]
+            local win_consignee=LocalData:Instance():get_getconsignee()
+
             if #rewardlist ==  0 then
             	return
             end
@@ -122,7 +125,17 @@ function TicketCenter:fun_list_data(  )
 	          end
 	          --  信息确认
 	          local TicketCenter_bt=cell:getChildByName("TicketCenter_bt")
+	          local Image_6=TicketCenter_bt:getChildByName("Image_6"):getChildByName("Text_8")
 	          TicketCenter_bt:setTag(i)
+	           if win_consignee["address"] then
+	           	TicketCenter_bt:setTouchEnabled(false)
+	           	Image_6:setColor(cc.c3b(158, 178, 144))
+	           	Image_6:setString("已确认")
+	           else
+	           	Image_6:setColor(cc.c3b(255, 255, 255))
+	           	Image_6:setString("信息确认")
+	           	TicketCenter_bt:setTouchEnabled(true)
+	           end
 	          TicketCenter_bt:addTouchEventListener(function(sender, eventType  )
 		                 if eventType == 3 then
 		                    sender:setScale(1)
@@ -139,7 +152,7 @@ function TicketCenter:fun_list_data(  )
 		                self.Theirwin = cc.CSLoader:createNode("Theirwin.csb");
 			    self:addChild(self.Theirwin)
 			    self.Theirwin:setTag(123)
-		              Server:Instance():getconsignee()
+		                Server:Instance():getconsignee()
 	            end)
 	           self.tck_data_num_tag=self.tck_data_num
 	          self:scheduleUpdate()
@@ -188,7 +201,6 @@ function TicketCenter:update(dt)
 end
 --信件确认
 function TicketCenter:fun_Theirwin( _img)
-	dump(_img)
 	local win_consignee=LocalData:Instance():get_getconsignee()
 	local Theirwin_back=self.Theirwin:getChildByName("Theirwin_back")
           	Theirwin_back:addTouchEventListener(function(sender, eventType  )
@@ -353,7 +365,7 @@ function TicketCenter:onEnter()
                        function()
                        	if self.win_type==1 then
                        		self:fun_PerfectInformation() 
-                       	else
+                       	elseif self.win_type==2 then
                        		self:fun_Theirwin(self._win_img) 
                        	end
 			
@@ -366,7 +378,7 @@ function TicketCenter:onEnter()
                                                                 if eventType==1    then
                                                                 	if self.win_type==1 then
                                                                 		self:removeChildByTag(213, true)
-                                                                	else
+                                                                	elseif self.win_type==2 then
                                                                 		self:removeChildByTag(123, true)
                                                                 	end
                                                                 end                
