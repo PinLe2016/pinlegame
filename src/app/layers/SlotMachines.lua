@@ -180,33 +180,19 @@ function SlotMachines:fun_PowerWindows( _text )
         self:removeChildByTag(123,true)
   end
   PowerWindows:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo)))
-  local fragment_sprite = display.newSprite("PromptBox/JXB_YX_29.png")
-  local Image_8=PowerWindows:getChildByName("Image_8")
   local Image_guang=PowerWindows:getChildByName("Image_9")
-  local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,Image_8:getContentSize().width-1,Image_8:getContentSize().height-4))
-  crn:setAnchorPoint(cc.p(0.5,0.5))
-  crn:setPosition(cc.p(Image_8:getPositionX()-Image_8:getContentSize().width/2+1,Image_8:getPositionY()-Image_8:getContentSize().height/2+4))
-  PowerWindows:addChild(crn)
-  fragment_sprite:setPosition(cc.p(Image_8:getContentSize().width/2-5,Image_8:getContentSize().height/2+20))
-  crn:addChild(fragment_sprite)
-  
-  Image_guang:setScale(0)
-  local actionT1= cc.ScaleTo:create( 1, 1.1)
-  local actionTo1 = cc.ScaleTo:create( 1, 1.8)
-   local actionT2 = cc.RotateBy:create( 4, 90)
-   local actionTo2 = cc.RotateBy:create(4, 90)
-  fragment_sprite:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
-  fragment_sprite:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
-  local Image_5=PowerWindows:getChildByName("Image_5")
-  local Image_6=PowerWindows:getChildByName("Image_6")
-  local Image_7=PowerWindows:getChildByName("Image_7")
-  Image_5:setLocalZOrder(2)
-  Image_6:setLocalZOrder(2)
-  Image_7:setLocalZOrder(2)
 
+   local actionT1= cc.ScaleTo:create( 1.5, 1.1)
+   local actionTo1 = cc.ScaleTo:create( 1.5, 0.8)
+   local actionT2 = cc.RotateBy:create( 1, 50)
+   local actionTo2 = cc.RotateBy:create(1, 50)
+  Image_guang:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+  Image_guang:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
   
-  local number=PowerWindows:getChildByName("number")
-  number:setLocalZOrder(2)
+   local actionT3= cc.ScaleTo:create( 1.5, 1.1)
+   local actionTo3 = cc.ScaleTo:create( 1.5, 0.8)
+  PowerWindows:getChildByName("Image_5"):runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
+  local number=PowerWindows:getChildByName("Image_5"):getChildByName("number")
   number:setString(tostring(_text))
  
 
@@ -245,10 +231,7 @@ function SlotMachines:fun_PowerWindows( _text )
                                     end
               end)
         end
-      local function fun_stopGo()
-        self:removeChildByTag(123,true)
-      end
-      PowerWindows:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo)))
+     
 end
 function SlotMachines:fun_touch_bt( ... )
      --  事件初始化

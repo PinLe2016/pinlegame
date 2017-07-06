@@ -58,6 +58,7 @@ function LuckyDraw:fun_constructor( ... )
       self.rewardid_table={}
       self.reward_IsGold=2
       self.x_rand=0
+      self.x_rand_is=1
       --  定时器
       self.image_table={}  --  存放奖品图片
       self.time=0
@@ -370,6 +371,11 @@ function LuckyDraw:awardEnd()
 	Util:player_music_new("huode.mp3",false )
 	self:fun_LuckyDraw_touch(true)
 	self.go_bt:setTouchEnabled(true)
+	
+	local function fun_stopGo()
+	        self:fun_LuckyDrawEndAct()
+	  end
+	  self:runAction( cc.Sequence:create(cc.DelayTime:create(1),cc.CallFunc:create(fun_stopGo)))
 	dump("抽奖成功,抽到"..self.m_info.data[m_nAwardID].name)
 end
 function LuckyDraw:doRotateAction(node,callback,time,speed)
@@ -578,7 +584,53 @@ function LuckyDraw:update(dt)
 	  end
 	end
 end
+function LuckyDraw:fun_LuckyDrawEndAct(  )
+  local LuckyDrawEndAct = cc.CSLoader:createNode("LuckyDrawEndAct.csb");
+  self:addChild(LuckyDrawEndAct) 
+  LuckyDrawEndAct:setTag(159)
+  local function fun_stopGo()
+        self:removeChildByTag(159,true)
+  end
+  LuckyDrawEndAct:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo)))
+   local Image_guang=LuckyDrawEndAct:getChildByName("Image_102")
+   local actionT1= cc.ScaleTo:create( 1, 1.2)
+   local actionTo1 = cc.ScaleTo:create( 1, 0.85)
+   local actionT2 = cc.RotateBy:create( 1, 70)
+   local actionTo2 = cc.RotateBy:create(1, 70)
+  Image_guang:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
+  Image_guang:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
+  
+   local actionT3= cc.ScaleTo:create( 1, 1.3)
+   local actionTo3 = cc.ScaleTo:create( 1, 0.8)
+   local Image_103=LuckyDrawEndAct:getChildByName("Image_103")
+   --Image_103:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
+  
+  local fortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
+  local rewardlist= fortunewheelrewards["rewardlist"]
+  if tonumber(rewardlist[self.x_rand_is]["type"])  ==  2 then  --金币
+     	Image_103:loadTexture("Dialog_Zhuanpan/ZLB_CJ_10.png")
+  elseif tonumber(rewardlist[self.x_rand_is]["type"])  ==  3 then   --  话费
+	Image_103:loadTexture("Dialog_Zhuanpan/ZLB_CJ_13.png")
+  else
+  	Image_103:loadTexture(path..tostring(Util:sub_str(rewardlist[self.x_rand_is]["goodsimageurl"], "/",":")))
+ end
 
+  local pwtrue=LuckyDrawEndAct:getChildByName("Image_1")
+            pwtrue:addTouchEventListener(function(sender, eventType  )
+                   if eventType == 3 then
+                      sender:setScale(1)
+                      return
+                  end
+                  if eventType ~= ccui.TouchEventType.ended then
+                      sender:setScale(1.2)
+                  return
+                  end
+                  sender:setScale(1)
+                   self:removeChildByTag(159,true)
+            end)
+     
+     
+end
 function LuckyDraw:onEnter()
 	--  动态广播返回数据
 	NotificationCenter:Instance():AddObserver("GAME_GETRECENTFORTUNEWHEELREWARDLIST", self,
@@ -601,6 +653,7 @@ function LuckyDraw:onEnter()
                        		for i=1,#self.rewardid_table do
                        			if self.rewardid_table[i]  == rewardid  then
                        				self.x_rand=i
+                       				self.x_rand_is=i
                        			end
                        		end
                       end)--
