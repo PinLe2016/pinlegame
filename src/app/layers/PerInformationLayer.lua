@@ -745,7 +745,10 @@ function  PerInformationLayer:city_init( )
          end
          self._area:setString(area)
          self._area:setVisible(true)
-         self.per_address_data:setString(userdt["provincename"] .. "-"  .. userdt["cityname"]  .. "-"  ..  area  )  --  城市
+         if userdt["cityname"] then
+             self.per_address_data:setString(userdt["provincename"] .. "-"  .. userdt["cityname"]  .. "-"  ..  area  )  --  城市
+         end
+         
          -- if area== "" then
          --     self._area:setVisible(false)
          --     between:setVisible(false)
