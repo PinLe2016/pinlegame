@@ -666,7 +666,7 @@ function MainInterfaceScene:fun_radio(_text ,_number_sd)
 
                 --描述动画
             self.t_title:setString(_text)
-            local move = cc.MoveTo:create((self.t_title:getContentSize().width)/(20 + _number_sd *5), cc.p(-450-self.t_title:getContentSize().width,8))
+            local move = cc.MoveTo:create((self.t_title:getContentSize().width)/(10 + _number_sd *2), cc.p(-450-self.t_title:getContentSize().width,8))
              local callfunc = cc.CallFunc:create(function(node, value)
                     self.t_title:setPosition(cc.p(450+self.t_title:getContentSize().width+self.t_title:getContentSize().width,8))
                   end, {tag=0})

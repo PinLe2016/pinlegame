@@ -209,7 +209,7 @@ function SlotMachines:fun_PowerWindows( _text )
                    self:removeChildByTag(123,true)
             end)
       --  连续三次分数弹窗
-      if #self.score_three<3   or #self.score_three>3 then
+      if #self.score_three<4   or #self.score_three>4 then
         return
       end
      

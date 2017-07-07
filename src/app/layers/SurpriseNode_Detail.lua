@@ -283,7 +283,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 self.award_bt:setVisible(false)
                 local sup_data=LocalData:Instance():get_getactivitybyid()
                  if tonumber(sup_data["gametimes"])<=0 then
-                    self.floating_layer:fun_congratulations("好友助力得积分,大奖等你拿","稍后助力","马上助力","助力赢大奖",function (sender, eventType)
+                    self.floating_layer:fun_congratulations("游戏次数已用尽,好友助力得积分,大奖等你拿","稍后助力","马上助力","助力赢大奖",function (sender, eventType)
                                   if eventType==1 then
                                      local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                                      local _activitybyid_id=activitybyid_data["id"]
