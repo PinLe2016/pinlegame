@@ -389,28 +389,43 @@ function Util:captureScreen()
 end
 
 --分享功能
+
+--tyep 1 正常分享类型 2 去助力分享类型
 function Util:share(_id,_loginname,type)
           local act_id=_id
           local loginname=_loginname
-          -- local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
-          local file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
 
-           if type and device.platform~="ios" then
-              file=Util:captureScreen()
-            end
+          local login_info=LocalData:Instance():get_user_data()
+          local share_title=LocalData:Instance():get_share_title()
+          local file --分享图片的链接
+          local title--分享标题
+          local content--分享内容
+          local url --分享后微信跳转的URL
 
-             if device.platform=="ios" then
-              file="res/screenshoot.jpg"
+          dump(login_info)
+          if type==1 then
+              file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
+              if device.platform=="ios" then
+                  file="res/screenshoot.jpg"
+              end
+              title=share_title["title"]
+              content=share_title["content"]
+              url =string.format("http://playtest.pinlegame.com/Reg.aspx?InCode=%s",login_info["playerid"])
+          else
+              file="" --"助力链接图片"
+              title="" --
+              content="" --
+
+              url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23e98e660f59078a&redirect_uri=http%3A%2F%2Fplaytest.pinlegame.com%2Fassist.html&response_type=code&"
+              local complete_url=string.format("scope=snsapi_userinfo&state=%s|%s#wechat_redirect",act_id,_loginname)
+              url=url..complete_url
           end
-
-            local login_info=LocalData:Instance():get_user_data()
-           local share_title=LocalData:Instance():get_share_title()
-           local complete_url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23e98e660f59078a&redirect_uri=http%3A%2F%2Fplaytest.pinlegame.com%2Fassist.html&response_type=code&"
-           local url=string.format("scope=snsapi_userinfo&state=%s|%s#wechat_redirect",act_id,_loginname)
-           complete_url=complete_url..url
-           dump(complete_url)
-           dump(type)
-           local share=cc.UM_Share:createWithShare(type,"",share_title["title"],share_title["content"],complete_url)
+         
+          
+            
+          
+         
+           local share=cc.UM_Share:createWithShare(file,"",title,content,url)
            share:addTo(display.getRunningScene(),1000)
            return share
 end
