@@ -180,7 +180,6 @@ function GameSurpriseScene:fun_Surorise( )
       self.lvw_Surorise:setInnerContainerSize(self.lvw_Surorise:getContentSize())
 end
 function GameSurpriseScene:fun_list_data(  )
-      self.lvw_Surorise:setInnerContainerSize(self.lvw_Surorise:getContentSize())
 	local list_table=LocalData:Instance():get_getactivitylist()
 	local _gamelist=list_table["game"]
 	if not list_table then
@@ -222,6 +221,12 @@ function GameSurpriseScene:fun_list_data(  )
 		_bg_Copy:setVisible(true)
 		self:fun_surprise_data(_bg_Copy,time_bg_Copy,i,0)
 	end
+      if tonumber(self.jac_data_num_tag)~=0 then
+             self.lvw_Surorise:jumpToPercentVertical(120)
+      else
+             self.lvw_Surorise:jumpToPercentVertical(0)
+      end
+
 	self.jac_data_num_tag=self.jac_data_num
      self.count_cishu=#_gamelist
 end
@@ -240,20 +245,24 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
                 _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
             end
             local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["nowtime"] )--_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
-      	local _str1="剩余时间"
+      	local time_bj=_time
+            local gs_time=0
+            local _str1="剩余时间"
       	if _time <0  then
       		_str1="结束时间: "
+                  time_bj=_gamelist[2*_num-istwo]["finishtime"]
+                  gs_time=1
       	else
       		_str1="剩余时间: "
+                  time_bj=_time
+                  gs_time=0
       	end
-            local time_bj=_time
-            if time_bj<=0 then
-              time_bj=time_bj+604800  --  目的是 7天后删除 
-            end
+
+            
             local _tabletime=(time_bj)
             local  _tabletime_data=Util:FormatTime_colon(_tabletime)
             local txt_Pastdate=time_obj:getChildByName("txt_Pastdate")
-            table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=time_bj,_str2=_str1})
+            table.insert(self.timetext_table,{timetext=txt_Pastdate,time_count=time_bj,_str2=_str1,_gs_time=gs_time})
             txt_Pastdate:setString(_str1  .. _tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
             
             local ig_GiftPhoto=_obj:getChildByName("ig_GiftPhoto")
@@ -379,14 +388,23 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 end
 --刷新时间的定时器
 function GameSurpriseScene:update(dt)
+
+
 	self.secondOne = self.secondOne+dt
 	if self.secondOne <1 then return end
 	self.secondOne=0
             self.time=1+self.time
          	for i=1,#self.timetext_table do
-         		
-         		self.countdown_time=Util:FormatTime_colon(self.timetext_table[i].time_count-self.time)
-         		self.timetext_table[i].timetext:setString(self.timetext_table[i]._str2 ..  self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
+         		if self.timetext_table[i]._gs_time == 0 then
+                       self.countdown_time=Util:FormatTime_colon(self.timetext_table[i].time_count-self.time)
+                       self.timetext_table[i].timetext:setString(self.timetext_table[i]._str2 ..  self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
+                  else
+                     local _year=os.date("%Y",(self.timetext_table[i].time_count))
+                     local _month=os.date("%m",(self.timetext_table[i].time_count))
+                     local _date=os.date("%d",(self.timetext_table[i].time_count))
+                     local p_time=os.date("%H",(self.timetext_table[i].time_count))
+                    self.timetext_table[i].timetext:setString(self.timetext_table[i]._str2  ..  _year  ..   "年"  ..  _month  ..   "月"  ..  _date  ..   "日"  ..  p_time  ..   "时"    )
+                  end
          	end
            --  刷新下载的图片
 	if #self.image_table~=0 then

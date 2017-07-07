@@ -33,8 +33,8 @@ function DetailsSurpreissue:update(dt)
             if self.secondOne <1 then return end
             self.secondOne=0
             self.time=1+self.time
-              self.countdown_time=Util:FormatTime_colon(self.DJS_time-self.time)
-              self.LH_number:setString(self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
+              --self.countdown_time=Util:FormatTime_colon(self.DJS_time-self.time)
+              --self.LH_number:setString(self.countdown_time[1]  .. self.countdown_time[2]  ..self.countdown_time[3]  ..self.countdown_time[4])
 end
 function DetailsSurpreissue:fun_init( ... )
       self.DetailsOfSurprise = cc.CSLoader:createNode("DetailsSurpreissue.csb");
@@ -118,7 +118,7 @@ function DetailsSurpreissue:fun_touch( ... )
                       sender:setScale(1)
                       Util:all_layer_backMusic()
                        
-                      self:unscheduleUpdate()
+                      --self:unscheduleUpdate()
               self:removeFromParent()
       end)
       local XQ_FD_LIST_More_Bt=self.XQ_Friend_bg:getChildByName("XQ_FD_LIST_More_Bt")
@@ -201,10 +201,13 @@ function DetailsSurpreissue:fun_ctor_data( ... )
                 end
       end)
 
-      self.DJS_time=(activitybyid["finishtime"]-activitybyid["begintime"])-(activitybyid["nowtime"]-activitybyid["begintime"])
-      local  _tabletime_data=Util:FormatTime_colon(self.DJS_time)
-      self.LH_number:setString(_tabletime_data[1]  .. _tabletime_data[2]  .._tabletime_data[3]  .._tabletime_data[4]  )
-      self:scheduleUpdate()
+      self.DJS_time=activitybyid["finishtime"]
+      local _year=os.date("%Y",(self.DJS_time))
+       local _month=os.date("%m",(self.DJS_time))
+       local _date=os.date("%d",(self.DJS_time))
+       local p_time=os.date("%H",(self.DJS_time))
+      self.LH_number:setString(  _year  ..   "年"  ..  _month  ..   "月"  ..  _date  ..   "日"  ..  p_time  ..   "时"    )
+      --self:scheduleUpdate()
 
 end
 --下载奖项预览图片

@@ -100,7 +100,22 @@ function MainInterfaceScene:fun_MainInterfaceScene_act(  )
       local actionT2 = cc.RotateTo:create( 1.5, 5)
       local actionTo2 = cc.RotateTo:create( 2.5, -6)
       Image_4749:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
-      Image_4750:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))    
+      Image_4750:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))  
+
+
+      local LuckyDraw_text =self.MainInterfaceScene:getChildByTag(268)
+      LuckyDraw_text:getChildByTag(3323):setVisible(false)
+      local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,450,41))
+      crn:setAnchorPoint(cc.p(0,0))
+      crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2+6,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
+      self.MainInterfaceScene:addChild(crn)
+
+      self.t_title = ccui.Text:create("", "resources/com/huakangfangyuan.ttf", 27)
+      self.t_title:setPosition(cc.p(450+self.t_title:getContentSize().width,8))
+      self.t_title:setAnchorPoint(cc.p(0.5,0))
+      crn:addChild(self.t_title)
+      self.t_title:setColor(cc.c3b(255, 255, 255))
+
       
 end
 
@@ -648,27 +663,16 @@ function MainInterfaceScene:fun_showtip(bt_obj,_x,_y )
 end
 --  广播 跑马灯
 function MainInterfaceScene:fun_radio(_text ,_number_sd)
-          local LuckyDraw_text =self.MainInterfaceScene:getChildByTag(268)
-          LuckyDraw_text:getChildByTag(3323):setVisible(false)
-          local crn=cc.ClippingRectangleNode:create(cc.rect(0,0,450,41))
-          crn:setAnchorPoint(cc.p(0,0))
-          crn:setPosition(cc.p(LuckyDraw_text:getPositionX()-LuckyDraw_text:getContentSize().width/2+6,LuckyDraw_text:getPositionY()-LuckyDraw_text:getContentSize().height/2))
-          self.MainInterfaceScene:addChild(crn)
-
-          local title = ccui.Text:create(_text, "resources/com/huakangfangyuan.ttf", 27)
-          title:setPosition(cc.p(450+title:getContentSize().width,8))
-          title:setAnchorPoint(cc.p(0.5,0))
-          crn:addChild(title)
-          title:setColor(cc.c3b(255, 255, 255))
 
                 --描述动画
-            local move = cc.MoveTo:create((title:getContentSize().width)/(20 + _number_sd *5), cc.p(-450-title:getContentSize().width,8))
+            self.t_title:setString(_text)
+            local move = cc.MoveTo:create((self.t_title:getContentSize().width)/(20 + _number_sd *5), cc.p(-450-self.t_title:getContentSize().width,8))
              local callfunc = cc.CallFunc:create(function(node, value)
-                    title:setPosition(cc.p(450+title:getContentSize().width+title:getContentSize().width,8))
+                    self.t_title:setPosition(cc.p(450+self.t_title:getContentSize().width+self.t_title:getContentSize().width,8))
                   end, {tag=0})
-             local seq = cc.Sequence:create(move,cc.DelayTime:create(1),callfunc  ) 
+             local seq = cc.Sequence:create(move,callfunc  ) 
             local rep = cc.RepeatForever:create(seq)
-            title:runAction(rep)
+            self.t_title:runAction(rep)
 end
 function MainInterfaceScene:pushFloating(text)
    if is_resource then

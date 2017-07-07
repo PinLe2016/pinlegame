@@ -90,7 +90,31 @@ function Util:FormatTime_colon(orginSecond)
     -- dump(_table)
    return _table--string.format("%s:%s:%s", hour, minutes, second)
 end
+-- 冒号格式时间显示
+function Util:FormatTime_colon_s(sorginSecond)
 
+   local d = sorginSecond
+   local nian=math.floor(d/60/60/24/365)
+   local day  = math.floor(d/60/60/24%365)
+   local h = math.floor((d/60/60)%24)
+   local m = (d/60)%60
+   local s = d%60
+   local hour = math.floor(h)
+   if (hour < 10) then
+    hour = '0' .. hour
+   end
+   local minutes = math.floor(m)
+   if (math.abs(minutes) < 10) then
+    minutes= '0' .. math.abs(minutes)
+   end
+   local second = math.floor(s)
+   if (math.abs(second) < 10) then
+    second = '0' .. math.abs(second)
+   end
+    local _table={nian  ..   "年"  ..  day.."天",hour.."小时",minutes.."分",second.."秒"}
+    -- dump(_table)
+   return _table--string.format("%s:%s:%s", hour, minutes, second)
+end
 -- 字符串拆成字符（中文）
 function Util:UTF8ToCharArray(str)
    -- local UTF8ToCharArray = function(str)
