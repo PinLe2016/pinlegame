@@ -849,8 +849,8 @@ function PerInformationLayer:perinformation_init(  )
         --初始化年月日
         
         self.date_years=self.Perinformation:getChildByTag(466):getChildByTag(87)
-        self.date_month=self.Perinformation:getChildByTag(466):getChildByTag(88)
-        self.date_day=self.Perinformation:getChildByTag(466):getChildByTag(89)
+        self.date_month=self.Perinformation:getChildByTag(466):getChildByTag(89)
+        self.date_day=self.Perinformation:getChildByTag(466):getChildByTag(88)
         local date=nil
         if  not  userdt["birthday"]  then
             self.date_years:setString("")
@@ -951,11 +951,23 @@ function PerInformationLayer:_savetime(  )
     local birthday_month=self.birthday_month_Itempicker:getCellPos()+1--月
     local birthday_day=self.birthday_daty_Itempicker:getCellPos()+1--日
     self.per_birthday_data:setString(birthday_year  ..   "年"   ..  birthday_month  ..  "月"  ..  birthday_day  ..  "日"  )
+    self.scall_years=tostring(birthday_year)
+    if tonumber(birthday_month)<10 then
+       self.scall_month=tostring("0"  ..  birthday_month)
+    else
+        self.scall_month=tostring(birthday_month)
+    end
+    if tonumber(birthday_day)<10 then
+       self.scall_day=tostring("0"  ..  birthday_day)
+    else
+        self.scall_day=tostring(birthday_day)
+    end
+    
     self.date_years:setString(birthday_year)
     self.date_month:setString(birthday_month)
     self.date_day:setString(birthday_day)
-self.date_years1:setString(birthday_year .. "-" ..  birthday_month .. "-" .. birthday_day) 
-     self.birthday:removeFromParent()
+    self.date_years1:setString(birthday_year .. "-" ..  birthday_month .. "-" .. birthday_day) 
+    self.birthday:removeFromParent()
 
 end
 function PerInformationLayer:GetShortName(sName,nMaxCount,nShowCount)
@@ -1279,6 +1291,7 @@ function PerInformationLayer:savedata( )
             userdatainit["nickname"]=userdata["nickname"]
             userdatainit["provincename"]=provincename
             userdatainit["districtame"] =self._area:getString()
+
             Server:Instance():setuserinfo(params) 
 
 end
@@ -1393,7 +1406,6 @@ function PerInformationLayer:fun_birthday(  )
             self.birthday_month_Itempicker:pushBackItem(button)
         end
         self.birthday_month_Itempicker:setOffsetLayout(m_offset_month)
-
         --日
         local birthday_scrollview3=self.birthday:getChildByTag(174):getChildByTag(173)
         local birthday_daty=birthday_scrollview3:getChildByTag(177)
