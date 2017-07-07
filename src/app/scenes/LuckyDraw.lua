@@ -510,7 +510,7 @@ function LuckyDraw:fun_radio( _text ,_number)
                   title:setColor(cc.c3b(255, 255, 255))
                
                         --描述动画
-                    local move = cc.MoveTo:create((title:getContentSize().height)/(10+_number*5), cc.p(290,140+title:getContentSize().height))
+                    local move = cc.MoveTo:create((title:getContentSize().height)/(10+_number*2), cc.p(290,140+title:getContentSize().height))
                     --local move_back = move:reverse()
                      local callfunc = cc.CallFunc:create(function(node, value)
                             title:setPosition(cc.p(290,-140-title:getContentSize().height))

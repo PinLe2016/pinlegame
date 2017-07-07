@@ -1589,7 +1589,7 @@ function PerInformationLayer:fun_city_info( )
            str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] 
         end
 
-        city_curr:setString(str)
+        city_curr:setString(userdatainit["provincename"])
         self.city_now=Util:lua_string_split(str, "-")  --当前城市
 
         --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属

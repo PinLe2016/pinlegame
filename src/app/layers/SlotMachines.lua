@@ -5,7 +5,9 @@ local SlotMachines = class("SlotMachines", function()
 end)
 _SlotMachines_id=nil
 function SlotMachines:ctor(params)
-      dump(params)
+       self.sur_pageno=1
+       self.Integralrecord_data_num_tag=0
+       self.Integralrecord_data_num = 0
        self.floating_layer = require("app.layers.FloatingLayer").new()
        self.floating_layer:addTo(self,100000)
        self.SlotMachinesgametimes=params.SlotMachinesgametimes
@@ -207,7 +209,7 @@ function SlotMachines:fun_PowerWindows( _text )
                    self:removeChildByTag(123,true)
             end)
       --  连续三次分数弹窗
-      if #self.score_three<3   or #self.score_three>3 then
+      if #self.score_three<4   or #self.score_three>4 then
         return
       end
      
@@ -263,7 +265,7 @@ function SlotMachines:fun_touch_bt( ... )
                 end
                 sender:setScale(1)
                 Util:all_layer_backMusic()
-                Server:Instance():getactivitypointsdetail(self.SlotMachinesId,"")
+                Server:Instance():getactivitypointsdetail(self.SlotMachinesId,self.sur_pageno)
                 self:fun_Integralrecord()
       end)
      
@@ -350,9 +352,20 @@ function SlotMachines:fun_Integralrecord( ... )
                   end
                   sender:setScale(1)
                   Util:all_layer_backMusic()
+                  self.sur_pageno=1
                   self:removeChildByTag(987, true)
+                  self.Integralrecord_data_num_tag=0
+                  self.Integralrecord_data_num = 0
             end)
-      self.XQ_FD_LIST_View=self.Integralrecord:getChildByName("ListView_5")
+            self.XQ_FD_LIST_View=self.Integralrecord:getChildByName("ListView_5")
+            self.XQ_FD_LIST_View:addScrollViewEventListener((function(sender, eventType  )
+                  if eventType  ==6 then
+                        self.sur_pageno=self.sur_pageno+1
+                        Server:Instance():getactivitypointsdetail(self.SlotMachinesId,self.sur_pageno)
+                              return
+                 end
+           end))
+
       self.XQ_FD_LIST_View:setItemModel(self.XQ_FD_LIST_View:getItem(0))
       self.XQ_FD_LIST_View:removeAllItems()
       self.XQ_FD_LIST_View:setInnerContainerSize(self.XQ_FD_LIST_View:getContentSize())
@@ -363,20 +376,23 @@ function SlotMachines:fun_SlotMachines_list_data( ... )
               if #mypointslist  <=0  then
                 return
               end
-              
-               for i=1,#mypointslist  do
+              self.Integralrecord_data_num = #mypointslist+self.Integralrecord_data_num_tag
+              if self.Integralrecord_data_num_tag==self.Integralrecord_data_num  and self.Integralrecord_data_num_tag== 0  then
+                return
+              end
+               for i=self.Integralrecord_data_num_tag+1,self.Integralrecord_data_num do
                       self.XQ_FD_LIST_View:pushBackDefaultItem()
                       local  cell = self.XQ_FD_LIST_View:getItem(i-1)
                       local WIN_TEXT=cell:getChildByName("WIN_TEXT")
-                      WIN_TEXT:setString(mypointslist[i]["points"])
+                      WIN_TEXT:setString(mypointslist[i-self.Integralrecord_data_num_tag]["points"])
                       local _img1="DetailsiOfSurprise/JXB_YX_S_0.png"
                       local _img2="DetailsiOfSurprise/JXB_YX_S_1.png"
                       local _img3="DetailsiOfSurprise/JXB_YX_S_2.png"
                       for j=1,#self._table_points_tag do
-                          if tonumber(mypointslist[i]["points"])==self._table_points_tag[j] then
+                          if tonumber(mypointslist[i-self.Integralrecord_data_num_tag]["points"])==self._table_points_tag[j] then
                               _img1="DetailsiOfSurprise/JXB_YX_S_"  .. self._table_points_tag_img[j][1]   ..   ".png"
-                              _img2="DetailsiOfSurprise/JXB_YX_S_"  .. self._table_points_tag_img[j][1]   ..   ".png"
-                              _img3="DetailsiOfSurprise/JXB_YX_S_"  .. self._table_points_tag_img[j][1]   ..   ".png"
+                              _img2="DetailsiOfSurprise/JXB_YX_S_"  .. self._table_points_tag_img[j][2]   ..   ".png"
+                              _img3="DetailsiOfSurprise/JXB_YX_S_"  .. self._table_points_tag_img[j][3]   ..   ".png"
                           end
                       end
                       local WIN_TYPE_1=cell:getChildByName("WIN_TYPE_1")
@@ -386,6 +402,12 @@ function SlotMachines:fun_SlotMachines_list_data( ... )
                       local WIN_TYPE_3=cell:getChildByName("WIN_TYPE_3")
                       WIN_TYPE_3:loadTexture(_img3)
                 end
+                if tonumber(self.Integralrecord_data_num_tag)~=0 then
+                       self.XQ_FD_LIST_View:jumpToPercentVertical(120)
+                else
+                       self.XQ_FD_LIST_View:jumpToPercentVertical(0)
+                end
+                self.Integralrecord_data_num_tag=self.Integralrecord_data_num
 end
 --  判断字符串中相同的个数
 function SlotMachines:stringToTable(str)  

@@ -79,18 +79,7 @@ function mailLayer:init(  )
   print("fadsjfhdsjfhdshf dsfjksafkjds ")
   local affiche=LocalData:Instance():get_getaffiche()
   local affichelist=affiche["affichelist"]
-  -- self.mailLayer = cc.CSLoader:createNode("mailLayer.csb")
- --            self:addChild(self.mailLayer)
 
- --            local back_bt=self.mailLayer:getChildByTag(46)--返回
- --            back_bt:addTouchEventListener(function(sender, eventType  )
- --                                    if eventType ~= ccui.TouchEventType.ended then
-  --                  return
-  --              end
-  --    self:removeFromParent()
- --                  LocalData:Instance():set_getaffiche(nil)
- --                  Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
- --                        end)
             local delete_bt=self.mailLayer:getChildByTag(54)--删除
             delete_bt:addTouchEventListener(function(sender, eventType  )
                                     if eventType ~= ccui.TouchEventType.ended then
@@ -115,22 +104,6 @@ function mailLayer:init(  )
       
                         end)
         
-
-            -- self.mail_list=self.mailLayer:getChildByTag(47)--邮箱列表
-            -- self.mail_list:setItemModel(self.mail_list:getItem(0))
-            -- --self.mail_list:removeAllItems()
-            -- self.mail_list:addScrollViewEventListener((function(sender, eventType  )
-            --           if eventType  ==6 then
-            --             self.sur_pageno=self.sur_pageno+1
-            --             Server:Instance():getaffichelist(self.sur_pageno)   --下拉刷新功能
-            --                      return
-            --           end
-            --  end))
-
-              -- if self.tablecout  ==  0  then
-              --    self.mail_list:removeAllItems() 
-              -- end
-              
               self.sup_data_num   =   #affichelist
            if self.tablecout<self.sup_data_num then
                    print("小于",self.tablecout ,"  ",self.sup_data_num)
@@ -138,7 +111,8 @@ function mailLayer:init(  )
            elseif self.tablecout>self.sup_data_num then
                  print("大于")
                 self.mail_list:removeAllItems()
-            else
+            elseif   self.tablecout==self.sup_data_num and  self.tablecout== 0 then 
+                
                  self.No_mail:setVisible(true)
            end
 

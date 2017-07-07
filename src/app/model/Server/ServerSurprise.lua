@@ -19,7 +19,7 @@ end
 
 
 function Server:getactivitylist_callback()
-         --dump(self.data)
+         dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
@@ -46,7 +46,7 @@ end
 
 
 function Server:getactivitybyid_callback()
-    --dump(self.data)
+    dump(self.data)
     if self.data.err_code==0  then
             LocalData:Instance():set_getactivitybyid(self.data)--保存数据
             -- if self.cycle  == 0 then
@@ -210,11 +210,11 @@ end
 --activityid    是   活动编号    String  
 --playerloginname 否   要对比的玩家登录名   String  如果不传此参数则只取玩家本人的积分详细
 --排行榜中的对比排行榜  和个人积分
-function Server:getactivitypointsdetail(activityid,playerloginname)
+function Server:getactivitypointsdetail(activityid,activity_pageno)
     local params = {}
     params={
             activityid =activityid,
-            playerloginname =playerloginname,
+            pageno =activity_pageno,
         }
     self:request_http("getactivitypointsdetail" , params ); 
 end

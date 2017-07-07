@@ -87,12 +87,14 @@ function SurpriseNode_Detail:fun_data(  )
             else
               if activitybyid_data["levelmax"]  and activitybyid_data["levelmin"]  then
                 DOS_LoadingBar:setPercent(tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv])    ))
+                self._DOS_ScrollView:scrollToPercentHorizontal(tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv])    ),1,true)
               else
                 DOS_LoadingBar:setPercent(0)
+                self._DOS_ScrollView:scrollToPercentHorizontal(0,1,true)
               end
               
            end
-           self._DOS_ScrollView:scrollToPercentHorizontal(tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv])    ),1,true)
+           
            -- 进度条的角标
            if activitybyid_data["levelmax"]  and activitybyid_data["levelmin"] then
               DOS_biaoji:setPositionX(24+tonumber(self.LV_hierarchy_table_number[_lv]+(activitybyid_data["levelmin"])/tonumber(activitybyid_data["levelmax"]) * (self.LV_hierarchy_table_number[_lv+1] - self.LV_hierarchy_table_number[_lv]))  * 1281)
@@ -281,7 +283,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 self.award_bt:setVisible(false)
                 local sup_data=LocalData:Instance():get_getactivitybyid()
                  if tonumber(sup_data["gametimes"])<=0 then
-                    self.floating_layer:fun_congratulations("好友助力得积分,大奖等你拿","稍后助力","马上助力","助力赢大奖",function (sender, eventType)
+                    self.floating_layer:fun_congratulations("游戏次数已用尽,好友助力得积分,大奖等你拿","稍后助力","马上助力","助力赢大奖",function (sender, eventType)
                                   if eventType==1 then
                                      local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                                      local _activitybyid_id=activitybyid_data["id"]
@@ -443,7 +445,7 @@ function SurpriseNode_Detail:fun_friend_list_data( ... )
           XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
           local XQ_FD_LIST_Number=cell:getChildByName("XQ_FD_LIST_Number")
           --XQ_FD_LIST_Number:setString(friendhelp[i]["nick"])
-          XQ_FD_LIST_Number:setString(math.random(1,8))
+          XQ_FD_LIST_Number:setString(friendhelp[i]["points"])
           local XQ_FD_LIST_img=cell:getChildByName("XQ_FD_LIST_img")
          -- XQ_FD_LIST_img:loadTexture("json")
         end
