@@ -1062,6 +1062,7 @@ function PerInformationLayer:_savecity(  )
              self._cityname:setString(city) 
              self._area:setString(conty) 
          end
+
 self._provincename1:setString(self._provincename:getString() .. "-" .. self._cityname:getString() .. "-" .. self._area:getString())
 self.per_address_data:setString(self._provincename:getString() .. "-" .. self._cityname:getString() .. "-" .. self._area:getString())
          
@@ -1667,9 +1668,16 @@ function PerInformationLayer:fun_city_info( )
 end
 
 function PerInformationLayer:fun_Province( ... )
+        self.province  =self._provincename:getString()
+         self.city  =self._cityname:getString() 
+         self.conty =self._area:getString()
+
     self.adress_province_Itempicker:clearItems()
     self.adress_province_Itempicker:removeAllChildren()
-
+    local p_phone_location=LocalData:Instance():getusercitybyphone()
+    if p_phone_location["provincename"] then
+       self.province=p_phone_location["provincename"]
+    end
     local json_province=self.city_data["provinces"]
     local m_offset_cell=0
     for i=1,#json_province+1+self.mail_h do   
