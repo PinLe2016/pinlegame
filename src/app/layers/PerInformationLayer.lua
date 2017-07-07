@@ -1708,6 +1708,7 @@ function PerInformationLayer:fun_Province( ... )
 
         
          self.adress_province_Itempicker:pushBackItem(button)
+         self.adress_province_Itempicker:setTouchEnabled(false)
     end
     dump(m_offset_cell)
     self.adress_province_Itempicker:setOffsetLayout(m_offset_cell)
