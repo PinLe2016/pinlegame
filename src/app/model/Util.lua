@@ -419,10 +419,7 @@ function Util:share(_id,_loginname,type)
           -- local file=cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
           local file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
 
-           if type and device.platform~="ios" then
-              file=Util:captureScreen()
-            end
-
+         
              if device.platform=="ios" then
               file="res/screenshoot.jpg"
           end
@@ -434,7 +431,7 @@ function Util:share(_id,_loginname,type)
            complete_url=complete_url..url
            dump(complete_url)
            dump(type)
-           local share=cc.UM_Share:createWithShare(type,"",share_title["title"],share_title["content"],complete_url)
+           local share=cc.UM_Share:createWithShare(file,"",share_title["title"],share_title["content"],complete_url)
            share:addTo(display.getRunningScene(),1000)
            return share
 end

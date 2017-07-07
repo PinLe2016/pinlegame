@@ -1279,8 +1279,6 @@ function PerInformationLayer:savedata( )
             userdatainit["nickname"]=userdata["nickname"]
             userdatainit["provincename"]=provincename
             userdatainit["districtame"] =self._area:getString()
-            -- dump(userdatainit)
-            LocalData:Instance():set_getuserinfo(userdatainit)  --必须打开
             Server:Instance():setuserinfo(params) 
 
 end
@@ -1339,7 +1337,7 @@ function PerInformationLayer:fun_birthday(  )
             local pos = string.find(self.scall_years, name)   
             if pos then
                 m_offset_birthday=i-3;
-                print("e  ",self.scall_years,name,m_offset_birthday)
+                print("e jskdjf  ",self.scall_years,name,m_offset_birthday)
             end
 
             cell:setTag(i)
@@ -1572,7 +1570,15 @@ function PerInformationLayer:fun_city_info( )
         -- dump(userdata)
          local  userdatainit=LocalData:Instance():get_user_data() --用户数据
          -- dump(userdatainit)
-        local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
+         local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
+         local s_phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+         if s_phone_location["provincename"] then
+             city_curr:setString(s_phone_location["provincename"])
+         else
+             city_curr:setString("")
+         end
+
+        
         local area=""
         if userdatainit["districtame"]  then
 
@@ -1589,7 +1595,7 @@ function PerInformationLayer:fun_city_info( )
            str=userdatainit["provincename"].."-" ..  userdatainit["cityname"] 
         end
 
-        city_curr:setString(userdatainit["provincename"])
+        
         self.city_now=Util:lua_string_split(str, "-")  --当前城市
 
         --如果获取定位信息，优先级最高，如果没有获取定位信息获取 手机号归属
