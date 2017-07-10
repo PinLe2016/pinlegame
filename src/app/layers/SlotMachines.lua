@@ -5,6 +5,7 @@ local SlotMachines = class("SlotMachines", function()
 end)
 _SlotMachines_id=nil
 function SlotMachines:ctor(params)
+      dump(params)
        self.sur_pageno=1
        self.Integralrecord_data_num_tag=0
        self.Integralrecord_data_num = 0
@@ -64,7 +65,7 @@ function SlotMachines:fun_Initialize_infor( ... )
       self.slotlv_name2=self.lh_bg:getChildByName("lv_name2") --  下一等级
       local _lv=1
       for i=1,#self.LV_hierarchy_table do
-        if tostring(self.LV_hierarchy_table) == tostring(self.SlotMachinesmylevel)  then
+        if tostring(self.LV_hierarchy_table[i]) == tostring(self.SlotMachinesmylevel)  then
          _lv=i
         end
       end
