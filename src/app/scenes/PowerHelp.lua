@@ -101,7 +101,7 @@ function PowerHelp:fun_Surorise( )
 	end))
 	self.PowerHelp_list:setItemModel(self.PowerHelp_list:getItem(0))
 	self.PowerHelp_list:removeAllItems()
-	self.PowerHelp_list:setInnerContainerSize(self.PowerHelp_list:getContentSize())
+	--self.PowerHelp_list:setInnerContainerSize(self.PowerHelp_list:getContentSize())
 end
 function PowerHelp:fun_list_data(  )
 	self.PowerHelp_list:removeAllItems()
@@ -115,7 +115,12 @@ function PowerHelp:fun_list_data(  )
 	          local  cell = self.PowerHelp_list:getItem(i-1)
 	          cell:getChildByName("rank_bg"):getChildByName("rank_number"):setString(string.format("%d",i))
 	          local _index=string.match(tostring(Util:sub_str(friendhelplist[i]["headimageurl"], "/",":")),"%d")
-   	          cell:getChildByName("head"):loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+	          if not _index then
+	            cell:getChildByName("head"):loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(math.random(1,18))))
+	          else
+	            cell:getChildByName("head"):loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
+	          end
+   	          --cell:getChildByName("head"):loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
 	          cell:getChildByName("nickname"):setString(friendhelplist[i]["nickname"])
 	          cell:getChildByName("number"):setString(friendhelplist[i]["amount"])
 	          if friendhelplist[i]["goodsname"] then

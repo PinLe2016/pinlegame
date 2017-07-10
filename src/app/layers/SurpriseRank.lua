@@ -83,7 +83,7 @@ function SurpriseRank:fun_friend_list_data( ... )
           local SurpriseRank_head=cell:getChildByName("SurpriseRank_head")
           local _index=string.match(tostring(Util:sub_str(ranklist[i]["headimageurl"], "/",":")),"%d")
           if not _index then
-            SurpriseRank_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(1)))
+            SurpriseRank_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(math.random(1,18))))
           else
             SurpriseRank_head:loadTexture( string.format("png/httpgame.pinlegame.comheadheadicon_%d.jpg",tonumber(_index)))
           end
