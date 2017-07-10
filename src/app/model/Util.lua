@@ -436,9 +436,17 @@ function Util:share(_id,_loginname,type)
               content=share_title["content"]
               url =string.format("http://playtest.pinlegame.com/Reg.aspx?InCode=%s",login_info["playerid"])
           else
-              file="" --"助力链接图片"
-              title="" --
-              content="" --
+              -- file="" --"助力链接图片"
+              -- title="" --
+              -- content="" --
+
+               file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
+              if device.platform=="ios" then
+                  file="res/screenshoot.jpg"
+              end
+              title=share_title["title"]
+              content=share_title["content"]
+              
 
               url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23e98e660f59078a&redirect_uri=http%3A%2F%2Fplaytest.pinlegame.com%2Fassist.html&response_type=code&"
               local complete_url=string.format("scope=snsapi_userinfo&state=%s|%s#wechat_redirect",act_id,_loginname)
