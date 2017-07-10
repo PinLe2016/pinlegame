@@ -74,7 +74,8 @@ function SurpriseRank:fun_friend_list_data( ... )
           if i>=9 then
             _bj=i
           end
-          rank_number:setString(self.LV_hierarchy_table[10-_bj])
+          rank_number:setString(ranklist[i]["title"])
+          --rank_number:setString(self.LV_hierarchy_table[10-_bj])
           local SurpriseRank_nickname=cell:getChildByName("SurpriseRank_nickname")
           SurpriseRank_nickname:setString(ranklist[i]["nickname"])
           local SurpriseRank_score=cell:getChildByName("SurpriseRank_score")
