@@ -92,7 +92,7 @@ function SlotMachines:fun_Initialize_data( ... )
       self.slotlv_name1:setString(tostring(activitygame["level"]))
       local _lv=1
       for i=1,#self.LV_hierarchy_table do
-        if tostring(self.LV_hierarchy_table) == tostring(activitygame["level"])  then
+        if tostring(self.LV_hierarchy_table[i]) == tostring(activitygame["level"])  then
          _lv=i
         end
       end
