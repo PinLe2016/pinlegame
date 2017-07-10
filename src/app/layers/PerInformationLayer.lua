@@ -1588,11 +1588,16 @@ function PerInformationLayer:fun_city_info( )
          -- dump(userdatainit)
          local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
          local s_phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
-         if s_phone_location["provincename"] then
-             city_curr:setString(s_phone_location["provincename"])
+         if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
+                city_curr:setString("")
          else
-             city_curr:setString("")
-         end
+             if s_phone_location["provincename"] then
+                 city_curr:setString(s_phone_location["provincename"])
+             else
+                 city_curr:setString("")
+             end
+         end 
+         
 
         
         local area=""
@@ -1678,8 +1683,10 @@ function PerInformationLayer:fun_Province( ... )
     self.adress_province_Itempicker:clearItems()
     self.adress_province_Itempicker:removeAllChildren()
     local p_phone_location=LocalData:Instance():getusercitybyphone()
-    if p_phone_location["provincename"] then
-       self.province=p_phone_location["provincename"]
+    if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ~=  1 then 
+        if p_phone_location["provincename"] then
+           self.province=p_phone_location["provincename"]
+        end
     end
     local json_province=self.city_data["provinces"]
     local m_offset_cell=0
