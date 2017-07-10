@@ -161,7 +161,6 @@ function SlotMachines:fun_Slot_machines( _num,_point )
                               end
                               audio.resumeMusic()
                               self:fun_Initialize_data()
-                              self.hl_began:setTouchEnabled(true)
                               self:fun_PowerWindows(_point)
                            end
                            self:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo2)))
@@ -177,6 +176,7 @@ function SlotMachines:fun_PowerWindows( _text )
   self:addChild(PowerWindows) 
   PowerWindows:setTag(123)
   local function fun_stopGo()
+         self.hl_began:setTouchEnabled(true)
         self:removeChildByTag(123,true)
   end
   PowerWindows:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo)))
@@ -207,6 +207,7 @@ function SlotMachines:fun_PowerWindows( _text )
                   return
                   end
                   sender:setScale(1)
+                  self.hl_began:setTouchEnabled(true)
                    self:removeChildByTag(123,true)
             end)
       --  连续三次分数弹窗
@@ -273,6 +274,7 @@ function SlotMachines:fun_touch_bt( ... )
       --开始
       self.hl_began=self.lh_bg:getChildByName("hl_began")
       self.hl_began:addTouchEventListener(function(sender, eventType  )
+
               if eventType == 3 then
                     sender:setScale(1)
                     return
@@ -282,6 +284,7 @@ function SlotMachines:fun_touch_bt( ... )
                 return
                 end
                 sender:setScale(1)
+                sender:setTouchEnabled(false)
                 local _pop_new_count_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_count_two",0)
                 if _pop_new_count_two==3 then
                   cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",4)
@@ -298,6 +301,7 @@ function SlotMachines:fun_touch_bt( ... )
                                       local loginname=_userdata["loginname"]
                                       self.share=Util:share(self.SlotMachinesId,loginname)
                                   end
+                                  sender:setTouchEnabled(true)
                     end)
                     return
                 end
@@ -307,7 +311,7 @@ function SlotMachines:fun_touch_bt( ... )
                   local actionTo1 = cc.ScaleTo:create( 0.2, 1)
                   self.slotbumber:runAction(cc.Sequence:create(actionT1, actionTo1))
                 end
-                self.hl_began:setTouchEnabled(false)
+                
                 Server:Instance():activitygame(self.SlotMachinesId)
       end)
 
