@@ -139,6 +139,7 @@ function SurpriseNode_Detail:fun_data(  )
            for i=1,9 do
              if self.LV_hierarchy_table[i]  == LH_rank:getString()  then
                 cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",i)
+                cc.UserDefault:getInstance():setIntegerForKey("lv_table_dx_idx_tag",i)
              end
            end
            self:fun_touch_bt_htp()
@@ -161,7 +162,7 @@ function SurpriseNode_Detail:fun_touch_bt( ... )
                       sender:setScale(1)
                       Util:all_layer_backMusic()
                        
-                      
+                      NotificationCenter:Instance():PostNotification("lv_table_dx_idx_tag")
                       self:unscheduleUpdate()
               self:removeFromParent()
       end)

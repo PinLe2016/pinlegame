@@ -51,6 +51,9 @@ function GameSurpriseScene:fun_constructor( ... )
       self.floating_layer:addTo(self,100000)
       self:listener_home() --注册安卓返回键
       --  列表发送请求
+      self.lv_table_dx={}
+      self.lv_table_dx_idx=1
+      self.lv_table_dx_idx_tag=0
       self.jac_data_num_tag=0
       self.jac_data_num=0
       self.count_cishu=0
@@ -156,6 +159,8 @@ function GameSurpriseScene:fun_touch_com(num )
 	self.jac_data_num_tag=0
   self.count_cishu=0
             self.jac_data_num=0
+            self.lv_table_dx={}
+            self.lv_table_dx_idx=1
 	LocalData:Instance():set_getactivitylist(nil)
 	self:scheduleUpdate()
 	self.lvw_Surorise:removeAllItems()
@@ -316,6 +321,7 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	              if _time >=0 then
 	              	 local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
 	              	local _parm=_gamelist[sender:getParent():getTag()]
+                  self.lv_table_dx_idx_tag=sender:getParent():getTag()
 		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"]}),1,1)
 		 else
 		 	local SurpriseNode_Detail = require("app.layers.DetailsSurpreissue")  --关于拼乐界面  
@@ -338,7 +344,8 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             local time_lv=time_obj:getChildByName("time_lv")
             local s_lv_sp=time_obj:getChildByName("s_lv_sp")
             local s_lv_img=time_obj:getChildByName("s_lv_img")
-            -- time_lv:setString("我的爵位     "  ..  _gamelist[2*_num-istwo]["mylevel"])
+            self.lv_table_dx[self.lv_table_dx_idx]=s_lv_img
+            self.lv_table_dx_idx=self.lv_table_dx_idx+1
             local lv_obj=1
             for j=1,9 do
                 if _gamelist[2*_num-istwo]["mylevel"]  ==  self.LV_hierarchy_table[j] then
@@ -467,6 +474,11 @@ function GameSurpriseScene:onEnter()
 			--self:fun_list_data()  --  关闭目的是刷新快
 			          
                       end)--
+      NotificationCenter:Instance():AddObserver("lv_table_dx_idx_tag", self,
+                       function()
+                              local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("lv_table_dx_idx_tag",1)
+                              self.lv_table_dx[self.lv_table_dx_idx_tag]:loadTexture("DetailsiOfSurprise/JXB_BQHD_CUXQ_"  .. self.LV_hierarchy_table_LV_IMG_NAME[new_time_two]  ..   ".png")
+                      end)--
 end
 
 function GameSurpriseScene:onExit()
@@ -475,6 +487,7 @@ function GameSurpriseScene:onExit()
       Util:player_music_hit("GAMEBG",true )
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST_IMAGE, self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.SURPRIS_LIST, self)
+      NotificationCenter:Instance():RemoveObserver("lv_table_dx_idx_tag", self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 
 
 end
