@@ -105,15 +105,29 @@ function FriendrequestLayer:fun_scrollToPage(  )
       --        return
       --       end
       --       pvw_Friends:scrollToPage(pvw_Friends:getCurPageIndex()+1)
-      -- end)   
-      self:fun_pnl_First(self.pnl_First,348,20,"","金币 100","",false,true,true,10,3)
-      self:fun_pnl_First(self.pnl_First,356,20,"","金币 200","",false,true,true,10,5)
-      self:fun_pnl_First(self.pnl_First,364,20,"","金币 500","",false,true,true,10,10)
-      self:fun_pnl_First(self.pnl_First,372,20,"","金币 1000","经验 1000",false,true,true,0,20)
-      self:fun_pnl_First(self.pnl_First,380,20,"","金币 2000","经验 2000",false,true,true,0,30)
-      self:fun_pnl_First(self.pnl_First,388,20,"","金币 4000","经验 4000",false,true,true,0,50)
-      self:fun_pnl_First(self.pnl_First,396,20,"","金币 8000","经验 8000",false,true,true,0,80)
-      self:fun_pnl_First(self.pnl_First,404,20,"","金币 20000","经验 10000",false,true,true,0,100)
+      -- end)  
+
+     local _reward_setting_list=LocalData:Instance():get_reward_setting_list()
+      local managerlist=_reward_setting_list["managerlist"]
+      local tmp = 0  
+  
+    for i=1,#managerlist-1 do  
+        for j=1,#managerlist-i do  
+            if managerlist[j]["friendscount"] > managerlist[j+1]["friendscount"] then  
+                tmp = managerlist[j]  
+                managerlist[j] = managerlist[j+1]  
+                managerlist[j+1] = tmp  
+            end  
+        end  
+    end  
+      self:fun_pnl_First(self.pnl_First,348,20,"","金币 100","",false,true,true,10,managerlist[1]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,356,20,"","金币 200","",false,true,true,10,managerlist[2]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,364,20,"","金币 500","",false,true,true,10,managerlist[3]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,372,20,"","金币 1000","经验 1000",false,true,true,0,managerlist[4]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,380,20,"","金币 2000","经验 2000",false,true,true,0,managerlist[5]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,388,20,"","金币 4000","经验 4000",false,true,true,0,managerlist[6]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,396,20,"","金币 8000","经验 8000",false,true,true,0,managerlist[7]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,404,20,"","金币 20000","经验 10000",false,true,true,0,managerlist[8]["friendscount"])
 
     
 end
