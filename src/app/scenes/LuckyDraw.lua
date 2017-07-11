@@ -205,11 +205,12 @@ function LuckyDraw:fun_draw_go( ... )
 	              end
 	              Server:Instance():getfortunewheelrandomreward(_LuckyDraw_type)
 	              self:fun_Isgold(self.reward_IsGold)
-	              self.reward_IsGold=1
+	              
 	              
             end)
 end
 function LuckyDraw:fun_Isgold(_type)
+	print("金币",_type)
 	if _type==1 then
 		local fortunewheelrandomreward=LocalData:Instance():get_getfortunewheelrandomreward()
 		local remaingolds = tonumber(fortunewheelrandomreward["remaingolds"])
@@ -648,6 +649,7 @@ function LuckyDraw:onEnter()
 	--  点击GO  返回的数据
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD", self,
                        function()
+                       	            self.reward_IsGold=1
                        		local fortunewheelrandomreward=LocalData:Instance():get_getfortunewheelrandomreward()
                        		local rewardid=fortunewheelrandomreward["rewardid"]
                        		for i=1,#self.rewardid_table do

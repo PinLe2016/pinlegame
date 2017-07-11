@@ -452,6 +452,7 @@ function SlotMachines:onEnter()
                        function()
                                   self:fun_SlotMachines_list_data()
                       end)
+  
 end
 
 function SlotMachines:onExit()
@@ -459,7 +460,7 @@ function SlotMachines:onExit()
   NotificationCenter:Instance():RemoveObserver("activitygame", self)
   NotificationCenter:Instance():RemoveObserver("activitygamefalse", self)
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.CONTRASRECORD_LAYER_IMAGE, self)
-      
+  
 end
 
 return SlotMachines

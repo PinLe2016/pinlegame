@@ -114,7 +114,7 @@ function LoginScene:fun_progress( )
             if self._time==100 then
                cc.Director:getInstance():getScheduler():unscheduleScriptEntry(self._scnum)--停止定时器
                local new_start=cc.UserDefault:getInstance():getStringForKey("new_start","0")
-               if new_start=="0" then
+               if new_start=="5" then
                   self:_coverlayer()
                   cc.UserDefault:getInstance():setStringForKey("new_start","1")
                   return
