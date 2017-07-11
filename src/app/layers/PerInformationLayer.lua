@@ -500,16 +500,21 @@ function PerInformationLayer:init(  )
             self.per_gender_text=self.Perinformation:getChildByTag(899)  --  性别
             self.per_gender_male=self.per_gender_text:getChildByTag(896):getChildByTag(897)  --  性别男
             self.per_gender_female=self.per_gender_text:getChildByTag(896):getChildByTag(898)  --  性别女
-
+            self.per_gender_male_text=self.per_gender_male:getChildByTag(900)
+            self.per_gender_female_text=self.per_gender_female:getChildByTag(901)
             self.per_gender_name_tex=0
             if tonumber(userdt["gender"]) ==  0  then
                 self.per_gender_name_tex=0
                 self.per_gender_name:setString("女")
+                self.per_gender_male_text:setString("女")
+                self.per_gender_female_text:setString("男")
                 self.per_gender_img:loadTexture("resources/gerenxixin/GRXX_5.png")
             elseif tonumber(userdt["gender"]) ==  1 then
                 self.per_gender_name_tex=1
                 self.per_gender_name:setString("男")
                 self.per_gender_img:loadTexture("resources/gerenxixin/GRXX_2.png")
+                self.per_gender_male_text:setString("男")
+                self.per_gender_female_text:setString("女")
             end
 
             self.per_gender:addTouchEventListener(function(sender, eventType  )
@@ -541,10 +546,12 @@ function PerInformationLayer:init(  )
                     end
                     sender:setScale(1)
                 self.per_gender_text:setVisible(false)
-                self.per_gender_name:setString("男")
-                self.per_gender_name_tex=1
-                self.per_gender_img:loadTexture("resources/gerenxixin/GRXX_2.png")
-                self:savedata()
+                -- self.per_gender_name:setString("男")
+                -- self.per_gender_male_text:setString("男")
+                -- self.per_gender_female_text:setString("女")
+                -- self.per_gender_name_tex=1
+                -- self.per_gender_img:loadTexture("resources/gerenxixin/GRXX_2.png")
+                -- self:savedata()
             end)
             self.per_gender_female:addTouchEventListener(function(sender, eventType  )
                 if eventType == 3 then
@@ -557,10 +564,22 @@ function PerInformationLayer:init(  )
                     end
                     sender:setScale(1)
                 self.per_gender_text:setVisible(false)
-                self.per_gender_name_tex=0
-                self.per_gender_name:setString("女")
-                self.per_gender_img:loadTexture("resources/gerenxixin/GRXX_5.png")
-                self:savedata()
+                if self.per_gender_name:getString()  ==  "男" then
+                    self.per_gender_name_tex=0
+                    self.per_gender_name:setString("女")
+                    self.per_gender_male_text:setString("女")
+                    self.per_gender_female_text:setString("男")
+                    self.per_gender_img:loadTexture("resources/gerenxixin/GRXX_5.png")
+                    self:savedata()
+                else
+                        self.per_gender_name:setString("男")
+                        self.per_gender_male_text:setString("男")
+                        self.per_gender_female_text:setString("女")
+                        self.per_gender_name_tex=1
+                        self.per_gender_img:loadTexture("resources/gerenxixin/GRXX_2.png")
+                        self:savedata()
+                end
+                
             end)
 
             self.per_name=self.Perinformation:getChildByTag(53)  --  姓名
@@ -649,7 +668,7 @@ function PerInformationLayer:init(  )
             self.per_address=self.Perinformation:getChildByTag(26):getChildByTag(244)  --  城市
             self.per_address_data=self.per_address:getChildByTag(51)  --  城市
             self.per_address_text=self.Perinformation:getChildByTag(467)  --  城市
-             self.per_address:getChildByTag(52):addTouchEventListener(function(sender, eventType  )
+             self.per_address:getChildByTag(51):getChildByTag(52):addTouchEventListener(function(sender, eventType  )
                     if eventType == 3 then
                         sender:setScale(1)
                         return
@@ -733,18 +752,19 @@ end
 function  PerInformationLayer:city_init( )
          local userdt = LocalData:Instance():get_userdata()
           self._provincename=self.Perinformation:getChildByTag(467):getChildByTag(90)
+          self.adres_pro_cicty_are=self.Perinformation:getChildByTag(467):getChildByTag(77)
          self._provincename:setString(userdt["provincename"])
          self._cityname=self.Perinformation:getChildByTag(467):getChildByTag(91)
          self._cityname:setString(userdt["cityname"])
          self._area=self.Perinformation:getChildByTag(467):getChildByTag(92)
          local  between=self.Perinformation:getChildByTag(26):getChildByTag(95)
-        
+        --self.adres_pro_cicty_are:setString("jkj")
          local area=""
          if userdt["districtame"] then
              area=userdt["districtame"]
          end
          self._area:setString(area)
-         self._area:setVisible(true)
+         --self._area:setVisible(true)
          if userdt["cityname"] then
              self.per_address_data:setString(userdt["provincename"] .. "-"  .. userdt["cityname"]  .. "-"  ..  area  )  --  城市
          end
@@ -759,6 +779,7 @@ function  PerInformationLayer:city_init( )
             self._area:setString("")
             self.per_address_data:setString("")  --  城市
          end
+         self.adres_pro_cicty_are:setString(userdt["provincename"] ..  "-"  .. userdt["cityname"]  ..  "-"    ..  area  )
 end
 --个人信息初始化
 function PerInformationLayer:perinformation_init(  )
@@ -1051,19 +1072,23 @@ function PerInformationLayer:_savecity(  )
          self._provincename:setString(" ") 
          self._cityname:setString(" ") 
          self._area:setString(" ") 
+         self.adres_pro_cicty_are:setString("" )
 
          if  self.city_present:isSelected() then   --待修改
              self._provincename:setString(self.city_now[1]) 
              self._cityname:setString(self.city_now[2]) 
              self._area:setString(self.city_now[3])
+             self.adres_pro_cicty_are:setString(self.city_now[1] ..  "-"  .. self.city_now[2]   "-"    .. self.city_now[3]  )
         elseif self.city_gps:isSelected() then  --带修改
              self._provincename:setString(self.province) 
              self._cityname:setString(self.city) 
              self._area:setString(self.conty) 
+             self.adres_pro_cicty_are:setString(self.province ..  "-"  .. self.city    "-"    .. self.conty  )
         elseif self.city_choose:isSelected() then
              self._provincename:setString(province) 
              self._cityname:setString(city) 
              self._area:setString(conty) 
+             self.adres_pro_cicty_are:setString(province ..  "-"  .. city  ..    "-"    .. conty  )
          end
 
 self._provincename1:setString(self._provincename:getString() .. "-" .. self._cityname:getString() .. "-" .. self._area:getString())
