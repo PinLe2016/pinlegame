@@ -568,7 +568,7 @@ function MainInterfaceScene:onEnter()
                                 for i=1,#affichelist do      
                                   self.radio_table[i]=affichelist[i]["title"]
                                    if tonumber(affichelist[i]["isread"]) == 0   then  --1已读  0未读 
-                                                 self.biao_ji:setVisible(true)
+                                                 --self.biao_ji:setVisible(true)
                                      end
                               end
                               self:fun_radio(table.concat(self.radio_table,"            ") ,#self.radio_table)
