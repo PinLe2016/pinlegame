@@ -1080,6 +1080,12 @@ function LoginScene:onEnter()
                     self:_resetpasswordLayer()
                     
                         end)
+ NotificationCenter:Instance():AddObserver("CHANGEPASSWORDffase", self,function()
+                    self._scode=cc.Director:getInstance():getScheduler():scheduleScriptFunc(function(  )
+                                self:countdowncode()
+              end,1.0, false)
+                    
+                        end)
 
 
 end
@@ -1094,6 +1100,7 @@ function LoginScene:onExit()
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.PASSWOEDCHANGE, self)
   NotificationCenter:Instance():RemoveObserver("REG_CALLBACK", self)
   NotificationCenter:Instance():RemoveObserver("CHANGEPASSWORD", self)
+  NotificationCenter:Instance():RemoveObserver("CHANGEPASSWORDffase", self)
 
 
   NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.VERRSION, self)

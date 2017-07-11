@@ -41,9 +41,9 @@ function authentication:fun_Thephoneauthentication( ... )
             Util:layer_action(self.ThephoneauthenticationNode,self,"open") 
 
 	local str_phone=self.Thephoneauthentication:getChildByTag(1779)  --手机号
-	Util:function_keyboard(self.Thephoneauthentication,str_phone,25)
+	Util:function_keyboard(self.Thephoneauthentication,str_phone,23)
 	local str_code=self.Thephoneauthentication:getChildByTag(1781) --验证码
-	Util:function_keyboard(self.Thephoneauthentication,str_code,30)
+	Util:function_keyboard(self.Thephoneauthentication,str_code,23)
 	local btn_Back=self.Thephoneauthentication:getChildByTag(1782)
           	btn_Back:addTouchEventListener(function(sender, eventType  )
 	                  if eventType == 3 then
@@ -152,10 +152,15 @@ function authentication:onEnter()
                                   self.btn_code:setTitleText("50S")
                                   self:scheduleUpdate()
                       end)
+    NotificationCenter:Instance():AddObserver("phoneverifyfalse", self,
+                       function()
+                                  self:scheduleUpdate()
+                      end)
 end
 
 function authentication:onExit()
       NotificationCenter:Instance():RemoveObserver("wangjimima", self)
+      NotificationCenter:Instance():RemoveObserver("phoneverifyfalse", self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
       
 end

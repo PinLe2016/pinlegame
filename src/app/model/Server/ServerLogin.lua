@@ -208,6 +208,7 @@ function Server:changepassword_callback()
      dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
+        NotificationCenter:Instance():PostNotification("CHANGEPASSWORDffase")
         return
     end
     --self:promptbox_box_buffer("修改密码成功")
@@ -315,6 +316,7 @@ function Server:phoneverify_callback()
      dump(self.data)
     if self.data.err_code~=0  then
         self:promptbox_box_buffer(self.data.err_msg)
+        NotificationCenter:Instance():PostNotification("phoneverifyfalse")
         return
     end
     self:promptbox_box_buffer("修改密码成功")
