@@ -156,11 +156,16 @@ function authentication:onEnter()
                        function()
                                   self:scheduleUpdate()
                       end)
+    NotificationCenter:Instance():AddObserver("phoneverifytrue", self,
+                       function()
+                                 
+                      end)
 end
 
 function authentication:onExit()
       NotificationCenter:Instance():RemoveObserver("wangjimima", self)
-      NotificationCenter:Instance():RemoveObserver("phoneverifyfalse", self)
+      NotificationCenter:Instance():RemoveObserver("wangjimima", self)
+      NotificationCenter:Instance():RemoveObserver("phoneverifytrue", self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
       
 end

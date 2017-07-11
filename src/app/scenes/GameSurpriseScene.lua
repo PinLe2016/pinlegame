@@ -100,7 +100,7 @@ function GameSurpriseScene:fun_init( ... )
 	                return
 	                end
 	                sender:setScale(1)
-		 print("规则")          
+		          self:fun_Rulesofsurprise()
             end)
             --  本期活动
             local btn_Current=self.GameSurpriseScene:getChildByName("btn_Current")
@@ -122,7 +122,28 @@ function GameSurpriseScene:fun_init( ... )
 
           	self:fun_Surorise()
 end
+function GameSurpriseScene:fun_Rulesofsurprise( ... )
+              self.Rulesofsurprise = cc.CSLoader:createNode("Rulesofsurprise.csb")
+              self:addChild(self.Rulesofsurprise) 
+              self.Rulesofsurprise:setTag(3288)
+              local Image_45=self.Rulesofsurprise:getChildByName("Image_45")
+              local Image_1=self.Rulesofsurprise:getChildByName("ProjectNode_1"):getChildByName("Image_1")
+              Image_1:getChildByName("Image_4"):setVisible(false)
+              Image_1:getChildByName("Image_5"):setVisible(false)
+              Image_45:addTouchEventListener(function(sender, eventType  )
+                   if eventType == 3 then
+                      sender:setScale(1)
+                      return
+                  end
+                  if eventType ~= ccui.TouchEventType.ended then
+                      sender:setScale(1.2)
+                  return
+                  end
+                  sender:setScale(1)
+                  self:removeChildByTag(3288, true)
 
+            end)
+end
   function GameSurpriseScene:list_btCallback( sender, eventType )
               if eventType ~= ccui.TouchEventType.ended then
                        return
@@ -307,16 +328,6 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
                          cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",3)
                      end
                      local userinfo=LocalData:Instance():get_getuserinfo()
-	               if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"]   then           
-	               else
-	                       self.floating_layer:prompt_box("完善信息才能参加惊喜吧哦！",function (sender, eventType)      
-	                                                                if eventType==1    then
-	                                                                    local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
-	             				                                self:addChild(PerInformationLayer.new())
-	                                                                end                
-	                           end) 
-		               		return
-	                end
                   sender:getChildByName("part"):setVisible(false)
 	              if _time >=0 then
 	              	 local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  

@@ -279,6 +279,33 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 sender:setScale(1)
                 audio.stopAllSounds()
                 Util:player_music_new("GO.mp3",false )
+
+                 local userinfo=LocalData:Instance():get_getuserinfo()
+                 if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
+                           if tonumber(userinfo["isphoneverify"])  ~=  1   then
+                                self.floating_layer:prompt_box("完善手机认证才能参加惊喜吧哦！",function (sender, eventType)      
+                                                                  if eventType==1    then
+                                                                      local authentication = require("app.layers.authentication")--惊喜吧 
+                                                                      self:addChild(authentication.new({_tag=1}))
+                                                                  end                
+                                end) 
+                              return
+                              end
+                  end
+
+
+                 if  userinfo["birthday"] and  userinfo["cityname"] and  userinfo["gender"]   then           
+                 else
+                         self.floating_layer:prompt_box("完善信息才能参加惊喜吧哦！",function (sender, eventType)      
+                                                                  if eventType==1    then
+                                                                      local PerInformationLayer = require("app.layers.PerInformationLayer")--惊喜吧 
+                                                      self:addChild(PerInformationLayer.new())
+                                                                  end                
+                             end) 
+                      return
+                  end
+
+
                 self.Friend_help:setVisible(false)
                 self.began_bt:setVisible(false)
                 self.award_bt:setVisible(false)
