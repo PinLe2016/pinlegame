@@ -1701,6 +1701,7 @@ function PerInformationLayer:fun_city_info( )
 end
 
 function PerInformationLayer:fun_Province( ... )
+    local  userdatainit=LocalData:Instance():get_getuserinfo()
         self.province  =self._provincename:getString()
          self.city  =self._cityname:getString() 
          self.conty =self._area:getString()
@@ -1740,10 +1741,15 @@ function PerInformationLayer:fun_Province( ... )
                 m_offset_cell=i-1-self.mail_dex;
             end
         end
-
-        
          self.adress_province_Itempicker:pushBackItem(button)
-         self.adress_province_Itempicker:setTouchEnabled(false)
+         if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
+                 if tonumber(userdatainit["isphoneverify"])  ~=  1   then
+                        self.adress_province_Itempicker:setTouchEnabled(true)
+                 end
+         else
+              self.adress_province_Itempicker:setTouchEnabled(false)
+         end
+         
     end
     dump(m_offset_cell)
     self.adress_province_Itempicker:setOffsetLayout(m_offset_cell)

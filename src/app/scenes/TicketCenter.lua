@@ -111,7 +111,7 @@ function TicketCenter:fun_list_data(  )
 	          TicketCenter_TIME:setString(rewardlist[i]["rewardtime"])
 	          --来源
 	          local TicketCenter_source=cell:getChildByName("TicketCenter_source")
-	          TicketCenter_source:setString(rewardlist[i]["activityname"])
+	          TicketCenter_source:setString("拼乐吧活动 - "  ..  rewardlist[i]["activityname"])
 	          --  图片
 	          local TicketCenter_image=cell:getChildByName("TicketCenter_image")
 

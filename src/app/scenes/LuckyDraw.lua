@@ -604,10 +604,12 @@ function LuckyDraw:fun_LuckyDrawEndAct(  )
    local actionT3= cc.ScaleTo:create( 1, 1.3)
    local actionTo3 = cc.ScaleTo:create( 1, 0.8)
    local Image_103=LuckyDrawEndAct:getChildByName("Image_103")
+   local Text_1=LuckyDrawEndAct:getChildByName("Text_1")
    --Image_103:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
   local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
   local fortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
   local rewardlist= fortunewheelrewards["rewardlist"]
+   Text_1:setString(rewardlist[self.x_rand_is]["name"])
   if tonumber(rewardlist[self.x_rand_is]["type"])  ==  2 then  --金币
      	Image_103:loadTexture("Dialog_Zhuanpan/ZLB_CJ_10.png")
   elseif tonumber(rewardlist[self.x_rand_is]["type"])  ==  3 then   --  话费
