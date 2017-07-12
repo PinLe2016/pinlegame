@@ -125,8 +125,8 @@ function LuckyDraw:fun_init( ... )
 	self.go_bt:setTouchEnabled(false)
 	--  事件初始化
 	--  返回
-	local LuckyDraw_back=self.LuckyDraw_bg:getChildByName("LuckyDraw_back")
-          	LuckyDraw_back:addTouchEventListener(function(sender, eventType  )
+	self.LuckyDraw_back=self.LuckyDraw_bg:getChildByName("LuckyDraw_back")
+          	self.LuckyDraw_back:addTouchEventListener(function(sender, eventType  )
 	                 if eventType == 3 then
 	                    sender:setScale(1)
 	                    return
@@ -194,6 +194,7 @@ function LuckyDraw:fun_draw_go( ... )
 	                sender:setScale(1)
 	                Util:player_music_new("spin_button.mp3",false )
 	              self.go_bt:setTouchEnabled(false)
+	              self.LuckyDraw_back:setTouchEnabled(false)
 	              self:fun_LuckyDraw_touch(false)
 	              local _LuckyDraw_type=200
 	              if LuckyDraw_type==200 then
@@ -216,12 +217,14 @@ function LuckyDraw:fun_Isgold(_type)
 		local remaingolds = tonumber(fortunewheelrandomreward["remaingolds"])
 		if tonumber(remaingolds) - LuckyDraw_type < 0 then
 			self.floating_layer:showFloat("金币不足")
+			self.LuckyDraw_back:setTouchEnabled(true)
 			return  
 		end
 	else
 		local getfortunewheelrewards=LocalData:Instance():get_getfortunewheelrewards()
 	            local remaingolds = tonumber(getfortunewheelrewards["remaingolds"])
 		if tonumber(remaingolds) - LuckyDraw_type < 0 then
+			self.LuckyDraw_back:setTouchEnabled(true)
 			self.floating_layer:showFloat("金币不足")  
 			return
 		end
@@ -243,7 +246,7 @@ function LuckyDraw:fun_began_start()
                 end
 
         end
-        local  pAction1 =cc.RotateBy:create(0.2,-360)
+        local  pAction1 =cc.RotateBy:create(0.2,360)
         m_imgZhuanpan:runAction(cc.Sequence:create(pAction1,cc.CallFunc:create(CallFucnCallback3)))
 end
   function LuckyDraw:list_btCallback( sender, eventType )
@@ -372,7 +375,7 @@ function LuckyDraw:awardEnd()
 	Util:player_music_new("huode.mp3",false )
 	self:fun_LuckyDraw_touch(true)
 	self.go_bt:setTouchEnabled(true)
-	
+	self.LuckyDraw_back:setTouchEnabled(true)
 	local function fun_stopGo()
 	        self:fun_LuckyDrawEndAct()
 	  end
@@ -665,6 +668,7 @@ function LuckyDraw:onEnter()
 	NotificationCenter:Instance():AddObserver("GAME_GETFORTUNEWHEELRANDOMREWARD_FALSE", self,
                        function()
                        		self.go_bt:setTouchEnabled(true)
+                       		self.LuckyDraw_back:setTouchEnabled(true)
                        		self:fun_LuckyDraw_touch(true)
                        		audio.stopAllSounds()
 		            Util:player_music_new("jbbuzu.mp3",false )
@@ -701,6 +705,7 @@ function LuckyDraw:onEnter()
 				end
 			end
 			self.go_bt:setTouchEnabled(true)
+			self.LuckyDraw_back:setTouchEnabled(true)
 			self:show(_info_data)
 			self:LuckyDraw_download_list()
                       end)--
