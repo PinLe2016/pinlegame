@@ -11,10 +11,11 @@ local SetLayer = class("SetLayer", function()
             return display.newLayer("SetLayer")
 end)
 function SetLayer:ctor()
+
           self.floating_layer = require("app.layers.FloatingLayer").new()
           self.floating_layer:addTo(self,100000)
           self:setNodeEventEnabled(true)--layer添加监听
-
+          Server:Instance():get_friend_reward_setting_list()
           
           self:fun_init_infor()
 
@@ -218,8 +219,7 @@ function SetLayer:per_userdady( )
 	 local txt_Name=self.SetNode:getChildByName("Text_1")
 	 txt_Name:setString(nick_sub)
 	 --账号
-	 local txt_Mobile=self.SetNode:getChildByName("Text_3")
-	 txt_Mobile:setString(nickname)
+	 
 end
 
 
@@ -229,11 +229,19 @@ function SetLayer:onEnter()
                         self:init()
 
                       end)
+  NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self,
+                       function()
+                        local   get_reward_setting_list=LocalData:Instance():get_reward_setting_list()
+                        local txt_Mobile=self.SetNode:getChildByName("Text_3")
+                        txt_Mobile:setString(get_reward_setting_list["activatedcode"])
+
+                      end)
   
 end
 
 function SetLayer:onExit()
        NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.AFFICHLIST, self)
+       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.INVITATION_POLITE, self)
        
 end
 
