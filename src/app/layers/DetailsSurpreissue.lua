@@ -15,6 +15,7 @@ function DetailsSurpreissue:ctor(params)
       self:setNodeEventEnabled(true)
 
        --  初始化界面
+       Server:Instance():getactivityadlist(self.surprise_id)
        self:fun_init()     
        self:fun_Initialize_variable()
        Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
@@ -164,43 +165,6 @@ end
 function DetailsSurpreissue:fun_ctor_data( ... )
       local activitybyid=LocalData:Instance():get_getactivitybyid()
       
-       --  规则按钮
-      local XQ_GZ=self.DetailsOfSurprise:getChildByName("XQ_GZ")
-      XQ_GZ:setVisible(false)
-      if activitybyid["description"]  ~= "" then
-         XQ_GZ:setVisible(true)
-      end
-      XQ_GZ:addTouchEventListener(function(sender, eventType  )
-            if eventType == 3 then
-                    sender:setScale(1)
-                    return
-                end
-                if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(1.2)
-                return
-                end
-                sender:setScale(1)
-                if activitybyid["description"]  ~= "" then
-                   self:fun_storebrowser(tostring(activitybyid["description"]))
-                end
-      end)
-
-       self._advertising_bt=self.DetailsOfSurprise:getChildByName("advertising_bt")
-      self._advertising_bt:addTouchEventListener(function(sender, eventType  )
-            if eventType == 3 then
-                    sender:setScale(1)
-                    return
-                end
-                if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(0.8)
-                return
-                end
-                sender:setScale(1)
-                if activitybyid["description"]  ~= "" then
-                   self:fun_storebrowser(tostring(activitybyid["description"]))
-                end
-      end)
-
       self.DJS_time=activitybyid["finishtime"]
       local _year=os.date("%Y",(self.DJS_time))
        local _month=os.date("%m",(self.DJS_time))
@@ -212,16 +176,18 @@ function DetailsSurpreissue:fun_ctor_data( ... )
 end
 --下载奖项预览图片
 function DetailsSurpreissue:winnersPreview_Home_image(  )
-         local sup_data=LocalData:Instance():get_getactivitybyid()
-         if not sup_data then
+        local getactivityadlist=LocalData:Instance():get_getactivityadlist()
+         if not getactivityadlist then
            return
          end
+         self.pinle_tag=math.random(1,#getactivityadlist["ads"])
+         local sup_data=getactivityadlist["ads"][self.pinle_tag]
           local com_={}
-          com_["command"]=sup_data["imageurl"]
+          com_["command"]=sup_data["imgurl"]
           com_["max_pic_idx"]=1
           com_["curr_pic_idx"]=1
           com_["TAG"]="getactivitybyid"
-          Server:Instance():request_pic(sup_data["imageurl"],com_) 
+          Server:Instance():request_pic(sup_data["imgurl"],com_) 
 end
 function DetailsSurpreissue:onEnter()
 
@@ -229,13 +195,63 @@ function DetailsSurpreissue:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
                        	 self:fun_ctor_data()
+                        
+                      end)
+   NotificationCenter:Instance():AddObserver("pinle_getactivityadlist", self,
+                       function()
+                         
                         self:winnersPreview_Home_image()
                       end)
    NotificationCenter:Instance():AddObserver("msg_getactivitybyid", self,
                        function()
-                                  local sup_data=LocalData:Instance():get_getactivitybyid()
+                                  
+                                  self._advertising_bt=self.DetailsOfSurprise:getChildByName("advertising_bt")
+                                  local _getactivityadlist=LocalData:Instance():get_getactivityadlist()
+                                  local sup_data=_getactivityadlist["ads"][self.pinle_tag]
                                   local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-                                  self._advertising_bt:loadTexture(path..tostring(Util:sub_str(sup_data["imageurl"], "/",":")))
+                                  self._advertising_bt:loadTexture(path..tostring(Util:sub_str(sup_data["imgurl"], "/",":")))
+
+                                
+                             self._advertising_bt:addTouchEventListener(function(sender, eventType  )
+                              if eventType == 3 then
+                                      sender:setScale(1)
+                                      return
+                                  end
+                                  if eventType ~= ccui.TouchEventType.ended then
+                                      sender:setScale(0.8)
+                                  return
+                                  end
+                                  sender:setScale(1)
+                                  if sup_data["addetailurl"]  ~= "" then
+                                     self:fun_storebrowser(tostring(sup_data["addetailurl"]))
+                                  end
+                            end)
+
+
+                             local XQ_GZ=self.DetailsOfSurprise:getChildByName("XQ_GZ")
+                            XQ_GZ:setVisible(false)
+                            if sup_data["addetailurl"]  ~= "" then
+                               XQ_GZ:setVisible(true)
+                            end
+                            XQ_GZ:addTouchEventListener(function(sender, eventType  )
+                                  if eventType == 3 then
+                                          sender:setScale(1)
+                                          return
+                                      end
+                                      if eventType ~= ccui.TouchEventType.ended then
+                                          sender:setScale(1.2)
+                                      return
+                                      end
+                                      sender:setScale(1)
+                                      if sup_data["addetailurl"]  ~= "" then
+                                         self:fun_storebrowser(tostring(sup_data["addetailurl"]))
+                                      end
+                            end)
+
+
+
+
+
                       end)
     NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.WINNERS, self,
                        function()
@@ -245,6 +261,7 @@ end
 
 function DetailsSurpreissue:onExit()
      NotificationCenter:Instance():RemoveObserver("msg_getactivitybyid", self)
+     NotificationCenter:Instance():RemoveObserver("pinle_getactivityadlist", self)
      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.WINNERS, self)
      NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
 end

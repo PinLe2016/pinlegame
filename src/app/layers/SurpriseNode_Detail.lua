@@ -418,7 +418,7 @@ function SurpriseNode_Detail:fun_friend_list_data( ... )
         local sup_data=LocalData:Instance():get_getactivitybyid()
         local friendhelp=sup_data["friendhelp"]
        
-        if not sup_data["friendhelp"]   then
+        if  #sup_data["friendhelp"] == 0   then
             self.DetailsOfSurprise:getChildByName("Friend_Node"):getChildByName("XQ_Friend_bg"):getChildByName("no_friend_bg"):setVisible(true)
             return
         else
