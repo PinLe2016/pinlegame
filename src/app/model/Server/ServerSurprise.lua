@@ -46,7 +46,7 @@ end
 
 
 function Server:getactivitybyid_callback()
-    dump(self.data)
+   -- dump(self.data)
     if self.data.err_code==0  then
             LocalData:Instance():set_getactivitybyid(self.data)--保存数据
             -- if self.cycle  == 0 then
@@ -76,7 +76,7 @@ end
 
 
 function Server:getranklistbyactivityid_callback()
-     dump(self.data)
+    -- dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取活动的排行榜失败:" .. self.data.err_msg)
         return
@@ -99,12 +99,12 @@ end
 function Server:getactivityadlist_callback()
      dump(self.data)
     if  self.data.err_code~=0  then
-        self:show_float_message("活动还没有开始，敬请期待！" .. self.data.err_msg)
+        self:show_float_message( self.data.err_msg)
         return
     end
     
     LocalData:Instance():set_getactivityadlist(self.data)--保存数据
-    NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.ACTIVITYYADLIST_LAYER_IMAGE)
+    NotificationCenter:Instance():PostNotification("pinle_getactivityadlist")
     
 end
 

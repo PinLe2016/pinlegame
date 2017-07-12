@@ -13,6 +13,7 @@ function SurpriseNode_Detail:ctor(params)
        cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",1)
        cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel_refresh",0)
        --  初始化界面
+       Server:Instance():getactivityadlist(self.surprise_id)
        self:fun_init()     
        self:fun_Initialize_variable()
        Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
@@ -227,40 +228,8 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
       local activitybyid=LocalData:Instance():get_getactivitybyid()
       
        --  规则按钮
-      local XQ_GZ=self.DetailsOfSurprise:getChildByName("XQ_GZ")
-      XQ_GZ:setVisible(false)
-      if activitybyid["description"]  ~= "" then
-         XQ_GZ:setVisible(true)
-      end
-      XQ_GZ:addTouchEventListener(function(sender, eventType  )
-            if eventType == 3 then
-                    sender:setScale(1)
-                    return
-                end
-                if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(1.2)
-                return
-                end
-                sender:setScale(1)
-                if activitybyid["description"]  ~= "" then
-                   self:fun_storebrowser(tostring(activitybyid["description"]))
-                end
-      end)
-      self._advertising_bt=self.DetailsOfSurprise:getChildByName("advertising_bt")
-      self._advertising_bt:addTouchEventListener(function(sender, eventType  )
-            if eventType == 3 then
-                    sender:setScale(1)
-                    return
-                end
-                if eventType ~= ccui.TouchEventType.ended then
-                    sender:setScale(0.8)
-                return
-                end
-                sender:setScale(1)
-                if activitybyid["description"]  ~= "" then
-                   self:fun_storebrowser(tostring(activitybyid["description"]))
-                end
-      end)
+      
+      
       --开始
       self.began_bt=self.DetailsOfSurprise:getChildByName("began_bt")
       self.began_bt:setVisible(true)
@@ -645,16 +614,18 @@ function SurpriseNode_Detail:winnersPreview_list_image(  )
 end
 --下载奖项预览图片
 function SurpriseNode_Detail:winnersPreview_Home_image(  )
-         local sup_data=LocalData:Instance():get_getactivitybyid()
-         if not sup_data then
+         local getactivityadlist=LocalData:Instance():get_getactivityadlist()
+         if not getactivityadlist then
            return
          end
+         self.pinle_tag=math.random(1,#getactivityadlist["ads"])
+         local sup_data=getactivityadlist["ads"][self.pinle_tag]
           local com_={}
-          com_["command"]=sup_data["imageurl"]
+          com_["command"]=sup_data["imgurl"]
           com_["max_pic_idx"]=1
           com_["curr_pic_idx"]=1
           com_["TAG"]="getactivitybyid"
-          Server:Instance():request_pic(sup_data["imageurl"],com_) 
+          Server:Instance():request_pic(sup_data["imgurl"],com_) 
 end
 --下载好友头像预览图片
 function SurpriseNode_Detail:fun_winnersPreview_Home_image(  )
@@ -705,7 +676,6 @@ function SurpriseNode_Detail:onEnter()
    NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self,
                        function()
                          self:fun_data()
-                         self:winnersPreview_Home_image()
                          self:fun_winnersPreview_Home_image()
                          self:fun_friend_list_data()
                          self:fun_help_data()
@@ -714,9 +684,58 @@ function SurpriseNode_Detail:onEnter()
                       end)
    NotificationCenter:Instance():AddObserver("msg_getactivitybyid", self,
                        function()
-                                  local sup_data=LocalData:Instance():get_getactivitybyid()
+                                 self._advertising_bt=self.DetailsOfSurprise:getChildByName("advertising_bt")
+                                  local _getactivityadlist=LocalData:Instance():get_getactivityadlist()
+                                  local sup_data=_getactivityadlist["ads"][self.pinle_tag]
                                   local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-                                  self._advertising_bt:loadTexture(path..tostring(Util:sub_str(sup_data["imageurl"], "/",":")))
+                                  self._advertising_bt:loadTexture(path..tostring(Util:sub_str(sup_data["imgurl"], "/",":")))
+
+                                
+                             self._advertising_bt:addTouchEventListener(function(sender, eventType  )
+                              if eventType == 3 then
+                                      sender:setScale(1)
+                                      return
+                                  end
+                                  if eventType ~= ccui.TouchEventType.ended then
+                                      sender:setScale(0.8)
+                                  return
+                                  end
+                                  sender:setScale(1)
+                                  if sup_data["addetailurl"]  ~= "" then
+                                     self:fun_storebrowser(tostring(sup_data["addetailurl"]))
+                                  end
+                            end)
+
+
+                             local XQ_GZ=self.DetailsOfSurprise:getChildByName("XQ_GZ")
+                            XQ_GZ:setVisible(false)
+                            if sup_data["addetailurl"]  ~= "" then
+                               XQ_GZ:setVisible(true)
+                            end
+                            XQ_GZ:addTouchEventListener(function(sender, eventType  )
+                                  if eventType == 3 then
+                                          sender:setScale(1)
+                                          return
+                                      end
+                                      if eventType ~= ccui.TouchEventType.ended then
+                                          sender:setScale(1.2)
+                                      return
+                                      end
+                                      sender:setScale(1)
+                                      if sup_data["addetailurl"]  ~= "" then
+                                         self:fun_storebrowser(tostring(sup_data["addetailurl"]))
+                                      end
+                            end)
+
+
+      
+                                  
+                      end)
+   NotificationCenter:Instance():AddObserver("pinle_getactivityadlist", self,
+                       function()
+
+                                     self:winnersPreview_Home_image()
+                                  
                       end)
 end
 
@@ -724,6 +743,7 @@ function SurpriseNode_Detail:onExit()
     cc.SpriteFrameCache:getInstance():removeSpriteFramesFromFile("DetailsiOfSurprise/LH_Plist.plist")
     NotificationCenter:Instance():RemoveObserver("GETACTIVITYAWARDS", self)
     NotificationCenter:Instance():RemoveObserver("msg_getactivitybyid", self)
+    NotificationCenter:Instance():RemoveObserver("pinle_getactivityadlist", self)
     NotificationCenter:Instance():RemoveObserver("GAME_GETACTIVITYAWARDS", self)
     NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.DETAILS_LAYER_IMAGE, self)
 end
