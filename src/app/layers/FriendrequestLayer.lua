@@ -120,14 +120,14 @@ function FriendrequestLayer:fun_scrollToPage(  )
             end  
         end  
     end  
-      self:fun_pnl_First(self.pnl_First,348,20,"","金币 100","",false,true,true,10,managerlist[1]["friendscount"])
-      self:fun_pnl_First(self.pnl_First,356,20,"","金币 200","",false,true,true,10,managerlist[2]["friendscount"])
-      self:fun_pnl_First(self.pnl_First,364,20,"","金币 500","",false,true,true,10,managerlist[3]["friendscount"])
-      self:fun_pnl_First(self.pnl_First,372,20,"","金币 1000","经验 1000",false,true,true,0,managerlist[4]["friendscount"])
-      self:fun_pnl_First(self.pnl_First,380,20,"","金币 2000","经验 2000",false,true,true,0,managerlist[5]["friendscount"])
-      self:fun_pnl_First(self.pnl_First,388,20,"","金币 4000","经验 4000",false,true,true,0,managerlist[6]["friendscount"])
-      self:fun_pnl_First(self.pnl_First,396,20,"","金币 8000","经验 8000",false,true,true,0,managerlist[7]["friendscount"])
-      self:fun_pnl_First(self.pnl_First,404,20,"","金币 20000","经验 10000",false,true,true,0,managerlist[8]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,348,20,"","金币" .. managerlist[1]["golds"] ,"",false,true,true,10,managerlist[1]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,356,20,"","金币" .. managerlist[2]["golds"],"",false,true,true,10,managerlist[2]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,364,20,"","金币" .. managerlist[3]["golds"],"",false,true,true,10,managerlist[3]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,372,20,"","金币" .. managerlist[4]["golds"],"",false,true,true,10,managerlist[4]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,380,20,"","金币" .. managerlist[5]["golds"],"",false,true,true,10,managerlist[5]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,388,20,"","金币" .. managerlist[6]["golds"],"",false,true,true,10,managerlist[6]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,396,20,"","金币" .. managerlist[7]["golds"],"",false,true,true,10,managerlist[7]["friendscount"])
+      self:fun_pnl_First(self.pnl_First,404,20,"","金币" .. managerlist[8]["golds"],"",false,true,true,10,managerlist[8]["friendscount"])
 
     
 end
