@@ -160,8 +160,6 @@ function PowerHelp:fun_list_data(  )
 	          	 if friendhelplist[i]["goodsname"] then
 	          	 	self.w_my_winname:setString(friendhelplist[i]["goodsname"])
 	          	 end
-	          else
-	          	self.w_my_no_win:setVisible(true)
 	          end
 
 	end
