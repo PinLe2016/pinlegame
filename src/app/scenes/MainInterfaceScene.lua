@@ -5,6 +5,7 @@ local MainInterfaceScene = class("MainInterfaceScene", function()
     return display.newScene("MainInterfaceScene")
 end)
 function MainInterfaceScene:ctor()
+      Server:Instance():getaffichelist(1,2)  --  邮件公告
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.count=0
@@ -25,7 +26,7 @@ function MainInterfaceScene:ctor()
       --手机归属请求
       Server:Instance():getusercitybyphone()--手机归属
       self:fun_init()
-      Server:Instance():getaffichelist(1,1)  --  邮件公告  
+        
 
       Server:Instance():share_title() --分享内容获取
 
