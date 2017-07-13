@@ -21,7 +21,23 @@ function PowerHelp:fun_init( ... )
 	self.PowerHelp = cc.CSLoader:createNode("PowerHelp.csb");
 	self:addChild(self.PowerHelp)
 	self.PowerHelp_time_bg=self.PowerHelp:getChildByName("PowerHelp_time_bg")
-
+	--头像 昵称 次数  奖品名称   是否上榜
+	self.w_my_head=self.PowerHelp_time_bg:getChildByName("my_head")
+	self.w_my_head:loadTexture(LocalData:Instance():get_user_head())
+	self.w_my_nickname=self.PowerHelp_time_bg:getChildByName("my_nickname")
+	local  userdata=LocalData:Instance():get_user_data()
+	local userdt = LocalData:Instance():get_userdata()
+	local nickname=userdata["loginname"]
+        	local nick_sub=string.sub(nickname,1,3)
+        	nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
+       	 if userdt["nickname"]~="" then
+            	nick_sub=userdt["nickname"]
+       	 end
+        	self.w_my_nickname:setString(nick_sub)
+	self.w_my_number=self.PowerHelp_time_bg:getChildByName("my_number")
+	self.w_my_winname=self.PowerHelp_time_bg:getChildByName("my_winname")
+	self.w_my_no_win=self.PowerHelp_time_bg:getChildByName("my_no_win")
+	self.w_my_no_win:setVisible(false)
 	--  事件初始化
 	--  返回
 	local btn_Back=self.PowerHelp:getChildByName("PowerHelp_back")
@@ -110,6 +126,17 @@ function PowerHelp:fun_list_data(  )
 	if #friendhelplist == 0  then
 		return
 	end
+	   local tmp = 0  
+	    for i=1,#friendhelplist-1 do  
+	        for j=1,#friendhelplist-i do  
+	            if friendhelplist[j]["amount"] < friendhelplist[j+1]["amount"] then  
+	                tmp = friendhelplist[j]  
+	                friendhelplist[j] = friendhelplist[j+1]  
+	                friendhelplist[j+1] = tmp  
+	            end  
+	        end  
+	    end  
+
 	 for i=1,#friendhelplist do
 	          self.PowerHelp_list:pushBackDefaultItem()
 	          local  cell = self.PowerHelp_list:getItem(i-1)
@@ -126,7 +153,17 @@ function PowerHelp:fun_list_data(  )
 	          if friendhelplist[i]["goodsname"] then
 	          	cell:getChildByName("winname"):setString(friendhelplist[i]["goodsname"])
 	          end
-	         
+	          if self.w_my_nickname:getString()  == friendhelplist[i]["nickname"]  then
+	          	 self.w_my_number:setString(friendhelplist[i]["amount"])
+	          	 self.w_my_no_win:setVisible(false)
+	          	 cell:getChildByName("head"):loadTexture(LocalData:Instance():get_user_head())
+	          	 if friendhelplist[i]["goodsname"] then
+	          	 	self.w_my_winname:setString(friendhelplist[i]["goodsname"])
+	          	 end
+	          else
+	          	self.w_my_no_win:setVisible(true)
+	          end
+
 	end
 end
 function PowerHelp:pushFloating(text)
