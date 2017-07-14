@@ -9,6 +9,7 @@ function MainInterfaceScene:ctor()
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.count=0
+      self._main_bcak=1
       self.radio_table={}  --  广播表
       self.main_leve={0,500,1500,8000,15000,40000,80000,150000,400000,80000,2000000,5000000}
       self.main_leve_name={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","大公","亲王","王储","国王"}
@@ -624,14 +625,18 @@ function MainInterfaceScene:listener_home()
               return
             end
 
-            if not self.floating_layer.dialog then
-              self.floating_layer:showFloat("您确定要退出游戏？",function (sender, eventType)
-                  if eventType==1 then
-                        cc.Director:getInstance():endToLua()
-                  end
-              end)  
+            --if not self.floating_layer.dialog then
+            if self._main_bcak==1 then
+                 self.floating_layer:showFloat("您确定要退出游戏？",function (sender, eventType)
+                      self._main_bcak=1
+                      if eventType==1 then
+                            cc.Director:getInstance():endToLua()
+                      end
+                  end)  
             end
-
+              
+           -- end
+            self._main_bcak=2
 
           end
     end

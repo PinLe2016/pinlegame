@@ -37,7 +37,7 @@ function PowerHelp:fun_init( ... )
 	self.w_my_number=self.PowerHelp_time_bg:getChildByName("my_number")
 	self.w_my_winname=self.PowerHelp_time_bg:getChildByName("my_winname")
 	self.w_my_no_win=self.PowerHelp_time_bg:getChildByName("my_no_win")
-	self.w_my_no_win:setVisible(false)
+	self.w_my_no_win:setVisible(true)
 	--  事件初始化
 	--  返回
 	local btn_Back=self.PowerHelp:getChildByName("PowerHelp_back")
