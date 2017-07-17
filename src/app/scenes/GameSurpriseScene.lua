@@ -72,6 +72,11 @@ end
 function GameSurpriseScene:fun_init( ... )
 	self.GameSurpriseScene = cc.CSLoader:createNode("GameSurpriseScene.csb");
 	self:addChild(self.GameSurpriseScene)
+
+      self.GameSurpriseText_1=self.GameSurpriseScene:getChildByName("Text_1")
+      self.GameSurpriseImage_49=self.GameSurpriseScene:getChildByName("Image_49")
+      self.GameSurpriseText_1:setVisible(false)
+      self.GameSurpriseImage_49:setVisible(false)
 	--  事件初始化
 	--  返回
 	local btn_Back=self.GameSurpriseScene:getChildByName("btn_Back")
@@ -391,8 +396,8 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             	Notwinimage:setVisible(false)
             end
             --  我的活动参加个数
-            local Text_1=self.GameSurpriseScene:getChildByName("Text_1")
-            local Image_49=self.GameSurpriseScene:getChildByName("Image_49")
+            local Text_1=self.GameSurpriseText_1
+            local Image_49=self.GameSurpriseImage_49
             if tonumber(self.ser_status) == 3 then
             	Text_1:setVisible(true)
             	Image_49:setVisible(true)

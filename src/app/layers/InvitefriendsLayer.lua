@@ -190,8 +190,10 @@ function InvitefriendsLayer:fun_init( _isvisber)
              self.gold_text:setString("+ "  ..  friendlist_table["one_golds"])
             if tostring(friendlist_table["one_golds"])  ==  "0" then
               self.obtain_bt:setBright(false) 
+              self.obtain_bt:setTouchEnabled(false)
             else
               self.obtain_bt:setBright(true)   
+              self.obtain_bt:setTouchEnabled(true)
             end
            
             if #friendlist_table["friendlist"]==0 then
