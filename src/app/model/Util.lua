@@ -449,7 +449,7 @@ function Util:share(_id,_loginname,type)
               
 
               url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23e98e660f59078a&redirect_uri=http%3A%2F%2Fplaytest.pinlegame.com%2Fassist.html&response_type=code&"
-              local complete_url=string.format("scope=snsapi_userinfo&time=%s&state=%s|%s#wechat_redirect",os.time(),act_id,_loginname)
+              local complete_url=string.format("scope=snsapi_userinfo&state=%s|%s|%s#wechat_redirect",act_id,_loginname,os.time())
               url=url..complete_url 
           end
          
