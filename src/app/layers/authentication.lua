@@ -55,6 +55,7 @@ function authentication:fun_Thephoneauthentication( ... )
 		         return
 		      end
 		      sender:setScale(1)
+                  Server:Instance():getuserinfo()
 		      self:unscheduleUpdate()
 		      Util:layer_action(self.ThephoneauthenticationNode,self,"close") 
             end)
@@ -156,16 +157,12 @@ function authentication:onEnter()
                        function()
                                   self:scheduleUpdate()
                       end)
-    NotificationCenter:Instance():AddObserver("phoneverifytrue", self,
-                       function()
-                                 
-                      end)
+    
 end
 
 function authentication:onExit()
       NotificationCenter:Instance():RemoveObserver("wangjimima", self)
       NotificationCenter:Instance():RemoveObserver("wangjimima", self)
-      NotificationCenter:Instance():RemoveObserver("phoneverifytrue", self)
       NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REGISTRATIONCODE, self)
       
 end

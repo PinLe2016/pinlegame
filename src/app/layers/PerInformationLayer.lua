@@ -174,10 +174,10 @@ function PerInformationLayer:add_init(  )
                             local Panel_text=cell:getChildByTag(1825)
                             Panel_text:setString("身份认证")
                         end
-                        local ig_GiftPhoto=cell:getChildByName("Button_10")
+                        self.ph_ig_GiftPhoto=cell:getChildByName("Button_10")
                         local ig_GiftPhoto_k=cell:getChildByName("Image_202")
-                        ig_GiftPhoto:setTag(i)   
-                        ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
+                        self.ph_ig_GiftPhoto:setTag(i)   
+                        self.ph_ig_GiftPhoto:addTouchEventListener(function(sender, eventType  )
                                 if eventType == 3 then
                                     sender:setScale(1)
                                     ig_GiftPhoto_k:setVisible(false)
@@ -197,11 +197,11 @@ function PerInformationLayer:add_init(  )
                         
                         if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
                            if tonumber(userdatainit["isphoneverify"])  ==  1   then
-                                 ig_GiftPhoto:setTitleText("已认证")
-                                 ig_GiftPhoto:setTouchEnabled(false)
+                                 self.ph_ig_GiftPhoto:setTitleText("已认证")
+                                 self.ph_ig_GiftPhoto:setTouchEnabled(false)
                             else
-                               ig_GiftPhoto:setTitleText("未认证")
-                               ig_GiftPhoto:setTouchEnabled(true)
+                               self.ph_ig_GiftPhoto:setTitleText("未认证")
+                               self.ph_ig_GiftPhoto:setTouchEnabled(true)
                             end
                         else
                              self.per_ListView:removeAllItems()
@@ -779,7 +779,12 @@ function  PerInformationLayer:city_init( )
             self._area:setString("")
             self.per_address_data:setString("")  --  城市
          end
-         self.adres_pro_cicty_are:setString(userdt["provincename"] ..  "-"  .. userdt["cityname"]  ..  "-"    ..  area  )
+         if userdt["cityname"] then
+             self.adres_pro_cicty_are:setString(userdt["provincename"] ..  "-"  .. userdt["cityname"]  ..  "-"    ..  area  )
+          else
+              self.adres_pro_cicty_are:setString(userdt["provincename"]   )
+         end
+         
 end
 --个人信息初始化
 function PerInformationLayer:perinformation_init(  )
@@ -1614,7 +1619,12 @@ function PerInformationLayer:fun_city_info( )
          local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
          local s_phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
          if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
-                city_curr:setString("")
+                if s_phone_location["provincename"] then
+                    city_curr:setString(s_phone_location["provincename"])
+                else
+                    city_curr:setString("")
+                end
+                
          else
              if s_phone_location["provincename"] then
                  city_curr:setString(s_phone_location["provincename"])
@@ -1910,9 +1920,16 @@ function PerInformationLayer:onEnter()
                        function()
                             self:fun_mail()
                       end)
+     NotificationCenter:Instance():AddObserver("phoneverifytrue", self,
+                       function()
+                        self.ph_ig_GiftPhoto:setTitleText("已认证")
+                                 self.ph_ig_GiftPhoto:setTouchEnabled(false)
+                                 
+                      end)
 end
 
 function PerInformationLayer:onExit()
+               NotificationCenter:Instance():RemoveObserver("phoneverifytrue", self)
          NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE, self)
           NotificationCenter:Instance():RemoveObserver(G_NOTIFICATION_EVENT.REG, self)
           NotificationCenter:Instance():RemoveObserver("xiugainicheng", self)
