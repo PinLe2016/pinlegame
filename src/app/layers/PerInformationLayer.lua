@@ -1724,6 +1724,13 @@ function PerInformationLayer:fun_Province( ... )
            self.province=p_phone_location["provincename"]
         end
     end
+
+     if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
+                 if tonumber(userdatainit["isphoneverify"])  ==  1   then
+                       self.province=self._provincename:getString()
+         end
+
+
     local json_province=self.city_data["provinces"]
     local m_offset_cell=0
     for i=1,#json_province+1+self.mail_h do   
@@ -1755,6 +1762,8 @@ function PerInformationLayer:fun_Province( ... )
          if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
                  if tonumber(userdatainit["isphoneverify"])  ~=  1   then
                         self.adress_province_Itempicker:setTouchEnabled(true)
+                 else
+                     self.adress_province_Itempicker:setTouchEnabled(false)
                  end
          else
               self.adress_province_Itempicker:setTouchEnabled(false)
