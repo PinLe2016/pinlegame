@@ -319,7 +319,7 @@ function Server:phoneverify_callback()
         NotificationCenter:Instance():PostNotification("phoneverifyfalse")
         return
     end
-    self:promptbox_box_buffer("修改密码成功")
+    self:promptbox_box_buffer("绑定手机号成功")
   NotificationCenter:Instance():PostNotification("phoneverifytrue")
     -- LocalData:Instance():set_user_data(self.data)--保存玩家数据
 end

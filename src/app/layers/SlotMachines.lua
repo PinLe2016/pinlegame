@@ -20,7 +20,7 @@ function SlotMachines:ctor(params)
        SlotMachines_id=params.SlotMachines_id
        self.score_three={}
        self.LV_hierarchy_table={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","国王"}
-       self._table_points_tag={1,2,3,5,10,20,30}
+       self._table_points_tag={10,20,30,50,100,200,300}
        self._table_points_tag_img={{0,1,2},{0,0,2},{1,1,2},{2,1,2},{0,0,0},{1,1,1},{2,3,2}}
        self:setNodeEventEnabled(true)
        --  初始化界面

@@ -18,8 +18,7 @@ function SetLayer:ctor()
           Server:Instance():get_friend_reward_setting_list()
           
           self:fun_init_infor()
-
-end
+end 
 function SetLayer:fun_init_infor( )
             local fragment_sprite_bg = cc.CSLoader:createNode("masklayer.csb")  --邀请好友排行榜
             self:addChild(fragment_sprite_bg)
