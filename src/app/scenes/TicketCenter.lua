@@ -70,7 +70,51 @@ function TicketCenter:fun_init( ... )
 	                Server:Instance():getconsignee()
             end)
 
+            --  惊喜吧中奖记录
+            local ticket_p_bt=self.TicketCenter:getChildByName("ticket_p_bt")
+            ticket_p_bt:setBright(false)
+     	self.curr_bright=ticket_p_bt
+          	ticket_p_bt:addTouchEventListener(function(sender, eventType  )
+	               self:list_btCallback(sender, eventType)
+
+            end)
+            --  转盘中奖记录
+            local ticket_z_1=self.TicketCenter:getChildByName("ticket_z_1")
+          	ticket_z_1:addTouchEventListener(function(sender, eventType  )
+	              self:list_btCallback(sender, eventType)     
+            end)
+            
           	 self:fun_Surorise()
+end
+
+
+  function TicketCenter:list_btCallback( sender, eventType )
+              if eventType ~= ccui.TouchEventType.ended then
+                       return
+              end
+              local tag=sender:getName()
+              if self.curr_bright:getName()==tag then
+                  return
+              end
+              self.curr_bright:setBright(true)
+              sender:setBright(false)
+               if tag=="ticket_p_bt" then  
+               	 Util:all_layer_backMusic()
+		 self.tck_data_num_tag=1
+	      	self.tck_data_num=1
+	      	self.TicketCenter_pageno=1
+	      	self.TicketCenterlist:removeAllItems()
+	      	Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
+               elseif tag=="ticket_z_1" then
+               	Util:all_layer_backMusic()
+               	self.tck_data_num_tag=1
+      		self.tck_data_num=1
+      		self.TicketCenter_pageno=1
+      		self.TicketCenterlist:removeAllItems()
+      		Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
+	   end
+
+              self.curr_bright=sender
 end
 
 
