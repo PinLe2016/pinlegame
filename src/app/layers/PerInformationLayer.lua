@@ -1727,10 +1727,10 @@ function PerInformationLayer:fun_Province( ... )
 
      if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
                  if tonumber(userdatainit["isphoneverify"])  ==  1   then
-                       self.province=self._provincename:getString()
+                       self.province=p_phone_location["provincename"]
          end
 
-
+    end
     local json_province=self.city_data["provinces"]
     local m_offset_cell=0
     for i=1,#json_province+1+self.mail_h do   
@@ -1921,9 +1921,6 @@ function PerInformationLayer:onEnter()
                             self._Pname1:setString(tostring(userdata["nickname"]))
                              self._Pname1:setVisible(true)
                            
-
-
-                            
                       end)
      NotificationCenter:Instance():AddObserver(G_NOTIFICATION_EVENT.EMAILADDRESS, self,
                        function()
@@ -1931,7 +1928,12 @@ function PerInformationLayer:onEnter()
                       end)
      NotificationCenter:Instance():AddObserver("phoneverifytrue", self,
                        function()
-                        self.ph_ig_GiftPhoto:setTitleText("已认证")
+                                 local phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
+                                if phone_location["provincename"] then
+                                    self.per_address_data:setString(phone_location["provincename"])
+                                    self.adres_pro_cicty_are:setString(phone_location["provincename"])
+                                end
+                                 self.ph_ig_GiftPhoto:setTitleText("已认证")
                                  self.ph_ig_GiftPhoto:setTouchEnabled(false)
                                  
                       end)

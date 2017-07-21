@@ -86,6 +86,7 @@ function authentication:fun_Thephoneauthentication( ... )
 	               self.time=50
 	               self.btn_code:setTitleText("获取验证码")
 	               self.btn_code:setTouchEnabled(true)
+                     Server:Instance():getusercitybyphone()
 	               Server:Instance():phoneverify(str_phone:getString(),str_code:getString())
             end)
 end
