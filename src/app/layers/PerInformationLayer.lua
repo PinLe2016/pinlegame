@@ -1616,20 +1616,20 @@ function PerInformationLayer:fun_city_info( )
         -- dump(userdata)
          local  userdatainit=LocalData:Instance():get_user_data() --用户数据
          -- dump(userdatainit)
-         local city_curr=self.adress:getChildByTag(52):getChildByTag(130)
+         self._city_curr=self.adress:getChildByTag(52):getChildByTag(130)
          local s_phone_location=LocalData:Instance():getusercitybyphone()--获取手机号信息
          if tonumber(cc.UserDefault:getInstance():getStringForKey("WeChat_landing","0")) ==  1 then
                 if s_phone_location["provincename"] then
-                    city_curr:setString(s_phone_location["provincename"])
+                    self._city_curr:setString(s_phone_location["provincename"])
                 else
-                    city_curr:setString("")
+                    self._city_curr:setString("")
                 end
                 
          else
              if s_phone_location["provincename"] then
-                 city_curr:setString(s_phone_location["provincename"])
+                 self._city_curr:setString(s_phone_location["provincename"])
              else
-                 city_curr:setString("")
+                 self._city_curr:setString("")
              end
          end 
          
@@ -1932,6 +1932,7 @@ function PerInformationLayer:onEnter()
                                 if phone_location["provincename"] then
                                     self.per_address_data:setString(phone_location["provincename"])
                                     self.adres_pro_cicty_are:setString(phone_location["provincename"])
+                                  self._city_curr:setString(phone_location["provincename"])
                                 end
                                  self.ph_ig_GiftPhoto:setTitleText("已认证")
                                  self.ph_ig_GiftPhoto:setTouchEnabled(false)
