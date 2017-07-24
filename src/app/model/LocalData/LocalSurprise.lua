@@ -141,7 +141,18 @@ function LocalData:get_tasktable()
 end
 --  新版中奖记录
 function LocalData:set_getmyrewardlist(getmyrewardlist)
+	if  not getmyrewardlist then
+	     self.getmyrewardlist=getmyrewardlist
+	     return
+	end
+	if self.getmyrewardlist then
+		for k,v in pairs(getmyrewardlist["rewardlist"]) do
+			table.insert(self.getmyrewardlist["rewardlist"],v)
+		end
+		return
+	end
 	self.getmyrewardlist=getmyrewardlist
+
 end
 
 function LocalData:get_getmyrewardlist()

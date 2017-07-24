@@ -13,7 +13,7 @@ function TicketCenter:fun_constructor( ... )
       self.win_type=0
       Server:Instance():getconsignee()
       --  请求自己中奖信息
-      self.tck_data_num_tag=1
+      self.tck_data_num_tag=0
       self.tck_data_num=1
       self.TicketCenter_pageno=1
       Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
@@ -69,52 +69,8 @@ function TicketCenter:fun_init( ... )
 		    self.PerfectInformation:setTag(213)
 	                Server:Instance():getconsignee()
             end)
-
-            --  惊喜吧中奖记录
-            local ticket_p_bt=self.TicketCenter:getChildByName("ticket_p_bt")
-            ticket_p_bt:setBright(false)
-     	self.curr_bright=ticket_p_bt
-          	ticket_p_bt:addTouchEventListener(function(sender, eventType  )
-	               self:list_btCallback(sender, eventType)
-
-            end)
-            --  转盘中奖记录
-            local ticket_z_1=self.TicketCenter:getChildByName("ticket_z_1")
-          	ticket_z_1:addTouchEventListener(function(sender, eventType  )
-	              self:list_btCallback(sender, eventType)     
-            end)
             
           	 self:fun_Surorise()
-end
-
-
-  function TicketCenter:list_btCallback( sender, eventType )
-              if eventType ~= ccui.TouchEventType.ended then
-                       return
-              end
-              local tag=sender:getName()
-              if self.curr_bright:getName()==tag then
-                  return
-              end
-              self.curr_bright:setBright(true)
-              sender:setBright(false)
-               if tag=="ticket_p_bt" then  
-               	 Util:all_layer_backMusic()
-		 self.tck_data_num_tag=1
-	      	self.tck_data_num=1
-	      	self.TicketCenter_pageno=1
-	      	self.TicketCenterlist:removeAllItems()
-	      	Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
-               elseif tag=="ticket_z_1" then
-               	Util:all_layer_backMusic()
-               	self.tck_data_num_tag=1
-      		self.tck_data_num=1
-      		self.TicketCenter_pageno=1
-      		self.TicketCenterlist:removeAllItems()
-      		Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
-	   end
-
-              self.curr_bright=sender
 end
 
 
@@ -125,7 +81,7 @@ function TicketCenter:fun_Surorise( )
 	self.TicketCenterlist:addScrollViewEventListener((function(sender, eventType  )
 	          if eventType  ==6 then
 			 self.TicketCenter_pageno=self.TicketCenter_pageno+1
-			 LocalData:Instance():set_getmyrewardlist(nil)
+			 --LocalData:Instance():set_getmyrewardlist(nil)
 			Server:Instance():getmyrewardlist(self.TicketCenter_pageno)
 	                     return
 	          end
@@ -143,8 +99,14 @@ function TicketCenter:fun_list_data(  )
             	return
             end
             self.tck_data_num=#rewardlist
+            if self.tck_data_num_tag  == self.tck_data_num  then
+            	return
+            end
+            dump(self.tck_data_num_tag)
+            dump(self.tck_data_num)
+            print("开始")
             local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
-	 for i=self.tck_data_num_tag,self.tck_data_num do
+	 for i=self.tck_data_num_tag+1,self.tck_data_num do
 	          self.TicketCenterlist:pushBackDefaultItem()
 	          local  cell = self.TicketCenterlist:getItem(i-1)
 	          --  名称
@@ -155,7 +117,7 @@ function TicketCenter:fun_list_data(  )
 	          TicketCenter_TIME:setString(rewardlist[i]["rewardtime"])
 	          --来源
 	          local TicketCenter_source=cell:getChildByName("TicketCenter_source")
-	          TicketCenter_source:setString("拼乐吧活动 - "  ..  rewardlist[i]["activityname"])
+	          TicketCenter_source:setString(rewardlist[i]["activityname"]   ..  "- "  ..  rewardlist[i]["goodsname"])
 	          --  图片
 	          local TicketCenter_image=cell:getChildByName("TicketCenter_image")
 
@@ -196,6 +158,11 @@ function TicketCenter:fun_list_data(  )
 			    self.Theirwin:setTag(123)
 		                Server:Instance():getconsignee()
 	            end)
+	           if tonumber(self.tck_data_num_tag)~=0 then
+		             self.TicketCenterlist:jumpToPercentVertical(120)
+	 	else
+		             self.TicketCenterlist:jumpToPercentVertical(0)
+		end
 	           self.tck_data_num_tag=self.tck_data_num
 	          self:scheduleUpdate()
 	end
@@ -402,7 +369,7 @@ function TicketCenter:promptbox_buffer(prompt_text)
        self.floating_layer:prompt_box(prompt_text) 
 end
 function TicketCenter:onEnter()
-
+ 	
 	NotificationCenter:Instance():AddObserver("getconsignee", self,
                        function()
                        	if self.win_type==1 then
