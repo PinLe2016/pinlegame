@@ -253,7 +253,7 @@ end
 function Server:getfriendhelplist(_type)
        local _params ={}
        _params={
-            _type=_type
+            type=_type
    }
    
     self:request_http("getfriendhelplist" , _params ); 

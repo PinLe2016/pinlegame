@@ -597,7 +597,7 @@ function PerInformationLayer:init(  )
                     end
                     sender:setScale(1)
                     local  userdatainit=LocalData:Instance():get_getuserinfo()
-                    if tonumber(userdatainit["alternick"]) ==0  then
+                    if tonumber(userdatainit["alternick"]) ==1  then
                         self.floating_layer:prompt_box("昵称只能修改一次，是否确认修改",function (sender, eventType)      
                                                                 if eventType==1    then
                                                                     self.per_name:setVisible(false)
@@ -621,7 +621,7 @@ function PerInformationLayer:init(  )
                     end
                     sender:setScale(1)
                      local  userdatainit=LocalData:Instance():get_getuserinfo()
-                    if tonumber(userdatainit["alternick"]) ==0  then
+                    if tonumber(userdatainit["alternick"]) ==1  then
                         self.floating_layer:prompt_box("昵称只能修改一次，是否确认修改",function (sender, eventType)      
                                                                 if eventType==1    then
                                                                     self.per_name:setVisible(false)

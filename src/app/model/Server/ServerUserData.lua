@@ -39,7 +39,7 @@ function Server:getuserinfo_callback()
         self:show_float_message("获取活动专区列表失败:" .. self.data.err_msg)
         return
     end
-      --dump(self.data)
+      dump(self.data)
     LocalData:Instance():set_getuserinfo(self.data)--保存数据
     NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.USERINFOINIT_LAYER_IMAGE)
    
@@ -100,7 +100,7 @@ function Server:getusercitybyphone()
 end
 
 function Server:getusercitybyphone_callback()
-     --dump(self.data)
+     dump(self.data)
     if self.data.err_code~=0  then
         self:show_float_message("获取玩家手机归属地:" .. self.data.err_msg)
         return
