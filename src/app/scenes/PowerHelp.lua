@@ -121,6 +121,7 @@ function PowerHelp:fun_Surorise( )
 end
 function PowerHelp:fun_list_data(  )
 	self.PowerHelp_list:removeAllItems()
+	local _tper=0
 	local friendhelp=LocalData:Instance():get_getfriendhelplist()
 	local friendhelplist=friendhelp["friendhelplist"]
 	if #friendhelplist == 0  then
@@ -156,10 +157,14 @@ function PowerHelp:fun_list_data(  )
 	          if self.w_my_nickname:getString()  == friendhelplist[i]["nickname"]  then
 	          	 self.w_my_number:setString(friendhelplist[i]["amount"])
 	          	 self.w_my_no_win:setVisible(false)
+	          	 _tper=1
 	          	 cell:getChildByName("head"):loadTexture(LocalData:Instance():get_user_head())
 	          	 if friendhelplist[i]["goodsname"] then
 	          	 	self.w_my_winname:setString(friendhelplist[i]["goodsname"])
 	          	 end
+	          elseif   _tper==0  then 
+	          	self.w_my_number:setString("")
+	          	 self.w_my_no_win:setVisible(true)
 	          end
 
 	end

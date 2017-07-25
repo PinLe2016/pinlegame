@@ -834,7 +834,7 @@ function PerInformationLayer:perinformation_init(  )
         nick_sub=nick_sub.."****"..string.sub(nickname,8,11)
         if userdt["nickname"]~="" then
             if nick_sub~=userdt["nickname"] then
-                self._Pname:setTouchEnabled(false)--只能修改一次
+               
             end
             nick_sub=userdt["nickname"]
         end
