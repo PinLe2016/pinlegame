@@ -90,11 +90,10 @@ function TicketCenter:fun_Surorise( )
 	self.TicketCenterlist:removeAllItems()
 	self.TicketCenterlist:setInnerContainerSize(self.TicketCenterlist:getContentSize())
 end
-function TicketCenter:fun_list_data(  )
+function TicketCenter:fun_list_data_reward(  )
 	local myrewardlist=LocalData:Instance():get_getmyrewardlist()
             local  rewardlist=myrewardlist["rewardlist"]
             local win_consignee=LocalData:Instance():get_getconsignee()
-
             if #rewardlist ==  0 then
             	return
             end
@@ -102,9 +101,6 @@ function TicketCenter:fun_list_data(  )
             if self.tck_data_num_tag  == self.tck_data_num  then
             	return
             end
-            dump(self.tck_data_num_tag)
-            dump(self.tck_data_num)
-            print("开始")
             local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 	 for i=self.tck_data_num_tag+1,self.tck_data_num do
 	          self.TicketCenterlist:pushBackDefaultItem()
@@ -124,7 +120,7 @@ function TicketCenter:fun_list_data(  )
 	          --  图片
 	          local TicketCenter_image=cell:getChildByName("TicketCenter_image")
 
-	          local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(rewardlist[i]["activityname"], "/",":")))
+	          local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(rewardlist[i]["goodsimageurl"], "/",":")))
 	          if not  file then
 	              table.insert(self.image_table,{_obj = TicketCenter_image ,name=path..tostring(Util:sub_str(rewardlist[i]["activityname"], "/",":"))})
 	           else
@@ -183,7 +179,7 @@ function TicketCenter:Theirwin_download_list(  )
          	com_["command"]=rewardlist[i]["goodsimageurl"]
          	com_["max_pic_idx"]=#rewardlist
          	com_["curr_pic_idx"]=i
-         	com_["TAG"]="getmyrewardlist"
+         	com_["TAG"]="getmyrewardlist_tag"
          	Server:Instance():request_pic(rewardlist[i]["goodsimageurl"],com_) 
          end
 end
@@ -399,20 +395,24 @@ function TicketCenter:onEnter()
 	    --  下载图片
 	   NotificationCenter:Instance():AddObserver("GAME_GETMYREWARDLIST", self,
                        function()
-                       			self:fun_list_data()	         
+                       			self:fun_list_data_reward()	         
                       end)
 	   --  中奖列表
 	   NotificationCenter:Instance():AddObserver("getmyrewardlist", self,
                        function()
                        
 			         self:Theirwin_download_list()
-			         self:fun_list_data()	
+			         --self:fun_list_data_reward()	
                       end)
 
 end
 
 function TicketCenter:onExit()
+	LocalData:Instance():set_getmyrewardlist(nil)
+	self.image_table={}
+	     self:unscheduleUpdate()
       NotificationCenter:Instance():RemoveObserver("getconsignee", self)
+      NotificationCenter:Instance():RemoveObserver("GAME_GETMYREWARDLIST", self)
       NotificationCenter:Instance():RemoveObserver("setconsignee_call", self)
       NotificationCenter:Instance():RemoveObserver("getmyrewardlist", self)
       cc.Director:getInstance():getTextureCache():removeAllTextures() 

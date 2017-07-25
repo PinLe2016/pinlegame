@@ -282,7 +282,7 @@ function Server:on_request_finished_pic(event , command)
         NotificationCenter:Instance():PostNotification(G_NOTIFICATION_EVENT.SURPRIS_LIST)
     elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getactivitywinners" then
         NotificationCenter:Instance():PostNotification("GAME_GETACTIVITYAWARDS")
-    elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getmyrewardlist" then
+    elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getmyrewardlist_tag" then
         NotificationCenter:Instance():PostNotification("GAME_GETMYREWARDLIST")
     elseif tonumber(command["max_pic_idx"])== tonumber(command["curr_pic_idx"]) and tostring(command["TAG"]) ==  "getfortunewheelrewards" then
         NotificationCenter:Instance():PostNotification("msg_getfortunewheelrewards")
