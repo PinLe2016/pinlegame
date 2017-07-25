@@ -5,7 +5,6 @@ local SlotMachines = class("SlotMachines", function()
 end)
 _SlotMachines_id=nil
 function SlotMachines:ctor(params)
-      dump(params)
        self.sur_pageno=1
        self.Integralrecord_data_num_tag=0
        self.Integralrecord_data_num = 0
@@ -125,6 +124,7 @@ function SlotMachines:fun_Slot_machines_init( ... )
 end
 --  开始
 function SlotMachines:fun_Slot_machines( _num,_point )
+      self.lh_record:setTouchEnabled(false)
       self.score_three[#self.score_three+1]=_num
          audio.stopAllSounds()
        Util:player_music_new("bg_7_f.mp3",true )
@@ -162,6 +162,7 @@ function SlotMachines:fun_Slot_machines( _num,_point )
                               audio.resumeMusic()
                               self:fun_Initialize_data()
                               self:fun_PowerWindows(_point)
+                              self.lh_record:setTouchEnabled(true)
                            end
                            self:runAction( cc.Sequence:create(cc.DelayTime:create(3 ),cc.CallFunc:create(fun_stopGo2)))
                      end
@@ -255,8 +256,9 @@ function SlotMachines:fun_touch_bt( ... )
       end)
       
        --  规则按钮
-      local lh_record=self.lh_bg:getChildByName("lh_record")
-      lh_record:addTouchEventListener(function(sender, eventType  )
+      self.lh_record=self.lh_bg:getChildByName("lh_record")
+      self.lh_record:setTouchEnabled(true)
+      self.lh_record:addTouchEventListener(function(sender, eventType  )
             if eventType == 3 then
                     sender:setScale(1)
                     return

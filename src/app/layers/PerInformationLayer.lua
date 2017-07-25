@@ -18,6 +18,7 @@ function PerInformationLayer:ctor()--params
        --获取城市定位
        
        --手机归属请求
+
        Server:Instance():getusercitybyphone()--手机归属
 
        self:add_init()
@@ -1936,7 +1937,6 @@ function PerInformationLayer:onEnter()
                                 end
                                  self.ph_ig_GiftPhoto:setTitleText("已认证")
                                  self.ph_ig_GiftPhoto:setTouchEnabled(false)
-                                 
                       end)
 end
 
