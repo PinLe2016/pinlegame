@@ -415,19 +415,19 @@ end
 --分享功能
 
 --tyep 1 正常分享类型 2 去助力分享类型
-function Util:share(_id,_loginname,type)
+function Util:share(_id,_loginname,title,img,content,type)
           local act_id=_id
           local loginname=_loginname
 
           local login_info=LocalData:Instance():get_user_data()
           local share_title=LocalData:Instance():get_share_title()
-          local file --分享图片的链接
-          local title--分享标题
-          local content--分享内容
+          local file =img  --分享图片的链接
+          local title  = title --分享标题
+          local content   =content --分享内容
           local url --分享后微信跳转的URL
 
           dump(login_info)
-          if type==1 then
+          if type~=2  then
               file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
               if device.platform=="ios" then
                   file="res/screenshoot.jpg"
@@ -439,13 +439,19 @@ function Util:share(_id,_loginname,type)
               -- file="" --"助力链接图片"
               -- title="" --
               -- content="" --
-
-               file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
-              if device.platform=="ios" then
-                  file="res/screenshoot.jpg"
+              if not file then
+                    file="http://a3.qpic.cn/psb?/V12zPeTO3EhoPL/T4Jju1vCpHFsTbRl*uuO9YxUD*MKbQU*Hf.PZsgjaXg!/b/dHYBAAAAAAAA&ek=1&kp=1&pt=0&bo=gALAAwAAAAAFAGI!&sce=60-2-2&rf=viewer_311"--cc.FileUtils:getInstance():getWritablePath().."screenshoot.jpg"
+                  if device.platform=="ios" then
+                      file="res/screenshoot.jpg"
+                  end
               end
-              title=share_title["title"]
+              if not  title then
+                title=share_title["title"]
+              end
+            if not content  then
               content=share_title["content"]
+            end
+              
               
 
               url="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx23e98e660f59078a&redirect_uri=http%3A%2F%2Fplaytest.pinlegame.com%2Fassist.html&response_type=code&"

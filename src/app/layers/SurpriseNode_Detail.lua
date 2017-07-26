@@ -4,6 +4,7 @@ local SurpriseNode_Detail = class("SurpriseNode_Detail", function()
 end)
 --  弹窗
 function SurpriseNode_Detail:ctor(params)
+
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.time_count_n=1
@@ -13,10 +14,11 @@ function SurpriseNode_Detail:ctor(params)
        cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",1)
        cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel_refresh",0)
        --  初始化界面
+        Server:Instance():getactivitybyid(self.surprise_id,0)
        Server:Instance():getactivityadlist(self.surprise_id)
        self:fun_init()     
        self:fun_Initialize_variable()
-       Server:Instance():getactivitybyid(self.surprise_id,0)  --  详情
+         --  详情
 end
 --  初始化变量
 function SurpriseNode_Detail:fun_Initialize_variable( ... )
@@ -131,7 +133,7 @@ function SurpriseNode_Detail:fun_data(  )
                                          local _activitybyid_id=activitybyid_data["id"]
                                          local _userdata=LocalData:Instance():get_user_data()
                                          local loginname=_userdata["loginname"]
-                                         self.share=Util:share(_activitybyid_id,loginname)
+                                         self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["ownerurl"],activitybyid_data["title"],2)
                                       end
                 end)
                   cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",pop_new_mylevel_refresh)
@@ -286,8 +288,9 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                      local _activitybyid_id=activitybyid_data["id"]
                                      local _userdata=LocalData:Instance():get_user_data()
                                      local loginname=_userdata["loginname"]
-                                     self.share=Util:share(_activitybyid_id,loginname)
+                                     self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["ownerurl"],activitybyid_data["title"],2)
                                   else
+                                      local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                                       local _SlotMachinesTable={}
                                       local _levelmin=0
                                       local _levelmax=0
@@ -307,7 +310,10 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                       if sup_data["totalpoints"] then
                                         _SlotMachinesTable["SlotMachinesscore"] = sup_data["totalpoints"]
                                       end
-                                      _SlotMachinesTable["SlotMachines_id"] = self.surprise_id                
+                                      _SlotMachinesTable["SlotMachines_id"] = self.surprise_id 
+                                      _SlotMachinesTable["title"] = activitybyid_data["title"]
+                                      _SlotMachinesTable["img"] = activitybyid_data["ownerurl"]
+                                      _SlotMachinesTable["content"] = activitybyid_data["title"])               
                                        local SlotMachines = require("app.layers.SlotMachines")    
                                       self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)
                                   end
@@ -656,7 +662,7 @@ function SurpriseNode_Detail:fun_help_data( ... )
                                   end
                                   sender:setScale(1)
                                   Util:all_layer_backMusic()
-                                  self.share=Util:share(_activitybyid_id,loginname)
+                                  self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["ownerurl"],activitybyid_data["title"],2)
                         end)
 end
 function SurpriseNode_Detail:onEnter()

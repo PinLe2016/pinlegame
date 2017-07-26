@@ -16,6 +16,9 @@ function SlotMachines:ctor(params)
        self.SlotMachinesmylevel=params.SlotMachinesmylevel
        self.SlotMachinesscore=params.SlotMachinesscore
        self.SlotMachinesId=params.SlotMachinesId
+       self.SlotMachtitle=params.title
+       self.SlotMachimg=params.img
+       self.SlotMachcontent=params.content
        SlotMachines_id=params.SlotMachines_id
        self.score_three={}
        self.LV_hierarchy_table={"平民","骑士","勋爵","男爵","子爵","伯爵","侯爵","公爵","国王"}
@@ -35,7 +38,7 @@ function SlotMachines:fun_Popup_window( ... )
                                   if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
                                       local loginname=_userdata["loginname"]
-                                      self.share=Util:share(self.SlotMachinesId,loginname)
+                                      self.share=Util:share(self.SlotMachinesId,loginname,self.SlotMachtitle ,self.SlotMachimg , self.SlotMachcontent,2)
                                   end
             end)
          end
@@ -221,7 +224,7 @@ function SlotMachines:fun_PowerWindows( _text )
                                     if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
                                       local loginname=_userdata["loginname"]
-                                      self.share=Util:share(self.SlotMachinesId,loginname)
+                                      self.share=Util:share(self.SlotMachinesId,loginname,self.SlotMachtitle ,self.SlotMachimg , self.SlotMachcontent,2)
                                     end
               end)
         else
@@ -229,7 +232,7 @@ function SlotMachines:fun_PowerWindows( _text )
                                     if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
                                       local loginname=_userdata["loginname"]
-                                      self.share=Util:share(self.SlotMachinesId,loginname)
+                                      self.share=Util:share(self.SlotMachinesId,loginname,self.SlotMachtitle ,self.SlotMachimg , self.SlotMachcontent,2)
                                     end
               end)
         end
@@ -301,7 +304,7 @@ function SlotMachines:fun_touch_bt( ... )
                                   if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
                                       local loginname=_userdata["loginname"]
-                                      self.share=Util:share(self.SlotMachinesId,loginname)
+                                      self.share=Util:share(self.SlotMachinesId,loginname,self.SlotMachtitle ,self.SlotMachimg , self.SlotMachcontent,2)
                                   end
                                   sender:setTouchEnabled(true)
                     end)
@@ -332,7 +335,7 @@ function SlotMachines:fun_touch_bt( ... )
                 sender:setScale(1)
                 local _userdata=LocalData:Instance():get_user_data()
                 local loginname=_userdata["loginname"]
-                self.share=Util:share(self.SlotMachinesId,loginname)
+                self.share=Util:share(self.SlotMachinesId,loginname,self.SlotMachtitle ,self.SlotMachimg , self.SlotMachcontent,2)
       end)
        
 end
