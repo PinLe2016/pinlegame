@@ -340,7 +340,11 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 if sup_data["totalpoints"] then
                   _SlotMachinesTable["SlotMachinesscore"] = sup_data["totalpoints"]
                 end
-                _SlotMachinesTable["SlotMachines_id"] = self.surprise_id                
+                _SlotMachinesTable["SlotMachines_id"] = self.surprise_id
+                local activitybyid_data=LocalData:Instance():get_getactivitybyid()  
+                _SlotMachinesTable["title"] = activitybyid_data["title"]
+                _SlotMachinesTable["img"] = activitybyid_data["imageurl"]
+                _SlotMachinesTable["content"] = activitybyid_data["requirementsummary"]                    
                  local SlotMachines = require("app.layers.SlotMachines")    
                 self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)
       end)
