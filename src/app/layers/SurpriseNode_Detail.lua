@@ -133,7 +133,7 @@ function SurpriseNode_Detail:fun_data(  )
                                          local _activitybyid_id=activitybyid_data["id"]
                                          local _userdata=LocalData:Instance():get_user_data()
                                          local loginname=_userdata["loginname"]
-                                         self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["ownerurl"],activitybyid_data["title"],2)
+                                         self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["imageurl"],activitybyid_data["title"],2)
                                       end
                 end)
                   cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",pop_new_mylevel_refresh)
@@ -288,7 +288,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                      local _activitybyid_id=activitybyid_data["id"]
                                      local _userdata=LocalData:Instance():get_user_data()
                                      local loginname=_userdata["loginname"]
-                                     self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["ownerurl"],activitybyid_data["title"],2)
+                                     self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["imageurl"],activitybyid_data["title"],2)
                                   else
                                       local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                                       local _SlotMachinesTable={}
@@ -312,7 +312,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                       end
                                       _SlotMachinesTable["SlotMachines_id"] = self.surprise_id 
                                       _SlotMachinesTable["title"] = activitybyid_data["title"]
-                                      _SlotMachinesTable["img"] = activitybyid_data["ownerurl"]
+                                      _SlotMachinesTable["img"] = activitybyid_data["imageurl"]
                                       _SlotMachinesTable["content"] = activitybyid_data["title"]              
                                        local SlotMachines = require("app.layers.SlotMachines")    
                                       self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)
@@ -662,7 +662,7 @@ function SurpriseNode_Detail:fun_help_data( ... )
                                   end
                                   sender:setScale(1)
                                   Util:all_layer_backMusic()
-                                  self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["ownerurl"],activitybyid_data["title"],2)
+                                  self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],activitybyid_data["imageurl"],activitybyid_data["title"],2)
                         end)
 end
 function SurpriseNode_Detail:onEnter()
