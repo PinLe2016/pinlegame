@@ -313,7 +313,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                       _SlotMachinesTable["SlotMachines_id"] = self.surprise_id 
                                       _SlotMachinesTable["title"] = activitybyid_data["title"]
                                       _SlotMachinesTable["img"] = activitybyid_data["ownerurl"]
-                                      _SlotMachinesTable["content"] = activitybyid_data["title"])               
+                                      _SlotMachinesTable["content"] = activitybyid_data["title"]              
                                        local SlotMachines = require("app.layers.SlotMachines")    
                                       self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)
                                   end
