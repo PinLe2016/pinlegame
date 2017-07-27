@@ -302,14 +302,30 @@ function TicketCenter:fun_PerfectInformation(  )
             local PerfectInformation_phone=PerfectInformation_BG:getChildByName("PerfectInformation_phone")
             local PerfectInformation_name=PerfectInformation_BG:getChildByName("PerfectInformation_name")
             --local PerfectInformation_city=PerfectInformation_BG:getChildByName("PerfectInformation_city")
-            local PerfectInformation_address=PerfectInformation_BG:getChildByName("PerfectInformation_address")
+            local PerfectInformation_address1=PerfectInformation_BG:getChildByName("PerfectInformation_address")
+            PerfectInformation_address1:setVisible(false)
             Util:function_advice_keyboard(PerfectInformation_BG,PerfectInformation_phone,25)
             Util:function_advice_keyboard(PerfectInformation_BG,PerfectInformation_name,25)
             --Util:function_advice_keyboard(PerfectInformation_BG,PerfectInformation_city,25)
-            Util:function_advice_keyboard(PerfectInformation_BG,PerfectInformation_address,25)
+            Util:function_advice_keyboard(PerfectInformation_BG,PerfectInformation_address1,25)
+	local res = "  "--res/png/DLkuang.png"
+	local width = 320
+	local height = 90
+                local PerfectInformation_address = ccui.EditBox:create(cc.size(width,height),res)
+	    PerfectInformation_BG:addChild(PerfectInformation_address)
+	    PerfectInformation_address:setPosition(cc.p(PerfectInformation_address1:getPositionX(),PerfectInformation_address1:getPositionY()))--( cc.p(130,438 ))  
+	    PerfectInformation_address:setPlaceHolder("请您输入详细地址")
+	    PerfectInformation_address:setAnchorPoint(0.5,0.5)
+	    PerfectInformation_address:setFont("Arial",30)
+	    PerfectInformation_address:setPlaceholderFont("Arial",30)  
+	    PerfectInformation_address:setPlaceholderFontColor(cc.c3b(245, 126, 20))
+	    PerfectInformation_address:setFontColor(cc.c3b(245, 126, 20))
+	    --PerfectInformation_address:setFontSize(20)
+
+
             local PerfectInformation_submit=PerfectInformation_BG:getChildByName("PerfectInformation_submit")
           	if win_consignee["address"] then
-            	PerfectInformation_address:setString(win_consignee["address"])
+            	PerfectInformation_address:setText(win_consignee["address"])
             end
             if win_consignee["name"] then
             	PerfectInformation_name:setString(win_consignee["name"])
@@ -346,11 +362,11 @@ function TicketCenter:fun_PerfectInformation(  )
 	                  return
 	                  end
 	                  
-	                  if PerfectInformation_address:getString() == "" then
+	                  if PerfectInformation_address:getText() == "" then
 	                  Server:Instance():promptbox_box_buffer("地址不能为空哦！")   --prompt
 	                  return
 	                  end
-	                  Server:Instance():setconsignee(PerfectInformation_name:getString(),PerfectInformation_phone:getString(),PerfectInformation_address:getString())
+	                  Server:Instance():setconsignee(PerfectInformation_name:getString(),PerfectInformation_phone:getString(),PerfectInformation_address:getText())
             end)
 end
 function TicketCenter:pushFloating(text)
