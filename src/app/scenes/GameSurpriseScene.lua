@@ -338,11 +338,11 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	              	 local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
 	              	local _parm=_gamelist[sender:getParent():getTag()]
                   self.lv_table_dx_idx_tag=sender:getParent():getTag()
-		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"]}),1,1)
+		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"],ownerurl=_parm["ownerurl"]  }),1,1)
 		 else
 		 	local SurpriseNode_Detail = require("app.layers.DetailsSurpreissue")  --关于拼乐界面  
 	              	local _parm=_gamelist[sender:getParent():getTag()]
-		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"],mylevel=_parm["mylevel"]}),1,1)
+		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"],ownerurl=_parm["ownerurl"],mylevel=_parm["mylevel"]}),1,1)
 	              end
 	             
             end)

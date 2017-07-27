@@ -606,7 +606,7 @@ function PerInformationLayer:init(  )
                                                                 end                
                            end)    --  然并卵的提示语
                      else
-                         self.floating_layer:prompt_box("昵称不可被更改")
+                         self.floating_layer:prompt_box("昵称只能修改一次哦~")
                     end
                 
             end)
