@@ -4,13 +4,13 @@ local SurpriseNode_Detail = class("SurpriseNode_Detail", function()
 end)
 --  弹窗
 function SurpriseNode_Detail:ctor(params)
+  dump(params)
       self.floating_layer = require("app.layers.FloatingLayer").new()
       self.floating_layer:addTo(self,100000)
       self.time_count_n=1
       self.image_table={}
       self.surprise_id=params.id
       self.mainsurprise_ownerurl=params.ownerurl
-      
        self:setNodeEventEnabled(true)
        cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",1)
        cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel_refresh",0)
@@ -134,7 +134,7 @@ function SurpriseNode_Detail:fun_data(  )
                                          local _activitybyid_id=activitybyid_data["id"]
                                          local _userdata=LocalData:Instance():get_user_data()
                                          local loginname=_userdata["loginname"]
-                                         self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],mainsurprise_ownerurl,activitybyid_data["requirementsummary"],2)
+                                         self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],self.mainsurprise_ownerurl,activitybyid_data["requirementsummary"],2)
                                       end
                 end)
                   cc.UserDefault:getInstance():setIntegerForKey("pop_new_mylevel",pop_new_mylevel_refresh)
@@ -289,7 +289,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                      local _activitybyid_id=activitybyid_data["id"]
                                      local _userdata=LocalData:Instance():get_user_data()
                                      local loginname=_userdata["loginname"]
-                                     self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],mainsurprise_ownerurl,activitybyid_data["requirementsummary"],2)
+                                     self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],self.mainsurprise_ownerurl,activitybyid_data["requirementsummary"],2)
                                   else
                                       local activitybyid_data=LocalData:Instance():get_getactivitybyid()
                                       local _SlotMachinesTable={}
@@ -313,7 +313,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                                       end
                                       _SlotMachinesTable["SlotMachines_id"] = self.surprise_id 
                                       _SlotMachinesTable["title"] = activitybyid_data["title"]
-                                      _SlotMachinesTable["img"] = mainsurprise_ownerurl
+                                      _SlotMachinesTable["img"] = self.mainsurprise_ownerurl
                                       _SlotMachinesTable["content"] = activitybyid_data["requirementsummary"]              
                                        local SlotMachines = require("app.layers.SlotMachines")    
                                       self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)
@@ -344,7 +344,7 @@ function SurpriseNode_Detail:fun_touch_bt_htp( ... )
                 _SlotMachinesTable["SlotMachines_id"] = self.surprise_id
                 local activitybyid_data=LocalData:Instance():get_getactivitybyid()  
                 _SlotMachinesTable["title"] = activitybyid_data["title"]
-                _SlotMachinesTable["img"] = mainsurprise_ownerurl
+                _SlotMachinesTable["img"] = self.mainsurprise_ownerurl
                 _SlotMachinesTable["content"] = activitybyid_data["requirementsummary"]                    
                  local SlotMachines = require("app.layers.SlotMachines")    
                 self:addChild(SlotMachines.new(_SlotMachinesTable),1,1)
@@ -667,7 +667,7 @@ function SurpriseNode_Detail:fun_help_data( ... )
                                   end
                                   sender:setScale(1)
                                   Util:all_layer_backMusic()
-                                  self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],mainsurprise_ownerurl,activitybyid_data["requirementsummary"],2)
+                                  self.share=Util:share(_activitybyid_id,loginname,activitybyid_data["title"],self.mainsurprise_ownerurl,activitybyid_data["requirementsummary"],2)
                         end)
 end
 function SurpriseNode_Detail:onEnter()
