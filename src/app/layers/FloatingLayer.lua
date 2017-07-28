@@ -223,12 +223,13 @@ function FloatingLayer:fun_congratulations( p_text ,p_false,p_true,p_title,call)
                     Text_5:setString(p_true)
                     local Text_6=self.congratulations:getChildByName("Text_6")
                     Text_6:setString(p_title)
+                    local _call=nil
                      determine:addTouchEventListener(function(sender, eventType  )
                                if eventType ~= ccui.TouchEventType.ended then
                                       return
                                end
-                              if self.call then
-                                self.call(self,1)
+                              if _call then
+                                _call(self,1)
                                 -- return
                               end
                               self:removeChildByTag(40)
@@ -238,15 +239,15 @@ function FloatingLayer:fun_congratulations( p_text ,p_false,p_true,p_title,call)
                            if eventType ~= ccui.TouchEventType.ended then
                                   return
                            end
-                           if self.call then
-                              self.call(self,2)
+                           if _call then
+                              _call(self,2)
                               -- return
                             end
                           self:removeChildByTag(40)
                   end)
 
                   if call then
-                    self.call=call
+                    _call=call
                   end
                   return  self.congratulations
 
