@@ -202,7 +202,7 @@ end
 function SetLayer:per_userdady( )
 	-- 头像
 	 local sp_Icon=self.SetNode:getChildByName("Image_15")
-	 print("···0",LocalData:Instance():get_user_head())
+      sp_Icon:setScale(0.6)
 	 if LocalData:Instance():get_user_head() then
 	            sp_Icon:loadTexture(LocalData:Instance():get_user_head())
 	 end
