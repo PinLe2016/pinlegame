@@ -105,7 +105,7 @@ function InvitefriendsLayer:init(  )
                          if eventType ~= ccui.TouchEventType.ended then
                              return
                         end
-                        print("邀请好友")
+                        self.share=Util:share()
                     end)
       self.obtain_bt=self.Invitefriends:getChildByTag(106):getChildByTag(116)  --一键获取
   self.obtain_bt:addTouchEventListener(function(sender, eventType)

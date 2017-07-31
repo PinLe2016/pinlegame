@@ -42,7 +42,7 @@ function mailLayer:ctor()
                   sender:setScale(1)
                   Util:all_layer_backMusic()
                   LocalData:Instance():set_getaffiche(nil)
-                   Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
+                  --Util:scene_control("MainInterfaceScene")   --  目的是刷新金币
                   -- local function stopAction()
                   -- self:removeFromParent()
                   -- end
