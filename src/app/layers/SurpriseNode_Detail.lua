@@ -53,6 +53,9 @@ function SurpriseNode_Detail:update(dt)
                 if file and self.image_table[i]._obj then
                     local activity_Panel=self.image_table[i]._obj
                     activity_Panel:loadTexture(self.image_table[i].name)
+                    if activity_Panel:getContentSize().width  <  700 then
+                     activity_Panel:setScale(0.1)
+                    end
                     self.image_table[i]._obj=nil
                     next_num=next_num+1
                 end
@@ -448,6 +451,9 @@ function SurpriseNode_Detail:fun_friend_list_data( ... )
               table.insert(self.image_table,{_obj = XQ_FD_LIST_Head ,name=path..tostring(Util:sub_str(friendhelp[i]["head"], "/",":"))  ..  ".png"})
              else
                  XQ_FD_LIST_Head:loadTexture(path..tostring(Util:sub_str(friendhelp[i]["head"], "/",":"))  ..  ".png"  )
+                 if XQ_FD_LIST_Head:getContentSize().width>=700 then
+                   XQ_FD_LIST_Head:setScale(0.05)
+                 end
              end
           local XQ_FD_LIST_Nickname=cell:getChildByName("XQ_FD_LIST_Nickname")
           XQ_FD_LIST_Nickname:setString(friendhelp[i]["nick"])
