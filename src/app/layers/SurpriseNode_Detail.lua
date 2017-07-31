@@ -55,6 +55,8 @@ function SurpriseNode_Detail:update(dt)
                     activity_Panel:loadTexture(self.image_table[i].name)
                     if activity_Panel:getContentSize().width  <  700 then
                      activity_Panel:setScale(0.1)
+                    else
+                      activity_Panel:setScale(0.05)
                     end
                     self.image_table[i]._obj=nil
                     next_num=next_num+1
@@ -453,6 +455,8 @@ function SurpriseNode_Detail:fun_friend_list_data( ... )
                  XQ_FD_LIST_Head:loadTexture(path..tostring(Util:sub_str(friendhelp[i]["head"], "/",":"))  ..  ".png"  )
                  if XQ_FD_LIST_Head:getContentSize().width>=700 then
                    XQ_FD_LIST_Head:setScale(0.05)
+                  else
+                    XQ_FD_LIST_Head:setScale(0.1)
                  end
              end
           local XQ_FD_LIST_Nickname=cell:getChildByName("XQ_FD_LIST_Nickname")
