@@ -9,7 +9,6 @@ function GameSurpriseScene:ctor()
       self.sur_pageno= 1  --  页数
       LocalData:Instance():set_getactivitylist(nil)
       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
-      
      
 end
 --  弹窗
@@ -18,7 +17,7 @@ function GameSurpriseScene:fun_Popup_window_Twoday( ... )
          local tab=os.date("*t");
          local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_time",0)
          if new_time_two==0  or tonumber(tab.day)  ~= tonumber(new_time_two)  then
-            self.floating_layer:fun_congratulations("推荐给你最好的朋友,一起赢大奖","稍后推荐","前去推荐","推荐",function (sender, eventType)
+            self.floating_layer:fun_congratulations("推荐给你最好的朋友,\n一起赢大奖","稍后推荐","前去推荐","推荐",function (sender, eventType)
                                   if eventType==1 then
                                     self:fun_storebrowser("http://sj.qq.com/myapp/detail.htm?apkName=com.pinle.pinlegame")
                                   end
@@ -321,10 +320,43 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
                      -- sender:setScale(1)
                       kuang:setVisible(false)
                       --  每天第一次进入本期活动登陆弹窗
+                      
+                      local  tt_tag=sender:getParent():getTag()
+                      local _s_sender=sender
                       if self.ser_status==1 then
-                        if self:fun_Popup_window_Twoday()  then
-                          return
-                        end
+                        -- if self:fun_Popup_window_Twoday()  then
+                        --   return
+                        -- end
+                               local tab=os.date("*t");
+                               local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_time",0)
+                               if new_time_two==0  or tonumber(tab.day)  ~= tonumber(new_time_two)  then
+                                  self.floating_layer:fun_congratulations("推荐给你最好的朋友,\n一起赢大奖","稍后推荐","前去推荐","推荐",function (sender, eventType)
+                                                        if eventType==1 then
+                                                          self:fun_storebrowser("http://sj.qq.com/myapp/detail.htm?apkName=com.pinle.pinlegame")
+                                                        else
+                                                                   local _pop_new_count_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_count_two",0)
+                                                                   if _pop_new_count_two~=0 and _pop_new_count_two~=2 then
+                                                                         cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",2)
+                                                                    elseif _pop_new_count_two==2 then
+                                                                       cc.UserDefault:getInstance():setIntegerForKey("pop_new_count_two",3)
+                                                                   end
+                                                                    local userinfo=LocalData:Instance():get_getuserinfo()
+                                                                    _s_sender:getChildByName("part"):setVisible(false)
+                                                                   if _time >=0 then
+                                                                         local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
+                                                                        local _parm=_gamelist[tt_tag]
+                                                                        self.lv_table_dx_idx_tag=tt_tag
+                                                                        self:addChild(SurpriseNode_Detail.new({id=_parm["id"],ownerurl=_parm["ownerurl"]  }),1,1)
+                                                                   else
+                                                                          local SurpriseNode_Detail = require("app.layers.DetailsSurpreissue")  --关于拼乐界面  
+                                                                                      local _parm=_gamelist[tt_tag]
+                                                                          self:addChild(SurpriseNode_Detail.new({id=_parm["id"],ownerurl=_parm["ownerurl"],mylevel=_parm["mylevel"]}),1,1)
+                                                                  end
+                                                        end
+                                  end)
+                                  cc.UserDefault:getInstance():setIntegerForKey("pop_new_time",tab.day)
+                                  return  
+                               end
                       end
                       local _pop_new_count_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_count_two",0)
 	               if _pop_new_count_two~=0 and _pop_new_count_two~=2 then
@@ -336,12 +368,12 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
                   sender:getChildByName("part"):setVisible(false)
 	              if _time >=0 then
 	              	 local SurpriseNode_Detail = require("app.layers.SurpriseNode_Detail")  --关于拼乐界面  
-	              	local _parm=_gamelist[sender:getParent():getTag()]
-                  self.lv_table_dx_idx_tag=sender:getParent():getTag()
+	              	local _parm=_gamelist[tt_tag]
+                  self.lv_table_dx_idx_tag=tt_tag
 		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"],ownerurl=_parm["ownerurl"]  }),1,1)
 		 else
 		 	local SurpriseNode_Detail = require("app.layers.DetailsSurpreissue")  --关于拼乐界面  
-	              	local _parm=_gamelist[sender:getParent():getTag()]
+	              	local _parm=_gamelist[tt_tag]
 		 	self:addChild(SurpriseNode_Detail.new({id=_parm["id"],ownerurl=_parm["ownerurl"],mylevel=_parm["mylevel"]}),1,1)
 	              end
 	             
