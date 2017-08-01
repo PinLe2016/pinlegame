@@ -193,11 +193,11 @@ function SlotMachines:fun_PowerWindows( _text )
   Image_guang:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT1, actionTo1)))
   Image_guang:runAction(cc.RepeatForever:create(cc.Sequence:create(actionT2, actionTo2)))
   
-   local actionT3= cc.ScaleTo:create( 1.5, 1.1)
-   local actionTo3 = cc.ScaleTo:create( 1.5, 0.8)
-  PowerWindows:getChildByName("Image_5"):runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
-  local number=PowerWindows:getChildByName("Image_5"):getChildByName("number")
-  number:setString(tostring(_text))
+  --  local actionT3= cc.ScaleTo:create( 1.5, 1.1)
+  --  local actionTo3 = cc.ScaleTo:create( 1.5, 0.8)
+  -- PowerWindows:getChildByName("Image_5"):runAction(cc.RepeatForever:create(cc.Sequence:create(actionT3, actionTo3)))
+  local number=PowerWindows:getChildByName("Text_4")
+  number:setString("+"  ..  tostring(_text))
  
 
   local pwtrue=PowerWindows:getChildByName("Image_1")
