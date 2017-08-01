@@ -164,18 +164,28 @@ end
             		self:fun_touch_com(1)
             		LocalData:Instance():set_getactivitylist(nil)
             		Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
+                         for i=1,6 do
+                            self.lvw_Surorise:pushBackDefaultItem()
+                            local  cell = self.lvw_Surorise:getItem(i-1)
+                        end
                elseif tag=="btn_Past" then
                         Util:all_layer_backMusic()
                         self:fun_touch_com(2)
                         LocalData:Instance():set_getactivitylist(nil)
                         Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
-                        print("往期活动")
+                         for i=1,6 do
+                            self.lvw_Surorise:pushBackDefaultItem()
+                            local  cell = self.lvw_Surorise:getItem(i-1)
+                        end
 	   elseif tag=="my_bt" then
                       Util:all_layer_backMusic()
                       self:fun_touch_com(3)
                       LocalData:Instance():set_getactivitylist(nil)
                       Server:Instance():getactivitylist(tostring(self.ser_status),self.sur_pageno)
-                      print("我的活动")
+                       for i=1,6 do
+                            self.lvw_Surorise:pushBackDefaultItem()
+                            local  cell = self.lvw_Surorise:getItem(i-1)
+                        end
 	   end
 
               self.curr_bright=sender
@@ -208,6 +218,10 @@ function GameSurpriseScene:fun_Surorise( )
 	self.lvw_Surorise:setItemModel(self.lvw_Surorise:getItem(0))
 	self.lvw_Surorise:removeAllItems()
       self.lvw_Surorise:setInnerContainerSize(self.lvw_Surorise:getContentSize())
+      for i=1,6 do
+          self.lvw_Surorise:pushBackDefaultItem()
+          local  cell = self.lvw_Surorise:getItem(i-1)
+      end
 end
 function GameSurpriseScene:fun_list_data(  )
 	local list_table=LocalData:Instance():get_getactivitylist()
@@ -222,6 +236,8 @@ function GameSurpriseScene:fun_list_data(  )
 	end
       if #_gamelist  == self.count_cishu  then
          return
+      else
+        self.lvw_Surorise:removeAllItems()
       end
 	local jioushu=math.floor(tonumber(num)) % 2  == 1 and 1 or 2   --判段奇数 偶数
 	local _jioushu=0
@@ -268,12 +284,13 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 	
 
-            local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
-            if not  file then
-              table.insert(self.image_table,{_obj = obj ,name=path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":"))})
-             else
-                _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
-            end
+            -- local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
+            -- if not  file then
+            --   table.insert(self.image_table,{_obj = obj ,name=path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":"))})
+            --  else
+            --     _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
+            -- end
+             _obj:getChildByName("ig_GiftPhoto"):loadTexture("res/SurpriseImage/"  ..    math.random(1,3)  ..   ".jpg")
             local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["nowtime"] )--_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
       	local time_bj=_time
             local gs_time=0
@@ -392,6 +409,9 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
             local time_lv=time_obj:getChildByName("time_lv")
             local s_lv_sp=time_obj:getChildByName("s_lv_sp")
             local s_lv_img=time_obj:getChildByName("s_lv_img")
+            time_lv:setVisible(true)
+            s_lv_sp:setVisible(true)
+            s_lv_img:setVisible(true)
             self.lv_table_dx[self.lv_table_dx_idx]=s_lv_img
             self.lv_table_dx_idx=self.lv_table_dx_idx+1
             local lv_obj=1
