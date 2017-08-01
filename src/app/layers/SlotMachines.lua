@@ -34,7 +34,7 @@ end
 function SlotMachines:fun_Popup_window( ... )
          local new_time_two=cc.UserDefault:getInstance():getIntegerForKey("pop_new_count_two",0)
          if new_time_two == 2 then
-            self.floating_layer:fun_congratulations("您已经成功参与惊喜吧活动,\n离奖品只差一步,赶紧好友助力帮您赢大奖！","稍后助力","马上助力","恭喜",function (sender, eventType)
+            self.floating_layer:fun_congratulations("您已经成功参与惊喜吧活动,\n离奖品只差一步,\n赶紧好友助力帮您赢大奖！","稍后助力","马上助力","恭喜",function (sender, eventType)
                                   if eventType==1 then
                                       local _userdata=LocalData:Instance():get_user_data()
                                       local loginname=_userdata["loginname"]
