@@ -236,7 +236,8 @@ function GameSurpriseScene:fun_list_data(  )
 	end
       if #_gamelist  == self.count_cishu  then
          return
-      else
+      end
+      if self.count_cishu==0 then  
         self.lvw_Surorise:removeAllItems()
       end
 	local jioushu=math.floor(tonumber(num)) % 2  == 1 and 1 or 2   --判段奇数 偶数
