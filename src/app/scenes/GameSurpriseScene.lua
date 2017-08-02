@@ -284,13 +284,13 @@ function GameSurpriseScene:fun_surprise_data(_obj,time_obj,_num,istwo)
 	local path=cc.FileUtils:getInstance():getWritablePath().."down_pic/"
 	
 
-            -- local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
-            -- if not  file then
-            --   table.insert(self.image_table,{_obj = obj ,name=path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":"))})
-            --  else
-            --     _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
-            -- end
-             _obj:getChildByName("ig_GiftPhoto"):loadTexture("res/SurpriseImage/"  ..    math.random(1,3)  ..   ".jpg")
+            local file=cc.FileUtils:getInstance():isFileExist(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
+            if not  file then
+              table.insert(self.image_table,{_obj = obj ,name=path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":"))})
+             else
+                _obj:getChildByName("ig_GiftPhoto"):loadTexture(path..tostring(Util:sub_str(_gamelist[2*_num-istwo]["ownerurl"], "/",":")))
+            end
+             --_obj:getChildByName("ig_GiftPhoto"):loadTexture("res/SurpriseImage/"  ..    math.random(1,3)  ..   ".jpg")
             local _time=(_gamelist[2*_num-istwo]["finishtime"]-_gamelist[2*_num-istwo]["nowtime"] )--_gamelist[2*_num-istwo]["begintime"])-(_gamelist[2*_num-istwo]["nowtime"]-_gamelist[2*_num-istwo]["begintime"])
       	local time_bj=_time
             local gs_time=0
